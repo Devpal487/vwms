@@ -425,7 +425,8 @@ const AddJobCard = (props: Props) => {
     if (field === 'unitName') {
       newData[index].unitName = newData[index].unitName;
     }
-
+    newData[index].amount = newData[index].unitRate * newData[index].qty;
+    newData[index].netAmount = newData[index].unitRate * newData[index].qty;
 
     setTableData(newData);
 
@@ -434,6 +435,13 @@ const AddJobCard = (props: Props) => {
         addRow();
       }
     }
+    let total = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+    })
+    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("totalServiceAmount", total);
+    formik.setFieldValue("totalItemAmount", total);
   };
 
   const addRow = () => {

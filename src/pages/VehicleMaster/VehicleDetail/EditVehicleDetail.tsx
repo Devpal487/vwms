@@ -60,11 +60,11 @@ const style = {
    borderRadius: 10,
 };
 
-const EditVehicleDetail = (props: Props) => {
+const AddVehicleDetail = (props: Props) => {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
-   const { defaultValues } = getISTDate();
+   const { defaultValues, defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
    const location = useLocation();
 
@@ -119,11 +119,6 @@ const EditVehicleDetail = (props: Props) => {
       getFuelTypeData();
       getEmpData();
    }, []);
-
-   const getLabelById = (option: any, id: any) => {
-      const obj = option.find((item: any) => item.value === id);
-      return obj ? obj.label : "";
-   };
 
    const getzoneData = async () => {
       const collectData = {
@@ -263,7 +258,10 @@ const EditVehicleDetail = (props: Props) => {
       setEmpOption(arr);
    };
 
-
+   const getLabelById = (option: any, id: any) => {
+      const obj = option.find((item: any) => item.value === id);
+      return obj ? obj.label : "";
+   };
 
 
 
@@ -281,7 +279,7 @@ const EditVehicleDetail = (props: Props) => {
          "taxId": location.state.taxId,
          "purchaseYear": location.state.purchaseYear,
          "modelNo": location.state.modelNo,
-         "serialNo": location.state.serialNo,
+         "serialNo": location.state.serialNo.toString(),
          "vehicleNo": location.state.vehicleNo,
          "tankCapacity": location.state.tankCapacity,
          "actPrice": location.state.actPrice,
@@ -296,7 +294,7 @@ const EditVehicleDetail = (props: Props) => {
          "createdOn": location.state.createdOn,
          "updatedOn": location.state.updatedOn,
          "zoneName": location.state.zoneName,
-         "vehiclePhotoFile": location.state.vehiclePhotoFile,
+         //"vehiclePhotoFile": location.state.vehiclePhotoFile,
          "vehicleTypeId": location.state.vehicleTypeId,
          "brandTypeId": location.state.brandTypeId,
          "fuelTypeId": location.state.fuelTypeId,
@@ -358,7 +356,7 @@ const EditVehicleDetail = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.EditVehicleDetail")}
+                        {t("text.AddVehicleDetail")}
                      </Typography>
                   </Grid>
 
@@ -389,13 +387,13 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={zoneOption}
-                           value={getLabelById(zoneOption, formik.values.vZoneID)}
+                           value={formik.values.zoneName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("vZoneID", newValue?.value);
-                              formik.setFieldValue("zoneName", newValue?.label);
+                              formik.setFieldValue("vZoneID", parseInt(newValue.value));
+                              formik.setFieldValue("zoneName", newValue.label.toString());
                               setZoneValue(newValue?.label)
                            }}
                            renderInput={(params) => (
@@ -439,7 +437,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.itemCode}
                            placeholder={t("text.Code")}
                            onChange={(e) => {
-                              formik.setFieldValue("itemCode", e.target.value)
+                              formik.setFieldValue("itemCode", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -461,7 +459,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.hsnCode}
                            placeholder={t("text.HSNCode")}
                            onChange={(e) => {
-                              formik.setFieldValue("hsnCode", e.target.value)
+                              formik.setFieldValue("hsnCode", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -472,12 +470,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={categoryOption}
-                           value={getLabelById(categoryOption, formik.values.itemCategoryId)}
+                           value={getLabelById(categoryOption,formik.values.itemCategoryId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("itemCategoryId", newValue?.value);
+                              formik.setFieldValue("itemCategoryId", parseInt(newValue.value));
                               setCategoryValue(newValue?.label);
                            }}
                            renderInput={(params) => (
@@ -498,12 +496,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={itemTypeOption}
-                           value={getLabelById(itemTypeOption, formik.values.itemTypeId)}
+                           value={getLabelById(itemTypeOption,formik.values.itemTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
-                              formik.setFieldValue("itemTypeId", newValue?.value)
+                              formik.setFieldValue("itemTypeId", parseInt(newValue.value))
                               setItemTypeValue(newValue?.label);
                            }}
                            renderInput={(params) => (
@@ -524,13 +522,14 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={unitOption}
-                           value={getLabelById(unitOption, formik.values.unitId)}
+                           value={getLabelById(unitOption,formik.values.unitId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("unitId", newValue?.value);
+                              formik.setFieldValue("unitId", parseInt(newValue.value));
                               setUnitValue(newValue?.label);
+
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -550,12 +549,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={taxOption}
-                           value={getLabelById(taxOption, formik.values.taxId)}
+                           value={getLabelById(taxOption,formik.values.taxId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("taxId", newValue?.value);
+                              formik.setFieldValue("taxId", parseInt(newValue.value));
                               setTaxValue(newValue?.label);
                            }}
                            renderInput={(params) => (
@@ -587,7 +586,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.modelNo}
                            placeholder={t("text.ModelNo")}
                            onChange={(e) => {
-                              formik.setFieldValue("modelNo", e.target.value);
+                              formik.setFieldValue("modelNo", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -609,7 +608,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.vehicleNo}
                            placeholder={t("text.VehicleNo")}
                            onChange={(e) => {
-                              formik.setFieldValue("vehicleNo", e.target.value);
+                              formik.setFieldValue("vehicleNo", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -631,7 +630,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.serialNo}
                            placeholder={t("text.serialNo")}
                            onChange={(e) => {
-                              formik.setFieldValue("serialNo", e.target.value);
+                              formik.setFieldValue("serialNo", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -653,7 +652,7 @@ const EditVehicleDetail = (props: Props) => {
                            value={formik.values.chesisNo}
                            placeholder={t("text.ChesisNo")}
                            onChange={(e) => {
-                              formik.setFieldValue("chesisNo", e.target.value);
+                              formik.setFieldValue("chesisNo", e.target.value.toString());
                            }}
                         />
                      </Grid>
@@ -672,7 +671,7 @@ const EditVehicleDetail = (props: Props) => {
                            size="small"
                            name="purchaseYear"
                            id="purchaseYear"
-                           value={formik.values.purchaseYear || ""}
+                           value={formik.values.purchaseYear || 0}
                            placeholder={t("text.PurchaseYear")}
                            onChange={(e) => {
                               formik.setFieldValue("purchaseYear", parseInt(e.target.value));
@@ -686,12 +685,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.empId)}
+                           value={getLabelById(empOption,formik.values.empId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("empId", newValue?.value);
+                              formik.setFieldValue("empId", parseInt(newValue.value));
                               setEmpValue(newValue?.label);
                               setDepartmentValue(newValue?.department);
                               setDesignationValue(newValue?.designation);
@@ -754,12 +753,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={vehicleTypeOption}
-                           value={getLabelById(vehicleTypeOption, formik.values.vehicleTypeId)}
+                           value={getLabelById(vehicleTypeOption,formik.values.vehicleTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
-                              formik.setFieldValue("vehicleTypeId", newValue?.value);
+                              formik.setFieldValue("vehicleTypeId", parseInt(newValue.value));
                               setVehicleTypeValue(newValue?.label);
 
                            }}
@@ -781,12 +780,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={brandOption}
-                           value={getLabelById(brandOption, formik.values.brandTypeId)}
+                           value={getLabelById(brandOption,formik.values.brandTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("brandTypeId", newValue?.value);
+                              formik.setFieldValue("brandTypeId", parseInt(newValue.value));
                               setBrandValue(newValue?.label);
                            }}
                            renderInput={(params) => (
@@ -807,12 +806,12 @@ const EditVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={fuelTypeOption}
-                           value={getLabelById(fuelTypeOption, formik.values.fuelTypeId)}
+                           value={getLabelById(fuelTypeOption,formik.values.fuelTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               //console.log(newValue?.value);
-                              formik.setFieldValue("fuelTypeId", newValue?.value);
+                              formik.setFieldValue("fuelTypeId", parseInt(newValue.value));
                               setFuelTypeValue(newValue?.label);
                            }}
                            renderInput={(params) => (
@@ -841,7 +840,7 @@ const EditVehicleDetail = (props: Props) => {
                            size="small"
                            name="vehicleWeight"
                            id="vehicleWeight"
-                           value={formik.values.vehicleWeight || ""}
+                           value={formik.values.vehicleWeight || 0}
                            placeholder={t("text.VehicleWeightKG")}
                            onChange={(e) => {
                               formik.setFieldValue("vehicleWeight", parseInt(e.target.value));
@@ -863,7 +862,7 @@ const EditVehicleDetail = (props: Props) => {
                            size="small"
                            name="mileage"
                            id="mileage"
-                           value={formik.values.mileage || ""}
+                           value={formik.values.mileage || 0}
                            placeholder={t("text.VehicleMileageKMPL")}
                            onChange={(e) => {
                               formik.setFieldValue("mileage", parseInt(e.target.value));
@@ -907,7 +906,7 @@ const EditVehicleDetail = (props: Props) => {
                            size="small"
                            name="actPrice"
                            id="actPrice"
-                           value={formik.values.actPrice || ""}
+                           value={formik.values.actPrice || 0}
                            placeholder={t("text.ActualPrice")}
                            onChange={(e) => {
                               formik.setFieldValue("actPrice", parseInt(e.target.value));
@@ -980,4 +979,4 @@ const EditVehicleDetail = (props: Props) => {
    );
 };
 
-export default EditVehicleDetail;
+export default AddVehicleDetail;

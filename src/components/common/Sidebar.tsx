@@ -527,7 +527,7 @@ export default function MiniDrawer({ items }: any) {
   const headerColor1 = `var(--header-background)`;
   const drawerStyles = `var(--drawer-background)`;
 
-  let ID: any = localStorage.getItem("useR_ID");
+  let ID: any = localStorage.getItem("username");
   ID = ID.replace(/^"(.*)"$/, "$1");
   const handlePermissionClick = () => {
     if (ID) {

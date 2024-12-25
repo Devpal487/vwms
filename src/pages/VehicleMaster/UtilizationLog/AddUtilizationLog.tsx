@@ -71,7 +71,7 @@ const AddUtilizationLog = (props: Props) => {
     { value: -1, label: t("text.VehicleNo") },
   ]);
   const [empOption, setEmpOption] = useState([
-    { value: 1, label: t("text.EmpName") },
+    { value: -1, label: t("text.EmpName") },
   ]);
 
   const [panOpens, setPanOpen] = React.useState(false);
@@ -278,8 +278,8 @@ const AddUtilizationLog = (props: Props) => {
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
-                    formik.setFieldValue("empId", newValue?.value);
-                    formik.setFieldValue("empName", newValue?.label);
+                    formik.setFieldValue("empId", newValue.value);
+                    formik.setFieldValue("empName", newValue.label);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -307,7 +307,8 @@ const AddUtilizationLog = (props: Props) => {
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
-                    formik.setFieldValue("vehicleNo", newValue?.label);
+                    formik.setFieldValue("vehicleNo", newValue.label);
+                    formik.setFieldValue("itemId", newValue.value);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -373,7 +374,7 @@ const AddUtilizationLog = (props: Props) => {
                   value={formik.values.fromTime}
                   placeholder={t("text.time")}
                   onChange={(e) => {
-                    formik.setFieldValue("fromTime", e.target.value+":00");
+                    formik.setFieldValue("fromTime", e.target.value + ":00");
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
@@ -431,7 +432,7 @@ const AddUtilizationLog = (props: Props) => {
                   value={formik.values.toTime}
                   placeholder={t("text.time")}
                   onChange={(e) => {
-                    formik.setFieldValue("toTime", e.target.value+":00");
+                    formik.setFieldValue("toTime", e.target.value + ":00");
                   }}
                   InputLabelProps={{ shrink: true }}
                 />

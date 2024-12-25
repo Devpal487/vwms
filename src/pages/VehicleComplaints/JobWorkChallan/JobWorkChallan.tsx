@@ -81,11 +81,8 @@ export default function JobWorkChallan() {
    let delete_id = "";
 
    const accept = () => {
-      const collectData = {
-         id: delete_id
-      }
       api
-         .post(`Master/DeleteJobWorkChallan`, collectData)
+         .post(`Master/DeleteJobWorkChallan?ChallanNo=${delete_id}`)
          .then((response) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
@@ -114,6 +111,15 @@ export default function JobWorkChallan() {
       });
    };
 
+   function formatDate(dateString: string) {
+      const timestamp = Date.parse(dateString);
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+   }
+
 
 
    const fetchJobChallanData = async () => {
@@ -131,6 +137,7 @@ export default function JobWorkChallan() {
             ...Item,
             serialNo: index + 1,
             id: Item.jobCardId,
+            challanDate: formatDate(Item.challanDate)
          }));
          setItem(arr);
          setIsLoading(false);
