@@ -1,0 +1,17 @@
+# Ignore test directory
+/test/
+
+# Ignore node_modules directory
+/node_modules/
+
+# Ignore .env file
+.env
+
+# Ignore build directory
+/build/
+
+# Ignore all .rar files
+*.rar
+
+# Ignore src21 directory
+src21/
