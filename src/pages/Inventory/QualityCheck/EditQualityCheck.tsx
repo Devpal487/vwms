@@ -6,6 +6,7 @@ import {
   Divider,
   TextField,
   Typography,
+
   TextareaAutosize,
   
   Table,
@@ -40,38 +41,41 @@ const EditQualityCheck = (props: Props) => {
   const [vendorData, setVendorData] = useState([]);
   // const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
-    id: -1,
-    qcId: 0,
-    mrnId: 0,
-    orderId: 0,
-    orderNo: "",
-    itemId: 0,
-    mrnQty: 0,
-    acceptQty: 0,
-    rejectQty: 0,
-    rate: 0,
-    amount: 0,
-    gstId: 0,
-    gstRate: 0,
-    cgst: 0,
-    sgst: 0,
-    igst: 0,
-    netAmount: 0,
-    reason: "",
-    batchNo: "",
-
-    item: {},
+"id": -1,
+    "qcId": 0,
+    "mrnId": 0,
+    "orderId": 0,
+    "orderNo": "",
+    "itemId": 0,
+    "mrnQty": 0,
+    "acceptQty": 0,
+    "rejectQty": 0,
+    "rate": 0,
+    "amount": 0,
+    "gstId": 0,
+    "gstRate": 0,
+    "cgst": 0,
+    "sgst": 0,
+    "igst": 0,
+    "netAmount": 0,
+    "reason": "",
+    "batchNo": "",
+    "unitId": 0
+  };
+  type MrnOption = {
+    label: string;
+    value: number;
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
-
+  const [mrnNoOptions, setmrnNoOptions] = useState<MrnOption[]>([]);
   const [orderOption, setorderOption] = useState([
     { value: -1, label: t("text.id") },
   ]);
 
   const [itemOption, setitemOption] = useState<any>([]);
   const [qcOptions, setQcOptions] = useState([]);
-  const [mrnNoOptions, setmrnNoOptions] = useState([]);
+
 
   const mrnTypeOption = [
     { value: "-1", label: t("text.selectMRN") },
@@ -87,55 +91,50 @@ const EditQualityCheck = (props: Props) => {
     GetitemData();
     GetorderData();
     GetmrnData();
-    GetQcData();
+    //GetQcData();
   }, []);
 
   const GetmrnData = async () => {
-    try {
-      const response = await api.get(`Mrn/GetMaxcMrnNo`, { headers: { 'MrnId': '-1' } },);
-      const data = response.data.data;
-      if (data && data.length > 0) {
-        const latestmrnNo = data[0]["mrnNo"];
-
-        // Set QC number in formik and options
-        formik.setFieldValue('mrnNo', latestmrnNo);
-        const arr = data.map((item: any) => ({
-          label: item.mrnNo,
-          value: item.mrnId,
-        }));
-
-        setmrnNoOptions(arr);
-      }
-    } catch (error) {
-      console.error("Error fetching QC data:", error);
+    const collectData = {
+      "mrnId": -1
+    };
+    const response = await api.post(`QualityCheck/GetMrn`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["mrnNo"],
+        value: data[index]["mrnId"],
+      });
     }
+    setmrnNoOptions(arr);
   };
 
-  const GetQcData = async () => {
-    try {
-      const response = await api.get(`Qc/GetMaxQcNo`,
-        { headers: { 'QcId': '-1' } },
-      );
+  // const GetQcData = async () => {
+  //   try {
+  //     const response = await api.get(`Qc/GetMaxQcNo`,
+  //       { headers: { 'QcId': '-1' } },
+  //     );
 
-      const data = response.data.data;
+  //     const data = response.data.data;
 
-      // Assuming the first item in data has the latest QC number
-      if (data && data.length > 0) {
-        const latestQcNo = data[0]["qcNo"];
+  //     // Assuming the first item in data has the latest QC number
+  //     if (data && data.length > 0) {
+  //       const latestQcNo = data[0]["qcNo"];
 
-        // Set QC number in formik and options
-        formik.setFieldValue('qcNo', latestQcNo);
-        const arr = data.map((item: any) => ({
-          label: item.qcNo,
-          value: item.qcId,
-        }));
+  //       // Set QC number in formik and options
+  //       formik.setFieldValue('qcNo', latestQcNo);
+  //       const arr = data.map((item: any) => ({
+  //         label: item.qcNo,
+  //         value: item.qcId,
+  //       }));
 
-        setQcOptions(arr);
-      }
-    } catch (error) {
-      console.error("Error fetching QC data:", error);
-    }
-  };
+  //       setQcOptions(arr);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching QC data:", error);
+  //   }
+  // };
 
 
 
@@ -143,7 +142,7 @@ const EditQualityCheck = (props: Props) => {
 
   const getQcById = (id: any) => {
 
-    api.get(`Qc/GetQc`, { headers: { QcId: id } })
+    api.post(`QualityCheck/GetQc`,{ QcId: id } )
       .then((response) => {
         if (response.data && response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
           const data = response.data.data[0]['qcDetail'];
@@ -196,40 +195,130 @@ const EditQualityCheck = (props: Props) => {
     }
   }, [tableData]);
 
+  // const GetitemData = async () => {
+  //   const collectData = {
+  //     itemMasterId: -1,
+  //   };
+  //   const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
+  //   const data = response.data.data;
+  //   const arr =
+  //     data?.map((item: any) => ({
+  //       label: `${item.itemName}`,
+  //       value: item.itemMasterId,
+  //       details: item,
+  //     })) || [];
+  //   setitemOption([{ value: -1, label: t("text.selectItem"), details: "" }, ...arr]);
+  // };
+
+  // const GetorderData = async () => {
+  //   const collectData = {
+  //     id: -1,
+  //   };
+  //   const response = await api.post(`PurchaseInvoice/GetPurchaseInvoice`, collectData);
+  //   const data = response.data.data;
+  //   const arr = [];
+  //   for (let index = 0; index < data.length; index++) {
+  //     arr.push({
+  //       label: data[index]["orderNo"],
+  //       value: data[index]["id"],
+  //     });
+  //   }
+  //   setorderOption(arr);
+  // };
+
+  // const getVendorData = async () => {
+  //   const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
+  //     venderId: -1,
+  //   });
+  //   if (result.data.isSuccess) {
+  //     const arr =
+  //       result?.data?.data?.map((item: any) => ({
+  //         label: `${item.venderId} - ${item.name}`,
+  //         value: item.venderId,
+  //         details: item,
+  //       })) || [];
+
+  //     setVendorData([
+  //       { value: "-1", label: t("text.SelectVendor") },
+  //       ...arr,
+  //     ] as any);
+  //   }
+  // };
+
+  // // const getVendorDatabyID = async (id: any) => {
+  // //   const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
+  // //     venderId: id,
+  // //   });
+  // //   if (result.data.isSuccess) {
+  // //     const arr =
+  // //       result?.data?.data?.map((item: any) => ({
+  // //         details: item
+  // //       })) || [];
+
+  // //     setVendorDetail(arr[0]['details']);
+  // //   }
+  // // };
+
+  // // console.log("setVendorDetail", vendorDetail);
+
+  // const getTaxData = async () => {
+  //   const result = await api.post(`TaxMaster/GetTaxMaster`, {
+  //     taxId: -1,
+  //   });
+  //   if (result.data.isSuccess) {
+  //     const arr =
+  //       result?.data?.data?.map((item: any) => ({
+  //         label: `${item.taxPercentage}`,
+  //         value: item.taxId,
+  //       })) || [];
+
+  //     setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+  //   }
+  // };
+
   const GetitemData = async () => {
     const collectData = {
       itemMasterId: -1,
     };
-    const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
+    const response = await api.get(`ItemMaster/GetItemMaster`, {});
     const data = response.data.data;
-    const arr =
-      data?.map((item: any) => ({
-        label: `${item.itemName}`,
-        value: item.itemMasterId,
-        details: item,
-      })) || [];
-    setitemOption([{ value: -1, label: t("text.selectItem"), details: "" }, ...arr]);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["itemName"],
+        value: data[index]["itemMasterId"],
+      });
+    }
+    setitemOption(arr);
   };
 
+  
   const GetorderData = async () => {
     const collectData = {
-      id: -1,
+      orderId: -1,
+      indentId:-1
     };
-    const response = await api.post(`PurchaseInvoice/GetPurchaseInvoice`, collectData);
+    const response = await api.post(
+      `PurchaseOrder/GetPurchaseOrder`,
+      collectData
+    );
     const data = response.data.data;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({
         label: data[index]["orderNo"],
-        value: data[index]["id"],
+        value: data[index]["orderId"],
       });
     }
     setorderOption(arr);
   };
 
   const getVendorData = async () => {
-    const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
-      venderId: -1,
+    const result = await api.post(`Master/GetVendorMaster`, {
+     "venderId": -1,
+  "countryId": -1, 
+  "stateId": -1,
+  "cityId": -1
     });
     if (result.data.isSuccess) {
       const arr =
@@ -246,27 +335,11 @@ const EditQualityCheck = (props: Props) => {
     }
   };
 
-  // const getVendorDatabyID = async (id: any) => {
-  //   const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
-  //     venderId: id,
-  //   });
-  //   if (result.data.isSuccess) {
-  //     const arr =
-  //       result?.data?.data?.map((item: any) => ({
-  //         details: item
-  //       })) || [];
-
-  //     setVendorDetail(arr[0]['details']);
-  //   }
-  // };
-
-  // console.log("setVendorDetail", vendorDetail);
-
   const getTaxData = async () => {
-    const result = await api.post(`TaxMaster/GetTaxMaster`, {
+    const result = await api.post(`UnitMaster/GetTaxMaster`, {
       taxId: -1,
     });
-    if (result.data.isSuccess) {
+    if (result.data.status===1) {
       const arr =
         result?.data?.data?.map((item: any) => ({
           label: `${item.taxPercentage}`,
@@ -535,7 +608,7 @@ const EditQualityCheck = (props: Props) => {
       });
       // values.vendor = vendorDetail;
 
-      const response = await api.post(`Qc/AddUpdateQc`, {
+      const response = await api.post(`QualityCheck/UpsertQc`, {
         ...values,
         qcDetail: filteredTableData,
       });

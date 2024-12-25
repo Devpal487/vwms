@@ -27,7 +27,7 @@ import StateMaster from "../pages/master/StateMaster/StateMaster";
 import GenderMaster from "../pages/master/GenderMaster/GenderMaster";
 import CountryMaster from "../pages/master/CountryMaster/CountryMaster";
 import CityMaster from "../pages/master/CityMaster/CityMaster";
-import Storemaster from "../pages/master/Storemaster/Storemaster";
+
 import VendorMaster from "../pages/master/VendorMaster/VendorMaster";
 import ItemGroup from "../pages/master/ItemGroup/ItemGroup";
 import Taxmaster from '../pages/master/Taxmaster/Taxmaster';
@@ -108,6 +108,7 @@ import EditStaffItemIssue from "../pages/Inventory/staffItemIssue/EditStaffItemI
 import StaffItemReturn from "../pages/Inventory/StaffItemReturn/StaffItemReturn";
 import CreateStaffItemReturn from "../pages/Inventory/StaffItemReturn/CreateStaffItemReturn";
 import EditStaffItemReturn from "../pages/Inventory/StaffItemReturn/EditStaffItemReturn";
+import StoreMaster from "../pages/Inventory/StoreMaster/StoreMaster";
 import ComplaintType from "../pages/master/ComplaintType/ComplaintType";
 import Emailsettingmaster from "../pages/Emailsystem/Emailsetting/Emailsettingmaster";
 import EmailcampgianMaster from "../pages/Emailsystem/Emailcampagian/Emailcampagianmaster";
@@ -232,6 +233,8 @@ import Smscampagian from "../pages/Emailsystem/Smscampagian/Smscampagian";
 import CreateSmscampagian from "../pages/Emailsystem/Smscampagian/CreateSmscampagian";
 import EditSmscampagian from "../pages/Emailsystem/Smscampagian/EditSmscampagian";
 import Smssetting from "../pages/Emailsystem/Smssetting/Smssetting";
+import OfficePurchaseIndent from "../pages/Inventory/OfficePurchaseIndent/OfficePurchaseIndent";
+
 
 
 
@@ -396,14 +399,7 @@ const appRoutes: RouteType[] = [
       },
 
 
-      {
-        path: "/master/Storemaster",
-        element: <Storemaster />,
-        state: "master.Storemaster",
-        sidebarProps: {
-          displayText: "Store master",
-        },
-      },
+      
       {
         path: "/master/VendorMaster",
         element: <VendorMaster />,
@@ -881,7 +877,7 @@ const appRoutes: RouteType[] = [
 
       {
         path: "/Inventory/StoreMaster",
-        element: <Storemaster />,
+        element: <StoreMaster />,
         state: "Inventory.StoreMaster",
       },
 
@@ -908,7 +904,7 @@ const appRoutes: RouteType[] = [
 
       {
         path: "/Inventory/OfficePurchaseIndent",
-        element: <EditOfficePurchaseIndent />,
+        element: <OfficePurchaseIndent />,
         state: "Inventory.OfficePurchaseIndent",
         sidebarProps: {
           displayText: "Office Purchase Indent",
