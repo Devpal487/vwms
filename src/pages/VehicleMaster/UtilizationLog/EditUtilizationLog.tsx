@@ -66,9 +66,13 @@ const EditUtilizationLog = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const location = useLocation();
 
-  const [zoneOption, setzoneOption] = useState([
-    { value: -1, label: t("text.zoneID") },
+  const [vehicleOption, setVehicleOption] = useState([
+    { value: -1, label: t("text.VehicleNo") },
+  ]);
+  const [empOption, setEmpOption] = useState([
+    { value: -1, label: t("text.EmpName") },
   ]);
 
   const [panOpens, setPanOpen] = React.useState(false);
@@ -87,72 +91,79 @@ const EditUtilizationLog = (props: Props) => {
 
 
   useEffect(() => {
-    getzoneData();
+    getVehicleDetails();
+    getEmpData();
   }, []);
 
-  const getzoneData = async () => {
+  const getVehicleDetails = async () => {
+    const response = await api.get(
+      `Master/GetVehicleDetail?ItemMasterId=-1`,
+    );
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      value: Item.itemMasterId,
+      label: Item.vehicleNo
+    }));
+    setVehicleOption(arr);
+  };
+
+  const getEmpData = async () => {
     const collectData = {
-      "zoneID": -1,
-      "user_ID": "",
+      "empid": -1,
+      "userId": ""
     };
-    const response = await api.post(`Zone/GetZonemaster`, collectData);
+    const response = await api.post(`Employee/GetEmployee`, collectData);
     const data = response.data.data;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({
-        label: data[index]["zoneName"],
-        value: data[index]["zoneID"],
+        label: data[index]["empName"],
+        value: data[index]["empid"],
       });
     }
-    setzoneOption(arr);
+    setEmpOption(arr);
   };
 
+  const formatTime = (date: any) => {
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
 
 
 
   const formik = useFormik({
     initialValues: {
-      "indentID": -1,
-      "indentNo": "",
-      "indentDate": "",
-      "reqBefDate": "",
-      "deptID": 0,
-      "emp_name": "",
-      "remark": "",
-      "instID": 0,
-      "sessionID": 0,
-      "approve": "",
-      "user_id": 0,
-      "divisionId": 0,
-      "forward_Status": "",
-      "forward_By": 0,
-      "forward_On": defaultValues,
-      "storeId": 0,
-      "l3_Status": "",
-      "l3_By": 0,
-      "l3_On": defaultValues,
-      "mode": "",
-      "estimateNo": "",
-      "workType": "",
-      "proposalNo": "",
-      "patCodeNo": "",
-      "toStoreId": 0,
-      "toDivisionId": 0,
-      "is_PMN": "",
-      "stage": "",
-      "indentinv": []
+      "id": location.state.id,
+      "empId": location.state.empId,
+      "itemId": location.state.itemId,
+      "fromDate": location.state.fromDate,
+      "toDate": location.state.toDate,
+      "fromTime": location.state.fromDate,
+      "toTime": location.state.toDate,
+      "remark": location.state.remark,
+      "createdBy": location.state.createdBy,
+      "updatedBy": location.state.updatedBy,
+      "createdOn": location.state.createdOn,
+      "updatedOn": location.state.updatedOn,
+      "companyId": location.state.companyId,
+      "fyId": location.state.fyId,
+      "itemName": location.state.itemName,
+      "empName": location.state.empName,
+      "vehicleNo": location.state.vehicleNo
     },
-    validationSchema: Yup.object({
-      indentNo: Yup.string()
-        .required(t("text.reqIndentNum")),
-    }),
+    // validationSchema: Yup.object({
+    //   indentNo: Yup.string()
+    //     .required(t("text.reqIndentNum")),
+    // }),
 
     onSubmit: async (values) => {
 
-      const response = await api.post(`AreaWardMaster/AddUpdateAreaWardMaster`, values);
-      if (response.data.isSucess) {
+      const response = await api.post(`Master/UpsertUtilizationLog`, values);
+      if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclemaster/LicensingInsuranceMaster")
+        navigate("/vehiclemaster/UtilizationLog")
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -262,22 +273,22 @@ const EditUtilizationLog = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={zoneOption}
-                  //value={zoneValue}
+                  options={empOption}
+                  value={formik.values.empName}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
-
-
+                    formik.setFieldValue("empId", newValue.value);
+                    formik.setFieldValue("empName", newValue.label);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.UnderControlOf")} required={true} />}
-                      name="zoneMaster.zoneID"
-                      id="zoneMaster.zoneID"
-                      placeholder={t("text.EnterZone")}
+                      name="empId"
+                      id="empId"
+                      placeholder={t("text.UnderControlOf")}
                     />
                   )}
                 />
@@ -291,22 +302,22 @@ const EditUtilizationLog = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={zoneOption}
-                  //value={zoneValue}
+                  options={vehicleOption}
+                  value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
-
-
+                    formik.setFieldValue("vehicleNo", newValue?.label);
+                    formik.setFieldValue("itemId", newValue?.value);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="zoneMaster.zoneID"
-                      id="zoneMaster.zoneID"
-                      placeholder={t("text.EnterZone")}
+                      name="vehicleNo"
+                      id="vehicleNo"
+                      placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
@@ -330,11 +341,13 @@ const EditUtilizationLog = (props: Props) => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  name="routeDate"
-                  id="routeDate"
-                  //value={formik.values.routeDate}
+                  name="fromDate"
+                  id="fromDate"
+                  value={formik.values.fromDate}
                   placeholder={t("text.fromDate")}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("fromDate", e.target.value);
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 {/* {formik.touched.routeDate && formik.errors.routeDate ? (
@@ -357,11 +370,13 @@ const EditUtilizationLog = (props: Props) => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  name="routeDate"
-                  id="routeDate"
-                  //value={formik.values.routeDate}
+                  name="fromTime"
+                  id="fromTime"
+                  value={formik.values.fromTime}
                   placeholder={t("text.time")}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("fromTime", e.target.value + ":00");
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 {/* {formik.touched.routeDate && formik.errors.routeDate ? (
@@ -385,11 +400,13 @@ const EditUtilizationLog = (props: Props) => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  name="routeDate"
-                  id="routeDate"
-                  //value={formik.values.routeDate}
+                  name="toDate"
+                  id="toDate"
+                  value={formik.values.toDate}
                   placeholder={t("text.toDate")}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("toDate", e.target.value);
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 {/* {formik.touched.routeDate && formik.errors.routeDate ? (
@@ -411,11 +428,13 @@ const EditUtilizationLog = (props: Props) => {
                   variant="outlined"
                   fullWidth
                   size="small"
-                  name="routeDate"
-                  id="routeDate"
-                  //value={formik.values.routeDate}
+                  name="toTime"
+                  id="toTime"
+                  value={formik.values.toTime}
                   placeholder={t("text.time")}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("toTime", e.target.value + ":00");
+                  }}
                   InputLabelProps={{ shrink: true }}
                 />
                 {/* {formik.touched.routeDate && formik.errors.routeDate ? (
@@ -431,12 +450,11 @@ const EditUtilizationLog = (props: Props) => {
               <Grid item xs={12} sm={4} lg={4}>
                 <TranslateTextField
                   label={t("text.Remark")}
-                  value={""}
-                  onChangeText={(text: string) => formik.setFieldValue("routeName", text)}
+                  value={formik.values.remark}
+                  onChangeText={(text: string) => formik.setFieldValue("remark", text)}
                   required={true}
                   lang={lang}
                 />
-
               </Grid>
 
 
@@ -444,17 +462,19 @@ const EditUtilizationLog = (props: Props) => {
 
 
               {/* attachment */}
-              <Grid container lg={12} sm={12} xs={12} sx={{ padding: "1rem" }}>
-                <Grid item xs={12} md={4} sm={4} sx={{ marginTop: "3rem" }}>
+              {/* <Grid container spacing={1} item>
+                <Grid
+                  xs={12}
+                  md={4}
+                  sm={4}
+                  item
+                  style={{ marginBottom: "30px", marginTop: "30px" }}
+                >
                   <TextField
                     type="file"
                     inputProps={{ accept: "image/*" }}
                     InputLabelProps={{ shrink: true }}
-                    label={
-                      <strong style={{ color: "#000" }}>
-                        {t("text.AttachedImage")}
-                      </strong>
-                    }
+                    label={<CustomLabel text={t("text.AttachedImage")} />}
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
@@ -462,6 +482,7 @@ const EditUtilizationLog = (props: Props) => {
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
+
                 <Grid xs={12} md={4} sm={4} item>
                   <Grid
                     style={{
@@ -471,7 +492,7 @@ const EditUtilizationLog = (props: Props) => {
                       margin: "10px",
                     }}
                   >
-                    {"" == "" ? (
+                    {formik.values.imageFile == "" ? (
                       <img
                         src={nopdf}
                         style={{
@@ -483,7 +504,7 @@ const EditUtilizationLog = (props: Props) => {
                       />
                     ) : (
                       <img
-                        src={"formik.values.imageFile"}
+                        src={`data:image/jpg;base64,${formik.values.imageFile}`}
                         style={{
                           width: 150,
                           height: 100,
@@ -494,7 +515,7 @@ const EditUtilizationLog = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("imageFile")}
+                      onClick={() => modalOpenHandle1("imageFile")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",
@@ -507,7 +528,7 @@ const EditUtilizationLog = (props: Props) => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Modal open={panOpens} onClose={handlePanClose}>
+                <Modal open={panOpens} onClose={handlePanClose1}>
                   <Box sx={style}>
                     {modalImg == "" ? (
                       <img
@@ -530,7 +551,7 @@ const EditUtilizationLog = (props: Props) => {
                     )}
                   </Box>
                 </Modal>
-              </Grid>
+              </Grid> */}
 
 
               {/* Submit Button */}

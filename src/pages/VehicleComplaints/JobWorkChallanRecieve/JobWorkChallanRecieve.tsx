@@ -81,11 +81,8 @@ export default function JobWorkChallanRecieve() {
    let delete_id = "";
 
    const accept = () => {
-      const collectData = {
-         campaignId: delete_id
-      }
       api
-         .post(`Comm/DeleteCampaign`, collectData)
+         .post(`Master/DeleteJobWorkChallanRcv?ChallanRcvNo=${delete_id}`)
          .then((response) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
@@ -114,6 +111,15 @@ export default function JobWorkChallanRecieve() {
       });
    };
 
+   function formatDate(dateString: string) {
+      const timestamp = Date.parse(dateString);
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+   }
+
 
 
    const fetchJobWorkChallanRcvData = async () => {
@@ -127,12 +133,13 @@ export default function JobWorkChallanRecieve() {
             collectData
          );
          const data = response.data.data;
-         const IndentWithIds = data.map((Item: any, index: any) => ({
+         const arr = data.map((Item: any, index: any) => ({
             ...Item,
             serialNo: index + 1,
             id: Item.challanRcvNo,
+            challanRcvDate:formatDate(Item.challanRcvDate)
          }));
-         setItem(IndentWithIds);
+         setItem(arr);
          setIsLoading(false);
 
          if (data.length > 0) {

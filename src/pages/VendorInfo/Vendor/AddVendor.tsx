@@ -629,10 +629,12 @@ const AddVendor = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
+                  value={formik.values.countryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("countryId", newValue?.value);
+                    formik.setFieldValue("countryName", newValue?.label);
                     formik.setFieldTouched("countryId", true);
                     formik.setFieldTouched("countryId", false);
                     getState(newValue?.value);
@@ -661,10 +663,12 @@ const AddVendor = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
+                  value={formik.values.stateName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("stateId", newValue?.value);
+                    formik.setFieldValue("stateName", newValue?.label);
                     formik.setFieldTouched("stateId", true);
                     formik.setFieldTouched("stateId", false);
                     getCity(newValue?.value);
@@ -693,10 +697,12 @@ const AddVendor = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
+                  value={formik.values.cityName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("cityId", newValue?.value);
+                    formik.setFieldValue("cityName", newValue?.label);
                     formik.setFieldTouched("cityId", true);
                     formik.setFieldTouched("cityId", false);
                   }}

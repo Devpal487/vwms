@@ -64,7 +64,7 @@ const AddVehicleDetail = (props: Props) => {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
-   const { defaultValues } = getISTDate();
+   const { defaultValues,defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
    const [zoneValue, setZoneValue] = useState("");
@@ -267,7 +267,7 @@ const AddVehicleDetail = (props: Props) => {
          "itemName": "",
          "itemCode": "",
          "itemTypeId": 0,
-         "itemFlag": "I",
+         "itemFlag": "V",
          "itemCategoryId": 0,
          "unitId": 0,
          "empId": 0,
@@ -284,13 +284,13 @@ const AddVehicleDetail = (props: Props) => {
          "chesisNo": "",
          "qcApplicable": true,
          "depreciationRate": 0,
-         "createdBy": "",
-         "updatedBy": "",
+         "createdBy": "aa",
+         "updatedBy": "aa",
          "mileage": 0,
-         "createdOn": defaultValues,
-         "updatedOn": defaultValues,
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,
          "zoneName": "",
-         "vehiclePhotoFile": "",
+         //"vehiclePhotoFile": "",
          "vehicleTypeId": 0,
          "brandTypeId": 0,
          "fuelTypeId": 0,
@@ -383,7 +383,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={zoneOption}
-                           value={zoneValue}
+                           value={formik.values.zoneName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -466,7 +466,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={categoryOption}
-                           value={categoryValue}
+                           value={categoryValue || ""}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {

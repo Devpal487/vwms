@@ -483,6 +483,7 @@ const AddServiceContract = (props: Props) => {
                             disablePortal
                             id="combo-box-demo"
                             options={serviceOption}
+                            value={row.serviceName}
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
