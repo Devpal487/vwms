@@ -232,6 +232,7 @@ import Smscampagian from "../pages/Emailsystem/Smscampagian/Smscampagian";
 import CreateSmscampagian from "../pages/Emailsystem/Smscampagian/CreateSmscampagian";
 import EditSmscampagian from "../pages/Emailsystem/Smscampagian/EditSmscampagian";
 import Smssetting from "../pages/Emailsystem/Smssetting/Smssetting";
+import LoginPage1 from "../loginPage/LoginPage1";
 
 
 
@@ -239,7 +240,7 @@ import Smssetting from "../pages/Emailsystem/Smssetting/Smssetting";
 const appRoutes: RouteType[] = [
   {
     index: true,
-    element: <Login_Page />,
+    element: <LoginPage1 />,
     state: "home",
   },
   {
