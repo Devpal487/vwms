@@ -710,6 +710,23 @@ const MainLayout = () => {
           ],
         },
 
+        {
+          menuName: "Admin",
+          path: "",
+          menuId: 10,
+          displayNo: 1,
+          childMenu: [
+            {
+              menuId: 1,
+              menuName: "Complaint Approval",
+              path: "/Admin/AddComplaintApproval",
+              displayNo: 0,
+            },
+
+          
+
+          ],
+        },
        
 
        

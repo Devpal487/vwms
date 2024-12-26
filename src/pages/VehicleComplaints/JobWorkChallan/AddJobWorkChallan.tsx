@@ -106,6 +106,9 @@ const AddJobWorkChallan = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
+  const [taxOption, setTaxOption] = useState([
+    { value: -1, label: t("text.Tax") },
+  ]);
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
@@ -113,6 +116,7 @@ const AddJobWorkChallan = (props: Props) => {
     getVendorData();
     getServiceData();
     getUnitData();
+    getTaxData();
   }, []);
 
   const getVehicleDetails = async () => {
@@ -182,6 +186,22 @@ const AddJobWorkChallan = (props: Props) => {
       });
     }
     setUnitOption(arr);
+  };
+
+  const getTaxData = async () => {
+    const collectData = {
+      "taxId": -1
+    };
+    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["taxPercentage"],
+        value: data[index]["taxId"],
+      });
+    }
+    setTaxOption(arr);
   };
 
 
@@ -917,12 +937,13 @@ const AddJobWorkChallan = (props: Props) => {
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={["0.00", "2.5", "5.0", "7.0", "14.0", "18.0", "21.0"]}
+                            options={taxOption}
                             value={row.gst}
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
-                              handleInputChange(index, 'gst', parseFloat(newValue) || 0);
+                              handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
+                              handleInputChange(index, 'gstId', newValue.value);
                             }}
                             renderInput={(params) => (
                               <TextField

@@ -234,14 +234,14 @@ const EditComplaint = (props: Props) => {
    };
    const modalOpenHandle = (event: any) => {
       setPanOpen(true);
-      if (event === "complaintDoc") {
-         setModalImg(formik.values.complaintDoc);
+      if (event === "file") {
+         setModalImg(formik.values.file);
       }
    };
-   const ConvertBase64 = (complaintDoc: File): Promise<string> => {
+   const ConvertBase64 = (file: File): Promise<string> => {
       return new Promise((resolve, reject) => {
          const reader = new FileReader();
-         reader.readAsDataURL(complaintDoc);
+         reader.readAsDataURL(file);
          reader.onload = () => resolve(reader.result as string);
          reader.onerror = (error) => reject(error);
       });
@@ -306,7 +306,7 @@ const EditComplaint = (props: Props) => {
             formik.setFieldValue(params, base64String);
 
             let outputCheck =
-               "data:image/png;base64," + formik.values.complaintDoc;
+               "data:image/png;base64," + formik.values.file;
             console.log(outputCheck);
          } catch (error) {
             console.error("Error converting image file to Base64:", error);
@@ -809,7 +809,7 @@ const EditComplaint = (props: Props) => {
                               size="small"
                               fullWidth
                               style={{ backgroundColor: "white" }}
-                              onChange={(e) => otherDocChangeHandler(e, "complaintDoc")}
+                              onChange={(e) => otherDocChangeHandler(e, "file")}
                            />
                         </Grid>
                         <Grid xs={12} md={4} sm={4} item></Grid>
@@ -823,7 +823,7 @@ const EditComplaint = (props: Props) => {
                                  margin: "10px",
                               }}
                            >
-                              {formik.values.complaintDoc == "" ? (
+                              {formik.values.file == "" ? (
                                  <img
                                     // src={nopdf}
                                     style={{
@@ -836,7 +836,7 @@ const EditComplaint = (props: Props) => {
                               ) : (
                                  <img
 
-                                    src={"data:image/png;base64," + formik.values.complaintDoc}
+                                    src={"data:image/png;base64," + formik.values.file}
                                     style={{
                                        width: 150,
                                        height: 100,
@@ -847,7 +847,7 @@ const EditComplaint = (props: Props) => {
                                  />
                               )}
                               <Typography
-                                 onClick={() => modalOpenHandle("complaintDoc")}
+                                 onClick={() => modalOpenHandle("file")}
                                  style={{
                                     textDecorationColor: "blue",
                                     textDecorationLine: "underline",
