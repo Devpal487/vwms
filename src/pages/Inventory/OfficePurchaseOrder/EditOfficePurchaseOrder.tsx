@@ -10,6 +10,7 @@ import {
   TableRow,
   TableHead,
   Table,
+
   TableBody,
   Select,
   MenuItem,
@@ -18,6 +19,7 @@ import {
   Modal,
   Box,
 } from "@mui/material";
+import nopdf from '../../../assets/images/imagepreview.jpg'
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -54,6 +56,8 @@ const StatusOption = [
 ];
 
 const EditOfficePurchaseOrder = () => {
+ 
+      const [docOpen, setDocOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const location = useLocation();
@@ -119,7 +123,7 @@ const [Img, setImg] = useState("");
     };
 
 
-    const response = await api.post(`IndentMaster/GetIndent`, collectData);
+    const response = await api.post(`Master/GetIndent`, collectData);
     const data = response.data.data;
     console.log("indent option", data)
     const arr = [];
@@ -133,26 +137,33 @@ const [Img, setImg] = useState("");
     setIndentOptions(arr);
 };
   const getVendorData = async () => {
-    const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
-      venderId: -1,
+    const result = await api.post(`Master/GetVendorMaster`, {
+      "venderId": -1,
+      "countryId": -1, 
+      "stateId": -1,
+      "cityId": -1
     });
-    const data = result.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["name"],
-        value: data[index]["venderId"],
-      });
+    if (result.data.isSuccess) {
+      const arr =
+        result?.data?.data?.map((item: any) => ({
+          label: `${item.venderId} - ${item.name}`,
+          value: item.venderId,
+          details: item,
+        })) || [];
+
+        setVendorOptions([
+        { value: "-1", label: t("text.SelectVendor") },
+        ...arr,
+      ] as any);
     }
-    setVendorOptions([{ value: "-1", label: t("text.supplierName") }, ...arr]);
   };
 
   const getPurchaseInvoiceById = async (id: any) => {
-    const result = await api.post(`PurchaseInvoice/GetPurchaseInvoice`, {
-      id: id,
+    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, {
+      orderId: id,
     });
-    const response = result.data.data[0]["purchaseinv"];
-    console.log("purchaseinv", response);
+    const response = result.data.data[0]["purchaseOrderDetail"];
+    console.log("purchaseOrderDetail", response);
 
     for (let i = 0; i < response.length; i++) {
       setItems([response[i]]);
@@ -161,131 +172,100 @@ const [Img, setImg] = useState("");
 
   const GetUnitData = async () => {
     const collectData = {
-      unitId: -1,
+        unitId: -1,
     };
     const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
     const data = response.data.data;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["unitName"],
-        value: data[index]["unitId"],
-      });
+        arr.push({
+            label: data[index]["unitName"],
+            value: data[index]["unitId"],
+        });
     }
     setUnitOptions([{ value: -1, label: t("text.selectUnit") }, ...arr]);
-  };
+};
 
-  const getTaxData = async () => {
-    const res = await api.post(`TaxMaster/GetTaxMaster`, { taxId: -1 });
-    const arr =
+const getTaxData = async () => {
+  const res = await api.post(`UnitMaster/GetTaxMaster`, { taxId: -1 });
+  const arr =
       res?.data?.data?.map((item: any) => ({
-        label: `${item.taxName} - ${item.taxPercentage}`,
-        value: item.taxId,
+          label: `${item.taxName} - ${item.taxPercentage}`,
+          value: item.taxId,
       })) || [];
 
-    setTaxOption([{ value: "-1", label: t("text.tax") }, ...arr]);
-  };
-
-  const GetitemData = async () => {
-    const collectData = {
+  setTaxOption([{ value: "-1", label: t("text.tax") }, ...arr]);
+};
+const GetitemData = async () => {
+  const collectData = {
       itemMasterId: -1,
-    };
-    const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
+  };
+  const response = await api.get(`ItemMaster/GetItemMaster`, {});
+  const data = response.data.data;
+  const arr = [];
+  for (let index = 0; index < data.length; index++) {
       arr.push({
-        label: data[index]["itemName"],
-        value: data[index]["itemMasterId"],
+          label: data[index]["itemName"],
+          value: data[index]["itemMasterId"],
       });
-    }
-    setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
   };
+  setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+};
     
-  const handlePanClose = () => {
-    setPanOpen(false);
+const handlePanClose1 = () => {
+  setDocOpen(false);
+};
+const modalOpenHandle1 = (event: string) => {
+  setDocOpen(true);
+  const base64Prefix = "data:image/jpg;base64,";
+
+  let imageData = '';
+  switch (event) {
+    case "pOrderDoc":
+      imageData = formik.values.pOrderDoc;
+      break;
+  }
+  if (imageData) {
+    console.log("imageData", base64Prefix + imageData);
+    setImg(base64Prefix + imageData);
+  } else {
+    setImg('');
+  }
+};
+
+ 
+
+
+const otherDocChangeHandler = (event: any, params: any) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  if (!['jpg'].includes(fileExtension || '')) {
+    alert("Only .jpg image file is allowed to be uploaded.");
+    event.target.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    const base64String = e.target?.result as string;
+    const base64Data = base64String.split(',')[1];
+    formik.setFieldValue(params, base64Data);
+
+    formik.setFieldValue('pOrderDoc', fileExtension);
+
+
+
+    console.log(`File '${file.name}' loaded as base64 string`);
+    console.log("base64Data", base64Data);
   };
-  const modalOpenHandle = (event: any) => {
-    setPanOpen(true);
-    if (event === "imageFile") {
-      setModalImg(formik.values.imageFile);
-    }
+  reader.onerror = (error) => {
+    console.error("Error reading file:", error);
+    alert("Error reading file. Please try again.");
   };
-  const ConvertBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  const base64ToByteArray = (base64: string): Uint8Array => {
-    // Remove the data URL scheme if it exists
-    const base64String = base64.split(",")[1];
-
-    // Decode the Base64 string
-    const binaryString = window.atob(base64String);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-
-    // Convert binary string to Uint8Array
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    return bytes;
-  };
-
-  const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-    let binary = "";
-    const len = uint8Array.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(uint8Array[i]);
-    }
-    return window.btoa(binary);
-  };
-
-  const otherDocChangeHandler = async (event: any, params: string) => {
-    console.log("Image file change detected");
-
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const fileNameParts = file.name.split(".");
-      const fileExtension =
-        fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-      if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-        alert(
-          "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-        );
-        event.target.value = null;
-        return;
-      }
-
-      try {
-        const base64Data = (await ConvertBase64(file)) as string;
-        console.log("Base64 image data:", base64Data);
-
-        // Convert Base64 to Uint8Array
-        const byteArray = base64ToByteArray(base64Data);
-        console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-        // Convert Uint8Array to base64 string
-        const base64String = uint8ArrayToBase64(byteArray);
-        console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-        // Set value in Formik
-        formik.setFieldValue(params, base64String);
-
-        let outputCheck =
-          "data:image/png;base64," + formik.values.imageFile;
-        console.log(outputCheck);
-      } catch (error) {
-        console.error("Error converting image file to Base64:", error);
-      }
-    }
-  };
+  reader.readAsDataURL(file);
+};
   const validateItem = (item: any) => {
     return (
         item.itemNameId && item.itemNameId !== -1 &&
@@ -305,7 +285,8 @@ const [Img, setImg] = useState("");
     initialValues: {
       id: location.state.id,
       indentNo:location.state.indentNo,
-      imageFile:location.state. imageFile,
+      file:location.state.file,
+      pOrderDoc:location.state.pOrderDoc,
       document_No: location.state.document_No,
       p_InvoiceNo: location.state.p_InvoiceNo,
       doc_Date: dayjs(location.state.doc_Date).format("YYYY-MM-DD"),
@@ -320,7 +301,7 @@ const [Img, setImg] = useState("");
       remark: location.state.remark,
       instId: location.state.instId,
       sessionId: location.state.sessionId,
-      purchaseinv: [],
+      purchaseOrderDetail: [],
     },
     validationSchema: Yup.object().shape({
       document_No: Yup.string().required(t("Document No. required")),
@@ -386,7 +367,7 @@ const [Img, setImg] = useState("");
             id: values.id.toString(),
             instId: values.instId.toString(),
             sessionId: values.sessionId.toString(),
-            purchaseinv: updatedItems 
+            purchaseOrderDetail: updatedItems 
         }
         );
         if (response.data.isSuccess) {
@@ -438,31 +419,31 @@ const handleRemoveItem = (index: any) => {
     setItems(updatedItems);
 };
 const handleAddItem = () => {
-    setItems([
-        ...items,
-        {
-            itemNameId: "",
-            unit: "",
-            qty: 0,
-            rate: 0,
-            amount: 0,
-            tax1: "",
-            taxId1: "",
-            tax2: "P",
-            discount: 0,
-            discountAmount: 0,
-            netAmount: 0,
-            documentNo: formik.values.document_No,
-            documentDate: formik.values.doc_Date,
-            invoiceNo: formik.values.p_InvoiceNo,
-            supplier: formik.values.supplierName,
-            orderNo: formik.values.orderNo,
-            mrnNo: "",
-            mrnDate: "",
-            taxId3: "",
-            tax3: "",
-        },
-    ]);
+  setItems([
+      ...items,
+      {
+          itemNameId: "",
+          unit: "",
+          qty: 0,
+          rate: 0,
+          amount: 0,
+          tax1: "",
+          taxId1: "",
+          tax2: "P",
+          discount: 0,
+          discountAmount: 0,
+          netAmount: 0, // Ensure this is initialized
+          documentNo: formik.values.document_No,
+          documentDate: formik.values.doc_Date,
+          invoiceNo: formik.values.p_InvoiceNo,
+          supplier: formik.values.supplierName,
+          orderNo: formik.values.orderNo,
+          mrnNo: "",
+          mrnDate: "",
+          taxId3: "",
+          tax3: "",
+      },
+  ]);
 };
 
 useEffect(() => {
@@ -471,7 +452,7 @@ useEffect(() => {
     0
   );
   setTotalAmount(calculatedTotalAmount);
-  formik.setFieldValue("amount", calculatedTotalAmount.toFixed(2));
+  //formik.setFieldValue("amount", calculatedTotalAmount.toFixed(2));
 }, [items]);
 
   return (
@@ -685,15 +666,11 @@ useEffect(() => {
                     type="file"
                     inputProps={{ accept: "image/*" }}
                     InputLabelProps={{ shrink: true }}
-                    label={
-                      <strong style={{ color: "#000" }}>
-                        {t("text.AttachedImage")}
-                      </strong>
-                    }
+                    label={<CustomLabel text={t("text.pOrderDoc")} />}
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "imageFile")}
+                    onChange={(e) => otherDocChangeHandler(e, "file")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -707,9 +684,9 @@ useEffect(() => {
                       margin: "10px",
                     }}
                   >
-                    {formik.values.imageFile == "" ? (
+                    {formik.values.pOrderDoc == "" ? (
                       <img
-                        // src={nopdf}
+                         src={nopdf}
                         style={{
                           width: 150,
                           height: 100,
@@ -720,7 +697,7 @@ useEffect(() => {
                     ) : (
                       <img
 
-                        src={"data:image/png;base64," + formik.values.imageFile}
+                        src={"data:image/png;base64," + formik.values.file}
                         style={{
                           width: 150,
                           height: 100,
@@ -731,7 +708,7 @@ useEffect(() => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("imageFile")}
+                      onClick={() => modalOpenHandle1("file")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",
@@ -744,11 +721,11 @@ useEffect(() => {
                     </Typography>
                   </Grid>
                 </Grid>
-                <Modal open={panOpens} onClose={handlePanClose}>
+                <Modal open={docOpen} onClose={handlePanClose1}>
                   <Box sx={style}>
-                    {modalImg == "" ? (
+                  {Img == "" ? (
                       <img
-                        //  src={nopdf}
+                        src={nopdf}
                         style={{
                           width: "170vh",
                           height: "75vh",
@@ -757,7 +734,8 @@ useEffect(() => {
                     ) : (
                       <img
                         alt="preview image"
-                        src={"data:image/png;base64," + modalImg}
+                       // src={"data:image/png;base64," + modalImg}
+                       src={Img}
                         style={{
                           width: "170vh",
                           height: "75vh",
@@ -1029,7 +1007,7 @@ useEffect(() => {
                             size="small"
                           />
                         </td>
-                        <td>{item.amount.toFixed(2)}</td>
+                        {/* <td>{item.amount.toFixed(2)}</td> */}
                         <td>
                           <Autocomplete
                             disablePortal
@@ -1087,8 +1065,9 @@ useEffect(() => {
                             size="small"
                           />
                         </td>
-                        <td>{item.discountAmount.toFixed(2)}</td>
-                        <td>{item.netamount?.toFixed(2) || 0.00}</td>
+                        {/* <td>{item.discountAmount.toFixed(2)}</td>
+                        <td>{safeToFixed(item.netamount)}</td> */}
+                        {/* <td>{item.netamount?.toFixed(2) || 0.00}</td> */}
                         <td>
                           <Button
                             onClick={() => handleRemoveItem(index)}
@@ -1108,7 +1087,7 @@ useEffect(() => {
                       </td>
                       <td colSpan={3}>
                         <strong style={{ color: "#fff" }}>
-                          {totalAmount.toFixed(2)}
+                          {/* {totalAmount.toFixed(2)} */}
                         </strong>
                       </td>
                     </tr>
