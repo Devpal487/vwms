@@ -56,21 +56,28 @@
 //     //const [tableData, setTableData] = useState<any>([]);
 //     const [tableData, setTableData] = useState<any>([{
 
-
-//         "id": 0,
-//         "issueId": 0,
-//         "itemID": 0,
-//         "batchNo": "",
-//         "indentId": 0,
-//         "unitId": 0,
-//         "reqQty": 0,
-//         "issueQty": 0,
-//         "stockQty": 0,
-//         "itemName": "",
-//         "indentNo": "",
-//         "srn": 0,
-//         "unitName": "",
-//         "returnItem": true,
+// "id": 0,
+//       "returnId": 0,
+//       "itemID": 0,
+//       "batchNo": "",
+//       "indentId": 0,
+//       "returnQty": 0,
+//       "issueQty": 0,
+//       "srn": 0
+//         // "id": 0,
+//         // "issueId": 0,
+//         // "itemID": 0,
+//         // "batchNo": "",
+//         // "indentId": 0,
+//         // "unitId": 0,
+//         // "reqQty": 0,
+//         // "issueQty": 0,
+//         // "stockQty": 0,
+//         // "itemName": "",
+//         // "indentNo": "",
+//         // "srn": 0,
+//         // "unitName": "",
+//         // "returnItem": true,
 
 
 //     }]);
@@ -119,7 +126,6 @@
 //     };
 
 
-
 //     const GetIndentIDById = async (itemID: any) => {
 //         const collectData = {
 //             indentId: itemID,
@@ -163,21 +169,21 @@
 
 //     console.log("check table", tableData)
 
-    // const GetitemData = async () => {
-    //     const collectData = {
-    //         itemMasterId: -1,
-    //     };
-    //     const response = await api.get(`ItemMaster/GetItemMaster`, {});
-    //     const data = response.data.data;
-    //     const arr = [];
-    //     for (let index = 0; index < data.length; index++) {
-    //         arr.push({
-    //             label: data[index]["itemName"],
-    //             value: data[index]["itemMasterId"],
-    //         });
-    //     };
-    //     setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
-    // };
+//     const GetitemData = async () => {
+//         const collectData = {
+//             itemMasterId: -1,
+//         };
+//         const response = await api.get(`ItemMaster/GetItemMaster`, {});
+//         const data = response.data.data;
+//         const arr = [];
+//         for (let index = 0; index < data.length; index++) {
+//             arr.push({
+//                 label: data[index]["itemName"],
+//                 value: data[index]["itemMasterId"],
+//             });
+//         };
+//         setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+//     };
 //     const GetUnitData = async () => {
 //         const collectData = {
 //             unitId: -1,
@@ -193,28 +199,28 @@
 //         }
 //         setUnitOptions(arr);
 //     };
-    // const GetempData = async () => {
-    //     const collectData = {
-    //       empid: -1,
-    //       userId: "",
+//     const GetempData = async () => {
+//         const collectData = {
+//           empid: -1,
+//           userId: "",
          
-    //     };
-    //     const response = await api.post(`Employee/GetEmployee`, collectData);
-    //     const data = response.data.data;
-    //     console.log('data', data)
-    //     const arr = data.map((item: any) => ({
-    //       label: item?.empName,
-    //       value: item?.empid
+//         };
+//         const response = await api.post(`Employee/GetEmployee`, collectData);
+//         const data = response.data.data;
+//         console.log('data', data)
+//         const arr = data.map((item: any) => ({
+//           label: item?.empName,
+//           value: item?.empid
     
-    //     }))
-    //     // for (let index = 0; index < data.length; index++) {
-    //     //   arr.push({
-    //     //     label: data[index]["empName"],
-    //     //     value: data[index]["empId"],
-    //     //   });
-    //     // }
-    //     setempOption(arr);
-    //   };
+//         }))
+//         // for (let index = 0; index < data.length; index++) {
+//         //   arr.push({
+//         //     label: data[index]["empName"],
+//         //     value: data[index]["empId"],
+//         //   });
+//         // }
+//         setempOption(arr);
+//       };
 
 
 
@@ -229,39 +235,30 @@
 //     const formik = useFormik({
 //         initialValues: {
 
-
-//             "issueId": 0,
-//             "issueDate": defaultValues,
-//             "indentId": 0,
-//             "issueLocation": "",
-//             "issueType": "",
-//             "vehicleitem": 0,
-//             "empId": null,
-//             "createdBy": "",
-//             "updatedBy": "",
-//             "createdOn": defaultValues,
-//             "updatedOn": defaultValues,
-//             "indentNo": "",
-//             "empName": "",
-//             "srn": 0,
-//             "jobId": 0,
-//             "jobCardNo": "",
-//             itemIssueDetail: []
-
-
+            
+//                 "returnId": 0,
+//                 "returnDate": defaultValues,
+//                 "returnType": "",
+//                 "returnIndentNo": "",
+//                 "createdBy": "",
+//                 "updatedBy": "",
+//                 "createdOn": defaultValues,
+//                 "updatedOn": defaultValues,
+//                 "itemReturnDetail": [],
+//                 "itemIssueDetail": []
 //         },
 
-//         validationSchema: Yup.object({
-//             indentNo: Yup.string()
-//                 .required(t("text.reqIndentNum")),
-//             empId: Yup.string()
-//                 .required(t("text.reqEmpName")),
-//         }),
+//         // validationSchema: Yup.object({
+//         //     indentNo: Yup.string()
+//         //         .required(t("text.reqIndentNum")),
+//         //     empId: Yup.string()
+//         //         .required(t("text.reqEmpName")),
+//         // }),
 
 //         onSubmit: async (values) => {
 
 //             const validTableData = tableData;
-//             values.itemIssueDetail = tableData
+//             values.itemReturnDetail = tableData
 
 //             // if (validTableData.length === 0) {
 //             //     toast.error("Please add some data in table for further process");
@@ -270,14 +267,14 @@
 
 
 //             const response = await api.post(
-//                 `Master/UpsertItemReturn`,
+//                 `ItemReturn/UpsertItemReturn`,
 //                 values
 //             );
 
 //             if (response.data.status === 1) {
 //                 setToaster(false);
 //                 toast.success(response.data.message);
-//                 navigate("/Inventory/StaffItemIssue");
+//                 navigate("/Inventory/StaffItemReturn");
 //             } else {
 //                 setToaster(true);
 //                 toast.error(response.data.message);
@@ -311,19 +308,27 @@
 //     const addRow = () => {
 //         setTableData([...tableData, {
 //             "id": 0,
-//             "issueId": -1,
-//             "itemID": 0,
-//             "batchNo": "",
-//             "indentId": 0,
-//             "unitId": 0,
-//             "reqQty": 0,
-//             "issueQty": 0,
-//             "stockQty": 0,
-//             "itemName": "",
-//             "indentNo": "",
-//             "srn": 0,
-//             "unitName": "",
-//             "returnItem": true
+//       "returnId": -1,
+//       "itemID": 0,
+//       "batchNo": "",
+//       "indentId": 0,
+//       "returnQty": 0,
+//       "issueQty": 0,
+//       "srn": 0
+//             // "id": 0,
+//             // "issueId": -1,
+//             // "itemID": 0,
+//             // "batchNo": "",
+//             // "indentId": 0,
+//             // "unitId": 0,
+//             // "reqQty": 0,
+//             // "issueQty": 0,
+//             // "stockQty": 0,
+//             // "itemName": "",
+//             // "indentNo": "",
+//             // "srn": 0,
+//             // "unitName": "",
+//             // "returnItem": true
 //         }]);
 //     };
 
@@ -401,7 +406,7 @@
 //                                         if (newValue) {
 //                                             GetIndentIDById(newValue?.value);
 //                                             formik.setFieldValue("indentId", newValue?.value);
-//                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
+//                                             formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
 //                                         }
 //                                     }}
 
@@ -417,13 +422,13 @@
 //                                         />
 //                                     )}
 //                                 />
-//                                 {formik.touched.indentNo && formik.errors.indentNo && (
+//                                 {/* {formik.touched.indentNo && formik.errors.indentNo && (
 //                                     <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNo}</div>
-//                                 )}
+//                                 )} */}
 //                             </Grid>
 
 
-//                             <Grid item xs={12} sm={4} lg={4}>
+//                             {/* <Grid item xs={12} sm={4} lg={4}>
 //                                 <Autocomplete
 //                                     disablePortal
 //                                     id="combo-box-demo"
@@ -444,16 +449,16 @@
 //                                 {formik.touched.empId && formik.errors.empId && (
 //                                     <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
 //                                 )}
-//                             </Grid>
+//                             </Grid> */}
 
 
 //                             <Grid item lg={4} xs={12}>
 //                                 <TextField
-//                                     id="issueDate"
-//                                     name="issueDate"
-//                                     label={<CustomLabel text={t("text.issueDate")} required={false} />}
-//                                     value={formik.values.issueDate}
-//                                     placeholder={t("text.issueDate")} size="small"
+//                                     id="returnDate"
+//                                     name="returnDate"
+//                                     label={<CustomLabel text={t("text.returnDate")} required={false} />}
+//                                     value={formik.values.returnDate}
+//                                     placeholder={t("text.returnDate")} size="small"
 //                                     fullWidth
 //                                     type="date"
 //                                     onChange={formik.handleChange}
@@ -635,6 +640,7 @@
 
 
 
+
 import {
     Autocomplete,
     Button,
@@ -657,6 +663,10 @@ import {
     TableHead,
     Paper,
     AutocompleteRenderInputParams,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Dialog,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
@@ -676,10 +686,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
+
 type Props = {};
 
 
 const CreateStaffItemReturn = (props: Props) => {
+
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleShowDetails = () => setOpenDialog(true);
+    const handleCloseDialog = () => setOpenDialog(false);
     let navigate = useNavigate();
     const { t } = useTranslation();
     const [lang, setLang] = useState<Language>("en");
@@ -709,13 +725,14 @@ const CreateStaffItemReturn = (props: Props) => {
 
 
     }]);
-    console.log("🚀 ~ CreateStaffItemreturn ~ tableData:", tableData)
+    console.log("🚀 ~ CreateStaffItemReturn ~ tableData:", tableData)
     const [indentOptions, setIndentOptions] = useState([
         { value: "-1", label: t("text.SelectindentNo") },
     ]);
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
+   // const [openDialog, setOpenDialog] = useState(false);
     const [unitOptions, setUnitOptions] = useState([
         { value: "-1", label: t("text.SelectUnitId") },
     ]);
@@ -752,6 +769,7 @@ const CreateStaffItemReturn = (props: Props) => {
         };
         setIndentOptions(arr);
     };
+
 
 
     const GetIndentIDById = async (itemID: any) => {
@@ -796,7 +814,7 @@ const CreateStaffItemReturn = (props: Props) => {
     };
 
     console.log("check table", tableData)
-
+    const [showIndentField, setShowIndentField] = useState(false);
     const GetitemData = async () => {
         const collectData = {
             itemMasterId: -1,
@@ -863,28 +881,16 @@ const CreateStaffItemReturn = (props: Props) => {
     const formik = useFormik({
         initialValues: {
 
-            
-                "returnId": 0,
-                "returnDate": defaultValues,
-                "returnType": "rt",
-                "returnIndentNo": "rt45",
-                "createdBy": "as",
-                "updatedBy": "as",
-                "createdOn": defaultValues,
-                "updatedOn": defaultValues,
-                "itemReturnDetail": [ ],
-                //   {
-                //     "id": 13,
-                //     "returnId": 0,
-                //     "itemID": 1,
-                //     "batchNo": "bt5",
-                //     "indentId": 2,
-                //     "returnQty": 10,
-                //     "issueQty": 10
-                //   }
-               
-                "itemIssueDetail": []
-              
+            "returnId": 0,
+            "returnDate": defaultValues,
+            "returnType": "",
+            "returnIndentNo": "",
+            "createdBy": "",
+            "updatedBy": "",
+            "createdOn": defaultValues,
+            "updatedOn":defaultValues,
+
+
             // "issueId": 0,
             // "issueDate": defaultValues,
             // "indentId": 0,
@@ -901,7 +907,8 @@ const CreateStaffItemReturn = (props: Props) => {
             // "srn": 0,
             // "jobId": 0,
             // "jobCardNo": "",
-            // itemIssueDetail: []
+            itemIssueDetail: [],
+            itemReturnDetail:[]
 
 
         },
@@ -925,7 +932,7 @@ const CreateStaffItemReturn = (props: Props) => {
 
 
             const response = await api.post(
-                `Master/UpsertItemReturn`,
+                `StaffItemIssue/UpsertItemIssue`,
                 values
             );
 
@@ -940,8 +947,18 @@ const CreateStaffItemReturn = (props: Props) => {
 
         },
     });
+    // const handleShowDetails = () => {
+    //     setShowIndentField(true); // Show the indent field
+    // };
 
+    // const handleCloseDialog = () => {
+    //     setOpenDialog(false);
+    // };
 
+    const handleOpenDialog = () => {
+        setOpenDialog(true);
+    };
+  
 
     const handleInputChange = (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
@@ -1041,96 +1058,92 @@ const CreateStaffItemReturn = (props: Props) => {
                     <form onSubmit={formik.handleSubmit}>
                         {toaster === false ? "" : <ToastApp />}
                         <Grid item xs={12} container spacing={2}>
+                        <Grid item lg={4} xs={12}>
+                    <TextField
+                        id="returnDate"
+                        name="returnDate"
+                        label={<CustomLabel text={t("text.returnDate")} required={false} />}
+                        value={formik.values.returnDate}
+                        placeholder={t("text.returnDate")}
+                        size="small"
+                        fullWidth
+                        type="date"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                </Grid>
+                <Grid item lg={2} xs={12}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleShowDetails}
+                        style={{ height: "100%" }}
+                    >
+                        Show Details
+                    </Button>
+                </Grid>
+               
+                <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
+                <DialogTitle>Add Item</DialogTitle>
+                <DialogContent>
+                    <p>Selected Indent No: {formik.values.returnIndentNo || "No Indent Selected"}</p>
+                    
+                    {/* Search Indent Autocomplete */}
+                    <Autocomplete
+                        disablePortal
+                        id="search-indent"
+                        options={indentOptions}
+                        fullWidth
+                        size="small"
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
+                            }
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Search Indent"
+                                placeholder="Search for an indent..."
+                            />
+                            
+                        )}
+                        
+                    />
+                    
+                    {/* Add Indent Button */}
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => alert("Add Indent functionality not implemented yet!")}
+                        style={{ marginTop: "10px" }}
+                    >
+                        Add Indent
+                    </Button>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+           
 
 
 
-                            <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={indentOptions}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event: any, newValue: any) => {
-                                        console.log("check value", newValue);
-                                        if (newValue) {
-                                            GetIndentIDById(newValue?.value);
-                                            formik.setFieldValue("indentId", newValue?.value);
-                                            formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
-                                        }
-                                    }}
-
-                                    // value={
-                                    //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null
-                                    // }
-                                    renderInput={(params: any) => (
-                                        <TextField
-                                            {...params}
-                                            label={
-                                                <CustomLabel text={t("text.enterIndentNo")} required={true}/>
-                                            }
-                                        />
-                                    )}
-                                />
-                                {/* {formik.touched.indentNo && formik.errors.indentNo && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNo}</div>
-                                )} */}
-                            </Grid>
-
-
-                            {/* <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={empOption}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event, newValue) => {
-                                        console.log(newValue?.value);
-                                        formik.setFieldValue("empId", newValue?.value);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={<CustomLabel text={t("text.selectemp_name")} required={true} />}
-                                        />
-                                    )}
-                                />
-                                {formik.touched.empId && formik.errors.empId && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-                                )}
-                            </Grid> */}
-
-
-                            <Grid item lg={4} xs={12}>
-                                <TextField
-                                    id="returnDate"
-                                    name="returnDate"
-                                    label={<CustomLabel text={t("text.returnDate")} required={false} />}
-                                    value={formik.values.returnDate}
-                                    placeholder={t("text.returnDate")} size="small"
-                                    fullWidth
-                                    type="date"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    InputLabelProps={{ shrink: true }}
-                                />
-                            </Grid>
-
-
-
-                            {isIndentSelected && (
+                            
                                 <Grid item xs={12}>
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batch No.</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stock Qty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>req Qty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issue Qty</th>
 
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
                                                 <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
@@ -1242,38 +1255,40 @@ const CreateStaffItemReturn = (props: Props) => {
 
                                     </Table>
                                 </Grid>
-                            )}
+                            
 
-                            <Grid item lg={6} sm={6} xs={12}>
-                                <Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        style={{
-                                            backgroundColor: `var(--header-background)`,
-                                            color: "white",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        {t("text.save")}
-                                    </Button>
-                                </Grid>
-                            </Grid>
+<Grid container spacing={2} >
+    <Grid item lg={6} sm={6} xs={12}>
+        <Button
+            type="submit"
+            fullWidth
+            style={{
+             
+                backgroundColor: `var(--header-background)`,
+                color: "white",
+                marginTop: "10px",
+                marginLeft: "10px", 
+            }}
+        >
+            {t("text.save")}
+        </Button>
+    </Grid>
+    <Grid item lg={6} sm={6} xs={12}>
+        <Button
+            type="reset"
+            fullWidth
+            style={{
+                backgroundColor: "#F43F5E",
+                color: "white",
+                marginTop: "10px",
+            }}
+            onClick={(e) => formik.resetForm()}
+        >
+            {t("text.reset")}
+        </Button>
+    </Grid>
+</Grid>
 
-                            <Grid item lg={6} sm={6} xs={12}>
-                                <Button
-                                    type="reset"
-                                    fullWidth
-                                    style={{
-                                        backgroundColor: "#F43F5E",
-                                        color: "white",
-                                        marginTop: "10px",
-                                    }}
-                                    onClick={(e: any) => formik.resetForm()}
-                                >
-                                    {t("text.reset")}
-                                </Button>
-                            </Grid>
                         </Grid>
                     </form>
                 </CardContent>
@@ -1283,6 +1298,13 @@ const CreateStaffItemReturn = (props: Props) => {
 };
 
 export default CreateStaffItemReturn;
+
+
+
+
+
+
+
 
 
 

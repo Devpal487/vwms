@@ -49,10 +49,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
+
 type Props = {};
 
 
 const CreateJobCardItemReturn = (props: Props) => {
+
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const handleShowDetails = () => setOpenDialog(true);
+    const handleCloseDialog = () => setOpenDialog(false);
     let navigate = useNavigate();
     const { t } = useTranslation();
     const [lang, setLang] = useState<Language>("en");
@@ -89,7 +95,7 @@ const CreateJobCardItemReturn = (props: Props) => {
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
-    const [openDialog, setOpenDialog] = useState(false);
+   // const [openDialog, setOpenDialog] = useState(false);
     const [unitOptions, setUnitOptions] = useState([
         { value: "-1", label: t("text.SelectUnitId") },
     ]);
@@ -238,24 +244,34 @@ const CreateJobCardItemReturn = (props: Props) => {
     const formik = useFormik({
         initialValues: {
 
-
-            "issueId": 0,
-            "issueDate": defaultValues,
-            "indentId": 0,
-            "issueLocation": "",
-            "issueType": "",
-            "vehicleitem": 0,
-            "empId": null,
+            "returnId": 0,
+            "returnDate": defaultValues,
+            "returnType": "",
+            "returnIndentNo": "",
             "createdBy": "",
             "updatedBy": "",
             "createdOn": defaultValues,
-            "updatedOn": defaultValues,
-            "indentNo": "",
-            "empName": "",
-            "srn": 0,
-            "jobId": 0,
-            "jobCardNo": "",
-            itemIssueDetail: []
+            "updatedOn":defaultValues,
+
+
+            // "issueId": 0,
+            // "issueDate": defaultValues,
+            // "indentId": 0,
+            // "issueLocation": "",
+            // "issueType": "",
+            // "vehicleitem": 0,
+            // "empId": null,
+            // "createdBy": "",
+            // "updatedBy": "",
+            // "createdOn": defaultValues,
+            // "updatedOn": defaultValues,
+            // "indentNo": "",
+            // "empName": "",
+            // "srn": 0,
+            // "jobId": 0,
+            // "jobCardNo": "",
+            itemIssueDetail: [],
+            itemReturnDetail:[]
 
 
         },
@@ -294,13 +310,13 @@ const CreateJobCardItemReturn = (props: Props) => {
 
         },
     });
-    const handleShowDetails = () => {
-        setShowIndentField(true); // Show the indent field
-    };
+    // const handleShowDetails = () => {
+    //     setShowIndentField(true); // Show the indent field
+    // };
 
-    const handleCloseDialog = () => {
-        setOpenDialog(false);
-    };
+    // const handleCloseDialog = () => {
+    //     setOpenDialog(false);
+    // };
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
@@ -405,93 +421,69 @@ const CreateJobCardItemReturn = (props: Props) => {
                     <form onSubmit={formik.handleSubmit}>
                         {toaster === false ? "" : <ToastApp />}
                         <Grid item xs={12} container spacing={2}>
-
-
-
-                            {/* <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={indentOptions}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event: any, newValue: any) => {
-                                        console.log("check value", newValue);
-                                        if (newValue) {
-                                            GetIndentIDById(newValue?.value);
-                                            formik.setFieldValue("indentId", newValue?.value);
-                                            formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
-                                        }
-                                    }}
-
-                                    // value={
-                                    //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null
-                                    // }
-                                    renderInput={(params: any) => (
-                                        <TextField
-                                            {...params}
-                                            label={
-                                                <CustomLabel text={t("text.enterIndentNo")} required={true}/>
-                                            }
-                                        />
-                                    )}
-                                />
-                                {formik.touched.indentNo && formik.errors.indentNo && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNo}</div>
-                                )}
-                            </Grid> */}
-
-<Grid item xs={12}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleShowDetails}
-                >
-                    Show Details
-                </Button>
-            </Grid>
-
-            {/* Conditionally Render Autocomplete Field */}
-            {showIndentField && (
-                <Grid item xs={12} sm={4} lg={4}>
+                        <Grid item lg={4} xs={12}>
+                    <TextField
+                        id="returnDate"
+                        name="returnDate"
+                        label={<CustomLabel text={t("text.returnDate")} required={false} />}
+                        value={formik.values.returnDate}
+                        placeholder={t("text.returnDate")}
+                        size="small"
+                        fullWidth
+                        type="date"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        InputLabelProps={{ shrink: true }}
+                    />
+                </Grid>
+                <Grid item lg={2} xs={12}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleShowDetails}
+                        style={{ height: "100%" }}
+                    >
+                        Show Details
+                    </Button>
+                </Grid>
+               
+                <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
+                <DialogTitle>Add Item</DialogTitle>
+                <DialogContent>
+                    <p>Selected Indent No: {formik.values.returnIndentNo || "No Indent Selected"}</p>
+                    
+                    {/* Search Indent Autocomplete */}
                     <Autocomplete
                         disablePortal
-                        id="combo-box-demo"
+                        id="search-indent"
                         options={indentOptions}
                         fullWidth
                         size="small"
-                        onChange={(event: any, newValue: any) => {
+                        onChange={(event, newValue) => {
                             if (newValue) {
-                                formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
+                                formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
                             }
                         }}
-                        renderInput={(params: any) => (
+                        renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="Enter Indent No"
+                                label="Search Indent"
+                                placeholder="Search for an indent..."
                             />
+                            
                         )}
+                        
                     />
-                    {formik.touched.indentNo && formik.errors.indentNo && (
-                        <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNo}</div>
-                    )}
-                    {/* Button to open dialog */}
+                    
+                    {/* Add Indent Button */}
                     <Button
                         variant="contained"
                         color="secondary"
-                        onClick={handleOpenDialog}
+                        onClick={() => alert("Add Indent functionality not implemented yet!")}
                         style={{ marginTop: "10px" }}
                     >
-                        Show Indent Details
+                        Add Indent
                     </Button>
-                </Grid>
-            )}
-
-            {/* Dialog for Showing Indent Details */}
-            <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Indent Details</DialogTitle>
-                <DialogContent>
-                    <p>Indent No: {formik.values.indentNo || "No Indent Selected"}</p>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} color="primary">
@@ -499,61 +491,22 @@ const CreateJobCardItemReturn = (props: Props) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-
-                            {/* <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={empOption}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event, newValue) => {
-                                        console.log(newValue?.value);
-                                        formik.setFieldValue("empId", newValue?.value);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={<CustomLabel text={t("text.selectemp_name")} required={true} />}
-                                        />
-                                    )}
-                                />
-                                {formik.touched.empId && formik.errors.empId && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-                                )}
-                            </Grid> */}
-
-
-                            <Grid item lg={4} xs={12}>
-                                <TextField
-                                    id="issueDate"
-                                    name="issueDate"
-                                    label={<CustomLabel text={t("text.issueDate")} required={false} />}
-                                    value={formik.values.issueDate}
-                                    placeholder={t("text.issueDate")} size="small"
-                                    fullWidth
-                                    type="date"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    InputLabelProps={{ shrink: true }}
-                                />
-                            </Grid>
+           
 
 
 
-                            {isIndentSelected && (
+                            
                                 <Grid item xs={12}>
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batch No.</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stock Qty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>req Qty</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issue Qty</th>
 
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
                                                 <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
@@ -665,38 +618,40 @@ const CreateJobCardItemReturn = (props: Props) => {
 
                                     </Table>
                                 </Grid>
-                            )}
+                            
 
-                            <Grid item lg={6} sm={6} xs={12}>
-                                <Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        style={{
-                                            backgroundColor: `var(--header-background)`,
-                                            color: "white",
-                                            marginTop: "10px",
-                                        }}
-                                    >
-                                        {t("text.save")}
-                                    </Button>
-                                </Grid>
-                            </Grid>
+<Grid container spacing={2} >
+    <Grid item lg={6} sm={6} xs={12}>
+        <Button
+            type="submit"
+            fullWidth
+            style={{
+             
+                backgroundColor: `var(--header-background)`,
+                color: "white",
+                marginTop: "10px",
+                marginLeft: "10px", 
+            }}
+        >
+            {t("text.save")}
+        </Button>
+    </Grid>
+    <Grid item lg={6} sm={6} xs={12}>
+        <Button
+            type="reset"
+            fullWidth
+            style={{
+                backgroundColor: "#F43F5E",
+                color: "white",
+                marginTop: "10px",
+            }}
+            onClick={(e) => formik.resetForm()}
+        >
+            {t("text.reset")}
+        </Button>
+    </Grid>
+</Grid>
 
-                            <Grid item lg={6} sm={6} xs={12}>
-                                <Button
-                                    type="reset"
-                                    fullWidth
-                                    style={{
-                                        backgroundColor: "#F43F5E",
-                                        color: "white",
-                                        marginTop: "10px",
-                                    }}
-                                    onClick={(e: any) => formik.resetForm()}
-                                >
-                                    {t("text.reset")}
-                                </Button>
-                            </Grid>
                         </Grid>
                     </form>
                 </CardContent>
