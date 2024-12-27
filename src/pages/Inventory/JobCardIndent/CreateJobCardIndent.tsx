@@ -371,7 +371,7 @@ import {
           "sno":0,
           "isDelete": true,
           "unitName": "",
-          "item": "6567"
+          "item": ""
         },
       ]);
     };

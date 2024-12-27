@@ -662,7 +662,7 @@ const CreateOfficePurchaseOrder = () => {
                     Object.keys(row.item).length === 0
                 );
             });
-            const response = await api.post(`PurchaseInv/UpsertPurchaseInvoice`, {
+            const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`, {
                 ...values,
                 purchaseInvoiceDetail: filteredTableData,
             });
