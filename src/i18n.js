@@ -9,7 +9,12 @@ const resources = {
       label: {},
       error: {},
       message: {},
-      text: {
+      text: {////
+        /////
+        
+        pOrderDoc:"Upload Documnet",
+        orderDate:"Order Date",
+        /////
         returnDate:"Return Date",
         qcDate1:"Qc Date",
         qcNo1:"Qc No.",
