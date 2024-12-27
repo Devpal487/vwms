@@ -28,7 +28,6 @@ import GenderMaster from "../pages/master/GenderMaster/GenderMaster";
 import CountryMaster from "../pages/master/CountryMaster/CountryMaster";
 import CityMaster from "../pages/master/CityMaster/CityMaster";
 
-import VendorMaster from "../pages/master/VendorMaster/VendorMaster";
 import ItemGroup from "../pages/master/ItemGroup/ItemGroup";
 import Taxmaster from '../pages/master/Taxmaster/Taxmaster';
 import Unitmaster from "../pages/master/Unitmaster/Unitmaster";
@@ -67,8 +66,7 @@ import LightInstallationEdit from "../pages/LightInstallation/LightInstallationE
 import MaterialRecieptNoteMaster from "../pages/Inventory/MaterialRecieptNote/MaterialRecieptNoteMaster";
 import CreateMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/CreateMaterialRecieptNote";
 import EditMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/EditMaterialRecieptNote";
-import EditVendor from "../pages/master/VendorMaster/EditVendor";
-import CreateVendor from "../pages/master/VendorMaster/CreateVendor";
+
 import QualityCheckMaster from "../pages/Inventory/QualityCheck/QualityCheckMaster";
 import CreateQualityCheck from "../pages/Inventory/QualityCheck/CreateQualityCheck";
 import EditQualityCheck from "../pages/Inventory/QualityCheck/EditQualityCheck";
@@ -178,6 +176,7 @@ import AddServiceContract from "../pages/VendorInfo/ServiceContract/AddServiceCo
 import ServiceContract from "../pages/VendorInfo/ServiceContract/ServiceContract";
 import Services from "../pages/VendorInfo/Services/Services";
 import AddVendor from "../pages/VendorInfo/Vendor/AddVendor";
+import EditVendor from "../pages/VendorInfo/Vendor/EditVendor";
 import Vendor from "../pages/VendorInfo/Vendor/Vendor";
 import VehicleTypeInfo from "../pages/VehicleMaster/VehicleTypeInfo/VehicleTypeInfo";
 import Location from "../pages/VehicleMaster/Location/Location";
@@ -234,6 +233,8 @@ import CreateSmscampagian from "../pages/Emailsystem/Smscampagian/CreateSmscampa
 import EditSmscampagian from "../pages/Emailsystem/Smscampagian/EditSmscampagian";
 import Smssetting from "../pages/Emailsystem/Smssetting/Smssetting";
 import OfficePurchaseIndent from "../pages/Inventory/OfficePurchaseIndent/OfficePurchaseIndent";
+import LoginPage1 from "../loginPage/LoginPage1";
+import AddComplaintApproval from "../pages/Admin/ComplaintApproval/AddComplaintApproval";
 
 
 
@@ -242,7 +243,7 @@ import OfficePurchaseIndent from "../pages/Inventory/OfficePurchaseIndent/Office
 const appRoutes: RouteType[] = [
   {
     index: true,
-    element: <Login_Page />,
+    element: <LoginPage1 />,
     state: "home",
   },
   {
@@ -396,29 +397,6 @@ const appRoutes: RouteType[] = [
         path: "/master/ComplaintType",
         element: <ComplaintType />,
         state: "master.ComplaintType",
-      },
-
-
-      
-      {
-        path: "/master/VendorMaster",
-        element: <VendorMaster />,
-        state: "master.VendorMaster",
-        sidebarProps: {
-          displayText: "Vendor Master",
-        },
-      },
-      {
-
-        path: "/master/CreateVendor",
-        element: <CreateVendor />,
-        state: "master.CreateVendor",
-      },
-      {
-        path: "/master/EditVendor",
-        element: <EditVendor />,
-        state: "master.EditVendor",
-
       },
       {
         path: "/master/ItemCategory",
@@ -1164,7 +1142,7 @@ const appRoutes: RouteType[] = [
 
       {
         path: "/emailsystem/Smscampagian",
-        element: <Smscampagian/>,
+        element: <Smscampagian />,
         state: "emailsystem.Smscampagian",
         sidebarProps: {
           displayText: "Smscampagian",
@@ -1189,7 +1167,7 @@ const appRoutes: RouteType[] = [
         state: "email.Smssetting",
       },
     ],
-    },
+  },
   //==================end========UserManagement==========
 
 
@@ -2131,6 +2109,30 @@ const appRoutes: RouteType[] = [
 
     ],
   },
+  {
+    path: "/Admin",
+    element: <DashboardPageLayout />,
+    state: "Admin",
+    sidebarProps: {
+      displayText: "Admin",
+      icon: <DashboardOutlinedIcon />,
+    },
+    child: [
+      {
+        index: true,
+        element: <DashboardIndex />,
+        state: "Admin.index",
+      },
+      {
+        path: "/Admin/AddComplaintApproval",
+        element: <AddComplaintApproval />,
+        state: "Admin.AddComplaintApproval",
+        sidebarProps: {
+          displayText: "Complaint Approval",
+        },
+      },
+    ]
+  }
 
 ];
 

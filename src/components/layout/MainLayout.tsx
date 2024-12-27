@@ -702,6 +702,26 @@ const MainLayout = () => {
             },
           ],
         },
+
+        {
+          menuName: "Admin",
+          path: "",
+          menuId: 10,
+          displayNo: 1,
+          childMenu: [
+            {
+              menuId: 1,
+              menuName: "Complaint Approval",
+              path: "/Admin/AddComplaintApproval",
+              displayNo: 0,
+            },
+
+          
+
+          ],
+        },
+       
+
       ];
 
       //const items1 = items2[0]["userPermission"][0]["parentMenu"];

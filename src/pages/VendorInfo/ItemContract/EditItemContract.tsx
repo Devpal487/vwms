@@ -78,8 +78,8 @@ const EditItemContract = (props: Props) => {
     contractId: 0,
     id: 0,
     itemId: 0,
-    createdBy: "",
-    updatedBy: "",
+    createdBy: "a",
+    updatedBy: "a",
     createdOn: "2024-12-19T10:50:11.993Z",
     updatedOn: "2024-12-19T10:50:11.993Z",
     fyId: 0,
@@ -165,7 +165,7 @@ const EditItemContract = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      "contractId": location.state.contractId,
+      //"contractId": 0,
       "vendorId": location.state.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
@@ -180,21 +180,7 @@ const EditItemContract = (props: Props) => {
       "fyId": location.state.fyId,
       "rate": location.state.rate,
       "srno": location.state.srno,
-      "serviceDetail": [
-        {
-          "contractId": location.state.contractId,
-          "id": location.state.id,
-          "serviceId": location.state.serviceId,
-          "createdBy": location.state.createdBy,
-          "updatedBy": location.state.updatedBy,
-          "createdOn": location.state.createdOn,
-          "updatedOn": location.state.updatedOn,
-          "fyId": location.state.fyId,
-          "rate": location.state.rate,
-          "srno": location.state.srno,
-          "serviceName": location.state.serviceName
-        }
-      ],
+      "serviceDetail": location.state.serviceDetail,
       "itemDetail": [],
       "vendorName": location.state.vendorName
     },
@@ -207,7 +193,7 @@ const EditItemContract = (props: Props) => {
         return;
       }
       const response = await api.post(`ItemContract/UpsertItemContractInformation`, { ...values, itemDetail: validTableData });
-      if (response.data.isSucess) {
+      if (response.data.status === 1) {
         toast.success(response.data.message);
         navigate("/vendorinfo/ItemContract")
       } else {
@@ -261,6 +247,12 @@ const EditItemContract = (props: Props) => {
     const newData = tableData.filter((_, i) => i !== index);
     setTableData(newData);
   };
+
+
+
+
+
+
 
   const back = useNavigate();
 
@@ -602,3 +594,4 @@ const EditItemContract = (props: Props) => {
 };
 
 export default EditItemContract;
+
