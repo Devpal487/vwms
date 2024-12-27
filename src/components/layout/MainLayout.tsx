@@ -694,19 +694,12 @@ const MainLayout = () => {
               path: "/security/RoleMaster",
               displayNo: 0,
             },
-
-
             {
               menuId: 2,
               menuName: "Jurisdiction with Location",
               path: "/security/Jurisdiction",
               displayNo: 0,
             },
-
-           
-
-          
-
           ],
         },
 
@@ -728,13 +721,6 @@ const MainLayout = () => {
           ],
         },
        
-
-       
-        
-       
-
-
-        
 
       ];
 

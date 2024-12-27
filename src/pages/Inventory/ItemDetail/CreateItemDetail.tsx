@@ -16,17 +16,18 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import ToastApp from "../../../ToastApp";
+//import 'react-toastify/dist/ReactToastify.css';
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useNavigate, useLocation } from "react-router-dom";
 import Chip from "@mui/material/Chip";
-import { ToastContainer } from 'react-toastify';
+//import { ToastContainer } from 'react-toastify';
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import { useTranslation } from "react-i18next";
 import Paper from "@mui/material/Paper";
-import { toast } from "react-toastify";
-import ToastApp from "../../../ToastApp";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -253,7 +254,7 @@ export default function CreateItemDetail() {
           <Divider />
           <Box height={10} />
           <form onSubmit={formik.handleSubmit}>
-            {toaster === false ? "" : <ToastApp />}
+          {toaster && <ToastApp />}
             <Grid container item xs={12} spacing={2}>
               <Grid item lg={12} xs={12}>
                 <FormGroup>
@@ -498,7 +499,7 @@ export default function CreateItemDetail() {
           </form>
         </Paper>
       </Card>
-      <ToastApp />
+     
     </>
   );
 };

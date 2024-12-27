@@ -325,7 +325,7 @@ const validationSchema = Yup.object().shape({
             <form onSubmit={formik.handleSubmit}>
               {/* <Grid container spacing={2}> */}
               {/* First Row */}
-              {toaster === false ? "" : <ToastApp />}
+              {toaster && <ToastApp />}
               <Grid container item xs={12} spacing={2}>
               <Grid item lg={12} xs={12}>
                 <FormGroup>
@@ -603,7 +603,7 @@ const validationSchema = Yup.object().shape({
             </form>
           </Paper>
         </Card>
-        <ToastApp />
+      
       </>
     );
   };
