@@ -694,31 +694,14 @@ const MainLayout = () => {
               path: "/security/RoleMaster",
               displayNo: 0,
             },
-
-
             {
               menuId: 2,
               menuName: "Jurisdiction with Location",
               path: "/security/Jurisdiction",
               displayNo: 0,
             },
-
-           
-
-          
-
           ],
         },
-
-       
-
-       
-        
-       
-
-
-        
-
       ];
 
       //const items1 = items2[0]["userPermission"][0]["parentMenu"];
