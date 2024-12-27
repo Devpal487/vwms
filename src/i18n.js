@@ -11,7 +11,8 @@ const resources = {
       message: {},
       text: {////
         /////
-        
+        AddComplaintApproval:"Create Complaint Approval",
+        Next:"Next",
         pOrderDoc:"Upload Documnet",
         orderDate:"Order Date",
         /////

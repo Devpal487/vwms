@@ -44,6 +44,11 @@ import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
 import { json } from "stream/consumers";
+import ReactQuill from "react-quill";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+
 
 type Props = {};
 
@@ -62,11 +67,13 @@ const style = {
 };
 
 const AddJobCard = (props: Props) => {
+  const location = useLocation(); 
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -250,35 +257,37 @@ const AddJobCard = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "jobCardId": 0,
-      "jobCardNo": "",
+      // "jobCardNo": "",
       "fileNo": "",
-      "imageFile": "",
-      "jobCardDate": "2024-12-23T11:56:48.412Z",
-      "complainId": 0,
-      "complainDate": "2024-12-23T11:56:48.412Z",
-      "empId": 0,
-      "itemId": 0,
-      "currenReading": 0,
-      "complain": "",
-      "status": "",
-      "serviceType": "",
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-23T11:56:48.412Z",
-      "updatedOn": "2024-12-23T11:56:48.412Z",
-      "companyId": 0,
-      "fyId": 0,
-      "totalItemAmount": 0,
-      "totalServiceAmount": 0,
-      "netAmount": 0,
-      "itemName": "",
-      "empName": "",
-      "serviceDetail": [],
-      "update": true
+      // "imageFile": "",
+       "jobCardDate": defaultValues,
+      // "complainId": 0,
+      // "complainDate": "2024-12-23T11:56:48.412Z",
+      // "empId": 0,
+      // "itemId": 0,
+      // "currenReading": 0,
+      // "complain": "",
+      // status: "inprogress",
+      // "serviceType": "",
+      // "createdBy": "",
+      // "updatedBy": "",
+      // "createdOn": "2024-12-23T11:56:48.412Z",
+      // "updatedOn": "2024-12-23T11:56:48.412Z",
+      // "companyId": 0,
+      // "fyId": 0,
+      // "totalItemAmount": 0,
+      // "totalServiceAmount": 0,
+      // "netAmount": 0,
+      // "itemName": "",
+      // "empName": "",
+      // "serviceDetail": [],
+      // "update": true
+      ...location.state,
     },
     onSubmit: async (values) => {
 
       const validTableData = tableData.filter(validateRow);
+      
       if (validTableData.length === 0) {
         toast.error("Please add some data in table for further process");
         return;
@@ -541,7 +550,35 @@ const AddJobCard = (props: Props) => {
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} lg={12}>
+        <FormControl component="fieldset">
+            <RadioGroup
+                row
+                aria-label="status"
+                name="status"
+                value={formik.values.status}  
+                onChange={(event) => formik.setFieldValue("status", event.target.value)}
+            >
+                <FormControlLabel
+                    value="complete"
+                    control={<Radio color="primary" />}
+                    label={t("text.Complete")}
+                   
+                />
+                <FormControlLabel
+                    value="jobwork"
+                    control={<Radio color="primary" />}
+                    label={t("text.JobWork")}
+                />
+                <FormControlLabel
+                    value="inprogress"
+                    control={<Radio color="primary" />}
+                    label={t("text.InProgress")}
+                />
 
+            </RadioGroup>
+        </FormControl>
+    </Grid>
               {/* RadioButton */}
               {/* <Grid item xs={12} sm={12} lg={12}>
                 <FormControl>
@@ -755,30 +792,8 @@ const AddJobCard = (props: Props) => {
                 />
               </Grid>
 
-              {/* Complaint */}
-              <Grid item xs={12} md={4} sm={4}>
-                <TextField
-                  label={
-                    <CustomLabel
-                      text={t("text.Complaint")}
-                    //required={true}
-                    />
-                  }
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  name="complain"
-                  id="complain"
-                  value={formik.values.complain}
-                  placeholder={t("text.Complaint")}
-                  onChange={(e) => {
-                    formik.setFieldValue("complain", e.target.value);
-                  }}
-                />
-              </Grid>
-
-              {/* CurrentReadingKM */}
-              <Grid item xs={12} md={4} sm={4}>
+               {/* CurrentReadingKM */}
+               <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -798,6 +813,44 @@ const AddJobCard = (props: Props) => {
                   }}
                 />
               </Grid>
+
+<Grid item lg={12} md={12} xs={12} >
+                                     <ReactQuill
+                                       id="complaint"
+                                       theme="snow"
+                                       value={formik.values.complain}
+                                       onChange={(content) => formik.setFieldValue("complain", content)}
+                                       onBlur={() => formik.setFieldTouched("complain", true)}
+                                       modules={modules}
+                                       formats={formats}
+                                       //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                                       placeholder="Enter your complaint here"
+                                     />
+                                   </Grid>
+
+              {/* Complaint
+              <Grid item xs={12} md={4} sm={4}>
+                <TextField
+                  label={
+                    <CustomLabel
+                      text={t("text.Complaint")}
+                    //required={true}
+                    />
+                  }
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="complain"
+                  id="complain"
+                  value={formik.values.complain}
+                  placeholder={t("text.Complaint")}
+                  onChange={(e) => {
+                    formik.setFieldValue("complain", e.target.value);
+                  }}
+                />
+              </Grid> */}
+
+             
 
 
 
@@ -1272,5 +1325,42 @@ const AddJobCard = (props: Props) => {
     </div>
   );
 };
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }],
+    [{ font: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ align: [] }],
+    ["link", "image", "video", "formula"],
+    ["clean"],
+  ],
+};
 
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "color",
+  "background",
+  "script",
+  "list",
+  "bullet",
+  "indent",
+  "align",
+  "link",
+  "image",
+  "video",
+  "formula",
+  "code-block",
+];
 export default AddJobCard;
