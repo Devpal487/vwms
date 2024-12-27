@@ -77,8 +77,8 @@ const AddItemContract = (props: Props) => {
     contractId: 0,
     id: 0,
     itemId: 0,
-    createdBy: "",
-    updatedBy: "",
+    createdBy: "a",
+    updatedBy: "a",
     createdOn: "2024-12-19T10:50:11.993Z",
     updatedOn: "2024-12-19T10:50:11.993Z",
     fyId: 0,
@@ -130,11 +130,11 @@ const AddItemContract = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      "contractId": 0,
+      //"contractId": 0,
       "vendorId": 0,
       "effectivedate": "2024-12-19T10:50:11.993Z",
-      "createdBy": "",
-      "updatedBy": "",
+      "createdBy": "a",
+      "updatedBy": "a",
       "type": "",
       "refDocNo": "",
       "createdOn": "2024-12-19T10:50:11.993Z",
@@ -150,8 +150,8 @@ const AddItemContract = (props: Props) => {
           "contractId": 0,
           "id": 0,
           "serviceId": 2,
-          "createdBy": "",
-          "updatedBy": "",
+          "createdBy": "a",
+          "updatedBy": "a",
           "createdOn": "2024-12-19T06:03:42.610Z",
           "updatedOn": "2024-12-19T06:03:42.610Z",
           "fyId": 2,
@@ -172,7 +172,7 @@ const AddItemContract = (props: Props) => {
         return;
       }
       const response = await api.post(`ItemContract/UpsertItemContractInformation`, { ...values, itemDetail: validTableData });
-      if (response.data.isSucess) {
+      if (response.data.status === 1) {
         toast.success(response.data.message);
         navigate("/vendorinfo/ItemContract")
       } else {
@@ -572,3 +572,4 @@ const AddItemContract = (props: Props) => {
 };
 
 export default AddItemContract;
+

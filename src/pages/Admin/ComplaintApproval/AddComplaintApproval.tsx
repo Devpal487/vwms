@@ -61,7 +61,7 @@ const style = {
    borderRadius: 10,
 };
 
-const AddComplaint = (props: Props) => {
+const AddComplaintApproval = (props: Props) => {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
@@ -348,7 +348,7 @@ const AddComplaint = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.AddComplaint")}
+                        {t("text.AddComplaintApproval")}
                      </Typography>
                   </Grid>
 
@@ -453,6 +453,7 @@ const AddComplaint = (props: Props) => {
                                  text={t("text.ComplaintNo")}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -516,7 +517,6 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -545,7 +545,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -565,7 +564,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -583,7 +581,6 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -612,7 +609,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -632,7 +628,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -650,7 +645,6 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -679,7 +673,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -699,7 +692,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -717,7 +709,6 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -746,7 +737,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -766,7 +756,6 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -923,24 +912,7 @@ const AddComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
-                  {(true) ?
-                     <Grid item>
-                        <Button
-                           type="button"
-                           fullWidth
-                           style={{
-                              backgroundColor: `#0000ff`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              navigate("/Admin/AddComplaintApproval")
-                           }}
-                        >
-                           {t("text.NextProcess")}<ArrowForwardIcon />
-                        </Button>
-                     </Grid> : ""
-                  }
+
                </form>
             </CardContent>
          </div>
@@ -948,4 +920,4 @@ const AddComplaint = (props: Props) => {
    );
 };
 
-export default AddComplaint;
+export default AddComplaintApproval;

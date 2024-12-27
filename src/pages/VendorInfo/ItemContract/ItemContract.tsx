@@ -157,7 +157,9 @@ export default function ItemContract() {
   const fetchItemContractData = async () => {
     try {
       const collectData = {
-        "contractId": -1
+        "contractId": -1,
+        "serviceId": -1,
+        "itemId": -1
       };
       const response = await api.post(
         `ItemContract/GetItemContractInformation`,
