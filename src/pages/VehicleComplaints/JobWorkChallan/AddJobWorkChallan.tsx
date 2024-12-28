@@ -71,6 +71,7 @@ const AddJobWorkChallan = (props: Props) => {
   const [modalImg, setModalImg] = useState("");
   const [Opens, setOpen] = React.useState(false);
   const [Img, setImg] = useState("");
+  const location = useLocation();
 
 
   const [tableData, setTableData] = useState([{
@@ -94,6 +95,8 @@ const AddJobWorkChallan = (props: Props) => {
     serviceName: "",
     unitName: ""
   }]);
+
+
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
   ]);
@@ -117,6 +120,7 @@ const AddJobWorkChallan = (props: Props) => {
     getServiceData();
     getUnitData();
     getTaxData();
+    setTableDataValues();
   }, []);
 
   const getVehicleDetails = async () => {
@@ -177,7 +181,6 @@ const AddJobWorkChallan = (props: Props) => {
     };
     const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
     const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
     const arr = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({
@@ -205,6 +208,36 @@ const AddJobWorkChallan = (props: Props) => {
   };
 
 
+  const setTableDataValues = () => {
+    const data = location.state.serviceDetail;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        id: 0,
+        challanNo: data[index].challanNo,
+        jobCardId: data[index].jobCardId,
+        serviceId: data[index].serviceId,
+        serviceCharge: data[index].unitRate,
+        vendorId: data[index].vendorId,
+        remark: "",
+        qty: data[index].qty,
+        unitId: data[index].unitId,
+        amount: data[index].amount,
+        netAmount: data[index].netAmount,
+        gstid: 0,
+        cgstid: 0,
+        sgstid: 0,
+        gst: 0,
+        cgst: 0,
+        sgst: 0,
+        serviceName: data[index].serviceName,
+        unitName: data[index].unitName
+      });
+    }
+    setTableData(arr);
+  }
+
+
   const validateRow = (row: any) => {
     return row.serviceId && row.serviceName && row.serviceCharge > 0;
   };
@@ -215,21 +248,21 @@ const AddJobWorkChallan = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "challanNo": 0,
-      "challanDate": "2024-12-24T07:29:27.863Z",
-      "complainId": 0,
-      "empId": 0,
-      "itemId": 0,
-      "jobCardId": 0,
-      "vendorId": 0,
+      "challanDate": dayjs(location.state.challanDate).format("YYYY-MM-DD"),
+      "complainId": location.state.complainId,
+      "empId": location.state.empId,
+      "itemId": location.state.itemId,
+      "jobCardId": location.state.jobCardId,
+      "vendorId": location.state.serviceDetail.complainId,
       "createdBy": "",
       "updatedBy": "",
       "createdOn": "2024-12-24T07:29:27.863Z",
       "updatedOn": "2024-12-24T07:29:27.863Z",
       "companyId": 0,
       "fyId": 0,
-      "serviceAmount": 0,
+      "serviceAmount": location.state.totalServiceAmount,
       "itemAmount": 0,
-      "netAmount": 0,
+      "netAmount": location.state.netAmount,
       "status": "",
       "rcvDate": "2024-12-24T07:29:27.863Z",
       "rcvNo": 0,
@@ -243,8 +276,8 @@ const AddJobWorkChallan = (props: Props) => {
       "fileOldName": "",
       "file": "",
       "jobWorkChallanDetail": [],
-      "vehicleNo": "",
-      "vendorName": "",
+      "vehicleNo": location.state.itemName,
+      "vendorName": location.state.serviceDetail[0].vendorName || "",
       "empName": "",
       "jobCardDate": "2024-12-24T07:29:27.863Z",
       "complainDate": "2024-12-24T07:29:27.863Z"
@@ -547,7 +580,7 @@ const AddJobWorkChallan = (props: Props) => {
                   value={formik.values.challanNo}
                   placeholder={t("text.ChallanNo")}
                   onChange={(e) => {
-                    formik.setFieldValue("challanNo", parseInt(e.target.value))
+                    formik.setFieldValue("challanNo", parseInt(e.target.value) || 0)
                   }}
                 />
               </Grid>
@@ -584,6 +617,7 @@ const AddJobWorkChallan = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
+                  value={formik.values.vendorName || ""}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
