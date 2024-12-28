@@ -43,6 +43,7 @@ import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 type Props = {};
 
@@ -113,6 +114,7 @@ const AddJobWorkChallan = (props: Props) => {
     { value: -1, label: t("text.Tax") },
   ]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     getVehicleDetails();
@@ -292,7 +294,8 @@ const AddJobWorkChallan = (props: Props) => {
       const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: validTableData });
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclecomplaint/JobWorkChallan")
+        setIsVisible(true);
+        //navigate("/vehiclecomplaint/JobWorkChallan")
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -1091,6 +1094,35 @@ const AddJobWorkChallan = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
+              {isVisible && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "16px",
+                      borderRadius: "8px",
+                      width: "100px",
+                    }}
+                    onClick={() => {
+                      // const validTableData = tableData.filter(validateRow);
+                      // if (validTableData.length === 0) {
+                      //   toast.error("Please add some data in table for further process");
+                      //   return;
+                      // }
+                      navigate("/vehiclecomplaint/AddJobWorkChallanRecieve", {
+                         state: { ...formik.values},
+                       });
+                    }}
+                  >
+                    {t("text.Next")}
+                    <ArrowForwardIcon />
+                  </Button>
+                </Grid>
+              )}
 
             </Grid>
 
