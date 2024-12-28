@@ -44,6 +44,10 @@ import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactQuill from "react-quill";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 type Props = {};
 
@@ -62,13 +66,14 @@ const style = {
 };
 
 const AddComplaintApproval = (props: Props) => {
+   const location = useLocation(); // Access the passed data
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
    const { defaultValues } = getISTDate();
    const [toaster, setToaster] = useState(false);
    const [isVisible, setIsVisible] = useState(false);
-
+  
    const [vehicleOption, setVehicleOption] = useState([
       { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
    ]);
@@ -105,6 +110,11 @@ const AddComplaintApproval = (props: Props) => {
       getDesignationData();
       getEmpData();
    }, []);
+
+   const getLabelById = (option: any, id: any) => {
+      const obj = option.find((item: any) => item.value === id);
+      return obj ? obj.label : "";
+   };
 
    const getVehicleDetails = async () => {
       const response = await api.get(
@@ -175,50 +185,95 @@ const AddComplaintApproval = (props: Props) => {
 
    const formik = useFormik({
       initialValues: {
-         "sno": 0,
-         "compId": 0,
-         "itemID": 0,
-         "complaintType": "",
-         "complaintDoc": "",
-         "empId": -1,
-         "approveEmp4": 0,
-         "approveEmp3": 0,
-         "approveEmp2": 0,
-         "approveEmp1": 0,
-         "complaint": "",
-         "complaintNo": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "status": "",
-         "currentReading": 0,
-         "createdOn": "2024-12-12T09:58:00.118Z",
-         "complaintDate": "2024-12-12T09:58:00.118Z",
-         "updatedOn": "2024-12-12T09:58:00.118Z",
-         "compAppdt": "2024-12-12T09:58:00.118Z",
-         "jobCardNo": "",
-         "srno": 0,
-         "file": "",
-         "fileOldName": "",
-         "totaldays": 0,
-         "outDate": "2024-12-12T09:58:00.118Z",
-         "outId": 0,
-         "vehicleNo": ""
+
+        // "sno": location.state.sno,
+         // "compId": location.state.compId,
+         // "itemID": location.state.itemID,
+         // "complaintType": location.state.complaintType,
+         // "complaintDoc": location.state.complaintDoc,
+         // "empId": location.state.empId,
+         // "approveEmp4": location.state.approveEmp4,
+         // "approveEmp3": location.state.approveEmp3,
+         // "approveEmp2": location.state.approveEmp2,
+         // "approveEmp1": location.state.approveEmp1,
+         // "complaint": location.state.complaint,
+         // "complaintNo": location.state.complaintNo,
+         // "createdBy": location.state.createdBy,
+         // "updatedBy": location.state.updatedBy,
+         // "status": location.state.status,
+         // "currentReading": location.state.currentReading,
+         // "createdOn": location.state.createdOn,
+         // "complaintDate": location.state.complaintDate,
+         // "updatedOn": location.state.updatedOn,
+         // "compAppdt": location.state.compAppdt,
+         // "jobCardNo": location.state.jobCardNo,
+         // "srno": location.state.srno,
+         // "file": location.state.file,
+         // "fileOldName": location.state.fileOldName,
+         // "totaldays": location.state.totaldays,
+         // "outDate": location.state.outDate,
+         // "outId": location.state.outId,
+         // "vehicleNo": location.state.vehicleNo
+         // "sno": 0,
+         // "compId": 0,
+         // "itemID": 0,
+         // "complaintType": "",
+         // "complaintDoc": "",
+         // "empId": -1,
+         // "approveEmp4": 0,
+         // "approveEmp3": 0,
+         // "approveEmp2": 0,
+         // "approveEmp1": 0,
+         // "complaint": "",
+         // "complaintNo": "",
+         // "createdBy": "",
+         // "updatedBy": "",
+          "status": "Pending",
+         // "currentReading": 0,
+         // "createdOn": defaultValues,
+         // "complaintDate": defaultValues,
+         // "updatedOn": defaultValues,
+          "compAppdt": defaultValues,
+         // "jobCardNo": "",
+         // "srno": 0,
+         // "file": "",
+         // "fileOldName": "",
+         // "totaldays": 0,
+         // "outDate": defaultValues,
+         // "outId": 0,
+         // "vehicleNo": ""
+         ...location.state,
       },
       // validationSchema: Yup.object({
       //    indentNo: Yup.string()
       //       .required(t("text.reqIndentNum")),
       // }),
 
-      onSubmit: async (values) => {
+      // onSubmit: async (values) => {
 
-         const response = await api.post(`Master/UpsertComplaint`, values);
-         if (response.data.status === 1) {
-            toast.success(response.data.message);
-            //navigate("/vehiclecomplaint/Complaint")
-            setIsVisible(true);
-         } else {
-            setToaster(true);
-            toast.error(response.data.message);
+      //    const response = await api.post(`Master/UpsertComplaint`, values);
+      //    if (response.data.status === 1) {
+      //       toast.success(response.data.message);
+      //       //navigate("/vehiclecomplaint/Complaint")
+      //       setIsVisible(true);
+      //    } else {
+      //       setToaster(true);
+      //       toast.error(response.data.message);
+      //    }
+      // },
+      onSubmit: async (values) => {
+         try {
+            const response = await api.post(`Master/UpsertComplaint`, values);
+
+            if (response.data.status === 1) {
+               toast.success(response.data.message);
+               setIsVisible(true);
+            } else {
+               toast.error(response.data.message);
+               setToaster(true);
+            }
+         } catch (error) {
+            toast.error("An error occurred while submitting the form. Please try again.");
          }
       },
    });
@@ -368,8 +423,9 @@ const AddComplaintApproval = (props: Props) => {
                </Grid>
                <Divider />
                <br />
+                <ToastContainer />
                <form onSubmit={formik.handleSubmit}>
-                  {toaster === false ? "" : <ToastApp />}
+                  {/* {toaster === false ? "" : <ToastApp />} */}
                   <Grid container spacing={2}>
 
                      {/* VehicleNumber */}
@@ -412,7 +468,8 @@ const AddComplaintApproval = (props: Props) => {
                            size="small"
                            name="vehicleName"
                            id="vehicleName"
-                           value={vehicleName}
+                         //  value={vehicleName}
+                         value={vehicleOption[vehicleOption.findIndex(e => e.label === formik.values.vehicleNo)]?.name}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
                            disabled={true}
@@ -426,7 +483,8 @@ const AddComplaintApproval = (props: Props) => {
                            disabled={true}
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption[empOption.findIndex(e => e.value == formik.values.empId)]?.label || ""}
+                           value={getLabelById(empOption, formik.values.empId)}
+                          // value={empOption[empOption.findIndex(e => e.value == formik.values.empId)]?.label || ""}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -453,7 +511,6 @@ const AddComplaintApproval = (props: Props) => {
                                  text={t("text.ComplaintNo")}
                               />
                            }
-                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -467,7 +524,7 @@ const AddComplaintApproval = (props: Props) => {
                         />
                      </Grid>
 
-                     {/* Date */}
+                     {/* approve Date */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
@@ -479,12 +536,12 @@ const AddComplaintApproval = (props: Props) => {
                            variant="outlined"
                            fullWidth
                            size="small"
-                           name="complaintDate"
-                           id="complaintDate"
-                           value={formik.values.complaintDate}
+                           name="compAppdt"
+                           id="compAppdt"
+                           value={formik.values.compAppdt}
                            placeholder={t("text.Date")}
                            onChange={(e) => {
-                              formik.setFieldValue("complaintDate", e.target.value)
+                              formik.setFieldValue("compAppdt", e.target.value)
                            }}
                            InputLabelProps={{ shrink: true }}
                         />
@@ -517,6 +574,8 @@ const AddComplaintApproval = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
+                           value={getLabelById(empOption, formik.values.approveEmp1)}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -545,6 +604,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                         //  disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -564,6 +624,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                           //disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -581,6 +642,8 @@ const AddComplaintApproval = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
+                           value={getLabelById(empOption, formik.values.approveEmp2)}
+                          // disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -609,6 +672,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                          // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -628,6 +692,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                          // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -645,6 +710,8 @@ const AddComplaintApproval = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
+                           value={getLabelById(empOption, formik.values.approveEmp3)}
+                          // disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -673,6 +740,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                         //  disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -692,6 +760,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                          // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -709,6 +778,8 @@ const AddComplaintApproval = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
+                           value={getLabelById(empOption, formik.values.approveEmp4)}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -737,6 +808,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                          // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -756,6 +828,7 @@ const AddComplaintApproval = (props: Props) => {
                               //required={true}
                               />
                            }
+                        //   disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -769,13 +842,27 @@ const AddComplaintApproval = (props: Props) => {
 
 
                      {/* Description */}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TranslateTextField
                            label={t("text.Description")}
                            value={formik.values.complaint}
                            onChangeText={(text: string) => formik.setFieldValue("complaint", text)}
                            required={true}
                            lang={lang}
+                        />
+                     </Grid> */}
+
+                     <Grid item lg={12} md={12} xs={12} marginTop={2}>
+                        <ReactQuill
+                           id="complaint"
+                           theme="snow"
+                           value={formik.values.complaint}
+                           onChange={(content) => formik.setFieldValue("complaint", content)}
+                           onBlur={() => formik.setFieldTouched("complaint", true)}
+                           modules={modules}
+                           formats={formats}
+                           //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                           placeholder="Enter your complaint here"
                         />
                      </Grid>
 
@@ -910,14 +997,110 @@ const AddComplaintApproval = (props: Props) => {
                            {t("text.reset")}
                         </Button>
                      </Grid>
+                     {isVisible && (
+                     <Grid item lg={6} sm={6} xs={12}>
+                      <Button
+   type="button"
+   style={{
+      backgroundColor: "#0000ff",
+      color: "white",
+      marginTop: "10px",
+      padding: "8px 16px",
+      fontSize: "16px",
+      borderRadius: "8px",
+      width: "100px",
+   }}
+   onClick={() => {
+      navigate("/vehiclecomplaint/AddJobCard", {
+         state: formik.values, 
+      });
+   }}
+>
+   {t("text.Next")}
+   <ArrowForwardIcon />
+</Button>
 
+                     </Grid>
+                  )}
                   </Grid>
-
+                  {/* {(true) ?
+                     <Grid item> */}
+                        {/* <Button
+                           type="button"
+                           fullWidth
+                           style={{
+                              backgroundColor: `#0000ff`,
+                              color: "white",
+                              marginTop: "10px",
+                           }}
+                           onClick={() => {
+                              navigate("/Admin/AddComplaintApproval")
+                           }}
+                        >
+                           {t("text.NextProcess")}<ArrowForwardIcon />
+                        </Button> */}
+                        {/* <Button
+                           type="button"
+                           style={{
+                              backgroundColor: "#0000ff",
+                              color: "white",
+                              marginTop: "10px",
+                              padding: "8px 16px",
+                              fontSize: "16px",
+                              borderRadius: "8px",
+                              width: "100px",
+                           }}
+                           onClick={() => {
+                              navigate("/vehiclecomplaint/AddJobCard");
+                           }}
+                        >
+                           {t("text.Next")}
+                           <ArrowForwardIcon />
+                        </Button>
+                     </Grid> : ""
+                  } */}
                </form>
             </CardContent>
          </div>
       </div>
    );
 };
+const modules = {
+   toolbar: [
+      [{ header: "1" }, { header: "2" }],
+      [{ font: [] }],
+      [{ size: ["small", false, "large", "huge"] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: [] }],
+      ["link", "image", "video", "formula"],
+      ["clean"],
+   ],
+};
 
+const formats = [
+   "header",
+   "font",
+   "size",
+   "bold",
+   "italic",
+   "underline",
+   "strike",
+   "color",
+   "background",
+   "script",
+   "list",
+   "bullet",
+   "indent",
+   "align",
+   "link",
+   "image",
+   "video",
+   "formula",
+   "code-block",
+];
 export default AddComplaintApproval;
