@@ -45,6 +45,7 @@ import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
 import { json } from "stream/consumers";
 import ReactQuill from "react-quill";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
@@ -67,7 +68,7 @@ const style = {
 };
 
 const AddJobCard = (props: Props) => {
-  const location = useLocation(); 
+  const location = useLocation();
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
@@ -139,6 +140,12 @@ const AddJobCard = (props: Props) => {
     getVendorData();
     getUnitData();
     getComplainData();
+    setVehicleName(location.state.vehicleName);
+    const timeoutId = setTimeout(() => {
+      setDesgValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.designation || "");
+      setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.department || "");
+    }, 300);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const getVehicleDetails = async () => {
@@ -249,7 +256,7 @@ const AddJobCard = (props: Props) => {
   };
 
   const validateRow = (row: any) => {
-    return row.serviceName && row.serviceId && row.vendorId && row.challanNo > 0;
+    return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
   };
 
 
@@ -257,46 +264,46 @@ const AddJobCard = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "jobCardId": 0,
-      // "jobCardNo": "",
+      "jobCardNo": "",
       "fileNo": "",
-      // "imageFile": "",
-       "jobCardDate": defaultValues,
-      // "complainId": 0,
-      // "complainDate": "2024-12-23T11:56:48.412Z",
-      // "empId": 0,
-      // "itemId": 0,
-      // "currenReading": 0,
-      // "complain": "",
-      // status: "inprogress",
-      // "serviceType": "",
-      // "createdBy": "",
-      // "updatedBy": "",
-      // "createdOn": "2024-12-23T11:56:48.412Z",
-      // "updatedOn": "2024-12-23T11:56:48.412Z",
-      // "companyId": 0,
-      // "fyId": 0,
-      // "totalItemAmount": 0,
-      // "totalServiceAmount": 0,
-      // "netAmount": 0,
-      // "itemName": "",
-      // "empName": "",
-      // "serviceDetail": [],
-      // "update": true
-      ...location.state,
+      "imageFile": "",
+      "jobCardDate": "2024-12-28T07:03:56.434Z",
+      "complainId": location.state.compId,
+      "complainDate": location.state.complaintDate,
+      "empId": location.state.empId,
+      "itemId": location.state.itemID,
+      "currenReading": location.state.currentReading,
+      "complain": location.state.complaint,
+      "status": "inprogress",
+      "serviceType": "",
+      "createdBy": "",
+      "updatedBy": "",
+      "createdOn": "2024-12-28T07:03:56.434Z",
+      "updatedOn": "2024-12-28T07:03:56.434Z",
+      "companyId": 0,
+      "fyId": 0,
+      "totalItemAmount": 0,
+      "totalServiceAmount": 0,
+      "netAmount": 0,
+      "itemName": location.state.vehicleNo,
+      "empName": location.state.empName,
+      "serviceDetail": [],
+      "update": true
+
+      //...location.state,
     },
     onSubmit: async (values) => {
 
       const validTableData = tableData.filter(validateRow);
-      
       if (validTableData.length === 0) {
         toast.error("Please add some data in table for further process");
         return;
       }
       const response = await api.post(`Master/UpsertJobCard`, { ...values, serviceDetail: validTableData });
-      console.log("@@@@===>>", values);
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclecomplaint/JobCard");
+        setIsVisible(true);
+        //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -311,7 +318,7 @@ const AddJobCard = (props: Props) => {
   };
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
-    if (event === "jobCardModel.imageFile") {
+    if (event === "imageFile") {
       setModalImg(formik.values.imageFile);
     }
   };
@@ -439,7 +446,7 @@ const AddJobCard = (props: Props) => {
 
     setTableData(newData);
 
-    if (newData[index].serviceId && newData[index].vendorName && newData[index].challanNo > 0) {
+    if (newData[index].serviceId && newData[index].vendorName && newData[index].qty && newData[index].unitRate > 0) {
       if (index === tableData.length - 1) {
         addRow();
       }
@@ -550,35 +557,35 @@ const AddJobCard = (props: Props) => {
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} lg={12}>
-        <FormControl component="fieldset">
-            <RadioGroup
-                row
-                aria-label="status"
-                name="status"
-                value={formik.values.status}  
-                onChange={(event) => formik.setFieldValue("status", event.target.value)}
-            >
-                <FormControlLabel
-                    value="complete"
-                    control={<Radio color="primary" />}
-                    label={t("text.Complete")}
-                   
-                />
-                <FormControlLabel
-                    value="jobwork"
-                    control={<Radio color="primary" />}
-                    label={t("text.JobWork")}
-                />
-                <FormControlLabel
-                    value="inprogress"
-                    control={<Radio color="primary" />}
-                    label={t("text.InProgress")}
-                />
+              <Grid item xs={12} sm={12} lg={12}>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    row
+                    aria-label="status"
+                    name="status"
+                    value={formik.values.status}
+                    onChange={(event) => formik.setFieldValue("status", event.target.value)}
+                  >
+                    <FormControlLabel
+                      value="complete"
+                      control={<Radio color="primary" />}
+                      label={t("text.Complete")}
 
-            </RadioGroup>
-        </FormControl>
-    </Grid>
+                    />
+                    <FormControlLabel
+                      value="jobwork"
+                      control={<Radio color="primary" />}
+                      label={t("text.JobWork")}
+                    />
+                    <FormControlLabel
+                      value="inprogress"
+                      control={<Radio color="primary" />}
+                      label={t("text.InProgress")}
+                    />
+
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
               {/* RadioButton */}
               {/* <Grid item xs={12} sm={12} lg={12}>
                 <FormControl>
@@ -614,6 +621,8 @@ const AddJobCard = (props: Props) => {
                   placeholder={t("text.FileNo")}
                   onChange={(e) => {
                     formik.setFieldValue("fileNo", e.target.value.toString());
+                    setDesgValue(empOption[empOption.findIndex(e => e.value === location.state.empId)].designation);
+                    setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)].department);
                   }}
                 />
               </Grid>
@@ -649,7 +658,7 @@ const AddJobCard = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vehicleOption}
-                  //value={formik.values.itemName}
+                  value={formik.values.itemName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -657,9 +666,6 @@ const AddJobCard = (props: Props) => {
                     formik.setFieldValue("itemId", newValue?.value);
                     formik.setFieldValue("empId", newValue?.empId);
                     formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
-                    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.empId == newValue?.empId)].label);
-                    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.empId == newValue?.empId)].value);
-                    // formik.setFieldValue("jobCardModel.jobCardNo", complainOption[complainOption.findIndex(e => e.empId == newValue?.empId)].jobCardNo);
                     setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
                     setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
                     setVehicleName(newValue?.vehicleName);
@@ -792,8 +798,8 @@ const AddJobCard = (props: Props) => {
                 />
               </Grid>
 
-               {/* CurrentReadingKM */}
-               <Grid item xs={12} md={4} sm={4}>
+              {/* CurrentReadingKM */}
+              <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -814,19 +820,19 @@ const AddJobCard = (props: Props) => {
                 />
               </Grid>
 
-<Grid item lg={12} md={12} xs={12} >
-                                     <ReactQuill
-                                       id="complaint"
-                                       theme="snow"
-                                       value={formik.values.complain}
-                                       onChange={(content) => formik.setFieldValue("complain", content)}
-                                       onBlur={() => formik.setFieldTouched("complain", true)}
-                                       modules={modules}
-                                       formats={formats}
-                                       //  style={{ backgroundColor: "white", minHeight: "200px" }} 
-                                       placeholder="Enter your complaint here"
-                                     />
-                                   </Grid>
+              <Grid item lg={12} md={12} xs={12} >
+                <ReactQuill
+                  id="complaint"
+                  theme="snow"
+                  value={formik.values.complain}
+                  onChange={(content) => formik.setFieldValue("complain", content)}
+                  onBlur={() => formik.setFieldTouched("complain", true)}
+                  modules={modules}
+                  formats={formats}
+                  //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                  placeholder="Enter your complaint here"
+                />
+              </Grid>
 
               {/* Complaint
               <Grid item xs={12} md={4} sm={4}>
@@ -850,7 +856,7 @@ const AddJobCard = (props: Props) => {
                 />
               </Grid> */}
 
-             
+
 
 
 
@@ -925,11 +931,27 @@ const AddJobCard = (props: Props) => {
                             // textAlign: "center",
                           }}
                         >
-                          <TextField
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={["JobWork"]}
                             value={row.challanStatus}
-                            onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                            fullWidth
                             size="small"
-                            inputProps={{ "aria-readonly": true }}
+                            onChange={(e: any, newValue: any) => {
+                              handleInputChange(index, 'challanStatus', newValue);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={
+                                  <CustomLabel
+                                    text={t("text.Status")}
+                                    required={false}
+                                  />
+                                }
+                              />
+                            )}
                           />
                         </td>
                         <td
@@ -1069,8 +1091,8 @@ const AddJobCard = (props: Props) => {
                           }}
                         >
                           <TextField
-                            // value={row.challanStatus}
-                            // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                            //value={row.challanStatus}
+                            //onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
                             size="small"
                             inputProps={{ "aria-readonly": true }}
                           />
@@ -1183,6 +1205,35 @@ const AddJobCard = (props: Props) => {
                 </Table>
               </Grid>
 
+              {true && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "jobwork");
+                      }
+                    }}
+                  >
+                    {t("text.JobWorkChallan")}
+                  </Button>
+
+                </Grid>
+              )}
+
 
 
               {/* attachment */}
@@ -1206,7 +1257,7 @@ const AddJobCard = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "jobCardModel.imageFile")}
+                    onChange={(e) => otherDocChangeHandler(e, "imageFile")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -1244,7 +1295,7 @@ const AddJobCard = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("jobCardModel.imageFile")}
+                      onClick={() => modalOpenHandle("imageFile")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",
@@ -1316,6 +1367,36 @@ const AddJobCard = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
+
+              {isVisible && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "16px",
+                      borderRadius: "8px",
+                      width: "100px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        toast.error("Please add some data in table for further process");
+                        return;
+                      }
+                      navigate("/vehiclecomplaint/AddJobWorkChallan", {
+                        state: { ...formik.values, serviceDetail: validTableData },
+                      });
+                    }}
+                  >
+                    {t("text.Next")}
+                    <ArrowForwardIcon />
+                  </Button>
+                </Grid>
+              )}
 
             </Grid>
 

@@ -110,10 +110,11 @@ const AddComplaint = (props: Props) => {
       getDesignationData();
       getEmpData();
    }, []);
+
    const getcomplaintNo = async () => {
       try {
          const result = await api.get(`Master/GetMaxComplaintNo`); // Correct endpoint
-   
+
          if (result?.data?.status === 1 && result?.data?.data?.length > 0) {
             const complaintNo = result.data.data[0]?.complaintNo; // Extract complaintNo
             if (complaintNo) {
@@ -132,7 +133,7 @@ const AddComplaint = (props: Props) => {
          formik.setFieldValue("complaintNo", "");
       }
    };
-   
+
    const getVehicleDetails = async () => {
       const response = await api.get(
          `Master/GetVehicleDetail?ItemMasterId=-1`,
@@ -207,7 +208,7 @@ const AddComplaint = (props: Props) => {
          "itemID": 0,
          "complaintType": "",
          "complaintDoc": "",
-         "empId": -1,
+         "empId": 0,
          "approveEmp4": 0,
          "approveEmp3": 0,
          "approveEmp2": 0,
@@ -223,31 +224,12 @@ const AddComplaint = (props: Props) => {
          "updatedOn": defaultValues,
          "compAppdt": defaultValues,
          "jobCardNo": "",
-         "srno": 0,
          "file": "",
          "fileOldName": "",
-         "totaldays": 0,
-         "outDate": defaultValues,
-         "outId": 0,
-         "vehicleNo": ""
+         "vehicleNo": "",
+         "vehicleName": "",
+         "empName": ""
       },
-      // validationSchema: Yup.object({
-      //    indentNo: Yup.string()
-      //       .required(t("text.reqIndentNum")),
-      // }),
-
-      // onSubmit: async (values) => {
-
-      //    const response = await api.post(`Master/UpsertComplaint`, values);
-      //    if (response.data.status === 1) {
-      //       toast.success(response.data.message);
-      //       //navigate("/vehiclecomplaint/Complaint")
-      //       setIsVisible(true);
-      //    } else {
-      //       setToaster(true);
-      //       toast.error(response.data.message);
-      //    }
-      // },
       onSubmit: async (values) => {
          try {
             const response = await api.post(`Master/UpsertComplaint`, values);
@@ -414,18 +396,22 @@ const AddComplaint = (props: Props) => {
                <ToastContainer />
                <form onSubmit={formik.handleSubmit}>
                   {/* {toaster === false ? "" : <ToastApp />} */}
+
                   <Grid container spacing={2}>
-                  <Grid item lg={4} xs={12} sm={4}>
-   <TextField
-      id="complaintNo"
-      name="complaintNo"
-      label={<CustomLabel text={t("text.ComplaintNo")} required={false} />}
-      value={formik.values.complaintNo} // Bind to Formik value
-      size="small"
-      fullWidth
-      InputProps={{ readOnly: true }} // Make it read-only
-   />
-</Grid>
+
+
+                     {/* ComplaintNo */}
+                     <Grid item lg={4} xs={12} sm={4}>
+                        <TextField
+                           id="complaintNo"
+                           name="complaintNo"
+                           label={<CustomLabel text={t("text.ComplaintNo")} required={false} />}
+                           value={formik.values.complaintNo} // Bind to Formik value
+                           size="small"
+                           fullWidth
+                           InputProps={{ readOnly: true }} // Make it read-only
+                        />
+                     </Grid>
 
                      {/* VehicleNumber */}
                      <Grid item xs={12} md={4} sm={4}>
@@ -438,9 +424,11 @@ const AddComplaint = (props: Props) => {
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
+                              formik.setFieldValue("itemID", newValue?.value);
                               formik.setFieldValue("vehicleNo", newValue?.label);
+                              formik.setFieldValue("vehicleName", newValue?.name);
                               formik.setFieldValue("empId", newValue?.empId);
-                              setVehicleName(newValue?.name);
+                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)].label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -467,7 +455,7 @@ const AddComplaint = (props: Props) => {
                            size="small"
                            name="vehicleName"
                            id="vehicleName"
-                           value={vehicleName}
+                           value={formik.values.vehicleName}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
                            disabled={true}
@@ -481,7 +469,7 @@ const AddComplaint = (props: Props) => {
                            disabled={true}
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption[empOption.findIndex(e => e.value == formik.values.empId)]?.label || ""}
+                           value={formik.values.empName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -500,34 +488,13 @@ const AddComplaint = (props: Props) => {
                         />
                      </Grid>
 
-                     {/* ComplaintNo */}
-                     {/* <Grid item xs={12} md={4} sm={4}>
-                        <TextField
-                           label={
-                              <CustomLabel
-                                 text={t("text.ComplaintNo")}
-                              />
-                           }
-                           variant="outlined"
-                           fullWidth
-                           size="small"
-                           name="complaintNo"
-                           id="complaintNo"
-                           value={formik.values.complaintNo}
-                           placeholder={t("text.ComplaintNo")}
-                           onChange={(e) => {
-                              formik.setFieldValue("complaintNo", e.target.value);
-                           }}
-                        />
-                     </Grid> */}
-
 
                      {/* Date */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.Date")}
+                                 text={t("text.ComplainDate")}
                               />
                            }
                            type="date"
@@ -561,7 +528,7 @@ const AddComplaint = (props: Props) => {
                            value={formik.values.currentReading}
                            placeholder={t("text.ReadingKM")}
                            onChange={(e) => {
-                              formik.setFieldValue("currentReading", e.target.value);
+                              formik.setFieldValue("currentReading", parseInt(e.target.value) || 0);
                            }}
                         />
                      </Grid>
@@ -834,18 +801,6 @@ const AddComplaint = (props: Props) => {
                         />
                      </Grid>
 
-
-                     {/* Description */}
-                     {/* <Grid item xs={12} md={4} sm={4}>
-                        <TranslateTextField
-                           label={t("text.Description")}
-                           value={formik.values.complaint}
-                           onChangeText={(text: string) => formik.setFieldValue("complaint", text)}
-                           required={true}
-                           lang={lang}
-                        />
-                     </Grid> */}
-
                      <Grid item lg={12} md={12} xs={12} marginTop={2}>
                         <ReactQuill
                            id="complaint"
@@ -995,49 +950,31 @@ const AddComplaint = (props: Props) => {
                   </Grid>
                   {isVisible && (
                      <Grid item lg={6} sm={6} xs={12}>
-                      <Button
-   type="button"
-   style={{
-      backgroundColor: "#0000ff",
-      color: "white",
-      marginTop: "10px",
-      padding: "8px 16px",
-      fontSize: "16px",
-      borderRadius: "8px",
-      width: "100px",
-   }}
-   onClick={() => {
-      navigate("/Admin/AddComplaintApproval", {
-         state: formik.values, 
-      });
-   }}
->
-   {t("text.Next")}
-   <ArrowForwardIcon />
-</Button>
+                        <Button
+                           type="button"
+                           style={{
+                              backgroundColor: "#0000ff",
+                              color: "white",
+                              marginTop: "10px",
+                              padding: "8px 16px",
+                              fontSize: "16px",
+                              borderRadius: "8px",
+                              width: "100px",
+                           }}
+                           onClick={() => {
+                              navigate("/Admin/AddComplaintApproval", {
+                                 state: formik.values,
+                              });
+                           }}
+                        >
+                           {t("text.Next")}
+                           <ArrowForwardIcon />
+                        </Button>
 
                      </Grid>
                   )}
 
-                  {/* {(true) ?
-                     <Grid item> */}
-                  {/* <Button
-                           type="button"
-                           fullWidth
-                           style={{
-                              backgroundColor: `#0000ff`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              navigate("/Admin/AddComplaintApproval")
-                           }}
-                        >
-                           {t("text.NextProcess")}<ArrowForwardIcon />
-                        </Button> */}
 
-                  {/* </Grid> : ""
-                  } */}
                </form>
             </CardContent>
          </div>

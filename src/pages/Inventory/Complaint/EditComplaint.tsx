@@ -44,96 +44,96 @@ const EditComplaint = (props: Props) => {
   const [approveEmp3, setApproveEmp3] = useState<any>('');
   const [approveEmp4, setApproveEmp4] = useState<any>('');
   console.log("check value", approveEmp1);
-  console.log("check value",approveEmp2);
-  console.log("check value",approveEmp3);
-  console.log("check value",approveEmp4);
+  console.log("check value", approveEmp2);
+  console.log("check value", approveEmp3);
+  console.log("check value", approveEmp4);
   const [editorContent, setEditorContent] = useState<string>("");
   const handleEditorChange = (content: any) => {
     setEditorContent(content);
-};
+  };
 
-const [zoneOption, setzoneOption] = useState([
-  { value: -1, label: t("text.id") },
-]);
+  const [zoneOption, setzoneOption] = useState([
+    { value: -1, label: t("text.id") },
+  ]);
 
-const [wardOption, setwardOption] = useState([
-  { value: -1, label: t("text.id") },
-]);
+  const [wardOption, setwardOption] = useState([
+    { value: -1, label: t("text.id") },
+  ]);
 
-// const [itemOption, setitemOption] = useState([
-//   { value: "-1", label: t("text.itemMasterId"), details: "" },
-// ]);
-const [itemOption, setitemOption] = useState([
-  { value: "-1", label: t("text.itemID") },
-]);
+  // const [itemOption, setitemOption] = useState([
+  //   { value: "-1", label: t("text.itemMasterId"), details: "" },
+  // ]);
+  const [itemOption, setitemOption] = useState([
+    { value: "-1", label: t("text.itemID") },
+  ]);
 
-const [poleOption, setpoleOption] = useState([
-  { value: "-1", label: t("text.poleInstChildId") },
-]);
+  const [poleOption, setpoleOption] = useState([
+    { value: "-1", label: t("text.poleInstChildId") },
+  ]);
 
-const [empOption, setempOption] = useState<any>([]);
-const [complaintOptions, setComplaintOptions] = useState<any>([]);
+  const [empOption, setempOption] = useState<any>([]);
+  const [complaintOptions, setComplaintOptions] = useState<any>([]);
 
-const [docOpen, setDocOpen] = useState(false);
-const [MaxComplainNoOption, setMaxComplainNoOption] = useState([
-  { value: "-1", label: t("text.compId") },
-]);
-  const formik:any = useFormik({
+  const [docOpen, setDocOpen] = useState(false);
+  const [MaxComplainNoOption, setMaxComplainNoOption] = useState([
+    { value: "-1", label: t("text.compId") },
+  ]);
+  const formik: any = useFormik({
     initialValues: {
-      compId: location.state.compId  ,
-              itemID: location.state.itemID ,
-              complaintNo: location.state.complaintNo ,
-              complaintDate: location.state.complaintDate ? dayjs(location.state.complaintDate).format("YYYY-MM-DD") : "",
-              complaintType: location.state.complaintType ,
-              complaintDoc: location.state.complaintDoc ,
-              empId: location.state.empId ,
-              approveEmp4: location.state.approveEmp4 ,
-              approveEmp3: location.state.approveEmp3 ,
-              approveEmp2: location.state.approveEmp2 ,
-              approveEmp1: location.state.approveEmp1 ,
-              complaint: location.state.complaint ,
-              createdBy: defaultValues ,
-              updatedBy: defaultValues ,
-              status: location.state.status ,
-              currentReading: location.state.currentReading ,
-              createdOn: defaultValues ,
-              updatedOn: defaultValues ,
-              compAppdt: location.state.compAppdt ? dayjs(location.state.compAppdt).format("YYYY-MM-DD") : "",
-              item: location.state.item ,
-              employee: location.state.employee ,
-              departmentmaster: location.state.departmentmaster ,
-              departmentName: location.state.departmentName ,
-              designation: location.state.designation ,
-              designationName: location.state.designationName ,
-              empStateName: location.state.empStateName ,
-              state: location.state.state ,
-              empCountryName: location.state.empCountryName ,
-              country: location.state.country ,
-              empCityName: location.state.empCityName ,
-              city: location.state.city ,
-              approveEmployee1: location.state.approveEmployee1 ,
-              approveEmployee2: location.state.approveEmployee2 ,
-              jobCardNo: location.state.jobCardNo ,
-              srno: location.state.srno ,
-              file: location.state.file ,
-              fileOldName: location.state.fileOldName ,
-              totaldays: location.state.totaldays ,
-              outDate: defaultValues,
-              outId: location.state.outId ,
-              vehicleNo: location.state.vehicleNo,
-              update: location.state.update || false,
-              wardid:location.state.wardid,
-              zoneid:location.state.zoneid,
-              poleNo:location.state.poleNo,
-              poleId:location.state.poleId,
-              compTypeName:location.state.compTypeName,
-              compTypeId:location.state.compTypeId,
-              "zoneName": location.state.zoneName,
-              "wardName": location.state.wardName,
-          "empName": location.state.empName,
-              
+      compId: location.state.compId,
+      itemID: location.state.itemID,
+      complaintNo: location.state.complaintNo,
+      complaintDate: location.state.complaintDate ? dayjs(location.state.complaintDate).format("YYYY-MM-DD") : "",
+      complaintType: location.state.complaintType,
+      complaintDoc: location.state.complaintDoc,
+      empId: location.state.empId,
+      approveEmp4: location.state.approveEmp4,
+      approveEmp3: location.state.approveEmp3,
+      approveEmp2: location.state.approveEmp2,
+      approveEmp1: location.state.approveEmp1,
+      complaint: location.state.complaint,
+      createdBy: defaultValues,
+      updatedBy: defaultValues,
+      status: location.state.status,
+      currentReading: location.state.currentReading,
+      createdOn: defaultValues,
+      updatedOn: defaultValues,
+      compAppdt: location.state.compAppdt ? dayjs(location.state.compAppdt).format("YYYY-MM-DD") : "",
+      item: location.state.item,
+      employee: location.state.employee,
+      departmentmaster: location.state.departmentmaster,
+      departmentName: location.state.departmentName,
+      designation: location.state.designation,
+      designationName: location.state.designationName,
+      empStateName: location.state.empStateName,
+      state: location.state.state,
+      empCountryName: location.state.empCountryName,
+      country: location.state.country,
+      empCityName: location.state.empCityName,
+      city: location.state.city,
+      approveEmployee1: location.state.approveEmployee1,
+      approveEmployee2: location.state.approveEmployee2,
+      jobCardNo: location.state.jobCardNo,
+      srno: location.state.srno,
+      file: location.state.file,
+      fileOldName: location.state.fileOldName,
+      totaldays: location.state.totaldays,
+      outDate: defaultValues,
+      outId: location.state.outId,
+      vehicleNo: location.state.vehicleNo,
+      update: location.state.update || false,
+      wardid: location.state.wardid,
+      zoneid: location.state.zoneid,
+      poleNo: location.state.poleNo,
+      poleId: location.state.poleId,
+      compTypeName: location.state.compTypeName,
+      compTypeId: location.state.compTypeId,
+      "zoneName": location.state.zoneName,
+      "wardName": location.state.wardName,
+      "empName": location.state.empName,
 
-    }, 
+
+    },
     //defaultValues
     onSubmit: async (values) => {
       const response = await api.post(
@@ -164,11 +164,11 @@ const [MaxComplainNoOption, setMaxComplainNoOption] = useState([
     // getstoreData();
     // GetUnitData();
     getZoneData();
-    
+
     getWardData();
     GetitemData();
     GetempData();
-   GetComplaintData();
+    GetComplaintData();
     // GetMaxComplainNo();
     getPoleData();
   }, []);
@@ -177,54 +177,54 @@ const [MaxComplainNoOption, setMaxComplainNoOption] = useState([
     const collectData = { zoneID: -1, user_ID: "" };
     const response = await api.post(`Zone/GetZonemaster`, collectData);
     const data = response.data.data;
-    const arr = data.map((zone:any) => ({
-        label: zone.zoneName,
-        value: zone.zoneID,
+    const arr = data.map((zone: any) => ({
+      label: zone.zoneName,
+      value: zone.zoneID,
     }));
     setzoneOption(arr);
-};
+  };
 
-const getPoleData = async (wardId = -1) => {
-  const collectData = {
+  const getPoleData = async (wardId = -1) => {
+    const collectData = {
       poleInstId: -1,
       zoneId: -1,
       wardId: wardId,
-  };
-  const response = await api.post(`PoleInstallation/GetPoleNoZoneWardWise`, collectData);
-  const data = response.data.data;
-  const arr = data.map((pole:any) => ({
+    };
+    const response = await api.post(`PoleInstallation/GetPoleNoZoneWardWise`, collectData);
+    const data = response.data.data;
+    const arr = data.map((pole: any) => ({
       label: pole.poleno,
       value: pole.poleInstChildId,
-  }));
-  setpoleOption(arr);
-};
+    }));
+    setpoleOption(arr);
+  };
 
-const getWardData = async (zoneId = -1) => {
-  const collectData = { areaID: zoneId };
-  const response = await api.post(`AreaWardMaster/GetAreaWardMaster`, collectData);
-  const data = response.data.data;
-  const arr = data.map((ward:any) => ({
+  const getWardData = async (zoneId = -1) => {
+    const collectData = { areaID: zoneId };
+    const response = await api.post(`AreaWardMaster/GetAreaWardMaster`, collectData);
+    const data = response.data.data;
+    const arr = data.map((ward: any) => ({
       label: ward.areaName,
       value: ward.areaID,
-  }));
-  setwardOption(arr);
-};
-
-const GetitemData = async () => {
-  const collectData = {
-    itemMasterId: -1,
+    }));
+    setwardOption(arr);
   };
-  const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
-  const data = response.data.data;
-  const arr = [];
-  for (let index = 0; index < data.length; index++) {
-    arr.push({
-      label: data[index]["itemName"],
-      value: data[index]["itemMasterId"]
-    });
-  }
-  setitemOption(arr);
-};
+
+  const GetitemData = async () => {
+    const collectData = {
+      itemMasterId: -1,
+    };
+    const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["itemName"],
+        value: data[index]["itemMasterId"]
+      });
+    }
+    setitemOption(arr);
+  };
 
   const GetempData = async () => {
     const collectData = {
@@ -250,34 +250,34 @@ const GetitemData = async () => {
         details: data
       });
     }
-    setempOption([ { value: "-1", label: t("text.empid"), details: "" }, ...arr]);
+    setempOption([{ value: "-1", label: t("text.empid"), details: "" }, ...arr]);
   };
-//   const GetMaxComplainNo = async () => {
+  //   const GetMaxComplainNo = async () => {
 
-//     const response = await api.get(`ComplaintItem/GetMaxComplainNo`);
-//     const data = response.data.data;
+  //     const response = await api.get(`ComplaintItem/GetMaxComplainNo`);
+  //     const data = response.data.data;
 
-//     for (let index = 0; index < data.length; index++) {
-//         formik.setFieldValue("complaintNo", data[index]['complaintNo'])
-//     }
-//     //setmaxindentOption(arr);
-// };
-const GetComplaintData = async () => {
-  const collectData = {
-    compTypeId: -1,
+  //     for (let index = 0; index < data.length; index++) {
+  //         formik.setFieldValue("complaintNo", data[index]['complaintNo'])
+  //     }
+  //     //setmaxindentOption(arr);
+  // };
+  const GetComplaintData = async () => {
+    const collectData = {
+      compTypeId: -1,
+    };
+    const response = await api.post(`ComplainType/GetComplainType`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["compTypeName"],
+        value: data[index]["compTypeId"],
+        details: data,
+      });
+    }
+    setComplaintOptions(arr);
   };
-  const response = await api.post(`ComplainType/GetComplainType`, collectData);
-  const data = response.data.data;
-  const arr = [];
-  for (let index = 0; index < data.length; index++) {
-    arr.push({
-      label: data[index]["compTypeName"],
-      value: data[index]["compTypeId"],
-      details: data,
-    });
-  }
-  setComplaintOptions(arr);
-};
 
   const handlePanClose1 = () => {
     setDocOpen(false);
@@ -339,15 +339,15 @@ const GetComplaintData = async () => {
 
       formik.setFieldValue("approveEmp1", newValue.value);
 
-      const selectedDetail = newValue.details.find((detail:any) => {
-        console.log("Checking detail:", detail); 
-        return detail.empid === newValue.value; 
+      const selectedDetail = newValue.details.find((detail: any) => {
+        console.log("Checking detail:", detail);
+        return detail.empid === newValue.value;
       });
 
       if (selectedDetail) {
         console.log("Matching Detail:", selectedDetail);
         formik.setFieldValue("approveEmployee1", selectedDetail);
-        setApproveEmp1(selectedDetail);  
+        setApproveEmp1(selectedDetail);
       } else {
         console.log("No matching detail found");
       }
@@ -363,77 +363,77 @@ const GetComplaintData = async () => {
   const handleEmployeeSelect2 = (event: any, newValue: any) => {
     console.log(newValue);
     if (newValue && newValue.value !== "-1") {
-        formik.setFieldValue("approveEmp2", newValue.value);
-        
-        const selectedDetail = newValue.details.find((detail: any) => {
-            return detail.empid === newValue.value;
-        });
+      formik.setFieldValue("approveEmp2", newValue.value);
 
-        if (selectedDetail) {
-            formik.setFieldValue("approveEmployee2", selectedDetail);
-            setApproveEmp2(selectedDetail);
-        } else {
-            console.log("No matching detail found for approveEmp2");
-        }
+      const selectedDetail = newValue.details.find((detail: any) => {
+        return detail.empid === newValue.value;
+      });
+
+      if (selectedDetail) {
+        formik.setFieldValue("approveEmployee2", selectedDetail);
+        setApproveEmp2(selectedDetail);
+      } else {
+        console.log("No matching detail found for approveEmp2");
+      }
     } else {
-        formik.setFieldValue("approveEmployee2", '');
-        setApproveEmp2('');
+      formik.setFieldValue("approveEmployee2", '');
+      setApproveEmp2('');
     }
-};
+  };
 
-const handleEmployeeSelect3 = (event: any, newValue: any) => {
+  const handleEmployeeSelect3 = (event: any, newValue: any) => {
     console.log(newValue);
     if (newValue && newValue.value !== "-1") {
-        formik.setFieldValue("approveEmp3", newValue.value);
-        
-        const selectedDetail = newValue.details.find((detail: any) => {
-            return detail.empid === newValue.value;
-        });
+      formik.setFieldValue("approveEmp3", newValue.value);
 
-        if (selectedDetail) {
-            formik.setFieldValue("approveEmployee3", selectedDetail);
-            setApproveEmp3(selectedDetail);
-        } else {
-            console.log("No matching detail found for approveEmp3");
-        }
+      const selectedDetail = newValue.details.find((detail: any) => {
+        return detail.empid === newValue.value;
+      });
+
+      if (selectedDetail) {
+        formik.setFieldValue("approveEmployee3", selectedDetail);
+        setApproveEmp3(selectedDetail);
+      } else {
+        console.log("No matching detail found for approveEmp3");
+      }
     } else {
-        formik.setFieldValue("approveEmployee3", '');
-        setApproveEmp3('');
+      formik.setFieldValue("approveEmployee3", '');
+      setApproveEmp3('');
     }
-};
+  };
 
-const handleEmployeeSelect4 = (event: any, newValue: any) => {
+  const handleEmployeeSelect4 = (event: any, newValue: any) => {
     console.log(newValue);
     if (newValue && newValue.value !== "-1") {
-        formik.setFieldValue("approveEmp4", newValue.value);
-        
-        const selectedDetail = newValue.details.find((detail: any) => {
-            return detail.empid === newValue.value;
-        });
+      formik.setFieldValue("approveEmp4", newValue.value);
 
-        if (selectedDetail) {
-            formik.setFieldValue("approveEmployee4", selectedDetail);
-            setApproveEmp4(selectedDetail);
-        } else {
-            console.log("No matching detail found for approveEmp4");
-        }
+      const selectedDetail = newValue.details.find((detail: any) => {
+        return detail.empid === newValue.value;
+      });
+
+      if (selectedDetail) {
+        formik.setFieldValue("approveEmployee4", selectedDetail);
+        setApproveEmp4(selectedDetail);
+      } else {
+        console.log("No matching detail found for approveEmp4");
+      }
     } else {
-        formik.setFieldValue("approveEmployee4", '');
-        setApproveEmp4('');
+      formik.setFieldValue("approveEmployee4", '');
+      setApproveEmp4('');
     }
-};
+  };
 
   // const handleEmployeeSelect = (event: any, newValue: any) => {
   //   console.log(newValue);
   //   if (newValue && newValue.value !== "-1") {
-  
+
   //     formik.setFieldValue("approveEmployee2", newValue.value);
-  
+
   //     const selectedDetail = newValue.details.find((detail:any) => {
   //       console.log("Checking detail:", detail); 
   //       return detail.empid === newValue.value; 
   //     });
-  
+
   //     if (selectedDetail) {
   //       console.log("Matching Detail:", selectedDetail);
   //       formik.setFieldValue("approveEmployee2", selectedDetail);
@@ -450,14 +450,14 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
   // const handleEmployeeSelect3 = (event: any, newValue: any) => {
   //   console.log(newValue);
   //   if (newValue && newValue.value !== "-1") {
-  
+
   //     formik.setFieldValue("approveEmployee3", newValue.value);
-  
+
   //     const selectedDetail = newValue.details.find((detail:any) => {
   //       console.log("Checking detail:", detail); 
   //       return detail.empid === newValue.value; 
   //     });
-  
+
   //     if (selectedDetail) {
   //       console.log("Matching Detail:", selectedDetail);
   //       formik.setFieldValue("approveEmployee3", selectedDetail);
@@ -473,14 +473,14 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
   // const handleEmployeeSelect4 = (event: any, newValue: any) => {
   //   console.log(newValue);
   //   if (newValue && newValue.value !== "-1") {
-  
+
   //     formik.setFieldValue("approveEmployee4", newValue.value);
-  
+
   //     const selectedDetail = newValue.details.find((detail:any) => {
   //       console.log("Checking detail:", detail); 
   //       return detail.empid === newValue.value; 
   //     });
-  
+
   //     if (selectedDetail) {
   //       console.log("Matching Detail:", selectedDetail);
   //       formik.setFieldValue("approveEmployee4", selectedDetail);
@@ -493,8 +493,8 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
   //     setApproveEmp4('');
   //   }
   // };
-  
-  
+
+
 
 
 
@@ -541,95 +541,95 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
             {toaster === false ? "" : <ToastApp />}
             <Grid item xs={12} container spacing={2}>
 
-            <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="complaintNo"
-                    name="complaintNo"
-                    label={<CustomLabel text={t("text.complaintNos")} required={false} />}
-                    value={formik.values.complaintNo}
-                    placeholder={t("text.complaintNos")}
-                    size="small"
-                    fullWidth
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                </Grid>
+              <Grid item lg={4} xs={12}>
+                <TextField
+                  id="complaintNo"
+                  name="complaintNo"
+                  label={<CustomLabel text={t("text.complaintNos")} required={false} />}
+                  value={formik.values.complaintNo}
+                  placeholder={t("text.complaintNos")}
+                  size="small"
+                  fullWidth
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </Grid>
 
-                <Grid item xs={12} sm={4} lg={4}>
-    <Autocomplete
-        disablePortal
-        id="zone-dropdown"
-        options={zoneOption}
-        fullWidth
-        size="small"
-        onChange={(event, newValue) => {
-            const zoneId = newValue?.value || null;
-            formik.setFieldValue("zoneid", zoneId);
-            setwardOption([]); // Reset dependent dropdowns
-            setpoleOption([]);
-            if (zoneId) getWardData(zoneId);
-        }}
-        value={
-            zoneOption.find((opt) => opt.value === formik.values.zoneid) || null
-        }
-        renderInput={(params) => (
-            <TextField
-                {...params}
-                label={<CustomLabel text={t("text.zoneId")} />}
-            />
-        )}
-    />
-</Grid>
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="zone-dropdown"
+                  options={zoneOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    const zoneId = newValue?.value || null;
+                    formik.setFieldValue("zoneid", zoneId);
+                    setwardOption([]); // Reset dependent dropdowns
+                    setpoleOption([]);
+                    if (zoneId) getWardData(zoneId);
+                  }}
+                  value={
+                    zoneOption.find((opt) => opt.value === formik.values.zoneid) || null
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.zoneId")} />}
+                    />
+                  )}
+                />
+              </Grid>
 
-<Grid item xs={12} sm={4} lg={4}>
-    <Autocomplete
-        disablePortal
-        id="ward-dropdown"
-        options={wardOption}
-        fullWidth
-        size="small"
-        onChange={(event, newValue) => {
-            const wardId = newValue?.value || null;
-            formik.setFieldValue("wardid", wardId);
-            setpoleOption([]); // Reset dependent dropdowns
-            if (wardId) getPoleData(wardId);
-        }}
-        value={
-            wardOption.find((opt) => opt.value === formik.values.wardid) || null
-        }
-        renderInput={(params) => (
-            <TextField
-                {...params}
-                label={<CustomLabel text={t("text.wardId")} />}
-            />
-        )}
-    />
-</Grid>
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="ward-dropdown"
+                  options={wardOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    const wardId = newValue?.value || null;
+                    formik.setFieldValue("wardid", wardId);
+                    setpoleOption([]); // Reset dependent dropdowns
+                    if (wardId) getPoleData(wardId);
+                  }}
+                  value={
+                    wardOption.find((opt) => opt.value === formik.values.wardid) || null
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.wardId")} />}
+                    />
+                  )}
+                />
+              </Grid>
 
-<Grid item xs={12} sm={4} lg={4}>
-    <Autocomplete
-        disablePortal
-        id="pole-dropdown"
-        options={poleOption}
-        fullWidth
-        size="small"
-        onChange={(event, newValue) => {
-            formik.setFieldValue("poleNo", newValue?.label || null);
-            formik.setFieldValue("poleId", newValue?.value || null);
-        }}
-        value={
-            poleOption.find((opt) => opt.value === formik.values.poleId) || null
-        }
-        renderInput={(params) => (
-            <TextField
-                {...params}
-                label={<CustomLabel text={t("text.SelectpoleNo")} />}
-            />
-        )}
-    />
-</Grid>
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="pole-dropdown"
+                  options={poleOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    formik.setFieldValue("poleNo", newValue?.label || null);
+                    formik.setFieldValue("poleId", newValue?.value || null);
+                  }}
+                  value={
+                    poleOption.find((opt) => opt.value === formik.values.poleId) || null
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.SelectpoleNo")} />}
+                    />
+                  )}
+                />
+              </Grid>
 
-                <Grid item xs={12} sm={4} lg={4}>
+              <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -642,7 +642,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   }}
                   value={
                     itemOption.find(
-                      (opt:any) => opt.value === formik.values.itemID
+                      (opt: any) => opt.value === formik.values.itemID
                     ) || null
                   }
                   renderInput={(params) => (
@@ -675,7 +675,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                 </Grid> */}
 
 
-                <Grid item xs={12} sm={4} lg={4}>
+              <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -688,7 +688,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   }}
                   value={
                     empOption.find(
-                      (opt:any) => opt.value === formik.values.empId
+                      (opt: any) => opt.value === formik.values.empId
                     ) || null
                   }
                   renderInput={(params) => (
@@ -704,7 +704,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                 />
               </Grid>
 
-             
+
 
               {/* <Grid item lg={4} xs={12}>
                   <TextField
@@ -732,7 +732,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   onChange={handleVendorSelect}
                   value={
                     empOption.find(
-                      (opt:any) => opt.value === formik.values.approveEmp1
+                      (opt: any) => opt.value === formik.values.approveEmp1
                     ) || null
                   }
                   renderInput={(params) => (
@@ -743,7 +743,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   )}
                 />
               </Grid>
-              
+
 
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -780,7 +780,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   onChange={handleEmployeeSelect2}
                   value={
                     empOption.find(
-                      (opt:any) => opt.value === formik.values.approveEmp2
+                      (opt: any) => opt.value === formik.values.approveEmp2
                     ) || null
                   }
                   renderInput={(params) => (
@@ -826,7 +826,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   onChange={handleEmployeeSelect3}
                   value={
                     empOption.find(
-                      (opt:any) => opt.value === formik.values.approveEmp3
+                      (opt: any) => opt.value === formik.values.approveEmp3
                     ) || null
                   }
                   renderInput={(params) => (
@@ -874,7 +874,7 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                   onChange={handleEmployeeSelect4}
                   value={
                     empOption.find(
-                      (opt:any) => opt.value === formik.values.approveEmp4
+                      (opt: any) => opt.value === formik.values.approveEmp4
                     ) || null
                   }
                   renderInput={(params) => (
@@ -910,17 +910,17 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                 />
               </Grid>
 
-                <Grid item xs={12} sm={4} lg={4}>
+              <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={complaintOptions}
                   fullWidth
                   value={
-                    complaintOptions.find((opt:any) => opt.value == formik.values.compTypeId) || null
-                } 
+                    complaintOptions.find((opt: any) => opt.value == formik.values.compTypeId) || null
+                  }
                   size="small"
-                  onChange={(event, newValue:any) => {
+                  onChange={(event, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("compTypeName", newValue?.label);
                     formik.setFieldValue("compTypeId", newValue?.value);
@@ -980,27 +980,27 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
                 />
               </Grid> */}
 
-<Grid item lg={12} md={12} xs={12} marginTop={2}>
-  <ReactQuill
-    id="complaint"
-    theme="snow"
-    value={formik.values.complaint} 
-    onChange={(content) => formik.setFieldValue("complaint", content)} 
-    onBlur={() => formik.setFieldTouched("complaint", true)} 
-    modules={modules}
-    formats={formats}
-  //  style={{ backgroundColor: "white", minHeight: "200px" }} 
-    placeholder="Enter your complaint here"
-  />
-</Grid>
+              <Grid item lg={12} md={12} xs={12} marginTop={2}>
+                <ReactQuill
+                  id="complaint"
+                  theme="snow"
+                  value={formik.values.complaint}
+                  onChange={(content) => formik.setFieldValue("complaint", content)}
+                  onBlur={() => formik.setFieldTouched("complaint", true)}
+                  modules={modules}
+                  formats={formats}
+                  //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                  placeholder="Enter your complaint here"
+                />
+              </Grid>
 
-<Grid item lg={3} md={6} xs={12}>
-                                <FormControlLabel
-                                    id="compainStatus"
-                                    name="compainStatus"
-                                    value={formik.values.compainStatus}
-                                    control={<Checkbox />} label={t("text.compainStatus")} />
-                            </Grid>
+              <Grid item lg={3} md={6} xs={12}>
+                <FormControlLabel
+                  id="compainStatus"
+                  name="compainStatus"
+                  value={formik.values.compainStatus}
+                  control={<Checkbox />} label={t("text.compainStatus")} />
+              </Grid>
 
 
               <Grid container spacing={1} item>
@@ -1133,18 +1133,18 @@ const handleEmployeeSelect4 = (event: any, newValue: any) => {
 }
 const modules = {
   toolbar: [
-      [{ header: "1" }, { header: "2" }],
-      [{ font: [] }],
-      [{ size: ["small", false, "large", "huge"] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ script: "sub" }, { script: "super" }],
-      ["blockquote", "code-block"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      [{ align: [] }],
-      ["link", "image", "video", "formula"],
-      ["clean"],
+    [{ header: "1" }, { header: "2" }],
+    [{ font: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ align: [] }],
+    ["link", "image", "video", "formula"],
+    ["clean"],
   ],
 };
 
