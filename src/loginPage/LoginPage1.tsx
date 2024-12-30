@@ -7,6 +7,10 @@ import {
    Box,
    InputLabel,
    CircularProgress,
+   FormControl,
+   FormControlLabel,
+   RadioGroup,
+   Radio,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -19,6 +23,7 @@ import "./index.css";
 import LoginBg from "./tools.jpg";
 import LoginImg from "./vehicleService.png";
 import { motion } from "framer-motion";
+import { t } from "i18next";
 
 const LoginPage1 = () => {
    const [loading, setLoading] = useState(false);
@@ -35,6 +40,13 @@ const LoginPage1 = () => {
       password: Yup.string().required("Password Required"),
    });
 
+   // const inhouse_outsource =[
+   //    {
+   //       value :"1" ,label:"outsource"
+
+   //       value :"2" ,label:"inhouse and outsource"
+   //    }
+   //]
    // Formik hook for form management
    const formik = useFormik({
       initialValues: {
@@ -124,10 +136,58 @@ const LoginPage1 = () => {
                      <div style={{ color: "#e7d215", marginTop: "-10px", marginBottom: "15px" }}>Password is required</div>
                   )}
 
+
+      
+
+     
+      <RadioGroup
+    row
+    aria-label="type"
+    name="type"
+    sx={{ borderColor: "#fff" }}
+>
+    <FormControlLabel
+        value="Outsource"
+        control={
+            <Radio
+                sx={{
+                    color: "#fff", 
+                    "&.Mui-checked": {
+                        color: "#fff", 
+                    },
+                }}
+            />
+        }
+        label={t("text.Outsource")}
+        sx={{
+            marginTop: "-1%",
+            color: "#fff",
+        }}
+    />
+    <FormControlLabel
+        value="Inhouse and Outsource"
+        control={
+            <Radio
+                sx={{
+                    color: "#fff",
+                    "&.Mui-checked": {
+                        color: "#fff",
+                    },
+                }}
+            />
+        }
+        label={t("text.InhouseandOutsource")}
+        sx={{ color: "#fff" }}
+    />
+</RadioGroup>
+
+         
+         
+
                   <Button
                      fullWidth
                      variant="contained"
-                     color="primary"
+                     color="secondary"
                      type="submit"
                      disabled={loading}
                      sx={{ marginBottom: 2, borderRadius: "3rem", color: "#fff" }}
@@ -136,6 +196,8 @@ const LoginPage1 = () => {
                   </Button>
                </form>
             </Grid>
+
+            
          </motion.div>
       </Grid >
    );

@@ -12,6 +12,8 @@ const resources = {
       text: {
         ////
         /////
+        Outsource:"OutSource",
+        InhouseandOutsource:"Inhouse and OutSource",
         AddComplaintApproval: "Create Complaint Approval",
         Next: "Next",
         pOrderDoc: "Upload Documnet",

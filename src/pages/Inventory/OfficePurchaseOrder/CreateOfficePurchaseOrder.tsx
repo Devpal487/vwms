@@ -1250,7 +1250,7 @@ const CreateOfficePurchaseOrder = () => {
                                                         )}
                                                     />
                                                 </td>
-                                                <td
+                                                {/* <td
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -1261,7 +1261,7 @@ const CreateOfficePurchaseOrder = () => {
                                                         size="small"
                                                         inputProps={{ readOnly: true }}
                                                     />
-                                                </td>
+                                                </td> */}
                                                 <td
                           style={{
                             border: "1px solid black",
