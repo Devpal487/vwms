@@ -458,7 +458,7 @@ const AddComplaint = (props: Props) => {
                            value={formik.values.vehicleName}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
-                           disabled={true}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
@@ -475,6 +475,7 @@ const AddComplaint = (props: Props) => {
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
                               formik.setFieldValue("empId", newValue?.value);
+                              formik.setFieldValue("empName", newValue?.label);
                            }}
                            renderInput={(params) => (
                               <TextField

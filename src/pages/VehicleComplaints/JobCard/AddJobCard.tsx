@@ -96,6 +96,7 @@ const AddJobCard = (props: Props) => {
   ]);
   const [deptValue, setDeptValue] = useState("");
   const [desgValue, setDesgValue] = useState("");
+  const [jobCardId, setJobCardId] = useState(0);
 
   const [tableData, setTableData] = useState([
     {
@@ -146,6 +147,35 @@ const AddJobCard = (props: Props) => {
       setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.department || "");
     }, 300);
     return () => clearTimeout(timeoutId);
+    // if (tableData.length === 0) {
+    //   setTableData([
+    //     {
+    //       id: 0,
+    //       jobCardId: 0,
+    //       serviceId: 0,
+    //       amount: 0,
+    //       jobWorkReq: true,
+    //       vendorId: 0,
+    //       challanRemark: "",
+    //       challanNo: 0,
+    //       challanDate: defaultValues,
+    //       challanRcvNo: 0,
+    //       challanRcvDate: defaultValues,
+    //       challanStatus: "",
+    //       netAmount: 0,
+    //       qty: 0,
+    //       unitRate: 0,
+    //       unitId: 0,
+    //       vendorName: "",
+    //       serviceName: "",
+    //       unitName: "",
+    //       cgstid: 0,
+    //       sgstid: 0,
+    //       gstid: 0,
+    //       gst: 0
+    //     }
+    //   ]);
+    // }
   }, []);
 
   const getVehicleDetails = async () => {
@@ -303,6 +333,7 @@ const AddJobCard = (props: Props) => {
       if (response.data.status === 1) {
         toast.success(response.data.message);
         setIsVisible(true);
+        setJobCardId(response.data.data.jobCardId);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -557,6 +588,8 @@ const AddJobCard = (props: Props) => {
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid container spacing={2}>
+
+              {/* RadioButton */}
               <Grid item xs={12} sm={12} lg={12}>
                 <FormControl component="fieldset">
                   <RadioGroup
@@ -586,22 +619,6 @@ const AddJobCard = (props: Props) => {
                   </RadioGroup>
                 </FormControl>
               </Grid>
-              {/* RadioButton */}
-              {/* <Grid item xs={12} sm={12} lg={12}>
-                <FormControl>
-                  <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="licensing"
-                    name="radio-buttons-group"
-                  >
-                    <div style={{ display: "flex" }}>
-                      <FormControlLabel value="complete" control={<Radio />} label={t("text.Complete")} />
-                      <FormControlLabel value="jobwork" control={<Radio />} label={t("text.JobWork")} />
-                      <FormControlLabel value="inprogress" control={<Radio />} label={t("text.InProgress")} />
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-              </Grid> */}
 
               {/* File number */}
               <Grid item xs={12} md={4} sm={4}>
@@ -876,8 +893,6 @@ const AddJobCard = (props: Props) => {
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Reading")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ChallanNo")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Remark")}</th>
-
-
                     </tr>
                   </thead>
                   <tbody>
@@ -890,7 +905,13 @@ const AddJobCard = (props: Props) => {
                           }}
                         >
                           <DeleteIcon
-                            onClick={() => deleteRow(index)}
+                            onClick={() => {
+                              if (tableData.length > 1) {
+                                deleteRow(index)
+                              } else {
+                                alert("Atleast one row should be there");
+                              }
+                            }}
                             style={{ cursor: "pointer" }}
                           />
                         </td>
@@ -1283,7 +1304,6 @@ const AddJobCard = (props: Props) => {
                       />
                     ) : (
                       <img
-
                         src={"data:image/png;base64," + formik.values.imageFile}
                         style={{
                           width: 150,
@@ -1388,7 +1408,7 @@ const AddJobCard = (props: Props) => {
                         return;
                       }
                       navigate("/vehiclecomplaint/AddJobWorkChallan", {
-                        state: { ...formik.values, serviceDetail: validTableData },
+                        state: { ...formik.values, serviceDetail: validTableData, jobCardId: jobCardId },
                       });
                     }}
                   >

@@ -66,6 +66,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const location = useLocation();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -106,12 +107,40 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
+  const [taxOption, setTaxOption] = useState([
+    { value: -1, label: t("text.Tax") },
+  ]);
 
   useEffect(() => {
     getVehicleDetails();
     getVendorData();
     getServiceData();
     getUnitData();
+    getTaxData();
+    setTableDataValues();
+    // if (tableData.length === 0) {
+    //   setTableData([{
+    //     id: 0,
+    //     challanRcvNo: 0,
+    //     jobCardId: 0,
+    //     serviceId: 0,
+    //     serviceCharge: 0,
+    //     vendorId: 0,
+    //     remark: "",
+    //     cgstid: 0,
+    //     sgstid: 0,
+    //     gstid: 0,
+    //     cgst: 0,
+    //     sgst: 0,
+    //     gst: 0,
+    //     unitId: 0,
+    //     qty: 0,
+    //     amount: 0,
+    //     netAmount: 0,
+    //     serviceName: "",
+    //     unitName: ""
+    //   }])
+    // }
   }, []);
 
   const getVehicleDetails = async () => {
@@ -146,6 +175,22 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       });
     }
     setVendorOption(arr);
+  };
+
+  const getTaxData = async () => {
+    const collectData = {
+      "taxId": -1
+    };
+    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["taxPercentage"],
+        value: data[index]["taxId"],
+      });
+    }
+    setTaxOption(arr);
   };
 
 
@@ -183,6 +228,35 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     setUnitOption(arr);
   };
 
+  const setTableDataValues = () => {
+    const data = location.state.jobWorkChallanDetail;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        id: 0,
+        challanRcvNo: 0,
+        jobCardId: data[index].jobCardId,
+        serviceId: data[index].serviceId,
+        serviceCharge: data[index].serviceCharge,
+        vendorId: data[index].vendorId,
+        remark: data[index].remark,
+        cgstid: data[index].cgstid,
+        sgstid: data[index].sgstid,
+        gstid: data[index].gstid,
+        cgst: data[index].cgst,
+        sgst: data[index].sgst,
+        gst: data[index].gst,
+        unitId: data[index].unitId,
+        qty: data[index].qty,
+        amount: data[index].amount,
+        netAmount: data[index].netAmount,
+        serviceName: data[index].serviceName,
+        unitName: data[index].unitName
+      });
+    }
+    setTableData(arr);
+  }
+
 
   const validateRow = (row: any) => {
     return row.serviceId && row.serviceName && row.amount > 0;
@@ -194,17 +268,17 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     initialValues: {
       "challanRcvNo": 0,
       "challanRcvDate": "2024-12-24T09:48:34.720Z",
-      "challanNo": 0,
-      "complainId": 0,
-      "empId": 0,
-      "itemId": 0,
-      "jobCardId": 0,
-      "vendorId": 0,
-      "remark": "",
-      "estAmount": 0,
-      "serviceAmount": 0,
-      "itemAmount": 0,
-      "netAmount": 0,
+      "challanNo": location.state.challanNo,
+      "complainId": location.state.complainId,
+      "empId": location.state.empId,
+      "itemId": location.state.itemId,
+      "jobCardId": location.state.jobCardId,
+      "vendorId": location.state.vendorId,
+      "remark": location.state.remark,
+      "estAmount": location.state.netAmount,
+      "serviceAmount": location.state.serviceAmount,
+      "itemAmount": location.state.itemAmount,
+      "netAmount": location.state.netAmount,
       "createdBy": "",
       "updatedBy": "",
       "createdOn": "2024-12-24T09:48:34.720Z",
@@ -214,22 +288,22 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "releasedOn": "2024-12-24T09:48:34.720Z",
       "postedOn": "2024-12-24T09:48:34.720Z",
       "companyId": 0,
-      "fyId": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "gst": 0,
-      "cgstid": 0,
-      "sgstid": 0,
-      "gstid": 0,
+      "fyId": location.state.fyId,
+      "cgst": location.state.cgst,
+      "sgst": location.state.sgst,
+      "gst": location.state.gst,
+      "cgstid": location.state.cgstid,
+      "sgstid": location.state.sgstid,
+      "gstid": location.state.gstid,
       "challanRcvDoc": "",
       "jobWorkChallanRcvDetail": [],
       "file": "",
-      "vehicleNo": "",
-      "vendorName": "",
-      "empName": "",
-      "jobCardNo": "",
-      "jobCardDate": "2024-12-24T09:48:34.720Z",
-      "challanDate": "2024-12-24T09:48:34.720Z"
+      "vehicleNo": location.state.vehicleNo,
+      "vendorName": location.state.vendorName,
+      "empName": location.state.empName,
+      "jobCardNo": location.state.jobCardNo,
+      "jobCardDate": location.state.jobCardDate,
+      "challanDate": location.state.challanDate,
     },
 
 
@@ -358,18 +432,21 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
-    if (field === 'netAmount') {
-      newData[index].netAmount = newData[index].netAmount;
-    }
+    // if (field === 'netAmount') {
+    //   newData[index].netAmount = newData[index].amount + newData[index].amount * (newData[index].gst / 100);
+    // }
     if (field === 'gst') {
-      newData[index].serviceName = newData[index].serviceName;
+      newData[index].gst = newData[index].gst;
+      newData[index].cgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+      newData[index].sgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+      newData[index].netAmount = (newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2);
     }
-    if (field === 'cgst') {
-      newData[index].cgst = newData[index].cgst;
-    }
-    if (field === 'sgst') {
-      newData[index].sgst = newData[index].sgst;
-    }
+    // if (field === 'cgst') {
+    //   newData[index].cgst = newData[index].cgst;
+    // }
+    // if (field === 'sgst') {
+    //   newData[index].sgst = newData[index].sgst;
+    // }
     if (field === 'serviceCharge') {
       newData[index].serviceCharge = newData[index].serviceCharge;
     }
@@ -387,7 +464,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     tableData.forEach(row => {
       total += row.amount;
     })
-    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("netAmount", total + total * (newData[index].gst / 100));
     formik.setFieldValue("serviceAmount", total);
   };
 
@@ -611,6 +688,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
+                  value={formik.values.vendorName}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -893,7 +971,13 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           }}
                         >
                           <DeleteIcon
-                            onClick={() => deleteRow(index)}
+                            onClick={() => {
+                              if (tableData.length > 1) {
+                                deleteRow(index)
+                              } else {
+                                alert("Atleast one row should be there");
+                              }
+                            }}
                             style={{ cursor: "pointer" }}
                           />
                         </td>
@@ -994,7 +1078,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                         >
                           <TextField
                             value={row.serviceCharge * row.qty}
-                            onChange={(e) => handleInputChange(index, 'amount', parseFloat(e.target.value) || 0)}
+                            onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
                             size="small"
                             inputProps={{ "aria-readonly": true }}
                           />
@@ -1008,12 +1092,13 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={["0.00", "2.5", "5.0", "7.0", "14.0", "18.0", "21.0"]}
+                            options={taxOption}
                             value={row.gst}
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
-                              handleInputChange(index, 'gst', parseFloat(newValue) || 0);
+                              handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
+                              handleInputChange(index, 'gstId', newValue.value);
                             }}
                             renderInput={(params) => (
                               <TextField
@@ -1062,8 +1147,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           }}
                         >
                           <TextField
-                            value={row.serviceCharge * row.qty}
-                            onChange={(e) => handleInputChange(index, 'netAmount', parseFloat(e.target.value) || 0)}
+                            value={row.amount + row.amount * (row.gst / 100)}
+                            //onChange={(e) => handleInputChange(index, 'netAmount', (row.serviceCharge * row.qty) || 0)}
                             size="small"
                             inputProps={{ "aria-readonly": true }}
                           />
