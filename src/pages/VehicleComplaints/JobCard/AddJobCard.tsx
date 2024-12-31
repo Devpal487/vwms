@@ -147,35 +147,7 @@ const AddJobCard = (props: Props) => {
       setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.department || "");
     }, 300);
     return () => clearTimeout(timeoutId);
-    // if (tableData.length === 0) {
-    //   setTableData([
-    //     {
-    //       id: 0,
-    //       jobCardId: 0,
-    //       serviceId: 0,
-    //       amount: 0,
-    //       jobWorkReq: true,
-    //       vendorId: 0,
-    //       challanRemark: "",
-    //       challanNo: 0,
-    //       challanDate: defaultValues,
-    //       challanRcvNo: 0,
-    //       challanRcvDate: defaultValues,
-    //       challanStatus: "",
-    //       netAmount: 0,
-    //       qty: 0,
-    //       unitRate: 0,
-    //       unitId: 0,
-    //       vendorName: "",
-    //       serviceName: "",
-    //       unitName: "",
-    //       cgstid: 0,
-    //       sgstid: 0,
-    //       gstid: 0,
-    //       gst: 0
-    //     }
-    //   ]);
-    // }
+
   }, []);
 
   const getVehicleDetails = async () => {
@@ -190,62 +162,6 @@ const AddJobCard = (props: Props) => {
       empId: Item.empId
     }));
     setVehicleOption(arr);
-  };
-
-  const getEmpData = async () => {
-    const collectData = {
-      "empid": -1,
-      "userId": ""
-    };
-    const response = await api.post(`Employee/GetEmployee`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["empName"],
-        value: data[index]["empid"],
-        department: data[index]["departmentName"],
-        designation: data[index]["designationName"],
-      });
-    }
-    setEmpOption(arr);
-  };
-
-  const getComplainData = async () => {
-    const collectData = {
-      "id": -1,
-      "empid": -1,
-      "itemId": -1
-    };
-    const response = await api.post(`Master/GetComplaint`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["complaint"],
-        value: data[index]["compId"],
-        empId: data[index]["empId"],
-        jobCardNo: data[index]["jobCardNo"],
-      });
-    }
-    setComplainOption(arr);
-  };
-
-  const getServiceData = async () => {
-    const collectData = {
-      "serviceId": -1
-    };
-    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["serviceName"],
-        value: data[index]["serviceId"],
-      });
-    }
-    setServiceOption(arr);
   };
 
   const getUnitData = async () => {
@@ -284,6 +200,66 @@ const AddJobCard = (props: Props) => {
     }
     setVendorOption(arr);
   };
+
+  const getEmpData = async () => {
+    const collectData = {
+      "empid": -1,
+      "userId": ""
+    };
+    const response = await api.post(`Employee/GetEmployee`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["empName"],
+        value: data[index]["empid"],
+        department: data[index]["departmentName"],
+        designation: data[index]["designationName"],
+      });
+    }
+    setEmpOption(arr);
+  };
+
+  
+
+  const getComplainData = async () => {
+    const collectData = {
+      "id": -1,
+      "empid": -1,
+      "itemId": -1
+    };
+    const response = await api.post(`Master/GetComplaint`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["complaint"],
+        value: data[index]["compId"],
+        empId: data[index]["empId"],
+        jobCardNo: data[index]["jobCardNo"],
+      });
+    }
+    setComplainOption(arr);
+  };
+
+  const getServiceData = async () => {
+    const collectData = {
+      "serviceId": -1
+    };
+    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["serviceName"],
+        value: data[index]["serviceId"],
+      });
+    }
+    setServiceOption(arr);
+  };
+
+  
 
   const validateRow = (row: any) => {
     return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
@@ -332,8 +308,8 @@ const AddJobCard = (props: Props) => {
       const response = await api.post(`Master/UpsertJobCard`, { ...values, serviceDetail: validTableData });
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        setIsVisible(true);
         setJobCardId(response.data.data.jobCardId);
+        setIsVisible(true);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -1408,8 +1384,9 @@ const AddJobCard = (props: Props) => {
                         return;
                       }
                       navigate("/vehiclecomplaint/AddJobWorkChallan", {
-                        state: { ...formik.values, serviceDetail: validTableData, jobCardId: jobCardId },
+                        state: { ...formik.values, serviceDetail: validTableData, jobCardId: jobCardId, challanNo: validTableData[0].challanNo },
                       });
+
                     }}
                   >
                     {t("text.Next")}

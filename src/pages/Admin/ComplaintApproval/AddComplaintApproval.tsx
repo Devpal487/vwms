@@ -130,6 +130,9 @@ const AddComplaintApproval = (props: Props) => {
       setVehicleOption(arr);
    };
 
+
+
+
    const getEmpData = async () => {
       const collectData = {
          "empid": -1,
@@ -148,6 +151,8 @@ const AddComplaintApproval = (props: Props) => {
       }
       setEmpOption(arr);
    };
+
+   
 
    const getDeptData = async () => {
       const collectData = {
@@ -539,7 +544,7 @@ const AddComplaintApproval = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={false} />}
                                  name="approveEmp1"
                                  id="approveEmp1"
                                  placeholder={t("text.ApproveEmployee" + " 1")}
@@ -607,7 +612,7 @@ const AddComplaintApproval = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={false} />}
                                  name="approveEmp2"
                                  id="approveEmp2"
                                  placeholder={t("text.ApproveEmployee" + " 2")}
@@ -675,7 +680,7 @@ const AddComplaintApproval = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={false} />}
                                  name="approveEmp3"
                                  id="approveEmp3"
                                  placeholder={t("text.ApproveEmployee" + " 3")}
@@ -743,7 +748,7 @@ const AddComplaintApproval = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={false} />}
                                  name="approveEmp4"
                                  id="approveEmp4"
                                  placeholder={t("text.ApproveEmployee" + " 4")}
@@ -792,17 +797,6 @@ const AddComplaintApproval = (props: Props) => {
                         />
                      </Grid>
 
-
-                     {/* Description */}
-                     {/* <Grid item xs={12} md={4} sm={4}>
-                        <TranslateTextField
-                           label={t("text.Description")}
-                           value={formik.values.complaint}
-                           onChangeText={(text: string) => formik.setFieldValue("complaint", text)}
-                           required={true}
-                           lang={lang}
-                        />
-                     </Grid> */}
 
                      <Grid item lg={12} md={12} xs={12} marginTop={2}>
                         <ReactQuill
