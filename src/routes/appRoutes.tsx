@@ -235,6 +235,9 @@ import Smssetting from "../pages/Emailsystem/Smssetting/Smssetting";
 import OfficePurchaseIndent from "../pages/Inventory/OfficePurchaseIndent/OfficePurchaseIndent";
 import LoginPage1 from "../loginPage/LoginPage1";
 import AddComplaintApproval from "../pages/Admin/ComplaintApproval/AddComplaintApproval";
+import AddJobCard1 from "../pages/VehicleComplaints/JobCard1/AddJobCard1";
+import EditJobCard1 from "../pages/VehicleComplaints/JobCard1/EditJobCard1";
+import JobCard1 from "../pages/VehicleComplaints/JobCard1/JobCard1";
 
 
 
@@ -1544,6 +1547,24 @@ const appRoutes: RouteType[] = [
         path: "/vehiclecomplaint/EditJobCard",
         element: <EditJobCard />,
         state: "vehiclecomplaint.EditJobCard",
+      },
+      {
+        path: "/vehiclecomplaint/JobCard1",
+        element: <JobCard1 />,
+        state: "vehiclecomplaint.JobCard1",
+        sidebarProps: {
+          displayText: "JobCard",
+        },
+      },
+      {
+        path: "/vehiclecomplaint/AddJobCard1",
+        element: <AddJobCard1 />,
+        state: "vehiclecomplaint.AddJobCard1",
+      },
+      {
+        path: "/vehiclecomplaint/EditJobCard1",
+        element: <EditJobCard1 />,
+        state: "vehiclecomplaint.EditJobCard1",
       },
       {
         path: "/vehiclecomplaint/JobWorkChallan",
