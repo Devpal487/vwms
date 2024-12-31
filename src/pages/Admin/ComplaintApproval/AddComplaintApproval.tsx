@@ -425,8 +425,8 @@ const AddComplaintApproval = (props: Props) => {
                            value={formik.values.vehicleName}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
-                           disabled={true}
                            InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
@@ -434,11 +434,9 @@ const AddComplaintApproval = (props: Props) => {
                      <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
-                           disabled={true}
                            id="combo-box-demo"
                            options={empOption}
                            value={formik.values.empName}
-                           // value={empOption[empOption.findIndex(e => e.value == formik.values.empId)]?.label || ""}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
