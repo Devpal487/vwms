@@ -50,8 +50,8 @@ const style = {
 const StatusOption = [
     { value: 'open', label: 'Open' },
     { value: 'close', label: 'Close' },
-    {value:'cancel' , label:'Cancel'},
-    {value:'partialClose',label:'Partial Close'}
+    { value: 'cancel', label: 'Cancel' },
+    { value: 'partialClose', label: 'Partial Close' }
 
 ];
 
@@ -255,7 +255,7 @@ const CreateWorkShopPurchaseOrder = () => {
             if (selectedItem) {
                 item = {
                     ...item,
-                   // mrnType: selectedItem?.value?.toString(),
+                    // mrnType: selectedItem?.value?.toString(),
                     orderId: selectedItem?.value,
                     orderNo: selectedItem?.label,
                 };
@@ -307,7 +307,7 @@ const CreateWorkShopPurchaseOrder = () => {
         item.cgst = item.gst / 2;
         item.igst = 0;
 
-       formik.setFieldValue("totalAmount", item.netAmount);
+        formik.setFieldValue("totalAmount", item.netAmount);
 
         updatedItems[index] = item;
         setTableData(updatedItems);
@@ -325,8 +325,8 @@ const CreateWorkShopPurchaseOrder = () => {
         return (
             row.orderNo &&
             row.itemId &&
-           // row.batchNo &&
-           // row.balQuantity > 0 &&
+            // row.batchNo &&
+            // row.balQuantity > 0 &&
             row.quantity > 0 &&
             row.rate > 0
         );
@@ -336,7 +336,7 @@ const CreateWorkShopPurchaseOrder = () => {
         console.log("updateTotalAmounts", data);
         const totals = data.reduce(
             (acc, row) => {
-              //  acc.totalAmount += parseFloat(row.amount) || 0;
+                //  acc.totalAmount += parseFloat(row.amount) || 0;
                 acc.totalCGST += parseFloat(row.cgst) || 0;
                 acc.totalSGST += parseFloat(row.sgst) || 0;
                 acc.totalIGST += parseFloat(row.igst) || 0;
@@ -344,7 +344,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 return acc;
             },
             {
-               // totalAmount: 0,
+                // totalAmount: 0,
                 totalCGST: 0,
                 totalSGST: 0,
                 totalIGST: 0,
@@ -609,12 +609,12 @@ const CreateWorkShopPurchaseOrder = () => {
                 //tableData[0].invoiceId === 0 &&
                 //  tableData[0].mrnType === "" &&
                 tableData[0].orderId === 0 &&
-              //  tableData[0].orderNo === "" &&
-               // tableData[0].batchNo === "" &&
+                //  tableData[0].orderNo === "" &&
+                // tableData[0].batchNo === "" &&
                 tableData[0].sno === "" &&
-             //   tableData[0].qcStatus === "" &&
+                //   tableData[0].qcStatus === "" &&
                 tableData[0].itemId === 0 &&
-             //   tableData[0].balQuantity === 0 &&
+                //   tableData[0].balQuantity === 0 &&
                 tableData[0].quantity === 0 &&
                 tableData[0].rate === 0 &&
                 tableData[0].amount === 0 &&
@@ -626,7 +626,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 tableData[0].cgstid === 0 &&
                 tableData[0].sgstid === 0 &&
                 tableData[0].igstid === 0 &&
-                  tableData[0].gst === "" &&
+                tableData[0].gst === "" &&
                 tableData[0].netAmount === 0 &&
                 Object.keys(tableData[0].item).length === 0;
 
@@ -638,15 +638,15 @@ const CreateWorkShopPurchaseOrder = () => {
             const filteredTableData = tableData.filter(row => {
                 return !(
                     row.id === -1 &&
-                   // row.invoiceId === 0 &&
+                    // row.invoiceId === 0 &&
                     //   row.mrnType === "" &&
                     row.orderId === 0 &&
-                   // row.orderNo === "" &&
-                   // row.batchNo === "" &&
+                    // row.orderNo === "" &&
+                    // row.batchNo === "" &&
                     row.sno === "" &&
                     //row.qcStatus === "" &&
                     row.itemId === 0 &&
-                   // row.balQuantity === 0 &&
+                    // row.balQuantity === 0 &&
                     row.quantity === 0 &&
                     row.rate === 0 &&
                     row.amount === 0 &&
@@ -939,7 +939,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         {Img == "" ? (
                                             // eslint-disable-next-line jsx-a11y/alt-text
                                             <img
-                                               // src={nopdf}
+                                                // src={nopdf}
                                                 style={{
                                                     width: "170vh",
                                                     height: "75vh",
@@ -948,7 +948,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         ) : (
                                             <img
                                                 alt="preview image"
-                                                src={"data:image/png;base64,"+ Img}
+                                                src={"data:image/png;base64," + Img}
                                                 style={{
                                                     width: "170vh",
                                                     height: "75vh",
@@ -968,11 +968,11 @@ const CreateWorkShopPurchaseOrder = () => {
                                         borderCollapse: "collapse",
                                         width: "100%",
                                         border: "1px solid black",
-                                      
+
                                     }}
                                 >
                                     <thead
-                                        style={{ backgroundColor: "#2196f3", color: "#f5f5f5"}}
+                                        style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
                                     >
                                         <tr>
                                             <th
@@ -985,7 +985,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                 {t("text.Action")}
                                             </th>
 
-                                         
+
                                             <th
                                                 style={{
                                                     border: "1px solid black",
@@ -1040,35 +1040,35 @@ const CreateWorkShopPurchaseOrder = () => {
                                             >
                                                 {t("text.GSTRate")}
                                             </th>
-                                            
-                                                <th
+
+                                            <th
                                                 style={{
-                                                  border: "1px solid black",
-                                                  textAlign: "center",
-                                                  padding: "5px",
+                                                    border: "1px solid black",
+                                                    textAlign: "center",
+                                                    padding: "5px",
                                                 }}
-                                              >
+                                            >
                                                 CGST
-                                              </th>
-                                              <th
+                                            </th>
+                                            <th
                                                 style={{
-                                                  border: "1px solid black",
-                                                  textAlign: "center",
-                                                  padding: "5px",
+                                                    border: "1px solid black",
+                                                    textAlign: "center",
+                                                    padding: "5px",
                                                 }}
-                                              >
+                                            >
                                                 SGST
-                                              </th >
-                                              <th
+                                            </th >
+                                            <th
                                                 style={{
-                                                  border: "1px solid black",
-                                                  textAlign: "center",
-                                                  padding: "5px",
+                                                    border: "1px solid black",
+                                                    textAlign: "center",
+                                                    padding: "5px",
                                                 }}
-                                              >
+                                            >
                                                 IGST
-                                              </th >
-                                                {/* <th
+                                            </th >
+                                            {/* <th
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -1077,7 +1077,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                 >
                                                     {t("text.totalTax")}
                                                 </th> */}
-                                            
+
                                             <th
                                                 style={{
                                                     border: "1px solid black",
@@ -1103,8 +1103,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         style={{ cursor: "pointer" }}
                                                     />
                                                 </td>
-                                               
-                                               
+
+
 
                                                 <td
                                                     style={{
@@ -1118,7 +1118,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         options={itemOption}
                                                         fullWidth
                                                         size="small"
-                                                        
+
                                                         onChange={(e: any, newValue: any) =>
                                                             handleInputChange(
                                                                 index,
@@ -1129,60 +1129,60 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                // label={
-                                                                //     // <CustomLabel
-                                                                //     //     text={t("text.selectItem")}
-                                                                //     //     required={false}
-                                                                //     // />
-                                                                // }
+                                                            // label={
+                                                            //     // <CustomLabel
+                                                            //     //     text={t("text.selectItem")}
+                                                            //     //     required={false}
+                                                            //     // />
+                                                            // }
                                                             />
                                                         )}
                                                     />
                                                 </td>
-                                              
-                                              <td
-                                              style={{
-                                                  border: "1px solid black",
-                                                  textAlign: "center",
-                                              }}
-                                          >
-                                              <Autocomplete
-                                                  disablePortal
-                                                  id="combo-box-demo"
-                                                  options={unitOptions}
-                                                  fullWidth
-                                                  size="small"
-                                                  onChange={(e: any, newValue:any) => handleInputChange(index, "unitId", newValue?.value)}
-                                                  renderInput={(params) => (
-                                                      <TextField
-                                                          {...params}
-                                                        //   label={
-                                                        //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                        //   }
-                                                      />
-                                                  )}
-                                              />
-                                          </td>
-                                           <td style={{ textAlign: "right" }}>
-                                           <TextField
-                                               type="text"
-                                               value={row.quantity}
-                                               onChange={(event) => {
-                                                   const value: any = event.target.value;
-                                                   handleInputChange(index, "quantity", value);
-                                                   // if (!isNaN(value) || value === '' || value === '.') {
-                                                   // }
-                                               }}
-                                               inputProps={{
-                                                   step: "any",
-                                                   min: "0"
-                                               }}
-                                               size="small"
-                                           />
-                                       </td>
-                                              
-                                              
-                                                
+
+                                                <td
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        id="combo-box-demo"
+                                                        options={unitOptions}
+                                                        fullWidth
+                                                        size="small"
+                                                        onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                            //   label={
+                                                            //       <CustomLabel text={t("text.selectUnit")} required={false} />
+                                                            //   }
+                                                            />
+                                                        )}
+                                                    />
+                                                </td>
+                                                <td style={{ textAlign: "right" }}>
+                                                    <TextField
+                                                        type="text"
+                                                        value={row.quantity}
+                                                        onChange={(event) => {
+                                                            const value: any = event.target.value;
+                                                            handleInputChange(index, "quantity", value);
+                                                            // if (!isNaN(value) || value === '' || value === '.') {
+                                                            // }
+                                                        }}
+                                                        inputProps={{
+                                                            step: "any",
+                                                            min: "0"
+                                                        }}
+                                                        size="small"
+                                                    />
+                                                </td>
+
+
+
                                                 <td
                                                     style={{
                                                         border: "1px solid black",
@@ -1226,14 +1226,27 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                // label={
-                                                                //     <CustomLabel
-                                                                //         text={t("text.tax")}
-                                                                //         required={false}
-                                                                //     />
-                                                                // }
+                                                            // label={
+                                                            //     <CustomLabel
+                                                            //         text={t("text.tax")}
+                                                            //         required={false}
+                                                            //     />
+                                                            // }
                                                             />
                                                         )}
+                                                    />
+                                                </td>
+
+                                                <td
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    <TextField
+                                                        value={row.cgst.toFixed(2)}
+                                                        size="small"
+                                                        inputProps={{ readOnly: true }}
                                                     />
                                                 </td>
                                                 <td
@@ -1243,47 +1256,23 @@ const CreateWorkShopPurchaseOrder = () => {
                                                     }}
                                                 >
                                                     <TextField
-                                                        value={row.gst}
+                                                        value={row.sgst.toFixed(2)}
                                                         size="small"
                                                         inputProps={{ readOnly: true }}
                                                     />
                                                 </td>
                                                 <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.cgst.toFixed(2)}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td> 
-                                                 <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.sgst.toFixed(2)}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td> 
-                                                 <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.igst.toFixed(2)}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td> 
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    <TextField
+                                                        value={row.igst.toFixed(2)}
+                                                        size="small"
+                                                        inputProps={{ readOnly: true }}
+                                                    />
+                                                </td>
                                                 <td
                                                     style={{
                                                         border: "1px solid black",

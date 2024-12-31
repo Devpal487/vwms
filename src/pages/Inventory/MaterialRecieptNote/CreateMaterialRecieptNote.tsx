@@ -39,60 +39,40 @@ const CreateMaterialRecieptNote = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
-
+  const [unitOptions, setUnitOptions] = useState([
+    { value: "-1", label: t("text.SelectUnitId") },
+  ]);
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
 
     "sno": 0,
-      "id": -1,
-      "mrnId": 0,
-      "orderId": 0,
-      "orderNo": "",
-      "batchNo": "",
-      "serialNo": "",
-      "qcStatus": "",
-      "itemId": 0,
-      "balQuantity": 0,
-      "quantity": 0,
-      "rate": 0,
-      "amount": 0,
-      "gstId": 0,
-      "gstRate": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "igst": 0,
-      "cgstid": 0,
-      "sgstid": 0,
-      "igstid": 0,
-      "netAmount": 0,
-      "unitId": 0,
-      "qcApplicable": true
-    // id: -1,
-    // mrnId: 0,
-    // mrnType: "",
-    // orderId: 0,
-    // orderNo: "",
-    // batchNo: "",
-    // serialNo: "",
-    // qcStatus: "",
-    // itemId: 0,
-    // balQuantity: "",
-    // quantity: "",
-    // rate: "",
-    // amount: "",
-    // gstId: "",
-    // gstRate: "",
-    // cgst: "",
-    // sgst: "",
-    // igst: "",
-    // cgstid: "",
-    // sgstid: "",
-    // igstid: "",
-    // gst: "",
-    // netAmount: "",
-   
+    "id": -1,
+    "mrnId": 0,
+    "orderId": 0,
+    "orderNo": "",
+    "batchNo": "",
+    "serialNo": "",
+    "qcStatus": "",
+    "itemId": 0,
+    "balQuantity": 0,
+    "quantity": 0,
+    "rate": 0,
+    "amount": 0,
+    "gstId": 0,
+    "gstRate": 0,
+    "cgst": 0,
+    "sgst": 0,
+    "igst": 0,
+    "cgstid": 0,
+    "sgstid": 0,
+    "igstid": 0,
+    "netAmount": 0,
+    "unitId": 0,
+    "qcApplicable": true
+
+
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
@@ -101,7 +81,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     { value: -1, label: t("text.id") },
   ]);
   const [itemOption, setitemOption] = useState<any>([]);
-  
+
   const mrnTypeOption = [
     { value: "-1", label: t("text.selectMRN") },
     { value: "1", label: "Bill" },
@@ -114,8 +94,23 @@ const CreateMaterialRecieptNote = (props: Props) => {
     getTaxData();
     GetitemData();
     GetorderData();
+    GetUnitData();
   }, []);
-
+  const GetUnitData = async () => {
+    const collectData = {
+      unitId: -1,
+    };
+    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["unitName"],
+        value: data[index]["unitId"],
+      });
+    }
+    setUnitOptions(arr);
+  };
   const getMRNNo = async () => {
     const result = await api.get(`QualityCheck/GetMaxcMrnNo`);
     if (result?.data.status === 1) {
@@ -142,7 +137,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const GetorderData = async () => {
     const collectData = {
       "orderId": -1,
-  "indentId": -1
+      "indentId": -1
     };
     const response = await api.post(
       `PurchaseOrder/GetPurchaseOrder`,
@@ -160,15 +155,15 @@ const CreateMaterialRecieptNote = (props: Props) => {
   };
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
-     "venderId": -1,
-  "countryId": -1, 
-  "stateId": -1,
-  "cityId": -1
+      "venderId": -1,
+      "countryId": -1,
+      "stateId": -1,
+      "cityId": -1
     });
     if (result.data.isSuccess) {
       const arr =
         result?.data?.data?.map((item: any) => ({
-          label: `${item.venderId} - ${item.name}`,
+          label: `${item.name}`,
           value: item.venderId,
           details: item,
         })) || [];
@@ -185,7 +180,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
 `, {
       taxId: -1,
     });
-    if (result.data.status===1) {
+    if (result.data.status === 1) {
       const arr =
         result?.data?.data?.map((item: any) => ({
           label: `${item.taxPercentage}`,
@@ -196,18 +191,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     }
   };
 
-  // const handleVendorSelect = (event: any, newValue: any) => {
-  //   console.log(newValue?.value);
-  // //  formik.setFieldValue("venderId", newValue?.value);
-  //   //formik.setFieldValue("vendorId", newValue?.value);
-  //   if (newValue && newValue.value !== "-1") {
-  //     setVendorDetail(newValue.details);
-  //     formik.setFieldValue("venderId", newValue.value);
-  //   } else {
-  //     setVendorDetail([]);
-  //     formik.setFieldValue("venderId", "");
-  //   }
-  // };
+
   const handleVendorSelect = (event: any, newValue: any) => {
     if (newValue && newValue.value !== "-1") {
       setVendorDetail(newValue.details); // Set vendor details for display
@@ -347,289 +331,102 @@ const CreateMaterialRecieptNote = (props: Props) => {
     initialValues: {
 
       "sno": 0,
-  "mrnId": 0,
-  "mrnNo": "",
-  "mrnDate": defaultValues,
-  "mrnType": "",
-  "vendorId": null,
-  "bill_ChalanNo": "",
-  "bill_ChalanDate":defaultValues,
-  "shipmentNo": "",
-  "remark": "",
-  "totalAmount": 0,
-  "totalCGST": 0,
-  "totalSGST": 0,
-  "totalIGST": 0,
-  "totalGrossAmount": 0,
-  "disPer": 0,
-  "disAmt": 0.0,
-  "netAmount": 0.0,
-  "qcApplicable": true,
-  "qcStatus": "",
-  "createdBy": "",
-  "updatedBy": "",
-  "createdOn": defaultValues,
-  "updatedOn": defaultValues,
-  "companyId": 0,
-  "fyId": 0,
-  "mrnDetail": []
-      // "sno": 0,
-      // mrnId: 0,
-      // mrnNo: "",
-      // mrnDate: defaultValues,
-      // mrnType: "",
-      // vendorId: 0,
-      // bill_ChalanNo: "",
-      // bill_ChalanDate: ,
-      // shipmentNo: "",
-      // remark: "",
-      // totalAmount: 0,
-      // totalCGST: "",
-      // totalSGST: "",
-      // totalIGST: "",
-      // totalGrossAmount: 0,
-      // disPer: 0,
-      // disAmt: 0.0,
-      // netAmount: 0.0,
-      // qcApplicable: false,
-      // qcStatus: "",
-      // createdBy: defaultValues,
-      // updatedBy: defaultValues,
-      // createdOn: defaultValues,
-      // updatedOn: defaultValues,
-      // companyId: 0,
-      // fyId: 0,
-      // mrnDetail: [],
-      // vendor: {},
-      // name: "",
-      // netAmountv: 0,
-      // srn: 0,
+      "mrnId": 0,
+      "mrnNo": "",
+      "mrnDate": defaultValues,
+      "mrnType": "",
+      "vendorId": null,
+      "bill_ChalanNo": "",
+      "bill_ChalanDate": defaultValues,
+      "shipmentNo": "",
+      "remark": "",
+      "totalAmount": 0,
+      "totalCGST": 0,
+      "totalSGST": 0,
+      "totalIGST": 0,
+      "totalGrossAmount": 0,
+      "disPer": 0,
+      "disAmt": 0.0,
+      "netAmount": 0.0,
+      "qcApplicable": true,
+      "qcStatus": "",
+      "createdBy": "",
+      "updatedBy": "",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
+      "companyId": 0,
+      "fyId": 0,
+      "mrnDetail": []
 
-      
-        // "sno": 0,
-        // "mrnId": 0,
-        // "mrnNo": "14",
-        // "mrnDate": "2024-12-18T06:24:32.113Z",
-        // "mrnType": "bill",
-        // "vendorId": 4,
-        // "bill_ChalanNo": "512",
-        // "bill_ChalanDate": "2024-12-18T06:24:32.113Z",
-        // "shipmentNo": "14",
-        // "remark": "ert",
-        // "totalAmount": 0,
-        // "totalCGST": 0,
-        // "totalSGST": 0,
-        // "totalIGST": 0,
-        // "totalGrossAmount": 0,
-        // "disPer": 0,
-        // "disAmt": 0,
-        // "netAmount": 0,
-        // "qcApplicable": true,
-        // "qcStatus": "y",
-        // "createdBy": "as",
-        // "updatedBy": "as",
-        // "createdOn": "2024-12-18T06:24:32.113Z",
-        // "updatedOn": "2024-12-18T06:24:32.113Z",
-        // "companyId": 4,
-        // "fyId": 2,
-        // "mrnDetail": [
-        //   {
-        //     "sno": 0,
-        //     "id": 2,
-        //     "mrnId": 2,
-        //     "orderId": 2,
-        //     "orderNo": "",
-        //     "batchNo": "",
-        //     "serialNo": "",
-        //     "qcStatus": "",
-        //     "itemId": 4,
-        //     "balQuantity": 2,
-        //     "quantity": 0,
-        //     "rate": 0,
-        //     "amount": 0,
-        //     "gstId": 0,
-        //     "gstRate": 0,
-        //     "cgst": 0,
-        //     "sgst": 0,
-        //     "igst": 0,
-        //     "cgstid": 0,
-        //     "sgstid": 0,
-        //     "igstid": 0,
-        //     "gst": 0,
-        //     "netAmount": 0,
-        //     "item": {
-        //       "itemMasterId": 4,
-        //       "itemName": "",
-        //       "itemCode": "",
-        //       "itemTypeId": 5,
-        //       "itemFlag": "f",
-        //       "itemCategoryId": 2,
-        //       "unitId": 2,
-        //       "empId": 2,
-        //       "vZoneID": 2,
-        //       "taxId": 2,
-        //       "purchaseYear": 2024,
-        //       "modelNo": "",
-        //       "serialNo": "",
-        //       "vehicleNo": "",
-        //       "tankCapacity": 2,
-        //       "actPrice": 10,
-        //       "hsnCode": "",
-        //       "filename": "",
-        //       "chesisNo": "",
-        //       "qcApplicable": true,
-        //       "depreciationRate": 10,
-        //       "createdBy": "",
-        //       "updatedBy": "",
-        //       "mileage": 0,
-        //       "createdOn": "2024-12-18T06:24:32.113Z",
-        //       "updatedOn": "2024-12-18T06:24:32.113Z",
-        //       "zoneName": "",
-        //       "vehiclePhotoFile": "",
-        //       "vehicleTypeId": 2,
-        //       "brandTypeId": 2,
-        //       "fuelTypeId": 2,
-        //       "devid": "",
-        //       "vehicleWeight": 20
-        //     },
-        //     "taxCGST": {
-        //       "sno": 0,
-        //       "taxId": 2,
-        //       "taxName": "",
-        //       "taxPercentage": 0,
-        //       "createdBy": "",
-        //       "updatedBy": "",
-        //       "effectiveDate": "2024-12-18T06:24:32.113Z",
-        //       "createdOn": "2024-12-18T06:24:32.113Z",
-        //       "updatedOn": "2024-12-18T06:24:32.113Z"
-        //     },
-        //     "taxSGST": {
-        //       "sno": 0,
-        //       "taxId": 4,
-        //       "taxName": "",
-        //       "taxPercentage": 0,
-        //       "createdBy": "",
-        //       "updatedBy": "",
-        //       "effectiveDate": "2024-12-18T06:24:32.113Z",
-        //       "createdOn": "2024-12-18T06:24:32.113Z",
-        //       "updatedOn": "2024-12-18T06:24:32.113Z"
-        //     },
-        //     "taxMaster": {
-        //       "sno": 0,
-        //       "taxId": 2,
-        //       "taxName": "",
-        //       "taxPercentage": 0,
-        //       "createdBy": "",
-        //       "updatedBy": "",
-        //       "effectiveDate": "2024-12-18T06:24:32.113Z",
-        //       "createdOn": "2024-12-18T06:24:32.113Z",
-        //       "updatedOn": "2024-12-18T06:24:32.113Z"
-        //     },
-        //     "srn": 0,
-        //     "isDelete": true
-        //   }
-        // ],
-        // "vendor": {
-        //   "venderId": 4,
-        //   "name": "vendor",
-        //   "code": "",
-        //   "permanentAddress": "",
-        //   "contactPerson": "",
-        //   "mobileNo": "",
-        //   "panNumber": "",
-        //   "addharNo": "",
-        //   "gstinNo": "",
-        //   "stateId": 2,
-        //   "countryId": 2,
-        //   "cityId": 2,
-        //   "pincode": 205011,
-        //   "createdBy": "",
-        //   "updatedBy": "",
-        //   "createdOn": "2024-12-18T06:24:32.114Z",
-        //   "updatedOn": "2024-12-18T06:24:32.114Z",
-        //   "imageFile": "",
-        //   "signatureFile": "",
-        //   "panFile": "",
-        //   "gstInFile": "",
-        //   "adharImageFile": "",
-        //   "tanFile": "",
-        //   "tanno": "",
-        //   "stateName": "",
-        //   "countryName": "",
-        //   "cityName": ""
-        // },
-        // "name": "",
-        // "netAmountv": 10,
-        // "srn": 0
-      
+
     },
     onSubmit: async (values) => {
 
-      const isFirstRowDefault = tableData[0] && 
-            tableData[0].id === -1 &&
-            tableData[0].mrnId === 0 &&
-          //  tableData[0].mrnType === "" &&
-            tableData[0].orderId === 0 &&
-            tableData[0].orderNo === "" &&
-            tableData[0].batchNo === "" &&
-            tableData[0].serialNo === "" &&
-            tableData[0].qcStatus === "" &&
-            tableData[0].itemId === 0 &&
-            tableData[0].balQuantity === 0 &&
-            tableData[0].quantity === 0 &&
-            tableData[0].rate === 0 &&
-            tableData[0].amount === 0 &&
-            tableData[0].gstId === 0 &&
-            tableData[0].gstRate === 0 &&
-            tableData[0].cgst === 0 &&
-            tableData[0].sgst === 0 &&
-            tableData[0].igst === 0 &&
-            tableData[0].cgstid === 0 &&
-            tableData[0].sgstid === 0 &&
-            tableData[0].igstid === 0 &&
-         //   tableData[0].gst === "" &&
-            tableData[0].netAmount === 0 &&
-            Object.keys(tableData[0].item).length === 0;
+      const isFirstRowDefault = tableData[0] &&
+        tableData[0].id === -1 &&
+        tableData[0].mrnId === 0 &&
+        //  tableData[0].mrnType === "" &&
+        tableData[0].orderId === 0 &&
+        tableData[0].orderNo === "" &&
+        tableData[0].batchNo === "" &&
+        tableData[0].serialNo === "" &&
+        tableData[0].qcStatus === "" &&
+        tableData[0].itemId === 0 &&
+        tableData[0].balQuantity === 0 &&
+        tableData[0].quantity === 0 &&
+        tableData[0].rate === 0 &&
+        tableData[0].amount === 0 &&
+        tableData[0].gstId === 0 &&
+        tableData[0].gstRate === 0 &&
+        tableData[0].cgst === 0 &&
+        tableData[0].sgst === 0 &&
+        tableData[0].igst === 0 &&
+        tableData[0].cgstid === 0 &&
+        tableData[0].sgstid === 0 &&
+        tableData[0].igstid === 0 &&
+        //   tableData[0].gst === "" &&
+        tableData[0].netAmount === 0 &&
+        Object.keys(tableData[0].item).length === 0;
 
-        if (isFirstRowDefault) {
-            alert("Please add values in the table before submitting.");
-            return; 
-        }
+      if (isFirstRowDefault) {
+        alert("Please add values in the table before submitting.");
+        return;
+      }
 
-        const filteredTableData = tableData.filter(row => {
-            return !(
-                row.id === -1 &&
-                row.mrnId === 0 &&
-             //   row.mrnType === "" &&
-                row.orderId === 0 &&
-                row.orderNo === "" &&
-                row.batchNo === "" &&
-                row.serialNo === "" &&
-                row.qcStatus === "" &&
-                row.itemId === 0 &&
-                row.balQuantity === 0 &&
-                row.quantity === 0 &&
-                row.rate === 0 &&
-                row.amount === 0 &&
-                row.gstId === 0 &&
-                row.gstRate === 0 &&
-                row.cgst === 0 &&
-                row.sgst === 0 &&
-                row.igst === 0 &&
-                row.cgstid === 0 &&
-                row.sgstid === 0 &&
-                row.igstid === 0 &&
-                row.gst === 0 &&
-                row.netAmount === "" &&
-                Object.keys(row.item).length === 0 
-            );
-        });
-        // const payload = { ...values, vendorId: values.vendorId }; // Only send vendorId
-        // console.log("Payload:", payload);
+      const filteredTableData = tableData.filter(row => {
+        return !(
+          row.id === -1 &&
+          row.mrnId === 0 &&
+          //   row.mrnType === "" &&
+          row.orderId === 0 &&
+          row.orderNo === "" &&
+          row.batchNo === "" &&
+          row.serialNo === "" &&
+          row.qcStatus === "" &&
+          row.itemId === 0 &&
+          row.balQuantity === 0 &&
+          row.quantity === 0 &&
+          row.rate === 0 &&
+          row.amount === 0 &&
+          row.gstId === 0 &&
+          row.gstRate === 0 &&
+          row.cgst === 0 &&
+          row.sgst === 0 &&
+          row.igst === 0 &&
+          row.cgstid === 0 &&
+          row.sgstid === 0 &&
+          row.igstid === 0 &&
+          row.gst === 0 &&
+          row.netAmount === "" &&
+          Object.keys(row.item).length === 0
+        );
+      });
+      // const payload = { ...values, vendorId: values.vendorId }; // Only send vendorId
+      // console.log("Payload:", payload);
 
-        const payload = { ...values };
-        console.log("Payload:", payload);
-   //   values.vendorId = vendorDetail;
+      const payload = { ...values };
+      console.log("Payload:", payload);
+      //   values.vendorId = vendorDetail;
 
       const response = await api.post(`QualityCheck/UpsertMrn`, {
         ...values,
@@ -938,6 +735,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
+
+                
                 <Table
                   style={{
                     borderCollapse: "collapse",
@@ -986,6 +785,16 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       >
                         {t("text.BatchNo")}
                       </th>
+
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.unit")}
+                      </th>
                       <th
                         style={{
                           border: "1px solid black",
@@ -1013,15 +822,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       >
                         {t("text.Rate")}
                       </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.Amount")}
-                      </th>
+                     
                       <th
                         style={{
                           border: "1px solid black",
@@ -1031,8 +832,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       >
                         {t("text.GSTRate")}
                       </th>
-                      {
-                        /* <th
+
+                      <th
                         style={{
                           border: "1px solid black",
                           textAlign: "center",
@@ -1049,17 +850,18 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         }}
                       >
                         SGST
-                      </th */
-                        <th
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            padding: "5px",
-                          }}
-                        >
-                          {t("text.totalTax")}
-                        </th>
-                      }
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        IGST
+                      </th>
+
+
                       <th
                         style={{
                           border: "1px solid black",
@@ -1117,25 +919,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             )}
                           />
                         </td>
-                        {/* <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.orderNo}
-                            size="small"
-                            onChange={(e) =>
-                              handleInputChange(
-                                index,
-                                "orderNo",
-                                e.target.value
-                              )
-                            }
-                          />
 
-                        </td> */}
                         <td
                           style={{
                             border: "1px solid black",
@@ -1168,20 +952,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             )}
                           />
                         </td>
-                        {/* <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.item}
-                            size="small"
-                            onChange={(e) =>
-                              handleInputChange(index, "item", e.target.value)
-                            }
-                          />
-                        </td> */}
+
+
 
                         <td
                           style={{
@@ -1192,7 +964,28 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <TextField
                             // value={row.batchNo}
                             size="small"
-                            onChange={(e) =>handleInputChange(index,"batchNo",e.target.value)}
+                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                          />
+                        </td>
+                        <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={unitOptions}
+                            value={
+                              unitOptions.find((opt) => (opt.value) === row?.unitId) || null
+                            }
+                            fullWidth
+                            size="small"
+                            onChange={(e, newValue: any) =>
+                              handleInputChange(index, "unitId", newValue?.value)
+                            }
+                            renderInput={(params: any) => (
+                              <TextField
+                                {...params}
+                                label={<CustomLabel text={t("text.selectUnit")} />}
+                              />
+                            )}
                           />
                         </td>
                         <td
@@ -1204,7 +997,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <TextField
                             size="small"
                             // value={row.balQuantity}
-                            onChange={(e) =>handleInputChange(index,"balQuantity",e.target.value)}
+                            onChange={(e) => handleInputChange(index, "balQuantity", e.target.value)}
                           />
                         </td>
                         <td
@@ -1216,7 +1009,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <TextField
                             size="small"
                             // value={row.quantity}
-                            onChange={(e) =>handleInputChange(index,"quantity",e.target.value)}
+                            onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
                           />
                         </td>
@@ -1229,11 +1022,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <TextField
                             size="small"
                             // value={row.rate}
-                            onChange={(e) => handleInputChange(index,"rate",e.target.value)}
+                            onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
                           />
                         </td>
-                        <td
+                        {/* <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1244,7 +1037,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
-                        </td>
+                        </td> */}
                         <td
                           style={{
                             border: "1px solid black",
@@ -1273,19 +1066,19 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             )}
                           />
                         </td>
-                        <td
+                        {/* <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
-                          }}
+                          }} ,
                         >
                           <TextField
                             value={row.gst}
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
-                        </td>
-                        {/* <td
+                        </td> */}
+                        <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1296,8 +1089,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
-                        </td> */}
-                        {/* <td
+                        </td>
+                        <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1308,8 +1101,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
-                        </td> */}
-                        {/* <td
+                        </td>
+                        <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1320,7 +1113,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
-                        </td> */}
+                        </td>
                         <td
                           style={{
                             border: "1px solid black",
@@ -1334,23 +1127,23 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           />
                         </td>
                       </tr>
-                      
+
                     ))}
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                      <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
                         {t("text.Totalnetamount")}
-                       
+
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
                         {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                      {t("text.Totaltaxamount")}
-                      
+                      <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        {t("text.Totaltaxamount")}
+
 
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1358,9 +1151,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                      {t("text.Totalgrossamount")}
-                        
+                      <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        {t("text.Totalgrossamount")}
+
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
                         {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
@@ -1369,7 +1162,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   </tfoot>
                 </Table>
               </Grid>
-{/* 
+              {/* 
               <Grid container item spacing={2} xs={12} md={12} lg={12}>
                 <Grid item lg={4} xs={12}>
                   <TextField
@@ -1500,7 +1293,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     FormHelperTextProps={{ style: { color: "red" } }}
                   />
                 </Grid> */}
-                {/* <Grid item lg={4} xs={12}>
+              {/* <Grid item lg={4} xs={12}>
                   <TextField
                     id="totalSGST"
                     name="totalSGST"
@@ -1543,7 +1336,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     FormHelperTextProps={{ style: { color: "red" } }}
                   />
                 </Grid> */}
-                {/* <Grid item lg={4} xs={12}>
+              {/* <Grid item lg={4} xs={12}>
                   <TextField
                     id="totalIGST"
                     name="totalIGST"
@@ -1633,9 +1426,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
               <Grid item xs={12} md={12} lg={12}>
                 <TextareaAutosize
-                  placeholder= {t("text.Remark")}
+                  placeholder={t("text.Remark")}
                   minRows={1}
-                  onChange={(e:any)=> formik.setFieldValue("remark", e.target.value)}
+                  onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
                   style={{
                     width: "100%",
                     height: "auto",
