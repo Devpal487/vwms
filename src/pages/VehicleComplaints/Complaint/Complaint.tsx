@@ -117,7 +117,7 @@ export default function Complaint() {
 
 
    const routeChangeEdit = (row: any) => {
-      console.log("row " + row);
+      console.log("row " , row);
 
       let path = `/vehiclecomplaint/EditComplaint`;
       navigate(path, {
@@ -177,6 +177,7 @@ export default function Complaint() {
             collectData
          );
          const data = response.data.data;
+         console.log("@@@@@@@@@@@=>",data);
          const arr = data.map((Item: any, index: any) => ({
             ...Item,
             serialNo: index + 1,

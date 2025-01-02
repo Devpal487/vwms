@@ -49,6 +49,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import { FormatItalic } from "@mui/icons-material";
+import { setTimeout } from "timers/promises";
 
 
 type Props = {};
@@ -91,12 +93,93 @@ const AddJobCard = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
-  const [complainOption, setComplainOption] = useState([
-    { value: -1, label: t("text.Complain"), empId: "", jobCardNo: "" },
-  ]);
+  const [complainOption, setComplainOption] = useState([{
+    "sno": 0,
+    "compId": 0,
+    "itemID": 0,
+    "complaintType": "",
+    "complaintDoc": "",
+    "empId": 0,
+    "approveEmp4": 0,
+    "approveEmp3": 0,
+    "approveEmp2": 0,
+    "approveEmp1": 0,
+    "complaint": "",
+    "complaintNo": "",
+    "createdBy": "",
+    "updatedBy": "",
+    "status": "Initial",
+    "currentReading": 0,
+    "createdOn": defaultValues,
+    "complaintDate": defaultValues,
+    "updatedOn": defaultValues,
+    "compAppdt": defaultValues,
+    "jobCardNo": "",
+    "file": "",
+    "fileOldName": "",
+    "vehicleNo": "",
+    "vehicleName": "",
+    "empName": ""
+  },]);
   const [deptValue, setDeptValue] = useState("");
   const [desgValue, setDesgValue] = useState("");
   const [jobCardId, setJobCardId] = useState(0);
+
+  const [jobCardData, setJobCardData] = useState([{
+    "jobCardId": 0,
+    "jobCardNo": "",
+    "fileNo": "",
+    "imageFile": "",
+    "jobCardDate": "2025-01-02T08:08:36.700Z",
+    "complainId": 0,
+    "complainDate": "2025-01-02T08:08:36.700Z",
+    "empId": 0,
+    "itemId": 0,
+    "currenReading": 0,
+    "complain": "",
+    "status": "",
+    "serviceType": "",
+    "createdBy": "",
+    "updatedBy": "",
+    "createdOn": "2025-01-02T08:08:36.700Z",
+    "updatedOn": "2025-01-02T08:08:36.700Z",
+    "companyId": 0,
+    "fyId": 0,
+    "totalItemAmount": 0,
+    "totalServiceAmount": 0,
+    "netAmount": 0,
+    "itemName": "",
+    "empName": "",
+    "serviceDetail": [
+      {
+        "id": 0,
+        "jobCardId": 0,
+        "serviceId": 0,
+        "amount": 0,
+        "jobWorkReq": true,
+        "vendorId": 0,
+        "challanRemark": "",
+        "challanNo": 0,
+        "challanDate": "2025-01-02T08:08:36.700Z",
+        "challanRcvNo": 0,
+        "challanRcvDate": "2025-01-02T08:08:36.700Z",
+        "challanStatus": "",
+        "netAmount": 0,
+        "qty": 0,
+        "unitRate": 0,
+        "unitId": 0,
+        "vendorName": "",
+        "serviceName": "",
+        "unitName": "",
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0,
+        "gst": 0
+      }
+    ],
+    "update": true
+  }]);
+
 
   const [tableData, setTableData] = useState([
     {
@@ -128,6 +211,7 @@ const AddJobCard = (props: Props) => {
 
   const [vehicleName, setVehicleName] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [itemId, setItemId] = useState(0);
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -141,14 +225,14 @@ const AddJobCard = (props: Props) => {
     getVendorData();
     getUnitData();
     getComplainData();
-    setVehicleName(location.state.vehicleName);
-    const timeoutId = setTimeout(() => {
-      setDesgValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.designation || "");
-      setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)]?.department || "");
-    }, 300);
-    return () => clearTimeout(timeoutId);
+    setVehicleName(location.state?.vehicleName);
+    // const timeoutId = setTimeout(() => {
+    //   setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
+    //   setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
+    // }, 300);
+    // return () => clearTimeout(timeoutId);
 
-  }, []);
+  }, [itemId]);
 
   const getVehicleDetails = async () => {
     const response = await api.get(
@@ -220,7 +304,7 @@ const AddJobCard = (props: Props) => {
     setEmpOption(arr);
   };
 
-  
+
 
   const getComplainData = async () => {
     const collectData = {
@@ -230,15 +314,13 @@ const AddJobCard = (props: Props) => {
     };
     const response = await api.post(`Master/GetComplaint`, collectData);
     const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["complaint"],
-        value: data[index]["compId"],
-        empId: data[index]["empId"],
-        jobCardNo: data[index]["jobCardNo"],
-      });
-    }
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+      value: Item.compId,
+      compId: Item.compId,
+      complaintDate: Item.complaintDate,
+      complaint: Item.complaint,
+    }));
     setComplainOption(arr);
   };
 
@@ -259,7 +341,7 @@ const AddJobCard = (props: Props) => {
     setServiceOption(arr);
   };
 
-  
+
 
   const validateRow = (row: any) => {
     return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
@@ -273,13 +355,13 @@ const AddJobCard = (props: Props) => {
       "jobCardNo": "",
       "fileNo": "",
       "imageFile": "",
-      "jobCardDate": "2024-12-28T07:03:56.434Z",
-      "complainId": location.state.compId,
-      "complainDate": location.state.complaintDate,
-      "empId": location.state.empId,
-      "itemId": location.state.itemID,
-      "currenReading": location.state.currentReading,
-      "complain": location.state.complaint,
+      "jobCardDate": defaultValues,
+      "complainId": location.state?.compId || 0,
+      "complainDate": location.state?.complaintDate || defaultValues,
+      "empId": location.state?.empId || 0,
+      "itemId": location.state?.itemID || 0,
+      "currenReading": location.state?.currentReading || 0,
+      "complain": location.state?.complaint || "",
       "status": "inprogress",
       "serviceType": "",
       "createdBy": "",
@@ -291,8 +373,8 @@ const AddJobCard = (props: Props) => {
       "totalItemAmount": 0,
       "totalServiceAmount": 0,
       "netAmount": 0,
-      "itemName": location.state.vehicleNo,
-      "empName": location.state.empName,
+      "itemName": location.state?.vehicleNo || "",
+      "empName": location.state?.empName || "",
       "serviceDetail": [],
       "update": true
 
@@ -318,6 +400,34 @@ const AddJobCard = (props: Props) => {
     },
   });
 
+  const handleGenerateChallan = async (values: any) => {
+    const validTableData = tableData.filter(validateRow);
+    if (validTableData.length === 0) {
+      toast.error("Please add some data in table for further process");
+      return;
+    }
+    const response = await api.post(`Master/GenerateJobWorkChallan`, { ...values, serviceDetail: validTableData });
+    if (response.data.status === 1) {
+      toast.success(response.data.message);
+      setJobCardId(response.data.data.jobCardId);
+    } else {
+      setToaster(true);
+      toast.error(response.data.message);
+    }
+  };
+
+  const getJobCardData = async () => {
+    const collectData = {
+      "jobCardId": -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCard`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+    }));
+    setJobCardData(arr);
+  };
 
 
   const handlePanClose = () => {
@@ -582,7 +692,7 @@ const AddJobCard = (props: Props) => {
 
                     />
                     <FormControlLabel
-                      value="jobwork"
+                      value="JobWork"
                       control={<Radio color="primary" />}
                       label={t("text.JobWork")}
                     />
@@ -614,8 +724,8 @@ const AddJobCard = (props: Props) => {
                   placeholder={t("text.FileNo")}
                   onChange={(e) => {
                     formik.setFieldValue("fileNo", e.target.value.toString());
-                    setDesgValue(empOption[empOption.findIndex(e => e.value === location.state.empId)].designation);
-                    setDeptValue(empOption[empOption.findIndex(e => e.value === location.state.empId)].department);
+                    setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
+                    setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
               </Grid>
@@ -650,11 +760,18 @@ const AddJobCard = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption}
+                  options={vehicleOption.filter(e => {
+                    for (let i = 0; i < complainOption.length; i++) {
+                      if (e.value == complainOption[i].itemID) {
+                        return e;
+                      }
+                    }
+                  })}
                   value={formik.values.itemName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    setItemId(newValue?.value);
                     formik.setFieldValue("itemName", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
                     formik.setFieldValue("empId", newValue?.empId);
@@ -662,6 +779,12 @@ const AddJobCard = (props: Props) => {
                     setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
                     setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
                     setVehicleName(newValue?.vehicleName);
+                    console.log(complainOption);
+                    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
+                    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
+                    formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
+                    formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
+                    formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -698,7 +821,7 @@ const AddJobCard = (props: Props) => {
               </Grid>
 
               {/* Job Card Number */}
-              <Grid item xs={12} md={4} sm={4}>
+              {/* <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -717,7 +840,7 @@ const AddJobCard = (props: Props) => {
                     formik.setFieldValue("jobCardNo", e.target.value.toString())
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* UnderControlOf */}
               <Grid item xs={12} md={4} sm={4}>
@@ -1222,6 +1345,7 @@ const AddJobCard = (props: Props) => {
                         return;
                       } else {
                         formik.setFieldValue("status", "jobwork");
+                        handleGenerateChallan(formik.values);
                       }
                     }}
                   >
