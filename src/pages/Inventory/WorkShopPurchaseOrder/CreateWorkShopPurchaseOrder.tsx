@@ -165,7 +165,7 @@ const CreateWorkShopPurchaseOrder = () => {
         for (let index = 0; index < data.length; index++) {
             arr.push({
                 label: data[index]["name"],
-                value: data[index]["vendorId"],
+                value: data[index]["venderId"],
 
             });
         };
@@ -844,8 +844,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log(newValue?.value);
-
-                                        formik.setFieldValue("name", newValue?.value?.toString());
+                                        formik.setFieldValue("vendorId", newValue?.value);
+                                        formik.setFieldValue("name", newValue?.label);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -1305,7 +1305,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalnetamount")}
+                                                {t("text.TotalAmount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1324,7 +1324,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         </tr>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalgrossamount")}
+                                                {t("text.Totalnetamount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>

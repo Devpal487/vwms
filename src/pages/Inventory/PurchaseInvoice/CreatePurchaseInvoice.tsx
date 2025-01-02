@@ -525,8 +525,6 @@ let navigate = useNavigate();
             "releasedOn": defaultValues,
             "postedOn": defaultValues,
             "srn": 0,
-
-           
             "purchaseInvoiceDetail": []
 
            
@@ -892,7 +890,8 @@ formik.setFieldValue("invoiceNo",e.target.value);
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
-                                        formik.setFieldValue("orderNo", newValue?.value.toString());
+                                        formik.setFieldValue("orderNo", newValue?.label);
+                                        formik.setFieldValue("orderId", newValue?.value);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -955,25 +954,7 @@ formik.setFieldValue("invoiceNo",e.target.value);
                   />
                 </Grid>
 
-                {vendorDetail?.gstinNo && (
-                  <Grid item lg={4} xs={12} md={6}>
-                    <TextField
-                      label={
-                        <CustomLabel
-                          text={t("text.vendorGstin")}
-                          required={false}
-                        />
-                      }
-                      value={vendorDetail?.gstinNo}
-                      placeholder={t("text.vendorGstin")}
-                      size="small"
-                      fullWidth
-                      style={{ backgroundColor: "white" }}
-                      onBlur={formik.handleBlur}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                )}
+             
 
                 {vendorDetail?.contactPerson && (
                   <Grid item lg={4} xs={12} md={6}>
@@ -1488,7 +1469,7 @@ formik.setFieldValue("invoiceNo",e.target.value);
                                     <tfoot>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalnetamount")}
+                                                {t("text.TotalAmount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>

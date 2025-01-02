@@ -12,6 +12,15 @@ const resources = {
       text: {
         ////
         /////
+        TotalAmount:"Total Amount:",
+        vendorevaluation:"Vendor Evaluation",
+        preReading:"Pre Reading",
+        gst:"GST",
+        Sgst:"SGST",
+        Cgst:"CGST",
+        Igst:"IGST",
+        indentGenerate:"Indent Generate",
+        indentprint:"Indent Print",
         Outsource:"OutSource",
         InhouseandOutsource:"Inhouse and OutSource",
         AddComplaintApproval: "Create Complaint Approval",
@@ -2961,7 +2970,7 @@ const resources = {
         TotalItemAmount: "Total Item Amount",
         TotalOutsourceItemAmount: "Total Outsource Item Amount",
         TotalServiceAmount: "Total Service Amount",
-        TotalAmount: "Total Amount",
+       // TotalAmount: "Total Amount",
         NetAmount: "Net Amount",
 
         reqBrandName: "Brand Name is required",
@@ -10236,6 +10245,7 @@ const resources = {
         issueQty: "जारी मात्रा",
         reqQty: "अनुरोधित मात्रा",
         stockQty: "स्टॉक मात्रा",
+        
         Batchno: "बैच संख्या",
         SelectItem: "आइटम चुनें",
         VehicleNos1: "वाहन संख्या चुनें",

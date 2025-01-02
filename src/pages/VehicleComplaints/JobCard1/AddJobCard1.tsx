@@ -1225,7 +1225,6 @@ const AddJobCard1 = (props: Props) => {
                   </tfoot>
                 </Table>
               </Grid>
-
               {true && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
@@ -1254,6 +1253,419 @@ const AddJobCard1 = (props: Props) => {
 
                 </Grid>
               )}
+              <Grid item xs={12}>
+                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                  <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                    <tr>
+                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.items")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Quantity")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.rate")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.preReading")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gst")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Sgst")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Cgst")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th>
+<th style={{ border:'1px solid black', textAlign:'center' ,padding:'5px'}}>{t("text.netAmount")}</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.map((row, index) => (
+                      <tr key={row.id} style={{ border: '1px solid black' }}>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                          }}
+                        >
+                          <DeleteIcon
+                            onClick={() => deleteRow(index)}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            // textAlign: "center",
+                          }}
+                        >
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={serviceOption}
+                            value={row.serviceName}
+                            fullWidth
+                            size="small"
+                            onChange={(e: any, newValue: any) => {
+                              console.log(newValue?.value);
+                              handleInputChange(index, 'serviceId', newValue?.value);
+                              handleInputChange(index, 'serviceName', newValue?.label);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={
+                                  <CustomLabel
+                                    text={t("text.SelectServices")}
+                                    required={false}
+                                  />
+                                }
+                              />
+                            )}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            // textAlign: "center",
+                          }}
+                        >
+                          <TextField
+                            value={row.challanStatus}
+                            onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            // textAlign: "center",
+                          }}
+                        >
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={vendorOption}
+                            value={row.vendorName}
+                            fullWidth
+                            size="small"
+                            onChange={(e: any, newValue: any) => {
+                              console.log(newValue?.value);
+                              handleInputChange(index, 'vendorId', newValue?.value);
+                              handleInputChange(index, 'vendorName', newValue?.label);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={
+                                  <CustomLabel
+                                    text={t("text.Vendor")}
+                                    required={false}
+                                  />
+                                }
+                              />
+                            )}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            // textAlign: "center",
+                          }}
+                        >
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={unitOption}
+                            value={row.unitName}
+                            fullWidth
+                            size="small"
+                            onChange={(e: any, newValue: any) => {
+                              console.log(newValue?.value);
+                              handleInputChange(index, 'unitId', newValue?.value);
+                              handleInputChange(index, 'unitName', newValue?.label);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={
+                                  <CustomLabel
+                                    text={t("text.Unit")}
+                                    required={false}
+                                  />
+                                }
+                              />
+                            )}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.qty}
+                            onChange={(e) => {
+                              handleInputChange(index, 'qty', parseInt(e.target.value) || 0);
+                              formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
+                              setTotalAmount(row.qty * row.unitRate);
+                            }}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.unitRate}
+                            onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.qty * row.unitRate}
+                            onChange={(e) => {
+                              handleInputChange(index, 'amount', parseFloat(e.target.value) || 0);
+                              formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
+                              handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
+                              setTotalAmount(row.qty * row.unitRate);
+                            }}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.qty * row.unitRate}
+                            onChange={(e) => {
+                              handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
+                            }}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            // value={row.challanStatus}
+                            // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.challanNo}
+                            onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
+                        >
+                          <TextField
+                            value={row.challanRemark}
+                            onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
+                            size="small"
+                            inputProps={{ "aria-readonly": true }}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.ItemAmount")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.CGST")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.SGST")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.IGST")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
+                        {t("text.TotalItemAmount")}
+                      </td>
+                      <td colSpan={1} style={{ borderTop: "1px solid black" }}>
+                        <b>:</b>{formik.values.totalItemAmount}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.TotalOutsourceItemAmount")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.TotalServiceAmount")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>{formik.values.totalServiceAmount}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan={9}></td>
+                      <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        {t("text.TotalAmount")}
+                      </td>
+                      <td colSpan={1}>
+                        <b>:</b>{formik.values.netAmount}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </Table>
+              </Grid>
+              {true && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "indentGenerate");
+                      }
+                    }}
+                  >
+                    {t("text.indentGenerate")}
+                  </Button>
+
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "indentprint");
+                      }
+                    }}
+                  >
+                    {t("text.indentprint")}
+                  </Button>
+
+                </Grid>
+                
+              )}
+               {/* {true && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "indentprint");
+                      }
+                    }}
+                  >
+                    {t("text.indentprint")}
+                  </Button>
+
+                </Grid>
+              )} */}
+
+
+
+       
 
 
 
