@@ -48,6 +48,7 @@ import ReactQuill from "react-quill";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import { FormatStrikethrough } from "@mui/icons-material";
 
 type Props = {};
 
@@ -98,6 +99,37 @@ const AddComplaintApproval = (props: Props) => {
    const [aprDept3, setaprEmpDept3] = useState("");
    const [aprDept4, setaprEmpDept4] = useState("");
 
+   const [complaintData, setComplaintData] = useState([
+      {
+         "sno": 0,
+         "compId": 0,
+         "itemID": 0,
+         "complaintType": "",
+         "complaintDoc": "",
+         "empId": 0,
+         "approveEmp4": 0,
+         "approveEmp3": 0,
+         "approveEmp2": 0,
+         "approveEmp1": 0,
+         "complaint": "",
+         "complaintNo": "",
+         "createdBy": "",
+         "updatedBy": "",
+         "status": "pending",
+         "currentReading": 0,
+         "createdOn": defaultValues,
+         "complaintDate": defaultValues,
+         "updatedOn": defaultValues,
+         "compAppdt": defaultValues,
+         "jobCardNo": "",
+         "file": "",
+         "fileOldName": "",
+         "vehicleNo": "",
+         "vehicleName": "",
+         "empName": ""
+      },
+   ]);
+
 
    const [panOpens, setPanOpen] = React.useState(false);
    const [modalImg, setModalImg] = useState("");
@@ -109,6 +141,7 @@ const AddComplaintApproval = (props: Props) => {
       getDeptData();
       getDesignationData();
       getEmpData();
+      getComplaintData();
    }, []);
 
    const getLabelById = (option: any, id: any) => {
@@ -152,7 +185,20 @@ const AddComplaintApproval = (props: Props) => {
       setEmpOption(arr);
    };
 
-   
+   const getComplaintData = async () => {
+      const collectData = {
+         "id": -1,
+         "empid": -1,
+         "itemId": -1
+      };
+      const response = await api.post(`Master/GetComplaint`, collectData);
+      const data = response.data.data;
+      const arr = data.map((Item: any, index: any) => ({
+         ...Item,
+      }));
+      setComplaintData(arr);
+   };
+
 
    const getDeptData = async () => {
       const collectData = {
@@ -186,36 +232,34 @@ const AddComplaintApproval = (props: Props) => {
       setDesignationOption(arr);
    };
 
-
-
    const formik = useFormik({
       initialValues: {
-         "sno": location.state.sno,
-         "compId": location.state.complaintNo - 1,
-         "itemID": location.state.itemID,
-         "complaintType": location.state.complaintType,
-         "complaintDoc": location.state.complaintDoc,
-         "empId": location.state.empId,
+         "sno": location.state?.sno,
+         "compId": location.state?.complaintNo,
+         "itemID": location.state?.itemID,
+         "complaintType": location.state?.complaintType,
+         "complaintDoc": location.state?.complaintDoc,
+         "empId": location.state?.empId,
          "approveEmp4": 0,
          "approveEmp3": 0,
          "approveEmp2": 0,
          "approveEmp1": 0,
-         "complaint": location.state.complaint,
-         "complaintNo": location.state.complaintNo,
-         "createdBy": location.state.createdBy,
-         "updatedBy": location.state.updatedBy,
-         "status": "pending",
-         "currentReading": location.state.currentReading,
-         "createdOn": location.state.createdOn,
-         "complaintDate": location.state.complaintDate,
-         "updatedOn": location.state.updatedOn,
+         "complaint": location.state?.complaint,
+         "complaintNo": location.state?.complaintNo,
+         "createdBy": location.state?.createdBy,
+         "updatedBy": location.state?.updatedBy,
+         "status": "inprogress",
+         "currentReading": location.state?.currentReading,
+         "createdOn": location.state?.createdOn,
+         "complaintDate": location.state?.complaintDate,
+         "updatedOn": location.state?.updatedOn,
          "compAppdt": defaultValues,
-         "jobCardNo": location.state.jobCardNo,
-         "file": location.state.file,
-         "fileOldName": location.state.fileOldName,
-         "vehicleNo": location.state.vehicleNo,
-         "vehicleName": location.state.vehicleName,
-         "empName": location.state.empName
+         "jobCardNo": location.state?.jobCardNo,
+         "file": location.state?.file || "",
+         "fileOldName": location.state?.fileOldName || "",
+         "vehicleNo": location.state?.vehicleNo,
+         "vehicleName": location.state?.vehicleName,
+         "empName": location.state?.empName
 
          //...location.state,
       },
@@ -234,6 +278,8 @@ const AddComplaintApproval = (props: Props) => {
          }
       },
    });
+
+   
 
 
 
@@ -390,16 +436,39 @@ const AddComplaintApproval = (props: Props) => {
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
-                           options={vehicleOption}
+                           options={vehicleOption.filter(e => {
+                              for (let i = 0; i < complaintData.length; i++) {
+                                 if (e.value == complaintData[i].itemID) {
+                                    return e;
+                                 }
+                              }
+                           })}
                            value={formik.values.vehicleNo}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               formik.setFieldValue("itemID", newValue?.value);
                               formik.setFieldValue("vehicleNo", newValue?.label);
-                              formik.setFieldValue("vehicleName", newValue?.name);
                               formik.setFieldValue("empId", newValue?.empId);
-                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)].label);
+                              formik.setFieldValue("sno", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].sno);
+                              formik.setFieldValue("compId", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].compId);
+                              formik.setFieldValue("complaintType", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintType);
+                              formik.setFieldValue("complaintDoc", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintDoc);
+                              formik.setFieldValue("empId", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].empId);
+                              formik.setFieldValue("complaint", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaint);
+                              formik.setFieldValue("complaintNo", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintNo);
+                              formik.setFieldValue("createdBy", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].createdBy);
+                              formik.setFieldValue("updatedBy", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].updatedBy);
+                              formik.setFieldValue("currentReading", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].currentReading);
+                              formik.setFieldValue("createdOn", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].createdOn);
+                              formik.setFieldValue("complaintDate", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintDate);
+                              formik.setFieldValue("updatedOn", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].updatedOn);
+                              formik.setFieldValue("jobCardNo", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].jobCardNo);
+                              formik.setFieldValue("file", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.file || "");
+                              formik.setFieldValue("fileOldName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.fileOldName || "");
+                              formik.setFieldValue("vehicleName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].vehicleName);
+                              formik.setFieldValue("empName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].empName);
+
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -437,7 +506,25 @@ const AddComplaintApproval = (props: Props) => {
 
                      {/* UnderControlOf */}
                      <Grid item xs={12} md={4} sm={4}>
-                        <Autocomplete
+                        <TextField
+                           label={
+                              <CustomLabel
+                                 text={t("text.UnderControlOf")}
+                              />
+                           }
+                           variant="outlined"
+                           fullWidth
+                           size="small"
+                           name="empName"
+                           id="empName"
+                           value={formik.values.empName}
+                           placeholder={t("text.UnderControlOf")}
+                           onChange={formik.handleChange}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
+                        />
+
+                        {/* <Autocomplete
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
@@ -457,7 +544,7 @@ const AddComplaintApproval = (props: Props) => {
                                  placeholder={t("text.UnderControlOf")}
                               />
                            )}
-                        />
+                        /> */}
                      </Grid>
 
                      {/* ComplaintNo */}
@@ -478,6 +565,8 @@ const AddComplaintApproval = (props: Props) => {
                            onChange={(e) => {
                               formik.setFieldValue("complaintNo", e.target.value);
                            }}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
@@ -522,6 +611,8 @@ const AddComplaintApproval = (props: Props) => {
                            onChange={(e) => {
                               formik.setFieldValue("currentReading", e.target.value);
                            }}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 

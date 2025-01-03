@@ -217,7 +217,7 @@ const AddComplaint = (props: Props) => {
          "complaintNo": "",
          "createdBy": "",
          "updatedBy": "",
-         "status": "Initial",
+         "status": "pending",
          "currentReading": 0,
          "createdOn": defaultValues,
          "complaintDate": defaultValues,

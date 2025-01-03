@@ -74,11 +74,83 @@ const AddJobWorkChallan = (props: Props) => {
   const [Img, setImg] = useState("");
   const location = useLocation();
 
+  const [vehicleOption, setVehicleOption] = useState([
+    { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
+  ]);
+  const [vendorOption, setVendorOption] = useState([
+    { value: -1, label: t("text.VendorName") },
+  ]);
+  const [serviceOption, setServiceOption] = useState([
+    { value: -1, label: t("text.Services") },
+  ]);
+  const [unitOption, setUnitOption] = useState([
+    { value: -1, label: t("text.Unit") },
+  ]);
+  const [taxOption, setTaxOption] = useState([
+    { value: -1, label: t("text.Tax") },
+  ]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [jobCardData, setJobCardData] = useState([{
+    "jobCardId": 0,
+    "jobCardNo": "",
+    "fileNo": "",
+    "imageFile": "",
+    "jobCardDate": "2025-01-02T08:08:36.700Z",
+    "complainId": 0,
+    "complainDate": "2025-01-02T08:08:36.700Z",
+    "empId": 0,
+    "itemId": 0,
+    "currenReading": 0,
+    "complain": "",
+    "status": "",
+    "serviceType": "",
+    "createdBy": "",
+    "updatedBy": "",
+    "createdOn": "2025-01-02T08:08:36.700Z",
+    "updatedOn": "2025-01-02T08:08:36.700Z",
+    "companyId": 0,
+    "fyId": 0,
+    "totalItemAmount": 0,
+    "totalServiceAmount": 0,
+    "netAmount": 0,
+    "itemName": "",
+    "empName": "",
+    "serviceDetail": [
+      {
+        "id": 0,
+        "jobCardId": 0,
+        "serviceId": 0,
+        "amount": 0,
+        "jobWorkReq": true,
+        "vendorId": 0,
+        "challanRemark": "",
+        "challanNo": 0,
+        "challanDate": "2025-01-02T08:08:36.700Z",
+        "challanRcvNo": 0,
+        "challanRcvDate": "2025-01-02T08:08:36.700Z",
+        "challanStatus": "",
+        "netAmount": 0,
+        "qty": 0,
+        "unitRate": 0,
+        "unitId": 0,
+        "vendorName": "",
+        "serviceName": "",
+        "unitName": "",
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0,
+        "gst": 0
+      }
+    ],
+    "update": true
+  }]);
 
   const [tableData, setTableData] = useState([{
     id: 0,
-    challanNo: location.state.challanNo,
-    jobCardId: location.state.jobCardId,
+    challanNo: 0,
+    jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
     serviceId: 0,
     serviceCharge: 0,
     vendorId: 0,
@@ -98,25 +170,6 @@ const AddJobWorkChallan = (props: Props) => {
   }]);
 
 
-  const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
-  ]);
-  const [vendorOption, setVendorOption] = useState([
-    { value: -1, label: t("text.VendorName") },
-  ]);
-  const [serviceOption, setServiceOption] = useState([
-    { value: -1, label: t("text.Services") },
-  ]);
-  const [unitOption, setUnitOption] = useState([
-    { value: -1, label: t("text.Unit") },
-  ]);
-  const [taxOption, setTaxOption] = useState([
-    { value: -1, label: t("text.Tax") },
-  ]);
-  const [totalAmount, setTotalAmount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-
-
   useEffect(() => {
     getVehicleDetails();
     getVendorData();
@@ -124,7 +177,7 @@ const AddJobWorkChallan = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
-   
+    getJobCardData();
   }, []);
 
 
@@ -213,18 +266,31 @@ const AddJobWorkChallan = (props: Props) => {
     setServiceOption(arr);
   };
 
- 
- 
+  const getJobCardData = async () => {
+    const collectData = {
+      "jobCardId": -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCard`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+    }));
+    setJobCardData(arr);
+  };
 
 
-  const setTableDataValues = () => {
-    const data = location.state.serviceDetail;
+
+
+
+  const setTableDataValues = (values = location.state?.serviceDetail || jobCardData[0].serviceDetail) => {
+    const data = values;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({
         id: 0,
         challanNo: data[index].challanNo,
-        jobCardId: location.state.jobCardId,
+        jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
         serviceId: data[index].serviceId,
         serviceCharge: data[index].unitRate,
         vendorId: data[index].vendorId,
@@ -243,6 +309,8 @@ const AddJobWorkChallan = (props: Props) => {
         unitName: data[index].unitName
       });
     }
+    formik.setFieldValue("vendorId", data[0].vendorId);
+    formik.setFieldValue("vendorName", data[0].vendorName);
     setTableData(arr);
   }
 
@@ -256,23 +324,23 @@ const AddJobWorkChallan = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      "challanNo": location.state.challanNo,
-      "challanDate": dayjs(location.state.challanDate).format("YYYY-MM-DD"),
-      "complainId": location.state.complainId,
-      "empId": location.state.empId,
-      "itemId": location.state.itemId,
-      "jobCardId": location.state.jobCardId,
-      "vendorId": location.state.serviceDetail[0].vendorId,
+      "challanNo": 0,
+      "challanDate": dayjs(location.state?.challanDate || defaultValues).format("YYYY-MM-DD"),
+      "complainId": location.state?.complainId || 0,
+      "empId": location.state?.empId || 0,
+      "itemId": location.state?.itemId || 0,
+      "jobCardId": location.state?.jobCardId || 0,
+      "vendorId": location.state?.serviceDetail[0].vendorId || 0,
       "createdBy": "",
       "updatedBy": "",
       "createdOn": "2024-12-24T07:29:27.863Z",
       "updatedOn": "2024-12-24T07:29:27.863Z",
       "companyId": 0,
       "fyId": 0,
-      "serviceAmount": location.state.totalServiceAmount,
-      "itemAmount": location.state.totalServiceAmount,
-      "netAmount": location.state.netAmount,
-      "status": location.state.status,
+      "serviceAmount": location.state?.totalServiceAmount || 0,
+      "itemAmount": location.state?.totalServiceAmount || 0,
+      "netAmount": location.state?.netAmount || 0,
+      "status": location.state?.status || "",
       "rcvDate": "2024-12-24T07:29:27.863Z",
       "rcvNo": 0,
       "cgst": 0,
@@ -285,11 +353,11 @@ const AddJobWorkChallan = (props: Props) => {
       "fileOldName": "",
       "file": "",
       "jobWorkChallanDetail": [],
-      "vehicleNo": location.state.itemName,
-      "vendorName": location.state.serviceDetail[0].vendorName || "",
-      "empName": location.state.empName,
-      "jobCardDate": location.state.jobCardDate,
-      "complainDate": location.state.complainDate
+      "vehicleNo": location.state?.itemName || "",
+      "vendorName": location.state?.serviceDetail[0].vendorName || "",
+      "empName": location.state?.empName || 0,
+      "jobCardDate": location.state?.jobCardDate || defaultValues,
+      "complainDate": location.state?.complainDate || defaultValues,
     },
 
     onSubmit: async (values) => {
@@ -458,8 +526,8 @@ const AddJobWorkChallan = (props: Props) => {
   const addRow = () => {
     setTableData([...tableData, {
       id: 0,
-      challanNo: location.state.challanNo,
-      jobCardId: location.state.jobCardId,
+      challanNo: location.state?.challanNo || 0,
+      jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
       serviceId: 0,
       serviceCharge: 0,
       vendorId: 0,
@@ -555,7 +623,13 @@ const AddJobWorkChallan = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption}
+                  options={vehicleOption.filter(e => {
+                    for (let i = 0; i < jobCardData.length; i++) {
+                      if (e.value == jobCardData[i].itemId) {
+                        return e;
+                      }
+                    }
+                  })}
                   value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
@@ -563,6 +637,17 @@ const AddJobWorkChallan = (props: Props) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vehicleNo", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
+                    setTableDataValues(jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].serviceDetail);
+                    formik.setFieldValue("complainId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].complainId);
+                    formik.setFieldValue("empId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].empId);
+                    formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].jobCardId);
+                    formik.setFieldValue("serviceAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].totalServiceAmount);
+                    formik.setFieldValue("itemAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].totalServiceAmount);
+                    formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].netAmount);
+                    formik.setFieldValue("status", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].status);
+                    formik.setFieldValue("empName", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].empName);
+                    formik.setFieldValue("jobCardDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].jobCardDate);
+                    formik.setFieldValue("complainDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].complainDate);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -577,7 +662,7 @@ const AddJobWorkChallan = (props: Props) => {
               </Grid>
 
               {/* Challan Number */}
-              <Grid item xs={12} md={4} sm={4}>
+              {/* <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -596,7 +681,7 @@ const AddJobWorkChallan = (props: Props) => {
                     formik.setFieldValue("challanNo", parseInt(e.target.value) || 0)
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
 
               {/* Challan Date */}
@@ -625,7 +710,27 @@ const AddJobWorkChallan = (props: Props) => {
 
 
               {/* Vendor */}
-              <Grid item xs={12} sm={4} lg={4}>
+              <Grid item xs={12} md={4} sm={4}>
+                <TextField
+                  label={
+                    <CustomLabel
+                      text={t("text.Vendor")}
+                    />
+                  }
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="vendorName"
+                  id="vendorName"
+                  value={formik.values.vendorName}
+                  placeholder={t("text.Vendor")}
+                  onChange={(e) => {
+                    formik.setFieldValue("vendorName", e.target.value)
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              {/* <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -641,17 +746,14 @@ const AddJobWorkChallan = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Vendor")} required={true} />}
+                      label={<CustomLabel text={t("text.Vendor")}  />}
                       name="vendorName"
                       id="vendorName"
                       placeholder={t("text.Vendor")}
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                )} */}
-              </Grid>
+              </Grid> */}
 
 
               {/* attachment */}
