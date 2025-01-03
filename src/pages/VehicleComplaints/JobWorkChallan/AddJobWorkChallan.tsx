@@ -77,8 +77,8 @@ const AddJobWorkChallan = (props: Props) => {
 
   const [tableData, setTableData] = useState([{
     id: 0,
-    challanNo: 0,
-    jobCardId: 0,
+    challanNo: location.state.challanNo,
+    jobCardId: location.state.jobCardId,
     serviceId: 0,
     serviceCharge: 0,
     vendorId: 0,
@@ -116,6 +116,7 @@ const AddJobWorkChallan = (props: Props) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
+
   useEffect(() => {
     getVehicleDetails();
     getVendorData();
@@ -123,30 +124,42 @@ const AddJobWorkChallan = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
-    // if (tableData.length < 1) {
-    //   setTableData([{
-    //     id: 0,
-    //     challanNo: 0,
-    //     jobCardId: 0,
-    //     serviceId: 0,
-    //     serviceCharge: 0,
-    //     vendorId: 0,
-    //     remark: "",
-    //     qty: 0,
-    //     unitId: 0,
-    //     amount: 0,
-    //     netAmount: 0,
-    //     gstid: 0,
-    //     cgstid: 0,
-    //     sgstid: 0,
-    //     gst: 0,
-    //     cgst: 0,
-    //     sgst: 0,
-    //     serviceName: "",
-    //     unitName: ""
-    //   }]);
-    // }
+   
   }, []);
+
+
+  const getTaxData = async () => {
+    const collectData = {
+      "taxId": -1
+    };
+    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["taxPercentage"],
+        value: data[index]["taxId"],
+      });
+    }
+    setTaxOption(arr);
+  };
+
+
+  const getUnitData = async () => {
+    const collectData = {
+      "unitId": -1
+    };
+    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["unitName"],
+        value: data[index]["unitId"],
+      });
+    }
+    setUnitOption(arr);
+  };
 
   const getVehicleDetails = async () => {
     const response = await api.get(
@@ -200,37 +213,8 @@ const AddJobWorkChallan = (props: Props) => {
     setServiceOption(arr);
   };
 
-  const getUnitData = async () => {
-    const collectData = {
-      "unitId": -1
-    };
-    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["unitName"],
-        value: data[index]["unitId"],
-      });
-    }
-    setUnitOption(arr);
-  };
-
-  const getTaxData = async () => {
-    const collectData = {
-      "taxId": -1
-    };
-    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["taxPercentage"],
-        value: data[index]["taxId"],
-      });
-    }
-    setTaxOption(arr);
-  };
+ 
+ 
 
 
   const setTableDataValues = () => {
@@ -240,7 +224,7 @@ const AddJobWorkChallan = (props: Props) => {
       arr.push({
         id: 0,
         challanNo: data[index].challanNo,
-        jobCardId: data[index].jobCardId,
+        jobCardId: location.state.jobCardId,
         serviceId: data[index].serviceId,
         serviceCharge: data[index].unitRate,
         vendorId: data[index].vendorId,
@@ -272,13 +256,13 @@ const AddJobWorkChallan = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      "challanNo": 0,
+      "challanNo": location.state.challanNo,
       "challanDate": dayjs(location.state.challanDate).format("YYYY-MM-DD"),
       "complainId": location.state.complainId,
       "empId": location.state.empId,
       "itemId": location.state.itemId,
       "jobCardId": location.state.jobCardId,
-      "vendorId": location.state.serviceDetail.complainId,
+      "vendorId": location.state.serviceDetail[0].vendorId,
       "createdBy": "",
       "updatedBy": "",
       "createdOn": "2024-12-24T07:29:27.863Z",
@@ -286,7 +270,7 @@ const AddJobWorkChallan = (props: Props) => {
       "companyId": 0,
       "fyId": 0,
       "serviceAmount": location.state.totalServiceAmount,
-      "itemAmount": 0,
+      "itemAmount": location.state.totalServiceAmount,
       "netAmount": location.state.netAmount,
       "status": location.state.status,
       "rcvDate": "2024-12-24T07:29:27.863Z",
@@ -474,8 +458,8 @@ const AddJobWorkChallan = (props: Props) => {
   const addRow = () => {
     setTableData([...tableData, {
       id: 0,
-      challanNo: 0,
-      jobCardId: 0,
+      challanNo: location.state.challanNo,
+      jobCardId: location.state.jobCardId,
       serviceId: 0,
       serviceCharge: 0,
       vendorId: 0,
@@ -1126,7 +1110,7 @@ const AddJobWorkChallan = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
-              {true && (
+              {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"

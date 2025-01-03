@@ -552,7 +552,7 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={false} />}
                                  name="approveEmp1"
                                  id="approveEmp1"
                                  placeholder={t("text.ApproveEmployee" + " 1")}
@@ -619,7 +619,7 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={false} />}
                                  name="approveEmp2"
                                  id="approveEmp2"
                                  placeholder={t("text.ApproveEmployee" + " 2")}
@@ -686,7 +686,7 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={false} />}
                                  name="approveEmp3"
                                  id="approveEmp3"
                                  placeholder={t("text.ApproveEmployee" + " 3")}
@@ -753,7 +753,7 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={false} />}
                                  name="approveEmp4"
                                  id="approveEmp4"
                                  placeholder={t("text.ApproveEmployee" + " 4")}
@@ -761,13 +761,16 @@ const AddComplaint = (props: Props) => {
                            )}
                         />
                      </Grid>
+
+
                      {/* Department 4*/}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
                                  text={t("text.Department")}
-                              //required={true}
+                             
+                                 
                               />
                            }
                            disabled={true}

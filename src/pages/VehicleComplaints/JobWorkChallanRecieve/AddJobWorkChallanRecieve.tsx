@@ -61,6 +61,7 @@ const style = {
 };
 
 const AddJobWorkChallanRecieve = (props: Props) => {
+
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
@@ -110,6 +111,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [taxOption, setTaxOption] = useState([
     { value: -1, label: t("text.Tax") },
   ]);
+  const [challanNo, setChallanNo] = useState(0);
 
   useEffect(() => {
     getVehicleDetails();
@@ -118,81 +120,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
-    // if (tableData.length === 0) {
-    //   setTableData([{
-    //     id: 0,
-    //     challanRcvNo: 0,
-    //     jobCardId: 0,
-    //     serviceId: 0,
-    //     serviceCharge: 0,
-    //     vendorId: 0,
-    //     remark: "",
-    //     cgstid: 0,
-    //     sgstid: 0,
-    //     gstid: 0,
-    //     cgst: 0,
-    //     sgst: 0,
-    //     gst: 0,
-    //     unitId: 0,
-    //     qty: 0,
-    //     amount: 0,
-    //     netAmount: 0,
-    //     serviceName: "",
-    //     unitName: ""
-    //   }])
-    // }
+    getChallanNo();
   }, []);
-
-  const getVehicleDetails = async () => {
-    const response = await api.get(
-      `Master/GetVehicleDetail?ItemMasterId=-1`,
-    );
-    const data = response.data.data;
-    const arr = data.map((Item: any, index: any) => ({
-      value: Item.itemMasterId,
-      label: Item.vehicleNo,
-      name: Item.itemName,
-      empId: Item.empId
-    }));
-    setVehicleOption(arr);
-  };
-
-  const getVendorData = async () => {
-    const collectData = {
-      "venderId": -1,
-      "countryId": -1,
-      "stateId": -1,
-      "cityId": -1
-    };
-    const response = await api.post(`Master/GetVendorMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["name"],
-        value: data[index]["venderId"],
-      });
-    }
-    setVendorOption(arr);
-  };
-
-  const getTaxData = async () => {
-    const collectData = {
-      "taxId": -1
-    };
-    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["taxPercentage"],
-        value: data[index]["taxId"],
-      });
-    }
-    setTaxOption(arr);
-  };
-
 
   const getServiceData = async () => {
     const collectData = {
@@ -227,6 +156,61 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     }
     setUnitOption(arr);
   };
+  const getVendorData = async () => {
+    const collectData = {
+      "venderId": -1,
+      "countryId": -1,
+      "stateId": -1,
+      "cityId": -1
+    };
+    const response = await api.post(`Master/GetVendorMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["name"],
+        value: data[index]["venderId"],
+      });
+    }
+    setVendorOption(arr);
+  };
+
+  const getVehicleDetails = async () => {
+    const response = await api.get(
+      `Master/GetVehicleDetail?ItemMasterId=-1`,
+    );
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      value: Item.itemMasterId,
+      label: Item.vehicleNo,
+      name: Item.itemName,
+      empId: Item.empId
+    }));
+    setVehicleOption(arr);
+  };
+
+
+
+  const getTaxData = async () => {
+    const collectData = {
+      "taxId": -1
+    };
+    const response = await api.post(`UnitMaster/GetTaxMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["taxPercentage"],
+        value: data[index]["taxId"],
+      });
+    }
+    setTaxOption(arr);
+  };
+
+
+  
+
 
   const setTableDataValues = () => {
     const data = location.state.jobWorkChallanDetail;
@@ -258,17 +242,34 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   }
 
 
+  const getChallanNo = async () => {
+    const collectData = {
+      "jobCardId": -1,
+      "challanNo": -1
+    };
+    const response = await api.post(
+      `Master/GetJobWorkChallan`,
+      collectData
+    );
+    const data = response.data.data;
+    data.map((e: any) => {
+      if (e.jobCardId === location.state.jobCardId) {
+        setChallanNo(e.challanNo);
+      }
+    })
+  }
+
+
   const validateRow = (row: any) => {
     return row.serviceId && row.serviceName && row.amount > 0;
   };
-
 
 
   const formik = useFormik({
     initialValues: {
       "challanRcvNo": 0,
       "challanRcvDate": "2024-12-24T09:48:34.720Z",
-      "challanNo": location.state.challanNo,
+      "challanNo": challanNo || location.state.challanNo,
       "complainId": location.state.complainId,
       "empId": location.state.empId,
       "itemId": location.state.itemId,
