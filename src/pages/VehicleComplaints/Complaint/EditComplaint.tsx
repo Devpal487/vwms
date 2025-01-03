@@ -24,6 +24,8 @@ import {
    Modal,
    Box,
 } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
@@ -43,7 +45,8 @@ import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
-import { getLabelFromValueOption } from "@mui/x-data-grid/components/panel/filterPanel/filterPanelUtils";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ReactQuill from "react-quill";
 
 type Props = {};
 
@@ -62,15 +65,17 @@ const style = {
 };
 
 const EditComplaint = (props: Props) => {
+
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
    const { defaultValues } = getISTDate();
    const [toaster, setToaster] = useState(false);
+   const [isVisible, setIsVisible] = useState(false);
    const location = useLocation();
 
    const [vehicleOption, setVehicleOption] = useState([
-      { value: -1, label: t("text.VehicleNo"), name: "" },
+      { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
    ]);
    const [empOption, setEmpOption] = useState([
       { value: 1, label: t("text.EmpName"), department: "", designation: "" },
@@ -99,18 +104,36 @@ const EditComplaint = (props: Props) => {
    const [Opens, setOpen] = React.useState(false);
    const [Img, setImg] = useState("");
 
-
    useEffect(() => {
+      //getcomplaintNo();
       getVehicleDetails();
       getDeptData();
       getDesignationData();
       getEmpData();
    }, []);
 
-   const getLabelById = (option: any, id: any) => {
-      const obj = option.find((item: any) => item.value === id);
-      return obj ? obj.label : "";
-   };
+   // const getcomplaintNo = async () => {
+   //    try {
+   //       const result = await api.get(`Master/GetMaxComplaintNo`); // Correct endpoint
+
+   //       if (result?.data?.status === 1 && result?.data?.data?.length > 0) {
+   //          const complaintNo = result.data.data[0]?.complaintNo; // Extract complaintNo
+   //          if (complaintNo) {
+   //             console.log("Fetched complaintNo:", complaintNo);
+   //             formik.setFieldValue("complaintNo", complaintNo); // Set complaintNo in form
+   //          } else {
+   //             console.warn("Complaint number is missing in the API response:", result);
+   //             formik.setFieldValue("complaintNo", "");
+   //          }
+   //       } else {
+   //          console.warn("API did not return a valid response for complaint number:", result);
+   //          formik.setFieldValue("complaintNo", "");
+   //       }
+   //    } catch (error) {
+   //       console.error("Error while fetching the complaint number:", error);
+   //       formik.setFieldValue("complaintNo", "");
+   //    }
+   // };
 
    const getVehicleDetails = async () => {
       const response = await api.get(
@@ -121,6 +144,7 @@ const EditComplaint = (props: Props) => {
          value: Item.itemMasterId,
          label: Item.vehicleNo,
          name: Item.itemName,
+         empId: Item.empId
       }));
       setVehicleOption(arr);
    };
@@ -196,35 +220,33 @@ const EditComplaint = (props: Props) => {
          "updatedBy": location.state.updatedBy,
          "status": location.state.status,
          "currentReading": location.state.currentReading,
-         "createdOn": location.state.createdOn,
-         "complaintDate": location.state.complaintDate,
-         "updatedOn": location.state.updatedOn,
+         "createdOn": defaultValues,
+         "complaintDate": dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
+         "updatedOn": defaultValues,
          "compAppdt": location.state.compAppdt,
-         "jobCardNo": location.state.jobCardNo,
-         "srno": location.state.srno,
-         "file": location.state.file,
-         "fileOldName": location.state.fileOldName,
-         "totaldays": location.state.totaldays,
-         "outDate": location.state.outDate,
-         "outId": location.state.outId,
-         "vehicleNo": location.state.vehicleNo
+         "jobCardNo": location.state?.jobCardNo ||location.state.complaintNo,
+         "file": location.state?.file || "",
+         "fileOldName": "",
+         "vehicleNo": location.state.vehicleNo,
+         "vehicleName": location.state.vehicleName,
+         "empName": location.state.empName,
       },
-      // validationSchema: Yup.object({
-      //    indentNo: Yup.string()
-      //       .required(t("text.reqIndentNum")),
-      // }),
-
       onSubmit: async (values) => {
+         try {
+            const response = await api.post(`Master/UpsertComplaint`, values);
 
-         const response = await api.post(`Master/UpsertComplaint`, values);
-         if (response.data.status === 1) {
-            toast.success(response.data.message);
-            navigate("/vehiclecomplaint/Complaint")
-         } else {
-            setToaster(true);
-            toast.error(response.data.message);
+            if (response.data.status === 1) {
+               toast.success(response.data.message);
+               setIsVisible(true);
+            } else {
+               toast.error(response.data.message);
+               setToaster(true);
+            }
+         } catch (error) {
+            toast.error("An error occurred while submitting the form. Please try again.");
          }
       },
+
    });
 
 
@@ -315,8 +337,6 @@ const EditComplaint = (props: Props) => {
    };
 
 
-
-
    const back = useNavigate();
 
    return (
@@ -374,9 +394,25 @@ const EditComplaint = (props: Props) => {
                </Grid>
                <Divider />
                <br />
+               <ToastContainer />
                <form onSubmit={formik.handleSubmit}>
-                  {toaster === false ? "" : <ToastApp />}
+                  {/* {toaster === false ? "" : <ToastApp />} */}
+
                   <Grid container spacing={2}>
+
+
+                     {/* ComplaintNo */}
+                     <Grid item lg={4} xs={12} sm={4}>
+                        <TextField
+                           id="complaintNo"
+                           name="complaintNo"
+                           label={<CustomLabel text={t("text.ComplaintNo")} required={false} />}
+                           value={formik.values.complaintNo} // Bind to Formik value
+                           size="small"
+                           fullWidth
+                           InputProps={{ readOnly: true }} // Make it read-only
+                        />
+                     </Grid>
 
                      {/* VehicleNumber */}
                      <Grid item xs={12} md={4} sm={4}>
@@ -389,8 +425,11 @@ const EditComplaint = (props: Props) => {
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
+                              formik.setFieldValue("itemID", newValue?.value);
                               formik.setFieldValue("vehicleNo", newValue?.label);
-                              setVehicleName(newValue?.name);
+                              formik.setFieldValue("vehicleName", newValue?.name);
+                              formik.setFieldValue("empId", newValue?.empId);
+                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)].label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -417,11 +456,10 @@ const EditComplaint = (props: Props) => {
                            size="small"
                            name="vehicleName"
                            id="vehicleName"
-                           value={vehicleOption[vehicleOption.findIndex(e => e.label === formik.values.vehicleNo)]?.name}
+                           value={formik.values.vehicleName}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
-                           disabled={true}
-                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
@@ -429,14 +467,16 @@ const EditComplaint = (props: Props) => {
                      <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
+                           disabled={true}
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.empId)}
+                           value={formik.values.empName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
                               formik.setFieldValue("empId", newValue?.value);
+                              formik.setFieldValue("empName", newValue?.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -450,33 +490,13 @@ const EditComplaint = (props: Props) => {
                         />
                      </Grid>
 
-                     {/* ComplaintNo */}
-                     <Grid item xs={12} md={4} sm={4}>
-                        <TextField
-                           label={
-                              <CustomLabel
-                                 text={t("text.ComplaintNo")}
-                              />
-                           }
-                           variant="outlined"
-                           fullWidth
-                           size="small"
-                           name="complaintNo"
-                           id="complaintNo"
-                           value={formik.values.complaintNo}
-                           placeholder={t("text.ComplaintNo")}
-                           onChange={(e) => {
-                              formik.setFieldValue("complaintNo", e.target.value);
-                           }}
-                        />
-                     </Grid>
 
                      {/* Date */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.Date")}
+                                 text={t("text.ComplainDate")}
                               />
                            }
                            type="date"
@@ -510,7 +530,7 @@ const EditComplaint = (props: Props) => {
                            value={formik.values.currentReading}
                            placeholder={t("text.ReadingKM")}
                            onChange={(e) => {
-                              formik.setFieldValue("currentReading", e.target.value);
+                              formik.setFieldValue("currentReading", parseInt(e.target.value) || 0);
                            }}
                         />
                      </Grid>
@@ -521,7 +541,7 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.approveEmp1)}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -533,7 +553,7 @@ const EditComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={false} />}
                                  name="approveEmp1"
                                  id="approveEmp1"
                                  placeholder={t("text.ApproveEmployee" + " 1")}
@@ -550,6 +570,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -569,6 +590,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -586,7 +608,7 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.approveEmp2)}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -598,7 +620,7 @@ const EditComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={false} />}
                                  name="approveEmp2"
                                  id="approveEmp2"
                                  placeholder={t("text.ApproveEmployee" + " 2")}
@@ -615,6 +637,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -634,6 +657,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -651,7 +675,7 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.approveEmp3)}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -663,7 +687,7 @@ const EditComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={false} />}
                                  name="approveEmp3"
                                  id="approveEmp3"
                                  placeholder={t("text.ApproveEmployee" + " 3")}
@@ -680,6 +704,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -699,6 +724,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -716,7 +742,7 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption, formik.values.approveEmp4)}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -728,7 +754,7 @@ const EditComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={true} />}
+                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={false} />}
                                  name="approveEmp4"
                                  id="approveEmp4"
                                  placeholder={t("text.ApproveEmployee" + " 4")}
@@ -736,15 +762,19 @@ const EditComplaint = (props: Props) => {
                            )}
                         />
                      </Grid>
+
+
                      {/* Department 4*/}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
                                  text={t("text.Department")}
-                              //required={true}
+
+
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -764,6 +794,7 @@ const EditComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
+                           disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -775,15 +806,17 @@ const EditComplaint = (props: Props) => {
                         />
                      </Grid>
 
-
-                     {/* Description */}
-                     <Grid item xs={12} md={4} sm={4}>
-                        <TranslateTextField
-                           label={t("text.Description")}
+                     <Grid item lg={12} md={12} xs={12} marginTop={2}>
+                        <ReactQuill
+                           id="complaint"
+                           theme="snow"
                            value={formik.values.complaint}
-                           onChangeText={(text: string) => formik.setFieldValue("complaint", text)}
-                           required={true}
-                           lang={lang}
+                           onChange={(content) => formik.setFieldValue("complaint", content)}
+                           onBlur={() => formik.setFieldTouched("complaint", true)}
+                           modules={modules}
+                           formats={formats}
+                           //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                           placeholder="Enter your complaint here"
                         />
                      </Grid>
 
@@ -920,6 +953,32 @@ const EditComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
+                  {isVisible && (
+                     <Grid item lg={6} sm={6} xs={12}>
+                        <Button
+                           type="button"
+                           style={{
+                              backgroundColor: "#0000ff",
+                              color: "white",
+                              marginTop: "10px",
+                              padding: "8px 16px",
+                              fontSize: "16px",
+                              borderRadius: "8px",
+                              width: "100px",
+                           }}
+                           onClick={() => {
+                              navigate("/Admin/AddComplaintApproval", {
+                                 state: formik.values,
+                              });
+                           }}
+                        >
+                           {t("text.Next")}
+                           <ArrowForwardIcon />
+                        </Button>
+
+                     </Grid>
+                  )}
+
 
                </form>
             </CardContent>
@@ -927,5 +986,42 @@ const EditComplaint = (props: Props) => {
       </div>
    );
 };
+const modules = {
+   toolbar: [
+      [{ header: "1" }, { header: "2" }],
+      [{ font: [] }],
+      [{ size: ["small", false, "large", "huge"] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ align: [] }],
+      ["link", "image", "video", "formula"],
+      ["clean"],
+   ],
+};
 
+const formats = [
+   "header",
+   "font",
+   "size",
+   "bold",
+   "italic",
+   "underline",
+   "strike",
+   "color",
+   "background",
+   "script",
+   "list",
+   "bullet",
+   "indent",
+   "align",
+   "link",
+   "image",
+   "video",
+   "formula",
+   "code-block",
+];
 export default EditComplaint;

@@ -235,7 +235,7 @@ const AddComplaintApproval = (props: Props) => {
    const formik = useFormik({
       initialValues: {
          "sno": location.state?.sno,
-         "compId": location.state?.complaintNo,
+         "compId": parseInt(location.state?.complaintNo),
          "itemID": location.state?.itemID,
          "complaintType": location.state?.complaintType,
          "complaintDoc": location.state?.complaintDoc,
@@ -254,7 +254,7 @@ const AddComplaintApproval = (props: Props) => {
          "complaintDate": location.state?.complaintDate,
          "updatedOn": location.state?.updatedOn,
          "compAppdt": defaultValues,
-         "jobCardNo": location.state?.jobCardNo,
+         "jobCardNo": location.state?.jobCardNo || location.state?.complaintNo || "",
          "file": location.state?.file || "",
          "fileOldName": location.state?.fileOldName || "",
          "vehicleNo": location.state?.vehicleNo,
@@ -279,7 +279,7 @@ const AddComplaintApproval = (props: Props) => {
       },
    });
 
-   
+
 
 
 
@@ -463,7 +463,7 @@ const AddComplaintApproval = (props: Props) => {
                               formik.setFieldValue("createdOn", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].createdOn);
                               formik.setFieldValue("complaintDate", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintDate);
                               formik.setFieldValue("updatedOn", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].updatedOn);
-                              formik.setFieldValue("jobCardNo", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].jobCardNo);
+                              formik.setFieldValue("jobCardNo", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.jobCardNo || complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].complaintNo);
                               formik.setFieldValue("file", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.file || "");
                               formik.setFieldValue("fileOldName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.fileOldName || "");
                               formik.setFieldValue("vehicleName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].vehicleName);

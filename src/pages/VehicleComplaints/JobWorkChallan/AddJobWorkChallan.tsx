@@ -32,7 +32,7 @@ import HOST_URL from "../../../utils/Url";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
@@ -127,7 +127,7 @@ const AddJobWorkChallan = (props: Props) => {
         "vendorId": 0,
         "challanRemark": "",
         "challanNo": 0,
-        "challanDate": "2025-01-02T08:08:36.700Z",
+        "challanDate": defaultValues,
         "challanRcvNo": 0,
         "challanRcvDate": "2025-01-02T08:08:36.700Z",
         "challanStatus": "",
@@ -613,8 +613,9 @@ const AddJobWorkChallan = (props: Props) => {
           </Grid>
           <Divider />
           <br />
+          <ToastContainer />
           <form onSubmit={formik.handleSubmit}>
-            {toaster === false ? "" : <ToastApp />}
+            {/* {toaster === false ? "" : <ToastApp />} */}
             <Grid container spacing={2}>
 
 
@@ -855,6 +856,7 @@ const AddJobWorkChallan = (props: Props) => {
 
 
               <Grid item xs={12} md={12} lg={12}>
+              <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                 <Table
                   style={{
                     borderCollapse: "collapse",
@@ -1177,6 +1179,7 @@ const AddJobWorkChallan = (props: Props) => {
                     </tr>
                   </tfoot>
                 </Table>
+                </div>
               </Grid>
 
 
