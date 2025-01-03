@@ -669,7 +669,7 @@ const CreateOfficePurchaseOrder = () => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/PurchaseInvoice");
+                navigate("/Inventory/OfficePurchaseOrder");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);
@@ -799,6 +799,7 @@ const CreateOfficePurchaseOrder = () => {
                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
                                         }
                                     }}
+
 
                                     // value={
                                     //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null

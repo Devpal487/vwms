@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 
-  TextareaAutosize,
+ 
   Table,
 } from "@mui/material";
 import 'react-toastify/dist/ReactToastify.css';
@@ -1140,9 +1140,9 @@ const GetorderData = async () => {
 
 
               <Grid item xs={12} md={12} lg={12}>
-                <TextareaAutosize
+              <TextField
                   placeholder={t("text.Remark")}
-                  minRows={1}
+
                   value={formik.values.remark}
                   onChange={(e:any)=> formik.setFieldValue("remark", e.target.value)}
                   style={{

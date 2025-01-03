@@ -8,7 +8,6 @@ import {
   MenuItem,
   TextField,
   Typography,
-  TextareaAutosize,
   Table,
 } from "@mui/material";
 import { ToastContainer } from "react-toastify";
@@ -1424,11 +1423,13 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid>
               </Grid> */}
 
-              <Grid item xs={12} md={12} lg={12}>
-                <TextareaAutosize
+             
+<Grid item xs={12} md={12} lg={12}>
+              <TextField
                   placeholder={t("text.Remark")}
-                  minRows={1}
-                  onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
+
+                  value={formik.values.remark}
+                  onChange={(e:any)=> formik.setFieldValue("remark", e.target.value)}
                   style={{
                     width: "100%",
                     height: "auto",
