@@ -115,7 +115,9 @@ const CreateWorkShopPurchaseOrder = () => {
     const [modalImg, setModalImg] = useState("");
     const [Opens, setOpen] = React.useState(false);
     const [Img, setImg] = useState("");
-    const [vendorData, setVendorData] = useState([]);
+    const [vendorData, setVendorData] = useState([
+        { value: "-1", label: t("text.Selectvendor") },
+    ]);
 
 
     useEffect(() => {
@@ -150,25 +152,37 @@ const CreateWorkShopPurchaseOrder = () => {
     };
 
     const getVendorData = async () => {
-        const result = await api.post(`Master/GetVendorMaster`, {
+        const response = await api.post(`Master/GetVendorMaster`, {
             "venderId": -1,
             "countryId": -1,
             "stateId": -1,
             "cityId": -1
         });
-        if (result.data.isSuccess) {
-            const arr =
-                result?.data?.data?.map((item: any) => ({
-                    label: `${item.name}`,
-                    value: item.venderId,
-                    details: item,
-                })) || [];
+        // const response = await api.post(`Master/GetIndent`, response);
+        const data = response.data.data;
+        console.log("vendor option", data)
+        const arr = [];
+        for (let index = 0; index < data.length; index++) {
+            arr.push({
+                label: data[index]["name"],
+                value: data[index]["venderId"],
 
-            setVendorData([
-                { value: "-1", label: t("text.SelectVendor") },
-                ...arr,
-            ] as any);
-        }
+            });
+        };
+        setVendorData(arr);
+        // if (result.data.isSuccess) {
+        //     const arr =
+        //         result?.data?.data?.map((item: any) => ({
+        //             label: item.name,
+        //             value: item.vendorId,
+        //             details: item,
+        //         })) || [];
+
+        //     setVendorData([
+        //         { value: "-1", label: t("text.SelectVendor")  },
+        //         ...arr,
+        //     ] as any);
+        // }
     };
 
 
@@ -830,8 +844,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log(newValue?.value);
-
-                                        formik.setFieldValue("name", newValue?.value?.toString());
+                                        formik.setFieldValue("vendorId", newValue?.value);
+                                        formik.setFieldValue("name", newValue?.label);
                                     }}
                                     renderInput={(params) => (
                                         <TextField
@@ -933,7 +947,6 @@ const CreateWorkShopPurchaseOrder = () => {
                                         </Typography>
                                     </Grid>
                                 </Grid>
-
                                 <Modal open={docOpen} onClose={handlePanClose1}>
                                     <Box sx={style}>
                                         {Img == "" ? (
@@ -1292,7 +1305,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalnetamount")}
+                                                {t("text.TotalAmount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1311,7 +1324,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         </tr>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalgrossamount")}
+                                                {t("text.Totalnetamount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1321,8 +1334,6 @@ const CreateWorkShopPurchaseOrder = () => {
                                     </tfoot>
                                 </Table>
                             </Grid>
-
-
                             <Grid item xs={12}>
                                 <div style={{ justifyContent: "space-between", flex: 2 }}>
                                     <Button

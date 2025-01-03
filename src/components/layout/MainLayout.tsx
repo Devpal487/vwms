@@ -408,6 +408,12 @@ const MainLayout = () => {
               displayNo: 0,
             },
             {
+              menuId: 2,
+              menuName: "Job Card1",
+              path: "/vehiclecomplaint/JobCard1",
+              displayNo: 0,
+            },
+            {
               menuId: 3,
               menuName: "Job Work Challan",
               path: "/vehiclecomplaint/JobWorkChallan",
