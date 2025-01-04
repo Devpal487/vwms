@@ -44,6 +44,14 @@ import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
 import { json } from "stream/consumers";
+import ReactQuill from "react-quill";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import { FormatItalic } from "@mui/icons-material";
+import { setTimeout } from "timers/promises";
+
 
 type Props = {};
 
@@ -62,12 +70,13 @@ const style = {
 };
 
 const EditJobCard = (props: Props) => {
+  const location = useLocation();
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
-  const location = useLocation();
+  const [isVisible, setIsVisible] = useState(false);
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -84,11 +93,96 @@ const EditJobCard = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
-  const [complainOption, setComplainOption] = useState([
-    { value: -1, label: t("text.Complain"), empId: "", jobCardNo: "" },
-  ]);
+
+  const [jobCardData, setJobCardData] = useState([{
+    "jobCardId": 0,
+    "jobCardNo": "",
+    "fileNo": "",
+    "imageFile": "",
+    "jobCardDate": "2025-01-02T08:08:36.700Z",
+    "complainId": 0,
+    "complainDate": "2025-01-02T08:08:36.700Z",
+    "empId": 0,
+    "itemId": 0,
+    "currenReading": 0,
+    "complain": "",
+    "status": "",
+    "serviceType": "",
+    "createdBy": "",
+    "updatedBy": "",
+    "createdOn": "2025-01-02T08:08:36.700Z",
+    "updatedOn": "2025-01-02T08:08:36.700Z",
+    "companyId": 0,
+    "fyId": 0,
+    "totalItemAmount": 0,
+    "totalServiceAmount": 0,
+    "netAmount": 0,
+    "itemName": "",
+    "empName": "",
+    "serviceDetail": [
+      {
+        "id": 0,
+        "jobCardId": 0,
+        "serviceId": 0,
+        "amount": 0,
+        "jobWorkReq": true,
+        "vendorId": 0,
+        "challanRemark": "",
+        "challanNo": 0,
+        "challanDate": "2025-01-02T08:08:36.700Z",
+        "challanRcvNo": 0,
+        "challanRcvDate": "2025-01-02T08:08:36.700Z",
+        "challanStatus": "",
+        "netAmount": 0,
+        "qty": 0,
+        "unitRate": 0,
+        "unitId": 0,
+        "vendorName": "",
+        "serviceName": "",
+        "unitName": "",
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0,
+        "gst": 0
+      }
+    ],
+    "update": true
+  }]);
+
+
+  const [complainOption, setComplainOption] = useState([{
+    "sno": 0,
+    "compId": 0,
+    "itemID": 0,
+    "complaintType": "",
+    "complaintDoc": "",
+    "empId": 0,
+    "approveEmp4": 0,
+    "approveEmp3": 0,
+    "approveEmp2": 0,
+    "approveEmp1": 0,
+    "complaint": "",
+    "complaintNo": "",
+    "createdBy": "",
+    "updatedBy": "",
+    "status": "",
+    "currentReading": 0,
+    "createdOn": defaultValues,
+    "complaintDate": defaultValues,
+    "updatedOn": defaultValues,
+    "compAppdt": defaultValues,
+    "jobCardNo": "",
+    "file": "",
+    "fileOldName": "",
+    "vehicleNo": "",
+    "vehicleName": "",
+    "empName": ""
+  },]);
   const [deptValue, setDeptValue] = useState("");
   const [desgValue, setDesgValue] = useState("");
+  const [jobCardId, setJobCardId] = useState(0);
+
+
 
   const [tableData, setTableData] = useState([
     {
@@ -120,6 +214,7 @@ const EditJobCard = (props: Props) => {
 
   const [vehicleName, setVehicleName] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [itemId, setItemId] = useState(0);
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -128,13 +223,15 @@ const EditJobCard = (props: Props) => {
 
   useEffect(() => {
     getVehicleDetails();
+    getJobCardData();
     getEmpData();
     getServiceData();
     getVendorData();
     getUnitData();
     getComplainData();
-    setTableData(formik.values.serviceDetail);
-  }, []);
+    setVehicleName(location.state?.vehicleName);
+    setTableData(location.state?.serviceDetail);
+  }, [itemId]);
 
   const getVehicleDetails = async () => {
     const response = await api.get(
@@ -148,62 +245,6 @@ const EditJobCard = (props: Props) => {
       empId: Item.empId
     }));
     setVehicleOption(arr);
-  };
-
-  const getEmpData = async () => {
-    const collectData = {
-      "empid": -1,
-      "userId": ""
-    };
-    const response = await api.post(`Employee/GetEmployee`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["empName"],
-        value: data[index]["empid"],
-        department: data[index]["departmentName"],
-        designation: data[index]["designationName"],
-      });
-    }
-    setEmpOption(arr);
-  };
-
-  const getComplainData = async () => {
-    const collectData = {
-      "id": -1,
-      "empid": -1,
-      "itemId": -1
-    };
-    const response = await api.post(`Master/GetComplaint`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["complaint"],
-        value: data[index]["compId"],
-        empId: data[index]["empId"],
-        jobCardNo: data[index]["jobCardNo"],
-      });
-    }
-    setComplainOption(arr);
-  };
-
-  const getServiceData = async () => {
-    const collectData = {
-      "serviceId": -1
-    };
-    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["serviceName"],
-        value: data[index]["serviceId"],
-      });
-    }
-    setServiceOption(arr);
   };
 
   const getUnitData = async () => {
@@ -243,39 +284,97 @@ const EditJobCard = (props: Props) => {
     setVendorOption(arr);
   };
 
+  const getEmpData = async () => {
+    const collectData = {
+      "empid": -1,
+      "userId": ""
+    };
+    const response = await api.post(`Employee/GetEmployee`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["empName"],
+        value: data[index]["empid"],
+        department: data[index]["departmentName"],
+        designation: data[index]["designationName"],
+      });
+    }
+    setEmpOption(arr);
+  };
+
+
+
+  const getComplainData = async () => {
+    const collectData = {
+      "id": -1,
+      "empid": -1,
+      "itemId": -1
+    };
+    const response = await api.post(`Master/GetComplaint`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+      value: Item.compId,
+      compId: Item.compId,
+      complaintDate: Item.complaintDate,
+      complaint: Item.complaint,
+    }));
+    setComplainOption(arr);
+  };
+
+  const getServiceData = async () => {
+    const collectData = {
+      "serviceId": -1
+    };
+    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["serviceName"],
+        value: data[index]["serviceId"],
+      });
+    }
+    setServiceOption(arr);
+  };
+
+
+
   const validateRow = (row: any) => {
-    return row.serviceName && row.serviceId && row.vendorId && row.challanNo > 0;
+    return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
   };
 
 
 
   const formik = useFormik({
     initialValues: {
-      "jobCardId": location.state.jobCardId,
-      "jobCardNo": location.state.jobCardNo,
-      "fileNo": location.state.fileNo,
-      "imageFile": location.state.imageFile,
-      "jobCardDate": location.state.jobCardDate,
-      "complainId": location.state.complainId,
-      "complainDate": location.state.complainDate,
-      "empId": location.state.empId,
-      "itemId": location.state.itemId,
-      "currenReading": location.state.currenReading,
-      "complain": location.state.complain,
-      "status": location.state.status,
-      "serviceType": location.state.serviceType,
-      "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
-      "createdOn": location.state.createdOn,
+      "jobCardId": location.state?.jobCardId,
+      "jobCardNo": location.state?.jobCardNo,
+      "fileNo": location.state?.fileNo,
+      "imageFile": location.state?.imageFile,
+      "jobCardDate": location.state?.jobCardDate,
+      "complainId": location.state?.compId || 0,
+      "complainDate": location.state?.complaintDate || defaultValues,
+      "empId": location.state?.empId || 0,
+      "itemId": location.state?.itemID || 0,
+      "currenReading": location.state?.currentReading || 0,
+      "complain": location.state?.complaint || "",
+      "status": location.state?.status,
+      "serviceType": location.state?.serviceType,
+      "createdBy": location.state?.createdBy,
+      "updatedBy": location.state?.updatedBy,
+      "createdOn": location.state?.createdOn,
       "updatedOn": location.state.updatedOn,
-      "companyId": location.state.companyId,
-      "fyId": location.state.fyId,
-      "totalItemAmount": location.state.totalItemAmount,
-      "totalServiceAmount": location.state.totalServiceAmount,
-      "netAmount": location.state.netAmount,
-      "itemName": location.state.itemName,
-      "empName": location.state.empName,
-      "serviceDetail": location.state.serviceDetail,
+      "companyId": location.state?.companyId,
+      "fyId": location.state?.fyId,
+      "totalItemAmount": location.state?.totalItemAmount || 0,
+      "totalServiceAmount": location.state?.totalServiceAmount || 0,
+      "netAmount": location.state?.netAmount || 0,
+      "itemName": location.state?.vehicleNo || "",
+      "empName": location.state?.empName || "",
+      "serviceDetail": location.state?.serviceDetail || [],
       "update": true
     },
     onSubmit: async (values) => {
@@ -286,10 +385,11 @@ const EditJobCard = (props: Props) => {
         return;
       }
       const response = await api.post(`Master/UpsertJobCard`, { ...values, serviceDetail: validTableData });
-      console.log("@@@@===>>", values);
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclecomplaint/JobCard");
+        setJobCardId(response.data.data.jobCardId);
+        setIsVisible(true);
+        //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -297,6 +397,34 @@ const EditJobCard = (props: Props) => {
     },
   });
 
+  const handleGenerateChallan = async (values: any) => {
+    const validTableData = tableData.filter(validateRow);
+    if (validTableData.length === 0) {
+      toast.error("Please add some data in table for further process");
+      return;
+    }
+    const response = await api.post(`Master/GenerateJobWorkChallan`, { ...values, serviceDetail: validTableData });
+    if (response.data.status === 1) {
+      toast.success(response.data.message);
+      setJobCardId(response.data.data.jobCardId);
+    } else {
+      setToaster(true);
+      toast.error(response.data.message);
+    }
+  };
+
+  const getJobCardData = async () => {
+    const collectData = {
+      "jobCardId": -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCard`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+    }));
+    setJobCardData(arr);
+  };
 
 
   const handlePanClose = () => {
@@ -304,7 +432,7 @@ const EditJobCard = (props: Props) => {
   };
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
-    if (event === "jobCardModel.imageFile") {
+    if (event === "imageFile") {
       setModalImg(formik.values.imageFile);
     }
   };
@@ -432,7 +560,7 @@ const EditJobCard = (props: Props) => {
 
     setTableData(newData);
 
-    if (newData[index].serviceId && newData[index].vendorName && newData[index].challanNo > 0) {
+    if (newData[index].serviceId && newData[index].vendorName && newData[index].qty && newData[index].unitRate > 0) {
       if (index === tableData.length - 1) {
         addRow();
       }
@@ -540,26 +668,41 @@ const EditJobCard = (props: Props) => {
           </Grid>
           <Divider />
           <br />
+          <ToastContainer />
           <form onSubmit={formik.handleSubmit}>
-            {toaster === false ? "" : <ToastApp />}
+            {/* {toaster === false ? "" : <ToastApp />} */}
             <Grid container spacing={2}>
 
               {/* RadioButton */}
-              {/* <Grid item xs={12} sm={12} lg={12}>
-                <FormControl>
+              <Grid item xs={12} sm={12} lg={12}>
+                <FormControl component="fieldset">
                   <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="licensing"
-                    name="radio-buttons-group"
+                    row
+                    aria-label="status"
+                    name="status"
+                    value={formik.values.status}
+                    onChange={(event) => formik.setFieldValue("status", event.target.value)}
                   >
-                    <div style={{ display: "flex" }}>
-                      <FormControlLabel value="complete" control={<Radio />} label={t("text.Complete")} />
-                      <FormControlLabel value="jobwork" control={<Radio />} label={t("text.JobWork")} />
-                      <FormControlLabel value="inprogress" control={<Radio />} label={t("text.InProgress")} />
-                    </div>
+                    <FormControlLabel
+                      value="complete"
+                      control={<Radio color="primary" />}
+                      label={t("text.Complete")}
+
+                    />
+                    <FormControlLabel
+                      value="JobWork"
+                      control={<Radio color="primary" />}
+                      label={t("text.JobWork")}
+                    />
+                    <FormControlLabel
+                      value="inprogress"
+                      control={<Radio color="primary" />}
+                      label={t("text.InProgress")}
+                    />
+
                   </RadioGroup>
                 </FormControl>
-              </Grid> */}
+              </Grid>
 
               {/* File number */}
               <Grid item xs={12} md={4} sm={4}>
@@ -579,6 +722,8 @@ const EditJobCard = (props: Props) => {
                   placeholder={t("text.FileNo")}
                   onChange={(e) => {
                     formik.setFieldValue("fileNo", e.target.value.toString());
+                    setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
+                    setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
               </Grid>
@@ -613,20 +758,31 @@ const EditJobCard = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption}
+                  options={vehicleOption.filter(e => {
+                    if (e.value == location.state?.itemId) {
+                      return e;
+                    }
+                  })}
                   value={formik.values.itemName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    setItemId(newValue?.value);
                     formik.setFieldValue("itemName", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
                     formik.setFieldValue("empId", newValue?.empId);
                     formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
-                    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.empId == newValue?.empId)].label);
-                    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.empId == newValue?.empId)].value);
                     setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
                     setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
                     setVehicleName(newValue?.vehicleName);
+                    console.log(complainOption);
+                    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
+                    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
+                    formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
+                    formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
+                    formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
+                    // formik.setFieldValue("serviceType", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceType || tableData);
+                    // setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || tableData);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -654,7 +810,7 @@ const EditJobCard = (props: Props) => {
                   size="small"
                   name="VehicleName"
                   id="VehicleName"
-                  value={vehicleName}
+                  value={vehicleName || vehicleOption[vehicleOption.findIndex(e => e.value === formik.values.itemId)]?.vehicleName}
                   placeholder={t("text.VehicleName")}
                   onChange={(e) => {
                   }}
@@ -663,7 +819,7 @@ const EditJobCard = (props: Props) => {
               </Grid>
 
               {/* Job Card Number */}
-              <Grid item xs={12} md={4} sm={4}>
+              {/* <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -682,7 +838,7 @@ const EditJobCard = (props: Props) => {
                     formik.setFieldValue("jobCardNo", e.target.value.toString())
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* UnderControlOf */}
               <Grid item xs={12} md={4} sm={4}>
@@ -756,28 +912,6 @@ const EditJobCard = (props: Props) => {
                 />
               </Grid>
 
-              {/* Complaint */}
-              <Grid item xs={12} md={4} sm={4}>
-                <TextField
-                  label={
-                    <CustomLabel
-                      text={t("text.Complaint")}
-                    //required={true}
-                    />
-                  }
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  name="complain"
-                  id="complain"
-                  value={formik.values.complain}
-                  placeholder={t("text.Complaint")}
-                  onChange={(e) => {
-                    formik.setFieldValue("complain", e.target.value);
-                  }}
-                />
-              </Grid>
-
               {/* CurrentReadingKM */}
               <Grid item xs={12} md={4} sm={4}>
                 <TextField
@@ -800,336 +934,426 @@ const EditJobCard = (props: Props) => {
                 />
               </Grid>
 
+              <Grid item lg={12} md={12} xs={12} >
+                <ReactQuill
+                  id="complaint"
+                  theme="snow"
+                  value={formik.values.complain}
+                  onChange={(content) => formik.setFieldValue("complain", content)}
+                  onBlur={() => formik.setFieldTouched("complain", true)}
+                  modules={modules}
+                  formats={formats}
+                  //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                  placeholder="Enter your complaint here"
+                />
+              </Grid>
+
+              {/* Complaint
+              <Grid item xs={12} md={4} sm={4}>
+                <TextField
+                  label={
+                    <CustomLabel
+                      text={t("text.Complaint")}
+                    //required={true}
+                    />
+                  }
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="complain"
+                  id="complain"
+                  value={formik.values.complain}
+                  placeholder={t("text.Complaint")}
+                  onChange={(e) => {
+                    formik.setFieldValue("complain", e.target.value);
+                  }}
+                />
+              </Grid> */}
+
+
+
 
 
               <Grid item xs={12}>
-                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                  <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                    <tr>
-                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Services")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Status")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Vendor")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Quantity")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.UnitRate")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Amount")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.NetAmount")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Reading")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ChallanNo")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Remark")}</th>
-
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row, index) => (
-                      <tr key={row.id} style={{ border: '1px solid black' }}>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <DeleteIcon
-                            onClick={() => deleteRow(index)}
-                            style={{ cursor: "pointer" }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={serviceOption}
-                            value={row.serviceName}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              console.log(newValue?.value);
-                              handleInputChange(index, 'serviceId', newValue?.value);
-                              handleInputChange(index, 'serviceName', newValue?.label);
+                <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
+                  <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                      <tr>
+                        <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Services")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Status")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Vendor")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.UnitRate")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Amount")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.NetAmount")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Reading")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ChallanNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Remark")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row, index) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
                             }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.SelectServices")}
-                                    required={false}
-                                  />
+                          >
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
                                 }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.challanStatus}
-                            onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={vendorOption}
-                            value={row.vendorName}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              console.log(newValue?.value);
-                              handleInputChange(index, 'vendorId', newValue?.value);
-                              handleInputChange(index, 'vendorName', newValue?.label);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
                             }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.Vendor")}
-                                    required={false}
-                                  />
-                                }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={unitOption}
-                            value={row.unitName}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              console.log(newValue?.value);
-                              handleInputChange(index, 'unitId', newValue?.value);
-                              handleInputChange(index, 'unitName', newValue?.label);
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={serviceOption}
+                              value={row.serviceName}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                console.log(newValue?.value);
+                                handleInputChange(index, 'serviceId', newValue?.value);
+                                handleInputChange(index, 'serviceName', newValue?.label);
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={
+                                    <CustomLabel
+                                      text={t("text.SelectServices")}
+                                      required={false}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
                             }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.Unit")}
-                                    required={false}
-                                  />
-                                }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.qty}
-                            onChange={(e) => {
-                              handleInputChange(index, 'qty', parseInt(e.target.value) || 0);
-                              formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
-                              setTotalAmount(row.qty * row.unitRate);
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={["JobWork"]}
+                              value={row.challanStatus}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                handleInputChange(index, 'challanStatus', newValue);
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={
+                                    <CustomLabel
+                                      text={t("text.Status")}
+                                      required={false}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
                             }}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.unitRate}
-                            onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.qty * row.unitRate}
-                            onChange={(e) => {
-                              handleInputChange(index, 'amount', parseFloat(e.target.value) || 0);
-                              formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
-                              handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
-                              setTotalAmount(row.qty * row.unitRate);
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={vendorOption}
+                              value={row.vendorName}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                console.log(newValue?.value);
+                                handleInputChange(index, 'vendorId', newValue?.value);
+                                handleInputChange(index, 'vendorName', newValue?.label);
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={
+                                    <CustomLabel
+                                      text={t("text.Vendor")}
+                                      required={false}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
                             }}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.qty * row.unitRate}
-                            onChange={(e) => {
-                              handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={unitOption}
+                              value={row.unitName}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                console.log(newValue?.value);
+                                handleInputChange(index, 'unitId', newValue?.value);
+                                handleInputChange(index, 'unitName', newValue?.label);
+                              }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  label={
+                                    <CustomLabel
+                                      text={t("text.Unit")}
+                                      required={false}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
                             }}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
+                          >
+                            <TextField
+                              value={row.qty}
+                              onChange={(e) => {
+                                handleInputChange(index, 'qty', parseInt(e.target.value) || 0);
+                                formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
+                                setTotalAmount(row.qty * row.unitRate);
+                              }}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              value={row.unitRate}
+                              onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              value={row.qty * row.unitRate}
+                              onChange={(e) => {
+                                handleInputChange(index, 'amount', parseFloat(e.target.value) || 0);
+                                formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
+                                handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
+                                setTotalAmount(row.qty * row.unitRate);
+                              }}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              value={row.qty * row.unitRate}
+                              onChange={(e) => {
+                                handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
+                              }}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              //value={row.challanStatus}
+                              //onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              value={row.challanNo}
+                              onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
+                            <TextField
+                              value={row.challanRemark}
+                              onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.ItemAmount")}
                         </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            // value={row.challanStatus}
-                            // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.challanNo}
-                            onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.challanRemark}
-                            onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
+                        <td colSpan={1}>
+                          <b>:</b>
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.ItemAmount")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.CGST")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.SGST")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.IGST")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
-                        {t("text.TotalItemAmount")}
-                      </td>
-                      <td colSpan={1} style={{ borderTop: "1px solid black" }}>
-                        <b>:</b>{formik.values.totalItemAmount}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.TotalOutsourceItemAmount")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.TotalServiceAmount")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>{formik.values.totalServiceAmount}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9}></td>
-                      <td colSpan={2} style={{ fontWeight: "bold" }}>
-                        {t("text.TotalAmount")}
-                      </td>
-                      <td colSpan={1}>
-                        <b>:</b>{formik.values.netAmount}
-                      </td>
-                    </tr>
-                  </tfoot>
-                </Table>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.CGST")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.SGST")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.IGST")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
+                          {t("text.TotalItemAmount")}
+                        </td>
+                        <td colSpan={1} style={{ borderTop: "1px solid black" }}>
+                          <b>:</b>{formik.values.totalItemAmount}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalOutsourceItemAmount")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalServiceAmount")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>{formik.values.totalServiceAmount}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalAmount")}
+                        </td>
+                        <td colSpan={1}>
+                          <b>:</b>{formik.values.netAmount}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </Table>
+                </div>
               </Grid>
+
+              {true && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "JobWork");
+                        handleGenerateChallan(formik.values);
+                      }
+                    }}
+                  >
+                    {t("text.JobWorkChallan")}
+                  </Button>
+
+                </Grid>
+              )}
 
 
 
@@ -1154,7 +1378,7 @@ const EditJobCard = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "jobCardModel.imageFile")}
+                    onChange={(e) => otherDocChangeHandler(e, "imageFile")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -1180,7 +1404,6 @@ const EditJobCard = (props: Props) => {
                       />
                     ) : (
                       <img
-
                         src={"data:image/png;base64," + formik.values.imageFile}
                         style={{
                           width: 150,
@@ -1192,7 +1415,7 @@ const EditJobCard = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("jobCardModel.imageFile")}
+                      onClick={() => modalOpenHandle("imageFile")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",
@@ -1265,6 +1488,37 @@ const EditJobCard = (props: Props) => {
                 </Button>
               </Grid>
 
+              {isVisible && (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#0000ff",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "16px",
+                      borderRadius: "8px",
+                      width: "100px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        toast.error("Please add some data in table for further process");
+                        return;
+                      }
+                      navigate("/vehiclecomplaint/AddJobWorkChallan", {
+                        state: { ...formik.values, serviceDetail: validTableData, jobCardId: jobCardId, challanNo: validTableData[0].challanNo },
+                      });
+
+                    }}
+                  >
+                    {t("text.Next")}
+                    <ArrowForwardIcon />
+                  </Button>
+                </Grid>
+              )}
+
             </Grid>
 
           </form>
@@ -1273,5 +1527,42 @@ const EditJobCard = (props: Props) => {
     </div>
   );
 };
+const modules = {
+  toolbar: [
+    [{ header: "1" }, { header: "2" }],
+    [{ font: [] }],
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ script: "sub" }, { script: "super" }],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ align: [] }],
+    ["link", "image", "video", "formula"],
+    ["clean"],
+  ],
+};
 
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "color",
+  "background",
+  "script",
+  "list",
+  "bullet",
+  "indent",
+  "align",
+  "link",
+  "image",
+  "video",
+  "formula",
+  "code-block",
+];
 export default EditJobCard;
