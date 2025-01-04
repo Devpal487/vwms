@@ -71,15 +71,7 @@ import QualityCheckMaster from "../pages/Inventory/QualityCheck/QualityCheckMast
 import CreateQualityCheck from "../pages/Inventory/QualityCheck/CreateQualityCheck";
 import EditQualityCheck from "../pages/Inventory/QualityCheck/EditQualityCheck";
 import ItemCategory from "../pages/master/ItemCategory/ItemCategory";
-import IndentApproval from "../pages/Inventory/IndentApproval/IndentApproval";
-import EditIndentApproval from "../pages/Inventory/IndentApproval/EditIndentApproval";
-import CreateIndentApproval from "../pages/Inventory/IndentApproval/CreateIndentApproval";
-import ForwardLevel from "../pages/Inventory/ForwardIndentLevel2/ForwardLevel";
-import CreateForwardLevel from "../pages/Inventory/ForwardIndentLevel2/CreateForwardLevel";
-import EditForwardLevel from "../pages/Inventory/ForwardIndentLevel2/EditForwardLevel";
-import IndentStore from "../pages/Inventory/IndentStorePass/IndentStore";
-import CreateIndentStore from "../pages/Inventory/IndentStorePass/CreateIndentStore";
-import EditIndentStore from "../pages/Inventory/IndentStorePass/EditIndentStore";
+
 import EmployeeMaster from "../pages/Employee/EmployeeMaster";
 import EmployeeAdd from "../pages/Employee/EmployeeAdd";
 import EmployeeEdit from "../pages/Employee/EmployeeEdit";
@@ -126,7 +118,7 @@ import RosterGroup from "../pages/master/RosterGroup/RosterGroup";
 import EditRosterGroup from "../pages/master/RosterGroup/EditRosterGroup";
 
 import ComplainAssignMaster from "../pages/master/ComplainAssignMaster/ComplainAssignMaster";
-import InventoryToAsset from "../pages/Inventory/InventoryToAsset/InventoryToAsset";
+
 import AreaMaster from "../pages/master/AreaMaster/AreaMaster";
 import RouteMaster from "../pages/master/RouteMaster/RouteMaster";
 import Login_Page from "../loginPage/Login_Page";
@@ -699,61 +691,7 @@ const appRoutes: RouteType[] = [
       },
 
 
-      {
-        path: "/Inventory/IndentApproval",
-        element: <IndentApproval />,
-        state: "Inventory.IndentApproval",
-        sidebarProps: {
-          displayText: "Indent Approval",
-        }
-      },
-      {
-        path: "/Inventory/CreateIndentApproval",
-        element: <CreateIndentApproval />,
-        state: "Inventory.CreateIndentApproval",
-      },
-      {
-        path: "/Inventory/EditIndentApproval",
-        element: <EditIndentApproval />,
-        state: "Inventory.EditIndentApproval",
-      },
-
-      {
-        path: "/Inventory/ForwardLevel",
-        element: <ForwardLevel />,
-        state: "Inventory.ForwardLevel",
-        sidebarProps: {
-          displayText: "Forward Level",
-        }
-      },
-      {
-        path: "/Inventory/CreateForwardLevel",
-        element: <CreateForwardLevel />,
-        state: "Inventory.CreateForwardLevel",
-      },
-      {
-        path: "/Inventory/EditForwardLevel",
-        element: <EditForwardLevel />,
-        state: "Inventory.EditForwardLevel",
-      },
-      {
-        path: "/Inventory/IndentStore",
-        element: <IndentStore />,
-        state: "Inventory.IndentStore",
-        sidebarProps: {
-          displayText: "Indent Store",
-        }
-      },
-      {
-        path: "/Inventory/CreateIndentStore",
-        element: <CreateIndentStore />,
-        state: "Inventory.CreateIndentStore",
-      },
-      {
-        path: "/Inventory/EditIndentStore",
-        element: <EditIndentStore />,
-        state: "Inventory.EditIndentStore",
-      },
+      
 
       {
         path: "/Inventory/StaffIndent",
@@ -811,11 +749,7 @@ const appRoutes: RouteType[] = [
         element: <EditStaffItemReturn />,
         state: "Inventory.EditStaffItemReturn",
       },
-      {
-        path: "/Inventory/InventoryToAsset",
-        element: <InventoryToAsset />,
-        state: "Inventory.InventoryToAsset",
-      },
+     
 
       {
         path: "/Inventory/JobCardIndent",
