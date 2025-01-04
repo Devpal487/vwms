@@ -48,7 +48,7 @@ type Props = {};
 const CreateJobcardItemIssue = (props: Props) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
-     const [itemValue, setItemValue] = useState();
+    const [itemValue, setItemValue] = useState();
     const [lang, setLang] = useState<Language>("en");
     const { defaultValues } = getISTDate();
     const [toaster, setToaster] = useState(false);
@@ -75,7 +75,7 @@ const CreateJobcardItemIssue = (props: Props) => {
         //unit:"",
         "returnItem": true,
 
-      
+
 
 
     }]);
@@ -91,7 +91,7 @@ const CreateJobcardItemIssue = (props: Props) => {
     ]);
     const [vehicleOption, setVehicleOption] = useState([
         { value: -1, label: t("text.VehicleNo") },
-      ]);
+    ]);
 
     const [empOption, setempOption] = useState([
         { value: "-1", label: t("text.empid") },
@@ -106,15 +106,15 @@ const CreateJobcardItemIssue = (props: Props) => {
 
     const getVehicleDetails = async () => {
         const response = await api.get(
-          `Master/GetVehicleDetail?ItemMasterId=-1`,
+            `Master/GetVehicleDetail?ItemMasterId=-1`,
         );
         const data = response.data.data;
         const arr = data.map((Item: any, index: any) => ({
-          value: Item.itemMasterId,
-          label: Item.vehicleNo
+            value: Item.itemMasterId,
+            label: Item.vehicleNo
         }));
         setVehicleOption(arr);
-      };
+    };
     const GetIndentID = async () => {
         const collectData = {
             indentId: -1,
@@ -165,12 +165,12 @@ const CreateJobcardItemIssue = (props: Props) => {
             issueQty: item?.approveQuantity,
             reqQty: item?.quantity,
 
-           unitName: "",
-          //unit:"",
+            unitName: "",
+            //unit:"",
             itemName: "",
             indentNo: "",
             "srn": 0,
-       // "unitName": "",
+            // "unitName": "",
             "returnItem": true
 
 
@@ -215,17 +215,17 @@ const CreateJobcardItemIssue = (props: Props) => {
     };
     const GetempData = async () => {
         const collectData = {
-          empid: -1,
-          userId: "",
-         
+            empid: -1,
+            userId: "",
+
         };
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
         console.log('data', data)
         const arr = data.map((item: any) => ({
-          label: item?.empName,
-          value: item?.empid
-    
+            label: item?.empName,
+            value: item?.empid
+
         }))
         // for (let index = 0; index < data.length; index++) {
         //   arr.push({
@@ -234,7 +234,7 @@ const CreateJobcardItemIssue = (props: Props) => {
         //   });
         // }
         setempOption(arr);
-      };
+    };
 
 
 
@@ -248,32 +248,45 @@ const CreateJobcardItemIssue = (props: Props) => {
 
     const formik = useFormik({
         initialValues: {
-
-
+            "sno": 0,
             "issueId": 0,
             "issueDate": defaultValues,
             "indentId": 0,
             "issueLocation": "",
             "issueType": "",
             "vehicleitem": 0,
-            "empId": null,
+            "empId": 0,
             "createdBy": "",
             "updatedBy": "",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
-            "indentNo": "",
-            "empName": "",
-            "srn": 0,
-            "jobId": 0,
-            "jobCardNo": "",
-            itemIssueDetail: []
+"indentNno": "",
+  "empName": "",
+  "vehicleNo": "",
+            // "issueId": 0,
+            // "issueDate": defaultValues,
+            // "indentId": 0,
+            // "issueLocation": "",
+            // "issueType": "",
+            // "vehicleitem": 0,
+            // "empId": null,
+            // "createdBy": "",
+            // "updatedBy": "",
+            // "createdOn": defaultValues,
+            // "updatedOn": defaultValues,
+           // "indentNo": "",
+           // "empName": "",
+            // "srn": 0,
+            // "jobId": 0,
+            // "jobCardNo": "",
+            itemIssueDetail: [],
 
 
         },
 
         validationSchema: Yup.object({
-            indentNo: Yup.string()
-                .required(t("text.reqIndentNum")),
+          //  indentno: Yup.string()
+              //  .required(t("text.reqIndentNum")),
             // empId: Yup.string()
             //     .required(t("text.reqEmpName")),
         }),
@@ -333,18 +346,32 @@ const CreateJobcardItemIssue = (props: Props) => {
             "id": 0,
             "issueId": -1,
             "itemID": 0,
+            "unitId": 0,
             "batchNo": "",
             "indentId": 0,
-            "unitId": 0,
             "reqQty": 0,
             "issueQty": 0,
-            "stockQty": 0,
             "itemName": "",
-            "indentNo": "",
-            "srn": 0,
             "unitName": "",
-           // unit:"",
-            "returnItem": true
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0,
+
+            // "id": 0,
+            // "issueId": -1,
+            // "itemID": 0,
+            // "batchNo": "",
+            // "indentId": 0,
+            // "unitId": 0,
+            // "reqQty": 0,
+            // "issueQty": 0,
+            // "stockQty": 0,
+            // "itemName": "",
+            // "indentNo": "",
+            // "srn": 0,
+            // "unitName": "",
+            // // unit:"",
+            // "returnItem": true
         }]);
     };
 
@@ -433,41 +460,41 @@ const CreateJobcardItemIssue = (props: Props) => {
                                         <TextField
                                             {...params}
                                             label={
-                                                <CustomLabel text={t("text.enterIndentNo")} required={true}/>
+                                                <CustomLabel text={t("text.enterIndentNo")} required={true} />
                                             }
                                         />
                                     )}
                                 />
-                                {formik.touched.indentNo && formik.errors.indentNo && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNo}</div>
+                                {formik.touched.indentNno && formik.errors.indentNno && (
+                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.indentNno}</div>
                                 )}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={vehicleOption}
-                  value={itemValue}
-                  fullWidth
-                  size="small"
-                  onChange={(event: any, newValue: any) => {
-                    console.log(newValue?.value);
-                    formik.setFieldValue("vehicleitem", newValue?.value);
-                    setItemValue(newValue?.label)
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="vehicleitem"
-                      id="vehicleitem"
-                      placeholder={t("text.VehicleNo")}
-                    />
-                  )}
-                />
-               
-              </Grid>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={vehicleOption}
+                                    value={itemValue}
+                                    fullWidth
+                                    size="small"
+                                    onChange={(event: any, newValue: any) => {
+                                        console.log(newValue?.value);
+                                        formik.setFieldValue("vehicleitem", newValue?.value);
+                                        setItemValue(newValue?.label)
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                                            name="vehicleitem"
+                                            id="vehicleitem"
+                                            placeholder={t("text.VehicleNo")}
+                                        />
+                                    )}
+                                />
+
+                            </Grid>
                             {/* <Grid item xs={12} sm={4} lg={4}>
                                 <Autocomplete
                                     disablePortal
@@ -506,6 +533,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                     InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
+
 
 
 

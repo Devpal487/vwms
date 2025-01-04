@@ -1,4 +1,3 @@
-
 import {
   Autocomplete,
   Button,
@@ -9,7 +8,7 @@ import {
   MenuItem,
   TextField,
   Typography,
-  TextareaAutosize,
+ 
   Table,
 } from "@mui/material";
 import { ToastContainer } from "react-toastify";
@@ -30,10 +29,16 @@ import api from "../../../utils/Url";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+
+import { lang } from "moment";
+
+import { Language } from "react-transliterate";
+import Languages from "../../../Languages";
 import { getISTDate } from "../../../utils/Constant";
 type Props = {};
 const CreateQualityCheck = (props: Props) => {
   let navigate = useNavigate();
+  const [lang, setLang] = useState<Language>("en");
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
   const [unitOptions, setUnitOptions] = useState<any>([]);
@@ -41,26 +46,26 @@ const CreateQualityCheck = (props: Props) => {
   const [vendorData, setVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
-    "id": -1,
-    "qcId": 0,
-    "mrnId": 0,
-    "orderId": 0,
-    "orderNo": "",
-    "itemId": 0,
-    "mrnQty": 0,
-    "acceptQty": 0,
-    "rejectQty": 0,
-    "rate": 0,
-    "amount": 0,
-    "gstId": 0,
-    "gstRate": 0,
-    "cgst": 0,
-    "sgst": 0,
-    "igst": 0,
-    "netAmount": 0,
-    "reason": "",
-    "batchNo": "",
-    "unitId": 0
+    id: -1,
+    qcId: 0,
+    mrnId: 0,
+    orderId: 0,
+    orderNo: "",
+    itemId: 0,
+    mrnQty: 0,
+    acceptQty: 0,
+    rejectQty: 0,
+    rate: 0,
+    amount: 0,
+    gstId: 0,
+    gstRate: 0,
+    cgst: 0,
+    sgst: 0,
+    igst: 0,
+    netAmount: 0,
+    reason: "",
+    batchNo: "",
+    unitId: 0,
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
@@ -105,7 +110,7 @@ const CreateQualityCheck = (props: Props) => {
   };
   const GetmrnData = async () => {
     const collectData = {
-      "mrnId": -1
+      mrnId: -1,
     };
     const response = await api.post(`QualityCheck/GetMrn`, collectData);
     const data = response.data.data;
@@ -120,13 +125,13 @@ const CreateQualityCheck = (props: Props) => {
   };
   const GetQcData = async () => {
     try {
-      const response = await api.get(`QualityCheck/GetMaxQcNo`,
-        { headers: {} },
-      );
+      const response = await api.get(`QualityCheck/GetMaxQcNo`, {
+        headers: {},
+      });
       const data = response.data.data;
       if (data && data.length > 0) {
         const latestQcNo = data[0]["qcNo"];
-        formik.setFieldValue('qcNo', latestQcNo);
+        formik.setFieldValue("qcNo", latestQcNo);
         const arr = data.map((item: any) => ({
           label: item.qcNo,
           value: item.qcId,
@@ -155,7 +160,7 @@ const CreateQualityCheck = (props: Props) => {
   const GetorderData = async () => {
     const collectData = {
       orderId: -1,
-      indentId: -1
+      indentId: -1,
     };
     const response = await api.post(
       `PurchaseOrder/GetPurchaseOrder`,
@@ -174,10 +179,10 @@ const CreateQualityCheck = (props: Props) => {
 
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
-      "venderId": -1,
-      "countryId": -1,
-      "stateId": -1,
-      "cityId": -1
+      venderId: -1,
+      countryId: -1,
+      stateId: -1,
+      cityId: -1,
     });
     if (result.data.isSuccess) {
       const arr =
@@ -208,11 +213,11 @@ const CreateQualityCheck = (props: Props) => {
   };
   const handleVendorSelect = (event: any, newValue: any) => {
     if (newValue && newValue.value !== "-1") {
-      setVendorDetail(newValue.details); 
-      formik.setFieldValue("vendorId", newValue.value); 
+      setVendorDetail(newValue.details);
+      formik.setFieldValue("vendorId", newValue.value);
     } else {
-      setVendorDetail(null); 
-      formik.setFieldValue("vendorId", null); 
+      setVendorDetail(null);
+      formik.setFieldValue("vendorId", null);
     }
   };
   const handleInputChange = (index: number, field: string, value: any) => {
@@ -257,23 +262,29 @@ const CreateQualityCheck = (props: Props) => {
       if (selectedTax) {
         item.gstRate = parseFloat(selectedTax.label) || 0;
         item.gstId = selectedTax.value || 0;
-        item.cgstid = selectedTax.value || 0;
-        item.sgstid = selectedTax.value || 0;
-        item.igstid = 0;
+        item.cgst = selectedTax.value || 0;
+        item.sgst = selectedTax.value || 0;
+        item.igst= 0;
       }
     } else {
       item[field] = value;
     }
     if (item.mrnQty && item.rate) {
-      item.amount = (parseFloat(item.mrnQty) || 0) * (parseFloat(item.rate) || 0);
+      item.amount =
+        (parseFloat(item.mrnQty) || 0) * (parseFloat(item.rate) || 0);
     }
     if (item.gstRate) {
-      item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(2);
+      item.gst = (
+        (item.amount * (parseFloat(item.gstRate) || 0)) /
+        100
+      ).toFixed(2);
       item.sgst = (parseFloat(item.gst) / 2).toFixed(2);
       item.cgst = (parseFloat(item.gst) / 2).toFixed(2);
       item.igst = 0;
     }
-    item.netAmount = (parseFloat(item.amount) + parseFloat(item.gst || "0")).toFixed(2);
+    item.netAmount = (
+      parseFloat(item.amount) + parseFloat(item.gst || "0")
+    ).toFixed(2);
     formik.setFieldValue("totalAmount", item.netAmount);
     updatedItems[index] = item;
     setTableData(updatedItems);
@@ -332,51 +343,47 @@ const CreateQualityCheck = (props: Props) => {
   };
   const formik = useFormik({
     initialValues: {
-      "qcId": 0,
-      "qcNo": "",
-      "qcDate": defaultValues,
-      "mrnId": 0,
-      "mrnType": "",
-      "vendorId": 0,
-      "bill_ChalanNo": "",
-      "bill_ChalanDate": defaultValues,
-      "shipmentNo": "",
-      "remark": "",
-      "totalAmount": 0,
-      "totalCGST": 0,
-      "totalSGST": 0,
-      "totalIGST": 0,
-      "totalGrossAmount": 0,
-      "disPer": 0,
-      "disAmt": 0,
-      "netAmount": 0,
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": defaultValues,
-      "updatedOn": defaultValues,
-      "companyId": 0,
-      "fyId": 0,
-      "srn": 0,
-      "amount": 0,
-      "vendor": "",
-      "mrnDate": defaultValues,
-      "mrnNo": "",
+      qcId: 0,
+      qcNo: "",
+      qcDate: defaultValues,
+      mrnId: 0,
+      mrnType: "",
+      vendorId: 0,
+      bill_ChalanNo: "",
+      bill_ChalanDate: defaultValues,
+      shipmentNo: "",
+      remark: "",
+      totalAmount: 0,
+      totalCGST: 0,
+      totalSGST: 0,
+      totalIGST: 0,
+      totalGrossAmount: 0,
+      disPer: 0,
+      disAmt: 0,
+      netAmount: 0,
+      createdBy: "",
+      updatedBy: "",
+      createdOn: defaultValues,
+      updatedOn: defaultValues,
+      companyId: 0,
+      fyId: 0,
+      srn: 0,
+      amount: 0,
+      vendor: "",
+      mrnDate: defaultValues,
+      mrnNo: "",
       qcDetail: [],
     },
 
     validationSchema: Yup.object({
-      qcDate: Yup.string()
-        .required(t("text.reqQcDate")),
-      bill_ChalanNo: Yup.string()
-        .required(t("text.reqBillNum")),
-      bill_ChalanDate: Yup.string()
-        .required(t("text.reqBillDate")),
+      qcDate: Yup.string().required(t("text.reqQcDate")),
+      bill_ChalanNo: Yup.string().required(t("text.reqBillNum")),
+      bill_ChalanDate: Yup.string().required(t("text.reqBillDate")),
     }),
 
-
     onSubmit: async (values) => {
-
-      const isFirstRowDefault = tableData[0] &&
+      const isFirstRowDefault =
+        tableData[0] &&
         tableData[0].id === -1 &&
         tableData[0].qcId === 0 &&
         tableData[0].mrnId === 0 &&
@@ -393,11 +400,11 @@ const CreateQualityCheck = (props: Props) => {
         tableData[0].cgst === "" &&
         tableData[0].sgst === "" &&
         tableData[0].igst === "" &&
-      //  tableData[0].gst === "" &&
+        //  tableData[0].gst === "" &&
         tableData[0].netAmount === "" &&
         tableData[0].reason === "" &&
         tableData[0].batchNo === "" &&
-tableData[0].unitId === 0 &&
+        tableData[0].unitId === 0 &&
         Object.keys(tableData[0].item).length === 0;
 
       if (isFirstRowDefault) {
@@ -405,7 +412,7 @@ tableData[0].unitId === 0 &&
         return;
       }
 
-      const filteredTableData = tableData.filter(row => {
+      const filteredTableData = tableData.filter((row) => {
         return !(
           row.id === -1 &&
           row.qcId === 0 &&
@@ -466,16 +473,8 @@ tableData[0].unitId === 0 &&
         }}
       >
         <CardContent>
-          <Typography
-            variant="h5"
-            textAlign="center"
-            style={{ fontSize: "18px", fontWeight: 500 }}
-          >
-            {t("text.createQualityCheck")}
-          </Typography>
-
-          <Grid item sm={4} xs={12}>
-            <Typography style={{ marginTop: "-75px" }}>
+          <Grid item xs={12} container spacing={2}>
+            <Grid item lg={2} md={2} xs={2} marginTop={2}>
               <Button
                 type="submit"
                 onClick={() => back(-1)}
@@ -489,22 +488,50 @@ tableData[0].unitId === 0 &&
               >
                 <ArrowBackSharpIcon />
               </Button>
-            </Typography>
+            </Grid>
+            <Grid
+              item
+              lg={7}
+              md={7}
+              xs={7}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ padding: "20px" }}
+                align="center"
+              >
+                {t("text.createQualityCheck")}
+              </Typography>
+            </Grid>
+
+            <Grid item lg={3} md={3} xs={3} marginTop={3}>
+              <select
+                className="language-dropdown"
+                value={lang}
+                onChange={(e) => setLang(e.target.value as Language)}
+              >
+                {Languages.map((l: any) => (
+                  <option key={l.value} value={l.value}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+            </Grid>
           </Grid>
           <Divider />
           <br />
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid item xs={12} container spacing={2}>
-
-
               <Grid item lg={4} xs={12}>
                 <TextField
                   id="qcNo"
                   name="qcNo"
-                  label={
-                    <CustomLabel text={t("text.qcNo")} required={false} />
-                  }
+                  label={<CustomLabel text={t("text.qcNo")} required={false} />}
                   value={formik.values.qcNo}
                   placeholder={t("text.qcNo")}
                   size="small"
@@ -531,9 +558,10 @@ tableData[0].unitId === 0 &&
                   InputLabelProps={{ shrink: true }}
                 />
                 {formik.touched.qcDate && formik.errors.qcDate && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.qcDate}</div>
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.qcDate}
+                  </div>
                 )}
-
               </Grid>
               <Grid item lg={4} xs={12}>
                 <Autocomplete
@@ -544,14 +572,19 @@ tableData[0].unitId === 0 &&
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     if (newValue) {
-                      formik.setFieldValue("mrnId", parseInt(newValue.value, 10)); // Cast to integer
+                      formik.setFieldValue(
+                        "mrnId",
+                        parseInt(newValue.value, 10)
+                      ); // Cast to integer
                       formik.setFieldValue("mrnNo", newValue.label); // Store mrnNo as string
                     }
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.mrnNo")} required={false} />}
+                      label={
+                        <CustomLabel text={t("text.mrnNo")} required={false} />
+                      }
                     />
                   )}
                 />
@@ -574,9 +607,12 @@ tableData[0].unitId === 0 &&
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.bill_ChalanNo && formik.errors.bill_ChalanNo && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.bill_ChalanNo}</div>
-                )}
+                {formik.touched.bill_ChalanNo &&
+                  formik.errors.bill_ChalanNo && (
+                    <div style={{ color: "red", margin: "5px" }}>
+                      {formik.errors.bill_ChalanNo}
+                    </div>
+                  )}
               </Grid>
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -598,9 +634,12 @@ tableData[0].unitId === 0 &&
                   onBlur={formik.handleBlur}
                   InputLabelProps={{ shrink: true }}
                 />
-                {formik.touched.bill_ChalanDate && formik.errors.bill_ChalanDate && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.bill_ChalanDate}</div>
-                )}
+                {formik.touched.bill_ChalanDate &&
+                  formik.errors.bill_ChalanDate && (
+                    <div style={{ color: "red", margin: "5px" }}>
+                      {formik.errors.bill_ChalanDate}
+                    </div>
+                  )}
               </Grid>
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -618,113 +657,110 @@ tableData[0].unitId === 0 &&
                   onBlur={formik.handleBlur}
                 />
               </Grid>
-              <Grid container item spacing={2} xs={12} md={12} lg={12}>
-                <Grid item lg={12} xs={12}>
-                  <Typography
-                    variant="h6"
-                    textAlign="center"
-                    fontWeight="bold"
-                    fontSize="14px"
-                  >
-                    {t("text.Vendordetails")}
-                  </Typography>
-                </Grid>
-                <Divider />
+              <Grid item lg={4} xs={12} md={6}>
+                <Autocomplete
+                  disablePortal
+                  size="small"
+                  id="combo-box-demo"
+                  options={vendorData}
+                  onChange={handleVendorSelect}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={
+                        <CustomLabel
+                          text={t("text.SelectVendor")}
+                          required={false}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </Grid>
+              {vendorDetail?.gstinNo && (
                 <Grid item lg={4} xs={12} md={6}>
-                  <Autocomplete
-                    disablePortal
-                    size="small"
-                    id="combo-box-demo"
-                    options={vendorData}
-                    onChange={handleVendorSelect}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={
-                          <CustomLabel
-                            text={t("text.SelectVendor")}
-                            required={false}
-                          />
-                        }
+                  <TextField
+                    label={
+                      <CustomLabel
+                        text={t("text.vendorGstin")}
+                        required={false}
                       />
-                    )}
+                    }
+                    value={vendorDetail?.gstinNo}
+                    placeholder={t("text.vendorGstin")}
+                    size="small"
+                    fullWidth
+                    style={{ backgroundColor: "white" }}
+                    onBlur={formik.handleBlur}
+                    InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-                {vendorDetail?.gstinNo && (
-                  <Grid item lg={4} xs={12} md={6}>
-                    <TextField
-                      label={
-                        <CustomLabel
-                          text={t("text.vendorGstin")}
-                          required={false}
-                        />
-                      }
-                      value={vendorDetail?.gstinNo}
-                      placeholder={t("text.vendorGstin")}
-                      size="small"
-                      fullWidth
-                      style={{ backgroundColor: "white" }}
-                      onBlur={formik.handleBlur}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                )}
-                {vendorDetail?.contactPerson && (
-                  <Grid item lg={4} xs={12} md={6}>
-                    <TextField
-                      label={
-                        <CustomLabel
-                          text={t("text.vendorContactPerson")}
-                          required={false}
-                        />
-                      }
-                      value={vendorDetail?.contactPerson}
-                      placeholder={t("text.vendorContactPerson")}
-                      size="small"
-                      fullWidth
-                      style={{ backgroundColor: "white" }}
-                      onBlur={formik.handleBlur}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                )}
-                {vendorDetail?.permanentAddress && (
-                  <Grid item lg={4} xs={12} md={6}>
-                    <TextField
-                      label={
-                        <CustomLabel
-                          text={t("text.vendorAddress")}
-                          required={false}
-                        />
-                      }
-                      value={vendorDetail?.permanentAddress}
-                      size="small"
-                      fullWidth
-                      style={{ backgroundColor: "white" }}
-                      onBlur={formik.handleBlur}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                )}
-                {vendorDetail?.mobileNo && (
-                  <Grid item lg={4} xs={12} md={6}>
-                    <TextField
-                      label={
-                        <CustomLabel
-                          text={t("text.vendorMobileNo")}
-                          required={false}
-                        />
-                      }
-                      value={vendorDetail?.mobileNo}
-                      size="small"
-                      fullWidth
-                      style={{ backgroundColor: "white" }}
-                      onBlur={formik.handleBlur}
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Grid>
-                )}
-              </Grid>
+              )}
+              {vendorDetail?.contactPerson && (
+                <Grid item lg={4} xs={12} md={6}>
+                  <TextField
+                    label={
+                      <CustomLabel
+                        text={t("text.vendorContactPerson")}
+                        required={false}
+                      />
+                    }
+                    value={vendorDetail?.contactPerson}
+                    placeholder={t("text.vendorContactPerson")}
+                    size="small"
+                    fullWidth
+                    style={{ backgroundColor: "white" }}
+                    onBlur={formik.handleBlur}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              )}
+              {vendorDetail?.permanentAddress && (
+                <Grid item lg={4} xs={12} md={6}>
+                  <TextField
+                    label={
+                      <CustomLabel
+                        text={t("text.vendorAddress")}
+                        required={false}
+                      />
+                    }
+                    value={vendorDetail?.permanentAddress}
+                    size="small"
+                    fullWidth
+                    style={{ backgroundColor: "white" }}
+                    onBlur={formik.handleBlur}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              )}
+              {vendorDetail?.mobileNo && (
+                <Grid item lg={4} xs={12} md={6}>
+                  <TextField
+                    label={
+                      <CustomLabel
+                        text={t("text.vendorMobileNo")}
+                        required={false}
+                      />
+                    }
+                    value={vendorDetail?.mobileNo}
+                    size="small"
+                    fullWidth
+                    style={{ backgroundColor: "white" }}
+                    onBlur={formik.handleBlur}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+              )}
+              <Grid
+                item
+                lg={12}
+                md={12}
+                xs={12}
+                textAlign={"center"}
+                fontSize={12}
+                fontWeight={800}
+              ></Grid>
+
               <Grid item xs={12} md={12} lg={12}>
                 <Table
                   style={{
@@ -825,6 +861,15 @@ tableData[0].unitId === 0 &&
                           padding: "5px",
                         }}
                       >
+                        {t("text.Amount")}
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
                         {t("text.GSTRate")}
                       </th>
                       <th
@@ -844,7 +889,7 @@ tableData[0].unitId === 0 &&
                         }}
                       >
                         SGST
-                      </th >
+                      </th>
                       <th
                         style={{
                           border: "1px solid black",
@@ -853,7 +898,8 @@ tableData[0].unitId === 0 &&
                         }}
                       >
                         IGST
-                      </th >
+                      </th>
+             
                       <th
                         style={{
                           border: "1px solid black",
@@ -964,13 +1010,19 @@ tableData[0].unitId === 0 &&
                             options={unitOptions}
                             fullWidth
                             size="small"
-                            onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
+                            onChange={(e: any, newValue: any) =>
+                              handleInputChange(
+                                index,
+                                "unitId",
+                                newValue?.value
+                              )
+                            }
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                              //   label={
-                              //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                              //   }
+                                //   label={
+                                //       <CustomLabel text={t("text.selectUnit")} required={false} />
+                                //   }
                               />
                             )}
                           />
@@ -982,9 +1034,15 @@ tableData[0].unitId === 0 &&
                           }}
                         >
                           <TextField
-                            // value={row.batchNo}
+                            value={row.batchNo}
                             size="small"
-                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "batchNo",
+                                e.target.value
+                              )
+                            }
                           />
                         </td>
                         <td
@@ -995,10 +1053,13 @@ tableData[0].unitId === 0 &&
                         >
                           <TextField
                             size="small"
-                            // value={row.balQuantity}
-                            onChange={(e) => handleInputChange(index, "mrnQty", e.target.value)}
+                            value={row.mrnQty}
+                            onChange={(e) =>
+                              handleInputChange(index, "mrnQty", e.target.value)
+                            }
                           />
                         </td>
+
                         <td
                           style={{
                             border: "1px solid black",
@@ -1007,8 +1068,14 @@ tableData[0].unitId === 0 &&
                         >
                           <TextField
                             size="small"
-                            // value={row.quantity}
-                            onChange={(e) => handleInputChange(index, "acceptQty", e.target.value)}
+                            value={row.acceptQty}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "acceptQty",
+                                e.target.value
+                              )
+                            }
                             inputProps={{ step: "any", min: "0" }}
                           />
                         </td>
@@ -1020,8 +1087,30 @@ tableData[0].unitId === 0 &&
                         >
                           <TextField
                             size="small"
-                            // value={row.quantity}
-                            onChange={(e) => handleInputChange(index, "rejectQty", e.target.value)}
+                            value={row.rejectQty}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "rejectQty",
+                                e.target.value
+                              )
+                            }
+                            inputProps={{ step: "any", min: "0" }}
+                          />
+                        </td>
+
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                          }}
+                        >
+                          <TextField
+                            size="small"
+                            //  value={row.rate}
+                            onChange={(e) =>
+                              handleInputChange(index, "rate", e.target.value)
+                            }
                             inputProps={{ step: "any", min: "0" }}
                           />
                         </td>
@@ -1032,10 +1121,9 @@ tableData[0].unitId === 0 &&
                           }}
                         >
                           <TextField
+                            value={row.amount}
                             size="small"
-                            // value={row.rate}
-                            onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                            inputProps={{ step: "any", min: "0" }}
+                            inputProps={{ readOnly: true }}
                           />
                         </td>
                         <td
@@ -1056,6 +1144,35 @@ tableData[0].unitId === 0 &&
                             renderInput={(params) => (
                               <TextField
                                 {...params}
+                                // label={
+                                //     <CustomLabel
+                                //         text={t("text.tax")}
+                                //         required={false}
+                                //     />
+                                // }
+                              />
+                            )}
+                          />
+                        </td>
+                        {/* <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                          }}
+                        >
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={taxData}
+                            fullWidth
+                            size="small"
+                            //  value={taxData.find((opt: any) => opt.value == row.gstId)}
+                            onChange={(e: any, newValue: any) =>
+                              handleInputChange(index, "gstId", newValue?.value)
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
                                 label={
                                   <CustomLabel
                                     text={t("text.tax")}
@@ -1065,7 +1182,19 @@ tableData[0].unitId === 0 &&
                               />
                             )}
                           />
-                        </td>
+                        </td> */}
+                        {/* <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                          }}
+                        >
+                          <TextField
+                            value={(row.cgst + row.sgst + row.igst) || 0}
+                            size="small"
+                            inputProps={{ readOnly: true }}
+                          />
+                        </td> */}
                         <td
                           style={{
                             border: "1px solid black",
@@ -1073,7 +1202,7 @@ tableData[0].unitId === 0 &&
                           }}
                         >
                           <TextField
-                            value={row.cgst.toFixed(2)}
+                               value={row.cgst.toFixed(2)}
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
@@ -1085,7 +1214,7 @@ tableData[0].unitId === 0 &&
                           }}
                         >
                           <TextField
-                            value={row.sgst.toFixed(2)}
+                               value={row.sgst.toFixed(2)}
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
@@ -1097,7 +1226,7 @@ tableData[0].unitId === 0 &&
                           }}
                         >
                           <TextField
-                            value={row.igst.toFixed(2)}
+                               value={row.igst.toFixed(2)}
                             size="small"
                             inputProps={{ readOnly: true }}
                           />
@@ -1126,7 +1255,7 @@ tableData[0].unitId === 0 &&
                             }}
                             inputProps={{
                               step: "any",
-                              min: "0"
+                              min: "0",
                             }}
                             size="small"
                           />
@@ -1136,42 +1265,86 @@ tableData[0].unitId === 0 &&
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan={14} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Net Amount:
+                      <td
+                        colSpan={14}
+                        style={{ textAlign: "right", fontWeight: "bold" }}
+                      >
+                        {t("text.TotalAmount")}
                       </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                      <td
+                        style={{
+                          textAlign: "center",
+                          border: "1px solid black",
+                        }}
+                      >
+                        {tableData
+                          .reduce(
+                            (acc, row) => acc + (parseFloat(row.amount) || 0),
+                            0
+                          )
+                          .toFixed(2)}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={14} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Tax Amount:
+                      <td
+                        colSpan={14}
+                        style={{ textAlign: "right", fontWeight: "bold" }}
+                      >
+                        {t("text.Totaltaxamount")}
                       </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
+                      <td
+                        style={{
+                          textAlign: "center",
+                          border: "1px solid black",
+                        }}
+                      >
+                        {tableData
+                          .reduce(
+                            (acc, row) =>
+                              acc + (parseFloat(row.sgst + row.cgst) || 0),
+                            0
+                          )
+                          .toFixed(2)}
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={14} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Gross Amount:
+                      <td
+                        colSpan={14}
+                        style={{ textAlign: "right", fontWeight: "bold" }}
+                      >
+                        {t("text.Totalgrossamount")}
                       </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                      <td
+                        style={{
+                          textAlign: "center",
+                          border: "1px solid black",
+                        }}
+                      >
+                        {tableData
+                          .reduce(
+                            (acc, row) =>
+                              acc + (parseFloat(row.netAmount) || 0),
+                            0
+                          )
+                          .toFixed(2)}
                       </td>
                     </tr>
                   </tfoot>
                 </Table>
               </Grid>
-              
+
               <Grid item xs={12} md={12} lg={12}>
-                <TextareaAutosize
+              <TextField
                   placeholder="Remark"
-                  minRows={1}
-                  onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
+                
+                  onChange={(e: any) =>
+                    formik.setFieldValue("remark", e.target.value)
+                  }
                   style={{
                     width: "100%",
                     height: "auto",
                     border: "1px solid #ccc",
+
                     padding: "8px",
                     borderRadius: "4px",
                     fontSize: "16px",
@@ -1179,34 +1352,33 @@ tableData[0].unitId === 0 &&
                   }}
                 />
               </Grid>
-              <Grid item lg={6} sm={6} xs={12}>
-                
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }} 
-                >
-                  {t("text.save")}
-                </Button>
-              </Grid>
+              <Grid item xs={12}>
+                <div style={{ justifyContent: "space-between", flex: 2 }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    style={{
+                      width: "48%",
+                      backgroundColor: `var(--header-background)`,
+                      margin: "1%",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
 
-              <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e: any) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
+                  <Button
+                    type="reset"
+                    variant="contained"
+                    style={{
+                      width: "48%",
+                      backgroundColor: "#F43F5E",
+                      margin: "1%",
+                    }}
+                    onClick={() => formik.resetForm()}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                </div>
               </Grid>
             </Grid>
           </form>
@@ -1217,4 +1389,3 @@ tableData[0].unitId === 0 &&
 };
 
 export default CreateQualityCheck;
-

@@ -1,22 +1,22 @@
 import {
-  Button,
-  CardContent,
-  Grid,
-  Divider,
-  TextField,
-  Typography,
-  TableContainer,
-  TableCell,
-  TableRow,
-  TableHead,
-  Table,
-  TableBody,
-  Select,
-  MenuItem,
-  Paper,
-  Autocomplete,
-  Modal,
-  Box,
+    Button,
+    CardContent,
+    Grid,
+    Divider,
+    TextField,
+    Typography,
+    TableContainer,
+    TableCell,
+    TableRow,
+    TableHead,
+    Table,
+    TableBody,
+    Select,
+    MenuItem,
+    Paper,
+    Autocomplete,
+    Modal,
+    Box,
 } from "@mui/material";
 import nopdf from '../../../assets/images/imagepreview.jpg'
 import React, { useState, useEffect } from "react";
@@ -35,87 +35,61 @@ import Languages from "../../../Languages";
 import dayjs from "dayjs";
 import { getISTDate } from "../../../utils/Constant";
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "180vh",
-  height: "85vh",
-  bgcolor: "#f5f5f5",
-  border: "1px solid #000",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 10,
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "180vh",
+    height: "85vh",
+    bgcolor: "#f5f5f5",
+    border: "1px solid #000",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 10,
 };
 interface VendorOption {
-  value: number;
-  label: string;
-  details?: any; // Optional, depending on your API response structure
+    value: number;
+    label: string;
+    details?: any; // Optional, depending on your API response structure
 }
-const StatusOption =[
-  { value:'open',label:"Open"},
-  {value:'close',label:"Close"},
-  {value:'cancel',label:"Cancel"},
-  {value:'partialClose',label:'Partial Close'}
+const StatusOption = [
+    { value: 'open', label: "Open" },
+    { value: 'close', label: "Close" },
+    { value: 'cancel', label: "Cancel" },
+    { value: 'partialClose', label: 'Partial Close' }
 ];
 const EditWorkShopPurchaseOrder = () => {
-       const { defaultValues } = getISTDate();  
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const location = useLocation();
-  const [lang, setLang] = useState<Language>("en");
-  const [toaster, setToaster] = useState(false);
-  // const [items, setItems] = useState<any>([
-  //   {
-  //     id: -1,
-  //     purchaseid: 1,
-  //     user_Id: -1,
-  //     ItemNameId: "",
-  //     unit: "",
-  //     qty: "",
-  //     rate: "",
-  //     amount: 0,
-  //     tax1: 0,
-  //     taxId1: 0,
-  //     tax2: "P",
-  //     discount: "",
-  //     discountAmount: 0,
-  //     netamount: 0,
-  //     documentNo: "",
-  //     documentDate: "",
-  //     invoiceNo: "",
-  //     supplier: "",
-  //     orderNo: "",
-  //     mrnNo: "",
-  //     mrnDate: "",
-  //     taxId3: "",
-  //     tax3: "",
-  //   },
-  // ]);
-  const initialRowData: any = {
-    "sno": 0,
-    "id": -1,
-    "orderId": 0,
-    "itemId": 0,
-    "quantity": 0,
-    "rate": 0,
-    "amount": 0,
-    "gstId": 0,
-    "gstRate": 0,
-    "cgst": 0,
-    "sgst": 0,
-    "igst": 0,
-    "cgstid": 0,
-    "sgstid": 0,
-    "igstid": 0,
-    "gst": 0,
-    "netAmount": 0,
-    "fyId": 0,
-    "srn": 0,
-    "balQuantity": 0,
-    "isDelete": true,
-    "itemName": ""
-};
+    const { defaultValues } = getISTDate();
+    const navigate = useNavigate();
+    const { t } = useTranslation();
+    const location = useLocation();
+    const [lang, setLang] = useState<Language>("en");
+    const [toaster, setToaster] = useState(false);
+ 
+    const initialRowData: any = {
+        "sno": 0,
+        "id": -1,
+        "orderId": 0,
+        "itemId": 0,
+        "quantity": 0,
+        "rate": 0,
+        "amount": 0,
+        "gstId": 0,
+        "gstRate": 0,
+        "cgst": 0,
+        "sgst": 0,
+        "igst": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "igstid": 0,
+        "gst": 0,
+        "netAmount": 0,
+        "fyId": 0,
+        "srn": 0,
+        "balQuantity": 0,
+        "isDelete": true,
+        "itemName": ""
+    };
     const [tableData, setTableData] = useState([{ ...initialRowData }]);
     const [taxData, setTaxData] = useState<any>([]);
 
@@ -144,453 +118,454 @@ const EditWorkShopPurchaseOrder = () => {
     const [Img, setImg] = useState("");
     const [vendorData, setVendorData] = useState([]);
 
- 
 
-  useEffect(() => {
-    getTaxData();
-    GetitemData();
-    GetUnitData();
-    getVendorData();
-   // getPurchaseInvoiceById(location.state.id);
-    GetIndentID();
-  }, []);
 
-  const GetIndentID = async () => {
-    const collectData = {
-        indentId: -1,
-        indentNo: "",
-        empId: -1,
+    useEffect(() => {
+        getTaxData();
+        GetitemData();
+        GetUnitData();
+        getVendorData();
+        // getPurchaseInvoiceById(location.state.id);
+        GetIndentID();
+    }, []);
+
+    const GetIndentID = async () => {
+        const collectData = {
+            indentId: -1,
+            indentNo: "",
+            empId: -1,
+        };
+
+
+        const response = await api.post(`Master/GetIndent`, collectData);
+        const data = response.data.data;
+        console.log("indent option", data)
+        const arr = [];
+        for (let index = 0; index < data.length; index++) {
+            arr.push({
+                label: data[index]["indentNo"],
+                value: data[index]["indentId"],
+
+            });
+        };
+        setIndentOptions(arr);
     };
 
-
-    const response = await api.post(`Master/GetIndent`, collectData);
-    const data = response.data.data;
-    console.log("indent option", data)
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-        arr.push({
-            label: data[index]["indentNo"],
-            value: data[index]["indentId"],
-
+    const getVendorData = async () => {
+        const result = await api.post(`Master/GetVendorMaster`, {
+            "venderId": -1,
+            "countryId": -1,
+            "stateId": -1,
+            "cityId": -1
         });
+        if (result.data.isSuccess) {
+            const arr =
+                result?.data?.data?.map((item: any) => ({
+                    label: `${item.name}`,
+                    value: item.venderId,
+                    details: item,
+                })) || [];
+
+            setVendorData([
+                { value: "-1", label: t("text.SelectVendor") },
+                ...arr,
+            ] as any);
+        }
+
     };
-    setIndentOptions(arr);
-};
-
-const getVendorData = async () => {
-    const result = await api.post(`Master/GetVendorMaster`, {
-        "venderId": -1,
-        "countryId": -1,
-        "stateId": -1,
-        "cityId": -1
-    });
-    if (result.data.isSuccess) {
-        const arr =
-            result?.data?.data?.map((item: any) => ({
-                label: `${item.name}`,
-                value: item.venderId,
-                details: item,
-            })) || [];
-
-        setVendorData([
-            { value: "-1", label: t("text.SelectVendor") },
-            ...arr,
-        ] as any);
-    }
-};
 
 
-const getPurchaseOrderNo = async () => {
-    try {
-        const result = await api.get(`PurchaseOrder/GetPurchaseOrderNo`);
+    const getPurchaseOrderNo = async () => {
+        try {
+            const result = await api.get(`PurchaseOrder/GetPurchaseOrderNo`);
 
 
-        if (result?.data?.status === 1 && result?.data?.data?.orderNo) {
-            formik.setFieldValue("orderNo", result.data.data.orderNo);
-        } else {
-            console.warn("Order number not found in the API response:", result);
+            if (result?.data?.status === 1 && result?.data?.data?.orderNo) {
+                formik.setFieldValue("orderNo", result.data.data.orderNo);
+            } else {
+                console.warn("Order number not found in the API response:", result);
+                formik.setFieldValue("orderNo", "");
+            }
+        } catch (error) {
+
+            if (error instanceof Error) {
+                console.error("Error while fetching the order number:", error.message);
+            } else {
+                console.error("An unexpected error occurred:", error);
+            }
             formik.setFieldValue("orderNo", "");
         }
-    } catch (error) {
+    };
 
-        if (error instanceof Error) {
-            console.error("Error while fetching the order number:", error.message);
-        } else {
-            console.error("An unexpected error occurred:", error);
+
+
+    const GetUnitData = async () => {
+        const collectData = {
+            unitId: -1,
+        };
+        const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+        const data = response.data.data;
+        const arr = [];
+        for (let index = 0; index < data.length; index++) {
+            arr.push({
+                label: data[index]["unitName"],
+                value: data[index]["unitId"],
+            });
         }
-        formik.setFieldValue("orderNo", "");
-    }
-};
-
-
-
-const GetUnitData = async () => {
-    const collectData = {
-        unitId: -1,
+        setUnitOptions([{ value: -1, label: t("text.selectUnit") }, ...arr]);
     };
-    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-        arr.push({
-            label: data[index]["unitName"],
-            value: data[index]["unitId"],
-        });
-    }
-    setUnitOptions([{ value: -1, label: t("text.selectUnit") }, ...arr]);
-};
 
-const getTaxData = async () => {
-    const result = await api.post(`UnitMaster/GetTaxMaster
+    const getTaxData = async () => {
+        const result = await api.post(`UnitMaster/GetTaxMaster
 `, {
-        taxId: -1,
-    });
-    if (result.data.status === 1) {
-        const arr =
-            result?.data?.data?.map((item: any) => ({
-                label: `${item.taxPercentage}`,
-                value: item.taxId,
-            })) || [];
-
-        setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
-    }
-};
-const GetitemData = async () => {
-    const collectData = {
-        itemMasterId: -1,
-    };
-    const response = await api.get(`ItemMaster/GetItemMaster`, {});
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-        arr.push({
-            label: data[index]["itemName"],
-            value: data[index]["itemMasterId"],
+            taxId: -1,
         });
-    }
-    setitemOption(arr);
-};
-    
-const handleInputChange = (index: number, field: string, value: any) => {
-  const updatedItems = [...tableData];
-  let item = { ...updatedItems[index] };
+        if (result.data.status === 1) {
+            const arr =
+                result?.data?.data?.map((item: any) => ({
+                    label: `${item.taxPercentage}`,
+                    value: item.taxId,
+                })) || [];
 
-  if (field === "orderNo") {
-      const selectedItem = orderOption.find(
-          (option: any) => option.value === value
-      );
-      console.log(selectedItem);
-      if (selectedItem) {
-          item = {
-              ...item,
-              // mrnType: selectedItem?.value?.toString(),
-              orderId: selectedItem?.value,
-              orderNo: selectedItem?.label,
-          };
-      }
-  } else if (field === "itemId") {
-      const selectedItem = itemOption.find(
-          (option: any) => option.value === value
-      );
-      console.log(selectedItem);
-      if (selectedItem) {
-          item = {
-              ...item,
-              itemId: selectedItem?.value,
-              itemName: selectedItem?.label,
-              item: selectedItem?.details,
-          };
-      }
-  }
-  //  else if (field === "batchNo") {
-  //     item.batchNo = value?.toString();
-  // } 
-  // else if (field === "balQuantity") {
-  //     item.balQuantity = value === "" ? 0 : parseFloat(value);
-  // } 
-  else if (field === "quantity") {
-      item.quantity = value === "" ? 0 : parseFloat(value);
-  } else if (field === "rate") {
-      item.rate = value === "" ? 0 : parseFloat(value);
-  } else if (field === "gstId") {
-      const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-      if (selectedTax) {
-          item.gstRate = parseFloat(selectedTax.label) || 0;
-          item.gstId = selectedTax.value || 0;
-          item.cgstid = selectedTax.value || 0;
-          item.sgstid = selectedTax.value || 0;
-          item.igstid = 0;
-          item.gst = item.gstRate;
-      }
-  } else {
-      item[field] = value;
-  }
-  item.amount =
-      (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-  item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
-      2
-  );
-  item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
-  item.sgst = item.gst / 2;
-  item.cgst = item.gst / 2;
-  item.igst = 0;
+            setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+        }
+    };
+    const GetitemData = async () => {
+        const collectData = {
+            itemMasterId: -1,
+        };
+        const response = await api.get(`ItemMaster/GetItemMaster`, {});
+        const data = response.data.data;
+        const arr = [];
+        for (let index = 0; index < data.length; index++) {
+            arr.push({
+                label: data[index]["itemName"],
+                value: data[index]["itemMasterId"],
+            });
+        }
+        setitemOption(arr);
+    };
 
-  formik.setFieldValue("totalAmount", item.netAmount);
+    const handleInputChange = (index: number, field: string, value: any) => {
+        const updatedItems = [...tableData];
+        let item = { ...updatedItems[index] };
 
-  updatedItems[index] = item;
-  setTableData(updatedItems);
-  updateTotalAmounts(updatedItems);
+        if (field === "orderNo") {
+            const selectedItem = orderOption.find(
+                (option: any) => option.value === value
+            );
+            console.log(selectedItem);
+            if (selectedItem) {
+                item = {
+                    ...item,
+                    // mrnType: selectedItem?.value?.toString(),
+                    orderId: selectedItem?.value,
+                    orderNo: selectedItem?.label,
+                };
+            }
+        } else if (field === "itemId") {
+            const selectedItem = itemOption.find(
+                (option: any) => option.value === value
+            );
+            console.log(selectedItem);
+            if (selectedItem) {
+                item = {
+                    ...item,
+                    itemId: selectedItem?.value,
+                    itemName: selectedItem?.label,
+                    item: selectedItem?.details,
+                };
+            }
+        }
+        //  else if (field === "batchNo") {
+        //     item.batchNo = value?.toString();
+        // } 
+        // else if (field === "balQuantity") {
+        //     item.balQuantity = value === "" ? 0 : parseFloat(value);
+        // } 
+        else if (field === "quantity") {
+            item.quantity = value === "" ? 0 : parseFloat(value);
+        } else if (field === "rate") {
+            item.rate = value === "" ? 0 : parseFloat(value);
+        } else if (field === "gstId") {
+            const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+            if (selectedTax) {
+                item.gstRate = parseFloat(selectedTax.label) || 0;
+                item.gstId = selectedTax.value || 0;
+                item.cgstid = selectedTax.value || 0;
+                item.sgstid = selectedTax.value || 0;
+                item.igstid = 0;
+                item.gst = item.gstRate;
+            }
+        } else {
+            item[field] = value;
+        }
+        item.amount =
+            (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+        item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
+            2
+        );
+        item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
+        item.sgst = item.gst / 2;
+        item.cgst = item.gst / 2;
+        item.igst = 0;
 
-  if (isRowFilled(item) && index === updatedItems.length - 1) {
-      addRow();
-  }
-};
+        formik.setFieldValue("totalAmount", item.netAmount);
 
-console.log("tableData.....", tableData);
+        updatedItems[index] = item;
+        setTableData(updatedItems);
+        updateTotalAmounts(updatedItems);
 
-const isRowFilled = (row: any) => {
-  console.log("isRowFilled", row);
-  return (
-      row.orderNo &&
-      row.itemId &&
-      // row.batchNo &&
-      // row.balQuantity > 0 &&
-      row.quantity > 0 &&
-      row.rate > 0
-  );
-};
+        if (isRowFilled(item) && index === updatedItems.length - 1) {
+            addRow();
+        }
+    };
 
-const updateTotalAmounts = (data: any[]) => {
-  console.log("updateTotalAmounts", data);
-  const totals = data.reduce(
-      (acc, row) => {
-          //  acc.totalAmount += parseFloat(row.amount) || 0;
-          acc.totalCGST += parseFloat(row.cgst) || 0;
-          acc.totalSGST += parseFloat(row.sgst) || 0;
-          acc.totalIGST += parseFloat(row.igst) || 0;
-          acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
-          return acc;
-      },
-      {
-          // totalAmount: 0,
-          totalCGST: 0,
-          totalSGST: 0,
-          totalIGST: 0,
-          totalGrossAmount: 0,
-      }
-  );
+    console.log("tableData.....", tableData);
 
-  formik.setValues({
-      ...formik.values,
-      ...totals,
-  });
-};
+    const isRowFilled = (row: any) => {
+        console.log("isRowFilled", row);
+        return (
+            row.orderNo &&
+            row.itemId &&
+            // row.batchNo &&
+            // row.balQuantity > 0 &&
+            row.quantity > 0 &&
+            row.rate > 0
+        );
+    };
 
-const deleteRow = (index: number) => {
-  if (tableData.length === 1) {
-      setTableData([{ ...initialRowData }]);
-  } else {
-      const newData = tableData.filter((_, i) => i !== index);
-      setTableData(newData);
-  }
-  updateTotalAmounts(tableData);
-};
+    const updateTotalAmounts = (data: any[]) => {
+        console.log("updateTotalAmounts", data);
+        const totals = data.reduce(
+            (acc, row) => {
+                //  acc.totalAmount += parseFloat(row.amount) || 0;
+                acc.totalCGST += parseFloat(row.cgst) || 0;
+                acc.totalSGST += parseFloat(row.sgst) || 0;
+                acc.totalIGST += parseFloat(row.igst) || 0;
+                acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
+                return acc;
+            },
+            {
+                // totalAmount: 0,
+                totalCGST: 0,
+                totalSGST: 0,
+                totalIGST: 0,
+                totalGrossAmount: 0,
+            }
+        );
 
-const addRow = () => {
-  setTableData([...tableData, { ...initialRowData }]);
-};
+        formik.setValues({
+            ...formik.values,
+            ...totals,
+        });
+    };
 
-const handlePanClose1 = () => {
-  setDocOpen(false);
-};
+    const deleteRow = (index: number) => {
+        if (tableData.length === 1) {
+            setTableData([{ ...initialRowData }]);
+        } else {
+            const newData = tableData.filter((_, i) => i !== index);
+            setTableData(newData);
+        }
+        updateTotalAmounts(tableData);
+    };
 
-const modalOpenHandle1 = (event: string) => {
-  setDocOpen(true);
-  const base64Prefix = "data:image/jpg;base64,";
+    const addRow = () => {
+        setTableData([...tableData, { ...initialRowData }]);
+    };
 
+    const handlePanClose1 = () => {
+        setDocOpen(false);
+    };
 
-  let imageData = '';
-  switch (event) {
-      case "pOrderDoc":
-          imageData = formik.values.pOrderDoc;
-          break;
-  }
-  if (imageData) {
-      console.log("imageData", base64Prefix + imageData);
-      setImg(base64Prefix + imageData);
-  } else {
-      setImg('');
-  }
-};
-
-const otherDocChangeHandler = (event: any, params: any) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  const fileExtension = file.name.split('.').pop()?.toLowerCase();
-  if (!['jpg'].includes(fileExtension || '')) {
-      alert("Only .jpg image file is allowed to be uploaded.");
-      event.target.value = '';
-      return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-      const base64String = e.target?.result as string;
-      const base64Data = base64String.split(',')[1];
-      formik.setFieldValue(params, base64Data);
-
-      formik.setFieldValue('pOrderDoc', fileExtension);
+    const modalOpenHandle1 = (event: string) => {
+        setDocOpen(true);
+        const base64Prefix = "data:image/jpg;base64,";
 
 
+        let imageData = '';
+        switch (event) {
+            case "pOrderDoc":
+                imageData = formik.values.pOrderDoc;
+                break;
+        }
+        if (imageData) {
+            console.log("imageData", base64Prefix + imageData);
+            setImg(base64Prefix + imageData);
+        } else {
+            setImg('');
+        }
+    };
 
-      console.log(`File '${file.name}' loaded as base64 string`);
-      console.log("base64Data", base64Data);
-  };
-  reader.onerror = (error) => {
-      console.error("Error reading file:", error);
-      alert("Error reading file. Please try again.");
-  };
-  reader.readAsDataURL(file);
-};
-  const formik = useFormik({
-    initialValues: {
-      
-      sno: location?.state?.sno || 0,
-      orderId: location?.state?.orderId || 0,
-      indentId: location?.state?.indentId || 0,
-      orderNo: location?.state?.orderNo || "",
-      orderDate: location?.state?.orderDate || defaultValues,
-      vendorId: location?.state?.vendorId || 0,
-      name: location?.state?.name || "",
-      billingAddress: location?.state?.billingAddress || "",
-      shippingAddress: location?.state?.shippingAddress || "",
-      totalAmount: location?.state?.totalAmount || 0,
-      totalCGST: location?.state?.totalCGST || 0,
-      totalSGST: location?.state?.totalSGST || 0,
-      totalIGST: location?.state?.totalIGST || 0,
-      netAmount: location?.state?.netAmount || 0,
-      status: location?.state?.status || "",
-      orderType: location?.state?.orderType || "",
-      createdBy: location?.state?.createdBy || "",
-      updatedBy: location?.state?.updatedBy || "",
-      createdOn: location?.state?.createdOn || defaultValues,
-      updatedOn: location?.state?.updatedOn || defaultValues,
-      companyId: location?.state?.companyId || 0,
-      fyId: location?.state?.fyId || 0,
-      releasedBy: location?.state?.releasedBy || "",
-      postedBy: location?.state?.postedBy || "",
-      releasedOn: location?.state?.releasedOn || defaultValues,
-      postedOn: location?.state?.postedOn || defaultValues,
-      pOrderDoc: location?.state?.pOrderDoc || "",
-      purchaseOrderDetail: location?.state?.purchaseOrderDetail || [],
-      isSelected: location?.state?.isSelected !== undefined ? location.state.isSelected : true,
-      file: location?.state?.file || "",
-      fileOldName: location?.state?.fileOldName || "",
-      indentNo: location?.state?.indentNo || "",
-      unitId: location?.state?.unitId || 0,
-      itemName: location?.state?.itemName || "",
-      unitName: location?.state?.unitName || "",
-    
-    
-    
-    },
-    // validationSchema: Yup.object().shape({
-    //   document_No: Yup.string().required(t("Document No. required")),
-    //   orderNo: Yup.string().required(t("Order No. required")),
-    //   doc_Date: Yup.date().required(t("Order Date required")),
-    //   p_InvoiceDate: Yup.date().required(t("Invoice Date required")),
-    //   supplierName: Yup.string().required(t("Supplier Name required")),
-    // }),
-    onSubmit: async (values) => {
-      const filteredTableData = tableData.filter(
-        (row) => !(row.itemId === 0 && row.quantity === 0)
-      );
-      const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`, {
-        ...values,
-        purchaseOrderDetail: filteredTableData,
-      });
-      if (response.data.status === 1) {
-        toast.success(response.data.message);
-        navigate("/Inventory/WorkShopPurchaseOrder");
-      } else {
-        toast.error(response.data.message);
-      }
-    },
-  });
-  useEffect(() => {
-    if (location?.state?.purchaseOrderDetail) {
-      setTableData(location.state.purchaseOrderDetail);
-    }
-  }, [location.state]);
+    const otherDocChangeHandler = (event: any, params: any) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
+        if (!['jpg'].includes(fileExtension || '')) {
+            alert("Only .jpg image file is allowed to be uploaded.");
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+            const base64String = e.target?.result as string;
+            const base64Data = base64String.split(',')[1];
+            formik.setFieldValue(params, base64Data);
+
+            formik.setFieldValue('pOrderDoc', fileExtension);
+
+
+
+            console.log(`File '${file.name}' loaded as base64 string`);
+            console.log("base64Data", base64Data);
+        };
+        reader.onerror = (error) => {
+            console.error("Error reading file:", error);
+            alert("Error reading file. Please try again.");
+        };
+        reader.readAsDataURL(file);
+    };
+    const formik = useFormik({
+        initialValues: {
+
+            sno: location?.state?.sno || 0,
+            orderId: location?.state?.orderId || 0,
+            indentId: location?.state?.indentId || 0,
+            orderNo: location?.state?.orderNo || "",
+            orderDate: dayjs(location.state.orderDate).format("YYYY-MM-DD"),
+            vendorId: location?.state?.vendorId || 0,
+            name: location?.state?.name || "",
+            billingAddress: location?.state?.billingAddress || "",
+            shippingAddress: location?.state?.shippingAddress || "",
+            totalAmount: location?.state?.totalAmount || 0,
+            totalCGST: location?.state?.totalCGST || 0,
+            totalSGST: location?.state?.totalSGST || 0,
+            totalIGST: location?.state?.totalIGST || 0,
+            netAmount: location?.state?.netAmount || 0,
+            status: location?.state?.status || "",
+            orderType: location?.state?.orderType || "",
+            createdBy: location?.state?.createdBy || "",
+            updatedBy: location?.state?.updatedBy || "",
+            createdOn: location?.state?.createdOn || defaultValues,
+            updatedOn: location?.state?.updatedOn || defaultValues,
+            companyId: location?.state?.companyId || 0,
+            fyId: location?.state?.fyId || 0,
+            releasedBy: location?.state?.releasedBy || "",
+            postedBy: location?.state?.postedBy || "",
+            releasedOn: location?.state?.releasedOn || defaultValues,
+            postedOn: location?.state?.postedOn || defaultValues,
+            pOrderDoc: location?.state?.pOrderDoc || "",
+            purchaseOrderDetail: location?.state?.purchaseOrderDetail || [],
+            isSelected: location?.state?.isSelected !== undefined ? location.state.isSelected : true,
+            file: location?.state?.file || "",
+            fileOldName: location?.state?.fileOldName || "",
+            indentNo: location?.state?.indentNo || "",
+            unitId: location?.state?.unitId || 0,
+            itemName: location?.state?.itemName || "",
+            unitName: location?.state?.unitName || "",
+
+
+
+        },
+        // validationSchema: Yup.object().shape({
+        //   document_No: Yup.string().required(t("Document No. required")),
+        //   orderNo: Yup.string().required(t("Order No. required")),
+        //   doc_Date: Yup.date().required(t("Order Date required")),
+        //   p_InvoiceDate: Yup.date().required(t("Invoice Date required")),
+        //   supplierName: Yup.string().required(t("Supplier Name required")),
+        // }),
+        onSubmit: async (values) => {
+            const filteredTableData = tableData.filter(
+                (row) => !(row.itemId === 0 && row.quantity === 0)
+            );
+            const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`, {
+                ...values,
+                purchaseOrderDetail: filteredTableData,
+            });
+            if (response.data.status === 1) {
+                toast.success(response.data.message);
+                navigate("/Inventory/WorkShopPurchaseOrder");
+            } else {
+                toast.error(response.data.message);
+            }
+        },
+    });
+    useEffect(() => {
+        if (location?.state?.purchaseOrderDetail) {
+            setTableData(location.state.purchaseOrderDetail);
+        }
+    }, [location.state]);
 
     const back = useNavigate();
 
-  return (
-    <div>
-      <div
-        style={{
-          padding: "5px",
-          backgroundColor: "#ffffff",
-          borderRadius: "5px",
-          border: ".5px solid #FF7722",
-          marginTop: "3vh",
-        }}
-      >
-        <CardContent>
-          <Grid item xs={12} container spacing={2}>
-            <Grid item lg={2} md={2} xs={2} marginTop={2}>
-              <Button
-                type="submit"
-                onClick={() => back(-1)}
-                variant="contained"
+    return (
+        <div>
+            <div
                 style={{
-                  backgroundColor: "blue",
-                  width: 20,
+                    padding: "5px",
+                    backgroundColor: "#ffffff",
+                    borderRadius: "5px",
+                    border: ".5px solid #FF7722",
+                    marginTop: "3vh",
                 }}
-              >
-                <ArrowBackSharpIcon />
-              </Button>
-            </Grid>
-            <Grid
-              item
-              lg={7}
-              md={7}
-              xs={7}
-              alignItems="center"
-              justifyContent="center"
             >
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                sx={{ padding: "20px" }}
-                align="center"
-              >
-                {t("text.EditWorkShopPurchaseOrder")}
-              </Typography>
-            </Grid>
+                <CardContent>
+                    <Grid item xs={12} container spacing={2}>
+                        <Grid item lg={2} md={2} xs={2} marginTop={2}>
+                            <Button
+                                type="submit"
+                                onClick={() => back(-1)}
+                                variant="contained"
+                                style={{
+                                    backgroundColor: "blue",
+                                    width: 20,
+                                }}
+                            >
+                                <ArrowBackSharpIcon />
+                            </Button>
+                        </Grid>
+                        <Grid
+                            item
+                            lg={7}
+                            md={7}
+                            xs={7}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                                sx={{ padding: "20px" }}
+                                align="center"
+                            >
+                                {t("text.EditWorkShopPurchaseOrder")}
+                            </Typography>
+                        </Grid>
 
-            <Grid item lg={3} md={3} xs={3} marginTop={3}>
-              <select
-                className="language-dropdown"
-                value={lang}
-                onChange={(e) => setLang(e.target.value as Language)}
-              >
-                {Languages.map((l: any) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
-            </Grid>
-          </Grid>
-          <Divider />
-          <br />
-          <form onSubmit={formik.handleSubmit}>
-            {toaster && <ToastApp />}
-            <Grid item xs={12} container spacing={2}>
-            <Grid item lg={4} xs={12} sm={4}>
+                        <Grid item lg={3} md={3} xs={3} marginTop={3}>
+                            <select
+                                className="language-dropdown"
+                                value={lang}
+                                onChange={(e) => setLang(e.target.value as Language)}
+                            >
+                                {Languages.map((l: any) => (
+                                    <option key={l.value} value={l.value}>
+                                        {l.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </Grid>
+                    </Grid>
+                    <Divider />
+                    <br />
+                    <form onSubmit={formik.handleSubmit}>
+                        {toaster && <ToastApp />}
+                        <Grid item xs={12} container spacing={2}>
+                            <Grid item lg={4} xs={12} sm={4}>
                                 <TextField
                                     id="orderNo"
                                     name="orderNo"
@@ -603,19 +578,19 @@ const otherDocChangeHandler = (event: any, params: any) => {
                             </Grid>
 
                             <Grid item lg={4} xs={12}>
-                            <TextField
-  id="orderDate"
-  name="orderDate"
-  label={<CustomLabel text={t("text.orderDate")} required={true} />}
-  value={formik.values.orderDate}
-  size="small"
-  type="date"
-  fullWidth
-  onChange={formik.handleChange}
-  onBlur={formik.handleBlur}
-  InputLabelProps={{ shrink: true }}
-  error={formik.touched.orderDate && Boolean(formik.errors.orderDate)}
-/>
+                                <TextField
+                                    id="orderDate"
+                                    name="orderDate"
+                                    label={<CustomLabel text={t("text.orderDate")} required={true} />}
+                                    value={formik.values.orderDate}
+                                    size="small"
+                                    type="date"
+                                    fullWidth
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    InputLabelProps={{ shrink: true }}
+                                    error={formik.touched.orderDate && Boolean(formik.errors.orderDate)}
+                                />
 
 
                                 {/* <TextField
@@ -674,27 +649,27 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                     )}
                                 /> */}
                                 <Autocomplete
-  disablePortal
-  id="combo-box-indent"
-  options={indentOptions}
-  fullWidth
-  size="small"
-  value={
-    indentOptions.find((option) => option.value === formik.values.indentId) || null
-  }
-  onChange={(event: any, newValue: any) => {
-    if (newValue) {
-      formik.setFieldValue("indentId", newValue.value);
-      formik.setFieldValue("indentNo", newValue.label);
-    }
-  }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label={<CustomLabel text={t("text.enterIndentNo")} required={true} />}
-    />
-  )}
-/>
+                                    disablePortal
+                                    id="combo-box-indent"
+                                    options={indentOptions}
+                                    fullWidth
+                                    size="small"
+                                    value={
+                                        indentOptions.find((option) => option.value === formik.values.indentId) || null
+                                    }
+                                    onChange={(event: any, newValue: any) => {
+                                        if (newValue) {
+                                            formik.setFieldValue("indentId", newValue.value);
+                                            formik.setFieldValue("indentNo", newValue.label);
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label={<CustomLabel text={t("text.enterIndentNo")} required={true} />}
+                                        />
+                                    )}
+                                />
 
                                 {formik.touched.indentNo && formik.errors.indentNo && (
                                     <div style={{ color: "red", margin: "5px" }}></div>
@@ -726,27 +701,27 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                     )}
                                 /> */}
                                 <Autocomplete
-  disablePortal
-  id="combo-box-vendor"
-  options={vendorData}
-  fullWidth
-  size="small"
-  value={
-    vendorData.find((option:any) => option.value === formik.values.vendorId) || null
-  }
-  onChange={(event: any, newValue: any) => {
-    if (newValue) {
-      formik.setFieldValue("vendorId", newValue.value);
-      formik.setFieldValue("name", newValue.label);
-    }
-  }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label={<CustomLabel text={t("text.vendorName")} required={true} />}
-    />
-  )}
-/>
+                                    disablePortal
+                                    id="combo-box-vendor"
+                                    options={vendorData}
+                                    fullWidth
+                                    size="small"
+                                    value={
+                                        vendorData.find((option: any) => option.value === formik.values.vendorId) || null
+                                    }
+                                    onChange={(event: any, newValue: any) => {
+                                        if (newValue) {
+                                            formik.setFieldValue("vendorId", newValue.value);
+                                            formik.setFieldValue("name", newValue.label);
+                                        }
+                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label={<CustomLabel text={t("text.vendorName")} required={true} />}
+                                        />
+                                    )}
+                                />
 
                             </Grid>
 
@@ -781,26 +756,26 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                     item
                                     style={{ marginBottom: "30px", marginTop: "30px" }}
                                 ><TextField
-                                type="file"
-                                inputProps={{ accept: "image/*" }}
-                                InputLabelProps={{ shrink: true }}
-                                label={<CustomLabel text={t("text.uploadDocument")} />}
-                                size="small"
-                                fullWidth
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                  const file = event.target.files?.[0];
-                                  if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = () => {
-                                      const base64String = reader.result?.toString().split(",")[1];
-                                      formik.setFieldValue("pOrderDoc", base64String);
-                                      formik.setFieldValue("file", file.name);
-                                    };
-                                    reader.readAsDataURL(file);
-                                  }
-                                }}
-                              />
-                              
+                                        type="file"
+                                        inputProps={{ accept: "image/*" }}
+                                        InputLabelProps={{ shrink: true }}
+                                        label={<CustomLabel text={t("text.uploadDocument")} />}
+                                        size="small"
+                                        fullWidth
+                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                            const file = event.target.files?.[0];
+                                            if (file) {
+                                                const reader = new FileReader();
+                                                reader.onload = () => {
+                                                    const base64String = reader.result?.toString().split(",")[1];
+                                                    formik.setFieldValue("pOrderDoc", base64String);
+                                                    formik.setFieldValue("file", file.name);
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }}
+                                    />
+
                                     {/* <TextField
                                         type="file"
                                         inputProps={{ accept: "image/*" }}
@@ -886,9 +861,9 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                 </Modal>
                             </Grid>
 
-                <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}></Grid>
+                            <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}></Grid>
 
-<Grid item xs={12} md={12} lg={12}>
+                            <Grid item xs={12} md={12} lg={12}>
                                 <Table
                                     style={{
                                         borderCollapse: "collapse",
@@ -1117,7 +1092,7 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                                 >
                                                     <TextField
                                                         size="small"
-                                                        // value={row.rate}
+                                                         value={row.rate}
                                                         onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                         inputProps={{ step: "any", min: "0" }}
                                                     />
@@ -1218,7 +1193,7 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                     <tfoot>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalnetamount")}
+                                                {t("text.TotalAmount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1237,7 +1212,7 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                         </tr>
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalgrossamount")}
+                                                {t("text.Totalnetamount")}
 
                                             </td>
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1248,41 +1223,41 @@ const otherDocChangeHandler = (event: any, params: any) => {
                                 </Table>
                             </Grid>
 
-         
-              <Grid item xs={12}>
-                <div style={{ justifyContent: "space-between", flex: 2 }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    style={{
-                      width: "48%",
-                      backgroundColor: `var(--header-background)`,
-                      margin: "1%",
-                    }}
-                  >
-                    {t("text.update")}
-                  </Button>
 
-                  <Button
-                    type="reset"
-                    variant="contained"
-                    style={{
-                      width: "48%",
-                      backgroundColor: "#F43F5E",
-                      margin: "1%",
-                    }}
-                    onClick={() => formik.resetForm()}
-                  >
-                    {t("text.reset")}
-                  </Button>
-                </div>
-              </Grid>
-            </Grid>
-          </form>
-        </CardContent>
-      </div>
-    </div>
-  );
+                            <Grid item xs={12}>
+                                <div style={{ justifyContent: "space-between", flex: 2 }}>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        style={{
+                                            width: "48%",
+                                            backgroundColor: `var(--header-background)`,
+                                            margin: "1%",
+                                        }}
+                                    >
+                                        {t("text.update")}
+                                    </Button>
+
+                                    <Button
+                                        type="reset"
+                                        variant="contained"
+                                        style={{
+                                            width: "48%",
+                                            backgroundColor: "#F43F5E",
+                                            margin: "1%",
+                                        }}
+                                        onClick={() => formik.resetForm()}
+                                    >
+                                        {t("text.reset")}
+                                    </Button>
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </form>
+                </CardContent>
+            </div>
+        </div>
+    );
 };
 
 export default EditWorkShopPurchaseOrder;

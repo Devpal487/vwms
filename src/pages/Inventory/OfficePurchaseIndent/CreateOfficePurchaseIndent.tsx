@@ -585,7 +585,7 @@ import {
   MenuItem,
   TextField,
   Typography,
-  TextareaAutosize,
+
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
@@ -1143,7 +1143,8 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
 
               <Grid item xs={12} md={12} lg={12}>
-                <TextareaAutosize placeholder={t("text.remark")} minRows={1}
+                 <TextField
+                               placeholder={t("text.Remark")}
                   onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                   style={{
                     width: '100%',

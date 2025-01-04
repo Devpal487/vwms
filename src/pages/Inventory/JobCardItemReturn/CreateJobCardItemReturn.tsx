@@ -194,6 +194,7 @@ const CreateJobCardItemReturn = (props: Props) => {
         setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
     };
     const GetUnitData = async () => {
+        
         const collectData = {
             unitId: -1,
         };

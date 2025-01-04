@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 
-  TextareaAutosize,
+
   
   Table,
 } from "@mui/material";
@@ -1294,7 +1294,7 @@ const EditQualityCheck = (props: Props) => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                      <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
                       {t("text.Totalnetamount")}
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1302,7 +1302,7 @@ const EditQualityCheck = (props: Props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                      <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
                       {t("text.Totaltaxamount")}
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1310,7 +1310,7 @@ const EditQualityCheck = (props: Props) => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                      <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
                       {t("text.Totalgrossamount")}
                       </td>
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1583,9 +1583,9 @@ const EditQualityCheck = (props: Props) => {
               </Grid> */}
 
               <Grid item xs={12} md={12} lg={12}>
-                <TextareaAutosize
+              <TextField
                   placeholder={t("text.Remark")}
-                  minRows={1}
+                
                   value={formik.values.remark}
                   onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
                   style={{
