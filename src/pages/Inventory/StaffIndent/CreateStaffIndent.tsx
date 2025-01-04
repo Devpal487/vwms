@@ -49,7 +49,7 @@ const CreateStaffIndent = (props: Props) => {
     // srn: 0,
     // isDelete: true,
 
-   "id": -1,
+    "id": -1,
     "indentId": 0,
     "itemId": 0,
     "unitId": 0,
@@ -113,10 +113,10 @@ const CreateStaffIndent = (props: Props) => {
     const data = response.data.data;
 
     for (let index = 0; index < data.length; index++) {
-        formik.setFieldValue("indentNo", data[index]['indentNo'])
+      formik.setFieldValue("indentNo", data[index]['indentNo'])
     }
     //setmaxindentOption(arr);
-};
+  };
 
 
 
@@ -126,7 +126,7 @@ const CreateStaffIndent = (props: Props) => {
     const collectData = {
       empid: -1,
       userId: "",
-     
+
     };
     const response = await api.post(`Employee/GetEmployee`, collectData);
     const data = response.data.data;
@@ -214,7 +214,7 @@ const CreateStaffIndent = (props: Props) => {
       // indentDetail:[],
       // srn: 0
 
-      
+
       "indentId": 0,
       "indentNo": "",
       "indentDate": defaultValues,
@@ -533,12 +533,17 @@ const CreateStaffIndent = (props: Props) => {
                             options={itemOption}
                             fullWidth
                             size="small"
-                            onChange={(e: any, newValue: any) =>
-                              handleInputChange(
-                                index,
-                                "itemId",
-                                newValue?.value
-                              )
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              } else {
+                                handleInputChange(
+                                  index,
+                                  "itemId",
+                                  newValue?.value
+                                )
+                              }
+                            }
                             }
                             renderInput={(params) => (
                               <TextField
@@ -605,7 +610,13 @@ const CreateStaffIndent = (props: Props) => {
                             inputProps={{ "aria-readonly": true }}
                           />
                         </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                          if (tableData.length > 1) {
+                            deleteRow(index)
+                          } else {
+                            alert("There should be atleast one row")
+                          }
+                        }}>
                           <DeleteIcon />
                         </td>
                       </tr>
@@ -618,7 +629,7 @@ const CreateStaffIndent = (props: Props) => {
               <Grid item xs={12} md={12} lg={12}>
                 {/* <TextareaAutosize placeholder={t("text.remark")} minRows={1} */}
                 <TextField
-                                             placeholder={t("text.Remark")}
+                  placeholder={t("text.Remark")}
                   onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                   style={{
                     width: '100%',
@@ -627,7 +638,7 @@ const CreateStaffIndent = (props: Props) => {
                     padding: '8px',
                     borderRadius: '4px',
                     fontSize: '16px',
-                 
+
                   }} />
               </Grid>
 

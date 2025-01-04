@@ -8,7 +8,7 @@ import {
   MenuItem,
   TextField,
   Typography,
- 
+
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
@@ -173,7 +173,7 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
             "empId": 0,
             "vZoneID": 0,
             "taxId": 0,
-            "purchaseYear":0 ,
+            "purchaseYear": 0,
             "modelNo": "",
             "vehicleNo": "",
             "tankCapacity": 0,
@@ -483,12 +483,17 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                             options={itemOption}
                             fullWidth
                             size="small"
-                            onChange={(e: any, newValue: any) =>
-                              handleInputChange(
-                                index,
-                                "itemId",
-                                newValue?.value
-                              )
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              } else {
+                                handleInputChange(
+                                  index,
+                                  "itemId",
+                                  newValue?.value
+                                )
+                              }
+                            }
                             }
                             renderInput={(params) => (
                               <TextField
@@ -555,7 +560,13 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                             inputProps={{ "aria-readonly": true }}
                           />
                         </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                          if (tableData.length > 1) {
+                            deleteRow(index)
+                          } else {
+                            alert("There should be atleast one row")
+                          }
+                        }}>
                           <DeleteIcon />
                         </td>
                       </tr>
@@ -566,8 +577,8 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
 
 
               <Grid item xs={12} md={12} lg={12}>
-               
-              <TextField
+
+                <TextField
                   placeholder={t("text.Remark")}
                   onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                   style={{

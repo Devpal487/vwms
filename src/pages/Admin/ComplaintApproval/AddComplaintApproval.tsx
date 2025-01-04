@@ -251,9 +251,9 @@ const AddComplaintApproval = (props: Props) => {
          "status": "inprogress",
          "currentReading": location.state?.currentReading,
          "createdOn": location.state?.createdOn,
-         "complaintDate": location.state?.complaintDate,
+         "complaintDate": dayjs(location.state?.complaintDate),
          "updatedOn": location.state?.updatedOn,
-         "compAppdt": defaultValues,
+         "compAppdt": dayjs(defaultValues),
          "jobCardNo": location.state?.jobCardNo || location.state?.complaintNo || "",
          "file": location.state?.file || "",
          "fileOldName": location.state?.fileOldName || "",
@@ -447,6 +447,10 @@ const AddComplaintApproval = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if(!newValue){
+                                 formik.setFieldValue("itemID", "");
+                                 formik.setFieldValue("vehicleNo", "");
+                              }else{
                               formik.setFieldValue("itemID", newValue?.value);
                               formik.setFieldValue("vehicleNo", newValue?.label);
                               formik.setFieldValue("empId", newValue?.empId);
@@ -468,7 +472,7 @@ const AddComplaintApproval = (props: Props) => {
                               formik.setFieldValue("fileOldName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)]?.fileOldName || "");
                               formik.setFieldValue("vehicleName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].vehicleName);
                               formik.setFieldValue("empName", complaintData[complaintData.findIndex(x => x.itemID == newValue?.value)].empName);
-
+                              }
                            }}
                            renderInput={(params) => (
                               <TextField

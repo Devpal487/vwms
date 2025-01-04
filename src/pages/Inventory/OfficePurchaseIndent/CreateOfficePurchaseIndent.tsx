@@ -28,10 +28,10 @@
 //   import Languages from "../../../Languages";
 //   import DeleteIcon from '@mui/icons-material/Delete';
 //   import { getISTDate } from "../../../utils/Constant";
-  
+
 //   type Props = {};
-  
-  
+
+
 //   const CreateOfficePurchaseIndent = (props: Props) => {
 //     let navigate = useNavigate();
 //     const { t } = useTranslation();
@@ -39,8 +39,8 @@
 //     const { defaultValues } = getISTDate();
 //     const [toaster, setToaster] = useState(false);
 //     const [tableData, setTableData] = useState<any>([{
-      
-  
+
+
 //       "id": -1,
 //       "indentId": 0,
 //       "itemId": 0,
@@ -55,8 +55,8 @@
 //       "unitName": "",
 //       "itemName": ""
 //     }]);
-  
-  
+
+
 //     const [unitOptions, setUnitOptions] = useState([
 //       { value: "-1", label: t("text.SelectUnitId") },
 //     ]);
@@ -66,23 +66,23 @@
 //     const [empOption, setempOption] = useState([
 //       { value: "-1", label: t("text.empid") },
 //     ]);
-  
-  
-  
+
+
+
 //     useEffect(() => {
-  
+
 //       GetUnitData();
 //       GetitemData();
 //       GetempData();
-  
+
 //       GetmaxindentData();
-  
+
 //     }, []);
-  
-  
+
+
 //     console.log("🚀 ~ CreateOfficePurchaseIndent ~ tableData:", tableData)
-  
-  
+
+
 //     const GetitemData = async () => {
 //       const collectData = {
 //         itemMasterId: -1,
@@ -98,22 +98,22 @@
 //       }
 //       setitemOption(arr);
 //     };
-  
+
 //     const GetmaxindentData = async () => {
-  
+
 //       const response = await api.get(`IndentMaster/GetMaxindentNo`);
 //       const data = response.data.data;
-  
+
 //       for (let index = 0; index < data.length; index++) {
 //         formik.setFieldValue("indentNo", data[index]['indentNo'])
 //       }
-      
+
 //     };
-  
-  
-  
-  
-  
+
+
+
+
+
 //     const GetempData = async () => {
 //       const collectData = {
 //         empid: -1,
@@ -134,14 +134,14 @@
 //       const arr = data.map((item: any) => ({
 //         label: item?.empName,
 //         value: item?.empid
-  
+
 //       }))
-     
+
 //       setempOption(arr);
 //     };
-  
-  
-  
+
+
+
 //     const GetUnitData = async () => {
 //       const collectData = {
 //         unitId: -1,
@@ -157,14 +157,14 @@
 //       }
 //       setUnitOptions(arr);
 //     };
-    
-  
-  
-  
+
+
+
+
 //     const formik = useFormik({
 //       initialValues: {
-       
-  
+
+
 //         "indentId": 0,
 //         "indentNo": "",
 //         "indentDate": defaultValues,
@@ -185,7 +185,7 @@
 //         "releasedOn": defaultValues,
 //         "postedOn": defaultValues,
 //         "empName": "",
-  
+
 //         indentDetail: [],
 //         srn: 0
 //       },
@@ -193,14 +193,14 @@
 //         empId: Yup.string()
 //           .required(t("text.reqEmpName")),
 //       }),
-  
+
 //       onSubmit: async (values) => {
 //         values.indentDetail = tableData
-  
+
 //         console.log('values', values)
-  
-       
-  
+
+
+
 //         const response = await api.post(
 //           `IndentMaster/UpsertIndent`, values
 //           // { ...values, indentDetail: tableData }
@@ -215,49 +215,49 @@
 //         }
 //       },
 //     });
-  
+
 //     const back = useNavigate();
-  
+
 //     const handleInputChange = (index: number, field: string, value: number) => {
 //       const newData: any = [...tableData];
-  
-  
+
+
 //       const numericValue = parseFloat(value.toString());
-  
+
 //       newData[index][field] = numericValue;
-  
-  
+
+
 //       if (field === 'quantity' && numericValue < 1) {
 //         newData[index].quantity = 1;
 //       }
-  
-  
+
+
 //       if (field === 'quantity' || field === 'rate' || field === 'approveQuantity' || field === 'unitId') {
 //         const quantity = newData[index].quantity;
 //         const rate = newData[index].rate;
 //         const approveQuantity = newData[index].approveQuantity;
-  
-  
+
+
 //         newData[index].amount = rate * approveQuantity;
 //       }
-  
-  
+
+
 //       setTableData(newData);
-  
-  
+
+
 //       if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
 //         if (index === tableData.length - 1) {
 //           addRow();
 //         }
 //       }
 //     };
-  
-  
+
+
 //     const addRow = () => {
 //       setTableData([
 //         ...tableData,
 //         {
-         
+
 //           id: tableData.length + 1,
 //           "indentId": 0,
 //           "itemId": 0,
@@ -274,13 +274,13 @@
 //         },
 //       ]);
 //     };
-  
-  
+
+
 //     const deleteRow = (index: any) => {
 //       const newData = tableData.filter((_: any, i: any) => i !== index);
 //       setTableData(newData);
 //     };
-  
+
 //     return (
 //       <div>
 //         <div
@@ -293,7 +293,7 @@
 //           }}
 //         >
 //           <CardContent>
-  
+
 //             <Grid item xs={12} container spacing={2} >
 //               <Grid item lg={2} md={2} xs={2} marginTop={2}>
 //                 <Button
@@ -319,7 +319,7 @@
 //                   {t("text.CreateOfficePurchaseIndent")}
 //                 </Typography>
 //               </Grid>
-  
+
 //               <Grid item lg={3} md={3} xs={3} marginTop={3}>
 //                 <select
 //                   className="language-dropdown"
@@ -339,22 +339,22 @@
 //             <form onSubmit={formik.handleSubmit}>
 //               {toaster === false ? "" : <ToastApp />}
 //               <Grid item xs={12} container spacing={2}>
-  
+
 //                 <Grid item lg={4} xs={12}>
 //                   <TextField
 //                     id="indentNo"
 //                     name="indentNo"
 //                     label={<CustomLabel text={t("text.IndentNO")} required={false} />}
 //                     value={formik.values.indentNo}
-                   
+
 //                     size="small"
 //                     fullWidth
-                
-  
+
+
 //                   />
 //                 </Grid>
-  
-  
+
+
 //                 <Grid item lg={4} xs={12}>
 //                   <TextField
 //                     id="indentDate"
@@ -370,10 +370,10 @@
 //                     InputLabelProps={{ shrink: true }}
 //                   />
 //                 </Grid>
-  
-  
-  
-  
+
+
+
+
 // {/*   
 //                 <Grid item xs={12} sm={4} lg={4}>
 //                   <Autocomplete
@@ -393,20 +393,20 @@
 //                       />
 //                     )}
 //                   />
-  
+
 //                   {formik.touched.empId && formik.errors.empId && (
 //                     <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
 //                   )}
 //                 </Grid> */}
-  
+
 //                 <Grid item xs={12}>
-                  
-  
-  
+
+
+
 //                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
 //                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
 //                       <tr>
-  
+
 //                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
 //                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
 //                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
@@ -415,15 +415,15 @@
 //                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
 //                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
 //                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-  
+
 //                       </tr>
 //                     </thead>
 //                     <tbody>
 //                       {tableData.map((row: any, index: any) => (
 //                         <tr key={row.id} style={{ border: '1px solid black' }}>
 //                           <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-  
-                        
+
+
 //                           <td
 //                             style={{
 //                               border: "1px solid black",
@@ -470,11 +470,11 @@
 //                               ))}
 //                             </select>
 //                           </td>
-  
-  
+
+
 //                           <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
 //                             <TextField
-  
+
 //                               size="small"
 //                               // type="text"
 //                               value={row.quantity}
@@ -483,7 +483,7 @@
 //                           </td>
 //                           <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
 //                             <TextField
-  
+
 //                               size="small"
 //                               // type="text"
 //                               value={row.approveQuantity}
@@ -492,14 +492,14 @@
 //                           </td>
 //                           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
 //                             <TextField
-  
+
 //                               size="small"
 //                               // type="text"
 //                               value={row.rate}
 //                               onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
 //                             />
 //                           </td>
-  
+
 //                           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
 //                             <TextField
 //                               // type="number"
@@ -516,8 +516,8 @@
 //                     </tbody>
 //                   </Table>
 //                 </Grid>
-  
-  
+
+
 //                 <Grid item xs={12} md={12} lg={12}>
 //                   <TextareaAutosize placeholder={t("text.remark")} minRows={1}
 //                     onChange={(e) => formik.setFieldValue('remark', e.target.value)}
@@ -531,8 +531,8 @@
 //                       resize: 'none',
 //                     }} />
 //                 </Grid>
-  
-  
+
+
 //                 <Grid item lg={6} sm={6} xs={12}>
 //                   <Button
 //                     type="submit"
@@ -546,7 +546,7 @@
 //                     {t("text.save")}
 //                   </Button>
 //                 </Grid>
-  
+
 //                 <Grid item lg={6} sm={6} xs={12}>
 //                   <Button
 //                     type="reset"
@@ -568,10 +568,10 @@
 //       </div>
 //     );
 //   };
-  
+
 //   export default CreateOfficePurchaseIndent;
-  
-  
+
+
 
 
 
@@ -750,7 +750,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
             "empId": 0,
             "vZoneID": 0,
             "taxId": 0,
-            "purchaseYear":0 ,
+            "purchaseYear": 0,
             "modelNo": "",
             "vehicleNo": "",
             "tankCapacity": 0,
@@ -1060,12 +1060,17 @@ const CreateOfficePurchaseIndent = (props: Props) => {
                             options={itemOption}
                             fullWidth
                             size="small"
-                            onChange={(e: any, newValue: any) =>
-                              handleInputChange(
-                                index,
-                                "itemId",
-                                newValue?.value
-                              )
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              } else {
+                                handleInputChange(
+                                  index,
+                                  "itemId",
+                                  newValue?.value
+                                )
+                              }
+                            }
                             }
                             renderInput={(params) => (
                               <TextField
@@ -1132,7 +1137,13 @@ const CreateOfficePurchaseIndent = (props: Props) => {
                             inputProps={{ "aria-readonly": true }}
                           />
                         </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                          if (tableData.length > 1) {
+                            deleteRow(index)
+                          } else {
+                            alert("There should be atleast one row")
+                          }
+                        }}>
                           <DeleteIcon />
                         </td>
                       </tr>
@@ -1143,8 +1154,8 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
 
               <Grid item xs={12} md={12} lg={12}>
-                 <TextField
-                               placeholder={t("text.Remark")}
+                <TextField
+                  placeholder={t("text.Remark")}
                   onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                   style={{
                     width: '100%',

@@ -635,6 +635,9 @@ const AddJobWorkChallan = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    } else{
                     console.log(newValue?.value);
                     formik.setFieldValue("vehicleNo", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
@@ -649,6 +652,7 @@ const AddJobWorkChallan = (props: Props) => {
                     formik.setFieldValue("empName", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].empName);
                     formik.setFieldValue("jobCardDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].jobCardDate);
                     formik.setFieldValue("complainDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)].complainDate);
+                    }
                   }}
                   renderInput={(params) => (
                     <TextField

@@ -68,9 +68,9 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         gst: "",
         netAmount: "",
         item: {},
-      };
+    };
 
-  
+
     const [tableData, setTableData] = useState([{
         id: -1,
         indentId: 0,
@@ -81,8 +81,8 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         approveQuantity: 0,
         fyId: 0,
         srn: 0,
-        unitId:0,
-        unitName:"",
+        unitId: 0,
+        unitName: "",
         isDelete: true
     }]);
     const [unitOptions, setUnitOptions] = useState([
@@ -92,16 +92,16 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
-   
+
 
 
 
     useEffect(() => {
         GetitemData();
-     
+
         getTransDataById(location.state.id);
         GetUnitData();
-       
+
 
     }, []);
 
@@ -145,8 +145,8 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                     approveQuantity: item.approveQuantity,
                     rate: item.rate,
                     amount: item.amount,
-                    unitId:item.unitId,
-                    unitName:item.unitName,
+                    unitId: item.unitId,
+                    unitName: item.unitName,
                 }));
                 setTableData(formattedData);
             }
@@ -173,7 +173,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         setitemOption(arr);
     };
 
- 
+
     const formik = useFormik({
         initialValues: {
             indentId: location.state.indentId,
@@ -200,7 +200,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         },
         onSubmit: async (values) => {
 
-           
+
 
             const response = await api.post(
                 `Master/UpsertIndent`,
@@ -239,7 +239,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
             const approveQuantity = newData[index].approveQuantity;
 
 
-            newData[index].amount =  rate * approveQuantity;
+            newData[index].amount = rate * approveQuantity;
         }
 
 
@@ -268,8 +268,8 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                 fyId: 0,
                 srn: 0,
                 isDelete: true,
-                unitId:0,
-        unitName:"",
+                unitId: 0,
+                unitName: "",
             },
         ]);
     };
@@ -345,10 +345,10 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                     name="indentNo"
                                     label={<CustomLabel text={t("text.IndentNO")} required={false} />}
                                     value={formik.values.indentNo}
-                                  
+
                                     size="small"
                                     fullWidth
-                              
+
                                 />
                             </Grid>
 
@@ -408,7 +408,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
 
 
                             <Grid item xs={12}>
-                              
+
 
 
                                 <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
@@ -431,49 +431,53 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                             <tr key={row.id} style={{ border: '1px solid black' }}>
                                                 <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
 
-                                             
 
 
 
-<td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={itemOption}
-                            fullWidth
-                            size="small"
-                            value={itemOption.find((opt:any)=> opt.value === row.itemId) ||null}
-                            onChange={(e: any, newValue: any) =>
-                              handleInputChange(
-                                index,
-                                "itemId",
-                                newValue?.value
-                              )
-                            }
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectItem")}
-                                    required={false}
-                                  />
-                                }
-                              />
-                            )}
-                          />
-                        </td>
-                                               
 
-<td style={{ border: '1px solid black', textAlign: 'center' }}>
+                                                <td
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        // textAlign: "center",
+                                                    }}
+                                                >
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        id="combo-box-demo"
+                                                        options={itemOption}
+                                                        fullWidth
+                                                        size="small"
+                                                        value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
+                                                        onChange={(e: any, newValue: any) => {
+                                                            if (!newValue) {
+                                                                return
+                                                            } else {
+                                                                handleInputChange(
+                                                                    index,
+                                                                    "itemId",
+                                                                    newValue?.value
+                                                                )
+                                                            }
+                                                        }}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label={
+                                                                    <CustomLabel
+                                                                        text={t("text.selectItem")}
+                                                                        required={false}
+                                                                    />
+                                                                }
+                                                            />
+                                                        )}
+                                                    />
+                                                </td>
+
+
+                                                <td style={{ border: '1px solid black', textAlign: 'center' }}>
                                                     <select
                                                         value={row.unitId}
-                                                        onChange={(e:any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                        onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
                                                         style={{ width: '90%', height: '35px' }}
                                                     >
                                                         <option value="">{t("text.SelectUnit")}</option>
@@ -523,7 +527,14 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                                         inputProps={{ "aria-readonly": true }}
                                                     />
                                                 </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                <td style={{ border: '1px solid black', textAlign: 'center' }}
+                                                    onClick={() => {
+                                                        if (tableData.length > 1) {
+                                                            deleteRow(index);
+                                                        } else {
+                                                            alert("Atleast one row should be there")
+                                                        }
+                                                    }}>
                                                     <DeleteIcon />
                                                 </td>
                                             </tr>
@@ -534,8 +545,8 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
 
 
                             <Grid item xs={12} md={12} lg={12}>
-                            <TextField
-                  placeholder={t("text.Remark")}
+                                <TextField
+                                    placeholder={t("text.Remark")}
                                     onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                                     value={formik.values.remark}
                                     style={{
