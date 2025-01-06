@@ -12,6 +12,8 @@ const resources = {
       text: {
         ////
         /////
+        release:"RELEASE",
+        post:"POST",
         TotalAmount:"Total Amount:",
         vendorevaluation:"Vendor Evaluation",
         preReading:"Pre Reading",

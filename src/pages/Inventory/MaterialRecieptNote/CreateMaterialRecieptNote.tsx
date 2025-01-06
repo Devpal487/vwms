@@ -734,7 +734,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
-
+                <div style={{ overflow: "scroll", margin: 0, padding: 0 }}>
                 
                 <Table
                   style={{
@@ -821,7 +821,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       >
                         {t("text.Rate")}
                       </th>
-                     
+
                       <th
                         style={{
                           border: "1px solid black",
@@ -1160,8 +1160,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     </tr>
                   </tfoot>
                 </Table>
-              </Grid>
-              {/* 
+              </div>
+            </Grid>
+            {/* 
               <Grid container item spacing={2} xs={12} md={12} lg={12}>
                 <Grid item lg={4} xs={12}>
                   <TextField
@@ -1292,7 +1293,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     FormHelperTextProps={{ style: { color: "red" } }}
                   />
                 </Grid> */}
-              {/* <Grid item lg={4} xs={12}>
+            {/* <Grid item lg={4} xs={12}>
                   <TextField
                     id="totalSGST"
                     name="totalSGST"
@@ -1335,7 +1336,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     FormHelperTextProps={{ style: { color: "red" } }}
                   />
                 </Grid> */}
-              {/* <Grid item lg={4} xs={12}>
+            {/* <Grid item lg={4} xs={12}>
                   <TextField
                     id="totalIGST"
                     name="totalIGST"
@@ -1423,58 +1424,58 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid>
               </Grid> */}
 
-             
-<Grid item xs={12} md={12} lg={12}>
+
+            <Grid item xs={12} md={12} lg={12}>
               <TextField
-                  placeholder={t("text.Remark")}
+                placeholder={t("text.Remark")}
 
-                  value={formik.values.remark}
-                  onChange={(e:any)=> formik.setFieldValue("remark", e.target.value)}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    border: "1px solid #ccc",
-                    padding: "8px",
-                    borderRadius: "4px",
-                    fontSize: "16px",
-                    resize: "none",
-                  }}
-                />
-              </Grid>
-
-              <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.save")}
-                </Button>
-              </Grid>
-
-              <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e: any) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
-              </Grid>
+                value={formik.values.remark}
+                onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  border: "1px solid #ccc",
+                  padding: "8px",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  resize: "none",
+                }}
+              />
             </Grid>
-          </form>
-        </CardContent>
-      </div>
+
+            <Grid item lg={6} sm={6} xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                style={{
+                  backgroundColor: `var(--header-background)`,
+                  color: "white",
+                  marginTop: "10px",
+                }}
+              >
+                {t("text.save")}
+              </Button>
+            </Grid>
+
+            <Grid item lg={6} sm={6} xs={12}>
+              <Button
+                type="reset"
+                fullWidth
+                style={{
+                  backgroundColor: "#F43F5E",
+                  color: "white",
+                  marginTop: "10px",
+                }}
+                onClick={(e: any) => formik.resetForm()}
+              >
+                {t("text.reset")}
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </CardContent>
     </div>
+    </div >
   );
 };
 

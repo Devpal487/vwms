@@ -518,7 +518,7 @@ const CreateJobCardIndent = (props: Props) => {
               <Grid item xs={12}>
 
 
-
+              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                 <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                   <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                     <tr>
@@ -642,7 +642,7 @@ const CreateJobCardIndent = (props: Props) => {
                     ))}
                   </tbody>
                 </Table>
-              </Grid>
+           </div>   </Grid>
 
 
               <Grid item xs={12} md={12} lg={12}>
@@ -661,8 +661,7 @@ const CreateJobCardIndent = (props: Props) => {
                   }} />
               </Grid>
 
-
-              <Grid item lg={6} sm={6} xs={12}>
+              <Grid item lg={4} sm={4} xs={12}>
                 <Button
                   type="submit"
                   fullWidth
@@ -672,11 +671,24 @@ const CreateJobCardIndent = (props: Props) => {
                     marginTop: "10px",
                   }}
                 >
-                  {t("text.save")}
+                  {t("text.release")}
+                </Button>
+              </Grid>
+              <Grid item lg={4} sm={4} xs={12}>
+                <Button
+                  type="submit"
+                  fullWidth
+                  style={{
+                    backgroundColor: `var(--header-background)`,
+                    color: "white",
+                    marginTop: "10px",
+                  }}
+                >
+                  {t("text.post")}
                 </Button>
               </Grid>
 
-              <Grid item lg={6} sm={6} xs={12}>
+              <Grid item lg={4} sm={4} xs={12}>
                 <Button
                   type="reset"
                   fullWidth

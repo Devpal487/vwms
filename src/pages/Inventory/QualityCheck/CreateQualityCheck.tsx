@@ -760,6 +760,7 @@ const CreateQualityCheck = (props: Props) => {
                 fontSize={12}
                 fontWeight={800}
               ></Grid>
+              
 
               <Grid item xs={12} md={12} lg={12}>
                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>

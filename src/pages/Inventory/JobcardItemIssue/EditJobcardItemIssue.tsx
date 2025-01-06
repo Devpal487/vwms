@@ -513,6 +513,7 @@ const EditJobcardItemIssue = (props: Props) => {
 
                             {isIndentSelected && (
                                 <Grid item xs={12}>
+                                     <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
@@ -633,7 +634,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                         </tbody>
 
                                     </Table>
-                                </Grid>
+                              </div>  </Grid>
                             )}
 
                             <Grid item lg={6} sm={6} xs={12}>
