@@ -424,11 +424,11 @@ const AddComplaint = (props: Props) => {
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
-                              formik.setFieldValue("itemID", newValue?.value);
-                              formik.setFieldValue("vehicleNo", newValue?.label);
-                              formik.setFieldValue("vehicleName", newValue?.name);
-                              formik.setFieldValue("empId", newValue?.empId);
-                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)].label);
+                              formik.setFieldValue("itemID", newValue?.value || 0);
+                              formik.setFieldValue("vehicleNo", newValue?.label || "");
+                              formik.setFieldValue("vehicleName", newValue?.name || "");
+                              formik.setFieldValue("empId", newValue?.empId || 0);
+                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)]?.label);
                            }}
                            renderInput={(params) => (
                               <TextField

@@ -212,12 +212,12 @@ export default function JobWorkChallanRecieve() {
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
                },
-               {
-                  field: "jobCardNo",
-                  headerName: t("text.JobCardNo"),
-                  flex: 1,
-                  headerClassName: "MuiDataGrid-colCell",
-               },
+               // {
+               //    field: "jobCardNo",
+               //    headerName: t("text.JobCardNo"),
+               //    flex: 1,
+               //    headerClassName: "MuiDataGrid-colCell",
+               // },
                {
                   field: "jobCardDate",
                   headerName: t("text.JobCardDate"),
