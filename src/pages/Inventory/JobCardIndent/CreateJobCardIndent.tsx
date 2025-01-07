@@ -469,7 +469,7 @@ const CreateJobCardIndent = (props: Props) => {
                     if (newValue && newValue.label) {
                       console.log(newValue?.value);
                       formik.setFieldValue("VehicleNo", newValue.label);
-                      formik.setFieldValue("vehicleNo", newValue.label);
+                      formik.setFieldValue("vehicleitem", newValue.value);
                     } else {
                       // Handle case where newValue is null or invalid
                       formik.setFieldValue("VehicleNo", "");

@@ -1056,6 +1056,9 @@ const AddComplaintApproval = (props: Props) => {
                                  navigate("/vehiclecomplaint/AddJobCard", {
                                     state: formik.values,
                                  });
+                                 // navigate("/vehiclecomplaint/AddJobCard1", {
+                                 //    state: formik.values,
+                                 // });
                               }}
                            >
                               {t("text.Next")}
