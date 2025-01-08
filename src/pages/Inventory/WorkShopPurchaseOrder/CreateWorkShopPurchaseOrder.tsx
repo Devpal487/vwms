@@ -616,6 +616,11 @@ const CreateWorkShopPurchaseOrder = () => {
         //             toast.error(t("error.network"));
         //         }
         //     },
+          validationSchema: Yup.object({
+            file: Yup.string()
+                .required("Image required")
+               
+            }),
         onSubmit: async (values) => {
 
             const isFirstRowDefault = tableData[0] &&
@@ -898,6 +903,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
                                         onChange={(e) => otherDocChangeHandler(e, "file")}
+                                        required={true}
                                     />
                                 </Grid>
                                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -961,7 +967,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         ) : (
                                             <img
                                                 alt="preview image"
-                                                src={"data:image/png;base64," + Img}
+                                                src={"data:image/jpg;base64," + Img}
                                                 style={{
                                                     width: "170vh",
                                                     height: "75vh",

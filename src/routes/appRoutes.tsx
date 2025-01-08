@@ -230,6 +230,7 @@ import AddComplaintApproval from "../pages/Admin/ComplaintApproval/AddComplaintA
 import AddJobCard1 from "../pages/VehicleComplaints/JobCard1/AddJobCard1";
 import EditJobCard1 from "../pages/VehicleComplaints/JobCard1/EditJobCard1";
 import JobCard1 from "../pages/VehicleComplaints/JobCard1/JobCard1";
+import Flowmaster from "../pages/Admin/Flowmaster/flowmaster";
 
 
 
@@ -2086,6 +2087,16 @@ const appRoutes: RouteType[] = [
           displayText: "Complaint Approval",
         },
       },
+
+      {
+        path: "/Admin/Flowmaster",
+        element: <Flowmaster/>,
+        state: "Admin.Flowmaster",
+        sidebarProps: {
+          displayText: "Flow Master",
+        },
+      },
+
     ]
   }
 

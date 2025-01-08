@@ -15,7 +15,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import api from "../utils/Url"; // Make sure this is your API utility file
 import logo from "../assets/images/qq.png";
 import "./index.css";
@@ -73,16 +73,18 @@ const LoginPage1 = () => {
                   "username",
                   JSON.stringify(response.data.data.responseData.username)
                );
+               localStorage.setItem("ApplicationFlow", "outsource");
                sessionStorage.setItem(
                   "token",
                   JSON.stringify(response.data.data.token)
                );
                navigate("/home");
             } else {
-               toast.error(response.data.message);
+                toast.error(response.data.message);
             }
          } catch (error) {
-            toast.error("Login Failed");
+             toast.error("Login Failed");
+            
          } finally {
             setLoading(false);
          }
@@ -92,6 +94,7 @@ const LoginPage1 = () => {
    return (
       <Grid container sx={{ justifyContent: "center", alignContent: "center", backgroundImage: `url(${LoginBg})`, backgroundSize: "cover", height: "100vh", opacity: "80%", padding: "5%" }}>
          {/* <Grid item xs={6} sm={6} md={6} sx={{ backgroundImage: `url${LoginImg}`, backgroundSize: "cover", justifyContent: "center", alignContent: "center", }}></Grid> */}
+         <ToastContainer></ToastContainer>
          <motion.div initial="hidden" whileHover={{ scale: 1 }} whileTap={{ scale: 0.95 }} style={{ justifyContent: "center", textAlign: "center", padding: "4%", overflow: "hidden", borderRadius: "2rem" }}>
             <Grid item sx={{ justifyContent: "center", alignContent: "center", padding: "4%", textAlign: "center", border: "3px solid black", backgroundColor: "black", opacity: "80%", boxShadow: 24, borderRadius: "2rem" }}>
                <form onSubmit={formik.handleSubmit}>
@@ -137,52 +140,52 @@ const LoginPage1 = () => {
                   )}
 
 
-      
 
-     
-      <RadioGroup
-    row
-    aria-label="type"
-    name="type"
-    sx={{ borderColor: "#fff" }}
->
-    <FormControlLabel
-        value="Outsource"
-        control={
-            <Radio
-                sx={{
-                    color: "#fff", 
-                    "&.Mui-checked": {
-                        color: "#fff", 
-                    },
-                }}
-            />
-        }
-        label={t("text.Outsource")}
-        sx={{
-            marginTop: "-1%",
-            color: "#fff",
-        }}
-    />
-    <FormControlLabel
-        value="Inhouse and Outsource"
-        control={
-            <Radio
-                sx={{
-                    color: "#fff",
-                    "&.Mui-checked": {
-                        color: "#fff",
-                    },
-                }}
-            />
-        }
-        label={t("text.InhouseandOutsource")}
-        sx={{ color: "#fff" }}
-    />
-</RadioGroup>
 
-         
-         
+
+                  {/* <RadioGroup
+                     row
+                     aria-label="type"
+                     name="type"
+                     sx={{ borderColor: "#fff" }}
+                  >
+                     <FormControlLabel
+                        value="Outsource"
+                        control={
+                           <Radio
+                              sx={{
+                                 color: "#fff",
+                                 "&.Mui-checked": {
+                                    color: "#fff",
+                                 },
+                              }}
+                           />
+                        }
+                        label={t("text.Outsource")}
+                        sx={{
+                           marginTop: "-1%",
+                           color: "#fff",
+                        }}
+                     />
+                     <FormControlLabel
+                        value="Inhouse and Outsource"
+                        control={
+                           <Radio
+                              sx={{
+                                 color: "#fff",
+                                 "&.Mui-checked": {
+                                    color: "#fff",
+                                 },
+                              }}
+                           />
+                        }
+                        label={t("text.InhouseandOutsource")}
+                        sx={{ color: "#fff" }}
+                     />
+                  </RadioGroup> */}
+
+
+
 
                   <Button
                      fullWidth
@@ -197,7 +200,7 @@ const LoginPage1 = () => {
                </form>
             </Grid>
 
-            
+
          </motion.div>
       </Grid >
    );
