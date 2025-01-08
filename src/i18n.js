@@ -12,7 +12,13 @@ const resources = {
       text: {
         ////
         /////
-       
+        ItemType1:"Item Type",
+        ShortName1:"Short Name",
+
+       //stockbin
+       StockBinName1:"StockBin Name",
+       binCode1:"StockBin Code",
+       binCode:" Enter StockBin Code",
         Flowmaster:"Flow Master",
         release:"RELEASE",
         post:"POST",
@@ -8791,7 +8797,7 @@ const resources = {
         JobCardStatus: "Job Card Status",
 
         FolderLocation: "Folder Location",
-        StockBinName: "StockBin Name",
+        StockBinName: "Enter StockBin Name",
         FinancialYear: "Financial Year",
         StockBin: "Stock Bin",
         complainNo: "Complain No.",

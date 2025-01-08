@@ -61,46 +61,12 @@ export default function ItemType() {
   let navigate = useNavigate();
 
   useEffect(() => {
-    // const dataString = localStorage.getItem("userdata");
-    // if (dataString) {
-    //   const data = JSON.parse(dataString);
-    //   if (data && data.length > 0) {
-    //     const userPermissionData = data[0]?.userPermission;
-    //     if (userPermissionData && userPermissionData.length > 0) {
-    //       const menudata = userPermissionData[0]?.parentMenu;
-    //       for (let index = 0; index < menudata.length; index++) {
-    //         const childMenudata = menudata[index]?.childMenu;
-    //         const pathrow = childMenudata.find(
-    //           (x: any) => x.path === location.pathname
-    //         );
-    //         console.log("data", pathrow);
-    //         if (pathrow) {
-    //           setPermissionData(pathrow);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+  
     fetchZonesData();
     //getCountryName();
   }, [isLoading]);
 
-  //   const getCountryName = () => {
-  //     const collectData = {
-  //       countryId: -1,
-  //     };
-  //     api.post(`Country/GetCountryMaster`, collectData).then((res) => {
-  //       const arr = [];
-  //       //console.log("result" + JSON.stringify(res.data.data));
-  //       for (let index = 0; index < res.data.data.length; index++) {
-  //         arr.push({
-  //           label: res.data.data[index]["countryName"],
-  //           value: res.data.data[index]["countryId"],
-  //         });
-  //       }
-  //       setOption(arr);
-  //     });
-  //   };
+
 
   const validationSchema = Yup.object({
     itemType: Yup.string().test(
@@ -266,13 +232,13 @@ export default function ItemType() {
           },
           {
             field: "itemType",
-            headerName: t("text.ItemType"),
+            headerName: t("text.ItemType1"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
           {
             field: "itemTypecode",
-            headerName: t("text.ShortName"),
+            headerName: t("text.itemTypecode"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
@@ -325,7 +291,7 @@ export default function ItemType() {
               </Typography>
             </Grid>
 
-            <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -337,7 +303,7 @@ export default function ItemType() {
                   </option>
                 ))}
               </select>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Divider />
@@ -348,15 +314,33 @@ export default function ItemType() {
 
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={3}>
-              <Grid item xs={12} lg={4}>
-                <TranslateTextField
-                  label={t("text.ItemType")}
+              {/* <Grid item xs={12} lg={4}>
+                <TextField
+                  label={<CustomLabel text={t("text.ItemType")}   required={true}/>}
                   value={formik.values.itemType}
-                  onChangeText={(text: string) =>
-                    handleConversionChange("itemType", text)
-                  }
-                  required={true}
+                  onChange={formik.handleChange}
+                 
                   lang={lang}
+                />
+                {formik.touched.itemType && formik.errors.itemType ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.itemType}
+                  </div>
+                ) : null}
+              </Grid> */}
+
+              <Grid xs={12} lg={4} item>
+                <TextField
+                  label={<CustomLabel text={t("text.enteritemType")} required={true}/>}
+                  value={formik.values.itemType}
+                  name="itemType"
+                  id="itemType"
+                  placeholder={t("text.enteritemType")}
+                  size="small"
+                  fullWidth
+                  style={{ backgroundColor: "white" }}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.itemType && formik.errors.itemType ? (
                   <div style={{ color: "red", margin: "5px" }}>
@@ -367,11 +351,11 @@ export default function ItemType() {
 
               <Grid xs={12} lg={4} item>
                 <TextField
-                  label={<CustomLabel text={t("text.ShortName")} />}
+                  label={<CustomLabel text={t("text.enteritemTypecode")} />}
                   value={formik.values.itemTypecode}
                   name="itemTypecode"
                   id="itemTypecode"
-                  placeholder={t("text.ShortName")}
+                  placeholder={t("text.enteritemTypecode")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}

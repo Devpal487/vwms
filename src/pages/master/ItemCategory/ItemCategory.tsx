@@ -337,7 +337,7 @@ export default function ItemCategory() {
               </Typography>
             </Grid>
 
-            <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -349,7 +349,7 @@ export default function ItemCategory() {
                   </option>
                 ))}
               </select>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Divider />
@@ -423,14 +423,21 @@ export default function ItemCategory() {
                 />
               </Grid>
               <Grid item xs={12} sm={4} lg={4}>
-                <TranslateTextField
-                  label={t("text.EnteritemCategory")}
-                  value={formik.values.itemCategory}
-                  onChangeText={(text) =>
-                    handleConversionChange("itemCategory", text)
+                <TextField
+                  label={
+                    <CustomLabel
+                      text={t("text.EnteritemCategory")}
+                      required={true}
+                    />
                   }
-                  required={true}
-                  lang={lang}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="itemCategory"
+                  id="itemCategory"
+                  value={formik.values.itemCategory}
+                onChange={formik.handleChange}
+                
                 />
                 {formik.touched.itemCategory && formik.errors.itemCategory ? (
                   <div style={{ color: "red", margin: "5px" }}>

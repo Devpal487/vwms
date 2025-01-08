@@ -58,6 +58,7 @@ import SearchIcon from "@mui/icons-material/Search";
 // import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import React from "react";
+import dayjs from "dayjs";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -994,7 +995,7 @@ th, td {
     }
   };
   const handlePrint2 = () => {
-   const rowsToPrint = getTop ? filteredRows2.slice(0, 10) : filteredRows2;
+    const rowsToPrint = getTop ? filteredRows2.slice(0, 10) : filteredRows2;
 
     if (rowsToPrint.length === 0) {
       console.error("No data to print.");
@@ -1351,7 +1352,7 @@ th, td {
         <div>
           <Grid container spacing={2}>
             <Grid container spacing={2}>
-              <Grid item xs={12} lg={6} sm={6}>
+              <Grid item xs={12} lg={8} sm={6}>
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Accordion expanded={true}>
                     <AccordionSummary
@@ -1362,7 +1363,7 @@ th, td {
                         backgroundColor: "#42b6f5",
                         color: "#fff",
                         width: "100%",
-                        marginTop: "-10%",
+                        marginTop: "-5%",
                         "&:hover": {
                           backgroundColor: "#42b6f5", // Retain the same background on hover
                         },
@@ -1909,29 +1910,30 @@ th, td {
                             ) : (
                               <div ref={reportRef}>
                                 <DataGrid
-                                rows={
-                                  getTop
-                                    ? filteredRows1.slice(0, 10) // Apply filtering and Top 10 logic
-                                    : filteredRows1
-                                }
-                               //   rows={ComplaintsOption.length > 0 ? ComplaintsOption : []}
+                                  rows={
+                                    getTop
+                                      ? filteredRows1.slice(0, 10) // Apply filtering and Top 10 logic
+                                      : filteredRows1
+                                  }
+                                  //   rows={ComplaintsOption.length > 0 ? ComplaintsOption : []}
                                   columns={[
 
-                                    { field: "vehicleNo", headerName: "Vehicle No.", flex: 1 ,
+                                    {
+                                      field: "vehicleNo", headerName: "Vehicle No.", flex: 1,
                                       renderCell: (params) =>
                                       (
                                         <span
-                                        style={{cursor:'pointer',color :'#007bff'}}
-                                        onClick={() =>{
-                                          navigate(`/Reports/ComplainStatus`,{
-                                            state:{vehicleNo :params.row.vehicleNo},
-                                          });
-                                        }}
+                                          style={{ cursor: 'pointer', color: '#007bff' }}
+                                          onClick={() => {
+                                            navigate(`/Reports/ComplainStatus`, {
+                                              state: { vehicleNo: params.row.vehicleNo },
+                                            });
+                                          }}
                                         >
-                                           {params.row.vehicleNo}
+                                          {params.row.vehicleNo}
                                         </span>
                                       )
-                                      
+
                                     },
                                     { field: "noOfComplaints", headerName: "Complaints", flex: 1 },
                                     { field: "totaldays", headerName: "Total Days", flex: 1 },
@@ -1997,17 +1999,22 @@ th, td {
                             ) : (
                               <div ref={reportRef}>
                                 <DataGrid
-                                rows={
-                                  getTop
-                                    ? filteredRows2.slice(0, 10) // Apply filtering and Top 10 logic
-                                    : filteredRows2
-                                }
-                                //  rows={ReorderOption.length > 0 ? ReorderOption : []}
+                                  rows={
+                                    getTop
+                                      ? filteredRows2.slice(0, 10) // Apply filtering and Top 10 logic
+                                      : filteredRows2
+                                  }
+                                  //  rows={ReorderOption.length > 0 ? ReorderOption : []}
                                   columns={[
                                     { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
-                                    { field: "effectiveDate", headerName: "Effective Date", flex: 1 },
-                                    { field: "todate", headerName: "Expiry Date", flex: 1 },
-                                    { field: "attachMentName", headerName: "Document", flex: 1 },
+                                    {
+                                      field: "effectiveDate", headerName: "Effective Date", flex: 1, renderCell(params) {
+                                        return dayjs(params.row.effectiveDate).format("DD-MMM-YYYY")
+                                      },
+                                    },
+                                    { field: "todate", headerName: "Expiry Date", flex: 1 ,renderCell(params) {
+                                      return dayjs(params.row.todate).format("DD-MMM-YYYY") },},
+                                    { field: "attachMentName", headerName: "Document", flex: 1.5 ,},
                                     { field: "licenceType", headerName: "Document Type", flex: 1 },
                                   ]}
                                   autoHeight
@@ -2069,17 +2076,18 @@ th, td {
                             ) : (
                               <div ref={reportRef}>
                                 <DataGrid
-                                rows={
-                                  getTop
-                                    ? filteredRows3.slice(0, 10) // Apply filtering and Top 10 logic
-                                    : filteredRows3
-                                }
-                                 // rows={OverDueOption.length > 0 ? OverDueOption : []}
+                                  rows={
+                                    getTop
+                                      ? filteredRows3.slice(0, 10) // Apply filtering and Top 10 logic
+                                      : filteredRows3
+                                  }
+                                  // rows={OverDueOption.length > 0 ? OverDueOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
-                                    { field: "vehicleRegistrationDate", headerName: "Registration Date", flex: 1 },
+                                    { field: "vehicleNo", headerName: "Vehicle No", flex: 0.9 },
+                                    { field: "vehicleRegistrationDate", headerName: "Registration On", flex: 0.9,renderCell(params) {
+                                      return dayjs(params.row.vehicleRegistrationDate).format("DD-MMM-YYYY") },},
                                     { field: "filename", headerName: "RC Document", flex: 1 },
-                                    { field: "vehiclePhotoFile", headerName: "Vehicle Photo", flex: 1 },
+                                    { field: "vehiclePhotoFile", headerName: "Vehicle Photo", flex: 1.2 },
                                     { field: "vehicleTypename", headerName: "Vehicle Type", flex: 1 },
                                   ]}
                                   autoHeight
@@ -2141,16 +2149,17 @@ th, td {
                             ) : (
                               <div ref={reportRef}>
                                 <DataGrid
-                                rows={
-                                  getTop
-                                    ? filteredRows4.slice(0, 10) // Apply filtering and Top 10 logic
-                                    : filteredRows4
-                                }
+                                  rows={
+                                    getTop
+                                      ? filteredRows4.slice(0, 10) // Apply filtering and Top 10 logic
+                                      : filteredRows4
+                                  }
                                   //rows={IssuedStatusOption.length > 0 ? IssuedStatusOption : []}
                                   columns={[
                                     { field: "vehicleno", headerName: "Vehicle No", flex: 1 },
                                     { field: "noOfServices", headerName: "No. Of Services", flex: 1 },
-                                    { field: "jobCardDate", headerName: "Last Service", flex: 1 },
+                                    { field: "jobCardDate", headerName: "Last Service", flex: 1,renderCell(params) {
+                                      return dayjs(params.row.jobCardDate).format("DD-MMM-YYYY") },}
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2211,15 +2220,16 @@ th, td {
                             ) : (
                               <div ref={reportRef}>
                                 <DataGrid
-                                rows={
-                                  getTop
-                                    ? filteredRows5.slice(0, 10) // Apply filtering and Top 10 logic
-                                    : filteredRows5
-                                }
-                                 // rows={DocumentTypeOption.length > 0 ? DocumentTypeOption : []}
+                                  rows={
+                                    getTop
+                                      ? filteredRows5.slice(0, 10) // Apply filtering and Top 10 logic
+                                      : filteredRows5
+                                  }
+                                  // rows={DocumentTypeOption.length > 0 ? DocumentTypeOption : []}
                                   columns={[
                                     { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
-                                    { field: "date", headerName: "Scrap Date", flex: 1 },
+                                    { field: "date", headerName: "Scrap Date", flex: 1,renderCell(params) {
+                                      return dayjs(params.row.date).format("DD-MM-YYYY") },},
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2253,17 +2263,56 @@ th, td {
                 </motion.div>
               </Grid>
 
-              <Grid item xs={12} lg={6} sm={6}>
+              <Grid item xs={12} lg={4} sm={6}>
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Card
                     elevation={2}
-                    style={{
+                    // style={{
+                    //   marginLeft: "1%",
+                    //   marginTop: "-10%",
+                    //   border: "0.03% solid transparent",
+                    //   borderRadius: "0.6%",
+                    //   height: "63.5vh",
+                    //   overflow: "auto",
+                    // }}
+
+                    sx={{
                       marginLeft: "1%",
                       marginTop: "-10%",
                       border: "0.03% solid transparent",
                       borderRadius: "0.6%",
-                      height: "60vh",
+                      height: "63.5vh",
                       overflow: "auto",
+                      width: "105%",
+                      //height: "90%",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: '1%,',
+                      backgroundColor: "#fff",
+                     // border: "2px solid #e0e0e0",
+                    //  borderRadius: "14px",
+                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
+                      // borderLeft: `4px solid ${item.id === 0
+                      //   ? "blue"
+                      //   : item.id === 1
+                      //     ? "red"
+                      //     : item.id === 2
+                      //       ? "green"
+                      //       : item.id === 3
+                      //         ? "orange"
+                      //         : item.id === 4
+                      //           ? "purple"
+                      //           : "teal"
+                      //   }`,
+                      transition: "transform 0.3s, box-shadow 0.3s",
+                      cursor: "pointer",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
+                        borderColor: "#3498db",
+                      },
                     }}
                   >
                     <Grid
@@ -2296,7 +2345,7 @@ th, td {
                                 color: getColor(key),
                                 cursor: "pointer",
                                 fontSize: "100%",
-                                margin:"1.5%",
+                                margin: "1.5%",
                               }}
                               onClick={() => handleClick1(key)}
                             >
