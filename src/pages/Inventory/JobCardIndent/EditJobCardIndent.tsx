@@ -369,11 +369,10 @@ const EditJobCardIndent = (props: Props) => {
   options={VnoOption}
   fullWidth
   size="small"
-//   value={
-//     VnoOption.find((Option:any) => Option.label+""==
-//     formik.values.vehicleitem+"")||null
-//   }
-value={formik.values.vehicleitem||""}
+  value={
+    VnoOption[VnoOption.findIndex(e=>e.value == formik.values.vehicleitem)]?.label || ""
+  }
+//value={formik.values.vehicleitem||""}
   onChange={(event: any, newValue: any) => {
     // Check if newValue is valid
     if (newValue && newValue.label) {

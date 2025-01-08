@@ -2035,6 +2035,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { FormatItalic } from "@mui/icons-material";
 import { setTimeout } from "timers/promises";
+import ItemDetail from "../../Inventory/ItemDetail/ItemDetail";
 
 
 type Props = {};
@@ -2054,7 +2055,7 @@ const style = {
 };
 
 const AddJobCard1 = (props: Props) => {
-  const [isIndentEnabled , setIsIndentEnabled]= useState(false);
+  const [isIndentEnabled, setIsIndentEnabled] = useState(false);
   const location = useLocation();
   let navigate = useNavigate();
   const { t } = useTranslation();
@@ -2229,7 +2230,7 @@ const AddJobCard1 = (props: Props) => {
       cgstid: 0,
       sgstid: 0,
       gstid: 0,
-     
+
     }
   ]);
 
@@ -2502,7 +2503,7 @@ const AddJobCard1 = (props: Props) => {
         },
       ],
     },
-    
+
     onSubmit: async (values) => {
       const validServiceDetails = values.serviceDetail.filter(row => row.serviceId && row.vendorId && row.amount > 0);
       const validItemDetails = values.itemDetail.filter(row => row.itemId && row.qty > 0 && row.rate > 0);
@@ -2537,12 +2538,27 @@ const AddJobCard1 = (props: Props) => {
     },
 
   });
-  const handleGenerateChallan = async (values: any) => {
+  const handleGenerateIndent = async (values: any) => {
     const validTableData = tableData.filter(validateRow);
     // if (validTableData.length === 0) {
     //   toast.error("Please add some data in table for further process");
     //   return;
     // }
+    const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validTableData, ItemDetail: validateItem });
+    if (response.data.status === 1) {
+      toast.success(response.data.message);
+      setJobCardId(response.data.data.jobCardId);
+    } else {
+      setToaster(true);
+      toast.error(response.data.message);
+    }
+  };
+  const handleGenerateChallan = async (values: any) => {
+    const validTableData = tableData.filter(validateRow);
+    if (validTableData.length === 0) {
+      toast.error("Please add some data in table for further process");
+      return;
+    }
     const response = await api.post(`Master/GenerateJobWorkChallan`, { ...values, serviceDetail: validTableData });
     if (response.data.status === 1) {
       toast.success(response.data.message);
@@ -2586,11 +2602,11 @@ const AddJobCard1 = (props: Props) => {
       challanRcvDate: defaultValues,
       challanStatus: "",
       netAmount: 0,
-   
+
       cgstid: 0,
       sgstid: 0,
       gstid: 0,
-    
+
     },
     ]);
   };
@@ -2637,7 +2653,7 @@ const AddJobCard1 = (props: Props) => {
       item.netAmount >= 0
     );
   };
-  const buttonStyle = (enabled:any) => ({
+  const buttonStyle = (enabled: any) => ({
     backgroundColor: enabled ? `var(--header-background)` : "#e0e0e0", // Faded color for disabled
     color: enabled ? "white" : "#9e9e9e", // Text color for disabled
     padding: "6px 12px",
@@ -2646,22 +2662,22 @@ const AddJobCard1 = (props: Props) => {
     minWidth: "120px",
     cursor: enabled ? "pointer" : "not-allowed", // Change cursor for disabled
   });
-  
-  const handleSave = async (values:any) => {
+
+  const handleSave = async (values: any) => {
     const validTableData = tableData.filter(validateRow);
-  
+
     // if (validTableData.length === 0) {
     //   alert("Please add some data in the table for further processing");
     //   return;
     // }
-  
+
     // Simulate Save logic here (e.g., API call)
     await api.post(`Master/UpsertJobCardInhouse`, values);
-  
+
     // Enable Indent buttons after saving
     setIsIndentEnabled(true);
   };
-  
+
   const back = useNavigate();
 
   return (
@@ -2852,11 +2868,11 @@ const AddJobCard1 = (props: Props) => {
                         challanRcvDate: defaultValues,
                         challanStatus: "",
                         netAmount: 0,
-                     
+
                         cgstid: 0,
                         sgstid: 0,
                         gstid: 0,
-                       
+
                       }]);
                       formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
                       formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
@@ -2897,7 +2913,7 @@ const AddJobCard1 = (props: Props) => {
                 />
               </Grid>
 
-            
+
 
               {/* UnderControlOf */}
               <Grid item xs={12} md={4} sm={4}>
@@ -3006,7 +3022,7 @@ const AddJobCard1 = (props: Props) => {
                   placeholder="Enter your complaint here"
                 />
               </Grid>
-           
+
 
 
 
@@ -3021,7 +3037,7 @@ const AddJobCard1 = (props: Props) => {
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Services")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Status")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Vendor")}</th>
-                  
+
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Amount")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.NetAmount")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Reading")}</th>
@@ -3078,7 +3094,7 @@ const AddJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                         
+
                           <td
                             style={{
                               border: "1px solid black",
@@ -3088,7 +3104,7 @@ const AddJobCard1 = (props: Props) => {
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
-                              options={["JobWork"]}
+                              options={["inhouse"]}
                               value={row.challanStatus}
                               fullWidth
                               size="small"
@@ -3139,7 +3155,7 @@ const AddJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                        
+
                           <td>
                             <TextField
                               value={row.amount}
@@ -3186,7 +3202,7 @@ const AddJobCard1 = (props: Props) => {
                               inputProps={{ "aria-readonly": true }}
                             />
                           </td>
-                       
+
                         </tr>
                       ))}
                     </tbody>
@@ -3309,7 +3325,7 @@ const AddJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                       
+
 
                           <td
                             style={{
@@ -3406,7 +3422,7 @@ const AddJobCard1 = (props: Props) => {
                                 handleItemChange(index, 'indentId', newValue?.value);
                                 handleItemChange(index, 'indentNo', newValue?.label);
                               }}
-                            
+
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
@@ -3463,9 +3479,9 @@ const AddJobCard1 = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
-                        
+
                             <TextField
-                                value={row.cgst.toFixed(2)}
+                              value={row.cgst.toFixed(2)}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
@@ -3477,7 +3493,7 @@ const AddJobCard1 = (props: Props) => {
                             }}
                           >
                             <TextField
-                              value={row.gstRate/2}
+                              value={row.gstRate / 2}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
@@ -3501,14 +3517,14 @@ const AddJobCard1 = (props: Props) => {
                             }}
                           >
                             <TextField
-                             // value={row.qty * row.rate}
-                              value ={row.amount +row.gstRate}
+                              // value={row.qty * row.rate}
+                              value={row.amount + row.gstRate}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
                           </td>
 
-                        
+
                         </tr>
                       ))}
                     </tbody>
@@ -3626,19 +3642,20 @@ const AddJobCard1 = (props: Props) => {
                     </Button>
                   </Grid> */}
 
-<Grid item>
-  <Button
-    type="button"
-    disabled={!isIndentEnabled} // Disable initially
-    style={buttonStyle(isIndentEnabled)}
-    onClick={() => {
-      // Indent Generate logic
-      formik.setFieldValue("status", "indentGenerate");
-    }}
-  >
-    {t("text.indentGenerate")}
-  </Button>
-</Grid>
+                  <Grid item>
+                    <Button
+                      type="button"
+                      disabled={!isIndentEnabled} // Disable initially
+                      style={buttonStyle(isIndentEnabled)}
+                      onClick={() => {
+                        // Indent Generate logic
+                        formik.setFieldValue("status", "inhouse");
+                        handleGenerateIndent(formik.values)
+                      }}
+                    >
+                      {t("text.indentGenerate")}
+                    </Button>
+                  </Grid>
 
                   {/* Indent Print Button */}
                   {/* <Grid item>
@@ -3667,19 +3684,19 @@ const AddJobCard1 = (props: Props) => {
                     </Button>
                   </Grid> */}
 
-<Grid item>
-  <Button
-    type="button"
-    disabled={!isIndentEnabled} // Disable initially
-    style={buttonStyle(isIndentEnabled)} 
-    onClick={() => {
-      // Indent Print logic
-      formik.setFieldValue("status", "indentPrint");
-    }}
-  >
-    {t("text.indentPrint")}
-  </Button>
-</Grid>
+                  <Grid item>
+                    <Button
+                      type="button"
+                      disabled={!isIndentEnabled} // Disable initially
+                      style={buttonStyle(isIndentEnabled)}
+                      onClick={() => {
+                        // Indent Print logic
+                        formik.setFieldValue("status", "indentPrint");
+                      }}
+                    >
+                      {t("text.indentprint")}
+                    </Button>
+                  </Grid>
                 </Grid>
 
               )}
@@ -3694,18 +3711,18 @@ const AddJobCard1 = (props: Props) => {
               >
                 {/* Vendor Evaluation Button */}
                 <Grid item>
-  <Button
-    type="button"
-    disabled={!isIndentEnabled} // Disable initially
-    style={buttonStyle(isIndentEnabled)}
-    onClick={() => {
-      // Indent Generate logic
-      formik.setFieldValue("status", "vendorevaluation");
-    }}
-  >
-    {t("text.vendorevaluation")}
-  </Button>
-</Grid>
+                  <Button
+                    type="button"
+                    disabled={!isIndentEnabled} // Disable initially
+                    style={buttonStyle(isIndentEnabled)}
+                    onClick={() => {
+                      // Indent Generate logic
+                      formik.setFieldValue("status", "vendorevaluation");
+                    }}
+                  >
+                    {t("text.vendorevaluation")}
+                  </Button>
+                </Grid>
                 {/* <Grid item>
                   <Button
                     type="button"
@@ -3742,7 +3759,7 @@ const AddJobCard1 = (props: Props) => {
                       minWidth: "120px", // Set a fixed width
                       textAlign: "center",
                     }}
-                   onClick={() => handleSave(formik.values)}
+                    onClick={() => handleSave(formik.values)}
                   >
                     {t("text.save")}
                   </Button>

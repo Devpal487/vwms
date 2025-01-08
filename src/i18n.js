@@ -12,6 +12,8 @@ const resources = {
       text: {
         ////
         /////
+       
+        Flowmaster:"Flow Master",
         release:"RELEASE",
         post:"POST",
         TotalAmount:"Total Amount:",
@@ -27,7 +29,7 @@ const resources = {
         InhouseandOutsource:"Inhouse and OutSource",
         AddComplaintApproval: "Create Complaint Approval",
         Next: "Next",
-        pOrderDoc: "Upload Documnet",
+        pOrderDoc: "Upload Document",
         orderDate: "Order Date",
         /////
         returnDate: "Return Date",

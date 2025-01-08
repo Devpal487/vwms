@@ -7,6 +7,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { useNavigate } from "react-router-dom";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 import backgroundimage from "../../assets/images/backgroundimage.jpg";
+import { useEffect, useState } from "react";
 const colorConfigs = {
   sidebar: {
     bg: "#233044",
@@ -25,6 +26,17 @@ const MainLayout = () => {
   const location = useLocation();
   var menuarray = [];
   let navigate = useNavigate();
+  const [appFlow, setAppFlow] = useState(localStorage.getItem("ApplicationFlow"));
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (appFlow === "outsource") {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  }, [appFlow])
+
 
   if (localStorage.getItem("userdata") == null) {
     navigate("/");
@@ -84,32 +96,32 @@ const MainLayout = () => {
             },
 
             {
-              menuId:8,
+              menuId: 8,
               menuName: "Item Type",
               path: "/master/ItemType",
               displayNo: 0,
             },
 
             {
-              menuId:9,
+              menuId: 9,
               menuName: "Folder Location",
-              path:  "/master/FolderLocation",
+              path: "/master/FolderLocation",
               displayNo: 0,
             },
 
 
             {
-              menuId:10,
+              menuId: 10,
               menuName: "Financial Year",
-              path:"/master/FinancialYear",
+              path: "/master/FinancialYear",
               displayNo: 0,
             },
 
 
             {
-              menuId:11,
+              menuId: 11,
               menuName: "Stock Bin",
-              path:"/master/StockBin",
+              path: "/master/StockBin",
               displayNo: 0,
             },
 
@@ -118,8 +130,8 @@ const MainLayout = () => {
 
 
 
-           
-            
+
+
 
           ],
         },
@@ -340,7 +352,7 @@ const MainLayout = () => {
           ],
         },
 
-       
+
         // {
         //   menuName: "Employee",
         //   path: "",
@@ -401,18 +413,22 @@ const MainLayout = () => {
               path: "/vehiclecomplaint/Complaint",
               displayNo: 0,
             },
-            {
-              menuId: 2,
-              menuName: "Job Card",
-              path: "/vehiclecomplaint/JobCard",
-              displayNo: 0,
-            },
-            {
-              menuId: 2,
-              menuName: "Job Card1",
-              path: "/vehiclecomplaint/JobCard1",
-              displayNo: 0,
-            },
+            (isVisible ? 
+              {
+                menuId: 2,
+                menuName: "Job Card",
+                path: "/vehiclecomplaint/JobCard",
+                displayNo: 0,
+              }
+              : {
+                menuId: 2,
+                menuName: "Job Card",
+                path: "/vehiclecomplaint/JobCard1",
+                displayNo: 0,
+              }
+            ),
+            
+           
             {
               menuId: 3,
               menuName: "Job Work Challan",
@@ -551,7 +567,7 @@ const MainLayout = () => {
         },
 
 
-        
+
 
 
         {
@@ -575,14 +591,14 @@ const MainLayout = () => {
             },
 
             {
-              menuId:3,
+              menuId: 3,
               menuName: "Vendor Item Detail",
               path: "/Reports/VendorItemDetail",
               displayNo: 0,
             },
 
             {
-              menuId:4,
+              menuId: 4,
               menuName: "Vendor Evaluation Report",
               path: "/Reports/VendorEvaluationReport",
               displayNo: 0,
@@ -590,7 +606,7 @@ const MainLayout = () => {
 
 
             {
-              menuId:5,
+              menuId: 5,
               menuName: "Vehicle Status Report",
               path: "/Reports/VehicleStatusReport",
               displayNo: 0,
@@ -681,7 +697,7 @@ const MainLayout = () => {
               displayNo: 0,
             },
 
-          
+
 
           ],
         },
@@ -722,11 +738,18 @@ const MainLayout = () => {
               displayNo: 0,
             },
 
-          
+            {
+              menuId: 2,
+              menuName: "Flow Master",
+              path: "/Admin/Flowmaster",
+              displayNo: 0,
+            },
+
+
 
           ],
         },
-       
+
 
       ];
 

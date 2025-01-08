@@ -92,7 +92,7 @@ const EditJobCardItemReturn = (props: Props) => {
     ]);
     useEffect(() => {
         GetIndentID();
-    GetIndentIDById(location.state.issueId);
+   // GetIndentIDById(location.state.issueId);
 
         GetitemData();
         GetUnitData();
@@ -108,9 +108,9 @@ const EditJobCardItemReturn = (props: Props) => {
         };
 
 
-        const response = await api.post(`IndentMaster/GetIndent`, collectData);
+        const response = await api.post(`Master/GetIndent`, collectData);
         const data = response.data.data;
-        console.log("indent option23", data)
+        console.log("indent option", data)
         const arr = [];
         for (let index = 0; index < data.length; index++) {
             arr.push({
@@ -123,6 +123,7 @@ const EditJobCardItemReturn = (props: Props) => {
     };
 
 
+
     const GetIndentIDById = async (itemID: any) => {
         const collectData = {
             indentId: itemID,
@@ -131,35 +132,37 @@ const EditJobCardItemReturn = (props: Props) => {
             indentNo: "",
             empId: -1,
         };
-        const response = await api.post(`IndentMaster/GetIndent`, collectData);
-        const data = response.data.data[0]['indentDetail'];
+        const response = await api.post(`Master/GetIndent`, collectData);
+        const data = response.data?.data[0]['indentDetail']||[];
 
-        console.log("indent option22", data)
-       // let arr: any = [];
+        console.log("indent option", data)
+        // let arr: any = [];
 
-        const  indent = data.map((item:any,index:any) => ({
+        const indent = data.map((item: any, index: any) => ({
 
-            id: index +1,
+            id: index + 1,
             "issueId": 0,
-          
-            batchNo:item?.batchNo,
-            itemID:item?.itemId,
-            unitId:item?.unitId,
-            issueQty:item?.approveQuantity,
-            reqQty:item?.quantity,
-            unitName:"",
-            itemName:"",
-            indentNo:"",
+
+
+            batchNo: item?.batchNo,
+            itemID: item?.itemId,
+            unitId: item?.unitId,
+            issueQty: item?.approveQuantity,
+            reqQty: item?.quantity,
+
+            unitName: "",
+            itemName: "",
+            indentNo: "",
             "srn": 0,
-      //"unitName": "",
-      "returnItem": true
+            //"unitName": "",
+            "returnItem": true
 
 
         }))
-        
-            setTableData(indent);
-            setIsIndentSelected(true);
-        
+
+        setTableData(indent);
+        setIsIndentSelected(true);
+
     };
 
     console.log("check table", tableData)
@@ -168,7 +171,7 @@ const EditJobCardItemReturn = (props: Props) => {
         const collectData = {
             itemMasterId: -1,
         };
-        const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
+        const response = await api.get(`ItemMaster/GetItemMaster`, {});
         const data = response.data.data;
         const arr = [];
         for (let index = 0; index < data.length; index++) {
@@ -176,8 +179,8 @@ const EditJobCardItemReturn = (props: Props) => {
                 label: data[index]["itemName"],
                 value: data[index]["itemMasterId"],
             });
-        }
-        setitemOption(arr);
+        };
+        setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
     };
     const GetUnitData = async () => {
         const collectData = {
@@ -198,17 +201,9 @@ const EditJobCardItemReturn = (props: Props) => {
         const collectData = {
             empid: -1,
             userId: "",
-            empName: "",
-            empMobileNo: "",
-            empDesignationId: -1,
-            empDeptId: -1,
-            empStateId: -1,
-            empCountryID: -1,
-            empCityId: -1,
-            empPincode: 0,
-            roleId: ""
+
         };
-        const response = await api.post(`EmpMaster/GetEmpmaster`, collectData);
+        const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
         console.log('data', data)
         const arr = data.map((item: any) => ({
