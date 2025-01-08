@@ -90,13 +90,15 @@ const EditJobCardIndent = (props: Props) => {
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
-
+  const [VnoOption, setVnoOption] = useState([
+    { value: -1, label: t("text.itemMasterId") },
+  ]);
 
 
 
     useEffect(() => {
         GetitemData();
-
+        getVnoData();
         getTransDataById(location.state.id);
         GetUnitData();
 
@@ -105,7 +107,17 @@ const EditJobCardIndent = (props: Props) => {
 
 
     console.log("🚀 ~ EditJobCardIndent ~ tableData:", tableData)
-
+    const getVnoData = async () => {
+        const response = await api.get(
+          `Master/GetVehicleDetail?ItemMasterId=-1`,
+        );
+        const data = response.data.data;
+        const arr = data.map((Item: any, index: any) => ({
+          value: Item.itemMasterId,
+          label: Item.vehicleNo
+        }));
+        setVnoOption(arr);
+      };
     const GetUnitData = async () => {
         const collectData = {
             unitId: -1,
@@ -348,7 +360,50 @@ const EditJobCardIndent = (props: Props) => {
 
                                 />
                             </Grid>
+                            <Grid item xs={12} sm={4} lg={4}>
 
+
+<Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={VnoOption}
+  fullWidth
+  size="small"
+//   value={
+//     VnoOption.find((Option:any) => Option.label+""==
+//     formik.values.vehicleitem+"")||null
+//   }
+value={formik.values.vehicleitem||""}
+  onChange={(event: any, newValue: any) => {
+    // Check if newValue is valid
+    if (newValue && newValue.label) {
+      console.log(newValue?.value);
+      formik.setFieldValue("VehicleNo", newValue.label);
+      formik.setFieldValue("vehicleitem", newValue.value);
+    } else {
+      // Handle case where newValue is null or invalid
+      formik.setFieldValue("VehicleNo", "");
+
+    }
+  }}
+  onInputChange={(event: any, value: string) => {
+    if (value.trim() !== "" || value !== null) {
+    }
+  }}
+  renderInput={(params: any) => (
+    <TextField
+      {...params}
+      label={
+        <CustomLabel text={t("text.VehicleNos1")} required={true} />
+      }
+    />
+  )}
+  popupIcon={null}
+/>
+{/* {formik.touched.vehicleNo && formik.errors.vehicleNo && (
+  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo}</div>
+)} */}
+</Grid>
 
                             <Grid item lg={4} xs={12}>
                                 <TextField
@@ -370,32 +425,7 @@ const EditJobCardIndent = (props: Props) => {
 
 
 
-                            {/* <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={empOption}
-                                    fullWidth
-                                    value={
-                                        empOption.find(
-                                            (opt: any) => opt.value === formik.values.empId
-                                        ) || null
-                                    }
-                                    size="small"
-                                    onChange={(event, newValue) => {
-                                        console.log(newValue?.value);
-                                        formik.setFieldValue("empId", newValue?.value);
-                                        
-                                    }}
-
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={<CustomLabel text={t("text.selectemp_name")} />}
-                                        />
-                                    )}
-                                />
-                            </Grid> */}
+                      
 
 
 
@@ -406,7 +436,7 @@ const EditJobCardIndent = (props: Props) => {
 
                             <Grid item xs={12}>
 
-
+                            <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
 
                                 <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
@@ -534,6 +564,7 @@ const EditJobCardIndent = (props: Props) => {
                                         ))}
                                     </tbody>
                                 </Table>
+                                </div>
                             </Grid>
 
 

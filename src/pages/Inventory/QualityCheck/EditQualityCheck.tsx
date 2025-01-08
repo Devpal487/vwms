@@ -916,7 +916,9 @@ const EditQualityCheck = (props: Props) => {
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
+              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                 <Table
+                 
                   style={{
                     borderCollapse: "collapse",
                     width: "100%",
@@ -1319,6 +1321,7 @@ const EditQualityCheck = (props: Props) => {
                     </tr>
                   </tfoot>
                 </Table>
+             </div>
               </Grid>
               {/* 
               <Grid container item spacing={2} xs={12} md={12} lg={12}>

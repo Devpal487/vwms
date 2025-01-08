@@ -1195,7 +1195,7 @@ reader.readAsDataURL(file);
 
 
               <Grid item lg={12} md={12} xs={12}>
-
+              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                 <Table
                   style={{
                     borderCollapse: "collapse",
@@ -1514,7 +1514,7 @@ reader.readAsDataURL(file);
                   </tbody>
                 </Table>
 
-              </Grid>
+            </div>  </Grid>
 
 
               <Grid item xs={12}>

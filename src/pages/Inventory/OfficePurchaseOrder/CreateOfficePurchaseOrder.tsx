@@ -972,6 +972,7 @@ const CreateOfficePurchaseOrder = () => {
                             </Grid>
 
                             <Grid item xs={12} md={12} lg={12}>
+                            <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                                 <Table
                                     style={{
                                         borderCollapse: "collapse",
@@ -1346,7 +1347,7 @@ const CreateOfficePurchaseOrder = () => {
                                         </tr>
                                     </tfoot>
                                 </Table>
-                            </Grid>
+                          </div>  </Grid>
 
 
                             <Grid item xs={12}>

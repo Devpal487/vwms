@@ -1104,6 +1104,7 @@ const CreatePurchaseInvoice = () => {
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
+              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                 <Table
                   style={{
                     borderCollapse: "collapse",
@@ -1497,7 +1498,7 @@ const CreatePurchaseInvoice = () => {
                     </tr>
                   </tfoot>
                 </Table>
-              </Grid>
+            </div>  </Grid>
 
               <Grid item xs={12}>
                 <div style={{ justifyContent: "space-between", flex: 2 }}>
