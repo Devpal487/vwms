@@ -142,7 +142,6 @@ const AddComplaintApproval = (props: Props) => {
       getDesignationData();
       getEmpData();
       getComplaintData();
-      //handleLocationChange(location.state?.itemID || 0);
    }, []);
 
    const getLabelById = (option: any, id: any) => {
@@ -227,162 +226,10 @@ const AddComplaintApproval = (props: Props) => {
       setDesignationOption(arr);
    };
 
-   const handleLocationChange = (value = location.state?.itemID||0) => {
-      formik.setFieldValue(
-         "sno",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].sno
-      );
-      formik.setFieldValue(
-         "compId",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].compId
-      );
-      formik.setFieldValue(
-         "complaintType",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaintType
-      );
-      formik.setFieldValue(
-         "complaintDoc",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaintDoc
-      );
-      formik.setFieldValue(
-         "empId",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].empId
-      );
-      formik.setFieldValue(
-         "complaint",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaint
-      );
-      formik.setFieldValue(
-         "complaintNo",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaintNo
-      );
-      formik.setFieldValue(
-         "createdBy",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].createdBy
-      );
-      formik.setFieldValue(
-         "updatedBy",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].updatedBy
-      );
-      formik.setFieldValue(
-         "currentReading",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].currentReading
-      );
-      formik.setFieldValue(
-         "createdOn",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].createdOn
-      );
-      formik.setFieldValue(
-         "complaintDate",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaintDate
-      );
-      formik.setFieldValue(
-         "updatedOn",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].updatedOn
-      );
-      formik.setFieldValue(
-         "jobCardNo",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ]?.jobCardNo ||
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].complaintNo
-      );
-      formik.setFieldValue(
-         "file",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ]?.file || ""
-      );
-      formik.setFieldValue(
-         "fileOldName",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ]?.fileOldName || ""
-      );
-      formik.setFieldValue(
-         "vehicleName",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].vehicleName
-      );
-      formik.setFieldValue(
-         "empName",
-         complaintData[
-            complaintData.findIndex(
-               (x) => x.itemID == value
-            )
-         ].empName
-      );
-   }
-
    const formik = useFormik({
       initialValues: {
-         sno: location.state?.sno,
-         compId: parseInt(location.state?.complaintNo),
+         sno: location.state?.sno || 0,
+         compId: parseInt(location.state?.complaintNo)-1 || 0,
          itemID: location.state?.itemID,
          complaintType: location.state?.complaintType,
          complaintDoc: location.state?.complaintDoc,
@@ -515,6 +362,159 @@ const AddComplaintApproval = (props: Props) => {
          }
       }
    };
+
+   const handleAutoFillValue = (value: any) => {
+      console.log(value)
+      // formik.setFieldValue(
+      //    "sno",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].sno
+      // );
+      // formik.setFieldValue(
+      //    "compId",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].compId
+      // );
+      // formik.setFieldValue(
+      //    "complaintType",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaintType
+      // );
+      // formik.setFieldValue(
+      //    "complaintDoc",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaintDoc
+      // );
+      // formik.setFieldValue(
+      //    "empId",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].empId
+      // );
+      // formik.setFieldValue(
+      //    "complaint",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaint
+      // );
+      // formik.setFieldValue(
+      //    "complaintNo",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaintNo
+      // );
+      // formik.setFieldValue(
+      //    "createdBy",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].createdBy
+      // );
+      // formik.setFieldValue(
+      //    "updatedBy",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].updatedBy
+      // );
+      // formik.setFieldValue(
+      //    "currentReading",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].currentReading
+      // );
+      // formik.setFieldValue(
+      //    "createdOn",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].createdOn
+      // );
+      // formik.setFieldValue(
+      //    "complaintDate",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaintDate
+      // );
+      // formik.setFieldValue(
+      //    "updatedOn",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].updatedOn
+      // );
+      // formik.setFieldValue(
+      //    "jobCardNo",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ]?.jobCardNo ||
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].complaintNo
+      // );
+      // formik.setFieldValue(
+      //    "file",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ]?.file || ""
+      // );
+      // formik.setFieldValue(
+      //    "fileOldName",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ]?.fileOldName || ""
+      // );
+      // formik.setFieldValue(
+      //    "vehicleName",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].vehicleName
+      // );
+      // formik.setFieldValue(
+      //    "empName",
+      //    complaintData[
+      //       complaintData.findIndex(
+      //          (x) => x.itemID == value
+      //       )
+      //    ].empName
+      // );
+   }
 
    const back = useNavigate();
 
