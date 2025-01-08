@@ -723,9 +723,9 @@ export default function MiniDrawer({ items }: any) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            {/* <Avatar sx={{ width: 40, height: 40 }}>
-              {username[0].toUpperCase()}
-            </Avatar> */}
+            <Avatar sx={{ width: 40, height: 40 }}>
+              {/* {username[0].toUpperCase()} */}
+            </Avatar>
           </IconButton>
 
           <Menu
