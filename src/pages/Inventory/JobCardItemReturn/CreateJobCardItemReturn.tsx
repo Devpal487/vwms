@@ -239,7 +239,7 @@ const CreateJobCardItemReturn = (props: Props) => {
     };
 
     const validateRow = (row: any) => {
-        // return row.itemName && row.unitId && row.reqQty >= 1;
+         return row.itemName && row.unitId && row.reqQty >= 1;
     };
 
     const formik = useFormik({
@@ -286,7 +286,7 @@ const CreateJobCardItemReturn = (props: Props) => {
 
         onSubmit: async (values) => {
 
-            const validTableData = tableData;
+            const validTableData = tableData.filter(validateRow);
             values.itemIssueDetail = tableData
 
             // if (validTableData.length === 0) {
@@ -540,12 +540,12 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                                     renderInput={(params) => (
                                                                         <TextField
                                                                             {...params}
-                                                                            label={
-                                                                                <CustomLabel
-                                                                                    text={t("text.selectItem")}
-                                                                                    required={false}
-                                                                                />
-                                                                            }
+                                                                            // label={
+                                                                            //     <CustomLabel
+                                                                            //         text={t("text.selectItem")}
+                                                                            //         required={false}
+                                                                            //     />
+                                                                            // }
                                                                         />
                                                                     )}
                                                                 />
@@ -566,7 +566,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                                     renderInput={(params: any) => (
                                                                         <TextField
                                                                             {...params}
-                                                                            label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                           // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                         />
                                                                     )}
                                                                 />
@@ -667,12 +667,12 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                label={
-                                                                    <CustomLabel
-                                                                        text={t("text.selectItem")}
-                                                                        required={false}
-                                                                    />
-                                                                }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.selectItem")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                             />
                                                         )}
                                                     />
@@ -693,7 +693,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         renderInput={(params: any) => (
                                                             <TextField
                                                                 {...params}
-                                                                label={<CustomLabel text={t("text.selectUnit")} />}
+                                                             //   label={<CustomLabel text={t("text.selectUnit")} />}
                                                             />
                                                         )}
                                                     />

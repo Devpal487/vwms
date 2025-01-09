@@ -506,12 +506,12 @@ const EditStaffItemIssue = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={
-                                                                        <CustomLabel
-                                                                            text={t("text.selectItem")}
-                                                                            required={false}
-                                                                        />
-                                                                    }
+                                                                    // label={
+                                                                    //     <CustomLabel
+                                                                    //         text={t("text.selectItem")}
+                                                                    //         required={false}
+                                                                    //     />
+                                                                    // }
                                                                 />
                                                             )}
                                                         />
@@ -532,7 +532,7 @@ const EditStaffItemIssue = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                 //   label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />

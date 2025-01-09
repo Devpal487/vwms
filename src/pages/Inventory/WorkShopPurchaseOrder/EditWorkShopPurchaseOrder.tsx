@@ -861,6 +861,7 @@ const EditWorkShopPurchaseOrder = () => {
                                 </Modal>
                             </Grid>
 
+
                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}></Grid>
 
                             <Grid item xs={12} md={12} lg={12}>
@@ -1020,7 +1021,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                         options={itemOption}
                                                         fullWidth
                                                         size="small"
-
+                                                        value={itemOption.find((opt:any) => opt.value=== row.itemId)||null}
                                                         onChange={(e: any, newValue: any) =>
                                                             handleInputChange(
                                                                 index,
@@ -1054,6 +1055,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                         options={unitOptions}
                                                         fullWidth
                                                         size="small"
+                                                        value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
                                                         onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
                                                         renderInput={(params) => (
                                                             <TextField
@@ -1122,6 +1124,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                         options={taxData}
                                                         fullWidth
                                                         size="small"
+                                                        value={taxData.find((opt: any) => opt.value === row.gstId) || null}
                                                         onChange={(e: any, newValue: any) =>
                                                             handleInputChange(index, "gstId", newValue?.value)
                                                         }

@@ -61,8 +61,8 @@ const CreateJobCardIndent = (props: Props) => {
   const [toaster, setToaster] = useState(false);
   const [tableData, setTableData] = useState<any>([{
 
-    // const [timerCheck, setTimerCheck] = useState<NodeJS.Timeout | null>(null);
-    "id": -1,
+
+    "id": 0,
     "indentId": 0,
     "itemId": 0,
     "unitId": 0,
@@ -74,7 +74,7 @@ const CreateJobCardIndent = (props: Props) => {
     "srn": 0,
     "isDelete": true,
     "unitName": "",
-    "item": "5675"
+    "item": ""
   }]);
 
 
@@ -84,9 +84,7 @@ const CreateJobCardIndent = (props: Props) => {
   const [itemOption, setitemOption] = useState([
     { value: -1, label: t("text.itemMasterId") },
   ]);
-  // const [empOption, setempOption] = useState([
-  //   { value: "-1", label: t("text.empid") },
-  // ]);
+
   const [VnoOption, setVnoOption] = useState([
     { value: -1, label: t("text.itemMasterId") },
   ]);
@@ -100,7 +98,6 @@ const CreateJobCardIndent = (props: Props) => {
 
     GetUnitData();
     GetitemData();
-    //GetempData();
     getVnoData();
     GetmaxindentData();
 
@@ -109,32 +106,7 @@ const CreateJobCardIndent = (props: Props) => {
 
   console.log("🚀 ~ CreateJobCardIndent ~ tableData:", tableData)
 
-  // const getVnoData = async (value: string = '') => {
-  //   const collectData = {
-  //     itemmasterid: -1,
-  //   };
 
-  //   try {
-  //     const response = await api.post('ItemMaster/GetItemMaster', collectData);
-  //     const data = response.data.data;
-  //     const arr = [];
-
-  //     for (let index = 0; index < data.length; index++) {
-  //       arr.push({
-  //         label: data[index].vehicleNo,
-  //         value: data[index].itemMasterId,
-  //         // Add more properties if needed, for example:
-  //         empName: data[index].empName,
-  //         empMobileNo: data[index].empMobileNo,
-  //         oldDeviceNo: data[index].oldDeviceNo,
-  //       });
-  //     }
-
-  //     setVnoOption(arr);
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
   const getVnoData = async () => {
     const response = await api.get(
       `Master/GetVehicleDetail?ItemMasterId=-1`,
@@ -162,21 +134,7 @@ const CreateJobCardIndent = (props: Props) => {
     setitemOption(arr);
   };
 
-  // const GetmaxindentData = async () => {
 
-  //     const collectData = {
-  //    "indentId": -1,
-  //   //  "indentNo": "",
-  //   //  "empId":-1
-  //     };
-  //   const response = await api.post(`Master/GetIndent`, collectData);
-  //   const data = response.data.data;
-
-  //   for (let index = 0; index < data.length; index++) {
-  //     formik.setFieldValue("indentNo", data[index]['indentNo'])
-  //   }
-
-  // };
   const GetmaxindentData = async () => {
 
     const response = await api.get(`Master/GetMaxindentNo`);
@@ -187,38 +145,6 @@ const CreateJobCardIndent = (props: Props) => {
     }
     //setmaxindentOption(arr);
   };
-
-
-
-
-
-  // const GetempData = async () => {
-  //   const collectData = {
-  //     empid: -1,
-  //     userId: "",
-  //     empName: "",
-  //     empMobileNo: "",
-  //     empDesignationId: -1,
-  //     empDeptId: -1,
-  //     empStateId: -1,
-  //     empCountryID: -1,
-  //     empCityId: -1,
-  //     empPincode: 0,
-  //     roleId: ""
-  //   };
-  //   const response = await api.post(`EmpMaster/GetEmpmaster`, collectData);
-  //   const data = response.data.data;
-  //   console.log('data', data)
-  //   const arr = data.map((item: any) => ({
-  //     label: item?.empName,
-  //     value: item?.empid
-
-  //   }))
-
-  //   setempOption(arr);
-  // };
-
-
 
   const GetUnitData = async () => {
     const collectData = {
@@ -237,11 +163,13 @@ const CreateJobCardIndent = (props: Props) => {
   };
 
 
-
+  const validateRow = (row: any) => {
+    return row.itemId && row.unitId && row.approveQuantity && row.rate > 0;
+  };
 
   const formik = useFormik({
     initialValues: {
-      vehicleNo: 0,
+      //vehicleNo: 0,
       "sno": 0,
       "indentId": 0,
       "indentNo": "",
@@ -254,7 +182,7 @@ const CreateJobCardIndent = (props: Props) => {
       "companyId": 0,
       "fyId": 0,
       "jobID": 0,
-      "vehicleitem": 0,
+      "vehicleitem": null,
       "empId": 0,
       "status": "",
       "releasedBy": "",
@@ -263,47 +191,32 @@ const CreateJobCardIndent = (props: Props) => {
       "releasedOn": defaultValues,
       "postedOn": defaultValues,
       indentDetail: [],
-
-
-      // "indentId": 0,
-      // "indentNo": "",
-      // "indentDate": defaultValues,
-      // "remark": "",
-      // "createdBy": "",
-      // "updatedBy": "",
-      // "createdOn": defaultValues,
-      // "updatedOn": defaultValues,
-      // "companyId": 0,
-      // "fyId": 0,
-      // "jobID": 0,
-      // "vehicleitem": 0,
-      // "empId": null,
-      // "status": "",
-      // "releasedBy": "",
-      // "indenttype": "",
-      // "postedBy": "",
-      // "releasedOn": defaultValues,
-      // "postedOn": defaultValues,
-      // "empName": "",
-
-      // indentDetail: [],
       srn: 0
     },
-    // validationSchema: Yup.object({
-    //   empId: Yup.string()
-    //     .required(t("text.reqEmpName")),
-    // }),
+
+
+    validationSchema: Yup.object({
+      vehicleitem: Yup.string()
+        .required("Vehicle no required"),
+    }),
+
+    
 
     onSubmit: async (values) => {
-      values.indentDetail = tableData
+      //values.indentDetail = tableData
+      const validTableData = tableData.filter(validateRow);
 
+      if (validTableData.length === 0) {
+        alert("Please add some data in table for further process");
+        return;
+      }
       console.log('values', values)
 
 
 
       const response = await api.post(
-        `Master/UpsertIndent`, values
-        // { ...values, indentDetail: tableData }
+        `Master/UpsertIndent`, 
+         { ...values, indentDetail: validTableData }
       );
       if (response.data.status === 1) {
         setToaster(false);
@@ -316,7 +229,7 @@ const CreateJobCardIndent = (props: Props) => {
     },
   });
 
-  const back = useNavigate();
+  // const back = useNavigate();
 
   const handleInputChange = (index: number, field: string, value: number) => {
     const newData: any = [...tableData];
@@ -381,7 +294,7 @@ const CreateJobCardIndent = (props: Props) => {
     const newData = tableData.filter((_: any, i: any) => i !== index);
     setTableData(newData);
   };
-
+ const back = useNavigate();
   return (
     <div>
       <div
@@ -437,6 +350,7 @@ const CreateJobCardIndent = (props: Props) => {
           </Grid>
           <Divider />
           <br />
+          {/* <ToastContainer/> */}
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid item xs={12} container spacing={2}>
@@ -445,7 +359,7 @@ const CreateJobCardIndent = (props: Props) => {
                 <TextField
                   id="indentNo"
                   name="indentNo"
-                  label={<CustomLabel text={t("text.IndentNO")} required={false} />}
+                  label={<CustomLabel text={t("text.IndentNO")} required={true} />}
                   value={formik.values.indentNo}
 
                   size="small"
@@ -456,8 +370,6 @@ const CreateJobCardIndent = (props: Props) => {
               </Grid>
 
               <Grid item xs={12} sm={4} lg={4}>
-
-
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -473,27 +385,29 @@ const CreateJobCardIndent = (props: Props) => {
                     } else {
                       // Handle case where newValue is null or invalid
                       formik.setFieldValue("VehicleNo", "");
-
                     }
                   }}
                   onInputChange={(event: any, value: string) => {
-                    if (value.trim() !== "" || value !== null) {
+                    if (value.trim() !== "") {
+                      formik.setFieldValue("vehicleitem", value); // Allow manual input if needed
                     }
                   }}
                   renderInput={(params: any) => (
                     <TextField
                       {...params}
-                      label={
-                        <CustomLabel text={t("text.VehicleNos1")} required={true} />
-                      }
+                      label={<CustomLabel text={t("text.VehicleNos1")} required={true} />}
+                   
                     />
                   )}
                   popupIcon={null}
                 />
-                {formik.touched.vehicleNo && formik.errors.vehicleNo && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo}</div>
+                {formik.touched.vehicleitem && formik.errors.vehicleitem && (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.vehicleitem}
+                  </div>
                 )}
               </Grid>
+
               <Grid item lg={4} xs={12}>
                 <TextField
                   id="indentDate"
@@ -509,140 +423,158 @@ const CreateJobCardIndent = (props: Props) => {
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
-
-
-
-
-
-
               <Grid item xs={12}>
 
 
-              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                  <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                    <tr>
+                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+                  <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                      <tr>
 
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row: any, index: any) => (
-                      <tr key={row.id} style={{ border: '1px solid black' }}>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
 
 
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={itemOption}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              if (!newValue) {
-                                return;
-                              } else {
-                                handleInputChange(
-                                  index,
-                                  "itemId",
-                                  newValue?.value
-                                )
-                              }
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row: any, index: any) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                            if (tableData.length > 1) {
+                              deleteRow(index)
+                            } else {
+                              alert("There should be atleast one row")
                             }
-                            }
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectItem")}
-                                    required={false}
-                                  />
-                                }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                          <select
-                            value={row.unitId}
-                            onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                            style={{ width: '95%', height: '35px' }}
+                          }}>
+                            <DeleteIcon />
+                          </td>
+
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
+                            }}
                           >
-                            <option value="">{t("text.SelectUnit")}</option>
-                            {unitOptions.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={itemOption}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                } else {
+                                  handleInputChange(
+                                    index,
+                                    "itemId",
+                                    newValue?.value
+                                  )
+                                }
+                              }
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                               
+                                />
+                              )}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }}>
+
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={unitOptions}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                } else {
+                                  handleInputChange(
+                                    index,
+                                    "unitId",
+                                    newValue?.value
+                                  )
+                                }
+                              }
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                              
+                                />
+                              )}
+                            />
+                         
+                          </td>
+
+
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
+
+                              size="small"
+                              // type="text"
+                              value={row.quantity}
+                              onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
+
+                              size="small"
+                              // type="text"
+                              value={row.approveQuantity}
+                              onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
+
+                              size="small"
+                              // type="text"
+                              value={row.rate}
+                              onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
+                              // type="number"
+                              value={row.amount.toFixed(2)}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
                         </td>
-
-
-                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                          <TextField
-
-                            size="small"
-                            // type="text"
-                            value={row.quantity}
-                            onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                          <TextField
-
-                            size="small"
-                            // type="text"
-                            value={row.approveQuantity}
-                            onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                          <TextField
-
-                            size="small"
-                            // type="text"
-                            value={row.rate}
-                            onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
-
-                        <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                          <TextField
-                            // type="number"
-                            value={row.amount.toFixed(2)}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                          if (tableData.length > 1) {
-                            deleteRow(index)
-                          } else {
-                            alert("There should be atleast one row")
-                          }
-                        }}>
-                          <DeleteIcon />
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
-           </div>   </Grid>
+
+
+                    </tfoot>
+                  </Table>
+                </div>   </Grid>
 
 
               <Grid item xs={12} md={12} lg={12}>
