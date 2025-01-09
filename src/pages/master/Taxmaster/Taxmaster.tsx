@@ -70,7 +70,7 @@ export default function Taxmaster() {
         formik.setFieldValue(params, text);
     };
 
-   
+
 
     const routeChangeEdit = (row: any) => {
         console.log(row);
@@ -90,7 +90,7 @@ export default function Taxmaster() {
         };
         console.log("collectData " + JSON.stringify(collectData));
         api
-            .post(`UnitMaster/DeleteTaxMaster`,  collectData )
+            .post(`UnitMaster/DeleteTaxMaster`, collectData)
             .then((response) => {
                 if (response.data.status === 1) {
                     toast.success(response.data.message);
@@ -229,8 +229,8 @@ export default function Taxmaster() {
             taxName: "",
             taxPercentage: "",
             effectiveDate: "",
-           
-           
+
+
             createdBy: "admin",
             updatedBy: "admin",
             createdOn: new Date().toISOString(),
@@ -293,7 +293,7 @@ export default function Taxmaster() {
                             </Typography>
                         </Grid>
 
-                        <Grid item lg={2} md={2} xs={12} marginTop={2}>
+                        {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
                             <select
                                 className="language-dropdown"
                                 value={lang}
@@ -305,7 +305,7 @@ export default function Taxmaster() {
                                     </option>
                                 ))}
                             </select>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
 
                     <Divider />
@@ -313,13 +313,37 @@ export default function Taxmaster() {
                     <Box height={10} />
                     <form onSubmit={formik.handleSubmit}>
                         <Grid item xs={12} container spacing={2}>
-                            <Grid xs={12} sm={4} lg={4} item>
-                                <TranslateTextField
+                            {/* <Grid xs={12} sm={4} lg={4} item>
+                                <TextField
                                     label={t("text.entertaxName")}
                                     value={formik.values.taxName}
-                                    onChangeText={(text: string) => handleConversionChange('taxName', text)}
+                                   //onChange={(text: string) => handleChange('taxName', text)}
                                     required={true}
                                     lang={lang}
+                                />
+                                {formik.touched.taxName && formik.errors.taxName ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.taxName}
+                                    </div>
+                                ) : null}
+                            </Grid> */}
+
+                            <Grid item xs={12} sm={4} lg={4}>
+                                <TextField
+                                    label={
+                                        <CustomLabel
+                                            text={t("text.entertaxName")}
+                                            required={true}
+                                        />
+                                    }
+                                    variant="outlined"
+                                    fullWidth
+                                    size="small"
+                                    name="taxName"
+                                    id="taxName"
+                                    value={formik.values.taxName}
+                                    placeholder={t("text.entertaxName")}
+                                    onChange={formik.handleChange}
                                 />
                                 {formik.touched.taxName && formik.errors.taxName ? (
                                     <div style={{ color: "red", margin: "5px" }}>
