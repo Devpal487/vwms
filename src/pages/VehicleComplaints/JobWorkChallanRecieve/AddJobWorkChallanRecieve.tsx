@@ -343,7 +343,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
 
   const getJobCardData = async () => {
     const collectData = {
-      "jobCardId": -1,
+      "jobCardId": location.state?.jobCardId || -1,
       "status": ""
     };
     const response = await api.post(`Master/GetJobCard`, collectData);
@@ -442,13 +442,20 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "challanRcvDoc": "",
       "jobWorkChallanRcvDetail": [],
       "file": "",
-      "vehicleNo": location.state?.vehicleNo,
+      "vehicleNo": location.state?.vehicleNo || "",
       "vendorName": location.state?.vendorName,
       "empName": location.state?.empName,
       "jobCardNo": location.state?.jobCardNo,
       "jobCardDate": location.state?.jobCardDate,
       "challanDate": location.state?.challanDate,
     },
+
+    validationSchema: Yup.object({
+      challanRcvDate: Yup.string()
+        .required("Challan Recieve Date is required"),
+      vehicleNo: Yup.string()
+        .required("Vehicle Number is required"),
+    }),
 
 
     onSubmit: async (values) => {
@@ -459,7 +466,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       }
       const response = await api.post(`Master/UpsertJobWorkChallanRcv`, { ...values, jobWorkChallanRcvDetail: validTableData });
       if (response.data.status === 1) {
-        toast.success(response.data.message);
+        toast.success(response.data.message + "\nYour JobCard Status is Completed successfully!");
         updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
         setJobCardId(location.state?.jobCardId || formik.values.jobCardId);
         setIsVisible(true);
@@ -485,7 +492,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "itemId": jobCardData.find(e => e.jobCardId === jobCardId)?.itemId,
       "currenReading": jobCardData.find(e => e.jobCardId === jobCardId)?.currenReading,
       "complain": jobCardData.find(e => e.jobCardId === jobCardId)?.complain,
-      "status": "complete",
+      "status": "Complete",
       "serviceType": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceType,
       "createdBy": jobCardData.find(e => e.jobCardId === jobCardId)?.createdBy,
       "updatedBy": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedBy,
@@ -760,47 +767,50 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    if(!newValue) {
+                    if (!newValue) {
                       return;
-                    } else{
+                    } else {
                       console.log(newValue?.value);
-                    formik.setFieldValue("itemId", newValue?.value)
-                    formik.setFieldValue("vehicleNo", newValue?.label);
-                    setTableDataValues(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobWorkChallanDetail);
-                    formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanNo);
-                    formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.complainId);
-                    formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empId);
-                    formik.setFieldValue("itemId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemId);
-                    formik.setFieldValue("jobCardId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId);
-                    formik.setFieldValue("vendorId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorId);
-                    formik.setFieldValue("estAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
-                    formik.setFieldValue("serviceAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.serviceAmount);
-                    formik.setFieldValue("itemAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemAmount);
-                    formik.setFieldValue("netAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
-                    formik.setFieldValue("fyId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.fyId);
-                    formik.setFieldValue("cgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgst);
-                    formik.setFieldValue("sgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgst);
-                    formik.setFieldValue("gst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gst);
-                    formik.setFieldValue("gstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gstid);
-                    formik.setFieldValue("cgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgstid);
-                    formik.setFieldValue("sgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgstid);
-                    formik.setFieldValue("vendorName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorName);
-                    formik.setFieldValue("empName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empName);
-                    formik.setFieldValue("jobCardNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId.toString);
-                    formik.setFieldValue("jobCardDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardDate || defaultValues);
-                    formik.setFieldValue("challanDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanDate || defaultValues);
+                      formik.setFieldValue("itemId", newValue?.value)
+                      formik.setFieldValue("vehicleNo", newValue?.label);
+                      setTableDataValues(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobWorkChallanDetail);
+                      formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanNo);
+                      formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.complainId);
+                      formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empId);
+                      formik.setFieldValue("itemId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemId);
+                      formik.setFieldValue("jobCardId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId);
+                      formik.setFieldValue("vendorId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorId);
+                      formik.setFieldValue("estAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
+                      formik.setFieldValue("serviceAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.serviceAmount);
+                      formik.setFieldValue("itemAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemAmount);
+                      formik.setFieldValue("netAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
+                      formik.setFieldValue("fyId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.fyId);
+                      formik.setFieldValue("cgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgst);
+                      formik.setFieldValue("sgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgst);
+                      formik.setFieldValue("gst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gst);
+                      formik.setFieldValue("gstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gstid);
+                      formik.setFieldValue("cgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgstid);
+                      formik.setFieldValue("sgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgstid);
+                      formik.setFieldValue("vendorName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorName);
+                      formik.setFieldValue("empName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empName);
+                      formik.setFieldValue("jobCardNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId.toString);
+                      formik.setFieldValue("jobCardDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardDate || defaultValues);
+                      formik.setFieldValue("challanDate", dayjs(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanDate).format('YYYY-MM-DD') || defaultValues);
                     }
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="VehicleNo"
-                      id="VehicleNo"
+                      name="vehicleNo"
+                      id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
+                {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                )}
               </Grid>
 
 
@@ -849,6 +859,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
+                {!formik.values.challanRcvDate && formik.touched.challanRcvDate && formik.errors.challanRcvDate && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.challanRcvDate.toString()}</div>
+                )}
               </Grid>
 
               {/* Challan Number */}
@@ -1231,6 +1244,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               options={serviceOption}
                               value={row.serviceName}
                               fullWidth
+                              sx={{ width: "230px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1240,7 +1254,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.ServiceName")} required={false} />}
+                                  // label={<CustomLabel text={t("text.ServiceName")} required={false} />}
                                   name="serviceName"
                                   id="serviceName"
                                   placeholder={t("text.ServiceName")}
@@ -1260,6 +1274,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               options={unitOption}
                               value={row.unitName}
                               fullWidth
+                              sx={{ width: "135px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1269,12 +1284,12 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Unit")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Unit")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1305,6 +1320,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1319,6 +1335,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1337,15 +1354,14 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e: any, newValue: any) => {
                                 handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                 handleInputChange(index, 'gstId', newValue.value);
-                                formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId)?.challanNo || 0);
                               }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.GstRate")} required={false} />}
-                                  name="gst"
-                                  id="gst"
-                                  placeholder={t("text.GstRate")}
+                                // label={<CustomLabel text={t("text.GstRate")} required={false} />}
+                                // name="gst"
+                                // id="gst"
+                                // placeholder={t("text.GstRate")}
                                 />
                               )}
                             />
@@ -1401,7 +1417,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.serviceAmount}
                         </td>
                       </tr>
@@ -1410,7 +1426,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.NetAmount")}
                         </td>
-                        <td colSpan={1} style={{ borderTop: "1px solid black" }}>
+                        <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>
@@ -1452,7 +1468,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
-              {isVisible && (
+              {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1479,7 +1495,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           "itemId": jobCardData.find(e => e.jobCardId === jobCardId)?.itemId,
                           "currenReading": jobCardData.find(e => e.jobCardId === jobCardId)?.currenReading,
                           "complain": jobCardData.find(e => e.jobCardId === jobCardId)?.complain,
-                          "status": "complete",
+                          "status": "Complete",
                           "serviceType": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceType,
                           "createdBy": jobCardData.find(e => e.jobCardId === jobCardId)?.createdBy,
                           "updatedBy": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedBy,
@@ -1490,7 +1506,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           "totalItemAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalItemAmount,
                           "totalServiceAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalServiceAmount,
                           "netAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.netAmount,
-                          "itemName": jobCardData.find(e => e.jobCardId === jobCardId)?.itemName,
+                          "itemName": jobCardData.find(e => e.jobCardId === jobCardId)?.itemName || "bcfdabhcjh",
                           "empName": jobCardData.find(e => e.jobCardId === jobCardId)?.empName,
                           "serviceDetail": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceDetail,
                           "update": true
@@ -1502,7 +1518,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
             </Grid>
 
           </form>

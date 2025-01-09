@@ -76,7 +76,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
 
   const [jobWorkChallanData, setJobWorkChallanData] = useState([{
     "challanNo": 0,
-    "challanDate": location.state?.challanDate, 
+    "challanDate": location.state?.challanDate,
     "complainId": 0,
     "empId": 0,
     "itemId": 0,
@@ -409,7 +409,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "challanRcvNo": location.state?.challanRcvNo,
-      "challanRcvDate": location.state?.challanRcvDate,
+      "challanRcvDate": location.state?.challanRcvDate || "",
       "challanNo": location.state?.challanNo,
       "complainId": location.state?.complainId,
       "empId": location.state?.empId,
@@ -440,7 +440,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       "challanRcvDoc": "",
       "jobWorkChallanRcvDetail": location.state?.jobWorkChallanDetail || [],
       "file": "",
-      "vehicleNo": location.state?.vehicleNo,
+      "vehicleNo": location.state?.vehicleNo || 0,
       "vendorName": location.state?.vendorName,
       "empName": location.state?.empName,
       "jobCardNo": location.state?.jobCardNo,
@@ -448,6 +448,12 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       "challanDate": dayjs(location.state?.challanDate).format("YYYY-MM-DD"),
     },
 
+    validationSchema: Yup.object({
+      challanRcvDate: Yup.string()
+        .required("Challan Recieve Date is required"),
+      vehicleNo: Yup.string()
+        .required("Vehicle Number is required"),
+    }),
 
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
@@ -779,18 +785,21 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                     formik.setFieldValue("empName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empName);
                     formik.setFieldValue("jobCardNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId.toString);
                     formik.setFieldValue("jobCardDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardDate);
-                    //formik.setFieldValue("challanDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanDate);
+                    formik.setFieldValue("challanDate", dayjs(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanDate).format('YYYY-MM-DD') || defaultValues);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="zoneMaster.zoneID"
-                      id="zoneMaster.zoneID"
+                      name="vehicleNo"
+                      id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
+                {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                )}
               </Grid>
 
 
@@ -839,6 +848,9 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
+                {!formik.values.challanRcvDate && formik.touched.challanRcvDate && formik.errors.challanRcvDate && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.challanRcvDate.toString()}</div>
+                )}
               </Grid>
 
               {/* Challan Number */}
@@ -1199,6 +1211,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               options={serviceOption}
                               value={row.serviceName}
                               fullWidth
+                              sx={{ width: "230px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1208,7 +1221,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.ServiceName")} required={false} />}
+                                  // label={<CustomLabel text={t("text.ServiceName")} required={false} />}
                                   name="serviceName"
                                   id="serviceName"
                                   placeholder={t("text.ServiceName")}
@@ -1228,6 +1241,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               options={unitOption}
                               value={row.unitName}
                               fullWidth
+                              sx={{ width: "135px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1237,12 +1251,12 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Unit")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Unit")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1273,6 +1287,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1287,6 +1302,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1305,15 +1321,14 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e: any, newValue: any) => {
                                 handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                 handleInputChange(index, 'gstId', newValue.value);
-                                formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === location.state.itemId)?.challanNo);
                               }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.GstRate")} required={false} />}
-                                  name="gst"
-                                  id="gst"
-                                  placeholder={t("text.GstRate")}
+                                // label={<CustomLabel text={t("text.GstRate")} required={false} />}
+                                // name="gst"
+                                // id="gst"
+                                // placeholder={t("text.GstRate")}
                                 />
                               )}
                             />
@@ -1369,7 +1384,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.serviceAmount}
                         </td>
                       </tr>
@@ -1378,7 +1393,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.NetAmount")}
                         </td>
-                        <td colSpan={1} style={{ borderTop: "1px solid black" }}>
+                        <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>

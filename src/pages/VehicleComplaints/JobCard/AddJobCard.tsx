@@ -77,7 +77,7 @@ const AddJobCard = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -229,14 +229,15 @@ const AddJobCard = (props: Props) => {
     setVehicleName(location.state?.vehicleName);
     getJobCardData();
 
-    // if (inputRef.current) {
-    //   inputRef.current.click();
-    // }
-
-    const timeoutId = setTimeout(() => {
-      //handleAutoFillData(location.state?.itemID || formik.values.itemId, location.state?.empId || formik.values.empId)
-    }, 300);
-    return () => clearTimeout(timeoutId);
+    setDesgValue(location.state?.designation || "");
+    setDeptValue(location.state?.department || "");
+    // const timeoutId = setTimeout(() => {
+    //   if (desgValue == "" && inputRef.current) {
+    //     inputRef.current.click(); // Programmatically click the button
+    //   }
+    //   // handleAutoFillData(location.state?.itemID || formik.values.itemId, location.state?.empId || 0);
+    // }, 500);
+    // return () => clearTimeout(timeoutId);
 
   }, []);
 
@@ -350,7 +351,7 @@ const AddJobCard = (props: Props) => {
 
   const getJobCardData = async () => {
     const collectData = {
-      "jobCardId": -1,
+      "jobCardId": location.state?.jobCardId || -1,
       "status": ""
     };
     const response = await api.post(`Master/GetJobCard`, collectData);
@@ -377,7 +378,7 @@ const AddJobCard = (props: Props) => {
       "imageFile": "",
       "jobCardDate": defaultValues,
       "complainId": location.state?.compId || 0,
-      "complainDate": location.state?.complaintDate || defaultValues,
+      "complainDate": dayjs(location.state?.complaintDate).format("YYYY-MM-DD") || defaultValues,
       "empId": location.state?.empId || 0,
       "itemId": location.state?.itemID || 0,
       "currenReading": location.state?.currentReading || 0,
@@ -390,9 +391,9 @@ const AddJobCard = (props: Props) => {
       "updatedOn": "2024-12-28T07:03:56.434Z",
       "companyId": 0,
       "fyId": 0,
-      "totalItemAmount": 0,
-      "totalServiceAmount": 0,
-      "netAmount": 0,
+      "totalItemAmount": location.state?.totalItemAmount || 0,
+      "totalServiceAmount": location.state?.totalServiceAmount || 0,
+      "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.vehicleNo || "",
       "empName": location.state?.empName || "",
       "serviceDetail": location.state?.serviceDetail || [],
@@ -400,6 +401,14 @@ const AddJobCard = (props: Props) => {
 
       //...location.state,
     },
+
+    validationSchema: Yup.object({
+      fileNo: Yup.string()
+        .required("File number is required"),
+      itemName: Yup.string()
+        .required("Vehicle Number is required"),
+    }),
+
     onSubmit: async (values) => {
 
       const validTableData = tableData.filter(validateRow);
@@ -565,9 +574,10 @@ const AddJobCard = (props: Props) => {
     if (field === 'unitName') {
       newData[index].unitName = newData[index].unitName;
     }
+    //newData[index].jobCardId = formik.values.jobCardId;
     newData[index].amount = newData[index].unitRate * newData[index].qty;
     newData[index].netAmount = newData[index].unitRate * newData[index].qty;
-
+    newData[index].id = index;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].vendorName && newData[index].qty && newData[index].unitRate > 0) {
@@ -620,6 +630,7 @@ const AddJobCard = (props: Props) => {
 
 
   const handleAutoFillData = (value: any, empValue: any) => {
+    console.log("@@@@@@@@@@@@@==>>>>>>>>>", value, "         ", empValue)
     formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == value)]?.compId);
     formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == value)]?.complaintDate);
     formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == value)]?.currentReading);
@@ -653,10 +664,10 @@ const AddJobCard = (props: Props) => {
     formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.jobCardNo || "");
     formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.fileNo || "");
     formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == value)]?.complaint);
-    // formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == empValue)].label);
-    // setDesgValue(empOption[empOption.findIndex(e => e.value == empValue)]?.designation);
-    // setDeptValue(empOption[empOption.findIndex(e => e.value == empValue)]?.department);
-    // setVehicleName(vehicleOption[vehicleOption.findIndex(e => e.value == value)]?.vehicleName);
+    //formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == empValue)]?.label || "");
+    setDesgValue(empOption[empOption.findIndex(e => e.value == empValue)]?.designation || "N/A");
+    setDeptValue(empOption[empOption.findIndex(e => e.value == empValue)]?.department || "N/A");
+    //setVehicleName(vehicleOption[vehicleOption.findIndex(e => e.value == value)]?.vehicleName || "N/A");
   }
 
 
@@ -735,7 +746,7 @@ const AddJobCard = (props: Props) => {
                     onChange={(event) => formik.setFieldValue("status", event.target.value)}
                   >
                     <FormControlLabel
-                      value="Complete"
+                      value={"Complete"}
                       control={<Radio color="primary" />}
                       label={t("text.Complete")}
 
@@ -777,6 +788,9 @@ const AddJobCard = (props: Props) => {
                     setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
+                {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
+                )}
               </Grid>
 
 
@@ -837,7 +851,7 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
                       formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
                       formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
-                      formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "complete");
+                      formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
                       setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || [{
                         id: 0,
                         jobCardId: 0,
@@ -866,6 +880,8 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
                       formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
                       formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
+                      formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
+                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || "");
                     }
                   }}
                   renderInput={(params) => (
@@ -878,6 +894,9 @@ const AddJobCard = (props: Props) => {
                     />
                   )}
                 />
+                {!formik.values.itemName && formik.touched.itemName && formik.errors.itemName && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemName.toString()}</div>
+                )}
               </Grid>
 
               {/* Vehicle name */}
@@ -932,6 +951,7 @@ const AddJobCard = (props: Props) => {
                   options={empOption}
                   value={formik.values.empName}
                   fullWidth
+                  disabled={true}
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
@@ -943,7 +963,7 @@ const AddJobCard = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.UnderControlOf")} required={true} />}
+                      label={<CustomLabel text={t("text.UnderControlOf")} required={false} />}
                       name="empName"
                       id="empName"
                       placeholder={t("text.UnderControlOf")}
@@ -1109,6 +1129,7 @@ const AddJobCard = (props: Props) => {
                               options={serviceOption}
                               value={row.serviceName}
                               fullWidth
+                              sx={{ width: "225px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1118,12 +1139,12 @@ const AddJobCard = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.SelectServices")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.SelectServices")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1144,15 +1165,16 @@ const AddJobCard = (props: Props) => {
                               onChange={(e: any, newValue: any) => {
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
+                              sx={{ width: "140px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Status")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Status")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1175,15 +1197,16 @@ const AddJobCard = (props: Props) => {
                                 handleInputChange(index, 'vendorId', newValue?.value);
                                 handleInputChange(index, 'vendorName', newValue?.label);
                               }}
+                              sx={{ width: "330px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Vendor")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Vendor")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1206,15 +1229,16 @@ const AddJobCard = (props: Props) => {
                                 handleInputChange(index, 'unitId', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
                               }}
+                              sx={{ width: "140px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Unit")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Unit")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1249,6 +1273,7 @@ const AddJobCard = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "80px" }}
                             />
                           </td>
                           <td
@@ -1266,6 +1291,7 @@ const AddJobCard = (props: Props) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
+                              sx={{ width: "90px" }}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1283,6 +1309,7 @@ const AddJobCard = (props: Props) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                               }}
                               size="small"
+                              sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
                             />
                           </td>
@@ -1326,13 +1353,14 @@ const AddJobCard = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                         </tr>
                       ))}
                     </tbody>
                     <tfoot>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={9}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.ItemAmount")}
@@ -1385,13 +1413,13 @@ const AddJobCard = (props: Props) => {
                         <td colSpan={1}>
                           <b>:</b>
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <td colSpan={9}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalServiceAmount}
                         </td>
                       </tr>
@@ -1400,8 +1428,8 @@ const AddJobCard = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={1}>
-                          <b>:</b>{formik.values.netAmount}
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.netAmount || formik.values.totalServiceAmount}
                         </td>
                       </tr>
                     </tfoot>
@@ -1571,6 +1599,18 @@ const AddJobCard = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
+              <Button
+                ref={inputRef}
+                onClick={(e) => {
+                  setTimeout(() => {
+                    handleAutoFillData(location.state?.itemID || formik.values?.itemId, location.state?.empId || formik.values.empId);
+                  }, 300);
+                }}
+                sx={{ display: "none" }}
+                variant="contained"
+                color="secondary"
+              >
+              </Button>
 
               {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
@@ -1605,10 +1645,11 @@ const AddJobCard = (props: Props) => {
 
             </Grid>
 
+
           </form>
         </CardContent>
       </div>
-    </div>
+    </div >
   );
 };
 const modules = {

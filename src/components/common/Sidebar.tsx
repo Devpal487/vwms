@@ -1156,7 +1156,7 @@ export default function MiniDrawer({ items }: any) {
                     <ListItem
                       sx={{
                         display: "flex",
-                        justifyContent: "center",
+                        justifyContent: "start",
                         alignItems: "center",
                         paddingLeft: 2,
                         paddingRight: 0,
