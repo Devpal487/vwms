@@ -78,7 +78,7 @@ export default function Unitmaster() {
     formik.setFieldValue("isActive", row.isActive);
     setEditId(row.unitId); // Set the unitId to edit
   };
-  
+
 
 
   let delete_id = "";
@@ -90,7 +90,7 @@ export default function Unitmaster() {
 
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`UnitMaster/DeleteUnitMaster`, collectData )
+      .post(`UnitMaster/DeleteUnitMaster`, collectData)
       .then((response) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);
@@ -147,7 +147,7 @@ export default function Unitmaster() {
                   direction="row"
                   sx={{ alignItems: "center", marginTop: "5px" }}
                 >
-                 
+
                   <EditIcon
                     style={{
                       fontSize: "20px",
@@ -176,21 +176,21 @@ export default function Unitmaster() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
-          
+
           },
           {
             field: "unitName",
             headerName: t("text.unitName"),
             flex: 1,
-           
+
           },
           {
             field: "unitShortname",
             headerName: t("text.unitShortname"),
             flex: 1,
-           
+
           },
-         
+
         ];
         setColumns(columns as any);
       }
@@ -228,7 +228,7 @@ export default function Unitmaster() {
         // Perform update
         values.unitId = editId; // Ensure the correct unitId is being sent for update
       }
-  
+
       const response = await api.post(endpoint, values);
       if (response.data.status === 1) {
         formik.resetForm();
@@ -240,7 +240,7 @@ export default function Unitmaster() {
       }
     },
   });
-  
+
 
 
 
@@ -280,7 +280,7 @@ export default function Unitmaster() {
               </Typography>
             </Grid>
 
-            <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -292,7 +292,7 @@ export default function Unitmaster() {
                   </option>
                 ))}
               </select>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Divider />
@@ -301,12 +301,28 @@ export default function Unitmaster() {
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={2}>
               <Grid xs={12} sm={5} lg={5} item>
-                <TranslateTextField
+                {/* <TranslateTextField
                   label={t("text.enterunitName")}
                   value={formik.values.unitName}
                   onChangeText={(text: string) => handleConversionChange('unitName', text)}
                   required={true}
                   lang={lang}
+                /> */}
+                <TextField
+                  label={
+                    <CustomLabel
+                      text={t("text.enterunitName")}
+                      required={true}
+                    />
+                  }
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="unitName"
+                  id="unitName"
+                  value={formik.values.unitName}
+                  placeholder={t("text.enterunitName")}
+                  onChange={formik.handleChange}
                 />
                 {formik.touched.unitName && formik.errors.unitName ? (
                   <div style={{ color: "red", margin: "5px" }}>
@@ -335,20 +351,20 @@ export default function Unitmaster() {
               </Grid>
 
               <Grid item xs={2} sx={{ m: -1 }}>
-  {editId === 0 ? (
-    <ButtonWithLoader
-      buttonText={t("text.save")}
-      onClickHandler={handleSubmitWrapper}
-      fullWidth={true}
-    />
-  ) : (
-    <ButtonWithLoader
-      buttonText={t("text.update")}
-      onClickHandler={handleSubmitWrapper}
-      fullWidth={true}
-    />
-  )}
-</Grid>
+                {editId === 0 ? (
+                  <ButtonWithLoader
+                    buttonText={t("text.save")}
+                    onClickHandler={handleSubmitWrapper}
+                    fullWidth={true}
+                  />
+                ) : (
+                  <ButtonWithLoader
+                    buttonText={t("text.update")}
+                    onClickHandler={handleSubmitWrapper}
+                    fullWidth={true}
+                  />
+                )}
+              </Grid>
 
             </Grid>
           </form>

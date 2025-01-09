@@ -88,7 +88,7 @@ export default function FileMaster() {
   const getStateZone = () => {
     const collectData = {
       stateId: -1,
-      
+
     };
     api.post(`StateMaster/GetState`, collectData).then((res) => {
       const arr = [];
@@ -110,7 +110,7 @@ export default function FileMaster() {
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`CityMaster/DeleteCityMaster`,  collectData )
+      .post(`CityMaster/DeleteCityMaster`, collectData)
       .then((response) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);
@@ -140,7 +140,7 @@ export default function FileMaster() {
   const getList = () => {
     const collectData = {
       cityId: -1,
-      
+
     };
     try {
       api.post(`CityMaster/GetCityMaster`, collectData).then((res) => {
@@ -169,29 +169,29 @@ export default function FileMaster() {
                     sx={{ alignItems: "center", marginTop: "5px" }}
                   >
                     {/* {permissionData?.isEdit ? ( */}
-                      <EditIcon
-                        style={{
-                          fontSize: "20px",
-                          color: "blue",
-                          cursor: "pointer",
-                        }}
-                        className="cursor-pointer"
-                        onClick={() => routeChangeEdit(params.row)}
-                      />
+                    <EditIcon
+                      style={{
+                        fontSize: "20px",
+                        color: "blue",
+                        cursor: "pointer",
+                      }}
+                      className="cursor-pointer"
+                      onClick={() => routeChangeEdit(params.row)}
+                    />
                     {/* ) : (
                       ""
                     )} */}
                     {/* {permissionData?.isDel ? ( */}
-                      <DeleteIcon
-                        style={{
-                          fontSize: "20px",
-                          color: "red",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          handledeleteClick(params.row.id);
-                        }}
-                      />
+                    <DeleteIcon
+                      style={{
+                        fontSize: "20px",
+                        color: "red",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        handledeleteClick(params.row.id);
+                      }}
+                    />
                     {/* ) : (
                       ""
                     )} */}
@@ -237,6 +237,13 @@ export default function FileMaster() {
         return value && value.trim() !== "";
       }
     ),
+    cityName: Yup.string().test(
+      "required",
+      "City Name Is Required",
+      function (value: any) {
+        return value && value.trim() !== "";
+      }
+    ),
   });
 
   const [toaster, setToaster] = useState(false);
@@ -245,8 +252,8 @@ export default function FileMaster() {
     initialValues: {
       cityId: 0,
       cityName: "",
-      stateId: 0,
-      stateName:"",
+      stateId: null,
+      stateName: "",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
       createdBy: "admin",
@@ -328,7 +335,7 @@ export default function FileMaster() {
               </Grid>
 
               <Grid item lg={2} md={2} xs={12} marginTop={2}>
-                <select
+                {/* <select
                   className="language-dropdown"
                   value={lang}
                   onChange={(e) => setLang(e.target.value as Language)}
@@ -338,7 +345,7 @@ export default function FileMaster() {
                       {l.label}
                     </option>
                   ))}
-                </select>
+                </select> */}
               </Grid>
             </Grid>
             <Divider />
@@ -355,13 +362,13 @@ export default function FileMaster() {
                     fullWidth
                     size="small"
                     onChange={(event, newValue) => {
-                     // console.log(newValue?.value);
+                      // console.log(newValue?.value);
                       formik.setFieldValue("stateId", newValue?.value);
                       formik.setFieldValue("stateName", newValue?.label);
                     }}
                     value={
                       option.find(
-                        (opt:any) => opt.value === formik.values.stateId
+                        (opt: any) => opt.value === formik.values.stateId
                       ) || null
                     }
                     // value={}
@@ -385,7 +392,7 @@ export default function FileMaster() {
                 </Grid>
 
                 <Grid item xs={5} sm={5}>
-                  <TranslateTextField
+                  {/* <TranslateTextField
                     label={t("text.EnterDistrictName")}
                     value={formik.values.cityName}
                     onChangeText={(text: string) =>
@@ -393,6 +400,18 @@ export default function FileMaster() {
                     }
                     required={true}
                     lang={lang}
+                  />*/}
+                  <TextField
+                    label={<CustomLabel text={t("text.EnterDistrictName")} required={true} />}
+                    value={formik.values.cityName}
+                    placeholder={t("text.EnterDistrictName")}
+                    size="small"
+                    fullWidth
+                    name="cityName"
+                    id="cityName"
+                    style={{ backgroundColor: "white" }}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   {formik.touched.cityName && formik.errors.cityName ? (
                     <div style={{ color: "red", margin: "5px" }}>
@@ -403,7 +422,7 @@ export default function FileMaster() {
 
                 <Grid item xs={2} sx={{ m: -1 }}>
                   {editId === 0 && (
-                  // {editId === -1 && permissionData?.isAdd && (
+                    // {editId === -1 && permissionData?.isAdd && (
                     <ButtonWithLoader
                       buttonText={t("text.save")}
                       onClickHandler={handleSubmitWrapper}

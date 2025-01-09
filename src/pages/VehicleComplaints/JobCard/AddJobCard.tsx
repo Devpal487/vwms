@@ -233,8 +233,13 @@ const AddJobCard = (props: Props) => {
     //   inputRef.current.click();
     // }
 
+    const timeoutId = setTimeout(() => {
+      //handleAutoFillData(location.state?.itemID || formik.values.itemId, location.state?.empId || formik.values.empId)
+    }, 300);
+    return () => clearTimeout(timeoutId);
+
   }, []);
-  
+
 
   const getVehicleDetails = async () => {
     const response = await api.get(
@@ -431,19 +436,6 @@ const AddJobCard = (props: Props) => {
     }
   };
 
-  // const getJobCardData = async () => {
-  //   const collectData = {
-  //     "jobCardId": -1,
-  //     "status": ""
-  //   };
-  //   const response = await api.post(`Master/GetJobCard`, collectData);
-  //   const data = response.data.data;
-  //   const arr = data.map((Item: any, index: any) => ({
-  //     ...Item,
-  //   }));
-  //   setJobCardData(arr);
-  // };
-
 
   const handlePanClose = () => {
     setPanOpen(false);
@@ -627,6 +619,47 @@ const AddJobCard = (props: Props) => {
   };
 
 
+  const handleAutoFillData = (value: any, empValue: any) => {
+    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == value)]?.compId);
+    formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == value)]?.complaintDate);
+    formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == value)]?.currentReading);
+    formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == value)]?.status);
+    setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.serviceDetail || [{
+      id: 0,
+      jobCardId: 0,
+      serviceId: 0,
+      amount: 0,
+      jobWorkReq: true,
+      vendorId: 0,
+      challanRemark: "",
+      challanNo: 0,
+      challanDate: defaultValues,
+      challanRcvNo: 0,
+      challanRcvDate: defaultValues,
+      challanStatus: "",
+      netAmount: 0,
+      qty: 0,
+      unitRate: 0,
+      unitId: 0,
+      vendorName: "",
+      serviceName: "",
+      unitName: "",
+      cgstid: 0,
+      sgstid: 0,
+      gstid: 0,
+      gst: 0
+    }]);
+    formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.jobCardId || 0);
+    formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.jobCardNo || "");
+    formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.fileNo || "");
+    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == value)]?.complaint);
+    // formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == empValue)].label);
+    // setDesgValue(empOption[empOption.findIndex(e => e.value == empValue)]?.designation);
+    // setDeptValue(empOption[empOption.findIndex(e => e.value == empValue)]?.department);
+    // setVehicleName(vehicleOption[vehicleOption.findIndex(e => e.value == value)]?.vehicleName);
+  }
+
+
 
 
   const back = useNavigate();
@@ -788,52 +821,52 @@ const AddJobCard = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
-                    }else{
-                    setItemId(newValue?.value);
-                    formik.setFieldValue("itemName", newValue?.label);
-                    formik.setFieldValue("itemId", newValue?.value);
-                    formik.setFieldValue("empId", newValue?.empId);
-                    formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
-                    setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
-                    setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
-                    setVehicleName(newValue?.vehicleName);
-                    console.log(complainOption);
-                    formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
-                    formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
-                    formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
-                    formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
-                    formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "complete");
-                    setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || [{
-                      id: 0,
-                      jobCardId: 0,
-                      serviceId: 0,
-                      amount: 0,
-                      jobWorkReq: true,
-                      vendorId: 0,
-                      challanRemark: "",
-                      challanNo: 0,
-                      challanDate: defaultValues,
-                      challanRcvNo: 0,
-                      challanRcvDate: defaultValues,
-                      challanStatus: "",
-                      netAmount: 0,
-                      qty: 0,
-                      unitRate: 0,
-                      unitId: 0,
-                      vendorName: "",
-                      serviceName: "",
-                      unitName: "",
-                      cgstid: 0,
-                      sgstid: 0,
-                      gstid: 0,
-                      gst: 0
-                    }]);
-                    formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
-                    formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
-                    formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
-                  }
+                    } else {
+                      setItemId(newValue?.value);
+                      formik.setFieldValue("itemName", newValue?.label);
+                      formik.setFieldValue("itemId", newValue?.value);
+                      formik.setFieldValue("empId", newValue?.empId);
+                      formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
+                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
+                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
+                      setVehicleName(newValue?.vehicleName);
+                      console.log(complainOption);
+                      formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
+                      formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
+                      formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
+                      formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
+                      formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "complete");
+                      setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || [{
+                        id: 0,
+                        jobCardId: 0,
+                        serviceId: 0,
+                        amount: 0,
+                        jobWorkReq: true,
+                        vendorId: 0,
+                        challanRemark: "",
+                        challanNo: 0,
+                        challanDate: defaultValues,
+                        challanRcvNo: 0,
+                        challanRcvDate: defaultValues,
+                        challanStatus: "",
+                        netAmount: 0,
+                        qty: 0,
+                        unitRate: 0,
+                        unitId: 0,
+                        vendorName: "",
+                        serviceName: "",
+                        unitName: "",
+                        cgstid: 0,
+                        sgstid: 0,
+                        gstid: 0,
+                        gst: 0
+                      }]);
+                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
+                      formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
+                      formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
+                    }
                   }}
                   renderInput={(params) => (
                     <TextField

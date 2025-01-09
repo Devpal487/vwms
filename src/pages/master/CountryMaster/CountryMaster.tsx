@@ -46,7 +46,7 @@ export default function CountryMaster() {
 
   const [columns, setColumns] = useState<any>([]);
   const [rows, setRows] = useState<any>([]);
-  const [editId, setEditId] = useState<any>(0);
+  const [editId, setEditId] = useState<any>(-1);
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [permissionData, setPermissionData] = useState<MenuPermission>({
@@ -89,7 +89,7 @@ export default function CountryMaster() {
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`CountryMaster/DeleteCountry`, collectData )
+      .post(`CountryMaster/DeleteCountry`, collectData)
       .then((response) => {
         if (response.data.isSuccess) {
           toast.success(response.data.mesg);
@@ -241,7 +241,7 @@ export default function CountryMaster() {
         toast.success(response.data.message);
         formik.resetForm();
         getList();
-        setEditId(0);
+        setEditId(-1);
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -281,7 +281,7 @@ export default function CountryMaster() {
             sx={{
               width: "100%",
               overflow: "hidden",
-             
+
             }}
             style={{ padding: "10px" }}
           >
@@ -300,7 +300,7 @@ export default function CountryMaster() {
                 </Typography>
               </Grid>
 
-              <Grid item lg={2} md={2} xs={12} marginTop={2}>
+              {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
                 <select
                   className="language-dropdown"
                   value={lang}
@@ -312,7 +312,7 @@ export default function CountryMaster() {
                     </option>
                   ))}
                 </select>
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Divider />
@@ -321,7 +321,7 @@ export default function CountryMaster() {
             <form onSubmit={formik.handleSubmit}>
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={5}>
-                  <TranslateTextField
+                  {/* <TranslateTextField
                     label={t("text.EnterCountryName")}
                     value={formik.values.countryName}
                     onChangeText={(text: string) =>
@@ -329,6 +329,18 @@ export default function CountryMaster() {
                     }
                     required={true}
                     lang={lang}
+                  /> */}
+                  <TextField
+                    label={<CustomLabel text={t("text.EnterCountryName")} required={true} />}
+                    value={formik.values.countryName}
+                    placeholder={t("text.EnterCountryName")}
+                    size="small"
+                    fullWidth
+                    name="countryName"
+                    id="countryName"
+                    style={{ backgroundColor: "white" }}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
 
                   {formik.touched.countryName && formik.errors.countryName ? (
@@ -337,6 +349,7 @@ export default function CountryMaster() {
                     </div>
                   ) : null}
                 </Grid>
+
                 <Grid item xs={5}>
                   <TextField
                     label={<CustomLabel text={t("text.EnterCountryCode")} />}

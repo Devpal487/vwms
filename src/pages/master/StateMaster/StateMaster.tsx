@@ -168,17 +168,17 @@ export default function StateMaster() {
 
   const accept = () => {
     const collectData = {
-      stateId: delete_id,
+      stateId: parseInt(delete_id),
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .delete(`StateMaster/DeleteState`, { data: collectData })
+      .post(`StateMaster/DeleteState`, collectData )
       .then((response) => {
-        if (response.data.isSuccess) {
-          toast.success(response.data.mesg);
+        if (response.data.status === 1) {
+          toast.success(response.data.message);
           fetchZonesData();
         } else {
-          toast.error(response.data.mesg);
+          toast.error(response.data.message);
         }
       });
   };
@@ -336,7 +336,7 @@ export default function StateMaster() {
               </Typography>
             </Grid>
 
-            <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -348,7 +348,7 @@ export default function StateMaster() {
                   </option>
                 ))}
               </select>
-            </Grid>
+            </Grid> */}
           </Grid>
 
           <Divider />
@@ -399,7 +399,7 @@ export default function StateMaster() {
               </Grid>
 
               <Grid item xs={3.5} sm={3.5}>
-                <TranslateTextField
+                {/* <TranslateTextField
                   label={t("text.EnterStateName")}
                   value={formik.values.stateName}
                   onChangeText={(text: string) =>
@@ -407,6 +407,18 @@ export default function StateMaster() {
                   }
                   required={true}
                   lang={lang}
+                /> */}
+                <TextField
+                  label={<CustomLabel text={t("text.EnterStateName")} required={true} />}
+                  value={formik.values.stateName}
+                  name="stateName"
+                  id="stateName"
+                  placeholder={t("text.EnterStateName")}
+                  size="small"
+                  fullWidth
+                  style={{ backgroundColor: "white" }}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 {formik.touched.stateName && formik.errors.stateName ? (
                   <div style={{ color: "red", margin: "5px" }}>

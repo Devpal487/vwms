@@ -769,8 +769,8 @@ const AddComplaint = (props: Props) => {
                            label={
                               <CustomLabel
                                  text={t("text.Department")}
-                             
-                                 
+
+
                               />
                            }
                            disabled={true}
