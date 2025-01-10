@@ -493,7 +493,7 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.UnderControlOf")} required={true} />}
+                                 label={<CustomLabel text={t("text.UnderControlOf")} required={false} />}
                                  name="empId"
                                  id="empId"
                                  placeholder={t("text.UnderControlOf")}
