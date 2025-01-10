@@ -148,9 +148,19 @@ const EditComplaintApproval = (props: Props) => {
          if (inputRef.current) {
             inputRef.current.click(); // Programmatically click the button
          }
+         if (formik.values.approveEmp1 > 0) {
+            setaprEmpDept1(empOption.find(e => e.value == location.state.approveEmp1)?.department || "")
+            setaprEmpDept2(empOption.find(e => e.value == location.state.approveEmp2)?.department || "")
+            setaprEmpDept3(empOption.find(e => e.value == location.state.approveEmp3)?.department || "")
+            setaprEmpDept4(empOption.find(e => e.value == location.state.approveEmp4)?.department || "")
+            setaprEmpDesignation1(empOption.find(e => e.value == location.state.approveEmp1)?.designation || "")
+            setaprEmpDesignation2(empOption.find(e => e.value == location.state.approveEmp2)?.designation || "")
+            setaprEmpDesignation3(empOption.find(e => e.value == location.state.approveEmp3)?.designation || "")
+            setaprEmpDesignation4(empOption.find(e => e.value == location.state.approveEmp4)?.designation || "")
+         }
       }, 300);
       return () => clearTimeout(timeoutId);
-   }, []);
+   }, [setaprEmpDept1]);
 
    const getLabelById = (option: any, id: any) => {
       const obj = option.find((item: any) => item.value === id);

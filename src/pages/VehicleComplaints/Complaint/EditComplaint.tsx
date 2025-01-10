@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -73,6 +73,8 @@ const EditComplaint = (props: Props) => {
    const [toaster, setToaster] = useState(false);
    const [isVisible, setIsVisible] = useState(false);
    const location = useLocation();
+   const inputRef = useRef<HTMLButtonElement>(null);
+
 
    const [vehicleOption, setVehicleOption] = useState([
       { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
@@ -112,16 +114,22 @@ const EditComplaint = (props: Props) => {
       getEmpData();
 
       const timeoutId = setTimeout(() => {
-         setaprEmpDept1(empOption.find(e=>e.value == location.state.approveEmp1)?.department || "")
-         setaprEmpDept2(empOption.find(e=>e.value == location.state.approveEmp2)?.department || "")
-         setaprEmpDept3(empOption.find(e=>e.value == location.state.approveEmp3)?.department || "")
-         setaprEmpDept4(empOption.find(e=>e.value == location.state.approveEmp4)?.department || "")
-         setaprEmpDesignation1(empOption.find(e=>e.value == location.state.approveEmp1)?.designation || "")
-         setaprEmpDesignation2(empOption.find(e=>e.value == location.state.approveEmp2)?.designation || "")
-         setaprEmpDesignation3(empOption.find(e=>e.value == location.state.approveEmp3)?.designation || "")
-         setaprEmpDesignation4(empOption.find(e=>e.value == location.state.approveEmp4)?.designation || "")
-       }, 300);
-       return () => clearTimeout(timeoutId);
+         const timeoutId = setTimeout(() => {
+            if (inputRef.current) {
+               inputRef.current.click(); // Programmatically click the button
+            }
+         }, 300);
+         return () => clearTimeout(timeoutId);
+         setaprEmpDept1(empOption.find(e => e.value == location.state.approveEmp1)?.department || "")
+         setaprEmpDept2(empOption.find(e => e.value == location.state.approveEmp2)?.department || "")
+         setaprEmpDept3(empOption.find(e => e.value == location.state.approveEmp3)?.department || "")
+         setaprEmpDept4(empOption.find(e => e.value == location.state.approveEmp4)?.department || "")
+         setaprEmpDesignation1(empOption.find(e => e.value == location.state.approveEmp1)?.designation || "")
+         setaprEmpDesignation2(empOption.find(e => e.value == location.state.approveEmp2)?.designation || "")
+         setaprEmpDesignation3(empOption.find(e => e.value == location.state.approveEmp3)?.designation || "")
+         setaprEmpDesignation4(empOption.find(e => e.value == location.state.approveEmp4)?.designation || "")
+      }, 300);
+      return () => clearTimeout(timeoutId);
    }, []);
 
    // const getcomplaintNo = async () => {
@@ -211,7 +219,7 @@ const EditComplaint = (props: Props) => {
       }
       setDesignationOption(arr);
    };
-   
+
 
 
 
@@ -237,7 +245,7 @@ const EditComplaint = (props: Props) => {
          "complaintDate": dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
          "updatedOn": defaultValues,
          "compAppdt": location.state.compAppdt,
-         "jobCardNo": location.state?.jobCardNo ||location.state.complaintNo,
+         "jobCardNo": location.state?.jobCardNo || location.state.complaintNo,
          "file": location.state?.file || "",
          "fileOldName": "",
          "vehicleNo": location.state.vehicleNo,
@@ -553,8 +561,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption.find(e=>e.value == formik.values.approveEmp1)?.label}
-                           //disabled={true}
+                           value={empOption.find(e => e.value == formik.values.approveEmp1)?.label}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -621,8 +629,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption.find(e=>e.value == formik.values.approveEmp2)?.label}
-                           //disabled={true}
+                           value={empOption.find(e => e.value == formik.values.approveEmp2)?.label}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -689,8 +697,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption.find(e=>e.value == formik.values.approveEmp3)?.label}
-                           //disabled={true}
+                           value={empOption.find(e => e.value == formik.values.approveEmp3)?.label}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -757,8 +765,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={empOption.find(e=>e.value == formik.values.approveEmp4)?.label}
-                           //disabled={true}
+                           value={empOption.find(e => e.value == formik.values.approveEmp4)?.label}
+                           disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -969,6 +977,21 @@ const EditComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
+                  <Button
+                     ref={inputRef}
+                     onClick={(e) => {
+                        setTimeout(() => {
+                           formik.setFieldValue("approveEmp1", location.state?.approveEmp1 || 0);
+                           formik.setFieldValue("approveEmp2", location.state?.approveEmp2 || 0);
+                           formik.setFieldValue("approveEmp3", location.state?.approveEmp3 || 0);
+                           formik.setFieldValue("approveEmp4", location.state?.approveEmp4 || 0);
+                        }, 300);
+                     }}
+                     sx={{ display: "none" }}
+                     variant="contained"
+                     color="secondary"
+                  >
+                  </Button>
                   {isVisible && (
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
