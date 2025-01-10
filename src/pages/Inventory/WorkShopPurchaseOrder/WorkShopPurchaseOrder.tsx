@@ -231,7 +231,7 @@ export default function WorkShopPurchaseOrder() {
                                            field: "netAmount",
                                            headerName: t("text.netAmount"),
                                            flex: 1,
-                                           headerClassName: "MuiDataGrid-colCell",
+                                          // headerClassName: "MuiDataGrid-colCell",
                                        },
                 ];
                 setColumns(columns as any);

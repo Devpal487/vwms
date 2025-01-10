@@ -512,13 +512,13 @@ const CreatePurchaseInvoice = () => {
       srn: 0,
       purchaseInvoiceDetail: [],
     },
-    // validationSchema: Yup.object().shape({
-    //     document_No: Yup.string().required(t("text.reqDocumentNum")),
-    //     orderNo: Yup.string().required(t("text.reqOrderNum")),
-    //     doc_Date: Yup.date().required(t("text.reqOrderDate")),
-    //     p_InvoiceDate: Yup.date().required(t("text.reqInvDate")),
-    //     supplierName: Yup.string().required(t("text.reqSuppName")),
-    // }),
+    validationSchema: Yup.object().shape({
+      invoiceNo: Yup.string().required("Invoice No. is required"),
+        orderNo: Yup.string().required(t("text.reqOrderNum")),
+        vendorId: Yup.date().required("Vendor is required"),
+        // p_InvoiceDate: Yup.date().required(t("text.reqInvDate")),
+        // supplierName: Yup.string().required(t("text.reqSuppName")),
+    }),
     // onSubmit: async (values) => {
     //     console.log("Form Submitted with values:", values);
     //     const validItems = items.filter((item: any) => validateItem(item));
@@ -766,7 +766,7 @@ const CreatePurchaseInvoice = () => {
   //     setTotalAmount(calculatedTotalAmount);
   //     formik.setFieldValue('amount', calculatedTotalAmount.toFixed(2));
   // }, [items]);
-
+  console.log("invoice" , formik.values.invoiceNo);
   return (
     <div>
       <div
@@ -812,7 +812,8 @@ const CreatePurchaseInvoice = () => {
               <Grid item xs={12} sm={4} lg={4}>
                 <TextField
                   label={
-                    <CustomLabel text={t("text.invoiceno")} required={false} />
+                    <CustomLabel text={t("text.invoiceno")} required={true} />
+                    
                   }
                   variant="outlined"
                   fullWidth
@@ -824,8 +825,16 @@ const CreatePurchaseInvoice = () => {
                   onChange={(e) => {
                     formik.setFieldValue("invoiceNo", e.target.value);
                   }}
+                  error={
+                    formik.touched.invoiceNo &&
+                    Boolean(formik.errors.invoiceNo)
+                  }
+                  helperText={
+                    formik.touched.invoiceNo && formik.errors.invoiceNo
+                  }
                 />
               </Grid>
+             
 
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -869,7 +878,7 @@ const CreatePurchaseInvoice = () => {
                       label={
                         <CustomLabel
                           text={t("text.orderno")}
-                          required={false}
+                          required={true}
                         />
                       }
                     />

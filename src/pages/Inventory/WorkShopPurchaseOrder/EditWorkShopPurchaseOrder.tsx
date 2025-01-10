@@ -759,21 +759,11 @@ const EditWorkShopPurchaseOrder = () => {
                                         type="file"
                                         inputProps={{ accept: "image/*" }}
                                         InputLabelProps={{ shrink: true }}
-                                        label={<CustomLabel text={t("text.uploadDocument")} />}
+                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
                                         size="small"
                                         fullWidth
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                            const file = event.target.files?.[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                reader.onload = () => {
-                                                    const base64String = reader.result?.toString().split(",")[1];
-                                                    formik.setFieldValue("pOrderDoc", base64String);
-                                                    formik.setFieldValue("file", file.name);
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }}
+                                        onChange={(e) => otherDocChangeHandler(e, "file")}
+                                        required={true}
                                     />
 
                                     {/* <TextField
@@ -829,6 +819,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                 fontSize: "15px",
                                                 cursor: "pointer",
                                             }}
+
                                         >
                                             {t("text.Preview")}
                                         </Typography>
