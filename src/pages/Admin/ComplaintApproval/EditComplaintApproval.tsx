@@ -25,7 +25,7 @@ import {
    Modal,
    Box,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -88,6 +88,7 @@ const EditComplaintApproval = (props: Props) => {
    const [designationOption, setDesignationOption] = useState([
       { value: 1, label: t("text.Designation") },
    ]);
+   const inputRef = useRef<HTMLButtonElement>(null);
 
    const [vehicleName, setVehicleName] = useState("");
 
@@ -142,6 +143,13 @@ const EditComplaintApproval = (props: Props) => {
       getDesignationData();
       getEmpData();
       getComplaintData();
+
+      const timeoutId = setTimeout(() => {
+         if (inputRef.current) {
+            inputRef.current.click(); // Programmatically click the button
+         }
+      }, 300);
+      return () => clearTimeout(timeoutId);
    }, []);
 
    const getLabelById = (option: any, id: any) => {
@@ -1191,6 +1199,22 @@ const EditComplaintApproval = (props: Props) => {
                         </Button>
                      </Grid>
 
+                     <Button
+                        ref={inputRef}
+                        onClick={(e) => {
+                           setTimeout(() => {
+                              formik.setFieldValue("approveEmp1", location.state?.approveEmp1 || 0);
+                              formik.setFieldValue("approveEmp2", location.state?.approveEmp2 || 0);
+                              formik.setFieldValue("approveEmp3", location.state?.approveEmp3 || 0);
+                              formik.setFieldValue("approveEmp4", location.state?.approveEmp4 || 0);
+                           }, 300);
+                        }}
+                        sx={{ display: "none" }}
+                        variant="contained"
+                        color="secondary"
+                     >
+                     </Button>
+
                      {isVisible && (
                         <Grid item lg={6} sm={6} xs={12}>
                            <Button
@@ -1232,7 +1256,7 @@ const EditComplaintApproval = (props: Props) => {
                </form>
             </CardContent>
          </div>
-      </div>
+      </div >
    );
 };
 const modules = {
