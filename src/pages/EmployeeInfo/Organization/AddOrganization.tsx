@@ -151,10 +151,12 @@ const AddOrganization = (props: Props) => {
       "updatedOn": "2024-12-14T09:54:26.532Z",
       "cityName": ""
     },
-    // validationSchema: Yup.object({
-    //   indentNo: Yup.string()
-    //     .required(t("text.reqIndentNum")),
-    // }),
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required(t("Company Name is required")),
+      address: Yup.string()
+        .required(t("Address is required")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -330,6 +332,11 @@ const AddOrganization = (props: Props) => {
                   required={true}
                   lang={lang}
                 />
+
+                {formik.touched.name && formik.errors.name && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.name}</div>
+                )}
+
               </Grid>
 
 
@@ -342,6 +349,9 @@ const AddOrganization = (props: Props) => {
                   required={true}
                   lang={lang}
                 />
+                {formik.touched.address && formik.errors.address && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.address}</div>
+                )}
               </Grid>
 
               {/* country */}
@@ -723,7 +733,7 @@ const AddOrganization = (props: Props) => {
                   </Box>
                 </Modal>
               </Grid>
-  
+
 
 
               {/* Submit Button */}

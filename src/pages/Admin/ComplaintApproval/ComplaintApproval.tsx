@@ -48,7 +48,7 @@ interface MenuPermission {
    isDel: boolean;
 }
 
-export default function Complaint() {
+export default function ComplaintApproval() {
    const [item, setItem] = useState([]);
    const [columns, setColumns] = useState<any>([]);
    const [isLoading, setIsLoading] = useState(true);
@@ -119,14 +119,14 @@ export default function Complaint() {
    const routeChangeEdit = (row: any) => {
       console.log("row " , row);
 
-      let path = `/vehiclecomplaint/EditComplaint`;
+      let path = `/Admin/EditComplaintApproval`;
       navigate(path, {
          state: row,
       });
    };
 
    const routeChangeAdd = () => {
-      let path = `/vehiclecomplaint/AddComplaint`;
+      let path = `/Admin/AddComplaintApproval`;
       navigate(path);
    };
 
@@ -184,8 +184,9 @@ export default function Complaint() {
             id: Item.compId,
             complaintDate: formatDate(Item.complaintDate)
          }));
-         setItem(arr);
-         setIsLoading(false);
+         setIsLoading(false); 
+         const arr2= arr.filter((e:any)=> e.status !== "pending");
+         setItem(arr2);
 
          if (data.length > 0) {
             const columns: GridColDef[] = [
@@ -361,7 +362,7 @@ export default function Complaint() {
                         sx={{ padding: "20px" }}
                         align="left"
                      >
-                        {t("text.Complaint")}
+                        {t("text.ComplaintApproval")}
                      </Typography>
                   </Grid>
                   <Grid item lg={2} md={2} xs={12} marginTop={2}>

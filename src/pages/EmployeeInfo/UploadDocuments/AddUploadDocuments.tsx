@@ -123,7 +123,7 @@ const AddUploadDocuments = (props: Props) => {
       "id": 0,
       "docCode": "",
       "empId": 0,
-      "vehicleId": 0,
+      "vehicleId": null,
       "expiry": "2024-12-23T05:35:11.869Z",
       "doc": "",
       "docTypeName": "",
@@ -131,10 +131,15 @@ const AddUploadDocuments = (props: Props) => {
       "createdBy": "",
       "updatedBy": "",
       "file": "",
-      "fileOldName": "",
+      "fileOldName": "a.pdf",
       "empName": "",
       "vehicleNo": ""
     },
+
+    validationSchema: Yup.object({
+      vehicleNo: Yup.string()
+        .required(t("Vehicle number is required")),
+    }),
 
 
     onSubmit: async (values) => {
@@ -319,13 +324,17 @@ const AddUploadDocuments = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={false} />}
+                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
                       name="vehicleNo"
                       id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
+                {formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo}</div>
+                )}
+
               </Grid>
 
               {/* Employee */}

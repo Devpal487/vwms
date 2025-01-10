@@ -24,7 +24,7 @@ import {
   Modal,
   Box,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -74,6 +74,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [modalImg, setModalImg] = useState("");
   const [Opens, setOpen] = React.useState(false);
   const [Img, setImg] = useState("");
+  const inputRef = useRef<HTMLButtonElement>(null);
 
   const [jobWorkChallanData, setJobWorkChallanData] = useState([{
     "challanNo": 0,
@@ -233,6 +234,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [challanNo, setChallanNo] = useState(0);
 
   useEffect(() => {
+    getChallanNo();
     getJobCardData();
     getJobWorkChallanData();
     getVehicleDetails();
@@ -241,7 +243,13 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
-    getChallanNo();
+
+    const timeoutId = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.click(); // Programmatically click the button
+      }
+    }, 500);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const getServiceData = async () => {
@@ -481,31 +489,31 @@ const AddJobWorkChallanRecieve = (props: Props) => {
 
   const updateJobCardStatusStatus = async (jobCardId: number) => {
     const collectData = {
-      "jobCardId": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardId,
-      "jobCardNo": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardNo,
-      "fileNo": jobCardData.find(e => e.jobCardId === jobCardId)?.fileNo,
-      "imageFile": jobCardData.find(e => e.jobCardId === jobCardId)?.imageFile,
-      "jobCardDate": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardDate,
-      "complainId": jobCardData.find(e => e.jobCardId === jobCardId)?.complainId,
-      "complainDate": jobCardData.find(e => e.jobCardId === jobCardId)?.complainDate,
-      "empId": jobCardData.find(e => e.jobCardId === jobCardId)?.empId,
-      "itemId": jobCardData.find(e => e.jobCardId === jobCardId)?.itemId,
-      "currenReading": jobCardData.find(e => e.jobCardId === jobCardId)?.currenReading,
-      "complain": jobCardData.find(e => e.jobCardId === jobCardId)?.complain,
+      "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
+      "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
+      "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
+      "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
+      "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
+      "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
+      "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
+      "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
+      "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
+      "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
+      "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
       "status": "Complete",
-      "serviceType": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceType,
-      "createdBy": jobCardData.find(e => e.jobCardId === jobCardId)?.createdBy,
-      "updatedBy": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedBy,
-      "createdOn": jobCardData.find(e => e.jobCardId === jobCardId)?.createdOn,
-      "updatedOn": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedOn,
-      "companyId": jobCardData.find(e => e.jobCardId === jobCardId)?.companyId,
-      "fyId": jobCardData.find(e => e.jobCardId === jobCardId)?.fyId,
-      "totalItemAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalItemAmount,
-      "totalServiceAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalServiceAmount,
-      "netAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.netAmount,
-      "itemName": jobCardData.find(e => e.jobCardId === jobCardId)?.itemName,
-      "empName": jobCardData.find(e => e.jobCardId === jobCardId)?.empName,
-      "serviceDetail": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceDetail,
+      "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
+      "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
+      "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
+      "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
+      "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
+      "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
+      "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
+      "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
+      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalServiceAmount,
+      "netAmount": formik.values.netAmount,
+      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
+      "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
+      "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail,
       "update": true
     };
     await api.post(`Master/UpsertJobCard`, collectData);
@@ -1468,6 +1476,18 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
+              <Button
+                ref={inputRef}
+                onClick={(e) => {
+                  setTimeout(() => {
+                    formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId)?.challanNo || 0);
+                  }, 300);
+                }}
+                sx={{ display: "none" }}
+                variant="contained"
+                color="secondary"
+              >
+              </Button>
               {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
@@ -1484,32 +1504,32 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     onClick={() => {
                       navigate("/vehiclecomplaint/AddJobCard", {
                         state: {
-                          "jobCardId": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardId,
-                          "jobCardNo": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardNo,
-                          "fileNo": jobCardData.find(e => e.jobCardId === jobCardId)?.fileNo,
-                          "imageFile": jobCardData.find(e => e.jobCardId === jobCardId)?.imageFile,
-                          "jobCardDate": jobCardData.find(e => e.jobCardId === jobCardId)?.jobCardDate,
-                          "complainId": jobCardData.find(e => e.jobCardId === jobCardId)?.complainId,
-                          "complainDate": jobCardData.find(e => e.jobCardId === jobCardId)?.complainDate,
-                          "empId": jobCardData.find(e => e.jobCardId === jobCardId)?.empId,
-                          "itemId": jobCardData.find(e => e.jobCardId === jobCardId)?.itemId,
-                          "currenReading": jobCardData.find(e => e.jobCardId === jobCardId)?.currenReading,
-                          "complain": jobCardData.find(e => e.jobCardId === jobCardId)?.complain,
-                          "status": "Complete",
-                          "serviceType": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceType,
-                          "createdBy": jobCardData.find(e => e.jobCardId === jobCardId)?.createdBy,
-                          "updatedBy": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedBy,
-                          "createdOn": jobCardData.find(e => e.jobCardId === jobCardId)?.createdOn,
-                          "updatedOn": jobCardData.find(e => e.jobCardId === jobCardId)?.updatedOn,
-                          "companyId": jobCardData.find(e => e.jobCardId === jobCardId)?.companyId,
-                          "fyId": jobCardData.find(e => e.jobCardId === jobCardId)?.fyId,
-                          "totalItemAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalItemAmount,
-                          "totalServiceAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.totalServiceAmount,
-                          "netAmount": jobCardData.find(e => e.jobCardId === jobCardId)?.netAmount,
-                          "itemName": jobCardData.find(e => e.jobCardId === jobCardId)?.itemName || "bcfdabhcjh",
-                          "empName": jobCardData.find(e => e.jobCardId === jobCardId)?.empName,
-                          "serviceDetail": jobCardData.find(e => e.jobCardId === jobCardId)?.serviceDetail,
-                          "update": true
+                         "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
+      "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
+      "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
+      "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
+      "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
+      "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
+      "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
+      "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
+      "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
+      "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
+      "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
+      "status": "Complete",
+      "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
+      "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
+      "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
+      "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
+      "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
+      "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
+      "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
+      "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
+      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalServiceAmount,
+      "netAmount": formik.values.netAmount,
+      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
+      "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
+      "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail,
+      "update": true
                         },
                       });
                     }}

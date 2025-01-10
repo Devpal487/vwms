@@ -126,10 +126,12 @@ export default function VehicleTypeInfo() {
          "updatedBy": ""
       },
 
-      // validationSchema: Yup.object({
-      //    areaName: Yup.string()
-      //       .required(t("text.reqAreaname")),
-      // }),
+      validationSchema: Yup.object({
+         vehicleName: Yup.string()
+            .required(t("Vehicle Type is required")),
+         petroName: Yup.string()
+            .required(t("Petrol pump name is required")),
+      }),
 
       onSubmit: async (values) => {
          try {
@@ -406,13 +408,18 @@ export default function VehicleTypeInfo() {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleType")} required={false} />}
-                                 name="vehicleTypeId"
-                                 id="vehicleTypeId"
+                                 label={<CustomLabel text={t("text.VehicleType")} required={true} />}
+                                 name="vehicleName"
+                                 id="vehicleName"
                                  placeholder={t("text.VehicleType")}
                               />
                            )}
                         />
+
+                        {formik.touched.vehicleName && formik.errors.vehicleName && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleName}</div>
+                        )}
+
                      </Grid>
 
 
@@ -478,13 +485,16 @@ export default function VehicleTypeInfo() {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.PetrolPump")} required={false} />}
-                                 name="petroId"
-                                 id="petroId"
+                                 label={<CustomLabel text={t("text.PetrolPump")} required={true} />}
+                                 name="petroName"
+                                 id="petroName"
                                  placeholder={t("text.PetrolPump")}
                               />
                            )}
                         />
+                        {formik.touched.petroName && formik.errors.petroName && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.petroName}</div>
+                        )}
                      </Grid>
 
 

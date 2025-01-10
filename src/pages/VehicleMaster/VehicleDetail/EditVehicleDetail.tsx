@@ -356,7 +356,7 @@ const AddVehicleDetail = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.AddVehicleDetail")}
+                        {t("text.EditVehicleDetail")}
                      </Typography>
                   </Grid>
 

@@ -64,7 +64,7 @@ const AddVehicleDetail = (props: Props) => {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
-   const { defaultValues,defaultValuestime } = getISTDate();
+   const { defaultValues, defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
    const [zoneValue, setZoneValue] = useState("");
@@ -297,10 +297,12 @@ const AddVehicleDetail = (props: Props) => {
          "devid": "",
          "vehicleWeight": 0
       },
-      // validationSchema: Yup.object({
-      //    indentNo: Yup.string()
-      //       .required(t("text.reqIndentNum")),
-      // }),
+      validationSchema: Yup.object({
+         itemName: Yup.string()
+            .required(t("Vehicle Name is required")),
+            vehicleNo: Yup.string()
+            .required(t("Vehicle Number is required")),
+      }),
 
       onSubmit: async (values) => {
          const response = await api.post(`Master/UpsertVehicleDetail`, values);
@@ -387,6 +389,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("vZoneID", parseInt(newValue.value));
                               formik.setFieldValue("zoneName", newValue.label.toString());
@@ -413,6 +418,10 @@ const AddVehicleDetail = (props: Props) => {
                            required={true}
                            lang={lang}
                         />
+
+                        {formik.touched.itemName && formik.errors.itemName && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemName}</div>
+                        )}
 
                      </Grid>
 
@@ -470,6 +479,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("itemCategoryId", parseInt(newValue.value));
                               setCategoryValue(newValue?.label);
@@ -496,6 +508,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               console.log(newValue?.value);
                               formik.setFieldValue("itemTypeId", parseInt(newValue.value))
                               setItemTypeValue(newValue?.label);
@@ -522,6 +537,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("unitId", parseInt(newValue.value));
                               setUnitValue(newValue?.label);
@@ -549,6 +567,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("taxId", parseInt(newValue.value));
                               setTaxValue(newValue?.label);
@@ -593,7 +614,7 @@ const AddVehicleDetail = (props: Props) => {
                            label={
                               <CustomLabel
                                  text={t("text.VehicleNo")}
-                                 required={false}
+                                 required={true}
                               />
                            }
                            variant="outlined"
@@ -607,6 +628,9 @@ const AddVehicleDetail = (props: Props) => {
                               formik.setFieldValue("vehicleNo", e.target.value.toString());
                            }}
                         />
+                        {formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo}</div>
+                        )}
                      </Grid>
 
                      {/* serial no */}
@@ -685,6 +709,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("empId", parseInt(newValue.value));
                               setEmpValue(newValue?.label);
@@ -753,6 +780,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               console.log(newValue?.value);
                               formik.setFieldValue("vehicleTypeId", parseInt(newValue.value));
                               setVehicleTypeValue(newValue?.label);
@@ -780,6 +810,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("brandTypeId", parseInt(newValue.value));
                               setBrandValue(newValue?.label);
@@ -806,6 +839,9 @@ const AddVehicleDetail = (props: Props) => {
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
                               //console.log(newValue?.value);
                               formik.setFieldValue("fuelTypeId", parseInt(newValue.value));
                               setFuelTypeValue(newValue?.label);

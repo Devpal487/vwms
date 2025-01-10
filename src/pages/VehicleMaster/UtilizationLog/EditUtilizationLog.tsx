@@ -93,6 +93,8 @@ const EditUtilizationLog = (props: Props) => {
   useEffect(() => {
     getVehicleDetails();
     getEmpData();
+
+    console.log(location.state);
   }, []);
 
   const getVehicleDetails = async () => {
@@ -138,10 +140,10 @@ const EditUtilizationLog = (props: Props) => {
       "id": location.state.id,
       "empId": location.state.empId,
       "itemId": location.state.itemId,
-      "fromDate": location.state.fromDate,
-      "toDate": location.state.toDate,
-      "fromTime": location.state.fromDate,
-      "toTime": location.state.toDate,
+      "fromDate": dayjs(location.state.fromDate).format("YYYY-MM-DD"),
+      "toDate": dayjs(location.state.toDate).format("YYYY-MM-DD"),
+      "fromTime": dayjs(location.state.fromDate).format('HH:MM'),
+      "toTime": dayjs(location.state.toDate).format("HH:MM"),
       "remark": location.state.remark,
       "createdBy": location.state.createdBy,
       "updatedBy": location.state.updatedBy,

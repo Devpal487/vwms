@@ -144,7 +144,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
       "updatedBy": location.state.updatedBy,
       "createdOn": location.state.createdOn,
       "updatedOn": location.state.updatedOn,
-      "file": location.state.file,
+      "file": location.state?.file || "",
     },
     // validationSchema: Yup.object({
     //   indentNo: Yup.string()

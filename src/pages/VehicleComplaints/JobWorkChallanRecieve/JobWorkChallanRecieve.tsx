@@ -242,12 +242,12 @@ export default function JobWorkChallanRecieve() {
                   flex: 1.5,
                   headerClassName: "MuiDataGrid-colCell",
                },
-               {
-                  field: "file",
-                  headerName: t("text.ChallanRcvDoc"),
-                  flex: 1,
-                  headerClassName: "MuiDataGrid-colCell",
-               },
+               // {
+               //    field: "file",
+               //    headerName: t("text.ChallanRcvDoc"),
+               //    flex: 1,
+               //    headerClassName: "MuiDataGrid-colCell",
+               // },
             ];
             setColumns(columns as any);
          }
