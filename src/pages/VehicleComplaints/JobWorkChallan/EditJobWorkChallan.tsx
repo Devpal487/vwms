@@ -336,7 +336,7 @@ const EditJobWorkChallan = (props: Props) => {
       "createdOn": location.state?.createdOn || defaultValues,
       "updatedOn": location.state?.updatedOn || defaultValues,
       "companyId": 0,
-      "fyId": 0,
+      "fyId": location.state?.fyId,
       "serviceAmount": location.state?.totalServiceAmount || 0,
       "itemAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
@@ -359,6 +359,11 @@ const EditJobWorkChallan = (props: Props) => {
       "jobCardDate": location.state?.jobCardDate || defaultValues,
       "complainDate": location.state?.complainDate || defaultValues,
     },
+
+    validationSchema: Yup.object({
+      vehicleNo: Yup.string()
+        .required("Vehicle Number is required"),
+    }),
 
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
@@ -660,6 +665,9 @@ const EditJobWorkChallan = (props: Props) => {
                     />
                   )}
                 />
+                {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                )}
               </Grid>
 
               {/* Challan Number */}
@@ -995,6 +1003,7 @@ const EditJobWorkChallan = (props: Props) => {
                               options={serviceOption}
                               value={row.serviceName}
                               fullWidth
+                              sx={{ width: "230px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1004,7 +1013,7 @@ const EditJobWorkChallan = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.ServiceName")} required={false} />}
+                                  // label={<CustomLabel text={t("text.ServiceName")} required={false} />}
                                   name="serviceName"
                                   id="serviceName"
                                   placeholder={t("text.ServiceName")}
@@ -1024,6 +1033,7 @@ const EditJobWorkChallan = (props: Props) => {
                               options={unitOption}
                               value={row.unitName}
                               fullWidth
+                              sx={{ width: "135px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1033,12 +1043,12 @@ const EditJobWorkChallan = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Unit")}
-                                      required={false}
-                                    />
-                                  }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Unit")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -1069,6 +1079,7 @@ const EditJobWorkChallan = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1083,6 +1094,7 @@ const EditJobWorkChallan = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              sx={{ width: "100px" }}
                             />
                           </td>
                           <td
@@ -1105,10 +1117,10 @@ const EditJobWorkChallan = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={<CustomLabel text={t("text.GstRate")} required={false} />}
-                                  name="gst"
-                                  id="gst"
-                                  placeholder={t("text.GstRate")}
+                                // label={<CustomLabel text={t("text.GstRate")} required={false} />}
+                                // name="gst"
+                                // id="gst"
+                                // placeholder={t("text.GstRate")}
                                 />
                               )}
                             />
@@ -1164,7 +1176,7 @@ const EditJobWorkChallan = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.serviceAmount}
                         </td>
                       </tr>
@@ -1173,7 +1185,7 @@ const EditJobWorkChallan = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.NetAmount")}
                         </td>
-                        <td colSpan={1} style={{ borderTop: "1px solid black" }}>
+                        <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>

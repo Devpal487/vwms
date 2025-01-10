@@ -205,7 +205,7 @@ const AddComplaint = (props: Props) => {
       initialValues: {
          "sno": 0,
          "compId": 0,
-         "itemID": 0,
+         "itemID": null,
          "complaintType": "",
          "complaintDoc": "",
          "empId": 0,
@@ -230,6 +230,16 @@ const AddComplaint = (props: Props) => {
          "vehicleName": "",
          "empName": ""
       },
+
+      validationSchema: Yup.object({
+         itemID: Yup.string()
+            .required("Vehicle Number is required"),
+         complaintDate: Yup.string()
+            .required("Complain date is required"),
+         complaint: Yup.string()
+            .required("Complaint is required"),
+      }),
+
       onSubmit: async (values) => {
          try {
             const response = await api.post(`Master/UpsertComplaint`, values);
@@ -434,12 +444,15 @@ const AddComplaint = (props: Props) => {
                               <TextField
                                  {...params}
                                  label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                                 name="vehicleNo"
-                                 id="vehicleNo"
+                                 name="itemID"
+                                 id="itemID"
                                  placeholder={t("text.VehicleNo")}
                               />
                            )}
                         />
+                        {formik.touched.itemID && formik.errors.itemID && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemID}</div>
+                        )}
                      </Grid>
 
                      {/* Vehicle name */}
@@ -511,6 +524,9 @@ const AddComplaint = (props: Props) => {
                            }}
                            InputLabelProps={{ shrink: true }}
                         />
+                        {formik.touched.complaintDate && formik.errors.complaintDate && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaintDate}</div>
+                        )}
                      </Grid>
 
                      {/* CurrentReadingKM */}
@@ -817,6 +833,9 @@ const AddComplaint = (props: Props) => {
                            //  style={{ backgroundColor: "white", minHeight: "200px" }} 
                            placeholder="Enter your complaint here"
                         />
+                        {formik.touched.complaint && formik.errors.complaint && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint}</div>
+                        )}
                      </Grid>
 
 

@@ -229,7 +229,7 @@ const AddComplaintApproval = (props: Props) => {
    const formik = useFormik({
       initialValues: {
          sno: location.state?.sno || 0,
-         compId: parseInt(location.state?.complaintNo)-1 || 0,
+         compId: parseInt(location.state?.complaintNo) - 1 || 0,
          itemID: location.state?.itemID,
          complaintType: location.state?.complaintType,
          complaintDoc: location.state?.complaintDoc,
@@ -245,18 +245,26 @@ const AddComplaintApproval = (props: Props) => {
          status: "inprogress",
          currentReading: location.state?.currentReading,
          createdOn: location.state?.createdOn,
-         complaintDate: dayjs(location.state?.complaintDate),
+         complaintDate: dayjs(location.state?.complaintDate).format("YYYY-MM-DD"),
          updatedOn: location.state?.updatedOn,
-         compAppdt: dayjs(defaultValues),
+         compAppdt: "",
          jobCardNo: location.state?.jobCardNo || location.state?.complaintNo || "",
          file: location.state?.file || "",
          fileOldName: location.state?.fileOldName || "",
-         vehicleNo: location.state?.vehicleNo,
+         vehicleNo: location.state?.vehicleNo || "",
          vehicleName: location.state?.vehicleName,
          empName: location.state?.empName,
 
          //...location.state,
       },
+      validationSchema: Yup.object({
+         vehicleNo: Yup.string()
+            .required("Vehicle Number is required"),
+         compAppdt: Yup.string()
+            .required("Complain date is required"),
+         complaint: Yup.string()
+            .required("Complaint is required"),
+      }),
       onSubmit: async (values) => {
          try {
             const response = await api.post(`Master/UpsertComplaint`, values);
@@ -363,158 +371,7 @@ const AddComplaintApproval = (props: Props) => {
       }
    };
 
-   const handleAutoFillValue = (value: any) => {
-      console.log(value)
-      // formik.setFieldValue(
-      //    "sno",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].sno
-      // );
-      // formik.setFieldValue(
-      //    "compId",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].compId
-      // );
-      // formik.setFieldValue(
-      //    "complaintType",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaintType
-      // );
-      // formik.setFieldValue(
-      //    "complaintDoc",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaintDoc
-      // );
-      // formik.setFieldValue(
-      //    "empId",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].empId
-      // );
-      // formik.setFieldValue(
-      //    "complaint",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaint
-      // );
-      // formik.setFieldValue(
-      //    "complaintNo",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaintNo
-      // );
-      // formik.setFieldValue(
-      //    "createdBy",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].createdBy
-      // );
-      // formik.setFieldValue(
-      //    "updatedBy",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].updatedBy
-      // );
-      // formik.setFieldValue(
-      //    "currentReading",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].currentReading
-      // );
-      // formik.setFieldValue(
-      //    "createdOn",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].createdOn
-      // );
-      // formik.setFieldValue(
-      //    "complaintDate",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaintDate
-      // );
-      // formik.setFieldValue(
-      //    "updatedOn",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].updatedOn
-      // );
-      // formik.setFieldValue(
-      //    "jobCardNo",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ]?.jobCardNo ||
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].complaintNo
-      // );
-      // formik.setFieldValue(
-      //    "file",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ]?.file || ""
-      // );
-      // formik.setFieldValue(
-      //    "fileOldName",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ]?.fileOldName || ""
-      // );
-      // formik.setFieldValue(
-      //    "vehicleName",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].vehicleName
-      // );
-      // formik.setFieldValue(
-      //    "empName",
-      //    complaintData[
-      //       complaintData.findIndex(
-      //          (x) => x.itemID == value
-      //       )
-      //    ].empName
-      // );
-   }
+
 
    const back = useNavigate();
 
@@ -772,6 +629,9 @@ const AddComplaintApproval = (props: Props) => {
                               />
                            )}
                         />
+                        {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                        )}
                      </Grid>
 
                      {/* Vehicle name */}
@@ -867,6 +727,9 @@ const AddComplaintApproval = (props: Props) => {
                            }}
                            InputLabelProps={{ shrink: true }}
                         />
+                        {formik.touched.compAppdt && formik.errors.compAppdt && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.compAppdt}</div>
+                        )}
                      </Grid>
 
                      {/* CurrentReadingKM */}
@@ -1194,6 +1057,9 @@ const AddComplaintApproval = (props: Props) => {
                            //  style={{ backgroundColor: "white", minHeight: "200px" }}
                            placeholder="Enter your complaint here"
                         />
+                        {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
+                        )}
                      </Grid>
 
                      {/* attachment */}
@@ -1350,7 +1216,10 @@ const AddComplaintApproval = (props: Props) => {
                                  //    });
                                  // }
                                  navigate("/vehiclecomplaint/AddJobCard", {
-                                    state: formik.values,
+                                    state: {
+                                       ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
+                                       designation: empOption.find(e => e.value == formik.values.empId)?.designation
+                                    },
                                  });
                               }}
                            >

@@ -110,6 +110,18 @@ const EditComplaint = (props: Props) => {
       getDeptData();
       getDesignationData();
       getEmpData();
+
+      const timeoutId = setTimeout(() => {
+         setaprEmpDept1(empOption.find(e=>e.value == location.state.approveEmp1)?.department || "")
+         setaprEmpDept2(empOption.find(e=>e.value == location.state.approveEmp2)?.department || "")
+         setaprEmpDept3(empOption.find(e=>e.value == location.state.approveEmp3)?.department || "")
+         setaprEmpDept4(empOption.find(e=>e.value == location.state.approveEmp4)?.department || "")
+         setaprEmpDesignation1(empOption.find(e=>e.value == location.state.approveEmp1)?.designation || "")
+         setaprEmpDesignation2(empOption.find(e=>e.value == location.state.approveEmp2)?.designation || "")
+         setaprEmpDesignation3(empOption.find(e=>e.value == location.state.approveEmp3)?.designation || "")
+         setaprEmpDesignation4(empOption.find(e=>e.value == location.state.approveEmp4)?.designation || "")
+       }, 300);
+       return () => clearTimeout(timeoutId);
    }, []);
 
    // const getcomplaintNo = async () => {
@@ -199,6 +211,7 @@ const EditComplaint = (props: Props) => {
       }
       setDesignationOption(arr);
    };
+   
 
 
 
@@ -541,7 +554,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={empOption.find(e=>e.value == formik.values.approveEmp1)?.label}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -608,7 +622,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={empOption.find(e=>e.value == formik.values.approveEmp2)?.label}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -675,7 +690,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={empOption.find(e=>e.value == formik.values.approveEmp3)?.label}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -742,7 +758,8 @@ const EditComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={empOption.find(e=>e.value == formik.values.approveEmp4)?.label}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
