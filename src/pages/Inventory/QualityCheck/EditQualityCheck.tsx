@@ -1080,12 +1080,12 @@ const EditQualityCheck = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectOrder")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectOrder")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
@@ -1114,12 +1114,12 @@ const EditQualityCheck = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectItem")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectItem")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
@@ -1220,12 +1220,12 @@ const EditQualityCheck = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.tax")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.tax")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />

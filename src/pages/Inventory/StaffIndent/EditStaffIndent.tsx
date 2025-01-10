@@ -456,195 +456,183 @@ const EditStaffIndent = (props: Props) => {
 
 
 
+                          
                             <Grid item xs={12}>
-                                {/* <Button onClick={addRow} variant="contained" style={{ marginBottom: '10px' }}>
-                                    Add Row
-                                </Button> */}
-
-<div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                                        <tr>
-
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {tableData.map((row, index) => (
-                                            <tr key={row.id} style={{ border: '1px solid black' }}>
-                                                <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-
-                                                {/* <Autocomplete
-                                                    disablePortal
-                                                    id="combo-box-demo"
-                                                    options={itemOption}
-                                                    fullWidth
-                                                    size="small"
-                                                    value={itemOption.find((opt: any) => opt.value === row.itemId)}
-                                                    onChange={(e: any, newValue: any) =>
-                                                        handleInputChange(
-                                                            index,
-                                                            "itemId",
-                                                            newValue?.value
-                                                        )
-                                                    }
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label={
-                                                                <CustomLabel
-                                                                    text={t("text.selectItem")}
-                                                                    required={false}
-                                                                />
-                                                            }
-                                                        />
-                                                    )}
-                                                /> */}
 
 
+                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+                  <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                      <tr>
 
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        // textAlign: "center",
-                                                    }}
-                                                >
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        id="combo-box-demo"
-                                                        options={itemOption}
-                                                        fullWidth
-                                                        size="small"
-                                                        value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
-                                                        onChange={(e: any, newValue: any) => {
-                                                            if (!newValue) {
-                                                                return
-                                                            } else {
-                                                                handleInputChange(
-                                                                    index,
-                                                                    "itemId",
-                                                                    newValue?.value
-                                                                )
-                                                            }
-                                                        }}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                                label={
-                                                                    <CustomLabel
-                                                                        text={t("text.selectItem")}
-                                                                        required={false}
-                                                                    />
-                                                                }
-                                                            />
-                                                        )}
-                                                    />
-                                                </td>
-                                                {/* <Autocomplete
-                                                    disablePortal
-                                                    id="combo-box-demo"
-                                                    options={itemOption}
-                                                    fullWidth
-                                                    size="small"
-                                                    value={
-                                                        itemOption.find((opt: any) => opt.value === row.itemId) || null
-                                                    }
-                                                    onChange={(e: any, newValue: any) =>
-                                                        handleInputChange(
-                                                            index,
-                                                            "itemId",
-                                                            newValue?.value || null
-                                                        )
-                                                    }
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label={
-                                                                <CustomLabel
-                                                                    text={t("text.selectItem")}
-                                                                    required={false}
-                                                                />
-                                                            }
-                                                        />
-                                                    )}
-                                                /> */}
-
-                                                <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                                                    <select
-                                                        value={row.unitId}
-                                                        onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                                                        style={{ width: '90%', height: '35px' }}
-                                                    >
-                                                        <option value="">{t("text.SelectUnit")}</option>
-                                                        {unitOptions.map((option) => (
-                                                            <option key={option.value} value={option.value}>
-                                                                {option.label}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </td>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
 
 
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row: any, index: any) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                            if (tableData.length > 1) {
+                              deleteRow(index)
+                            } else {
+                              alert("There should be atleast one row")
+                            }
+                          }}>
+                            <DeleteIcon />
+                          </td>
 
-                                                <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                                                    <TextField
+                            <td
+                                                                               style={{
+                                                                                   border: "1px solid black",
+                                                                                   // textAlign: "center",
+                                                                               }}
+                                                                           >
+                                                                               <Autocomplete
+                                                                                   disablePortal
+                                                                                   id="combo-box-demo"
+                                                                                   options={itemOption}
+                                                                                   fullWidth
+                                                                                   size="small"
+                                                                                   value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
+                                                                                   onChange={(e: any, newValue: any) => {
+                                                                                       if (!newValue) {
+                                                                                           return
+                                                                                       } else {
+                                                                                           handleInputChange(
+                                                                                               index,
+                                                                                               "itemId",
+                                                                                               newValue?.value
+                                                                                           )
+                                                                                       }
+                                                                                   }}
+                                                                                   renderInput={(params) => (
+                                                                                       <TextField
+                                                                                           {...params}
+                                                                                       // label={
+                                                                                       //     <CustomLabel
+                                                                                       //         text={t("text.selectItem")}
+                                                                                       //         required={false}
+                                                                                       //     />
+                                                                                       // }
+                                                                                       />
+                                                                                   )}
+                                                                               />
+                                                                           </td>
+                       
+                       
+                                                                           <td style={{ border: '1px solid black', textAlign: 'center' }}>
+                       
+                                                                               <Autocomplete
+                                                                                   disablePortal
+                                                                                   id="combo-box-demo"
+                                                                                   options={unitOptions}
+                                                                                   fullWidth
+                                                                                   size="small"
+                                                                                   value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
+                                                                                   onChange={(e: any, newValue: any) => {
+                                                                                       if (!newValue) {
+                                                                                           return
+                                                                                       } else {
+                                                                                           handleInputChange(
+                                                                                               index,
+                                                                                               "unitId",
+                                                                                               newValue?.value
+                                                                                           )
+                                                                                       }
+                                                                                   }}
+                                                                                   renderInput={(params) => (
+                                                                                       <TextField
+                                                                                           {...params}
+                                                                                       // label={
+                                                                                       //     <CustomLabel
+                                                                                       //         text={t("text.selectItem")}
+                                                                                       //         required={false}
+                                                                                       //     />
+                                                                                       // }
+                                                                                       />
+                                                                                   )}
+                                                                               />
+                                                                               {/* <select
+                                                                                                                                                                           value={row.unitId}
+                                                                                                                                                                           onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                                                                                                                           style={{ width: '90%', height: '35px' }}
+                                                                                                                                                                       >
+                                                                                                                                                                           <option value="">{t("text.SelectUnit")}</option>
+                                                                                                                                                                           {unitOptions.map((option) => (
+                                                                                                                                                                               <option key={option.value} value={option.value}>
+                                                                                                                                                                                   {option.label}
+                                                                                                                                                                               </option>
+                                                                                                                                                                           ))}
+                                                                                                                                                                       </select> */}
+                                                                           </td>
 
-                                                        size="small"
-                                                        // type="text"
-                                                        value={row.quantity}
-                                                        onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                                    />
-                                                </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                                                    <TextField
 
-                                                        size="small"
-                                                        // type="text"
-                                                        value={row.approveQuantity}
-                                                        onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                                                    />
-                                                </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                                                    <TextField
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
 
-                                                        size="small"
-                                                        // type="text"
-                                                        value={row.rate}
-                                                        onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                                                    />
-                                                </td>
+                              size="small"
+                              // type="text"
+                              value={row.quantity}
+                              onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
 
-                                                <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                                                    <TextField
-                                                        // type="number"
-                                                        value={row.amount.toFixed(2)}
-                                                        size="small"
-                                                        inputProps={{ "aria-readonly": true }}
-                                                    />
-                                                </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center' }}
-                                                    onClick={() => {
-                                                        if (tableData.length > 1) {
-                                                            deleteRow(index);
-                                                        } else {
-                                                            alert("Atleast one row should be there")
-                                                        }
-                                                    }}>
-                                                    <DeleteIcon />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                          </div>  </Grid>
+                              size="small"
+                              // type="text"
+                              value={row.approveQuantity}
+                              onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
+
+                              size="small"
+                              // type="text"
+                              value={row.rate}
+                              onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
+                              // type="number"
+                              value={row.amount.toFixed(2)}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+
+
+                    </tfoot>
+                  </Table>
+                </div>   </Grid>
+
 
 
                             <Grid item xs={12} md={12} lg={12}>

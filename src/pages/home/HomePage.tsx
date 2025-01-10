@@ -134,12 +134,22 @@ export default function HomePage() {
   const [DocumentTypeOption, setDocumentTypeOption] = useState<any[]>([]);
   useEffect(() => {
     GetTopVehicleActprice();
-    GetTopVehicleMaxNoOfComplaints();
-    GetTopItemIssued();
-    GetReOrderLevel();
-    GetTopVehiclewaiting();
-    GetScrapDetail();
+    // GetTopVehicleMaxNoOfComplaints();
+    // GetTopItemIssued();
+    // GetReOrderLevel();
+    // GetTopVehiclewaiting();
+    // GetScrapDetail();
   }, []);
+  useEffect(() => {
+ 
+  setIsShow(true);
+  setIsShow2(false);
+  setIsShow3(false);
+  setIsShow4(false);
+  setIsShow5(false);
+  setIsShow6(false);
+}, []); // Run only on initial render
+
   const GetTopVehicleActprice = async () => {
     try {
       const response = await api.get(`Dashboard/GetTopVehicleActprice`);
@@ -191,12 +201,12 @@ export default function HomePage() {
       const response = await api.get(`Dashboard/GetTopVehicleMaxNoOfComplaints`);
       const data = response.data.data;
       console.log("Fetched Data:", data);
-      const processedData = data.map((item: any, index: number) => ({
+      const processedData1 = data.map((item: any, index: number) => ({
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
       }));
-      setComplaintsOption(processedData);
+      setComplaintsOption(processedData1);
       setIsLoading(false);
       setIsShow3(false);
       setIsShow4(false);
@@ -236,12 +246,12 @@ export default function HomePage() {
       const response = await api.get(`Dashboard/GetLicensing`);
       const data = response.data.data;
       console.log("Fetched Data:", data);
-      const processedData = data.map((item: any, index: number) => ({
+      const processedData2 = data.map((item: any, index: number) => ({
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
       }));
-      setReorderOption(processedData);
+      setReorderOption(processedData2);
       setIsLoading(false);
       setIsShow3(true);
       setIsShow4(false);
@@ -283,12 +293,12 @@ export default function HomePage() {
       const response = await api.get(`Dashboard/GetRegistration`);
       const data = response.data.data;
       console.log("Fetched Data:", data);
-      const processedData = data.map((item: any, index: number) => ({
+      const processedData3 = data.map((item: any, index: number) => ({
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
       }));
-      setOverDueOption(processedData);
+      setOverDueOption(processedData3);
       setIsLoading(false);
       setIsShow3(false);
       setIsShow4(true);
@@ -329,12 +339,12 @@ export default function HomePage() {
       const response = await api.get(`Dashboard/GetServiceDetail`);
       const data = response.data.data;
       console.log("Fetched Data:", data);
-      const processedData = data.map((item: any, index: number) => ({
+      const processedData4 = data.map((item: any, index: number) => ({
         ...item,
         id: item.vehicleno || index,
         serialNo: index + 1,
       }));
-      setIssuedStatusOption(processedData);
+      setIssuedStatusOption(processedData4);
       setIsLoading(false);
       setIsShow3(false);
       setIsShow4(false);
@@ -380,13 +390,13 @@ export default function HomePage() {
 
       console.log("Fetched Data:", data);
 
-      const processedData = data.map((item: any, index: number) => ({
+      const processedData5 = data.map((item: any, index: number) => ({
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
       }));
 
-      setDocumentTypeOption(processedData);
+      setDocumentTypeOption(processedData5);
       setIsLoading(false);
       setIsShow3(false);
       setIsShow4(false);
@@ -423,6 +433,7 @@ export default function HomePage() {
 
   const handleClick = (id: any) => {
     if (id === 0) {
+      GetTopVehicleActprice(); // Load VEHICLE EXPENDITURE data
       setIsShow(true);
       setIsShow2(false);
       setIsShow3(false);
@@ -430,38 +441,39 @@ export default function HomePage() {
       setIsShow5(false);
       setIsShow6(false);
     } else if (id === 1) {
+      GetTopVehicleMaxNoOfComplaints(); // Load COMPLAINTS data
       setIsShow(false);
       setIsShow2(true);
       setIsShow3(false);
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
-    }
-    else if (id === 2) {
+    } else if (id === 2) {
+      GetReOrderLevel(); // Load INSURANCE data
       setIsShow(false);
       setIsShow2(false);
       setIsShow3(true);
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
-    }
-    else if (id === 3) {
+    } else if (id === 3) {
+      GetTopVehiclewaiting(); // Load REGISTRATION data
       setIsShow(false);
       setIsShow2(false);
       setIsShow3(false);
       setIsShow4(true);
       setIsShow5(false);
       setIsShow6(false);
-    }
-    else if (id === 4) {
+    } else if (id === 4) {
+      GetTopItemIssued(); // Load SERVICES data
       setIsShow(false);
       setIsShow2(false);
       setIsShow3(false);
       setIsShow4(false);
       setIsShow5(true);
       setIsShow6(false);
-    }
-    else if (id === 5) {
+    } else if (id === 5) {
+      GetScrapDetail(); // Load SCRAP DETAIL data
       setIsShow(false);
       setIsShow2(false);
       setIsShow3(false);
@@ -470,6 +482,56 @@ export default function HomePage() {
       setIsShow6(true);
     }
   };
+
+  // const handleClick = (id: any) => {
+  //   if (id === 0) {
+  //     setIsShow(true);
+  //     setIsShow2(false);
+  //     setIsShow3(false);
+  //     setIsShow4(false);
+  //     setIsShow5(false);
+  //     setIsShow6(false);
+  //   } else if (id === 1) {
+  //     setIsShow(false);
+  //     setIsShow2(true);
+  //     setIsShow3(false);
+  //     setIsShow4(false);
+  //     setIsShow5(false);
+  //     setIsShow6(false);
+  //   }
+  //   else if (id === 2) {
+  //     setIsShow(false);
+  //     setIsShow2(false);
+  //     setIsShow3(true);
+  //     setIsShow4(false);
+  //     setIsShow5(false);
+  //     setIsShow6(false);
+  //   }
+  //   else if (id === 3) {
+  //     setIsShow(false);
+  //     setIsShow2(false);
+  //     setIsShow3(false);
+  //     setIsShow4(true);
+  //     setIsShow5(false);
+  //     setIsShow6(false);
+  //   }
+  //   else if (id === 4) {
+  //     setIsShow(false);
+  //     setIsShow2(false);
+  //     setIsShow3(false);
+  //     setIsShow4(false);
+  //     setIsShow5(true);
+  //     setIsShow6(false);
+  //   }
+  //   else if (id === 5) {
+  //     setIsShow(false);
+  //     setIsShow2(false);
+  //     setIsShow3(false);
+  //     setIsShow4(false);
+  //     setIsShow5(false);
+  //     setIsShow6(true);
+  //   }
+  // };
 
   const [recentlyIssueTransactionOption] = useState(false);
   const [isVisible, setVisible] = useState(false);
@@ -596,6 +658,8 @@ export default function HomePage() {
       setIsLoading1(false);
     }, 2000);
   }, []);
+
+  
   const [isPrint, setPrint] = useState([]);
   const [isPrint1, setPrint1] = useState([]);
   const [isLabel, setlabel] = useState("");
@@ -2267,53 +2331,17 @@ th, td {
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Card
                     elevation={2}
-                    // style={{
-                    //   marginLeft: "1%",
-                    //   marginTop: "-10%",
-                    //   border: "0.03% solid transparent",
-                    //   borderRadius: "0.6%",
-                    //   height: "63.5vh",
-                    //   overflow: "auto",
-                    // }}
-
-                    sx={{
+                    style={{
                       marginLeft: "1%",
                       marginTop: "-10%",
-                      border: "0.03% solid transparent",
-                      borderRadius: "0.6%",
-                      height: "63.5vh",
+                   //   border: "0.03% solid transparent",
+                      border: "2px solid #e0e0e0",
+                    //  borderRadius: "4%",
+                      height: "62.5vh",
                       overflow: "auto",
-                      width: "105%",
-                      //height: "90%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: '1%,',
-                      backgroundColor: "#fff",
-                     // border: "2px solid #e0e0e0",
-                    //  borderRadius: "14px",
-                      boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                      // borderLeft: `4px solid ${item.id === 0
-                      //   ? "blue"
-                      //   : item.id === 1
-                      //     ? "red"
-                      //     : item.id === 2
-                      //       ? "green"
-                      //       : item.id === 3
-                      //         ? "orange"
-                      //         : item.id === 4
-                      //           ? "purple"
-                      //           : "teal"
-                      //   }`,
-                      transition: "transform 0.3s, box-shadow 0.3s",
-                      cursor: "pointer",
-                      "&:hover": {
-                        transform: "scale(1.05)",
-                        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
-                        borderColor: "#3498db",
-                      },
                     }}
+
+                  
                   >
                     <Grid
                       style={{
@@ -2345,7 +2373,7 @@ th, td {
                                 color: getColor(key),
                                 cursor: "pointer",
                                 fontSize: "100%",
-                                margin: "1.5%",
+                                margin: "2.5%",
                               }}
                               onClick={() => handleClick1(key)}
                             >

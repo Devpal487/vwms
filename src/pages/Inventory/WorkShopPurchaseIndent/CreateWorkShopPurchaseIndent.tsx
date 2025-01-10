@@ -125,10 +125,13 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
 
 
 
+  const validateRow = (row: any) => {
+    return row.itemId && row.unitId && row.approveQuantity && row.rate > 0;
+  };
 
   const formik = useFormik({
     initialValues: {
-
+      //vehicleNo: 0,
       "sno": 0,
       "indentId": 0,
       "indentNo": "",
@@ -141,7 +144,7 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
       "companyId": 0,
       "fyId": 0,
       "jobID": 0,
-      "vehicleitem": 0,
+      "vehicleitem": null,
       "empId": 0,
       "status": "",
       "releasedBy": "",
@@ -149,108 +152,29 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
       "postedBy": "",
       "releasedOn": defaultValues,
       "postedOn": defaultValues,
-      "indentDetail": [
-        {
-          "sno": 0,
-          "id": 0,
-          "indentId": 0,
-          "itemId": 0,
-          "quantity": 0,
-          "rate": 0,
-          "amount": 0,
-          "approveQuantity": 0,
-          "fyId": 0,
-          "srn": 0,
-          "isDelete": true,
-          "item": {
-            "itemMasterId": 0,
-            "itemName": "",
-            "itemCode": "",
-            "itemTypeId": 0,
-            "itemFlag": "d",
-            "itemCategoryId": 0,
-            "unitId": 0,
-            "empId": 0,
-            "vZoneID": 0,
-            "taxId": 0,
-            "purchaseYear": 0,
-            "modelNo": "",
-            "vehicleNo": "",
-            "tankCapacity": 0,
-            "actPrice": 0,
-            "hsnCode": "",
-            "filename": "",
-            "chesisNo": "",
-            "qcApplicable": true,
-            "depreciationRate": 0,
-            "createdBy": "",
-            "updatedBy": "",
-            "mileage": 0,
-            "createdOn": defaultValues,
-            "updatedOn": defaultValues,
-            "file": "",
-            "file1": "",
-            "zoneName": "",
-            "vehiclePhotoFile": "",
-            "vehicleTypeId": 0,
-            "brandTypeId": 0,
-            "fuelTypeId": 0,
-            "devid": "",
-            "vehicleWeight": 0,
-            "empName": "",
-            "departmentName": "",
-            "designationName": "",
-            "itemCategoryName": "",
-            "taxName": "",
-            "unitName": "",
-            "itemTypeName": "",
-            "mobileNo": ""
-          }
-        }
-      ],
-      "srn": 0
-
-
-      // "indentId": 0,
-      // "indentNo": "",
-      // "indentDate": defaultValues,
-      // "remark": "",
-      // "createdBy": "",
-      // "updatedBy": "",
-      // "createdOn": defaultValues,
-      // "updatedOn": defaultValues,
-      // "companyId": 0,
-      // "fyId": 0,
-      // "jobID": 0,
-      // "vehicleitem": 0,
-      // "empId": null,
-      // "status": "",
-      // "releasedBy": "",
-      // "indenttype": "",
-      // "postedBy": "",
-      // "releasedOn": defaultValues,
-      // "postedOn": defaultValues,
-      // "empName": "",
-
-      // indentDetail: [],
-      // srn: 0
+      indentDetail: [],
+      srn: 0
     },
-    validationSchema: Yup.object({
-      empId: Yup.string()
-        .required(t("text.reqEmpName")),
-    }),
+    // validationSchema: Yup.object({
+    //   empId: Yup.string()
+    //     .required(t("text.reqEmpName")),
+    // }),
 
     onSubmit: async (values) => {
-      values.indentDetail = tableData
-
+     // values.indentDetail = tableData
+      const validTableData = tableData.filter(validateRow);
+      if (validTableData.length === 0) {
+             alert("Please add some data in table for further process");
+             return;
+           }
       console.log('values', values)
 
 
 
       const response = await api.post(
         `Master/UpsertIndent
-`, values
-        // { ...values, indentDetail: tableData }
+`, 
+         { ...values, indentDetail: validTableData }
       );
       if (response.data.status === 1) {
         setToaster(false);
@@ -454,14 +378,16 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                   <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                     <tr>
 
+                     
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
                       <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+
 
                     </tr>
                   </thead>
@@ -469,7 +395,15 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                     {tableData.map((row: any, index: any) => (
                       <tr key={row.id} style={{ border: '1px solid black' }}>
                         <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-
+                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                          if (tableData.length > 1) {
+                            deleteRow(index)
+                          } else {
+                            alert("There should be atleast one row")
+                          }
+                        }}>
+                          <DeleteIcon />
+                        </td>
 
                         <td
                           style={{
@@ -498,18 +432,48 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectItem")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectItem")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
                         </td>
                         <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                          <select
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={unitOptions}
+                            fullWidth
+                            size="small"
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              } else {
+                                handleInputChange(
+                                  index,
+                                  "unitId",
+                                  newValue?.value
+                                )
+                              }
+                            }
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectItem")}
+                                //     required={false}
+                                //   />
+                                // }
+                              />
+                            )}
+                          />
+                          {/* <select
                             value={row.unitId}
                             onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
                             style={{ width: '95%', height: '35px' }}
@@ -520,7 +484,7 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                                 {option.label}
                               </option>
                             ))}
-                          </select>
+                          </select> */}
                         </td>
 
 
@@ -560,18 +524,23 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                             inputProps={{ "aria-readonly": true }}
                           />
                         </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                          if (tableData.length > 1) {
-                            deleteRow(index)
-                          } else {
-                            alert("There should be atleast one row")
-                          }
-                        }}>
-                          <DeleteIcon />
-                        </td>
+                       
                       </tr>
                     ))}
                   </tbody>
+                  <tfoot>
+                      <tr>
+                        <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+
+
+                    </tfoot>
                 </Table>
              </div> </Grid>
 

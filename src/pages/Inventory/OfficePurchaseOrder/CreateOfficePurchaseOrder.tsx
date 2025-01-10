@@ -1145,12 +1145,12 @@ const CreateOfficePurchaseOrder = () => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                label={
-                                                                    <CustomLabel
-                                                                        text={t("text.selectItem")}
-                                                                        required={false}
-                                                                    />
-                                                                }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.selectItem")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                             />
                                                         )}
                                                     />
@@ -1172,9 +1172,9 @@ const CreateOfficePurchaseOrder = () => {
                                                   renderInput={(params) => (
                                                       <TextField
                                                           {...params}
-                                                          label={
-                                                              <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                          }
+                                                        //   label={
+                                                        //       <CustomLabel text={t("text.selectUnit")} required={false} />
+                                                        //   }
                                                       />
                                                   )}
                                               />
@@ -1242,12 +1242,12 @@ const CreateOfficePurchaseOrder = () => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                label={
-                                                                    <CustomLabel
-                                                                        text={t("text.tax")}
-                                                                        required={false}
-                                                                    />
-                                                                }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.tax")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                             />
                                                         )}
                                                     />

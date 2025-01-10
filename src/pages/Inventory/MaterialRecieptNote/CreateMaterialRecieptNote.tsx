@@ -908,12 +908,12 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectorderNo")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectorderNo")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
@@ -941,12 +941,12 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.selectItem")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.selectItem")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
@@ -982,7 +982,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             renderInput={(params: any) => (
                               <TextField
                                 {...params}
-                                label={<CustomLabel text={t("text.selectUnit")} />}
+                              //  label={<CustomLabel text={t("text.selectUnit")} />}
                               />
                             )}
                           />
@@ -1055,12 +1055,12 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.tax")}
-                                    required={false}
-                                  />
-                                }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.tax")}
+                                //     required={false}
+                                //   />
+                                // }
                               />
                             )}
                           />
