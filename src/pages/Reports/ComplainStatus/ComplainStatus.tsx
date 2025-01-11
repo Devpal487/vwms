@@ -354,18 +354,24 @@ export default function ComplainStatus() {
           {
             field: "serialNo",
             headerName: t("text.SrNo"),
-            flex: 0.5,
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+       
+          {
+            field: "complainNo",
+            headerName: t("text.complainNo"),
+            flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "trackDate",
-            headerName: t("text.Date"),
-            flex: 1.3,
+            field: "complaint",
+            headerName: t("text.complaint"),
+            flex: 1.2,
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.trackDate).format("DD-MM-YYYY");
-            },
           },
           {
             field: "vehicleNo",
@@ -375,72 +381,101 @@ export default function ComplainStatus() {
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "driverName",
-            headerName: t("text.Driver"),
-            flex: 1,
+            field: "jobCardNo",
+            headerName: t("text.jobCardNo"),
+            flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "mobileNo",
-            headerName: t("text.MobileNo"),
+            field: "complainStatus",
+            headerName: t("text.complainStatus"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+
+          {
+            field: "complaintDate",
+            headerName: t("text.Date"),
+            flex: 1.3,
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+          },
+
+          {
+            field: "updatedOn",
+            headerName: t("text.Date"),
+            flex: 1.3,
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.updatedOn).format("DD-MM-YYYY");
+            },
+          },
+          
+
+          {
+            field: "totaldays",
+            headerName: t("text.totaldays"),
             flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "department",
-            headerName: t("text.Department"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "distanceKM",
-            headerName: t("text.Distance"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: "right",
-            headerAlign: "right",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "running",
-            headerName: t("text.Running"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "idle",
-            headerName: t("text.Idle"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "startTime",
-            headerName: t("text.StartTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "endTime",
-            headerName: t("text.EndTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "fuelConsumption",
-            headerName: t("text.FuelConsumption"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: "right",
-            headerAlign: "right",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "department",
+          //   headerName: t("text.Department"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "distanceKM",
+          //   headerName: t("text.Distance"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   align: "right",
+          //   headerAlign: "right",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "running",
+          //   headerName: t("text.Running"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "idle",
+          //   headerName: t("text.Idle"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "startTime",
+          //   headerName: t("text.StartTime"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "endTime",
+          //   headerName: t("text.EndTime"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "fuelConsumption",
+          //   headerName: t("text.FuelConsumption"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   align: "right",
+          //   headerAlign: "right",
+          //   cellClassName: "wrap-text", // Added here
+          // },
         ];
         setColumns(columns as any);
       }
