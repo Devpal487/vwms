@@ -1450,7 +1450,7 @@ th, td {
                         }}>
                           VEHICLE   EXPENDITURE
 
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <Grid style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
 
                             {/* <TextField
           placeholder="Search"
@@ -1515,7 +1515,7 @@ th, td {
                               label={<span style={{ color: "white" }}>Top 10</span>}
                             />
 
-                          </div>
+                          </Grid>
                         </Typography>
                       )}
                       {isShow2 && (
@@ -1839,7 +1839,7 @@ th, td {
                     <AccordionDetails style={{ background: "white", height: "50vh", overflow: "auto", }}>
                       {isShow && (
                         <Grid container spacing={2}>
-                          <Grid item xs={12} sm={2} lg={12}>
+                          <Grid item xs={12} sm={12} lg={12}>
                             {/* <PrintIcon
                               fontSize="large"
                               sx={{ color: "blue", cursor: "pointer" }}
@@ -1944,7 +1944,7 @@ th, td {
                       )}
                       {isShow2 && (
                         <Grid container spacing={2}>
-                          <Grid item xs={12} sm={2} lg={12}>
+                          <Grid item xs={12} sm={12} lg={12}>
                             {/* <PrintIcon
                               fontSize="large"
                               sx={{ color: "blue", cursor: "pointer" }}
