@@ -67,6 +67,7 @@ const AddJobWorkChallan = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const [isEnable, setIsEnable] = useState(true);
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -147,27 +148,29 @@ const AddJobWorkChallan = (props: Props) => {
     "update": true
   }]);
 
-  const [tableData, setTableData] = useState([{
-    id: 0,
-    challanNo: 0,
-    jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
-    serviceId: 0,
-    serviceCharge: 0,
-    vendorId: 0,
-    remark: "",
-    qty: 0,
-    unitId: 0,
-    amount: 0,
-    netAmount: 0,
-    gstid: 0,
-    cgstid: 0,
-    sgstid: 0,
-    gst: 0,
-    cgst: 0,
-    sgst: 0,
-    serviceName: "",
-    unitName: ""
-  }]);
+  const [tableData, setTableData] = useState([
+    {
+      id: 0,
+      challanNo: 0,
+      jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
+      serviceId: 0,
+      serviceCharge: 0,
+      vendorId: 0,
+      remark: "",
+      qty: 0,
+      unitId: 0,
+      amount: 0,
+      netAmount: 0,
+      gstid: 0,
+      cgstid: 0,
+      sgstid: 0,
+      gst: 0,
+      cgst: 0,
+      sgst: 0,
+      serviceName: "",
+      unitName: ""
+    },
+  ]);
 
 
   useEffect(() => {
@@ -178,6 +181,7 @@ const AddJobWorkChallan = (props: Props) => {
     getTaxData();
     setTableDataValues();
     getJobCardData();
+    console.log("location.state==>" + JSON.stringify(location.state))
   }, []);
 
 
@@ -333,15 +337,15 @@ const AddJobWorkChallan = (props: Props) => {
       "vendorId": location.state?.serviceDetail[0].vendorId || 0,
       "createdBy": "",
       "updatedBy": "",
-      "createdOn": "2024-12-24T07:29:27.863Z",
-      "updatedOn": "2024-12-24T07:29:27.863Z",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
-      "serviceAmount": location.state?.totalServiceAmount || 0,
+      "serviceAmount": location.state?.totalServiceAmount || location.state?.serviceAmount || 0,
       "itemAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "status": location.state?.status || "",
-      "rcvDate": "2024-12-24T07:29:27.863Z",
+      "rcvDate": defaultValues,
       "rcvNo": 0,
       "cgst": 0,
       "sgst": 0,
@@ -375,6 +379,8 @@ const AddJobWorkChallan = (props: Props) => {
       if (response.data.status === 1) {
         toast.success(response.data.message);
         setIsVisible(true);
+        setIsEnable(false);
+        //formik.setFieldValue("challanNo",response.data.data.challanNo);
         //navigate("/vehiclecomplaint/JobWorkChallan")
       } else {
         setToaster(true);
@@ -1201,7 +1207,7 @@ const AddJobWorkChallan = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {isEnable ? (<Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1211,7 +1217,20 @@ const AddJobWorkChallan = (props: Props) => {
                   }}
                 >
                   {t("text.save")}
-                </Button>
+                </Button>) :
+                  (<Button
+                    type="submit"
+                    fullWidth
+                    disabled={true}
+                    style={{
+                      backgroundColor: `grey`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>)
+                }
               </Grid>
 
               {/* Reset Button */}
@@ -1251,7 +1270,7 @@ const AddJobWorkChallan = (props: Props) => {
                         return;
                       }
                       navigate("/vehiclecomplaint/AddJobWorkChallanRecieve", {
-                        state: { ...formik.values, jobWorkChallanDetail: validTableData },
+                        state: { ...formik.values, jobWorkChallanDetail: tableData },
                       });
                     }}
                   >

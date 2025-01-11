@@ -300,7 +300,7 @@ export default function CountryMaster() {
                 </Typography>
               </Grid>
 
-              {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+              <Grid item lg={2} md={2} xs={12} marginTop={2}>
                 <select
                   className="language-dropdown"
                   value={lang}
@@ -312,7 +312,7 @@ export default function CountryMaster() {
                     </option>
                   ))}
                 </select>
-              </Grid> */}
+              </Grid>
             </Grid>
 
             <Divider />
@@ -321,7 +321,7 @@ export default function CountryMaster() {
             <form onSubmit={formik.handleSubmit}>
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={5}>
-                  {/* <TranslateTextField
+                  <TranslateTextField
                     label={t("text.EnterCountryName")}
                     value={formik.values.countryName}
                     onChangeText={(text: string) =>
@@ -329,8 +329,8 @@ export default function CountryMaster() {
                     }
                     required={true}
                     lang={lang}
-                  /> */}
-                  <TextField
+                  />
+                  {/* <TextField
                     label={<CustomLabel text={t("text.EnterCountryName")} required={true} />}
                     value={formik.values.countryName}
                     placeholder={t("text.EnterCountryName")}
@@ -341,7 +341,7 @@ export default function CountryMaster() {
                     style={{ backgroundColor: "white" }}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                  />
+                  /> */}
 
                   {formik.touched.countryName && formik.errors.countryName ? (
                     <div style={{ color: "red", margin: "5px" }}>

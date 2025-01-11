@@ -247,7 +247,7 @@ const AddComplaintApproval = (props: Props) => {
          createdOn: location.state?.createdOn,
          complaintDate: dayjs(location.state?.complaintDate).format("YYYY-MM-DD"),
          updatedOn: location.state?.updatedOn,
-         compAppdt: "",
+         compAppdt: defaultValues,
          jobCardNo: location.state?.jobCardNo || location.state?.complaintNo || "",
          file: location.state?.file || "",
          fileOldName: location.state?.fileOldName || "",

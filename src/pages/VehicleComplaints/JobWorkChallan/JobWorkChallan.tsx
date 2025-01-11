@@ -69,7 +69,29 @@ export default function JobWorkChallan() {
 
       let path = `/vehiclecomplaint/EditJobWorkChallan`;
       navigate(path, {
-         state: row,
+         state: {
+            ...row, jobWorkChallanDetail: [...row.jobWorkChallanDetail, {
+               id: 0,
+               challanNo: 0,
+               jobCardId: row.jobCardId,
+               serviceId: 0,
+               serviceCharge: 0,
+               vendorId: 0,
+               remark: "",
+               qty: 0,
+               unitId: 0,
+               amount: 0,
+               netAmount: 0,
+               gstid: 0,
+               cgstid: 0,
+               sgstid: 0,
+               gst: 0,
+               cgst: 0,
+               sgst: 0,
+               serviceName: "",
+               unitName: ""
+            },]
+         },
       });
    };
 
