@@ -68,7 +68,7 @@ const AddUtilizationLog = (props: Props) => {
   const [toaster, setToaster] = useState(false);
 
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo") },
+    { value: -1, label: t("text.VehicleNo"), name:"" },
   ]);
   const [empOption, setEmpOption] = useState([
     { value: -1, label: t("text.EmpName") },
@@ -101,7 +101,8 @@ const AddUtilizationLog = (props: Props) => {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
-      label: Item.vehicleNo
+      label: Item.vehicleNo,
+      name: Item.itemName
     }));
     setVehicleOption(arr);
   };
@@ -135,8 +136,8 @@ const AddUtilizationLog = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "id": 0,
-      "empId": 0,
-      "itemId": 0,
+      "empId": null,
+      "itemId": null,
       "fromDate": "2024-12-14T08:04:23.833Z",
       "toDate": "2024-12-14T08:04:23.833Z",
       "fromTime": "",
@@ -152,10 +153,12 @@ const AddUtilizationLog = (props: Props) => {
       "empName": "",
       "vehicleNo": ""
     },
-    // validationSchema: Yup.object({
-    //   indentNo: Yup.string()
-    //     .required(t("text.reqIndentNum")),
-    // }),
+    validationSchema: Yup.object({
+      empId: Yup.string()
+        .required(t("Employee name is required")),
+      itemId: Yup.string()
+        .required(t("Vehicle Number is required")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -291,9 +294,9 @@ const AddUtilizationLog = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                {formik.touched.empId && formik.errors.empId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
+                )}
               </Grid>
 
               {/* Vehicle Number */}
@@ -309,6 +312,7 @@ const AddUtilizationLog = (props: Props) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vehicleNo", newValue.label);
                     formik.setFieldValue("itemId", newValue.value);
+                    formik.setFieldValue("itemName", newValue.name);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -320,9 +324,9 @@ const AddUtilizationLog = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                {formik.touched.itemId && formik.errors.itemId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId}</div>
+                )}
               </Grid>
 
 
@@ -333,7 +337,7 @@ const AddUtilizationLog = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.fromDate")}
-                      required={true}
+                      required={false}
                     />
                   }
                   type="date"
@@ -362,7 +366,7 @@ const AddUtilizationLog = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.time")}
-                      required={true}
+                      required={false}
                     />
                   }
                   type="time"
@@ -392,7 +396,7 @@ const AddUtilizationLog = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.toDate")}
-                      required={true}
+                      required={false}
                     />
                   }
                   type="date"
@@ -420,7 +424,7 @@ const AddUtilizationLog = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.time")}
-                      required={true}
+                      required={false}
                     />
                   }
                   type="time"
@@ -451,7 +455,7 @@ const AddUtilizationLog = (props: Props) => {
                   label={t("text.Remark")}
                   value={formik.values.remark}
                   onChangeText={(text: string) => formik.setFieldValue("remark", text)}
-                  required={true}
+                  required={false}
                   lang={lang}
                 />
               </Grid>

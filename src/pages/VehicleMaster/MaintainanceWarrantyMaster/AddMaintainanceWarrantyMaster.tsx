@@ -127,23 +127,36 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "id": 0,
-      "effDate": "2024-12-13T10:35:45.458Z",
+      "effDate": "",
       "type": "",
-      "vendorId": 0,
-      "itemId": 0,
-      "fromDate": "2024-12-13T10:35:45.459Z",
-      "toDate": "2024-12-13T10:35:45.459Z",
+      "vendorId": null,
+      "itemId": null,
+      "fromDate": "",
+      "toDate": "",
       "remark": "",
       "attachment": "",
       "attachmentName": "",
       "createdBy": "",
       "updatedBy": "",
-      "createdOn": "2024-12-13T10:35:45.459Z",
-      "updatedOn": "2024-12-13T10:35:45.459Z",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
       "file": ""
     },
+
+    validationSchema: Yup.object({
+      itemId: Yup.string()
+        .required(t("Vehicle Number is required")),
+      vendorId: Yup.string()
+        .required(t("Vendor name is required")),
+      fromDate: Yup.string()
+        .required(t("From date is required")),
+      toDate: Yup.string()
+        .required(t("To date is required")),
+      effDate: Yup.string()
+        .required(t("Effective date is required")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -331,9 +344,9 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                {formik.touched.itemId && formik.errors.itemId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId}</div>
+                )}
               </Grid>
 
               {/* Vendor */}
@@ -360,9 +373,9 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId}</div>
+                )}
               </Grid>
 
 
@@ -372,7 +385,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.EffectiveDate")}
-                      required={false}
+                      required={true}
                     />
                   }
                   type="date"
@@ -388,7 +401,9 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-
+                {formik.touched.effDate && formik.errors.effDate && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.effDate}</div>
+                )}
               </Grid>
 
               {/* Status */}
@@ -423,7 +438,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.fromDate")}
-                      required={false}
+                      required={true}
                     />
                   }
                   type="date"
@@ -439,11 +454,11 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.fromDate && formik.errors.fromDate ? (
                    <div style={{ color: "red", margin: "5px" }}>
-                     {formik.errors.routeDate}
+                     {formik.errors.fromDate}
                    </div>
-                 ) : null} */}
+                 ) : null}
 
               </Grid>
 
@@ -453,7 +468,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.toDate")}
-                      required={false}
+                      required={true}
                     />
                   }
                   type="date"
@@ -467,11 +482,11 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   onChange={formik.handleChange}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.toDate && formik.errors.toDate ? (
                    <div style={{ color: "red", margin: "5px" }}>
-                     {formik.errors.routeDate}
+                     {formik.errors.toDate}
                    </div>
-                 ) : null} */}
+                 ) : null}
               </Grid>
 
 
@@ -481,7 +496,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   label={t("text.Remark")}
                   value={formik.values.remark}
                   onChangeText={(text: string) => formik.setFieldValue("remark", text)}
-                  required={true}
+                  required={false}
                   lang={lang}
                 />
 

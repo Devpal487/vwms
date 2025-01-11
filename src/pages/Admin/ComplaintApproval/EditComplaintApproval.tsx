@@ -4,7 +4,8 @@ import {
    Card,
    CardContent,
    Grid,
-   Divider, Table,
+   Divider,
+   Table,
    MenuItem,
    TextField,
    Typography,
@@ -24,9 +25,7 @@ import {
    Modal,
    Box,
 } from "@mui/material";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -40,13 +39,17 @@ import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ReactQuill from "react-quill";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FormatStrikethrough } from "@mui/icons-material";
 
 type Props = {};
 
@@ -64,8 +67,8 @@ const style = {
    borderRadius: 10,
 };
 
-const AddComplaint = (props: Props) => {
-
+const EditComplaintApproval = (props: Props) => {
+   const location = useLocation(); // Access the passed data
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
@@ -85,6 +88,7 @@ const AddComplaint = (props: Props) => {
    const [designationOption, setDesignationOption] = useState([
       { value: 1, label: t("text.Designation") },
    ]);
+   const inputRef = useRef<HTMLButtonElement>(null);
 
    const [vehicleName, setVehicleName] = useState("");
 
@@ -97,6 +101,36 @@ const AddComplaint = (props: Props) => {
    const [aprDept3, setaprEmpDept3] = useState("");
    const [aprDept4, setaprEmpDept4] = useState("");
 
+   const [complaintData, setComplaintData] = useState([
+      {
+         sno: 0,
+         compId: 0,
+         itemID: 0,
+         complaintType: "",
+         complaintDoc: "",
+         empId: 0,
+         approveEmp4: 0,
+         approveEmp3: 0,
+         approveEmp2: 0,
+         approveEmp1: 0,
+         complaint: "",
+         complaintNo: "",
+         createdBy: "",
+         updatedBy: "",
+         status: "pending",
+         currentReading: 0,
+         createdOn: defaultValues,
+         complaintDate: defaultValues,
+         updatedOn: defaultValues,
+         compAppdt: defaultValues,
+         jobCardNo: "",
+         file: "",
+         fileOldName: "",
+         vehicleNo: "",
+         vehicleName: "",
+         empName: "",
+      },
+   ]);
 
    const [panOpens, setPanOpen] = React.useState(false);
    const [modalImg, setModalImg] = useState("");
@@ -104,54 +138,51 @@ const AddComplaint = (props: Props) => {
    const [Img, setImg] = useState("");
 
    useEffect(() => {
-      getcomplaintNo();
       getVehicleDetails();
       getDeptData();
       getDesignationData();
       getEmpData();
-   }, []);
+      getComplaintData();
 
-   const getcomplaintNo = async () => {
-      try {
-         const result = await api.get(`Master/GetMaxComplaintNo`); // Correct endpoint
-
-         if (result?.data?.status === 1 && result?.data?.data?.length > 0) {
-            const complaintNo = result.data.data[0]?.complaintNo; // Extract complaintNo
-            if (complaintNo) {
-               console.log("Fetched complaintNo:", complaintNo);
-               formik.setFieldValue("complaintNo", complaintNo); // Set complaintNo in form
-            } else {
-               console.warn("Complaint number is missing in the API response:", result);
-               formik.setFieldValue("complaintNo", "");
-            }
-         } else {
-            console.warn("API did not return a valid response for complaint number:", result);
-            formik.setFieldValue("complaintNo", "");
+      const timeoutId = setTimeout(() => {
+         if (inputRef.current) {
+            inputRef.current.click(); // Programmatically click the button
          }
-      } catch (error) {
-         console.error("Error while fetching the complaint number:", error);
-         formik.setFieldValue("complaintNo", "");
-      }
+         if (formik.values.approveEmp1 > 0) {
+            setaprEmpDept1(empOption.find(e => e.value == location.state.approveEmp1)?.department || "")
+            setaprEmpDept2(empOption.find(e => e.value == location.state.approveEmp2)?.department || "")
+            setaprEmpDept3(empOption.find(e => e.value == location.state.approveEmp3)?.department || "")
+            setaprEmpDept4(empOption.find(e => e.value == location.state.approveEmp4)?.department || "")
+            setaprEmpDesignation1(empOption.find(e => e.value == location.state.approveEmp1)?.designation || "")
+            setaprEmpDesignation2(empOption.find(e => e.value == location.state.approveEmp2)?.designation || "")
+            setaprEmpDesignation3(empOption.find(e => e.value == location.state.approveEmp3)?.designation || "")
+            setaprEmpDesignation4(empOption.find(e => e.value == location.state.approveEmp4)?.designation || "")
+         }
+      }, 300);
+      return () => clearTimeout(timeoutId);
+   }, [setaprEmpDept1]);
+
+   const getLabelById = (option: any, id: any) => {
+      const obj = option.find((item: any) => item.value === id);
+      return obj ? obj.label : "";
    };
 
    const getVehicleDetails = async () => {
-      const response = await api.get(
-         `Master/GetVehicleDetail?ItemMasterId=-1`,
-      );
+      const response = await api.get(`Master/GetVehicleDetail?ItemMasterId=-1`);
       const data = response.data.data;
       const arr = data.map((Item: any, index: any) => ({
          value: Item.itemMasterId,
          label: Item.vehicleNo,
          name: Item.itemName,
-         empId: Item.empId
+         empId: Item.empId,
       }));
       setVehicleOption(arr);
    };
 
    const getEmpData = async () => {
       const collectData = {
-         "empid": -1,
-         "userId": ""
+         empid: -1,
+         userId: "",
       };
       const response = await api.post(`Employee/GetEmployee`, collectData);
       const data = response.data.data;
@@ -167,9 +198,23 @@ const AddComplaint = (props: Props) => {
       setEmpOption(arr);
    };
 
+   const getComplaintData = async () => {
+      const collectData = {
+         id: -1,
+         empid: -1,
+         itemId: -1,
+      };
+      const response = await api.post(`Master/GetComplaint`, collectData);
+      const data = response.data.data;
+      const arr = data.map((Item: any, index: any) => ({
+         ...Item,
+      }));
+      setComplaintData(arr);
+   };
+
    const getDeptData = async () => {
       const collectData = {
-         "departmentId": -1
+         departmentId: -1,
       };
       const response = await api.post(`Department/GetDepartment`, collectData);
       const data = response.data.data;
@@ -185,7 +230,7 @@ const AddComplaint = (props: Props) => {
 
    const getDesignationData = async () => {
       const collectData = {
-         "designationId": -1
+         designationId: -1,
       };
       const response = await api.post(`Department/GetDesignation`, collectData);
       const data = response.data.data;
@@ -199,66 +244,66 @@ const AddComplaint = (props: Props) => {
       setDesignationOption(arr);
    };
 
-
-
    const formik = useFormik({
       initialValues: {
-         "sno": 0,
-         "compId": 0,
-         "itemID": null,
-         "complaintType": "",
-         "complaintDoc": "",
-         "empId": 0,
-         "approveEmp4": 0,
-         "approveEmp3": 0,
-         "approveEmp2": 0,
-         "approveEmp1": 0,
-         "complaint": "",
-         "complaintNo": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "status": "pending",
-         "currentReading": 0,
-         "createdOn": defaultValues,
-         "complaintDate": defaultValues,
-         "updatedOn": defaultValues,
-         "compAppdt": defaultValues,
-         "jobCardNo": "",
-         "file": "",
-         "fileOldName": "",
-         "vehicleNo": "",
-         "vehicleName": "",
-         "empName": ""
-      },
+         sno: location.state?.sno || 0,
+         compId: parseInt(location.state?.complaintNo) - 1 || 0,
+         itemID: location.state?.itemID,
+         complaintType: location.state?.complaintType,
+         complaintDoc: location.state?.complaintDoc,
+         empId: location.state?.empId,
+         approveEmp4: 0,
+         approveEmp3: 0,
+         approveEmp2: 0,
+         approveEmp1: 0,
+         complaint: location.state?.complaint,
+         complaintNo: location.state?.complaintNo,
+         createdBy: location.state?.createdBy,
+         updatedBy: location.state?.updatedBy,
+         status: "inprogress",
+         currentReading: location.state?.currentReading,
+         createdOn: location.state?.createdOn,
+         complaintDate: dayjs(location.state?.complaintDate).format("YYYY-MM-DD"),
+         updatedOn: location.state?.updatedOn,
+         compAppdt: location.state?.compAppdt || "",
+         jobCardNo: location.state?.jobCardNo || location.state?.complaintNo || "",
+         file: location.state?.file || "",
+         fileOldName: location.state?.fileOldName || "",
+         vehicleNo: location.state?.vehicleNo || "",
+         vehicleName: location.state?.vehicleName,
+         empName: location.state?.empName,
 
+         //...location.state,
+      },
       validationSchema: Yup.object({
-         itemID: Yup.string()
+         vehicleNo: Yup.string()
             .required("Vehicle Number is required"),
-         complaintDate: Yup.string()
+         compAppdt: Yup.string()
             .required("Complain date is required"),
          complaint: Yup.string()
             .required("Complaint is required"),
       }),
-
       onSubmit: async (values) => {
          try {
             const response = await api.post(`Master/UpsertComplaint`, values);
-
             if (response.data.status === 1) {
                toast.success(response.data.message);
-               setIsVisible(true);
+               if (localStorage.getItem("ApplicationFlow") === "outsource") {
+                  setIsVisible(true);
+               } else {
+                  setIsVisible(false);
+               }
             } else {
                toast.error(response.data.message);
                setToaster(true);
             }
          } catch (error) {
-            toast.error("An error occurred while submitting the form. Please try again.");
+            toast.error(
+               "An error occurred while submitting the form. Please try again."
+            );
          }
       },
-
    });
-
-
 
    const handlePanClose = () => {
       setPanOpen(false);
@@ -336,14 +381,14 @@ const AddComplaint = (props: Props) => {
             // Set value in Formik
             formik.setFieldValue(params, base64String);
 
-            let outputCheck =
-               "data:image/png;base64," + formik.values.file;
+            let outputCheck = "data:image/png;base64," + formik.values.file;
             console.log(outputCheck);
          } catch (error) {
             console.error("Error converting image file to Base64:", error);
          }
       }
    };
+
 
 
    const back = useNavigate();
@@ -360,8 +405,7 @@ const AddComplaint = (props: Props) => {
             }}
          >
             <CardContent>
-
-               <Grid item xs={12} container spacing={2} >
+               <Grid item xs={12} container spacing={2}>
                   <Grid item lg={2} md={2} xs={2} marginTop={2}>
                      <Button
                         type="submit"
@@ -375,7 +419,14 @@ const AddComplaint = (props: Props) => {
                         <ArrowBackSharpIcon />
                      </Button>
                   </Grid>
-                  <Grid item lg={7} md={7} xs={7} alignItems="center" justifyContent="center">
+                  <Grid
+                     item
+                     lg={7}
+                     md={7}
+                     xs={7}
+                     alignItems="center"
+                     justifyContent="center"
+                  >
                      <Typography
                         gutterBottom
                         variant="h5"
@@ -383,7 +434,7 @@ const AddComplaint = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.AddComplaint")}
+                        {t("text.EditComplaintApproval")}
                      </Typography>
                   </Grid>
 
@@ -406,80 +457,237 @@ const AddComplaint = (props: Props) => {
                <ToastContainer />
                <form onSubmit={formik.handleSubmit}>
                   {/* {toaster === false ? "" : <ToastApp />} */}
-
                   <Grid container spacing={2}>
-
-
-                     {/* ComplaintNo */}
-                     <Grid item lg={4} xs={12} sm={4}>
-                        <TextField
-                           id="complaintNo"
-                           name="complaintNo"
-                           label={<CustomLabel text={t("text.ComplaintNo")} required={false} />}
-                           value={formik.values.complaintNo} // Bind to Formik value
-                           size="small"
-                           fullWidth
-                           InputProps={{ readOnly: true }} // Make it read-only
-                        />
-                     </Grid>
-
                      {/* VehicleNumber */}
                      <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
-                           options={vehicleOption}
+                           options={vehicleOption.filter((e) => {
+                              for (let i = 0; i < complaintData.length; i++) {
+                                 if (e.value == complaintData[i].itemID) {
+                                    return e;
+                                 }
+                              }
+                           })}
                            value={formik.values.vehicleNo}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
-                              console.log(newValue?.value);
-                              formik.setFieldValue("itemID", newValue?.value || 0);
-                              formik.setFieldValue("vehicleNo", newValue?.label || "");
-                              formik.setFieldValue("vehicleName", newValue?.name || "");
-                              formik.setFieldValue("empId", newValue?.empId || 0);
-                              formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)]?.label);
+                              if (!newValue) {
+                                 formik.setFieldValue("itemID", "");
+                                 formik.setFieldValue("vehicleNo", "");
+                              } else {
+                                 formik.setFieldValue("itemID", newValue?.value);
+                                 formik.setFieldValue("vehicleNo", newValue?.label);
+                                 formik.setFieldValue("empId", newValue?.empId);
+                                 formik.setFieldValue(
+                                    "sno",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].sno
+                                 );
+                                 formik.setFieldValue(
+                                    "compId",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].compId
+                                 );
+                                 formik.setFieldValue(
+                                    "complaintType",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaintType
+                                 );
+                                 formik.setFieldValue(
+                                    "complaintDoc",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaintDoc
+                                 );
+                                 formik.setFieldValue(
+                                    "empId",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].empId
+                                 );
+                                 formik.setFieldValue(
+                                    "complaint",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaint
+                                 );
+                                 formik.setFieldValue(
+                                    "complaintNo",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaintNo
+                                 );
+                                 formik.setFieldValue(
+                                    "createdBy",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].createdBy
+                                 );
+                                 formik.setFieldValue(
+                                    "updatedBy",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].updatedBy
+                                 );
+                                 formik.setFieldValue(
+                                    "currentReading",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].currentReading
+                                 );
+                                 formik.setFieldValue(
+                                    "createdOn",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].createdOn
+                                 );
+                                 formik.setFieldValue(
+                                    "complaintDate",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaintDate
+                                 );
+                                 formik.setFieldValue(
+                                    "updatedOn",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].updatedOn
+                                 );
+                                 formik.setFieldValue(
+                                    "jobCardNo",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ]?.jobCardNo ||
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].complaintNo
+                                 );
+                                 formik.setFieldValue(
+                                    "file",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ]?.file || ""
+                                 );
+                                 formik.setFieldValue(
+                                    "fileOldName",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ]?.fileOldName || ""
+                                 );
+                                 formik.setFieldValue(
+                                    "vehicleName",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].vehicleName
+                                 );
+                                 formik.setFieldValue(
+                                    "empName",
+                                    complaintData[
+                                       complaintData.findIndex(
+                                          (x) => x.itemID == newValue?.value
+                                       )
+                                    ].empName
+                                 );
+                              }
                            }}
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                                 name="itemID"
-                                 id="itemID"
+                                 label={
+                                    <CustomLabel
+                                       text={t("text.VehicleNo")}
+                                       required={true}
+                                    />
+                                 }
+                                 name="vehicleNo"
+                                 id="vehicleNo"
                                  placeholder={t("text.VehicleNo")}
                               />
                            )}
                         />
-                        {formik.touched.itemID && formik.errors.itemID && (
-                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemID}</div>
+                        {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
                         )}
                      </Grid>
 
                      {/* Vehicle name */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
-                           label={
-                              <CustomLabel
-                                 text={t("text.VehicleName")}
-                              />
-                           }
+                           label={<CustomLabel text={t("text.VehicleName")} />}
                            variant="outlined"
                            fullWidth
                            size="small"
                            name="vehicleName"
                            id="vehicleName"
+                           //  value={vehicleName}
                            value={formik.values.vehicleName}
                            placeholder={t("text.VehicleName")}
                            onChange={formik.handleChange}
+                           InputLabelProps={{ shrink: true }}
                            inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
                      {/* UnderControlOf */}
                      <Grid item xs={12} md={4} sm={4}>
-                        <Autocomplete
+                        <TextField
+                           label={<CustomLabel text={t("text.UnderControlOf")} />}
+                           variant="outlined"
+                           fullWidth
+                           size="small"
+                           name="empName"
+                           id="empName"
+                           value={formik.values.empName}
+                           placeholder={t("text.UnderControlOf")}
+                           onChange={formik.handleChange}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
+                        />
+
+                        {/* <Autocomplete
                            disablePortal
-                           disabled={true}
                            id="combo-box-demo"
                            options={empOption}
                            value={formik.values.empName}
@@ -488,55 +696,64 @@ const AddComplaint = (props: Props) => {
                            onChange={(event: any, newValue: any) => {
                               console.log(newValue?.value);
                               formik.setFieldValue("empId", newValue?.value);
-                              formik.setFieldValue("empName", newValue?.label);
                            }}
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.UnderControlOf")} required={false} />}
+                                 label={<CustomLabel text={t("text.UnderControlOf")} required={true} />}
                                  name="empId"
                                  id="empId"
                                  placeholder={t("text.UnderControlOf")}
                               />
                            )}
+                        /> */}
+                     </Grid>
+
+                     {/* ComplaintNo */}
+                     <Grid item xs={12} md={4} sm={4}>
+                        <TextField
+                           label={<CustomLabel text={t("text.ComplaintNo")} />}
+                           variant="outlined"
+                           fullWidth
+                           size="small"
+                           name="complaintNo"
+                           id="complaintNo"
+                           value={formik.values.complaintNo}
+                           placeholder={t("text.ComplaintNo")}
+                           onChange={(e) => {
+                              formik.setFieldValue("complaintNo", e.target.value);
+                           }}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
-
-                     {/* Date */}
+                     {/* approve Date */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
-                           label={
-                              <CustomLabel
-                                 text={t("text.ComplainDate")}
-                              />
-                           }
+                           label={<CustomLabel text={t("text.ComplainApproveDate")} />}
                            type="date"
                            variant="outlined"
                            fullWidth
                            size="small"
-                           name="complaintDate"
-                           id="complaintDate"
-                           value={formik.values.complaintDate}
+                           name="compAppdt"
+                           id="compAppdt"
+                           value={dayjs(formik.values.compAppdt).format("YYYY-MM-DD")}
                            placeholder={t("text.Date")}
                            onChange={(e) => {
-                              formik.setFieldValue("complaintDate", e.target.value)
+                              formik.setFieldValue("compAppdt", e.target.value);
                            }}
                            InputLabelProps={{ shrink: true }}
                         />
-                        {formik.touched.complaintDate && formik.errors.complaintDate && (
-                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaintDate}</div>
+                        {!formik.values.compAppdt && formik.touched.compAppdt && formik.errors.compAppdt && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.compAppdt.toString()}</div>
                         )}
                      </Grid>
 
                      {/* CurrentReadingKM */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
-                           label={
-                              <CustomLabel
-                                 text={t("text.ReadingKM")}
-                              />
-                           }
+                           label={<CustomLabel text={t("text.ReadingKM")} />}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -545,8 +762,10 @@ const AddComplaint = (props: Props) => {
                            value={formik.values.currentReading}
                            placeholder={t("text.ReadingKM")}
                            onChange={(e) => {
-                              formik.setFieldValue("currentReading", parseInt(e.target.value) || 0);
+                              formik.setFieldValue("currentReading", e.target.value);
                            }}
+                           InputLabelProps={{ shrink: true }}
+                           inputProps={{ readOnly: true }}
                         />
                      </Grid>
 
@@ -556,7 +775,8 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={getLabelById(empOption, formik.values.approveEmp1)}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -568,7 +788,12 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 1"} required={false} />}
+                                 label={
+                                    <CustomLabel
+                                       text={t("text.ApproveEmployee") + " 1"}
+                                       required={false}
+                                    />
+                                 }
                                  name="approveEmp1"
                                  id="approveEmp1"
                                  placeholder={t("text.ApproveEmployee" + " 1")}
@@ -585,7 +810,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           //  disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -605,7 +830,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           //disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -623,7 +848,8 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={getLabelById(empOption, formik.values.approveEmp2)}
+                           // disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -635,7 +861,12 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 2"} required={false} />}
+                                 label={
+                                    <CustomLabel
+                                       text={t("text.ApproveEmployee") + " 2"}
+                                       required={false}
+                                    />
+                                 }
                                  name="approveEmp2"
                                  id="approveEmp2"
                                  placeholder={t("text.ApproveEmployee" + " 2")}
@@ -652,7 +883,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -672,7 +903,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -690,7 +921,8 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={getLabelById(empOption, formik.values.approveEmp3)}
+                           // disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -702,7 +934,12 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 3"} required={false} />}
+                                 label={
+                                    <CustomLabel
+                                       text={t("text.ApproveEmployee") + " 3"}
+                                       required={false}
+                                    />
+                                 }
                                  name="approveEmp3"
                                  id="approveEmp3"
                                  placeholder={t("text.ApproveEmployee" + " 3")}
@@ -719,7 +956,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           //  disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -739,7 +976,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -757,7 +994,8 @@ const AddComplaint = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           disabled={true}
+                           value={getLabelById(empOption, formik.values.approveEmp4)}
+                           //disabled={true}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -769,7 +1007,12 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.ApproveEmployee") + " 4"} required={false} />}
+                                 label={
+                                    <CustomLabel
+                                       text={t("text.ApproveEmployee") + " 4"}
+                                       required={false}
+                                    />
+                                 }
                                  name="approveEmp4"
                                  id="approveEmp4"
                                  placeholder={t("text.ApproveEmployee" + " 4")}
@@ -777,19 +1020,16 @@ const AddComplaint = (props: Props) => {
                            )}
                         />
                      </Grid>
-
-
                      {/* Department 4*/}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
                                  text={t("text.Department")}
-
-
+                              //required={true}
                               />
                            }
-                           disabled={true}
+                           // disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -809,7 +1049,7 @@ const AddComplaint = (props: Props) => {
                               //required={true}
                               />
                            }
-                           disabled={true}
+                           //   disabled={true}
                            variant="outlined"
                            fullWidth
                            size="small"
@@ -826,18 +1066,19 @@ const AddComplaint = (props: Props) => {
                            id="complaint"
                            theme="snow"
                            value={formik.values.complaint}
-                           onChange={(content) => formik.setFieldValue("complaint", content)}
+                           onChange={(content) =>
+                              formik.setFieldValue("complaint", content)
+                           }
                            onBlur={() => formik.setFieldTouched("complaint", true)}
                            modules={modules}
                            formats={formats}
-                           //  style={{ backgroundColor: "white", minHeight: "200px" }} 
+                           //  style={{ backgroundColor: "white", minHeight: "200px" }}
                            placeholder="Enter your complaint here"
                         />
-                        {formik.touched.complaint && formik.errors.complaint && (
-                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint}</div>
+                        {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
                         )}
                      </Grid>
-
 
                      {/* attachment */}
                      <Grid container spacing={1} item>
@@ -886,7 +1127,6 @@ const AddComplaint = (props: Props) => {
                                  />
                               ) : (
                                  <img
-
                                     src={"data:image/png;base64," + formik.values.file}
                                     style={{
                                        width: 150,
@@ -936,7 +1176,6 @@ const AddComplaint = (props: Props) => {
                         </Modal>
                      </Grid>
 
-
                      {/* Submit Button */}
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
@@ -970,38 +1209,64 @@ const AddComplaint = (props: Props) => {
                         </Button>
                      </Grid>
 
+                     <Button
+                        ref={inputRef}
+                        onClick={(e) => {
+                           setTimeout(() => {
+                              formik.setFieldValue("approveEmp1", location.state?.approveEmp1 || 0);
+                              formik.setFieldValue("approveEmp2", location.state?.approveEmp2 || 0);
+                              formik.setFieldValue("approveEmp3", location.state?.approveEmp3 || 0);
+                              formik.setFieldValue("approveEmp4", location.state?.approveEmp4 || 0);
+                           }, 300);
+                        }}
+                        sx={{ display: "none" }}
+                        variant="contained"
+                        color="secondary"
+                     >
+                     </Button>
+
+                     {isVisible && (
+                        <Grid item lg={6} sm={6} xs={12}>
+                           <Button
+                              type="button"
+                              style={{
+                                 backgroundColor: "#0000ff",
+                                 color: "white",
+                                 marginTop: "10px",
+                                 padding: "8px 16px",
+                                 fontSize: "16px",
+                                 borderRadius: "8px",
+                                 width: "100px",
+                              }}
+                              onClick={() => {
+                                 // if (localStorage.getItem("ApplicationFlow") == "outsource") {
+                                 //    navigate("/vehiclecomplaint/AddJobCard", {
+                                 //       state: formik.values,
+                                 //    });
+                                 // }
+                                 // else {
+                                 //    navigate("/vehiclecomplaint/AddJobCard1", {
+                                 //       state: formik.values,
+                                 //    });
+                                 // }
+                                 navigate("/vehiclecomplaint/AddJobCard", {
+                                    state: {
+                                       ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
+                                       designation: empOption.find(e => e.value == formik.values.empId)?.designation
+                                    },
+                                 });
+                              }}
+                           >
+                              {t("text.Next")}
+                              <ArrowForwardIcon />
+                           </Button>
+                        </Grid>
+                     )}
                   </Grid>
-                  {isVisible && (
-                     <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="button"
-                           style={{
-                              backgroundColor: "#0000ff",
-                              color: "white",
-                              marginTop: "10px",
-                              padding: "8px 16px",
-                              fontSize: "16px",
-                              borderRadius: "8px",
-                              width: "100px",
-                           }}
-                           onClick={() => {
-                              navigate("/Admin/AddComplaintApproval", {
-                                 state: formik.values,
-                              });
-                           }}
-                        >
-                           {t("text.Next")}
-                           <ArrowForwardIcon />
-                        </Button>
-
-                     </Grid>
-                  )}
-
-
                </form>
             </CardContent>
          </div>
-      </div>
+      </div >
    );
 };
 const modules = {
@@ -1042,4 +1307,4 @@ const formats = [
    "formula",
    "code-block",
 ];
-export default AddComplaint;
+export default EditComplaintApproval;

@@ -148,7 +148,7 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
       "updatedOn": location.state.updatedOn,
       "companyId": location.state.companyId,
       "fyId": location.state.fyId,
-      "file": location.state.file
+      "file": location.state?.file || ""
     },
 
     onSubmit: async (values) => {

@@ -124,11 +124,11 @@ const AddLicensingInsuranceMaster = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "licensingId": 0,
-      "itemId": 0,
-      "vendorId": 0,
-      "effectiveDate": "2024-12-13T09:11:21.146Z",
-      "fromDate": "2024-12-13T09:11:21.146Z",
-      "todate": "2024-12-13T09:11:21.146Z",
+      "itemId": null,
+      "vendorId": null,
+      "effectiveDate": "",
+      "fromDate": "",
+      "todate": "",
       "narration": "",
       "amount": 0,
       "attachment": "",
@@ -140,10 +140,19 @@ const AddLicensingInsuranceMaster = (props: Props) => {
       "updatedOn": "2024-12-13T09:11:21.146Z",
       "file": ""
     },
-    // validationSchema: Yup.object({
-    //   indentNo: Yup.string()
-    //     .required(t("text.reqIndentNum")),
-    // }),
+
+    validationSchema: Yup.object({
+      itemId: Yup.string()
+        .required(t("Vehicle Number is required")),
+      vendorId: Yup.string()
+        .required(t("Vendor name is required")),
+      fromDate: Yup.string()
+        .required(t("From date is required")),
+      todate: Yup.string()
+        .required(t("To date is required")),
+      effectiveDate: Yup.string()
+        .required(t("Effective date is required")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -346,9 +355,9 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                )} */}
+                {formik.touched.itemId && formik.errors.itemId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId}</div>
+                )}
               </Grid>
 
               {/* Vendor */}
@@ -376,9 +385,9 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                )} */}
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId}</div>
+                )}
               </Grid>
 
               {/* from Date */}
@@ -403,11 +412,11 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.fromDate && formik.errors.fromDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.fromDate}
                   </div>
-                ) : null} */}
+                ) : null}
 
               </Grid>
 
@@ -433,11 +442,11 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.todate && formik.errors.todate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.todate}
                   </div>
-                ) : null} */}
+                ) : null}
               </Grid>
 
               {/* effective data */}
@@ -462,11 +471,11 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.effectiveDate && formik.errors.effectiveDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.effectiveDate}
                   </div>
-                ) : null} */}
+                ) : null}
               </Grid>
 
               {/* narration */}
@@ -608,7 +617,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   </Box>
                 </Modal>
               </Grid>
-              
+
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>

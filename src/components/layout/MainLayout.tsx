@@ -734,7 +734,7 @@ const MainLayout = () => {
             {
               menuId: 1,
               menuName: "Complaint Approval",
-              path: "/Admin/AddComplaintApproval",
+              path: "/Admin/ComplaintApproval",
               displayNo: 0,
             },
 

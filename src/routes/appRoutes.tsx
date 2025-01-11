@@ -231,6 +231,8 @@ import AddJobCard1 from "../pages/VehicleComplaints/JobCard1/AddJobCard1";
 import EditJobCard1 from "../pages/VehicleComplaints/JobCard1/EditJobCard1";
 import JobCard1 from "../pages/VehicleComplaints/JobCard1/JobCard1";
 import Flowmaster from "../pages/Admin/Flowmaster/flowmaster";
+import ComplaintApproval from "../pages/Admin/ComplaintApproval/ComplaintApproval";
+import EditComplaintApproval from "../pages/Admin/ComplaintApproval/EditComplaintApproval";
 
 
 
@@ -2080,12 +2082,22 @@ const appRoutes: RouteType[] = [
         state: "Admin.index",
       },
       {
-        path: "/Admin/AddComplaintApproval",
-        element: <AddComplaintApproval />,
-        state: "Admin.AddComplaintApproval",
+        path: "/Admin/ComplaintApproval",
+        element: <ComplaintApproval />,
+        state: "Admin.ComplaintApproval",
         sidebarProps: {
           displayText: "Complaint Approval",
         },
+      },
+      {
+        path: "/Admin/AddComplaintApproval",
+        element: <AddComplaintApproval />,
+        state: "Admin.AddComplaintApproval",
+      },
+      {
+        path: "/Admin/EditComplaintApproval",
+        element: <EditComplaintApproval />,
+        state: "Admin.EditComplaintApproval",
       },
 
       {

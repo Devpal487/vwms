@@ -77,6 +77,7 @@ const AddJobCard = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleJWC, setIsVisibleJWC] = useState(false);
   const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
@@ -421,6 +422,8 @@ const AddJobCard = (props: Props) => {
         toast.success(response.data.message);
         setJobCardId(response.data.data.jobCardId);
         setIsVisible(true);
+        formik.setFieldValue("jobCardId", response.data.data.jobCardId);
+        formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -583,6 +586,7 @@ const AddJobCard = (props: Props) => {
     if (newData[index].serviceId && newData[index].vendorName && newData[index].qty && newData[index].unitRate > 0) {
       if (index === tableData.length - 1) {
         addRow();
+        //setIsVisibleJWC(true);
       }
     }
     let total = 0;
@@ -846,7 +850,7 @@ const AddJobCard = (props: Props) => {
                       setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
                       setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
                       setVehicleName(newValue?.vehicleName);
-                      console.log(complainOption);
+
                       formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
                       formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
                       formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
@@ -882,6 +886,7 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
                       formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
                       formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || "");
+                      console.log("@@@@@@@@@@@@@@@@@@@" + JSON.stringify(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail))
                     }
                   }}
                   renderInput={(params) => (
@@ -1225,9 +1230,12 @@ const AddJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
-                                handleInputChange(index, 'unitId', newValue?.value);
-                                handleInputChange(index, 'unitName', newValue?.label);
+                                handleInputChange(index, 'unitId', newValue.value);
+                                handleInputChange(index, 'unitName', newValue.label);
                               }}
                               sx={{ width: "140px" }}
                               renderInput={(params) => (
@@ -1437,12 +1445,13 @@ const AddJobCard = (props: Props) => {
                 </div>
               </Grid>
 
-              {true && (
+
+              {isVisible ? (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
                     style={{
-                      backgroundColor: "#0000ff",
+                      backgroundColor: "#426aed",
                       color: "white",
                       marginTop: "10px",
                       padding: "8px 16px",
@@ -1450,6 +1459,35 @@ const AddJobCard = (props: Props) => {
                       borderRadius: "8px",
                       width: "200px",
                     }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "JobWork");
+                        handleGenerateChallan(formik.values);
+                      }
+                    }}
+                  >
+                    {t("text.JobWorkChallan")}
+                  </Button>
+
+                </Grid>
+              ) : (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "grey",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    disabled={true}
                     onClick={() => {
                       const validTableData = tableData.filter(validateRow);
                       if (validTableData.length === 0) {

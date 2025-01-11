@@ -271,45 +271,45 @@ const AddEmployee = (props: Props) => {
 
 
   const validationSchema = Yup.object({
-    name: Yup.string().test(
+    empName: Yup.string().test(
       "required",
       t("text.EmpNameRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
-    code: Yup.string().test(
+    empCode: Yup.string().test(
       "required",
       t("text.EmpCodeRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
-    mobileNo: Yup.string().test(
+    empMobileNo: Yup.string().test(
       "required",
       t("text.MobNoRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
-    panNumber: Yup.string()
+    empPanNumber: Yup.string()
       .matches(/^[A-Z]{3}[A-ZHPTCF][A-Z]\d{4}[A-Z]$/, "Invalid PAN format")
       .required(t("text.PanNoRequired")),
-    permanentAddress: Yup.string().test(
+    empPerAddress: Yup.string().test(
       "required",
       t("text.PermanentAddressRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
-    pincode: Yup.string().test(
+    empPincode: Yup.string().test(
       "required",
       t("text.PincodeRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
-    addharNo: Yup.string()
+    empAddharNo: Yup.string()
       .required(t("text.AdharNoRequired"))
       .test("len", "Aadhaar number must be exactly 12 digits", (val: any) =>
         val ? val.replace(/\D/g, "").length === 12 : true
@@ -402,7 +402,7 @@ const AddEmployee = (props: Props) => {
       "empCountryName": "",
       "empStateName": ""
     },
-    //validationSchema: validationSchema,
+    validationSchema: validationSchema,
 
     onSubmit: async (values) => {
       // console.log("Before submission formik values", values);
@@ -529,6 +529,11 @@ const AddEmployee = (props: Props) => {
                   required={true}
                   lang={lang}
                 />
+
+                {formik.touched.empName && formik.errors.empName && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empName}</div>
+                )}
+
               </Grid>
 
               {/* Code */}
@@ -551,6 +556,9 @@ const AddEmployee = (props: Props) => {
                     formik.setFieldValue("empCode", e.target.value);
                   }}
                 />
+                {formik.touched.empCode && formik.errors.empCode && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empCode}</div>
+                )}
               </Grid>
 
               {/* father name */}
@@ -637,6 +645,7 @@ const AddEmployee = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.MobileNo")}
+                      required={true}
                     />
                   }
                   value={formik.values.empMobileNo}
@@ -648,6 +657,9 @@ const AddEmployee = (props: Props) => {
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.empMobileNo && formik.errors.empMobileNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empMobileNo}</div>
+                )}
               </Grid>
 
               {/* email id */}
@@ -680,6 +692,7 @@ const AddEmployee = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.PanNo")}
+                      required={true}
                     />
                   }
                   value={formik.values.empPanNumber}
@@ -691,6 +704,9 @@ const AddEmployee = (props: Props) => {
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.empPanNumber && formik.errors.empPanNumber && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empPanNumber}</div>
+                )}
               </Grid>
 
               {/* aadhar no */}
@@ -701,6 +717,7 @@ const AddEmployee = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.AadharNo")}
+                      required={true}
                     />
                   }
                   value={formik.values.empAddharNo}
@@ -712,6 +729,9 @@ const AddEmployee = (props: Props) => {
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.empAddharNo && formik.errors.empAddharNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empAddharNo}</div>
+                )}
               </Grid>
 
               {/* joining date */}

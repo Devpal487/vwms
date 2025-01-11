@@ -34,6 +34,8 @@ const resources = {
         Outsource:"OutSource",
         InhouseandOutsource:"Inhouse and OutSource",
         AddComplaintApproval: "Create Complaint Approval",
+        ComplaintApproval: "Complaint Approval",
+        EditComplaintApproval: "Edit Complaint Approval",
         Next: "Next",
         pOrderDoc: "Upload Document",
         orderDate: "Order Date",
