@@ -59,7 +59,8 @@ const CreateJobCardIndent = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
-  const [tableData, setTableData] = useState<any>([{
+  const [tableData, setTableData] = useState<any>([
+    {
 
 
     "id": 0,
@@ -75,7 +76,25 @@ const CreateJobCardIndent = (props: Props) => {
     "isDelete": true,
     "unitName": "",
     "item": ""
-  }]);
+  },
+  {
+
+
+    "id": 0,
+    "indentId": 0,
+    "itemId": 0,
+    "unitId": 0,
+    "quantity": 0,
+    "rate": 0,
+    "amount": 0,
+    "approveQuantity": 0,
+    "fyId": 0,
+    "srn": 0,
+    "isDelete": true,
+    "unitName": "",
+    "item": ""
+  }
+]);
 
 
   const [unitOptions, setUnitOptions] = useState([
@@ -190,7 +209,9 @@ const CreateJobCardIndent = (props: Props) => {
       "postedBy": "",
       "releasedOn": defaultValues,
       "postedOn": defaultValues,
-      indentDetail: [],
+      indentDetail: [
+
+      ],
       srn: 0
     },
 

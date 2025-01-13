@@ -90,32 +90,37 @@ export default function OutSourceService() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
+    const headers = [ "Vehicle No", "jobCard No.", "Item Name", "Service Name"];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+      item?.vehicleNo|| "",
+      item?.jobCardNo || "", // Vehicle No
+      item?.itemName || "", // Driver
+      item?.serviceName || "", // Mobile No
     ]);
 
     // Create HTML table
@@ -214,7 +219,7 @@ export default function OutSourceService() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = [ "Vehicle No", "jobCard No.", "Item Name", "Service Name"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -247,11 +252,11 @@ export default function OutSourceService() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+      item?.vehicleNo|| "",
+        item?.jobCardNo || "", // Vehicle No
+        item?.itemName || "", // Driver
+        item?.serviceName || "", // Mobile No
+       // item?.running || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -364,25 +369,6 @@ export default function OutSourceService() {
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "complainDate",
-            headerName: t("text.ComplainDate"),
-            flex: 1,
-            cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.complainDate).format("DD-MM-YYYY");
-            },
-          },
-
-          {
-            field: "jobCardDate",
-            headerName: t("text.JobCardDate"),
-            flex: 1,
-            cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.jobCardDate).format("DD-MM-YYYY");
-            },
-          },
-          {
             field: "vehicleNo",
             headerName: t("text.VehicleNo"),
             flex: 1,
@@ -394,22 +380,7 @@ export default function OutSourceService() {
             headerName: t("text.JobCardNo"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-            align:'right',
-            headerAlign:"right",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "vendor",
-            headerName: t("text.Vendor"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "serviceName",
-            headerName: t("text.Service"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          
             cellClassName: "wrap-text", // Added here
           },
           {
@@ -420,6 +391,44 @@ export default function OutSourceService() {
            
             cellClassName: "wrap-text", // Added here
           },
+
+          {
+            field: "serviceName",
+            headerName: t("text.Service"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+          // {
+          //   field: "complainDate",
+          //   headerName: t("text.ComplainDate"),
+          //   flex: 1,
+          //   cellClassName: "wrap-text", // Added here
+          //   renderCell: (params) => {
+          //     return moment(params.row.complainDate).format("DD-MM-YYYY");
+          //   },
+          // },
+
+          // {
+          //   field: "jobCardDate",
+          //   headerName: t("text.JobCardDate"),
+          //   flex: 1,
+          //   cellClassName: "wrap-text", // Added here
+          //   renderCell: (params) => {
+          //     return moment(params.row.jobCardDate).format("DD-MM-YYYY");
+          //   },
+          // },
+          
+        
+          // {
+          //   field: "vendor",
+          //   headerName: t("text.Vendor"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          
+         
           
         ];
         setColumns(columns as any);
@@ -601,7 +610,7 @@ export default function OutSourceService() {
                     {...params}
                     label={
                       <CustomLabel
-                        text={t("text.Vendor")}
+                        text={t("text.SelectVendor")}
                         required={false}
                       />
                     }

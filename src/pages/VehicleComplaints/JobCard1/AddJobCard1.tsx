@@ -2190,7 +2190,7 @@ const AddJobCard1 = (props: Props) => {
     "update": true
   }]);
 
-  const [items, setItems] = useState<any>([
+  const [tableData1, setTableData1] = useState<any>([
     {
       "id": 0,
       "jobCardId": 0,
@@ -2211,6 +2211,27 @@ const AddJobCard1 = (props: Props) => {
       "isDelete": true,
       "prevReading": 0
     },
+    {
+      "id": 0,
+      "jobCardId": 0,
+      "itemId": 0,
+      "indentId": 0,
+      "indentNo": "",
+      "qty": 0,
+      "rate": 0,
+      "batchNo": "",
+      "amount": 0,
+      "gstId": 0,
+      "gstRate": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "netAmount": 0,
+      "srno": 0,
+      "isDelete": true,
+      "prevReading": 0
+    },
+
   ]);
   const [tableData, setTableData] = useState([
     {
@@ -2231,7 +2252,27 @@ const AddJobCard1 = (props: Props) => {
       sgstid: 0,
       gstid: 0,
 
-    }
+    },
+    {
+      id: 0,
+      jobCardId: 0,
+      serviceId: 0,
+      amount: 0,
+      jobWorkReq: true,
+      vendorId: 0,
+      challanRemark: "",
+      challanNo: 0,
+      challanDate: defaultValues,
+      challanRcvNo: 0,
+      challanRcvDate: defaultValues,
+      challanStatus: "",
+      netAmount: 0,
+      cgstid: 0,
+      sgstid: 0,
+      gstid: 0,
+
+    },
+   
   ]);
 
   const [vehicleName, setVehicleName] = useState("");
@@ -2460,53 +2501,13 @@ const AddJobCard1 = (props: Props) => {
       netAmount: 0,
       vehicleNo: "",
       empName: "",
-      serviceDetail: [
-        {
-          id: 0,
-          jobCardId: 0,
-          serviceId: 0,
-          amount: 0,
-          jobWorkReq: true,
-          vendorId: 0,
-          challanRemark: "",
-          challanNo: 0,
-          challanDate: defaultValues,
-          challanRcvNo: 0,
-          challanRcvDate: defaultValues,
-          challanStatus: "",
-          netAmount: 0,
-          cgstid: 0,
-          sgstid: 0,
-          gstid: 0,
-        },
-      ],
-      itemDetail: [
-        {
-          id: 0,
-          jobCardId: 0,
-          itemId: 0,
-          indentId: 0,
-          indentNo: "",
-          qty: 0,
-          rate: 0,
-          batchNo: "",
-          amount: 0,
-          gstId: 0,
-          gstRate: 0,
-          cgst: 0,
-          sgst: 0,
-          igst: 0,
-          netAmount: 0,
-          srno: 0,
-          isDelete: false,
-          prevReading: 0,
-        },
-      ],
+      serviceDetail: [],
+      itemDetail: [],
     },
 
     onSubmit: async (values) => {
-      const validServiceDetails = values.serviceDetail.filter(row => row.serviceId && row.vendorId && row.amount > 0);
-      const validItemDetails = values.itemDetail.filter(row => row.itemId && row.qty > 0 && row.rate > 0);
+      const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
+      const validItemDetails = tableData1.filter((row:any) => row.itemId && row.qty > 0 && row.rate > 0);
 
       // if (validServiceDetails.length === 0) {
       //   toast.error("Add valid service details.");
@@ -2546,7 +2547,7 @@ const AddJobCard1 = (props: Props) => {
     // }
     const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validTableData, ItemDetail: validateItem });
     if (response.data.status === 1) {
-      toast.success(response.data.message);
+      toast.success(response.data?.message || "JOBCARD Indent Generated");
       setJobCardId(response.data.data.jobCardId);
     } else {
       setToaster(true);
@@ -2568,23 +2569,162 @@ const AddJobCard1 = (props: Props) => {
       toast.error(response.data.message);
     }
   };
-  const handleServiceChange = (index: any, field: any, value: any) => {
-    const updatedServiceDetails: any = [...formik.values.serviceDetail];
-    updatedServiceDetails[index][field] = value;
-    formik.setFieldValue("serviceDetail", updatedServiceDetails);
+  // const handleServiceChange = (index: any, field: any, value: any) => {
+  //   const updatedServiceDetails: any = [...formik.values.serviceDetail];
+  //   updatedServiceDetails[index][field] = value;
+  //   formik.setFieldValue("serviceDetail", updatedServiceDetails);
+
+    
+  // };
+
+
+  const handleInputChange = (index: any, field: any, value: any) => {
+    const newData: any = [...tableData];
+    newData[index][field] = value;
+
+    if (field === 'serviceId') {
+      newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    }
+    // if (field === 'serviceName') {
+    //   newData[index].serviceName = newData[index].serviceName;
+    // }
+    if (field === 'amount') {
+      newData[index].amount = newData[index].amount;
+    }
+    if (field === 'vendorId') {
+      newData[index].vendorId = newData[index].vendorId;
+      newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
+    }
+    if (field === 'challanRemark') {
+      newData[index].challanRemark = newData[index].challanRemark;
+    }
+    if (field === 'challanNo') {
+      newData[index].challanNo = newData[index].challanNo;
+    }
+    if (field === 'challanStatus') {
+      newData[index].challanStatus = newData[index].challanStatus;
+    }
+    if (field === 'netAmount') {
+      newData[index].netAmount = newData[index].netAmount;
+    }
+    // if (field === 'qty') {
+    //   newData[index].qty = newData[index].qty;
+    // }
+    // if (field === 'unitRate') {
+    //   newData[index].unitRate = newData[index].unitRate;
+    // }
+    // if (field === 'unitId') {
+    //   newData[index].unitId = newData[index].unitId;
+    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
+    // }
+    // if (field === 'vendorName') {
+    //   newData[index].vendorName = newData[index].vendorName;
+    // }
+    // if (field === 'unitName') {
+    //   newData[index].unitName = newData[index].unitName;
+    // }
+    newData[index].jobCardId = formik.values.jobCardId;
+  //  newData[index].amount = newData[index].unitRate * newData[index].qty;
+  //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    newData[index].id = index;
+    setTableData(newData);
+
+    if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
+      if (index === tableData.length - 1) {
+        addRow();
+        //setIsVisibleJWC(true);
+      }
+    }
+    
+    let total = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+    })
+    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("totalServiceAmount", total);
+    formik.setFieldValue("totalItemAmount", total);
   };
 
-  const handleItemChange = (index: any, field: any, value: any) => {
-    const updatedItems: any = [...formik.values.itemDetail];
-    updatedItems[index][field] = value;
+  // const handleItemChange = (index: any, field: any, value: any) => {
+  //   const updatedItems: any = [...formik.values.itemDetail];
+  //   updatedItems[index][field] = value;
 
-    // Update calculations if needed
-    if (field === "qty" || field === "rate") {
-      updatedItems[index].amount = updatedItems[index].qty * updatedItems[index].rate;
-      updatedItems[index].netAmount = updatedItems[index].amount;
+  //   // Update calculations if needed
+  //   if (field === "qty" || field === "rate") {
+  //     updatedItems[index].amount = updatedItems[index].qty * updatedItems[index].rate;
+  //     updatedItems[index].netAmount = updatedItems[index].amount;
+  //   }
+
+  //   formik.setFieldValue("itemDetail", updatedItems);
+  // };
+
+  const handleInputChange1 = (index: any, field: any, value: any) => {
+    const newData: any = [...tableData1];
+    newData[index][field] = value;
+
+    if (field === 'serviceId') {
+      newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
+    // if (field === 'serviceName') {
+    //   newData[index].serviceName = newData[index].serviceName;
+    // }
+    if (field === 'amount') {
+      newData[index].amount = newData[index].amount;
+    }
+    // if (field === 'vendorId') {
+    //   newData[index].vendorId = newData[index].vendorId;
+    //   newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
+    // }
+    // if (field === 'challanRemark') {
+    //   newData[index].challanRemark = newData[index].challanRemark;
+    // }
+    // if (field === 'challanNo') {
+    //   newData[index].challanNo = newData[index].challanNo;
+    // }
+    // if (field === 'challanStatus') {
+    //   newData[index].challanStatus = newData[index].challanStatus;
+    // }
+    if (field === 'netAmount') {
+      newData[index].netAmount = newData[index].netAmount;
+    }
+    // if (field === 'qty') {
+    //   newData[index].qty = newData[index].qty;
+    // }
+    // if (field === 'unitRate') {
+    //   newData[index].unitRate = newData[index].unitRate;
+    // }
+    // if (field === 'unitId') {
+    //   newData[index].unitId = newData[index].unitId;
+    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
+    // }
+    // if (field === 'vendorName') {
+    //   newData[index].vendorName = newData[index].vendorName;
+    // }
+    // if (field === 'unitName') {
+    //   newData[index].unitName = newData[index].unitName;
+    // }
+    newData[index].jobCardId = formik.values.jobCardId;
+   // newData[index].amount = newData[index].unitRate * newData[index].qty;
+   // newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    newData[index].id = index;
+    setTableData1(newData);
 
-    formik.setFieldValue("itemDetail", updatedItems);
+    if (newData[index].itemId && newData[index].qty && newData[index].rate) {
+      if (index === tableData1.length - 1) {
+        handleAddItem();
+        //setIsVisibleJWC(true);
+      }
+    }
+    
+    let total = 0;
+    tableData1.forEach((row:any) => {
+      total += row.amount;
+    })
+    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("totalServiceAmount", total);
+    formik.setFieldValue("totalItemAmount", total);
   };
 
   const addRow = () => {
@@ -2612,8 +2752,8 @@ const AddJobCard1 = (props: Props) => {
   };
 
   const handleAddItem = () => {
-    setItems([
-      ...items,
+    setTableData1([
+      ...tableData1,
       {
         "id": 0,
         "jobCardId": 0,
@@ -2772,7 +2912,7 @@ const AddJobCard1 = (props: Props) => {
               </Grid>
 
               {/* File number */}
-              <Grid item xs={12} md={4} sm={4}>
+              {/* <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -2793,7 +2933,7 @@ const AddJobCard1 = (props: Props) => {
                     setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
-              </Grid>
+              </Grid> */}
 
 
               {/* job card Date */}
@@ -2854,26 +2994,26 @@ const AddJobCard1 = (props: Props) => {
                       formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
                       formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
                       formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "complete");
-                      setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || [{
-                        id: 0,
-                        jobCardId: 0,
-                        serviceId: 0,
-                        amount: 0,
-                        jobWorkReq: true,
-                        vendorId: 0,
-                        challanRemark: "",
-                        challanNo: 0,
-                        challanDate: defaultValues,
-                        challanRcvNo: 0,
-                        challanRcvDate: defaultValues,
-                        challanStatus: "",
-                        netAmount: 0,
+                      // setTableData([...(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail),{
+                      //   id: 0,
+                      //   jobCardId: 0,
+                      //   serviceId: 0,
+                      //   amount: 0,
+                      //   jobWorkReq: true,
+                      //   vendorId: 0,
+                      //   challanRemark: "",
+                      //   challanNo: 0,
+                      //   challanDate: defaultValues,
+                      //   challanRcvNo: 0,
+                      //   challanRcvDate: defaultValues,
+                      //   challanStatus: "",
+                      //   netAmount: 0,
 
-                        cgstid: 0,
-                        sgstid: 0,
-                        gstid: 0,
+                      //   cgstid: 0,
+                      //   sgstid: 0,
+                      //   gstid: 0,
 
-                      }]);
+                      // }]);
                       formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
                       formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
                       formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
@@ -3027,9 +3167,8 @@ const AddJobCard1 = (props: Props) => {
 
 
 
-
-              <Grid item xs={12}>
-                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+  <Grid item xs={12}>
+                <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
@@ -3046,9 +3185,29 @@ const AddJobCard1 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {formik.values.serviceDetail.map((row, index) => (
-                        <tr key={index}>
-                          <td
+                    {tableData.map((row, index) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
+                      {/* {formik.values.serviceDetail.map((row, index) => (
+                        <tr key={index}> */}
+
+<td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -3063,7 +3222,7 @@ const AddJobCard1 = (props: Props) => {
                               }}
                               style={{ cursor: "pointer" }}
                             />
-                          </td>
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black"
@@ -3074,22 +3233,23 @@ const AddJobCard1 = (props: Props) => {
                               id="combo-box-demo"
                               options={serviceOption}
                               // value={row.serviceId}
+                              sx={{ width: "225px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleServiceChange(index, "serviceId", newValue?.value)
-                                handleServiceChange(index, 'serviceName', newValue?.label);
+                                handleInputChange(index, "serviceId", newValue?.value)
+                                handleInputChange(index, 'serviceName', newValue?.label);
 
                               }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.SelectServices")}
-                                      required={false}
-                                    />
-                                  }
+                                  // label={
+                                  //   <CustomLabel
+                                  //     text={t("text.SelectServices")}
+                                  //     required={false}
+                                  //   />
+                                  // }
                                 />
                               )}
                             />
@@ -3109,17 +3269,18 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
-                                handleServiceChange(index, 'challanStatus', newValue);
+                                handleInputChange(index, 'challanStatus', newValue);
                               }}
+                              sx={{ width: "140px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Status")}
-                                      required={false}
-                                    />
-                                  }
+                                  // label={
+                                  //   <CustomLabel
+                                  //     text={t("text.Status")}
+                                  //     required={false}
+                                  //   />
+                                  // }
                                 />
                               )}
                             />
@@ -3139,53 +3300,79 @@ const AddJobCard1 = (props: Props) => {
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleServiceChange(index, 'vendorId', newValue?.value);
-                                handleServiceChange(index, 'vendorName', newValue?.label);
+                                handleInputChange(index, 'vendorId', newValue?.value);
+                                handleInputChange(index, 'vendorName', newValue?.label);
                               }}
+                              sx={{ width: "330px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Vendor")}
-                                      required={false}
-                                    />
-                                  }
+                                  // label={
+                                  //   <CustomLabel
+                                  //     text={t("text.Vendor")}
+                                  //     required={false}
+                                  //   />
+                                  // }
                                 />
                               )}
                             />
                           </td>
 
-                          <td>
+                          <td style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
                             <TextField
                               value={row.amount}
                               onChange={(e) =>
-                                handleServiceChange(index, "amount", parseFloat(e.target.value))
+                                handleInputChange(index, "amount", parseFloat(e.target.value)||0)
                               }
+                               size="small"
                             />
                           </td>
-                          <td>
+                          <td style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
                             <TextField
                               value={row.netAmount}
                               onChange={(e) =>
-                                handleServiceChange(index, "netAmount", parseFloat(e.target.value))
+                                handleInputChange(index, "netAmount", parseFloat(e.target.value)||0)
                               }
+                               size="small"
                             />
                           </td>
-                          <td>
+                          <td style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
                             <TextField
                               value={row.netAmount}
                               onChange={(e) =>
-                                handleServiceChange(index, "netAmount", parseFloat(e.target.value))
+                                handleInputChange(index, "netAmount", parseFloat(e.target.value)||0)
                               }
+                               size="small"
                             />
                           </td>
-                          <td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "10rem"
+                            }}
+                          >
                             <TextField
                               value={row.challanNo}
                               onChange={(e) =>
-                                handleServiceChange(index, "challanNo", parseFloat(e.target.value))
+                                handleInputChange(index, "challanNo", parseFloat(e.target.value)||0)
                               }
+                               size="small"
                             />
                           </td>
                           <td
@@ -3197,7 +3384,7 @@ const AddJobCard1 = (props: Props) => {
                           >
                             <TextField
                               value={row.challanRemark}
-                              onChange={(e) => handleServiceChange(index, 'challanRemark', (e.target.value))}
+                              onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -3279,9 +3466,26 @@ const AddJobCard1 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {formik.values.itemDetail.map((row, index) => (
-                        <tr key={index}>
+                    {tableData1.map((row:any, index:any) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
                           <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData1.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -3295,7 +3499,8 @@ const AddJobCard1 = (props: Props) => {
                                 formik.setFieldValue("itemDetail", newDetails);
                               }}
                             />
-                          </td>
+                          </td> */}
+                        
 
                           <td
                             style={{
@@ -3309,9 +3514,9 @@ const AddJobCard1 = (props: Props) => {
                               options={itemOption}
                               fullWidth
                               size="small"
-
+                              sx={{ width: "225px" }}
                               onChange={(e: any, newValue: any) =>
-                                handleItemChange(
+                                handleInputChange1(
                                   index,
                                   "itemId",
                                   newValue?.value
@@ -3342,18 +3547,18 @@ const AddJobCard1 = (props: Props) => {
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleItemChange(index, 'unitId', newValue?.value);
-                                handleItemChange(index, 'unitName', newValue?.label);
+                                handleInputChange1(index, 'unitId', newValue?.value);
+                                handleInputChange1(index, 'unitName', newValue?.label);
                               }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel
-                                      text={t("text.Unit")}
-                                      required={false}
-                                    />
-                                  }
+                                  // label={
+                                  //   <CustomLabel
+                                  //     text={t("text.Unit")}
+                                  //     required={false}
+                                  //   />
+                                  // }
                                 />
                               )}
                             />
@@ -3372,7 +3577,7 @@ const AddJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onChange={(e) =>
-                                handleItemChange(index, "qty", parseFloat(e.target.value))
+                                handleInputChange1(index, "qty", parseFloat(e.target.value)||0)
                               }
                             />
                           </td>
@@ -3386,7 +3591,7 @@ const AddJobCard1 = (props: Props) => {
                             <TextField
                               value={row.rate}
                               onChange={(e) =>
-                                handleItemChange(index, "rate", parseFloat(e.target.value))
+                                handleInputChange1(index, "rate", parseFloat(e.target.value)||0)
                               }
                               size="small"
                               inputProps={{ "aria-readonly": true }}
@@ -3401,6 +3606,9 @@ const AddJobCard1 = (props: Props) => {
                           >
                             <TextField
                               value={row.amount}
+                              onChange={(e) =>
+                                handleInputChange1(index, "amount", parseFloat(e.target.value)||0)
+                              }
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
@@ -3419,16 +3627,16 @@ const AddJobCard1 = (props: Props) => {
                               size="small"
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleItemChange(index, 'indentId', newValue?.value);
-                                handleItemChange(index, 'indentNo', newValue?.label);
+                                handleInputChange1(index, 'indentId', newValue?.value);
+                                handleInputChange1(index, 'indentNo', newValue?.label);
                               }}
 
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
-                                  label={
-                                    <CustomLabel text={t("text.enterIndentNo")} required={true} />
-                                  }
+                                  // label={
+                                  //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
+                                  // }
                                 />
                               )}
                             />
@@ -3442,7 +3650,7 @@ const AddJobCard1 = (props: Props) => {
                           >
                             <TextField
                               value={row.prevReading}
-                              onChange={(e) => handleItemChange(index, 'prevReading', (e.target.value))}
+                              onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -3461,7 +3669,7 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) =>
-                                handleItemChange(index, "gstId", newValue?.value)
+                                handleInputChange1(index, "gstId", newValue?.value)
                               }
                               renderInput={(params) => (
                                 <TextField
@@ -3616,31 +3824,7 @@ const AddJobCard1 = (props: Props) => {
                   alignItems="center"
                 >
                   {/* Indent Generate Button */}
-                  {/* <Grid item>
-                    <Button
-                      type="button"
-                      style={{
-                        backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                        color: "white",
-                        padding: "6px 12px", // Smaller padding for a smaller size
-                        fontSize: "12px", // Smaller font size
-                        borderRadius: "8px",
-                        minWidth: "120px", // Set consistent button width
-                        textAlign: "center",
-                      }}
-                      onClick={() => {
-                        const validTableData = tableData.filter(validateRow);
-                        if (validTableData.length === 0) {
-                          alert("Please add some data in table for further process");
-                          return;
-                        } else {
-                          formik.setFieldValue("status", "indentGenerate");
-                        }
-                      }}
-                    >
-                      {t("text.indentGenerate")}
-                    </Button>
-                  </Grid> */}
+                
 
                   <Grid item>
                     <Button
@@ -3658,31 +3842,7 @@ const AddJobCard1 = (props: Props) => {
                   </Grid>
 
                   {/* Indent Print Button */}
-                  {/* <Grid item>
-                    <Button
-                      type="button"
-                      style={{
-                        backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                        color: "white",
-                        padding: "6px 12px", // Smaller padding for a smaller size
-                        fontSize: "12px", // Smaller font size
-                        borderRadius: "8px",
-                        minWidth: "120px", // Set consistent button width
-                        textAlign: "center",
-                      }}
-                      onClick={() => {
-                        const validTableData = tableData.filter(validateRow);
-                        if (validTableData.length === 0) {
-                          alert("Please add some data in table for further process");
-                          return;
-                        } else {
-                          formik.setFieldValue("status", "indentprint");
-                        }
-                      }}
-                    >
-                      {t("text.indentprint")}
-                    </Button>
-                  </Grid> */}
+                
 
                   <Grid item>
                     <Button
@@ -3723,30 +3883,7 @@ const AddJobCard1 = (props: Props) => {
                     {t("text.vendorevaluation")}
                   </Button>
                 </Grid>
-                {/* <Grid item>
-                  <Button
-                    type="button"
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      minWidth: "120px", // Set a fixed width
-                      textAlign: "center",
-                    }}
-                    onClick={() => {
-                      const validTableData = tableData.filter(validateRow);
-                      if (validTableData.length === 0) {
-                        alert("Please add some data in table for further process");
-                        return;
-                      } else {
-                        formik.setFieldValue("status", "vendorevaluation");
-                      }
-                    }}
-                  >
-                    {t("text.vendorevaluation")}
-                  </Button>
-
-                </Grid> */}
-
+            
 
                 {/* Submit Button */}
                 <Grid item >
@@ -3800,7 +3937,7 @@ const AddJobCard1 = (props: Props) => {
                       width: "100px",
                     }}
                     onClick={() => {
-                      const validTableData = tableData.filter(validateRow);
+                      const validTableData = tableData1.filter(validateRow);
                       if (validTableData.length === 0) {
                         toast.error("Please add some data in table for further process");
                         return;

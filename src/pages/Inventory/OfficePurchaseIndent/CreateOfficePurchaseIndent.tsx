@@ -36,7 +36,10 @@ const CreateOfficePurchaseIndent = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
-  const [tableData, setTableData] = useState<any>([{
+  const [tableData, setTableData] = useState<any>([
+    
+    
+    {
 
 
     "id": -1,
@@ -52,7 +55,25 @@ const CreateOfficePurchaseIndent = (props: Props) => {
     "isDelete": true,
     "unitName": "",
     "itemName": ""
-  }]);
+  },
+  {
+
+
+    "id": -1,
+    "indentId": 0,
+    "itemId": 0,
+    "unitId": 0,
+    "quantity": 0,
+    "rate": 0,
+    "amount": 0,
+    "approveQuantity": 0,
+    "fyId": 0,
+    "srn": 0,
+    "isDelete": true,
+    "unitName": "",
+    "itemName": ""
+  }
+]);
 
 
   const [unitOptions, setUnitOptions] = useState([

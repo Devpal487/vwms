@@ -79,34 +79,39 @@ export default function StockSummaryReport() {
       console.error("No data to export to Tabular HTML.");
       return;
     }
-
+   const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"]
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+      item?.itemname|| "",
+      item?.opbal || "", // Vehicle No
+      item?.inqty || "", // Driver
+      item?.outqty || "", // Mobile No
+      item?.bal || "",
     ]);
 
     // Create HTML table
@@ -205,7 +210,7 @@ export default function StockSummaryReport() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -238,11 +243,11 @@ export default function StockSummaryReport() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.itemname|| "",
+        item?.opbal || "", // Vehicle No
+        item?.inqty || "", // Driver
+        item?.outqty || "", // Mobile No
+        item?.bal || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -485,7 +490,7 @@ export default function StockSummaryReport() {
                   <TextField
                     {...params}
                     label={
-                      <CustomLabel text={t("text.Item")} required={false} />
+                      <CustomLabel text={t("text.selectItem")} required={false} />
                     }
                   />
                 )}
