@@ -77,7 +77,7 @@ const AddJobCard = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isVisibleJWC, setIsVisibleJWC] = useState(false);
+  const [isVisibleJWC, setIsVisibleJWC] = useState(0);
   const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
@@ -208,6 +208,31 @@ const AddJobCard = (props: Props) => {
       sgstid: 0,
       gstid: 0,
       gst: 0
+    },
+    {
+      id: 0,
+      jobCardId: 0,
+      serviceId: 0,
+      amount: 0,
+      jobWorkReq: true,
+      vendorId: 0,
+      challanRemark: "",
+      challanNo: 0,
+      challanDate: defaultValues,
+      challanRcvNo: 0,
+      challanRcvDate: defaultValues,
+      challanStatus: "",
+      netAmount: 0,
+      qty: 0,
+      unitRate: 0,
+      unitId: 0,
+      vendorName: "",
+      serviceName: "",
+      unitName: "",
+      cgstid: 0,
+      sgstid: 0,
+      gstid: 0,
+      gst: 0
     }
   ]);
 
@@ -239,7 +264,13 @@ const AddJobCard = (props: Props) => {
     //   // handleAutoFillData(location.state?.itemID || formik.values.itemId, location.state?.empId || 0);
     // }, 500);
     // return () => clearTimeout(timeoutId);
-
+    let total = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+    })
+    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("totalServiceAmount", total);
+    formik.setFieldValue("totalItemAmount", total);
   }, []);
 
 
@@ -388,8 +419,8 @@ const AddJobCard = (props: Props) => {
       "serviceType": "",
       "createdBy": "",
       "updatedBy": "",
-      "createdOn": "2024-12-28T07:03:56.434Z",
-      "updatedOn": "2024-12-28T07:03:56.434Z",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
       "totalItemAmount": location.state?.totalItemAmount || 0,
@@ -424,6 +455,7 @@ const AddJobCard = (props: Props) => {
         setIsVisible(true);
         formik.setFieldValue("jobCardId", response.data.data.jobCardId);
         formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
+        setIsVisibleJWC(isVisibleJWC + 1);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -440,8 +472,9 @@ const AddJobCard = (props: Props) => {
     }
     const response = await api.post(`Master/GenerateJobWorkChallan`, { ...values, serviceDetail: validTableData });
     if (response.data.status === 1) {
-      toast.success(response.data.message);
+      toast.success(response.data?.message || "JObWork Challan Generated");
       setJobCardId(response.data.data.jobCardId);
+      setIsVisibleJWC(5);
     } else {
       setToaster(true);
       toast.error(response.data.message);
@@ -540,15 +573,17 @@ const AddJobCard = (props: Props) => {
 
     if (field === 'serviceId') {
       newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    if (field === 'serviceName') {
-      newData[index].serviceName = newData[index].serviceName;
-    }
+    // if (field === 'serviceName') {
+    //   newData[index].serviceName = newData[index].serviceName;
+    // }
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
     if (field === 'vendorId') {
       newData[index].vendorId = newData[index].vendorId;
+      newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
     }
     if (field === 'challanRemark') {
       newData[index].challanRemark = newData[index].challanRemark;
@@ -570,14 +605,15 @@ const AddJobCard = (props: Props) => {
     }
     if (field === 'unitId') {
       newData[index].unitId = newData[index].unitId;
+      newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
     }
-    if (field === 'vendorName') {
-      newData[index].vendorName = newData[index].vendorName;
-    }
-    if (field === 'unitName') {
-      newData[index].unitName = newData[index].unitName;
-    }
-    //newData[index].jobCardId = formik.values.jobCardId;
+    // if (field === 'vendorName') {
+    //   newData[index].vendorName = newData[index].vendorName;
+    // }
+    // if (field === 'unitName') {
+    //   newData[index].unitName = newData[index].unitName;
+    // }
+    newData[index].jobCardId = formik.values.jobCardId;
     newData[index].amount = newData[index].unitRate * newData[index].qty;
     newData[index].netAmount = newData[index].unitRate * newData[index].qty;
     newData[index].id = index;
@@ -634,36 +670,40 @@ const AddJobCard = (props: Props) => {
 
 
   const handleAutoFillData = (value: any, empValue: any) => {
-    console.log("@@@@@@@@@@@@@==>>>>>>>>>", value, "         ", empValue)
+    //console.log("@@@@@@@@@@@@@==>>>>>>>>>", value, "         ", empValue)
     formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == value)]?.compId);
     formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == value)]?.complaintDate);
     formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == value)]?.currentReading);
     formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == value)]?.status);
-    setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.serviceDetail || [{
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      qty: 0,
-      unitRate: 0,
-      unitId: 0,
-      vendorName: "",
-      serviceName: "",
-      unitName: "",
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
-      gst: 0
-    }]);
+    if (jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.serviceDetail.length === 0) {
+      setTableData(tableData);
+    } else {
+      setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.serviceDetail || [{
+        id: 0,
+        jobCardId: 0,
+        serviceId: 0,
+        amount: 0,
+        jobWorkReq: true,
+        vendorId: 0,
+        challanRemark: "",
+        challanNo: 0,
+        challanDate: defaultValues,
+        challanRcvNo: 0,
+        challanRcvDate: defaultValues,
+        challanStatus: "",
+        netAmount: 0,
+        qty: 0,
+        unitRate: 0,
+        unitId: 0,
+        vendorName: "",
+        serviceName: "",
+        unitName: "",
+        cgstid: 0,
+        sgstid: 0,
+        gstid: 0,
+        gst: 0
+      }]);
+    }
     formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.jobCardId || 0);
     formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.jobCardNo || "");
     formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == value)]?.fileNo || "");
@@ -885,7 +925,7 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
                       formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
                       formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
-                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || "");
+                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || 0);
                       console.log("@@@@@@@@@@@@@@@@@@@" + JSON.stringify(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail))
                     }
                   }}
@@ -1446,7 +1486,7 @@ const AddJobCard = (props: Props) => {
               </Grid>
 
 
-              {isVisible ? (
+              {(isVisibleJWC == 1) ? (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1467,6 +1507,8 @@ const AddJobCard = (props: Props) => {
                       } else {
                         formik.setFieldValue("status", "JobWork");
                         handleGenerateChallan(formik.values);
+                        setIsVisibleJWC(isVisibleJWC + 1)
+                        setIsVisible(true);
                       }
                     }}
                   >
@@ -1642,6 +1684,7 @@ const AddJobCard = (props: Props) => {
                 onClick={(e) => {
                   setTimeout(() => {
                     handleAutoFillData(location.state?.itemID || formik.values?.itemId, location.state?.empId || formik.values.empId);
+                    setIsVisible(true);
                   }, 300);
                 }}
                 sx={{ display: "none" }}
@@ -1650,7 +1693,7 @@ const AddJobCard = (props: Props) => {
               >
               </Button>
 
-              {isVisible && (
+              {isVisible && (isVisibleJWC > 2) && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1670,7 +1713,7 @@ const AddJobCard = (props: Props) => {
                         return;
                       }
                       navigate("/vehiclecomplaint/AddJobWorkChallan", {
-                        state: { ...formik.values, serviceDetail: validTableData, jobCardId: jobCardId, challanNo: validTableData[0].challanNo },
+                        state: { ...formik.values, serviceDetail: tableData, jobCardId: jobCardId, challanNo: validTableData[0].challanNo },
                       });
 
                     }}

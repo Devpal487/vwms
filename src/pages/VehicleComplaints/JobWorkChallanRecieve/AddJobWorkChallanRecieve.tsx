@@ -69,6 +69,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const [isEnable, setIsEnable] = useState(true);
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -195,27 +196,28 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [jobCardId, setJobCardId] = useState(0);
 
 
-  const [tableData, setTableData] = useState([{
-    id: 0,
-    challanRcvNo: 0,
-    jobCardId: 0,
-    serviceId: 0,
-    serviceCharge: 0,
-    vendorId: 0,
-    remark: "",
-    cgstid: 0,
-    sgstid: 0,
-    gstid: 0,
-    cgst: 0,
-    sgst: 0,
-    gst: 0,
-    unitId: 0,
-    qty: 0,
-    amount: 0,
-    netAmount: 0,
-    serviceName: "",
-    unitName: ""
-  }]);
+  const [tableData, setTableData] = useState([
+    {
+      id: 0,
+      challanRcvNo: 0,
+      jobCardId: 0,
+      serviceId: 0,
+      serviceCharge: 0,
+      vendorId: 0,
+      remark: "",
+      cgstid: 0,
+      sgstid: 0,
+      gstid: 0,
+      cgst: 0,
+      sgst: 0,
+      gst: 0,
+      unitId: 0,
+      qty: 0,
+      amount: 0,
+      netAmount: 0,
+      serviceName: "",
+      unitName: ""
+    }]);
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
   ]);
@@ -419,7 +421,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "challanRcvNo": 0,
-      "challanRcvDate": "",
+      "challanRcvDate": defaultValues,
       "challanNo": location.state?.challanNo,
       "complainId": location.state?.complainId,
       "empId": location.state?.empId,
@@ -474,8 +476,11 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       }
       const response = await api.post(`Master/UpsertJobWorkChallanRcv`, { ...values, jobWorkChallanRcvDetail: validTableData });
       if (response.data.status === 1) {
+        setIsEnable(false);
         toast.success(response.data.message + "\nYour JobCard Status is Completed successfully!");
-        updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+        formik.setFieldValue("challanRcvNo", response.data.data.challanRcvNo)
+        await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+        //await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
         setJobCardId(location.state?.jobCardId || formik.values.jobCardId);
         setIsVisible(true);
         //navigate("/vehiclecomplaint/JobWorkChallanRecieve")
@@ -1446,7 +1451,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {isEnable ? (<Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1456,7 +1461,20 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   }}
                 >
                   {t("text.save")}
-                </Button>
+                </Button>) :
+                  (<Button
+                    type="submit"
+                    fullWidth
+                    disabled={true}
+                    style={{
+                      backgroundColor: `grey`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>)
+                }
               </Grid>
 
               {/* Reset Button */}

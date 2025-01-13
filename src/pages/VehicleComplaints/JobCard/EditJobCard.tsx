@@ -209,7 +209,7 @@ const EditJobCard = (props: Props) => {
       sgstid: 0,
       gstid: 0,
       gst: 0
-    }
+    },
   ]);
 
   const [vehicleName, setVehicleName] = useState("");
@@ -230,7 +230,10 @@ const EditJobCard = (props: Props) => {
     getUnitData();
     getComplainData();
     setVehicleName(location.state?.vehicleName);
-    setTableData(location.state?.serviceDetail);
+    setTableData([...location.state.serviceDetail]);
+    console.log("location.state", location.state);
+    setDeptValue(location.state?.department);
+    setDesgValue(location.state?.designation);
   }, [itemId]);
 
   const getVehicleDetails = async () => {
@@ -355,12 +358,12 @@ const EditJobCard = (props: Props) => {
       "fileNo": location.state?.fileNo,
       "imageFile": location.state?.imageFile,
       "jobCardDate": location.state?.jobCardDate,
-      "complainId": location.state?.compId || 0,
+      "complainId": location.state?.complainId || 0,
       "complainDate": location.state?.complaintDate || defaultValues,
       "empId": location.state?.empId || 0,
       "itemId": location.state?.itemID || 0,
-      "currenReading": location.state?.currentReading || 0,
-      "complain": location.state?.complaint || "",
+      "currenReading": location.state?.currenReading || 0,
+      "complain": location.state?.complain || "",
       "status": location.state?.status,
       "serviceType": location.state?.serviceType,
       "createdBy": location.state?.createdBy,
@@ -372,7 +375,7 @@ const EditJobCard = (props: Props) => {
       "totalItemAmount": location.state?.totalItemAmount || 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
-      "itemName": location.state?.vehicleNo || "",
+      "itemName": location.state?.itemName || "",
       "empName": location.state?.empName || "",
       "serviceDetail": location.state?.serviceDetail || [],
       "update": true
@@ -515,18 +518,19 @@ const EditJobCard = (props: Props) => {
   const handleInputChange = (index: any, field: any, value: any) => {
     const newData: any = [...tableData];
     newData[index][field] = value;
-
     if (field === 'serviceId') {
       newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    if (field === 'serviceName') {
-      newData[index].serviceName = newData[index].serviceName;
-    }
+    // if (field === 'serviceName') {
+    //   newData[index].serviceName = newData[index].serviceName;
+    // }
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
     if (field === 'vendorId') {
       newData[index].vendorId = newData[index].vendorId;
+      newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
     }
     if (field === 'challanRemark') {
       newData[index].challanRemark = newData[index].challanRemark;
@@ -548,13 +552,15 @@ const EditJobCard = (props: Props) => {
     }
     if (field === 'unitId') {
       newData[index].unitId = newData[index].unitId;
+      newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
     }
-    if (field === 'vendorName') {
-      newData[index].vendorName = newData[index].vendorName;
-    }
-    if (field === 'unitName') {
-      newData[index].unitName = newData[index].unitName;
-    }
+    // if (field === 'vendorName') {
+    //   newData[index].vendorName = newData[index].vendorName;
+    // }
+    // if (field === 'unitName') {
+    //   newData[index].unitName = newData[index].unitName;
+    // }
+    newData[index].jobCardId = formik.values.jobCardId;
     newData[index].amount = newData[index].unitRate * newData[index].qty;
     newData[index].netAmount = newData[index].unitRate * newData[index].qty;
 
@@ -767,6 +773,9 @@ const EditJobCard = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     setItemId(newValue?.value);
                     formik.setFieldValue("itemName", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
@@ -774,7 +783,6 @@ const EditJobCard = (props: Props) => {
                     formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
                     setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
                     setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
-                    setVehicleName(newValue?.vehicleName);
                     console.log(complainOption);
                     formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
                     formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
@@ -782,7 +790,7 @@ const EditJobCard = (props: Props) => {
                     formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
                     formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
                     // formik.setFieldValue("serviceType", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceType || tableData);
-                    // setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || tableData);
+                    //setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || tableData);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -976,7 +984,7 @@ const EditJobCard = (props: Props) => {
 
               <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
-                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                  <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
@@ -1117,7 +1125,7 @@ const EditJobCard = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={unitOption}
-                              value={row.unitName}
+                              value={unitOption[unitOption.findIndex(e => e.value == row.unitId)]?.label}
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
@@ -1338,7 +1346,7 @@ const EditJobCard = (props: Props) => {
                   <Button
                     type="button"
                     style={{
-                      backgroundColor: "#0000ff",
+                      backgroundColor: "grey",
                       color: "white",
                       marginTop: "10px",
                       padding: "8px 16px",
@@ -1346,6 +1354,7 @@ const EditJobCard = (props: Props) => {
                       borderRadius: "8px",
                       width: "200px",
                     }}
+                    disabled={true}
                     onClick={() => {
                       const validTableData = tableData.filter(validateRow);
                       if (validTableData.length === 0) {

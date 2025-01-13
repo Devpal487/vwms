@@ -133,7 +133,7 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "id": location.state.id,
-      "effDate": location.state.effDate,
+      "effDate": dayjs(location.state.effDate).format("YYYY-MM-DD"),
       "type": location.state.type,
       "vendorId": location.state.vendorId,
       "itemId": location.state.itemId,

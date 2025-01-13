@@ -69,7 +69,29 @@ export default function JobWorkChallanRecieve() {
 
       let path = `/vehiclecomplaint/EditJobWorkChallanRecieve`;
       navigate(path, {
-         state: row,
+         state: {
+            ...row, jobWorkChallanRcvDetail: [...row.jobWorkChallanRcvDetail, {
+               id: 0,
+               challanRcvNo: 0,
+               jobCardId: 0,
+               serviceId: 0,
+               serviceCharge: 0,
+               vendorId: 0,
+               remark: "",
+               cgstid: 0,
+               sgstid: 0,
+               gstid: 0,
+               cgst: 0,
+               sgst: 0,
+               gst: 0,
+               unitId: 0,
+               qty: 0,
+               amount: 0,
+               netAmount: 0,
+               serviceName: "",
+               unitName: ""
+            }]
+         },
       });
    };
 
@@ -137,7 +159,7 @@ export default function JobWorkChallanRecieve() {
             ...Item,
             serialNo: index + 1,
             id: Item.challanRcvNo,
-            challanRcvDate:formatDate(Item.challanRcvDate)
+            challanRcvDate: formatDate(Item.challanRcvDate)
          }));
          setItem(arr);
          setIsLoading(false);

@@ -16,7 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Paper from "@mui/material/Paper";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
@@ -34,6 +34,7 @@ import { Language, ReactTransliterate } from "react-transliterate";
 import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
 import DataGrids from "../../../utils/Datagrids";
+import dayjs from "dayjs";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -116,31 +117,29 @@ export default function FinancialYear() {
 
   const formik = useFormik({
     initialValues: {
-      itemTypeMasterId: -1,
-      itemType: "",
-      itemTypecode: "",
-      createdBy: "",
-      updatedBy: "",
-
-      createdOn: defaultValuestime,
-      updatedOn: defaultValuestime,
+      "fnId": 0,
+      "financialYear": "",
+      "fromDate": defaultValuestime,
+      "toDate": defaultValuestime,
+      "currentYear": true,
+      "createdBy": "",
+      "updatedBy": "",
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime
     },
-    validationSchema: validationSchema,
+    //validationSchema: validationSchema,
     onSubmit: async (values) => {
-      values.itemTypeMasterId = editId;
-
       const response = await api.post(
-        `ItemType/AddUpdateItemTypeMaster`,
+        `FinnacialYear/UpsertFinnacialYear`,
         values
       );
-      if (response.data.isSuccess) {
-        toast.success(response.data.mesg);
-        fetchZonesData();
+      if (response.data.status === 1) {
+        toast.success(response.data.message);
         formik.resetForm();
-
+        fetchZonesData();
         setEditId(-1);
       } else {
-        toast.error(response.data.mesg);
+        toast.error(response.data.message);
       }
     },
   });
@@ -148,9 +147,11 @@ export default function FinancialYear() {
   const requiredFields = ["itemType"];
 
   const routeChangeEdit = (row: any) => {
-    formik.setFieldValue("itemType", row.itemType);
-    formik.setFieldValue("itemTypecode", row.itemTypecode);
-    formik.setFieldValue("itemTypeMasterId", row.itemTypeMasterId);
+    formik.setFieldValue("fnId", row.fnId);
+    formik.setFieldValue("financialYear", row.financialYear);
+    formik.setFieldValue("fromDate", dayjs(row.fromDate).format("YYYY-MM-DD"));
+    formik.setFieldValue("toDate", dayjs(row.toDate).format("YYYY-MM-DD"));
+   
 
     setEditId(row.id);
   };
@@ -163,17 +164,17 @@ export default function FinancialYear() {
 
   const accept = () => {
     const collectData = {
-      itemTypeMasterId: delete_id,
+      "fnId": delete_id,
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .delete(`ItemType/DeleteItemTypeMaster`, { data: collectData })
+      .post(`FinnacialYear/DeleteFinnacialYear`, collectData)
       .then((response) => {
-        if (response.data.isSuccess) {
-          toast.success(response.data.mesg);
+        if (response.data.status === 1) {
+          toast.success(response.data.message);
           fetchZonesData();
         } else {
-          toast.error(response.data.mesg);
+          toast.error(response.data.message);
         }
       });
   };
@@ -197,17 +198,19 @@ export default function FinancialYear() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        itemTypeMasterId: -1,
+        "fnId": -1
       };
       const response = await api.post(
-        `ItemType/GetItemTypeMaster`,
+        `FinnacialYear/GetFinnacialYear`,
         collectData
       );
       const data = response.data.data;
       const zonesWithIds = data.map((zone: any, index: any) => ({
         ...zone,
         serialNo: index + 1,
-        id: zone.itemTypeMasterId,
+        id: zone.fnId,
+        fromDate: dayjs(zone.fromDate).format("DD-MM-YYYY"),
+        toDate: dayjs(zone.toDate).format("DD-MM-YYYY")
       }));
       setZones(zonesWithIds);
       setIsLoading(false);
@@ -266,14 +269,20 @@ export default function FinancialYear() {
             headerClassName: "MuiDataGrid-colCell",
           },
           {
-            field: "itemType",
-            headerName: t("text.ItemType"),
+            field: "financialYear",
+            headerName: t("text.FinancialYear"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
           {
-            field: "itemTypecode",
-            headerName: t("text.ShortName"),
+            field: "fromDate",
+            headerName: t("text.fromDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+          },
+          {
+            field: "toDate",
+            headerName: t("text.toDate"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
@@ -346,16 +355,16 @@ export default function FinancialYear() {
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2"></Stack>
-
+          <ToastContainer />
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={3}>
               <Grid xs={12} md={6} lg={6} item>
                 <TextField
                   label={<CustomLabel text={t("text.FromDate")} />}
-                  value={formik.values.itemTypecode}
+                  value={formik.values.fromDate}
                   type="date"
-                  name="itemTypecode"
-                  id="itemTypecode"
+                  name="fromDate"
+                  id="fromDate"
                   placeholder={t("text.FromDate")}
                   InputLabelProps={{ shrink: true }}
                   size="small"
@@ -369,10 +378,10 @@ export default function FinancialYear() {
               <Grid xs={12} md={6} lg={6} item>
                 <TextField
                   label={<CustomLabel text={t("text.ToDate")} />}
-                  value={formik.values.itemTypecode}
+                  value={formik.values.toDate}
                   type="date"
-                  name="itemTypecode"
-                  id="itemTypecode"
+                  name="toDate"
+                  id="toDate"
                   placeholder={t("text.ToDate")}
                   InputLabelProps={{ shrink: true }}
                   size="small"
@@ -386,9 +395,9 @@ export default function FinancialYear() {
               <Grid xs={12} md={6} lg={6} item>
                 <TextField
                   label={<CustomLabel text={t("text.FinancialYear")} />}
-                  value={formik.values.itemTypecode}
-                  name="itemTypecode"
-                  id="itemTypecode"
+                  value={formik.values.financialYear}
+                  name="financialYear"
+                  id="financialYear"
                   placeholder={t("text.FinancialYear")}
                   size="small"
                   fullWidth

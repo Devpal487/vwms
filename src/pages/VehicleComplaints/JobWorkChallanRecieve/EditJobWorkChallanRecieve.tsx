@@ -191,27 +191,28 @@ const EditJobWorkChallanRecieve = (props: Props) => {
   const [statusValue, setStatusValue] = useState({});
 
 
-  const [tableData, setTableData] = useState([{
-    id: 0,
-    challanRcvNo: 0,
-    jobCardId: 0,
-    serviceId: 0,
-    serviceCharge: 0,
-    vendorId: 0,
-    remark: "",
-    cgstid: 0,
-    sgstid: 0,
-    gstid: 0,
-    cgst: 0,
-    sgst: 0,
-    gst: 0,
-    unitId: 0,
-    qty: 0,
-    amount: 0,
-    netAmount: 0,
-    serviceName: "",
-    unitName: ""
-  }]);
+  const [tableData, setTableData] = useState([
+    {
+      id: 0,
+      challanRcvNo: 0,
+      jobCardId: 0,
+      serviceId: 0,
+      serviceCharge: 0,
+      vendorId: 0,
+      remark: "",
+      cgstid: 0,
+      sgstid: 0,
+      gstid: 0,
+      cgst: 0,
+      sgst: 0,
+      gst: 0,
+      unitId: 0,
+      qty: 0,
+      amount: 0,
+      netAmount: 0,
+      serviceName: "",
+      unitName: ""
+    }]);
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
   ]);
@@ -241,10 +242,10 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     console.log("location.state", location.state);
 
 
-    const timeoutId = setTimeout(() => {
-      setTableData(location.state?.jobWorkChallanRcvDetail || tableData)
-    }, 500);
-    return () => clearTimeout(timeoutId);
+    setTableData(location.state?.jobWorkChallanRcvDetail || tableData)
+    // const timeoutId = setTimeout(() => {
+    // }, 500);
+    // return () => clearTimeout(timeoutId);
   }, []);
 
   const getServiceData = async () => {
@@ -509,7 +510,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       "update": true
     };
     await api.post(`Master/UpsertJobCard`, collectData);
-  } 
+  }
   const handlePanClose = () => {
     setPanOpen(false);
   };

@@ -437,7 +437,7 @@ const MainLayout = () => {
             },
             {
               menuId: 4,
-              menuName: "Job Work Challan Recieve",
+              menuName: "JobWorkChallanRcv  ",
               path: "/vehiclecomplaint/JobWorkChallanRecieve",
               displayNo: 0,
             },

@@ -147,27 +147,28 @@ const EditJobWorkChallan = (props: Props) => {
     "update": true
   }]);
 
-  const [tableData, setTableData] = useState([{
-    id: 0,
-    challanNo: 0,
-    jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
-    serviceId: 0,
-    serviceCharge: 0,
-    vendorId: 0,
-    remark: "",
-    qty: 0,
-    unitId: 0,
-    amount: 0,
-    netAmount: 0,
-    gstid: 0,
-    cgstid: 0,
-    sgstid: 0,
-    gst: 0,
-    cgst: 0,
-    sgst: 0,
-    serviceName: "",
-    unitName: ""
-  }]);
+  const [tableData, setTableData] = useState([
+    {
+      id: 0,
+      challanNo: 0,
+      jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
+      serviceId: 0,
+      serviceCharge: 0,
+      vendorId: 0,
+      remark: "",
+      qty: 0,
+      unitId: 0,
+      amount: 0,
+      netAmount: 0,
+      gstid: 0,
+      cgstid: 0,
+      sgstid: 0,
+      gst: 0,
+      cgst: 0,
+      sgst: 0,
+      serviceName: "",
+      unitName: ""
+    }]);
 
 
   useEffect(() => {
@@ -177,7 +178,7 @@ const EditJobWorkChallan = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
-    getJobCardData();
+    console.log("locatiion.state==>>"+JSON.stringify(location.state))
   }, []);
 
 
@@ -337,8 +338,8 @@ const EditJobWorkChallan = (props: Props) => {
       "updatedOn": location.state?.updatedOn || defaultValues,
       "companyId": 0,
       "fyId": location.state?.fyId,
-      "serviceAmount": location.state?.totalServiceAmount || 0,
-      "itemAmount": location.state?.totalServiceAmount || 0,
+      "serviceAmount": location.state?.serviceAmount || 0,
+      "itemAmount": 0,
       "netAmount": location.state?.netAmount || 0,
       "status": location.state?.status || "",
       "rcvDate": location.state?.rcvDate || defaultValues,
@@ -353,7 +354,7 @@ const EditJobWorkChallan = (props: Props) => {
       "fileOldName": "",
       "file": "",
       "jobWorkChallanDetail": location.state?.jobWorkChallanDetail || [],
-      "vehicleNo": location.state?.itemName || "",
+      "vehicleNo": location.state?.vehicleNo || "",
       "vendorName": location.state?.vendorName || "",
       "empName": location.state?.empName || 0,
       "jobCardDate": location.state?.jobCardDate || defaultValues,

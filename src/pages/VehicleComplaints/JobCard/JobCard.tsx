@@ -39,6 +39,7 @@ import DataGrids from "../../../utils/Datagrids";
 import dayjs from "dayjs";
 import { getISTDate } from "../../../utils/Constant";
 import moment from "moment";
+import { setEnvironmentData } from "worker_threads";
 
 
 interface MenuPermission {
@@ -55,15 +56,77 @@ export default function JobCard() {
    const [lang, setLang] = useState<Language>("en");
    const { defaultValues } = getISTDate();
 
+
    let navigate = useNavigate();
    const { t } = useTranslation();
 
    const [vehicleOption, setVehicleOption] = useState([
-      { value: -1, label: t("text.VehicleNo") },
+      { value: -1, label: t("text.VehicleNo"), name: "" },
    ]);
+
+   const [empOption, setEmpOption] = useState([
+      { value: 1, label: t("text.EmpName"), department: "", designation: "" },
+   ]);
+
+   const [jobCardData, setJobCardData] = useState([{
+      "jobCardId": 0,
+      "jobCardNo": "",
+      "fileNo": "",
+      "imageFile": "",
+      "jobCardDate": "2025-01-02T08:08:36.700Z",
+      "complainId": 0,
+      "complainDate": "2025-01-02T08:08:36.700Z",
+      "empId": 0,
+      "itemId": 0,
+      "currenReading": 0,
+      "complain": "",
+      "status": "",
+      "serviceType": "",
+      "createdBy": "",
+      "updatedBy": "",
+      "createdOn": "2025-01-02T08:08:36.700Z",
+      "updatedOn": "2025-01-02T08:08:36.700Z",
+      "companyId": 0,
+      "fyId": 0,
+      "totalItemAmount": 0,
+      "totalServiceAmount": 0,
+      "netAmount": 0,
+      "itemName": "",
+      "empName": "",
+      "serviceDetail": [
+         {
+            "id": 0,
+            "jobCardId": 0,
+            "serviceId": 0,
+            "amount": 0,
+            "jobWorkReq": true,
+            "vendorId": 0,
+            "challanRemark": "",
+            "challanNo": 0,
+            "challanDate": defaultValues,
+            "challanRcvNo": 0,
+            "challanRcvDate": "2025-01-02T08:08:36.700Z",
+            "challanStatus": "",
+            "netAmount": 0,
+            "qty": 0,
+            "unitRate": 0,
+            "unitId": 0,
+            "vendorName": "",
+            "serviceName": "",
+            "unitName": "",
+            "cgstid": 0,
+            "sgstid": 0,
+            "gstid": 0,
+            "gst": 0
+         }
+      ],
+      "update": true
+   }]);
+
 
    useEffect(() => {
       getVehicleDetails();
+      getEmpData();
       const timeoutId = setTimeout(() => {
          fetchJobCardData();
       }, 100);
@@ -77,12 +140,30 @@ export default function JobCard() {
       const data = response.data.data;
       const arr = data.map((Item: any, index: any) => ({
          value: Item.itemMasterId,
-         label: Item.vehicleNo
+         label: Item.vehicleNo,
+         name: Item.itemName
       }));
       setVehicleOption(arr);
    };
 
-
+   const getEmpData = async () => {
+      const collectData = {
+         "empid": -1,
+         "userId": ""
+      };
+      const response = await api.post(`Employee/GetEmployee`, collectData);
+      const data = response.data.data;
+      const arr = [];
+      for (let index = 0; index < data.length; index++) {
+         arr.push({
+            label: data[index]["empName"],
+            value: data[index]["empid"],
+            department: data[index]["departmentName"],
+            designation: data[index]["designationName"],
+         });
+      }
+      setEmpOption(arr);
+   };
 
 
    const routeChangeEdit = (row: any) => {
@@ -90,7 +171,35 @@ export default function JobCard() {
 
       let path = `/vehiclecomplaint/EditJobCard`;
       navigate(path, {
-         state: row,
+         state: {
+            ...row,
+            // serviceDetail: [jobCardData[jobCardData.findIndex(e => e.jobCardId == row.jobCardId)]?.serviceDetail, {
+            //    id: 0,
+            //    jobCardId: 0,
+            //    serviceId: 0,
+            //    amount: 0,
+            //    jobWorkReq: true,
+            //    vendorId: 0,
+            //    challanRemark: "",
+            //    challanNo: 0,
+            //    challanDate: defaultValues,
+            //    challanRcvNo: 0,
+            //    challanRcvDate: defaultValues,
+            //    challanStatus: "",
+            //    netAmount: 0,
+            //    qty: 0,
+            //    unitRate: 0,
+            //    unitId: 0,
+            //    vendorName: "",
+            //    serviceName: "",
+            //    unitName: "", 
+            //    cgstid: 0,
+            //    sgstid: 0,
+            //    gstid: 0,
+            //    gst: 0
+            // }],
+            vehicleName: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.name || "", department: empOption[empOption.findIndex(e => e.value == row.empId)]?.department || "", designation: empOption[empOption.findIndex(e => e.value == row.empId)]?.designation || ""
+         },
       });
    };
 
@@ -163,9 +272,10 @@ export default function JobCard() {
             ...Item,
             serialNo: index + 1,
             id: Item.jobCardId,
-            jobCardDate:formatDate(Item.jobCardDate)
+            jobCardDate: formatDate(Item.jobCardDate)
          }));
          setItem(arr);
+         setJobCardData(data)
          setIsLoading(false);
 
          if (data.length > 0) {
