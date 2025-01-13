@@ -648,12 +648,14 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       }
     }
     let total = 0;
+    let netAmt = 0;
     tableData.forEach(row => {
       total += row.amount;
+      netAmt += row.netAmount;
     })
-    formik.setFieldValue("netAmount", total + total * (newData[index].gst / 100));
+    formik.setFieldValue("netAmount", netAmt);
     formik.setFieldValue("serviceAmount", total);
-    formik.setFieldValue("estAmount", total + total * (newData[index].gst / 100));
+    formik.setFieldValue("estAmount", netAmt);
   };
 
   const addRow = () => {

@@ -90,6 +90,7 @@ const EditServiceContract = (props: Props) => {
   }]);
 
   useEffect(() => {
+    console.log("location==>>", location.state)
     getTransDataById(location.state.contractId);
     getVendorData();
     getServiceData();
@@ -158,7 +159,19 @@ const EditServiceContract = (props: Props) => {
           srno: item.srno,
           serviceName: item.serviceName
         }));
-        setTableData(formattedData);
+        setTableData([...formattedData,{
+          contractId: 0,
+          id: 0,
+          serviceId: 0,
+          createdBy: "",
+          updatedBy: "",
+          createdOn: "2024-12-19T06:03:42.610Z",
+          updatedOn: "2024-12-19T06:03:42.610Z",
+          fyId: 0,
+          rate: 0,
+          srno: 0,
+          serviceName: ""
+        }]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

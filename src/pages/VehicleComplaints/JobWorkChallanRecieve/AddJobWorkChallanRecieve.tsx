@@ -252,6 +252,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       }
     }, 500);
     return () => clearTimeout(timeoutId);
+
+    console.log(location.state)
   }, []);
 
   const getServiceData = async () => {
@@ -480,7 +482,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
         toast.success(response.data.message + "\nYour JobCard Status is Completed successfully!");
         formik.setFieldValue("challanRcvNo", response.data.data.challanRcvNo)
         await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
-        //await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+        await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
         setJobCardId(location.state?.jobCardId || formik.values.jobCardId);
         setIsVisible(true);
         //navigate("/vehiclecomplaint/JobWorkChallanRecieve")
@@ -493,6 +495,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
 
 
   const updateJobCardStatusStatus = async (jobCardId: number) => {
+    await getJobCardData();
     const collectData = {
       "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
       "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
@@ -518,7 +521,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "netAmount": formik.values.netAmount,
       "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
       "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
-      "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail,
+      "serviceDetail": [...(jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail)],
       "update": true
     };
     await api.post(`Master/UpsertJobCard`, collectData);
@@ -652,7 +655,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     }
     newData[index].amount = newData[index].serviceCharge * newData[index].qty;
     newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
-
+    newData[index].jobCardId = location.state?.jobCardId || 0;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].unitId > 0 && newData[index].qty && newData[index].amount > 0) {
@@ -1459,6 +1462,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     color: "white",
                     marginTop: "10px",
                   }}
+                  onClick={() => updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId)}
                 >
                   {t("text.save")}
                 </Button>) :
@@ -1499,7 +1503,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 onClick={(e) => {
                   setTimeout(() => {
                     formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId)?.challanNo || 0);
-                  }, 300);
+                  }, 400);
                 }}
                 sx={{ display: "none" }}
                 variant="contained"
