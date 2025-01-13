@@ -118,6 +118,8 @@ const AddVehicleDetail = (props: Props) => {
       getBrandData();
       getFuelTypeData();
       getEmpData();
+
+      console.log("location==>>", location.state)
    }, []);
 
    const getzoneData = async () => {
@@ -470,7 +472,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={categoryOption}
-                           value={getLabelById(categoryOption,formik.values.itemCategoryId)}
+                           value={getLabelById(categoryOption, formik.values.itemCategoryId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -496,7 +498,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={itemTypeOption}
-                           value={getLabelById(itemTypeOption,formik.values.itemTypeId)}
+                           value={getLabelById(itemTypeOption, formik.values.itemTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -522,7 +524,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={unitOption}
-                           value={getLabelById(unitOption,formik.values.unitId)}
+                           value={getLabelById(unitOption, formik.values.unitId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -549,7 +551,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={taxOption}
-                           value={getLabelById(taxOption,formik.values.taxId)}
+                           value={getLabelById(taxOption, formik.values.taxId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -685,7 +687,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={getLabelById(empOption,formik.values.empId)}
+                           value={getLabelById(empOption, formik.values.empId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -753,7 +755,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={vehicleTypeOption}
-                           value={getLabelById(vehicleTypeOption,formik.values.vehicleTypeId)}
+                           value={getLabelById(vehicleTypeOption, formik.values.vehicleTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -780,7 +782,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={brandOption}
-                           value={getLabelById(brandOption,formik.values.brandTypeId)}
+                           value={getLabelById(brandOption, formik.values.brandTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -806,7 +808,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={fuelTypeOption}
-                           value={getLabelById(fuelTypeOption,formik.values.fuelTypeId)}
+                           value={getLabelById(fuelTypeOption, formik.values.fuelTypeId)}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {

@@ -152,7 +152,19 @@ const EditItemContract = (props: Props) => {
           srno: item.srno,
           itemName: item.itemName
         }));
-        setTableData(formattedData);
+        setTableData([...formattedData, {
+          contractId: 0,
+          id: 0,
+          itemId: 0,
+          createdBy: "a",
+          updatedBy: "a",
+          createdOn: "2024-12-19T10:50:11.993Z",
+          updatedOn: "2024-12-19T10:50:11.993Z",
+          fyId: 0,
+          rate: 0,
+          srno: 0,
+          itemName: ""
+        }]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);

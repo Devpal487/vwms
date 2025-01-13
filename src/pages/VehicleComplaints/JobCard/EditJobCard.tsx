@@ -230,10 +230,11 @@ const EditJobCard = (props: Props) => {
     getUnitData();
     getComplainData();
     setVehicleName(location.state?.vehicleName);
-    setTableData([...location.state.serviceDetail]);
+    setTableData([...location.state?.serviceDetail || tableData]);
     console.log("location.state", location.state);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
+
   }, [itemId]);
 
   const getVehicleDetails = async () => {

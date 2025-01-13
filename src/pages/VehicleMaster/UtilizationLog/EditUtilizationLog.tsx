@@ -69,7 +69,7 @@ const EditUtilizationLog = (props: Props) => {
   const location = useLocation();
 
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo") },
+    { value: -1, label: t("text.VehicleNo"), name: "" },
   ]);
   const [empOption, setEmpOption] = useState([
     { value: -1, label: t("text.EmpName") },
@@ -94,7 +94,7 @@ const EditUtilizationLog = (props: Props) => {
     getVehicleDetails();
     getEmpData();
 
-    console.log(location.state);
+    console.log("location.state", location.state);
   }, []);
 
   const getVehicleDetails = async () => {
@@ -104,7 +104,8 @@ const EditUtilizationLog = (props: Props) => {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
-      label: Item.vehicleNo
+      label: Item.vehicleNo,
+      name: Item.itemName
     }));
     setVehicleOption(arr);
   };
@@ -305,13 +306,14 @@ const EditUtilizationLog = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vehicleOption}
-                  value={formik.values.vehicleNo}
+                  value={formik.values?.vehicleNo || vehicleOption[vehicleOption.findIndex(e => e.value == formik.values.itemId)]?.label}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vehicleNo", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
+                    formik.setFieldValue("itemName", newValue?.name);
                   }}
                   renderInput={(params) => (
                     <TextField

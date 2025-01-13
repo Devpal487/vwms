@@ -518,6 +518,8 @@ const AddJobWorkChallan = (props: Props) => {
     }
     newData[index].amount = newData[index].serviceCharge * newData[index].qty;
     newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
+    newData[index].jobCardId = location.state?.jobCardId || 0;
+    newData[index].challanNo = 0;
 
     setTableData(newData);
 
@@ -527,8 +529,10 @@ const AddJobWorkChallan = (props: Props) => {
       }
     }
     let total = 0;
+    let netAmt = 0;
     tableData.forEach(row => {
       total += row.amount;
+      netAmt += row.netAmount;
     })
     formik.setFieldValue("netAmount", total + total * (newData[index].gst / 100));
     formik.setFieldValue("serviceAmount", total);

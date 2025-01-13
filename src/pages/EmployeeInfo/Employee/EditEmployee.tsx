@@ -29,6 +29,7 @@ import TranslateTextField from "../../../TranslateTextField";
 import { Language } from "react-transliterate";
 import { getISTDate } from "../../../utils/Constant";
 import Department from "../Department/Department";
+import dayjs from "dayjs";
 
 const style = {
   position: "absolute" as "absolute",
@@ -89,6 +90,8 @@ const EditEmployee = (props: Props) => {
     getDesignationData();
     getZoneData();
     getEmailData();
+
+    console.log("location.state=>", location.state)
   }, []);
 
   const getZoneData = async () => {
@@ -331,12 +334,12 @@ const EditEmployee = (props: Props) => {
       "empStatus": location.state.empStatus,
       "empPanNumber": location.state.empPanNumber,
       "empAddharNo": location.state.empAddharNo,
-      "empDob": location.state.empDob,
-      "empJoiningDate": location.state.empJoiningDate,
-      "empretirementDate": location.state.empretirementDate,
+      "empDob": dayjs(location.state.empDob).format("YYYY-MM-DD"),
+      "empJoiningDate": dayjs(location.state.empJoiningDate).format("YYYY-MM-DD"),
+      "empretirementDate": dayjs(location.state.empretirementDate).format("YYYY-MM-DD"),
       "empDeptId": location.state.empDeptId,
       "empDesignationId": location.state.empDesignationId,
-      "empStateId":location.state.empStateId,
+      "empStateId": location.state.empStateId,
       "empCountryID": location.state.empCountryID,
       "empCityId": location.state.empCityId,
       "empPincode": location.state.empPincode,
@@ -895,11 +898,12 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
-                  value={Country[Country.findIndex((e:any) => e.value == formik.values.empCountryID)]?.label}
+                  value={formik.values.empCountryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empCountryID", newValue?.value);
+                    formik.setFieldValue("empCountryName", newValue?.label);
                     formik.setFieldTouched("empCountryID", true);
                     formik.setFieldTouched("empCountryID", false);
                     getState(newValue?.value);
@@ -924,11 +928,12 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
-                  value={StateOption[StateOption.findIndex((e:any) => e.value == formik.values.empStateId)]?.label}
+                  value={formik.values.empStateName || StateOption[StateOption.findIndex((e:any) => e.value == formik.values.empStateId)].label}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empStateId", newValue?.value);
+                    formik.setFieldValue("empStateName", newValue?.label);
                     formik.setFieldTouched("empStateId", true);
                     formik.setFieldTouched("empStateId", false);
                     getCity(newValue?.value);
@@ -952,11 +957,12 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
-                  value={City[City.findIndex((e:any) => e.value == formik.values.empCityId)]?.label}
+                  value={formik.values.empCityName || City[City.findIndex((e: any) => e.value == formik.values.empCityId)]?.label}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empCityId", newValue?.value);
+                    formik.setFieldValue("empCityName", newValue?.label);
                     formik.setFieldTouched("empCityId", true);
                     formik.setFieldTouched("empCityId", false);
                   }}

@@ -68,7 +68,7 @@ const AddUtilizationLog = (props: Props) => {
   const [toaster, setToaster] = useState(false);
 
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo"), name:"" },
+    { value: -1, label: t("text.VehicleNo"), name: "" },
   ]);
   const [empOption, setEmpOption] = useState([
     { value: -1, label: t("text.EmpName") },
@@ -130,6 +130,9 @@ const AddUtilizationLog = (props: Props) => {
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
+
+
+
 
 
 

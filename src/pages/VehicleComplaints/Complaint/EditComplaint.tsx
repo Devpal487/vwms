@@ -113,6 +113,9 @@ const EditComplaint = (props: Props) => {
       getDesignationData();
       getEmpData();
 
+      console.log("location.state", location.state, dayjs(location.state.complaintDate));
+
+
       const timeoutId = setTimeout(() => {
          const timeoutId = setTimeout(() => {
             if (inputRef.current) {
@@ -131,6 +134,7 @@ const EditComplaint = (props: Props) => {
       }, 300);
       return () => clearTimeout(timeoutId);
    }, []);
+
 
    // const getcomplaintNo = async () => {
    //    try {
@@ -220,6 +224,14 @@ const EditComplaint = (props: Props) => {
       setDesignationOption(arr);
    };
 
+   const inputDate = location.state.complaintDate; // Input in DD-MM-YYYY format
+
+   // Split the date into day, month, and year
+   const [day, month, year] = inputDate.split("-");
+
+   // Rearrange into YYYY-MM-DD format
+   const formattedDate = `${year}-${month}-${day}`;
+
 
 
 
@@ -242,7 +254,7 @@ const EditComplaint = (props: Props) => {
          "status": location.state.status,
          "currentReading": location.state.currentReading,
          "createdOn": defaultValues,
-         "complaintDate": dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
+         "complaintDate": formattedDate || dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
          "updatedOn": defaultValues,
          "compAppdt": location.state.compAppdt,
          "jobCardNo": location.state?.jobCardNo || location.state.complaintNo,

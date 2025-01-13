@@ -472,7 +472,7 @@ const AddJobCard = (props: Props) => {
     }
     const response = await api.post(`Master/GenerateJobWorkChallan`, { ...values, serviceDetail: validTableData });
     if (response.data.status === 1) {
-      toast.success(response.data?.message || "JObWork Challan Generated");
+      toast.success(response.data?.message || "JobWork Challan Generated");
       setJobCardId(response.data.data.jobCardId);
       setIsVisibleJWC(5);
     } else {
@@ -896,37 +896,37 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
                       formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
                       formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
-                      setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || [{
-                        id: 0,
-                        jobCardId: 0,
-                        serviceId: 0,
-                        amount: 0,
-                        jobWorkReq: true,
-                        vendorId: 0,
-                        challanRemark: "",
-                        challanNo: 0,
-                        challanDate: defaultValues,
-                        challanRcvNo: 0,
-                        challanRcvDate: defaultValues,
-                        challanStatus: "",
-                        netAmount: 0,
-                        qty: 0,
-                        unitRate: 0,
-                        unitId: 0,
-                        vendorName: "",
-                        serviceName: "",
-                        unitName: "",
-                        cgstid: 0,
-                        sgstid: 0,
-                        gstid: 0,
-                        gst: 0
-                      }]);
-                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
-                      formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
-                      formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
-                      formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
-                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || 0);
-                      console.log("@@@@@@@@@@@@@@@@@@@" + JSON.stringify(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail))
+                      // setTableData([...(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail) ,{
+                      //   id: 0,
+                      //   jobCardId: 0,
+                      //   serviceId: 0,
+                      //   amount: 0,
+                      //   jobWorkReq: true,
+                      //   vendorId: 0,
+                      //   challanRemark: "",
+                      //   challanNo: 0,
+                      //   challanDate: defaultValues,
+                      //   challanRcvNo: 0,
+                      //   challanRcvDate: defaultValues,
+                      //   challanStatus: "",
+                      //   netAmount: 0,
+                      //   qty: 0,
+                      //   unitRate: 0,
+                      //   unitId: 0,
+                      //   vendorName: "",
+                      //   serviceName: "",
+                      //   unitName: "",
+                      //   cgstid: 0,
+                      //   sgstid: 0,
+                      //   gstid: 0,
+                      //   gst: 0
+                      // }]);
+                      // formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
+                      // formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
+                      // formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
+                      // formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
+                      // formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || 0);
+                      // console.log("@@@@@@@@@@@@@@@@@@@" + JSON.stringify(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail))
                     }
                   }}
                   renderInput={(params) => (

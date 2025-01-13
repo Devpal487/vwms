@@ -96,7 +96,33 @@ export default function ServiceContract() {
 
     let path = `/vendorinfo/EditServiceContract`;
     navigate(path, {
-      state: row,
+      state: {
+        ...row, itemDetail: (row.itemDetail.length === 0) ? [...row.itemDetail, {
+          contractId: 0,
+          id: 0,
+          serviceId: 0,
+          createdBy: "",
+          updatedBy: "",
+          createdOn: "2024-12-19T06:03:42.610Z",
+          updatedOn: "2024-12-19T06:03:42.610Z",
+          fyId: 0,
+          rate: 0,
+          srno: 0,
+          serviceName: ""
+        }] : [{
+          contractId: 0,
+          id: 0,
+          serviceId: 0,
+          createdBy: "",
+          updatedBy: "",
+          createdOn: "2024-12-19T06:03:42.610Z",
+          updatedOn: "2024-12-19T06:03:42.610Z",
+          fyId: 0,
+          rate: 0,
+          srno: 0,
+          serviceName: ""
+        }]
+      }
     });
   };
 
