@@ -1061,7 +1061,33 @@ const EditComplaintApproval = (props: Props) => {
                         />
                      </Grid>
 
-                     <Grid item lg={12} md={12} xs={12} marginTop={2}>
+<Grid item xs={12} md={12} sm={12}>
+                <div>
+                  {/* <CustomLabel text={t("text.Complaint")} /> */}
+                  <textarea
+                    name="complaint"
+                    id="complaint"
+                    value={formik.values.complaint}
+                    placeholder={t("text.enterComplaint")}
+                    onChange={(e) => {
+                      formik.setFieldValue("complaint", e.target.value);
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100px",
+                      padding: "10px",
+                      boxSizing: "border-box",
+                      borderRadius: "4px",
+                      border: "1px solid #ccc",
+                      fontSize: "14px",
+                    }}
+                  />
+                </div>
+                {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
+                        )}
+              </Grid>
+                     {/* <Grid item lg={12} md={12} xs={12} marginTop={2}>
                         <ReactQuill
                            id="complaint"
                            theme="snow"
@@ -1078,7 +1104,7 @@ const EditComplaintApproval = (props: Props) => {
                         {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
                            <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
                         )}
-                     </Grid>
+                     </Grid> */}
 
                      {/* attachment */}
                      <Grid container spacing={1} item>

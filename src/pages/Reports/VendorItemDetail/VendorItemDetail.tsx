@@ -93,33 +93,44 @@ export default function VendorItemDetail() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
+
+    const headers = ["mrnNo", "itemName", "netAmount", "vendor", "mrnDate"];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+      item?.mrnNo || "",
+      item?.itemName || "", // Vehicle No
+      // item?.quantity || "", // Driver
+      // item?.rate || "", // Mobile No
+      item?.netAmount || "",
+      item?.vendor || "",
+      moment(item?.mrnDate).format("DD-MM-YYYY")
+    
     ]);
+
 
     // Create HTML table
     let html = `
@@ -217,7 +228,7 @@ export default function VendorItemDetail() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["mrnNo", "itemName", "netAmount", "vendor", "mrnDate"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -250,11 +261,13 @@ export default function VendorItemDetail() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.mrnNo || "",
+        item?.itemName || "", // Vehicle No
+        // item?.quantity || "", // Driver
+        // item?.rate || "", // Mobile No
+        item?.netAmount || "",
+        item?.vendor || "",
+        moment(item?.mrnDate).format("DD-MM-YYYY")
       ];
 
       row.forEach((cell, colIndex) => {

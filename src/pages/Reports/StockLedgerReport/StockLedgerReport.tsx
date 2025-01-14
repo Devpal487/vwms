@@ -87,32 +87,41 @@ export default function StockLedgerReport() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
+
+    
+    const headers = ["Date", "Item Name", "Unit Name", "Particular", "Document No."];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+
+      moment(item?.docDate).format("DD-MM-YYYY") || "",
+      item?.itemName || "", // Vehicle No
+      item?.unitName || "", // Driver
+      item?.particular || "", // Mobile No
+      item?.docNo || "",
     ]);
 
     // Create HTML table
@@ -211,7 +220,7 @@ export default function StockLedgerReport() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Date", "Item Name", "Unit Name", "Particular", "Document No."];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -244,11 +253,11 @@ export default function StockLedgerReport() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        moment(item?.docDate).format("DD-MM-YYYY") || "",
+        item?.itemName || "", // Vehicle No
+        item?.unitName || "", // Driver
+        item?.particular || "", // Mobile No
+        item?.docNo || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -364,8 +373,8 @@ export default function StockLedgerReport() {
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "trackDate",
-            headerName: t("text.Date"),
+            field: "docNo",
+            headerName: t("text.docNo"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
@@ -373,79 +382,83 @@ export default function StockLedgerReport() {
             },
           },
           {
-            field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
-            flex: 1.2,
+            field: "particular",
+            headerName: t("text.particular"),
+            flex: 1.9,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "driverName",
-            headerName: t("text.Driver"),
+            field: "itemName",
+            headerName: t("text.itemName"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "mobileNo",
-            headerName: t("text.MobileNo"),
+            field: "unitName",
+            headerName: t("text.unitName"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            
+          },
+          {
+            field: "docDate",
+            headerName: t("text.docDate"),
             flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.docDate).format("DD-MM-YYYY");
+            },
           },
           {
-            field: "department",
-            headerName: t("text.Department"),
+            field: "opening",
+            headerName: t("text.opening"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            //align: 'right',
+           // headerAlign: 'right',
+            cellClassName: "wrap-text", // Added here
+          },
+          {
+            field: "inQty",
+            headerName: t("text.inQty"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "distanceKM",
-            headerName: t("text.Distance"),
+            field: "outQty",
+            headerName: t("text.outQty"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "running",
-            headerName: t("text.Running"),
+            field: "vendor",
+            headerName: t("text.vendor"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "idle",
-            headerName: t("text.Idle"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "startTime",
-            headerName: t("text.StartTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "endTime",
-            headerName: t("text.EndTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "fuelConsumption",
-            headerName: t("text.FuelConsumption"),
+            field: "balance",
+            headerName: t("text.balance"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
           },
+          // {
+          //   field: "fuelConsumption",
+          //   headerName: t("text.FuelConsumption"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   align: 'right',
+          //   headerAlign: 'right',
+          //   cellClassName: "wrap-text", // Added here
+          // },
         ];
         setColumns(columns as any);
       }

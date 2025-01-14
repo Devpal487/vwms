@@ -69,25 +69,38 @@ const CreateJobCardItemReturn = (props: Props) => {
     const [items, setItems] = useState<any>([]);
     //const [tableData, setTableData] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([{
-
-
         "id": 0,
-        "issueId": 0,
-        "itemID": 0,
-        "batchNo": "",
-        "indentId": 0,
-        "unitId": 0,
-        "reqQty": 0,
-        "issueQty": 0,
-        "stockQty": 0,
-        "itemName": "",
-        "indentNo": "",
-        "srn": 0,
-        "unitName": "",
-        "returnItem": true,
+      "returnId": 0,
+      "itemID": 0,
+      "batchNo": "",
+      "indentId": 0,
+      "returnQty": 0,
+      "issueQty": 0
 
 
     }]);
+
+    const [tableDatai, setTableDatai] = useState<any>([{
+
+
+        "id": 0,
+      "issueId": 0,
+      "itemID": 0,
+      "unitId": 0,
+      "batchNo": "",
+      "indentId": 0,
+      "reqQty": 0,
+      "issueQty": 0,
+      "itemName": "",
+      "unitName": "",
+      "returnItem": true,
+      "indentNo": "",
+      "stockQty": 0
+      
+
+
+    }]);
+
     console.log("🚀 ~ CreateJobCardItemReturn ~ tableData:", tableData)
     const [indentOptions, setIndentOptions] = useState([
         { value: "-1", label: t("text.SelectindentNo") },
@@ -239,7 +252,7 @@ const CreateJobCardItemReturn = (props: Props) => {
     };
 
     const validateRow = (row: any) => {
-         return row.itemName && row.unitId && row.reqQty >= 1;
+        // return row.itemName && row.unitId && row.reqQty >= 1;
     };
 
     const formik = useFormik({
@@ -255,61 +268,76 @@ const CreateJobCardItemReturn = (props: Props) => {
             "updatedOn": defaultValues,
 
 
-            // "issueId": 0,
-            // "issueDate": defaultValues,
-            // "indentId": 0,
-            // "issueLocation": "",
-            // "issueType": "",
-            // "vehicleitem": 0,
-            // "empId": null,
-            // "createdBy": "",
-            // "updatedBy": "",
-            // "createdOn": defaultValues,
-            // "updatedOn": defaultValues,
-            // "indentNo": "",
-            // "empName": "",
-            // "srn": 0,
-            // "jobId": 0,
-            // "jobCardNo": "",
+          
             itemIssueDetail: [],
             itemReturnDetail: []
 
 
         },
 
-        validationSchema: Yup.object({
-            indentNo: Yup.string()
-                .required(t("text.reqIndentNum")),
-            empId: Yup.string()
-                .required(t("text.reqEmpName")),
-        }),
+        // validationSchema: Yup.object({
+        //     indentNo: Yup.string()
+        //         .required(t("text.reqIndentNum")),
+        //     // empId: Yup.string()
+        //     //     .required(t("text.reqEmpName")),
+        // }),
 
+        // onSubmit: async (values) => {
+
+        //     const validTableData = tableData.filter(validateRow);
+        //     values.itemIssueDetail = tableData
+
+        //     // if (validTableData.length === 0) {
+        //     //     toast.error("Please add some data in table for further process");
+        //     //     return;
+        //     // }
+
+
+        //     const response = await api.post(
+        //         `Master/UpsertItemReturn`,
+        //         values
+        //     );
+
+        //     if (response.data.status === 1) {
+        //         setToaster(false);
+        //         toast.success(response.data.message);
+        //         navigate("/Inventory/JobCardItemReturn");
+        //     } else {
+        //         setToaster(true);
+        //         toast.error(response.data.message);
+        //     }
+
+        // },
         onSubmit: async (values) => {
-
-            const validTableData = tableData.filter(validateRow);
-            values.itemIssueDetail = tableData
-
-            // if (validTableData.length === 0) {
-            //     toast.error("Please add some data in table for further process");
-            //     return;
-            // }
-
-
-            const response = await api.post(
-                `StaffItemIssue/UpsertItemIssue`,
-                values
-            );
-
-            if (response.data.status === 1) {
-                setToaster(false);
-                toast.success(response.data.message);
-                navigate("/Inventory/JobCardItemReturn");
-            } else {
-                setToaster(true);
-                toast.error(response.data.message);
+            const validTableData = tableData.filter((row: any) => row.returnQty > 0);
+        
+            if (validTableData.length === 0) {
+                toast.error("Please add valid return quantities before submission!");
+                return;
             }
-
+        
+            const payload = {
+                ...values,
+                itemReturnDetail: validTableData,
+            };
+        
+            console.log("Submitting payload:", payload);
+        
+            try {
+                const response = await api.post(`Master/UpsertItemReturn`, payload);
+        
+                if (response.data.status === 1) {
+                    toast.success(response.data.message);
+                    navigate("/Inventory/JobCardItemReturn");
+                } else {
+                    toast.error(response.data.error?.errorMessage || "Submission failed!");
+                }
+            } catch (error) {
+                console.error("Error during submission:", error);
+                toast.error("Failed to submit data. Please check the console for details.");
+            }
         },
+        
     });
     // const handleShowDetails = () => {
     //     setShowIndentField(true); // Show the indent field
@@ -347,17 +375,24 @@ const CreateJobCardItemReturn = (props: Props) => {
     // };
 
     const [showTable, setShowTable] = useState(false); // State to control table visibility
-
     const handleIndentChange = async (event: any, newValue: any) => {
         if (newValue) {
             formik.setFieldValue("returnIndentNo", newValue.label.toString());
-
-            // Fetch indent details by selected indent ID
             const response = await GetIndentIDById(newValue.value);
-            setTableData(response); // Update table data
-            setShowTable(true); // Show the table after selecting an indent
+            setTableDatai(response); // Set `itemIssueDetail` for modal
         }
     };
+    
+    // const handleIndentChange = async (event: any, newValue: any) => {
+    //     if (newValue) {
+    //         formik.setFieldValue("returnIndentNo", newValue.label.toString());
+
+    //         // Fetch indent details by selected indent ID
+    //         const response = await GetIndentIDById(newValue.value);
+    //         setTableData(response); // Update table data
+    //         setShowTable(true); // Show the table after selecting an indent
+    //     }
+    // };
     const back = useNavigate();
 
 
@@ -380,7 +415,25 @@ const CreateJobCardItemReturn = (props: Props) => {
             "returnItem": true
         }]);
     };
-
+    const handleAddIndent = () => {
+        const mergedData = [
+            ...tableData,
+            ...tableDatai.map((item: any) => ({
+                ...item,
+                indentNo: formik.values.returnIndentNo, // Add indent number to each row
+            })),
+        ];
+    
+        // Remove duplicates by itemID (or another unique identifier)
+        const uniqueData = mergedData.filter(
+            (item, index, self) =>
+                index === self.findIndex((t) => t.itemID === item.itemID)
+        );
+    
+        setTableData(uniqueData);
+        setOpenDialog(false); // Close modal
+    };
+    
 
     return (
         <div>
@@ -513,7 +566,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {tableData.map((row: any, index: any) => (
+                                                    {tableDatai.map((row: any, index: any) => (
                                                         <tr key={row.id} style={{ border: '1px solid black' }}>
                                                             <td
                                                                 style={{
@@ -540,12 +593,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                                     renderInput={(params) => (
                                                                         <TextField
                                                                             {...params}
-                                                                            // label={
-                                                                            //     <CustomLabel
-                                                                            //         text={t("text.selectItem")}
-                                                                            //         required={false}
-                                                                            //     />
-                                                                            // }
+                                                                           
                                                                         />
                                                                     )}
                                                                 />
@@ -566,14 +614,14 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                                     renderInput={(params: any) => (
                                                                         <TextField
                                                                             {...params}
-                                                                           // label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                          
                                                                         />
                                                                     )}
                                                                 />
                                                             </td>
                                                             <td style={{ border: '1px solid black', textAlign: 'center' }}>
                                                                 <TextField
-                                                                    type="number"
+                                                                   // type="number"
                                                                     size="small"
                                                                     // type="text"
                                                                     value={row.batchNo}
@@ -583,7 +631,7 @@ const CreateJobCardItemReturn = (props: Props) => {
 
                                                             <td style={{ border: '1px solid black', textAlign: 'center' }}>
                                                                 <TextField
-                                                                    type="number"
+                                                                   // type="number"
                                                                     size="small"
                                                                     // type="text"
                                                                     value={row.reqQty}
@@ -602,14 +650,26 @@ const CreateJobCardItemReturn = (props: Props) => {
                                         </div> </Grid>
                                     )}
                                 {/* Add Indent Button */}
-                                                  <Button
+                                                  {/* <Button
                                                       variant="contained"
                                                       color="secondary"
                                                       onClick={() => alert("Add Indent functionality not implemented yet!")}
                                                       style={{ marginTop: "10px" }}
                                                   >
                                                       Add Indent
-                                                  </Button>
+                                                  </Button> */}
+
+<Button
+    variant="contained"
+    color="secondary"
+    onClick={handleAddIndent}
+    style={{ marginTop: "10px" }}
+>
+    Add Indent
+</Button>
+
+
+
                                               </DialogContent>
                                               <DialogActions>
                                                   <Button onClick={handleCloseDialog} color="primary">
@@ -626,6 +686,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                         <tr>
                                             {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item</th>
+                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batch No.</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stock Qty</th>
@@ -677,6 +738,35 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         )}
                                                     />
                                                 </td>
+
+                                                      <td
+                                                                            style={{
+                                                                              border: "1px solid black",
+                                                
+                                                                            }}
+                                                                          >
+                                                                            <Autocomplete
+                                                                              disablePortal
+                                                                              id="combo-box-demo"
+                                                                              options={indentOptions}
+                                                                              fullWidth
+                                                                              size="small"
+                                                                              onChange={(e: any, newValue: any) => {
+                                                                                console.log(newValue?.value);
+                                                                                handleInputChange(index, 'indentId', newValue?.value);
+                                                                                handleInputChange(index, 'indentNo', newValue?.label);
+                                                                              }}
+                                                
+                                                                              renderInput={(params: any) => (
+                                                                                <TextField
+                                                                                  {...params}
+                                                                                  // label={
+                                                                                  //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
+                                                                                  // }
+                                                                                />
+                                                                              )}
+                                                                            />
+                                                                          </td>
                                                 <td style={{ border: "1px solid black", textAlign: "center" }}>
                                                     <Autocomplete
                                                         disablePortal

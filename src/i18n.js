@@ -12,6 +12,18 @@ const resources = {
       text: {
         ////
         /////
+        enterComplaint:"Enter Complaint",
+        docNo:"Document No.",
+        particular:"Particular",
+        itemName:"Item Name",
+        unitName:"Unit Name",
+        docDate:"Document Date",
+        opening:"Opening",
+        inQty:"In Qty",
+        outQty:"Out Qty",
+        vendor:"Vendor",
+        balance:"Balance",
+        age:"Age",
         selectcomplainNo:"Enter Complaint No.",
 
         complaintDate:"Complaint Date",

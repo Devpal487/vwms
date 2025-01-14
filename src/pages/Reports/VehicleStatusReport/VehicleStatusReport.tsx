@@ -324,88 +324,85 @@ export default function VehicleStatusReport() {
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "trackDate",
-            headerName: t("text.Date"),
+            field: "vehicleNo",
+            headerName: t("text.vehicleNo"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.trackDate).format("DD-MM-YYYY");
-            },
+            // renderCell: (params) => {
+            //   return moment(params.row.trackDate).format("DD-MM-YYYY");
+            // },
           },
           {
-            field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
+            field: "complaintDate",
+            headerName: t("text.complaintDate"),
             flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
           },
           {
-            field: "driverName",
-            headerName: t("text.Driver"),
+            field: "complainStatus",
+            headerName: t("text.complainStatus"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "mobileNo",
-            headerName: t("text.MobileNo"),
+            field: "jobCardNo",
+            headerName: t("text.jobCardNo"),
             flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "department",
-            headerName: t("text.Department"),
+            field: "jobCardDate",
+            headerName: t("text.jobCardDate"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
+            renderCell: (params) => {
+              return moment(params.row.jobCardDate).format("DD-MM-YYYY");
+            },
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "distanceKM",
-            headerName: t("text.Distance"),
+            field: "challanDate",
+            headerName: t("text.challanDate"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
+            // align: 'right',
+            // headerAlign: 'right',
+            renderCell: (params) => {
+              return moment(params.row.challanDate).format("DD-MM-YYYY");
+            },
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "running",
-            headerName: t("text.Running"),
+            field: "challanRcvDate",
+            headerName: t("text.challanRcvDate"),
+            flex: 1.5,
+            headerClassName: "MuiDataGrid-colCell",
+            renderCell: (params) => {
+              return moment(params.row.challanRcvDate).format("DD-MM-YYYY");
+            },
+            cellClassName: "wrap-text", // Added here
+          },
+          {
+            field: "complainStatus",
+            headerName: t("text.complainStatus"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "idle",
-            headerName: t("text.Idle"),
+            field: "jobcardStatus",
+            headerName: t("text.jobcardStatus"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "startTime",
-            headerName: t("text.StartTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "endTime",
-            headerName: t("text.EndTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "fuelConsumption",
-            headerName: t("text.FuelConsumption"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
-            cellClassName: "wrap-text", // Added here
-          },
+        
         ];
         setColumns(columns as any);
       }
