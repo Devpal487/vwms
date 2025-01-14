@@ -1106,12 +1106,12 @@ export default function VehicleItemService() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo": vNO,
-        "jobCardNofrom": formik.values.JobCardNoFrom,
-        "jobCardNoTo": formik.values.JobCardNoTo,
+        "vehicleNo": formik.values.vehicleNo,
+        "jobCardNofrom": formik.values.jobCardNofrom,
+        "jobCardNoTo": formik.values.jobCardNoTo,
         "complainDatefrom": "2021-01-11T07:51:03.389Z",
         "complainDateTo": defaultValues,
-        "challanStatus": "Complete"
+        "challanStatus": ""
       };
       const response = await api.post(
         `Report/GetVehicleItemServiceApi`,
@@ -1230,15 +1230,17 @@ export default function VehicleItemService() {
 
   const formik = useFormik({
     initialValues: {
-      genderID: -1,
+     // genderID: -1,
       vehicleNo: location.state?.vehicleNo || "",
-      fromDate: "",
-      toDate: "",
-
-      JobCardNoFrom: "",
-      JobCardNoTo: "",
+      jobCardNofrom: "",
+      jobCardNoTo: "",
+      complainDateTo: "",
+      complainDatefrom: "",
+   
+     
     },
     onSubmit: async (values) => {
+      
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
       //     values
@@ -1356,9 +1358,9 @@ export default function VehicleItemService() {
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoFrom")} />}
-                value={formik.values.JobCardNoFrom}
-                name="JobCardNoFrom"
-                id="JobCardNoFrom"
+                value={formik.values.jobCardNofrom}
+                name="jobCardNofrom"
+                id="jobCardNofrom"
                 placeholder={t("text.JobCardNoFrom")}
                 size="small"
                 fullWidth
@@ -1372,9 +1374,9 @@ export default function VehicleItemService() {
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoTo")} />}
-                value={formik.values.JobCardNoTo}
-                name="JobCardNoTo"
-                id="JobCardNoTo"
+                value={formik.values.jobCardNoTo}
+                name="jobCardNoTo"
+                id="jobCardNoTo"
                 placeholder={t("text.JobCardNoTo")}
                 size="small"
                 fullWidth
@@ -1387,12 +1389,12 @@ export default function VehicleItemService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="complainDatefrom"
+                name="complainDatefrom"
                 label={
                   <CustomLabel text={t("text.FromDate")} required={false} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.complainDatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
@@ -1406,10 +1408,10 @@ export default function VehicleItemService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
+                id="complainDateTo"
+                name="complainDateTo"
                 label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                value={formik.values.complainDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth

@@ -41,6 +41,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import "../../../index.css";
+import { getISTDate } from "../../../utils/Constant";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -50,6 +51,8 @@ interface MenuPermission {
 }
 
 export default function ComplainStatus() {
+    const { defaultValues } = getISTDate();
+    const location = useLocation();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -87,31 +90,38 @@ export default function ComplainStatus() {
 
     // Prepare headers and rows for HTML table
     const headers = [
-      "Date",
+      "complaintDate",
       "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
+      "Complaint No",
+      "Complaint ",
+    //  "jobCard No",
+      "Complaint Status",
+      // "Running",
+      // "Idle",
+      // "Start Time",
+      // "End Time",
+      // "Fuel Consumption",
     ];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+
+      moment(item?.complaintDate).format("DD-MM-YYYY") || "",
+      item?.vehicleNo || "", // Vehicle No
+      item?.complainNo || "", // Driver
+      item?.complaint || "", // Mobile No
+   //   item?.jobCardNo || "",
+      item?.complainStatus || "",
     ]);
 
     // Create HTML table
@@ -210,7 +220,7 @@ export default function ComplainStatus() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Date", "Vehicle No", "Complaint No", "Complaint", "Complaint Status"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -243,11 +253,12 @@ export default function ComplainStatus() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
+        moment(item?.complaintDate).format("DD-MM-YYYY") || "",
         item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.complainNo || "", // Driver
+        item?.complaint || "", // Mobile No
+       // item?.jobCardNo || "",
+        item?.complainStatus || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -284,9 +295,8 @@ export default function ComplainStatus() {
   const { t } = useTranslation();
 
   useEffect(() => {
-   
-   
     getVehicleNo();
+    fetchZonesData();
   }, []);
 
  
@@ -324,11 +334,11 @@ export default function ComplainStatus() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo":vNO,
+        "vehicleNo":formik.values.vehicleNo,
         "complainNo":formik.values.complainNo,
-        "complaintDatefrom":formik.values.fromDate,
-        "complaintDateTo":formik.values.toDate,
-        "status": "Complete",
+        "complaintDatefrom":"2021-01-11T07:51:03.389Z",
+        "complaintDateTo":defaultValues,
+        status: formik.values.status, 
         "show": true
       };
       const response = await api.post(
@@ -375,7 +385,7 @@ export default function ComplainStatus() {
           },
           {
             field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
+            headerName: t("text.vehicleNo12"),
             flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
@@ -389,15 +399,16 @@ export default function ComplainStatus() {
           },
           {
             field: "complainStatus",
-            headerName: t("text.complainStatus"),
+            headerName: t("text.complainStatus12"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            
           },
 
           {
             field: "complaintDate",
-            headerName: t("text.Date"),
+            headerName: t("text.complaintDate"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
@@ -407,7 +418,7 @@ export default function ComplainStatus() {
 
           {
             field: "updatedOn",
-            headerName: t("text.Date"),
+            headerName: t("text.closingdate"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
@@ -416,13 +427,13 @@ export default function ComplainStatus() {
           },
           
 
-          {
-            field: "totaldays",
-            headerName: t("text.totaldays"),
-            flex: 1.3,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "totaldays",
+          //   headerName: t("text.totaldays"),
+          //   flex: 1.3,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           // {
           //   field: "department",
           //   headerName: t("text.Department"),
@@ -485,6 +496,29 @@ export default function ComplainStatus() {
     }
   };
 
+
+  // const fetchZonesData = async () => {
+  //   try {
+  //     const collectData = {
+  //       vehicleNo: formik.values.vehicleNo,
+  //       complainNo: formik.values.complainNo,
+  //       complaintDatefrom: "2021-01-11T07:51:03.389Z", // Replace with dynamic dates if needed
+  //       complaintDateTo: defaultValues, // This is initialized elsewhere
+  //       status: formik.values.status, // Status captured from navigation
+  //       show: true,
+  //     };
+  //     const response = await api.post(
+  //       `Report/GetvComplainStatusSummaryApi`,
+  //       collectData
+  //     );
+  //     const data = response?.data;
+  //     setZones(data); // Updating the table or list with fetched data
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+  
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
   }));
@@ -499,32 +533,53 @@ export default function ComplainStatus() {
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
 
-  const formik = useFormik({
-    initialValues: {
-      genderID: -1,
-      
-      fromDate: "",
-      toDate: "",
+  // const formik = useFormik({
+  //   initialValues: {
+  //     genderID: -1,
+  //     vehicleNo: location.state?.vehicleNo || "",
+  //     fromDate: "",
+  //     toDate: "",
     
      
-      complainNo: "",
+  //     complainNo: "",
+  //   },
+  //   onSubmit: async (values) => {
+  //     //   const response = await api.post(
+  //     //     `Gender/AddUpdateGenderMaster`,
+  //     //     values
+  //     //   );
+  //     //   try {
+  //     //     setToaster(false);
+  //     //     toast.success(response.data.mesg);
+  //     //     navigate("/master/GenderMaster");
+  //     //   } catch (error) {
+  //     //     setToaster(true);
+  //     //     toast.error(response.data.mesg);
+  //     //   }
+  //   },
+  // });
+ 
+  const formik = useFormik({
+    initialValues: {
+      // genderID: -1,
+      // vehicleNo: location.state?.vehicleNo || "",
+      // status: location.state?.status || "", // Capturing the status
+      // fromDate: "",
+      // toDate: "",
+      // complainNo: "",
+
+      "vehicleNo": location.state?.vehicleNo || "",
+  "complainNo": "",
+  "complaintDatefrom": "",
+  "complaintDateTo": "",
+  "status": location.state?.status || "",
+  "show": true
     },
     onSubmit: async (values) => {
-      //   const response = await api.post(
-      //     `Gender/AddUpdateGenderMaster`,
-      //     values
-      //   );
-      //   try {
-      //     setToaster(false);
-      //     toast.success(response.data.mesg);
-      //     navigate("/master/GenderMaster");
-      //   } catch (error) {
-      //     setToaster(true);
-      //     toast.error(response.data.mesg);
-      //   }
+      // API call or other logic
     },
   });
-
+  
   return (
     <>
       <Card
@@ -571,6 +626,7 @@ export default function ComplainStatus() {
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={formik.values.vehicleNo}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -595,11 +651,11 @@ export default function ComplainStatus() {
 
             <Grid xs={12} md={3} lg={3} item>
               <TextField
-                label={<CustomLabel text={t("text.complainNo")} />}
+                label={<CustomLabel text={t("text.selectcomplainNo")} />}
                 value={formik.values.complainNo}
                 name="complainNo"
                 id="complainNo"
-                placeholder={t("text.complainNo")}
+                placeholder={t("text.selectcomplainNo")}
                 size="small"
                 fullWidth
                 style={{ backgroundColor: "white" }}
@@ -611,12 +667,12 @@ export default function ComplainStatus() {
             <Grid xs={12} sm={3} md={3} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="complaintDatefrom"
+                name="complaintDatefrom"
                 label={
                   <CustomLabel text={t("text.FromDate")} required={false} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.complaintDatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
@@ -630,10 +686,10 @@ export default function ComplainStatus() {
             <Grid xs={12} sm={3} md={3} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
+                id="complaintDateTo"
+                name="complaintDateTo"
                 label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                value={formik.values.complaintDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
@@ -666,43 +722,28 @@ export default function ComplainStatus() {
                     label="Tabular Excel"
                   />
                 </RadioGroup>
+
+
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-                <RadioGroup
-                  row
-                // value={selectedFormat}
-                // onChange={handleFormatChange}
-                >
-                  <FormControlLabel
-                    value="pending"
-                    control={<Radio />}
-                    label="Pending"
-                  />
-                  <FormControlLabel
-                    value="inProgress"
-                    control={<Radio />}
-                    label="InProgress"
-                  />
-                  <FormControlLabel
-                    value="outSource"
-                    control={<Radio />}
-                    label="OutSource"
-                  />
-
-                  <FormControlLabel
-                    value="complete"
-                    control={<Radio />}
-                    label="Complete"
-                  />
-                  <FormControlLabel
-                    value="all"
-                    control={<Radio />}
-                    label="All"
-                  />
-                </RadioGroup>
+              <RadioGroup
+                row
+                value={formik.values.status}
+                onChange={(event) => {
+                formik.setFieldValue("status", event.target.value);
+                fetchZonesData(); // Fetch data based on selected status
+                }}
+              >
+                <FormControlLabel value="PENDING" control={<Radio />} label="Pending" />
+                <FormControlLabel value="INPROGRESS" control={<Radio />} label="InProgress" />
+                <FormControlLabel value="OUTSOURCE" control={<Radio />} label="OutSource" />
+                <FormControlLabel value="COMPLETE" control={<Radio />} label="Complete" />
+                <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" />
+                <FormControlLabel value="all" control={<Radio />} label="All" />
+              </RadioGroup>
               </FormControl>
             </Grid>
 

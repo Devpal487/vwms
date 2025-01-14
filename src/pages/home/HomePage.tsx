@@ -82,6 +82,8 @@ interface Department {
   session_year: string;
 }
 export default function HomePage() {
+  const [selectedCardId, setSelectedCardId] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTerm1, setSearchTerm1] = useState("");
   const [searchTerm2, setSearchTerm2] = useState("");
@@ -91,8 +93,11 @@ export default function HomePage() {
 
   let navigate = useNavigate();
   const handleClick1 = (key: any) => {
-    navigate(`/Reports/ComplainStatus`, { state: { complaintType: key.toUpperCase() } });
+    navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
   };
+  // <Button onClick={() => handleClick1("pending")}>Pending Complaints</Button>
+
+  
   const handleClickVno = (key: any) => {
     navigate(`/Reports/VehicleItemService`, { state: {} })
   }
@@ -432,6 +437,7 @@ export default function HomePage() {
   };
 
   const handleClick = (id: any) => {
+    setSelectedCardId(id);
     if (id === 0) {
       GetTopVehicleActprice(); // Load VEHICLE EXPENDITURE data
       setIsShow(true);
@@ -789,7 +795,7 @@ export default function HomePage() {
     inprogress: 0,
     outsource: 0,
     inhouse: 0,
-    closed: 0,
+    Complete: 0,
   });
   const [total, setTotal] = useState(0);
   useEffect(() => {
@@ -807,7 +813,7 @@ export default function HomePage() {
           inprogress: responses[1].data.data.length,
           outsource: responses[2].data.data.length,
           inhouse: responses[3].data.data.length,
-          closed: responses[4].data.data.length,
+          Complete: responses[4].data.data.length,
         };
         setComplaints(data);
         setTotal(Object.values(data).reduce((sum, count) => sum + count, 0));
@@ -1344,7 +1350,7 @@ th, td {
   return (
     <div>
       <Box sx={{ marginTop: "1%" }}>
-        <Grid container spacing={2}>
+         <Grid container spacing={2}>
           {items.map((item) => (
             <Grid item xs={6} sm={4} md={2} key={item.id}>
               <Card
@@ -1358,7 +1364,7 @@ th, td {
                   alignItems: "center",
                   padding: '1%,',
                   backgroundColor: "#fff",
-                  border: "2px solid #e0e0e0",
+                  border: `2px solid ${selectedCardId === item.id ? "#3498db" : "#e0e0e0"}`,
                   borderRadius: "8px",
                   boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
                   borderLeft: `4px solid ${item.id === 0
@@ -1398,7 +1404,9 @@ th, td {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> 
+
+
       </Box>
       <div>
         <div
@@ -2428,7 +2436,7 @@ const getColor = (status: string) => {
       return "blue";
     case "inhouse":
       return "purple";
-    case "closed":
+    case "Complete":
       return "green";
     default:
       return "white";

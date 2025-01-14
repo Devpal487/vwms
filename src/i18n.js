@@ -12,6 +12,11 @@ const resources = {
       text: {
         ////
         /////
+        selectcomplainNo:"Enter Complaint No.",
+
+        complaintDate:"Complaint Date",
+        closingdate:"Closing Date",
+        vehicleNo12:"Vehicle No.",
         ItemType1:"Item Type",
         ShortName1:"Short Name",
 
@@ -8784,9 +8789,9 @@ const resources = {
         AddJobCard: "Add Job Card",
         EditJobCard: "Edit Job Card",
         Services: "Services",
-
+        complainStatus12:"Status",
         ComplainStatus: "Complain Status",
-        WorkshoapService: "Workshoap Service",
+        WorkshoapService: "Workshop Service",
         VendorItemDetail: "Vendor Item Detail",
         VendorEvaluationReport: "Vendor Evaluation Report",
         VehicleStatusReport: "Vehicle Status Report",
@@ -8816,10 +8821,10 @@ const resources = {
         JobCardNo: "Job Card Number",
         ComplainDateFrom: "Complain Date From",
         ComplainDateTo: "Complain Date To",
-        OpeningBallence: "Opening Ballence",
-        InQuantuty: "In Quantuty",
+        OpeningBallence: "Opening Ballance",
+        InQuantuty: "In Quantity",
         OutQuantity: "Out Quantity",
-        Ballence: "Ballence",
+        Ballence: "Ballance",
 
         Days: "Days",
         SelectTax: "Select Tax",
