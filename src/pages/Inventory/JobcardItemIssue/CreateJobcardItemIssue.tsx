@@ -93,14 +93,14 @@ const CreateJobcardItemIssue = (props: Props) => {
         { value: -1, label: t("text.VehicleNo") },
     ]);
 
-    const [empOption, setempOption] = useState([
-        { value: "-1", label: t("text.empid") },
-    ]);
+    // const [empOption, setempOption] = useState([
+    //     { value: "-1", label: t("text.empid") },
+    // ]);
     useEffect(() => {
         GetIndentID();
         GetitemData();
         GetUnitData();
-        GetempData();
+      //  GetempData();
         getVehicleDetails();
     }, []);
 
@@ -213,28 +213,28 @@ const CreateJobcardItemIssue = (props: Props) => {
         }
         setUnitOptions(arr);
     };
-    const GetempData = async () => {
-        const collectData = {
-            empid: -1,
-            userId: "",
+    // const GetempData = async () => {
+    //     const collectData = {
+    //         empid: -1,
+    //         userId: "",
 
-        };
-        const response = await api.post(`Employee/GetEmployee`, collectData);
-        const data = response.data.data;
-        console.log('data', data)
-        const arr = data.map((item: any) => ({
-            label: item?.empName,
-            value: item?.empid
+    //     };
+    //     const response = await api.post(`Employee/GetEmployee`, collectData);
+    //     const data = response.data.data;
+    //     console.log('data', data)
+    //     const arr = data.map((item: any) => ({
+    //         label: item?.empName,
+    //         value: item?.empid
 
-        }))
-        // for (let index = 0; index < data.length; index++) {
-        //   arr.push({
-        //     label: data[index]["empName"],
-        //     value: data[index]["empId"],
-        //   });
-        // }
-        setempOption(arr);
-    };
+    //     }))
+    //     // for (let index = 0; index < data.length; index++) {
+    //     //   arr.push({
+    //     //     label: data[index]["empName"],
+    //     //     value: data[index]["empId"],
+    //     //   });
+    //     // }
+    //     setempOption(arr);
+    // };
 
 
 
@@ -255,7 +255,7 @@ const CreateJobcardItemIssue = (props: Props) => {
             "issueLocation": "",
             "issueType": "",
             "vehicleitem": 0,
-            "empId": 0,
+            "empId": -1,
             "createdBy": "",
             "updatedBy": "",
             "createdOn": defaultValues,
@@ -544,6 +544,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
@@ -553,14 +554,22 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th>
 
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: '1px solid black' }}>
 
-
+                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                                                            if (tableData.length > 1) {
+                                                                deleteRow(index)
+                                                            } else {
+                                                                alert("There should be atleast one row")
+                                                            }
+                                                        }}>
+                                                            <DeleteIcon />
+                                                        </td>
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
@@ -576,14 +585,57 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
-                                                                onChange={(e: any, newValue: any) =>
-                                                                    handleInputChange(
-                                                                        index,
-                                                                        "itemID",
-                                                                        newValue?.value
-                                                                    )
+                                                                sx={{ width: "175px" }}
+                                                                // onChange={(e: any, newValue: any) =>
+                                                                //     handleInputChange(
+                                                                //         index,
+                                                                //         "itemID",
+                                                                //         newValue?.value
+                                                                //     )
+                                                                // }
+
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return;
+                                                                    } else {
+                                                                        handleInputChange(
+                                                                            index,
+                                                                            "itemId",
+                                                                            newValue?.value
+                                                                        )
+                                                                    }
+                                                                }
                                                                 }
 
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        {...params}
+
+                                                                    />
+                                                                )}
+                                                            />
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center' }}>
+
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="combo-box-demo"
+                                                                options={unitOptions}
+                                                                fullWidth
+                                                                size="small"
+                                                                sx={{ width: "135px" }}
+                                                                value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return
+                                                                    } else {
+                                                                        handleInputChange(
+                                                                            index,
+                                                                            "unitId",
+                                                                            newValue?.value
+                                                                        )
+                                                                    }
+                                                                }}
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
@@ -596,31 +648,12 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                     />
                                                                 )}
                                                             />
-                                                        </td>
-                                                        <td style={{ border: "1px solid black", textAlign: "center" }}>
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                options={unitOptions}
-                                                                value={
-                                                                    unitOptions.find((opt) => (opt.value) === row?.unitId) || null
-                                                                }
-                                                                fullWidth
-                                                                size="small"
-                                                                onChange={(e, newValue: any) =>
-                                                                    handleInputChange(index, "unitId", newValue?.value)
-                                                                }
-                                                                renderInput={(params: any) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                    //label={<CustomLabel text={t("text.selectUnit")} />}
-                                                                    />
-                                                                )}
-                                                            />
+                                                            {/* <select
+                                                                                                                                                                                                                       </select> */}
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                               // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.batchNo}
@@ -629,7 +662,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                               // type="number"
                                                                 size="small"
                                                                 value={row.stockQty || 0}
                                                                 onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
@@ -637,7 +670,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                                //type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.reqQty}
@@ -646,16 +679,16 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                               // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.issueQty}
                                                                 onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
                                                             />
                                                         </td>
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
                                                 ))}
                                             </tbody>

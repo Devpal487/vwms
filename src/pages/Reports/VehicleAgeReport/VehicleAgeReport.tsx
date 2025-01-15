@@ -87,32 +87,40 @@ export default function VehicleAgeReport() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
 
+    
+    const headers = ["Item Code", "Vehicle No.", "Purchase Year", "Employee Name", "Age"];
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // item?.vehicleNo || "", // Vehicle Type
+      // item?.driverName || "", // Driver
+      // item?.mobileNo, // Driver Mobile No
+      // item?.department,
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
+
+      item?.itemCode || "",
+      item?.vehicleNo || "", // Vehicle No
+      item?.purchaseYear || "", // Driver
+      item?.empName || "", // Mobile No
+      item?.age || "",
     ]);
 
     // Create HTML table
@@ -211,7 +219,7 @@ export default function VehicleAgeReport() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Item Code", "Vehicle No.", "Purchase Year", "Employee Name", "Age"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -244,11 +252,11 @@ export default function VehicleAgeReport() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
+        item?.itemCode || "",
         item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.purchaseYear || "", // Driver
+        item?.empName || "", // Mobile No
+        item?.age || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -373,88 +381,73 @@ export default function VehicleAgeReport() {
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "trackDate",
-            headerName: t("text.Date"),
+            field: "itemCode",
+            headerName: t("text.itemCode"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.trackDate).format("DD-MM-YYYY");
-            },
+            // renderCell: (params) => {
+            //   return moment(params.row.trackDate).format("DD-MM-YYYY");
+            // },
           },
           {
-            field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
+            field: "itemName",
+            headerName: t("text.itemName"),
             flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "driverName",
-            headerName: t("text.Driver"),
+            field: "vehicleNo",
+            headerName: t("text.vehicleNo"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "mobileNo",
-            headerName: t("text.MobileNo"),
+            field: "purchaseYear",
+            headerName: t("text.purchaseYear"),
             flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
-            field: "department",
-            headerName: t("text.Department"),
+            field: "itemType",
+            headerName: t("text.itemType"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
+          // {
+          //   field: "itemCategory",
+          //   headerName: t("text.itemCategory"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   align: 'right',
+          //   headerAlign: 'right',
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
-            field: "distanceKM",
-            headerName: t("text.Distance"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "running",
-            headerName: t("text.Running"),
+            field: "empName",
+            headerName: t("text.empName"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
+          // {
+          //   field: "empMobileNo",
+          //   headerName: t("text.empMobileNo"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
-            field: "idle",
-            headerName: t("text.Idle"),
+            field: "age",
+            headerName: t("text.age"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "startTime",
-            headerName: t("text.StartTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "endTime",
-            headerName: t("text.EndTime"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "fuelConsumption",
-            headerName: t("text.FuelConsumption"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
-            cellClassName: "wrap-text", // Added here
-          },
+    
         ];
         setColumns(columns as any);
       }
@@ -631,7 +624,7 @@ export default function VehicleAgeReport() {
                     {...params}
                     label={
                       <CustomLabel
-                        text={t("text.SelectEmployee")}
+                        text={t("text.selectemployee")}
                         required={false}
                       />
                     }

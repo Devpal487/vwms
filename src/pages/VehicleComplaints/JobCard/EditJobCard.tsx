@@ -943,7 +943,7 @@ const EditJobCard = (props: Props) => {
                 />
               </Grid>
 
-              <Grid item lg={12} md={12} xs={12} >
+              {/* <Grid item lg={12} md={12} xs={12} >
                 <ReactQuill
                   id="complaint"
                   theme="snow"
@@ -955,14 +955,14 @@ const EditJobCard = (props: Props) => {
                   //  style={{ backgroundColor: "white", minHeight: "200px" }} 
                   placeholder="Enter your complaint here"
                 />
-              </Grid>
+              </Grid> */}
 
-              {/* Complaint
+              {/* Complaint */}
               <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.Complaint")}
+                      text={t("text.enterComplaint")}
                     //required={true}
                     />
                   }
@@ -972,12 +972,12 @@ const EditJobCard = (props: Props) => {
                   name="complain"
                   id="complain"
                   value={formik.values.complain}
-                  placeholder={t("text.Complaint")}
+                  placeholder={t("text.enterComplaint")}
                   onChange={(e) => {
                     formik.setFieldValue("complain", e.target.value);
                   }}
                 />
-              </Grid> */}
+              </Grid>
 
 
 

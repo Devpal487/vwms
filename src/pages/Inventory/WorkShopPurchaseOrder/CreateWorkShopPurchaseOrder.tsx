@@ -63,7 +63,8 @@ const CreateWorkShopPurchaseOrder = () => {
     const [lang, setLang] = useState<Language>("en");
     const [toaster, setToaster] = useState(false);
     // const initialRowData: any = {
-    const [tableData, setTableData] = useState<any>([{
+    const [tableData, setTableData] = useState<any>([
+        {
         "sno": 0,
         "id": -1,
         "orderId": 0,
@@ -88,7 +89,34 @@ const CreateWorkShopPurchaseOrder = () => {
         "itemName": ""
 
 
-    }]);
+    },
+    // {
+    //     "sno": 0,
+    //     "id": -1,
+    //     "orderId": 0,
+    //     "itemId": 0,
+    //     "quantity": 0,
+    //     "rate": 0,
+    //     "amount": 0,
+    //     "gstId": 0,
+    //     "gstRate": 0,
+    //     "cgst": 0,
+    //     "sgst": 0,
+    //     "igst": 0,
+    //     "cgstid": 0,
+    //     "sgstid": 0,
+    //     "igstid": 0,
+    //     "gst": 0,
+    //     "netAmount": 0,
+    //     "fyId": 0,
+    //     "srn": 0,
+    //     "balQuantity": 0,
+    //     "isDelete": true,
+    //     "itemName": ""
+
+
+    // }
+]);
 
     // const [tableData, setTableData] = useState([{ ...initialRowData }]);
     const [taxData, setTaxData] = useState<any>([]);
@@ -426,7 +454,7 @@ const CreateWorkShopPurchaseOrder = () => {
     //     };
 
     const validateRow = (row: any) => {
-        return row.itemId && row.quantity && row.rate > 0;
+        return row.itemId && row.unitId && row.rate > 0;
     };
 
 
@@ -471,113 +499,7 @@ const CreateWorkShopPurchaseOrder = () => {
             "unitName": ""
 
         },
-        // validationSchema: Yup.object().shape({
-        //     document_No: Yup.string().required(t("text.reqDocumentNum")),
-        //     orderNo: Yup.string().required(t("text.reqOrderNum")),
-        //     doc_Date: Yup.date().required(t("text.reqOrderDate")),
-        //     p_InvoiceDate: Yup.date().required(t("text.reqInvDate")),
-        //     supplierName: Yup.string().required(t("text.reqSuppName")),
-        // }),
-        //     onSubmit: async (values) => {
-        //         console.log("Form Submitted with values:", values);
-        //         const validItems = items.filter((item: any) => validateItem(item));
-
-        //         // Check if there are valid items
-        //         // if (validItems.length === 0) {
-        //         //     alert("Please fill in at least one valid item.");
-        //         //     return;
-        //         // }
-
-        //         // Map the valid items, setting values at the first index
-        //         const updatedItems = validItems.map((item: any, index: any) => {
-        //            // const documentDate = values.doc_Date;
-
-        //             const baseItem = {
-
-
-        // //                 "sno": 0,
-        // //   "id": 0,
-        // //   "orderId": 0,
-        // //   "itemId": 0,
-        // //   "quantity": 0,
-        // //   "rate": 0,
-        // //   "amount": 0,
-        // //   "gstId": 0,
-        // //   "gstRate": 0,
-        // //   "cgst": 0,
-        // //   "sgst": 0,
-        // //   "igst": 0,
-        // //   "cgstid": 0,
-        // //   "sgstid": 0,
-        // //   "igstid": 0,
-        // //   "gst": 0,
-        // //   "netAmount": 0,
-        // //   "fyId": 0,
-        // //   "srn": 0,
-        // //   "balQuantity": 0,
-        // //   "isDelete": true,
-        // //   "itemName": "string"
-
-
-        //                 ...item,
-        //                 id: item.id,
-        //                 orderId: item.orderId,
-        //                 itemId: item.itemId,
-        //                 itemName: item.itemName.toString(),
-        //               //  unit: item.unit.toString(),
-        //               quantity: item.quantity,
-        //                 rate: item.rate,
-        //                 amount: item.amount,
-        //                 cgst: item.cgst,
-        //                 cgstid: item.cgstid,
-        //                 sgst: item.sgst,
-        //                // discount: item.discount,
-        //                // discountAmount: item.discountAmount,
-        //                 netAmount: item.netAmount,
-        //               // documentNo: values.document_No,
-        //              //  documentDate: documentDate,
-        //              //  invoiceNo: values.p_InvoiceNo,
-        //             //  supplier: values.supplierName,
-        //              //   orderNo: values.orderNo,
-        //               //  mrnNo: "",
-        //                //mrnDate: documentDate,
-        //                igstid: 0,
-        //                igst: 0,
-        //             };
-
-        //             if (index === 0) {
-        //                 return baseItem;
-        //             }
-        //             return item;
-        //         });
-
-        //         console.log("Form Submitted with values:", values);
-        //         console.log("Updated Items:", updatedItems);
-
-        //         try {
-        //             const response = await api.post(
-        //                 `PurchaseOrder/UpsertPurchaseOrder`,
-        //                 { 
-        //                     ...values, 
-        //                  //   id: values.id.toString(),
-        //                    // instId: values.instId.toString(),
-        //                  //   sessionId: values.sessionId.toString(),
-        //                  purchaseOrderDetail: updatedItems 
-        //                 }
-        //             );
-        //             if (response.data.status===1) {
-        //                 setToaster(true);
-        //                 toast.success(response.data.message);
-        //                 navigate("/Inventory/OfficePurchaseOrder");
-        //             } else {
-        //                 setToaster(true);
-        //                 toast.error(response.data.message);
-        //             }
-        //         } catch (error) {
-        //             setToaster(true);
-        //             toast.error(t("error.network"));
-        //         }
-        //     },
+       
         validationSchema: Yup.object({
             file: Yup.string()
                 .required("Image required"),
@@ -594,65 +516,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 return;
             }
             console.log('values', values)
-            // const isFirstRowDefault = tableData[0] &&
-            //     tableData[0].id === -1 &&
-            //     //tableData[0].invoiceId === 0 &&
-            //     //  tableData[0].mrnType === "" &&
-            //     tableData[0].orderId === 0 &&
-            //     //  tableData[0].orderNo === "" &&
-            //     // tableData[0].batchNo === "" &&
-            //     tableData[0].sno === "" &&
-            //     //   tableData[0].qcStatus === "" &&
-            //     tableData[0].itemId === 0 &&
-            //     //   tableData[0].balQuantity === 0 &&
-            //     tableData[0].quantity === 0 &&
-            //     tableData[0].rate === 0 &&
-            //     tableData[0].amount === 0 &&
-            //     tableData[0].gstId === 0 &&
-            //     tableData[0].gstRate === 0 &&
-            //     tableData[0].cgst === 0 &&
-            //     tableData[0].sgst === 0 &&
-            //     tableData[0].igst === 0 &&
-            //     tableData[0].cgstid === 0 &&
-            //     tableData[0].sgstid === 0 &&
-            //     tableData[0].igstid === 0 &&
-            //     tableData[0].gst === "" &&
-            //     tableData[0].netAmount === 0 &&
-            //     Object.keys(tableData[0].item).length === 0;
-
-            // if (isFirstRowDefault) {
-            //     alert("Please add values in the table before submitting.");
-            //     return;
-            // }
-
-            // const filteredTableData = tableData.filter(row => {
-            //     return !(
-            //         row.id === -1 &&
-            //         // row.invoiceId === 0 &&
-            //         //   row.mrnType === "" &&
-            //         row.orderId === 0 &&
-            //         // row.orderNo === "" &&
-            //         // row.batchNo === "" &&
-            //         row.sno === "" &&
-            //         //row.qcStatus === "" &&
-            //         row.itemId === 0 &&
-            //         // row.balQuantity === 0 &&
-            //         row.quantity === 0 &&
-            //         row.rate === 0 &&
-            //         row.amount === 0 &&
-            //         row.gstId === 0 &&
-            //         row.gstRate === 0 &&
-            //         row.cgst === 0 &&
-            //         row.sgst === 0 &&
-            //         row.igst === 0 &&
-            //         row.cgstid === 0 &&
-            //         row.sgstid === 0 &&
-            //         row.igstid === 0 &&
-            //         row.gst === 0 &&
-            //         row.netAmount === 0 &&
-            //         Object.keys(row.item).length === 0
-            //     );
-            // });
+           
             const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`,
                 //     ...values,
                 //     purchaseOrderDetail: filteredTableData,
@@ -703,12 +567,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 };
             }
         }
-        //  else if (field === "batchNo") {
-        //     item.batchNo = value?.toString();
-        // } 
-        // else if (field === "balQuantity") {
-        //     item.balQuantity = value === "" ? 0 : parseFloat(value);
-        // } 
+       
         else if (field === "quantity") {
             item.quantity = value === "" ? 0 : parseFloat(value);
         } else if (field === "rate") {
@@ -739,11 +598,12 @@ const CreateWorkShopPurchaseOrder = () => {
         tableData[index] = item;
         setTableData(tableData);
         updateTotalAmounts(tableData);
-        if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].approveQuantity >= 1) {
+        if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
             if (index === tableData.length - 1) {
                 addRow();
             }
         }
+       // addRow();
 
         let total = 0;
         tableData.forEach((row: any) => {
@@ -1229,6 +1089,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 options={itemOption}
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{ width: "175px" }}
                                                                 value={
                                                                     itemOption.find((opt: any) => (opt.value) === parseInt(row?.itemId)) || null
                                                                 }
@@ -1268,6 +1129,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{ width: "145px" }}
                                                                 onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
                                                                 renderInput={(params) => (
                                                                     <TextField
@@ -1411,8 +1273,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         {t("text.TotalAmount")}
 
                                                     </td>
-                                                    <td style={{ textAlign: "center", border: "1px solid black" }}>
-                                                        <b>:</b>{formik.values.netAmount}
+                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
+                                                        <b></b>{formik.values.netAmount}
                                                         {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                                                     </td>
                                                 </tr>
@@ -1422,7 +1284,7 @@ const CreateWorkShopPurchaseOrder = () => {
 
 
                                                     </td>
-                                                    <td style={{ textAlign: "center", border: "1px solid black" }}>
+                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
 
                                                         {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
                                                     </td>
@@ -1432,7 +1294,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         {t("text.Totalnetamount")}
 
                                                     </td>
-                                                    <td style={{ textAlign: "center", border: "1px solid black" }}>
+                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
 
                                                         {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)}

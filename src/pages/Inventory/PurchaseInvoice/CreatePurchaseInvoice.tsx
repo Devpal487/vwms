@@ -913,6 +913,7 @@ const CreatePurchaseInvoice = () => {
                                 options={itemOption}
                                 fullWidth
                                 size="small"
+                                sx={{ width: "175px" }}
                                 value={
                                   itemOption.find((opt: any) => (opt.value) === parseInt(row?.itemId)) || null
                                 }
@@ -952,6 +953,7 @@ const CreatePurchaseInvoice = () => {
                                 }
                                 fullWidth
                                 size="small"
+                                sx={{ width: "145px" }}
                                 onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
                                 renderInput={(params) => (
                                   <TextField
@@ -1096,8 +1098,8 @@ const CreatePurchaseInvoice = () => {
                             {t("text.TotalAmount")}
 
                           </td>
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
-                            <b>:</b>{formik.values.netAmount}
+                          <td style={{ textAlign: "end", border: "1px solid black" }}>
+                            <b></b>{formik.values.netAmount}
                             {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                           </td>
                         </tr>
@@ -1107,7 +1109,7 @@ const CreatePurchaseInvoice = () => {
 
 
                           </td>
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "end", border: "1px solid black" }}>
 
                             {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
                           </td>
@@ -1117,7 +1119,7 @@ const CreatePurchaseInvoice = () => {
                             {t("text.Totalnetamount")}
 
                           </td>
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "end", border: "1px solid black" }}>
                             {/* value={formik.values.netAmount} */}
 
                             {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)}

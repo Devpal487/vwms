@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Stack,
+
   TextField,
   Typography,
 } from "@mui/material";
@@ -46,7 +47,7 @@ export default function CountryMaster() {
 
   const [columns, setColumns] = useState<any>([]);
   const [rows, setRows] = useState<any>([]);
-  const [editId, setEditId] = useState<any>(-1);
+  const [editId, setEditId] = useState(0);
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [permissionData, setPermissionData] = useState<MenuPermission>({
@@ -91,10 +92,10 @@ export default function CountryMaster() {
     api
       .post(`CountryMaster/DeleteCountry`, collectData)
       .then((response) => {
-        if (response.data.isSuccess) {
-          toast.success(response.data.mesg);
+        if (response.data.status===1) {
+          toast.success(response.data.message);
         } else {
-          toast.error(response.data.mesg);
+          toast.error(response.data.message);
         }
         getList();
       });
@@ -241,7 +242,7 @@ export default function CountryMaster() {
         toast.success(response.data.message);
         formik.resetForm();
         getList();
-        setEditId(-1);
+        setEditId(0);
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -365,7 +366,7 @@ export default function CountryMaster() {
                   />
                 </Grid>
                 <Grid item xs={2} sx={{ m: -1 }}>
-                  {editId === -1 && (
+                  {editId === 0 && (
                     // {editId === -1 && permissionData?.isAdd && (
                     <ButtonWithLoader
                       buttonText={t("text.save")}
@@ -374,7 +375,7 @@ export default function CountryMaster() {
                     />
                   )}
 
-                  {editId !== -1 && (
+                  {editId !== 0 && (
                     <ButtonWithLoader
                       buttonText={t("text.update")}
                       onClickHandler={handleSubmitWrapper}

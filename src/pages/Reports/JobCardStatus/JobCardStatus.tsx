@@ -337,22 +337,23 @@ export default function JobCardStatus() {
           {
             field: "serialNo",
             headerName: t("text.SrNo"),
-            flex: 0.5,
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.VehicleNo"),
-            flex: 1,
+            flex: 1.4,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
           },
           {
             field: "jobcardNo",
             headerName: t("text.JobCardNo"),
-            flex: 1,
-            align: "right",
-            headerAlign: "right",
+            flex: 1.5,
+            // align: "right",
+            // headerAlign: "right",
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
@@ -369,7 +370,7 @@ export default function JobCardStatus() {
           {
             field: "jobcardDate",
             headerName: t("text.JobCardDate"),
-            flex: 1,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
@@ -388,8 +389,8 @@ export default function JobCardStatus() {
             headerName: t("text.Days"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-            align: "right",
-            headerAlign: "right",
+            // align: "right",
+            // headerAlign: "right",
             cellClassName: "wrap-text", // Added here
           },
         ];
