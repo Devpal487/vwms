@@ -601,35 +601,35 @@ const EditJobCard1 = (props: Props) => {
           <form onSubmit={formik.handleSubmit}>
             {toaster === false ? "" : <ToastApp />}
             <Grid container spacing={2}>
-               <Grid item xs={12} sm={12} lg={12}>
-                              <FormControl component="fieldset">
-                                <RadioGroup
-                                  row
-                                  aria-label="status"
-                                  name="status"
-                                  value={formik.values.status}
-                                  onChange={(event) => formik.setFieldValue("status", event.target.value)}
-                                >
-                                  <FormControlLabel
-                                    value="complete"
-                                    control={<Radio color="primary" />}
-                                    label={t("text.Complete")}
-              
-                                  />
-                                  <FormControlLabel
-                                    value="jobwork"
-                                    control={<Radio color="primary" />}
-                                    label={t("text.JobWork")}
-                                  />
-                                  <FormControlLabel
-                                    value="inprogress"
-                                    control={<Radio color="primary" />}
-                                    label={t("text.InProgress")}
-                                  />
-              
-                                </RadioGroup>
-                              </FormControl>
-                            </Grid>
+              <Grid item xs={12} sm={12} lg={12}>
+                <FormControl component="fieldset">
+                  <RadioGroup
+                    row
+                    aria-label="status"
+                    name="status"
+                    value={formik.values.status}
+                    onChange={(event) => formik.setFieldValue("status", event.target.value)}
+                  >
+                    <FormControlLabel
+                      value="complete"
+                      control={<Radio color="primary" />}
+                      label={t("text.Complete")}
+
+                    />
+                    <FormControlLabel
+                      value="jobwork"
+                      control={<Radio color="primary" />}
+                      label={t("text.JobWork")}
+                    />
+                    <FormControlLabel
+                      value="inprogress"
+                      control={<Radio color="primary" />}
+                      label={t("text.InProgress")}
+                    />
+
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
 
               {/* RadioButton */}
               {/* <Grid item xs={12} sm={12} lg={12}>
@@ -705,6 +705,9 @@ const EditJobCard1 = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     formik.setFieldValue("itemName", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
                     formik.setFieldValue("empId", newValue?.empId);
@@ -781,6 +784,9 @@ const EditJobCard1 = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -937,6 +943,9 @@ const EditJobCard1 = (props: Props) => {
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              }
                               console.log(newValue?.value);
                               handleInputChange(index, 'serviceId', newValue?.value);
                               handleInputChange(index, 'serviceName', newValue?.label);
@@ -981,6 +990,9 @@ const EditJobCard1 = (props: Props) => {
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              }
                               console.log(newValue?.value);
                               handleInputChange(index, 'vendorId', newValue?.value);
                               handleInputChange(index, 'vendorName', newValue?.label);
@@ -1141,7 +1153,7 @@ const EditJobCard1 = (props: Props) => {
                       </tr>
                     ))}
                   </tbody>
-                
+
                 </Table>
               </Grid>
 
@@ -1171,28 +1183,28 @@ const EditJobCard1 = (props: Props) => {
                     {t("text.JobWorkChallan")}
                   </Button> */}
                   <Button
-                  type="button"
-                  style={{
-                    backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                    color: "white",
-                    padding: "6px 12px", // Smaller padding for a smaller size
-                    fontSize: "12px", // Smaller font size
-                    borderRadius: "8px",
-                    minWidth: "120px", // Set consistent button width
-                    textAlign: "center",
-                  }}
-                  onClick={() => {
-                    const validTableData = tableData.filter(validateRow);
-                    if (validTableData.length === 0) {
-                      alert("Please add some data in table for further process");
-                      return;
-                    } else {
-                      formik.setFieldValue("status", "jobwork");
-                    }
-                  }}
-                >
-                  {t("text.JobWorkChallan")}
-                </Button>
+                    type="button"
+                    style={{
+                      backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
+                      color: "white",
+                      padding: "6px 12px", // Smaller padding for a smaller size
+                      fontSize: "12px", // Smaller font size
+                      borderRadius: "8px",
+                      minWidth: "120px", // Set consistent button width
+                      textAlign: "center",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "jobwork");
+                      }
+                    }}
+                  >
+                    {t("text.JobWorkChallan")}
+                  </Button>
 
                 </Grid>
               )}
@@ -1244,17 +1256,20 @@ const EditJobCard1 = (props: Props) => {
                             fullWidth
                             size="small"
 
-                            onChange={(e: any, newValue: any) =>
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              }
                               handleInputChange(
                                 index,
                                 "itemId",
                                 newValue?.value
                               )
-                            }
+                            }}
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                           
+
                               />
                             )}
                           />
@@ -1273,6 +1288,9 @@ const EditJobCard1 = (props: Props) => {
                             fullWidth
                             size="small"
                             onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              }
                               console.log(newValue?.value);
                               handleInputChange(index, 'unitId', newValue?.value);
                               handleInputChange(index, 'unitName', newValue?.label);
@@ -1378,13 +1396,17 @@ const EditJobCard1 = (props: Props) => {
                             options={taxData}
                             fullWidth
                             size="small"
-                            onChange={(e: any, newValue: any) =>
-                              handleInputChange(index, "gstId", newValue?.value)
+                            onChange={(e: any, newValue: any) => {
+                              if (!newValue) {
+                                return;
+                              }
+                              handleInputChange(index, "gstId", newValue?.value);
+                            }
                             }
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                            
+
                               />
                             )}
                           />
@@ -1530,141 +1552,141 @@ const EditJobCard1 = (props: Props) => {
                 </Table>
               </Grid>
               {true && (
-              <Grid
-              item
-              lg={6}
-              sm={6}
-              xs={12}
-              container
-              spacing={2} // Adds spacing between buttons
-              justifyContent="flex-start" // Aligns buttons to the left; use 'center' or 'flex-end' as needed
-              alignItems="center"
-            >
-              {/* Indent Generate Button */}
-              <Grid item>
-                <Button
-                  type="button"
-                  style={{
-                    backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                    color: "white",
-                    padding: "6px 12px", // Smaller padding for a smaller size
-                    fontSize: "12px", // Smaller font size
-                    borderRadius: "8px",
-                    minWidth: "120px", // Set consistent button width
-                    textAlign: "center",
-                  }}
-                  onClick={() => {
-                    const validTableData = tableData.filter(validateRow);
-                    if (validTableData.length === 0) {
-                      alert("Please add some data in table for further process");
-                      return;
-                    } else {
-                      formik.setFieldValue("status", "indentGenerate");
-                    }
-                  }}
+                <Grid
+                  item
+                  lg={6}
+                  sm={6}
+                  xs={12}
+                  container
+                  spacing={2} // Adds spacing between buttons
+                  justifyContent="flex-start" // Aligns buttons to the left; use 'center' or 'flex-end' as needed
+                  alignItems="center"
                 >
-                  {t("text.indentGenerate")}
-                </Button>
-              </Grid>
-            
-              {/* Indent Print Button */}
-              <Grid item>
-                <Button
-                  type="button"
-                  style={{
-                    backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                    color: "white",
-                    padding: "6px 12px", // Smaller padding for a smaller size
-                    fontSize: "12px", // Smaller font size
-                    borderRadius: "8px",
-                    minWidth: "120px", // Set consistent button width
-                    textAlign: "center",
-                  }}
-                  onClick={() => {
-                    const validTableData = tableData.filter(validateRow);
-                    if (validTableData.length === 0) {
-                      alert("Please add some data in table for further process");
-                      return;
-                    } else {
-                      formik.setFieldValue("status", "indentprint");
-                    }
-                  }}
-                >
-                  {t("text.indentprint")}
-                </Button>
-              </Grid>
-            </Grid>
-            
+                  {/* Indent Generate Button */}
+                  <Grid item>
+                    <Button
+                      type="button"
+                      style={{
+                        backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
+                        color: "white",
+                        padding: "6px 12px", // Smaller padding for a smaller size
+                        fontSize: "12px", // Smaller font size
+                        borderRadius: "8px",
+                        minWidth: "120px", // Set consistent button width
+                        textAlign: "center",
+                      }}
+                      onClick={() => {
+                        const validTableData = tableData.filter(validateRow);
+                        if (validTableData.length === 0) {
+                          alert("Please add some data in table for further process");
+                          return;
+                        } else {
+                          formik.setFieldValue("status", "indentGenerate");
+                        }
+                      }}
+                    >
+                      {t("text.indentGenerate")}
+                    </Button>
+                  </Grid>
+
+                  {/* Indent Print Button */}
+                  <Grid item>
+                    <Button
+                      type="button"
+                      style={{
+                        backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
+                        color: "white",
+                        padding: "6px 12px", // Smaller padding for a smaller size
+                        fontSize: "12px", // Smaller font size
+                        borderRadius: "8px",
+                        minWidth: "120px", // Set consistent button width
+                        textAlign: "center",
+                      }}
+                      onClick={() => {
+                        const validTableData = tableData.filter(validateRow);
+                        if (validTableData.length === 0) {
+                          alert("Please add some data in table for further process");
+                          return;
+                        } else {
+                          formik.setFieldValue("status", "indentprint");
+                        }
+                      }}
+                    >
+                      {t("text.indentprint")}
+                    </Button>
+                  </Grid>
+                </Grid>
+
               )}
 
               <Grid container spacing={3} item></Grid>
               {/* vendor evaluation*/}
               <Grid
-  container
-  spacing={2}
-  justifyContent="flex-end" // Align buttons to the right
-  alignItems="center"
-  style={{ marginTop: "10px" }}
->
-  {/* Vendor Evaluation Button */}
-  <Grid item>
-    <Button
-      type="button"
-      style={{
-        backgroundColor: `var(--header-background)`,
-        color: "white",
-        minWidth: "120px", // Set a fixed width
-        textAlign: "center",
-      }}
-      onClick={() => {
-        const validTableData = tableData.filter(validateRow);
-        if (validTableData.length === 0) {
-          alert("Please add some data in table for further process");
-          return;
-        } else {
-          formik.setFieldValue("status", "vendorevaluation");
-        }
-      }}
-    >
-      {t("text.vendorevaluation")}
-    </Button>
-  </Grid>
+                container
+                spacing={2}
+                justifyContent="flex-end" // Align buttons to the right
+                alignItems="center"
+                style={{ marginTop: "10px" }}
+              >
+                {/* Vendor Evaluation Button */}
+                <Grid item>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      minWidth: "120px", // Set a fixed width
+                      textAlign: "center",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "vendorevaluation");
+                      }
+                    }}
+                  >
+                    {t("text.vendorevaluation")}
+                  </Button>
+                </Grid>
 
-  {/* Submit Button */}
-  <Grid item>
-    <Button
-      type="submit"
-      style={{
-        backgroundColor: `var(--header-background)`,
-        color: "white",
-        minWidth: "120px", // Set a fixed width
-        textAlign: "center",
-      }}
-    >
-      {t("text.save")}
-    </Button>
-  </Grid>
+                {/* Submit Button */}
+                <Grid item>
+                  <Button
+                    type="submit"
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      minWidth: "120px", // Set a fixed width
+                      textAlign: "center",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
+                </Grid>
 
 
-  {/* Reset Button */}
-  <Grid item>
-    <Button
-      type="reset"
-      style={{
-        backgroundColor: "#F43F5E",
-        color: "white",
-        minWidth: "120px", // Set a fixed width
-        textAlign: "center",
-      }}
-      onClick={() => {
-        formik.resetForm();
-        console.log(totalAmount);
-      }}
-    >
-      {t("text.reset")}
-    </Button>
-  </Grid>
-</Grid>
+                {/* Reset Button */}
+                <Grid item>
+                  <Button
+                    type="reset"
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      minWidth: "120px", // Set a fixed width
+                      textAlign: "center",
+                    }}
+                    onClick={() => {
+                      formik.resetForm();
+                      console.log(totalAmount);
+                    }}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                </Grid>
+              </Grid>
 
 
             </Grid>

@@ -597,6 +597,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     formik.setFieldValue("gender", newValue);
                   }}
                   renderInput={(params) => (
@@ -839,6 +842,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("departmentName", newValue?.label)
                     formik.setFieldValue("empDeptId", newValue?.value)
@@ -866,6 +872,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("designationName", newValue?.label);
                     formik.setFieldValue("empDesignationId", newValue?.value);
@@ -917,6 +926,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     formik.setFieldValue("empCountryID", newValue?.value);
                     formik.setFieldTouched("empCountryID", true);
                     formik.setFieldTouched("empCountryID", false);
@@ -945,6 +957,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     formik.setFieldValue("empStateId", newValue?.value);
                     formik.setFieldTouched("empStateId", true);
                     formik.setFieldTouched("empStateId", false);
@@ -972,6 +987,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     formik.setFieldValue("empCityId", newValue?.value);
                     formik.setFieldTouched("empCityId", true);
                     formik.setFieldTouched("empCityId", false);
@@ -998,6 +1016,9 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    if(!newValue){
+                      return;
+                    }
                     formik.setFieldValue("zoneName", newValue?.label);
                     formik.setFieldValue("eZoneID", newValue?.value);
                   }}

@@ -622,11 +622,13 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     // if (field === 'netAmount') {
     //   newData[index].netAmount = newData[index].amount + newData[index].amount * (newData[index].gst / 100);
     // }
-    if (field === 'gst') {
+    if (field === 'gst' || field === 'gstId') {
       newData[index].gst = newData[index].gst;
       newData[index].cgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
       newData[index].sgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
-      newData[index].netAmount = (newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2);
+      newData[index].netAmount = parseFloat((newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2));
+    } else {
+      newData[index].netAmount = (newData[index].serviceCharge * newData[index].qty);
     }
     // if (field === 'cgst') {
     //   newData[index].cgst = newData[index].cgst;
@@ -638,8 +640,8 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       newData[index].serviceCharge = newData[index].serviceCharge;
     }
     newData[index].amount = newData[index].serviceCharge * newData[index].qty;
-    newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
-
+    //newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
+    newData[index].jobCardId = location.state?.jobCardId || 0;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].unitId > 0 && newData[index].qty && newData[index].amount > 0) {
@@ -651,13 +653,12 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     let netAmt = 0;
     tableData.forEach(row => {
       total += row.amount;
-      netAmt += row.netAmount;
+      netAmt += row.amount + row.amount * (row.gst / 100);
     })
     formik.setFieldValue("netAmount", netAmt);
     formik.setFieldValue("serviceAmount", total);
     formik.setFieldValue("estAmount", netAmt);
   };
-
   const addRow = () => {
     setTableData([...tableData, {
       id: 0,
@@ -767,6 +768,9 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("itemId", newValue?.value)
                     formik.setFieldValue("vehicleNo", newValue?.label);
@@ -1221,6 +1225,9 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               sx={{ width: "230px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'serviceId', newValue?.value);
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -1251,6 +1258,9 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               sx={{ width: "135px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'unitId', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
@@ -1278,6 +1288,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.qty}
                               onChange={(e) => handleInputChange(index, 'qty', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1292,6 +1303,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.serviceCharge}
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
@@ -1307,6 +1319,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.serviceCharge * row.qty}
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
@@ -1326,6 +1339,9 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                 handleInputChange(index, 'gstId', newValue.value);
                               }}
@@ -1350,6 +1366,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.cgst}
                               onChange={(e) => handleInputChange(index, 'cgst', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1364,6 +1381,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.sgst}
                               onChange={(e) => handleInputChange(index, 'sgst', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1380,6 +1398,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               //onChange={(e) => handleInputChange(index, 'netAmount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                         </tr>

@@ -78,6 +78,7 @@ const AddJobCard = (props: Props) => {
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleJWC, setIsVisibleJWC] = useState(0);
+  const [isEnable, setIsEnable] = useState(0);
   const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
@@ -270,7 +271,7 @@ const AddJobCard = (props: Props) => {
     })
     formik.setFieldValue("netAmount", total);
     formik.setFieldValue("totalServiceAmount", total);
-    formik.setFieldValue("totalItemAmount", total);
+    //formik.setFieldValue("totalItemAmount", total);
   }, []);
 
 
@@ -423,7 +424,7 @@ const AddJobCard = (props: Props) => {
       "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
-      "totalItemAmount": location.state?.totalItemAmount || 0,
+      "totalItemAmount": 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.vehicleNo || "",
@@ -456,6 +457,7 @@ const AddJobCard = (props: Props) => {
         formik.setFieldValue("jobCardId", response.data.data.jobCardId);
         formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
         setIsVisibleJWC(isVisibleJWC + 1);
+        setIsEnable(isEnable + 1);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -631,7 +633,7 @@ const AddJobCard = (props: Props) => {
     })
     formik.setFieldValue("netAmount", total);
     formik.setFieldValue("totalServiceAmount", total);
-    formik.setFieldValue("totalItemAmount", total);
+    // formik.setFieldValue("totalItemAmount", total);
   };
 
   const addRow = () => {
@@ -831,6 +833,7 @@ const AddJobCard = (props: Props) => {
                     setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
                     setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
+                  onFocus={(e) => e.target.select()}
                 />
                 {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
@@ -999,6 +1002,9 @@ const AddJobCard = (props: Props) => {
                   disabled={true}
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -1177,6 +1183,9 @@ const AddJobCard = (props: Props) => {
                               sx={{ width: "225px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'serviceId', newValue?.value);
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -1208,9 +1217,12 @@ const AddJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
-                              sx={{ width: "140px" }}
+                              sx={{ width: "145px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -1238,6 +1250,9 @@ const AddJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'vendorId', newValue?.value);
                                 handleInputChange(index, 'vendorName', newValue?.label);
@@ -1305,6 +1320,7 @@ const AddJobCard = (props: Props) => {
                                 formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1319,6 +1335,7 @@ const AddJobCard = (props: Props) => {
                             <TextField
                               value={row.unitRate}
                               onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "80px" }}
@@ -1339,6 +1356,7 @@ const AddJobCard = (props: Props) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
+                              onFocus={(e) => e.target.select()}
                               sx={{ width: "90px" }}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
@@ -1356,6 +1374,7 @@ const AddJobCard = (props: Props) => {
                               onChange={(e) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                               }}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
@@ -1369,8 +1388,8 @@ const AddJobCard = (props: Props) => {
                             }}
                           >
                             <TextField
-                              //value={row.challanStatus}
-                              //onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                              //value={row.reading}
+                              //onChange={(e) => handleInputChange(index, 'reading', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1383,8 +1402,10 @@ const AddJobCard = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.challanNo}
                               onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1399,6 +1420,7 @@ const AddJobCard = (props: Props) => {
                             <TextField
                               value={row.challanRemark}
                               onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
@@ -1648,17 +1670,33 @@ const AddJobCard = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.save")}
-                </Button>
+                {(isEnable < 2) ? (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    disabled={true}
+                    style={{
+                      backgroundColor: `grey`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
+                )}
+
               </Grid>
 
               {/* Reset Button */}
@@ -1693,7 +1731,7 @@ const AddJobCard = (props: Props) => {
               >
               </Button>
 
-              {isVisible && (isVisibleJWC > 2) && (
+              {isVisible && (isVisibleJWC > 2 && isEnable > 1) && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"

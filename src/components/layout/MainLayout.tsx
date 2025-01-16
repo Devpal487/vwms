@@ -542,29 +542,29 @@ const MainLayout = () => {
         },
 
 
-        {
-          menuName: "Installation",
-          path: "",
-          menuId: 8,
-          displayNo: 1,
-          childMenu: [
-            {
-              menuId: 1,
-              menuName: "Pole Installation",
-              path: "/installation/PoleInstallation",
-              displayNo: 0,
-            },
+        // {
+        //   menuName: "Installation",
+        //   path: "",
+        //   menuId: 8,
+        //   displayNo: 1,
+        //   childMenu: [
+        //     {
+        //       menuId: 1,
+        //       menuName: "Pole Installation",
+        //       path: "/installation/PoleInstallation",
+        //       displayNo: 0,
+        //     },
 
-            {
-              menuId: 2,
-              menuName: "Light Installation",
-              path: "/installation/LightInstallation",
-              displayNo: 0,
-            },
-            // {menuId: 3, menuName: 'User Type', path:"/UserManagement/UserType",displayNo:0},
-            // {menuId: 4, menuName: 'User Permission Master', path:"/UserManagement/UserPermissionMaster",displayNo:0},
-          ],
-        },
+        //     {
+        //       menuId: 2,
+        //       menuName: "Light Installation",
+        //       path: "/installation/LightInstallation",
+        //       displayNo: 0,
+        //     },
+        //     // {menuId: 3, menuName: 'User Type', path:"/UserManagement/UserType",displayNo:0},
+        //     // {menuId: 4, menuName: 'User Permission Master', path:"/UserManagement/UserPermissionMaster",displayNo:0},
+        //   ],
+        // },
 
 
 
