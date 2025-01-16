@@ -335,7 +335,7 @@ export default function FileMaster() {
               </Grid>
 
               <Grid item lg={2} md={2} xs={12} marginTop={2}>
-                {/* <select
+                <select
                   className="language-dropdown"
                   value={lang}
                   onChange={(e) => setLang(e.target.value as Language)}
@@ -345,7 +345,7 @@ export default function FileMaster() {
                       {l.label}
                     </option>
                   ))}
-                </select> */}
+                </select>
               </Grid>
             </Grid>
             <Divider />
@@ -392,7 +392,7 @@ export default function FileMaster() {
                 </Grid>
 
                 <Grid item xs={5} sm={5}>
-                  {/* <TranslateTextField
+                  <TranslateTextField
                     label={t("text.EnterDistrictName")}
                     value={formik.values.cityName}
                     onChangeText={(text: string) =>
@@ -400,8 +400,8 @@ export default function FileMaster() {
                     }
                     required={true}
                     lang={lang}
-                  />*/}
-                  <TextField
+                  />
+                  {/* <TextField
                     label={<CustomLabel text={t("text.EnterDistrictName")} required={true} />}
                     value={formik.values.cityName}
                     placeholder={t("text.EnterDistrictName")}
@@ -412,7 +412,7 @@ export default function FileMaster() {
                     style={{ backgroundColor: "white" }}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                  />
+                  /> */}
                   {formik.touched.cityName && formik.errors.cityName ? (
                     <div style={{ color: "red", margin: "5px" }}>
                       {formik.errors.cityName}

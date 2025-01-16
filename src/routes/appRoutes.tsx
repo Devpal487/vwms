@@ -1,9 +1,6 @@
 
 import RoleMaster from "../pages/UserManagementMaster/RoleMaster/RoleMaster";
 import UserPermissionMaster from "../pages/UserManagementMaster/UserPermissionMaster/UserPermissionMaster";
-import MenuMaster from "../pages/master/Menu/MenuMaster";
-import MenuMasterAdd from "../pages/master/Menu/MenuMasterAdd";
-import MenuMasterEdit from "../pages/master/Menu/MenuMasterEdit";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../loginPage/LoginPage";
 import { RouteType } from "./config";
@@ -11,84 +8,29 @@ import HomeIcon from "@mui/icons-material/Home";
 import DashboardPageLayout from "../pages/master/MasterPageLayout";
 import DashboardIndex from "../pages/master/MasterPageIndex";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import ItemDimension from "../pages/master/ItemDimension/ItemDimention";
-import ItemDimensionAdd from "../pages/master/ItemDimension/ItemDimentionAdd";
-import ItemDimensionEdit from "../pages/master/ItemDimension/ItemDimentionEdit";
-import LightType from "../pages/master/LightType/LightType";
-import LightTypeAdd from "../pages/master/LightType/LightTypeAdd";
-import LightTypeEdit from "../pages/master/LightType/LightTypeEdit";
-import ItemStatus from "../pages/master/ItemStatus/ItemStatus";
-
 import ZoneMaster from "../pages/master/ZoneMaster/ZoneMaster";
-import WardMaster from "../pages/master/WardMaster/WardMaster";
-import DepartmentMaster from "../pages/master/DepartmentMaster/DepartmentMaster";
-import DesignationMaster from "../pages/master/DesignationMaster/DesignationMaster";
 import StateMaster from "../pages/master/StateMaster/StateMaster";
-import GenderMaster from "../pages/master/GenderMaster/GenderMaster";
 import CountryMaster from "../pages/master/CountryMaster/CountryMaster";
 import CityMaster from "../pages/master/CityMaster/CityMaster";
-
-import ItemGroup from "../pages/master/ItemGroup/ItemGroup";
 import Taxmaster from '../pages/master/Taxmaster/Taxmaster';
 import Unitmaster from "../pages/master/Unitmaster/Unitmaster";
-import ItemMasters from "../pages/master/ItemMasters/ItemMasters";
-import Stockledger from "../pages/master/Stockledger/Stockledger";
-import Jurisdiction from "../pages/master/Jurisdiction/Jurisdiction";
-import NodePermission from "../pages/master/NodePermission/NodePermission";
-import PollMaster from "../pages/master/PollMaster/PollMaster";
-import PollMasterAdd from "../pages/master/PollMaster/PollMasterAdd";
-import PollMasterEdit from "../pages/master/PollMaster/PollMasterEdit";
-import PoleType from "../pages/master/PoleType/PoleType";
-// import IndentFormMaster from "../pages/Inventory/IndentForm/IndentFormMaster";
-// import CreateIndentForm from "../pages/Inventory/IndentForm/CreateIndentForm";
-// import EditIndentForm from "../pages/Inventory/IndentForm/EditIndentForm";
-// import CreateComplaint from "../pages/Inventory/Complaint/CreateComplaint";
-// import ComplaintMaster from "../pages/Inventory/Complaint/ComplaintMaster";
-// import EditComplaint from "../pages/Inventory/Complaint/EditComplaint";
-
-import LightMaster from "../pages/master/LightMaster/LightMaster";
-import LightMasterAdd from "../pages/master/LightMaster/LightMasterAdd";
-import LightMasterEdit from "../pages/master/LightMaster/LightMasterEdit";
 import PoleInstallation from "../pages/PoleInstallation/PoleInstallation";
 import PoleInstallationAdd from "../pages/PoleInstallation/PoleInstallationAdd";
 import PoleInstallationEdit from "../pages/PoleInstallation/PoleInstallationEdit";
 import LightInstallation from "../pages/LightInstallation/LightInstallation";
 import LightInstallationAdd from "../pages/LightInstallation/LightInstallationAdd";
 import LightInstallationEdit from "../pages/LightInstallation/LightInstallationEdit";
-
-
-
-
-
-// import PurchaseOrderMaster from "../pages/Inventory/PurchaseOrder/PurchaseOrderMaster";
-// import CreatePurchaseOrder from "../pages/Inventory/PurchaseOrder/CreatePurchaseOrder";
-// import EditPurchaseOrder from "../pages/Inventory/PurchaseOrder/EditPurchaseOrder";
 import MaterialRecieptNoteMaster from "../pages/Inventory/MaterialRecieptNote/MaterialRecieptNoteMaster";
 import CreateMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/CreateMaterialRecieptNote";
 import EditMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/EditMaterialRecieptNote";
-
 import QualityCheckMaster from "../pages/Inventory/QualityCheck/QualityCheckMaster";
 import CreateQualityCheck from "../pages/Inventory/QualityCheck/CreateQualityCheck";
 import EditQualityCheck from "../pages/Inventory/QualityCheck/EditQualityCheck";
 import ItemCategory from "../pages/master/ItemCategory/ItemCategory";
-
 import EmployeeMaster from "../pages/Employee/EmployeeMaster";
 import EmployeeAdd from "../pages/Employee/EmployeeAdd";
 import EmployeeEdit from "../pages/Employee/EmployeeEdit";
 import ItemType from "../pages/master/ItemType/ItemType";
-// EditJobCard from "../pages/Inventory/JobWork/EditJobCard";
-import CreateItemMaster from "../pages/master/ItemMasters/CreateItemMaster";
-import EditItemMaster from "../pages/master/ItemMasters/EditItemMaster";
-import CreateStockledger from "../pages/master/Stockledger/CreateStockledger";
-import EditStockledger from "../pages/master/Stockledger/EditStockledger";
-// import JobCardMaster from "../pages/Inventory/JobWork/JobCardMaster";
-// import CreateJobCard from "../pages/Inventory/JobWork/CreateJobCard";
-// import JobWorkChallanMaster from "../pages/Inventory/Job Work Challan/JobWorkChallanMaster";
-// import CreateJobWorkChallan from "../pages/Inventory/Job Work Challan/CreateJobWorkChallan";
-// import EditJobWorkChallan from "../pages/Inventory/Job Work Challan/EditJobWorkChallan";
-// import JobWorkChallanReceiveMaster from "../pages/Inventory/Job Work Challan Receive/JobWorkChallanReceiveMaster";
-// import CreateJobWorkChallanReceive from "../pages/Inventory/Job Work Challan Receive/CreateJobWorkChallanReceive";
-// import EditJobWorkChallanReceive from "../pages/Inventory/Job Work Challan Receive/EditJobWorkChallanReceive";
 import StaffIndent from "../pages/Inventory/StaffIndent/StaffIndent";
 import CreateStaffIndent from "../pages/Inventory/StaffIndent/CreateStaffIndent";
 import EditStaffIndent from "../pages/Inventory/StaffIndent/EditStaffIndent";
@@ -99,7 +41,6 @@ import StaffItemReturn from "../pages/Inventory/StaffItemReturn/StaffItemReturn"
 import CreateStaffItemReturn from "../pages/Inventory/StaffItemReturn/CreateStaffItemReturn";
 import EditStaffItemReturn from "../pages/Inventory/StaffItemReturn/EditStaffItemReturn";
 import StoreMaster from "../pages/Inventory/StoreMaster/StoreMaster";
-import ComplaintType from "../pages/master/ComplaintType/ComplaintType";
 import Emailsettingmaster from "../pages/Emailsystem/Emailsetting/Emailsettingmaster";
 import EmailcampgianMaster from "../pages/Emailsystem/Emailcampagian/Emailcampagianmaster";
 import CreatemailcampgiontForm from "../pages/Emailsystem/Emailcampagian/Createcampgainform";
@@ -113,16 +54,7 @@ import EditCampaignTemplate from "../pages/Emailsystem/CampaignTemplate/EditCamp
 import Editgroupmaster from "../pages/Emailsystem/Group/Editgroupmaster";
 import Creategroupmaster from "../pages/Emailsystem/Group/Creategroupmaster";
 import Groupmaster from "../pages/Emailsystem/Group/Groupmaster";
-import CreateRosterGroup from "../pages/master/RosterGroup/CreateRosterGroup";
-import RosterGroup from "../pages/master/RosterGroup/RosterGroup";
-import EditRosterGroup from "../pages/master/RosterGroup/EditRosterGroup";
-
-import ComplainAssignMaster from "../pages/master/ComplainAssignMaster/ComplainAssignMaster";
-
-import AreaMaster from "../pages/master/AreaMaster/AreaMaster";
-import RouteMaster from "../pages/master/RouteMaster/RouteMaster";
 import Login_Page from "../loginPage/Login_Page";
-import RosterVisit from "../pages/master/RosterVisit/RosterVisit";
 import LicensingInsuranceMaster from "../pages/VehicleMaster/LicensingInsuranceMaster/LicensingInsuranceMaster";
 import EditLicensingInsuranceMaster from "../pages/VehicleMaster/LicensingInsuranceMaster/EditLicensingInsuranceMaster";
 import AddLicensingInsuranceMaster from "../pages/VehicleMaster/LicensingInsuranceMaster/AddLicensingInsuranceMaster";
@@ -268,24 +200,7 @@ const appRoutes: RouteType[] = [
         element: <DashboardIndex />,
         state: "master.index",
       },
-      {
-        path: "/master/MenuMaster",
-        element: <MenuMaster />,
-        state: "master.MenuMaster",
-        sidebarProps: {
-          displayText: "Menu Master",
-        },
-      },
-      {
-        path: "/master/MenuMasterAdd",
-        element: <MenuMasterAdd />,
-        state: "master.MenuMasterAdd",
-      },
-      {
-        path: "/master/MenuMasterEdit",
-        element: <MenuMasterEdit />,
-        state: "master.MenuMasterEdit",
-      },
+     
       {
         path: "/master/ZoneMaster",
         element: <ZoneMaster />,
@@ -294,30 +209,7 @@ const appRoutes: RouteType[] = [
           displayText: "Zone Master",
         },
       },
-      {
-        path: "/master/WardMaster",
-        element: <WardMaster />,
-        state: "master.WardMaster",
-        sidebarProps: {
-          displayText: "Ward Master",
-        },
-      },
-      {
-        path: "/master/DepartmentMaster",
-        element: <DepartmentMaster />,
-        state: "master.DepartmentMaster",
-        sidebarProps: {
-          displayText: "Department Master",
-        },
-      },
-      {
-        path: "/master/DesignationMaster",
-        element: <DesignationMaster />,
-        state: "master.DesignationMaster",
-        sidebarProps: {
-          displayText: "Designation Master",
-        },
-      },
+     
       {
         path: "/master/CityMaster",
         element: <CityMaster />,
@@ -334,14 +226,7 @@ const appRoutes: RouteType[] = [
           displayText: "State",
         },
       },
-      {
-        path: "/master/GenderMaster",
-        element: <GenderMaster />,
-        state: "master.GenderMaster",
-        sidebarProps: {
-          displayText: "Gender",
-        },
-      },
+     
       {
         path: "/master/CountryMaster",
         element: <CountryMaster />,
@@ -350,52 +235,14 @@ const appRoutes: RouteType[] = [
           displayText: "Country",
         },
       },
-      {
-        path: "/master/ItemDimension",
-        element: <ItemDimension />,
-        state: "master.ItemDimension",
-        sidebarProps: {
-          displayText: "Item Dimension",
-        },
-      },
-      {
-        path: "/master/ItemDimensionAdd",
-        element: <ItemDimensionAdd />,
-        state: "master.ItemDimensionAdd",
-      },
-      {
-        path: "/master/ItemDimensionEdit",
-        element: <ItemDimensionEdit />,
-        state: "master.ItemDimensionEdit",
-      },
-      {
-        path: "/master/LightType",
-        element: <LightType />,
-        state: "master.LightType",
-        sidebarProps: {
-          displayText: "Light Type",
-        },
-      },
-      {
-        path: "/master/LightTypeAdd",
-        element: <LightTypeAdd />,
-        state: "master.LightTypeAdd",
-      },
-      {
-        path: "/master/LightTypeEdit",
-        element: <LightTypeEdit />,
-        state: "master.LightTypeEdit",
-      },
+     
+      
       {
         path: "/master/ItemType",
         element: <ItemType />,
         state: "master.ItemType",
       },
-      {
-        path: "/master/ComplaintType",
-        element: <ComplaintType />,
-        state: "master.ComplaintType",
-      },
+     
       {
         path: "/master/ItemCategory",
         element: <ItemCategory />,
@@ -405,14 +252,7 @@ const appRoutes: RouteType[] = [
         },
       },
 
-      {
-        path: "/master/ItemGroup",
-        element: <ItemGroup />,
-        state: "master.ItemGroup",
-        sidebarProps: {
-          displayText: "Item Group",
-        },
-      },
+      
       {
         path: "/master/Taxmaster",
         element: <Taxmaster />,
@@ -429,154 +269,7 @@ const appRoutes: RouteType[] = [
           displayText: "Unit master",
         },
       },
-      {
-        path: "/master/ItemMasters",
-        element: <ItemMasters />,
-        state: "master.ItemMasters",
-        sidebarProps: {
-          displayText: "Item Masters",
-        },
-      },
-      {
-
-        path: "/master/CreateItemMaster",
-        element: <CreateItemMaster />,
-        state: "master.CreateItemMaster",
-      },
-      {
-        path: "/master/EditItemMaster",
-        element: <EditItemMaster />,
-        state: "master.EditItemMaster",
-
-      },
-      {
-        path: "/master/Stockledger",
-        element: <Stockledger />,
-        state: "master.Stockledger",
-        sidebarProps: {
-          displayText: "Stock Ledger",
-        },
-      },
-      {
-
-        path: "/master/CreateStockledger",
-        element: <CreateStockledger />,
-        state: "master.CreateStockledger",
-      },
-      {
-        path: "/master/EditStockledger",
-        element: <EditStockledger />,
-        state: "master.EditStockledger",
-
-      },
-
-
-      {
-        path: "/master/NodePermission",
-        element: <NodePermission />,
-        state: "master.NodePermission",
-        sidebarProps: {
-          displayText: "Node Permission",
-        },
-      },
-      {
-        path: "/master/PollMaster",
-        element: <PollMaster />,
-        state: "master.PollMaster",
-        sidebarProps: {
-          displayText: "Poll Master",
-        },
-      },
-      {
-        path: "/master/PollMasterAdd",
-        element: <PollMasterAdd />,
-        state: "master.PollMasterAdd",
-
-      },
-      {
-        path: "/master/PollMasterEdit",
-        element: <PollMasterEdit />,
-        state: "master.PollMasterEdit",
-      },
-      {
-        path: "/master/PoleType",
-        element: <PoleType />,
-        state: "master.PoleType",
-        sidebarProps: {
-          displayText: "Pole Type",
-        },
-      },
-
-
-
-      {
-        path: "/master/LightMaster",
-        element: <LightMaster />,
-        state: "master.LightMaster",
-        sidebarProps: {
-          displayText: "Light Master",
-        },
-      },
-      {
-        path: "/master/LightMasterAdd",
-        element: <LightMasterAdd />,
-        state: "master.LightMasterAdd",
-
-      },
-      {
-        path: "/master/LightMasterEdit",
-        element: <LightMasterEdit />,
-        state: "master.LightMasterEdit",
-
-      },
-
-
-      {
-        path: "/master/RosterGroup",
-        element: <RosterGroup />,
-        state: "master.RosterGroup",
-        sidebarProps: {
-          displayText: "Roster Group",
-        }
-      },
-      {
-        path: "/master/CreateRosterGroup",
-        element: <CreateRosterGroup />,
-        state: "master.CreateRosterGroup",
-      },
-      {
-        path: "/master/EditRosterGroup",
-        element: <EditRosterGroup />,
-        state: "master.EditRosterGroup",
-      },
-
-      {
-        path: "/master/ComplainAssignMaster",
-        element: <ComplainAssignMaster />,
-        state: "master.ComplainAssignMaster",
-
-
-      },
-      {
-        path: "/master/AreaMaster",
-        element: <AreaMaster />,
-        state: "master.AreaMaster",
-
-      },
-      {
-        path: "/master/RouteMaster",
-        element: <RouteMaster />,
-        state: "master.RouteMaster",
-
-      },
-      {
-        path: "/master/RosterVisit",
-        element: <RosterVisit />,
-        state: "master.RosterVisit",
-
-      },
-
-
+      
       {
         path: "/master/FolderLocation",
         element: <FolderLocation />,
@@ -1336,19 +1029,6 @@ const appRoutes: RouteType[] = [
           displayText: "Role Master",
         }
       },
-
-
-      {
-        path: "/security/Jurisdiction",
-        element: <Jurisdiction />,
-        state: "security.Jurisdiction",
-        sidebarProps: {
-          displayText: "Jurisdiction with Location",
-        }
-      },
-
-
-
     ],
   },
 

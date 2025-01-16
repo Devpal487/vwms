@@ -291,7 +291,7 @@ export default function ItemType() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -303,7 +303,7 @@ export default function ItemType() {
                   </option>
                 ))}
               </select>
-            </Grid> */}
+            </Grid>
           </Grid>
 
           <Divider />
@@ -314,12 +314,12 @@ export default function ItemType() {
 
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={3}>
-              {/* <Grid item xs={12} lg={4}>
-                <TextField
-                  label={<CustomLabel text={t("text.ItemType")}   required={true}/>}
+              <Grid item xs={12} lg={4}>
+              <TranslateTextField
+                   label={t("text.enteritemType")}
                   value={formik.values.itemType}
-                  onChange={formik.handleChange}
-                 
+                  onChangeText={(text: string) => handleConversionChange('itemType', text)}
+                  required={true}
                   lang={lang}
                 />
                 {formik.touched.itemType && formik.errors.itemType ? (
@@ -327,9 +327,9 @@ export default function ItemType() {
                     {formik.errors.itemType}
                   </div>
                 ) : null}
-              </Grid> */}
+              </Grid>
 
-              <Grid xs={12} lg={4} item>
+              {/* <Grid xs={12} lg={4} item>
                 <TextField
                   label={<CustomLabel text={t("text.enteritemType")} required={true}/>}
                   value={formik.values.itemType}
@@ -347,7 +347,7 @@ export default function ItemType() {
                     {formik.errors.itemType}
                   </div>
                 ) : null}
-              </Grid>
+              </Grid> */}
 
               <Grid xs={12} lg={4} item>
                 <TextField

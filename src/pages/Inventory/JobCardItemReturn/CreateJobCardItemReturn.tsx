@@ -68,38 +68,62 @@ const CreateJobCardItemReturn = (props: Props) => {
     const [selectedAction, setSelectedAction] = useState(null);
     const [items, setItems] = useState<any>([]);
     //const [tableData, setTableData] = useState<any>([]);
-    const [tableData, setTableData] = useState<any>([{
-        "id": 0,
-      "returnId": 0,
-      "itemID": 0,
-      "batchNo": "",
-      "indentId": 0,
-      "returnQty": 0,
-      "issueQty": 0
+    const [tableData, setTableData] = useState<any>([
+        {
+            "id": 0,
+            "returnId": 0,
+            "itemID": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "returnQty": 0,
+            "issueQty": 0
+        },
+        {
+            "id": 0,
+            "returnId": 0,
+            "itemID": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "returnQty": 0,
+            "issueQty": 0
+        }
 
 
-    }]);
+    ]);
 
-    const [tableDatai, setTableDatai] = useState<any>([{
+    const [tableDatai, setTableDatai] = useState<any>([
+        {
+            "id": 0,
+            "issueId": 0,
+            "itemID": 0,
+            "unitId": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "reqQty": 0,
+            "issueQty": 0,
+            "itemName": "",
+            "unitName": "",
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0
+        },
+        {
+            "id": 0,
+            "issueId": 0,
+            "itemID": 0,
+            "unitId": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "reqQty": 0,
+            "issueQty": 0,
+            "itemName": "",
+            "unitName": "",
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0
+        },
 
-
-        "id": 0,
-      "issueId": 0,
-      "itemID": 0,
-      "unitId": 0,
-      "batchNo": "",
-      "indentId": 0,
-      "reqQty": 0,
-      "issueQty": 0,
-      "itemName": "",
-      "unitName": "",
-      "returnItem": true,
-      "indentNo": "",
-      "stockQty": 0
-      
-
-
-    }]);
+    ]);
 
     console.log("🚀 ~ CreateJobCardItemReturn ~ tableData:", tableData)
     const [indentOptions, setIndentOptions] = useState([
@@ -146,11 +170,9 @@ const CreateJobCardItemReturn = (props: Props) => {
         setIndentOptions(arr);
     };
 
-
-
-    const GetIndentIDById = async (itemID: any) => {
+    const GetIndentIDById = async (itemId: any) => {
         const collectData = {
-            indentId: itemID,
+            indentId: itemId,
 
             //indentId: -1,
             indentNo: "",
@@ -167,18 +189,18 @@ const CreateJobCardItemReturn = (props: Props) => {
             id: index + 1,
             "issueId": 0,
 
-
+            rate: item?.rate,
             batchNo: item?.batchNo,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.approveQuantity,
-            reqQty: item?.quantity,
-
+            reqQty: item?.approveQuantity,
+            //reqQty: item?.quantity,
+            // amount: item?.amount,
             unitName: "",
             itemName: "",
-            indentNo: "",
-            "srn": 0,
-            //"unitName": "",
+            // indentNo: "",
+            // "srn": 0,
+
             "returnItem": true
 
 
@@ -188,6 +210,47 @@ const CreateJobCardItemReturn = (props: Props) => {
         setIsIndentSelected(true);
 
     };
+
+    // const GetIndentIDById = async (itemID: any) => {
+    //     const collectData = {
+    //         indentId: itemID,
+
+    //         //indentId: -1,
+    //         indentNo: "",
+    //         empId: -1,
+    //     };
+    //     const response = await api.post(`Master/GetIndent`, collectData);
+    //     const data = response.data.data[0]['indentDetail'];
+
+    //     console.log("indent option", data)
+    //     // let arr: any = [];
+
+    //     const indent = data.map((item: any, index: any) => ({
+
+    //         id: index + 1,
+    //         "issueId": 0,
+
+
+    //         batchNo: item?.batchNo,
+    //         itemID: item?.itemId,
+    //         unitId: item?.unitId,
+    //         issueQty: item?.approveQuantity,
+    //         reqQty: item?.quantity,
+
+    //         unitName: "",
+    //         itemName: "",
+    //         indentNo: "",
+    //         "srn": 0,
+    //         //"unitName": "",
+    //         "returnItem": true
+
+
+    //     }))
+
+    //     setTableData(indent);
+    //     setIsIndentSelected(true);
+
+    // };
 
     console.log("check table", tableData)
     const [showIndentField, setShowIndentField] = useState(false);
@@ -207,7 +270,7 @@ const CreateJobCardItemReturn = (props: Props) => {
         setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
     };
     const GetUnitData = async () => {
-        
+
         const collectData = {
             unitId: -1,
         };
@@ -268,7 +331,7 @@ const CreateJobCardItemReturn = (props: Props) => {
             "updatedOn": defaultValues,
 
 
-          
+
             itemIssueDetail: [],
             itemReturnDetail: []
 
@@ -310,22 +373,23 @@ const CreateJobCardItemReturn = (props: Props) => {
         // },
         onSubmit: async (values) => {
             const validTableData = tableData.filter((row: any) => row.returnQty > 0);
-        
-            if (validTableData.length === 0) {
-                toast.error("Please add valid return quantities before submission!");
-                return;
-            }
-        
+            const validTableDatai = tableDatai.filter((row: any) => row.issueQty > 0);
+            // if (validTableData.length === 0) {
+            //     alert("Please add valid return quantities before submission!");
+            //     return;
+            // }
+
             const payload = {
                 ...values,
                 itemReturnDetail: validTableData,
+                itemIssueDetail: validTableDatai,
             };
-        
+
             console.log("Submitting payload:", payload);
-        
+
             try {
                 const response = await api.post(`Master/UpsertItemReturn`, payload);
-        
+
                 if (response.data.status === 1) {
                     toast.success(response.data.message);
                     navigate("/Inventory/JobCardItemReturn");
@@ -337,7 +401,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                 toast.error("Failed to submit data. Please check the console for details.");
             }
         },
-        
+
     });
     // const handleShowDetails = () => {
     //     setShowIndentField(true); // Show the indent field
@@ -351,18 +415,109 @@ const CreateJobCardItemReturn = (props: Props) => {
         setOpenDialog(true);
     };
 
-
     const handleInputChange = (index: any, field: any, value: any) => {
-        const updatedData = [...tableData];
-        updatedData[index][field] = value;
+        const newData: any = [...tableData];
+        newData[index][field] = value;
+
+        if (field === 'returnId') {
+            newData[index].returnId = newData[index].returnId;
+            //  newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+        }
+
+        if (field === 'itemID') {
+            newData[index].itemID = newData[index].itemID;
+        }
+        if (field === 'batchNo') {
+            newData[index].batchNo = newData[index].batchNo;
+            // newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
+        }
+        if (field === 'indentId') {
+            newData[index].indentId = newData[index].indentId;
+        }
+        if (field === 'returnQty') {
+            newData[index].returnQty = newData[index].returnQty;
+        }
+        if (field === 'issueQty') {
+            newData[index].issueQty = newData[index].issueQty;
+        }
 
 
+        //  newData[index].jobCardId = formik.values.jobCardId;
 
-        setTableData(updatedData);
+        newData[index].id = index;
+        setTableData(newData);
+
+        if (newData[index].itemID && newData[index].batchNo && newData[index].indentId) {
+            if (index === tableData.length - 1) {
+                addRow();
+
+            }
+        }
+
+        // let total = 0;
+        // tableData.forEach((row:any) => {
+        //   total += row.amount;
+        // })
+        // formik.setFieldValue("netAmount", total);
+        // formik.setFieldValue("totalServiceAmount", total);
+        // formik.setFieldValue("totalItemAmount", total);
     };
+
+
+    const handleInputChange1 = (index: any, field: any, value: any) => {
+        const newData: any = [...tableDatai];
+        newData[index][field] = value;
+
+        if (field === 'itemID') {
+            newData[index].itemID = newData[index].itemID;
+            // newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+        }
+
+        if (field === 'unitId') {
+            newData[index].unitId = newData[index].unitId;
+        }
+
+        if (field === 'batchNo') {
+            newData[index].batchNo = newData[index].batchNo;
+        }
+
+        // newData[index].jobCardId = formik.values.jobCardId;
+
+        newData[index].id = index;
+        setTableDatai(newData);
+
+        if (newData[index].itemID && newData[index].unitId && newData[index].batchNo) {
+            if (index === tableDatai.length - 1) {
+                handleAddItem();
+
+            }
+        }
+
+        // let total = 0;
+        // tableDatai.forEach((row: any) => {
+        //   total += row.amount;
+        // })
+        // formik.setFieldValue("netAmount", total);
+        // formik.setFieldValue("totalServiceAmount", total);
+        // formik.setFieldValue("totalItemAmount", total);
+    };
+
+
+    // const handleInputChange = (index: any, field: any, value: any) => {
+    //     const updatedData = [...tableData];
+    //     updatedData[index][field] = value;
+
+
+
+    //     setTableData(updatedData);
+    // };
     const deleteRow = (index: number) => {
         const updatedData = tableData.filter((_: any, i: number) => i !== index);
         setTableData(updatedData);
+    };
+    const deleteRow1 = (index: number) => {
+        const updatedData1 = tableDatai.filter((_: any, i: number) => i !== index);
+        setTableDatai(updatedData1);
     };
 
 
@@ -382,7 +537,7 @@ const CreateJobCardItemReturn = (props: Props) => {
             setTableDatai(response); // Set `itemIssueDetail` for modal
         }
     };
-    
+
     // const handleIndentChange = async (event: any, newValue: any) => {
     //     if (newValue) {
     //         formik.setFieldValue("returnIndentNo", newValue.label.toString());
@@ -395,24 +550,38 @@ const CreateJobCardItemReturn = (props: Props) => {
     // };
     const back = useNavigate();
 
-
-
     const addRow = () => {
-        setTableData([...tableData, {
+        setTableData([
+            ...tableData,
+            {
+                "id": 0,
+                "returnId": 0,
+                "itemID": 0,
+                "batchNo": "string",
+                "indentId": 0,
+                "returnQty": 0,
+                "issueQty": 0
+            },
+        ]);
+    };
+
+    const handleAddItem = () => {
+        setTableDatai([...tableDatai, {
+
+
             "id": 0,
             "issueId": -1,
             "itemID": 0,
+            "unitId": 0,
             "batchNo": "",
             "indentId": 0,
-            "unitId": 0,
             "reqQty": 0,
             "issueQty": 0,
-            "stockQty": 0,
             "itemName": "",
-            "indentNo": "",
-            "srn": 0,
             "unitName": "",
-            "returnItem": true
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0
         }]);
     };
     const handleAddIndent = () => {
@@ -423,17 +592,17 @@ const CreateJobCardItemReturn = (props: Props) => {
                 indentNo: formik.values.returnIndentNo, // Add indent number to each row
             })),
         ];
-    
+
         // Remove duplicates by itemID (or another unique identifier)
         const uniqueData = mergedData.filter(
             (item, index, self) =>
                 index === self.findIndex((t) => t.itemID === item.itemID)
         );
-    
-        setTableData(uniqueData);
+
+        setTableDatai(uniqueData);
         setOpenDialog(false); // Close modal
     };
-    
+
 
     return (
         <div>
@@ -525,132 +694,148 @@ const CreateJobCardItemReturn = (props: Props) => {
 
                                     {/* Autocomplete to Select Indent */}
                                     <Grid item lg={4} xs={12}>
-                                    <Autocomplete
-                                        disablePortal
-                                        id="combo-box-demo"
-                                        options={indentOptions}
-                                        fullWidth
-                                        size="small"
-                                        onChange={(event: any, newValue: any) => {
-                                            console.log("check value", newValue);
-                                            if (newValue) {
-                                                GetIndentIDById(newValue?.value);
-                                                formik.setFieldValue("indentId", newValue?.value);
-                                                formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
-                                            }
-                                        }}
-                                        // value={
-                                        //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null
-                                        // }
-                                        renderInput={(params: any) => (
-                                            <TextField
-                                                {...params}
-                                                label="Search Indent"
-                                                placeholder="Search for an indent..."
-                                            />
-                                        )}
-                                    />
+                                        <Autocomplete
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={indentOptions}
+                                            fullWidth
+                                            size="small"
+                                            onChange={(event: any, newValue: any) => {
+                                                console.log("check value", newValue);
+                                                if (newValue) {
+                                                    GetIndentIDById(newValue?.value);
+                                                    formik.setFieldValue("indentId", newValue?.value);
+                                                    formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
+                                                }
+                                            }}
+                                            // value={
+                                            //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null
+                                            // }
+                                            renderInput={(params: any) => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Search Indent"
+                                                    placeholder="Search for an indent..."
+                                                />
+                                            )}
+                                        />
                                     </Grid>
                                     {isIndentSelected && (
                                         <Grid item xs={12}>
                                             <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                                            <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black', marginTop: "2%" }}>
-                                                <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                                                    <tr>
-                                                        {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
-                                                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
+                                                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black', marginTop: "2%" }}>
+                                                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                                                        <tr>
                                                         <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {tableDatai.map((row: any, index: any) => (
-                                                        <tr key={row.id} style={{ border: '1px solid black' }}>
-                                                            <td
-                                                                style={{
-                                                                    border: "1px solid black",
-                                                                    // textAlign: "center",
-                                                                }}
-                                                            >
-                                                                <Autocomplete
-                                                                    disablePortal
-                                                                    id="combo-box-demo"
-                                                                    options={itemOption}
-                                                                    value={
-                                                                        itemOption.find((opt) => (opt.value) === parseInt(row?.itemID)) || null
-                                                                    }
-                                                                    fullWidth
-                                                                    size="small"
-                                                                    onChange={(e: any, newValue: any) =>
-                                                                        handleInputChange(
-                                                                            index,
-                                                                            "itemID",
-                                                                            newValue?.value
-                                                                        )
-                                                                    }
-                                                                    renderInput={(params) => (
-                                                                        <TextField
-                                                                            {...params}
-                                                                           
-                                                                        />
-                                                                    )}
-                                                                />
-                                                            </td>
-                                                            <td style={{ border: "1px solid black", textAlign: "center" }}>
-                                                                <Autocomplete
-                                                                    disablePortal
-                                                                    id="combo-box-demo"
-                                                                    options={unitOptions}
-                                                                    value={
-                                                                        unitOptions.find((opt) => (opt.value) === row?.unitId) || null
-                                                                    }
-                                                                    fullWidth
-                                                                    size="small"
-                                                                    onChange={(e, newValue: any) =>
-                                                                        handleInputChange(index, "unitId", newValue?.value)
-                                                                    }
-                                                                    renderInput={(params: any) => (
-                                                                        <TextField
-                                                                            {...params}
-                                                                          
-                                                                        />
-                                                                    )}
-                                                                />
-                                                            </td>
-                                                            <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                                                                <TextField
-                                                                   // type="number"
-                                                                    size="small"
-                                                                    // type="text"
-                                                                    value={row.batchNo}
-                                                                    onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                                />
-                                                            </td>
-
-                                                            <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                                                                <TextField
-                                                                   // type="number"
-                                                                    size="small"
-                                                                    // type="text"
-                                                                    value={row.reqQty}
-                                                                    onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
-                                                                />
-                                                            </td>
-
-                                                            <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
-                                                                <DeleteIcon />
-                                                            </td>
+                                                            {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
+                                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
+                                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
+                                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batch No</th>
+                                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Pending Qty</th>
+                                                          
                                                         </tr>
-                                                    ))}
-                                                </tbody>
+                                                    </thead>
+                                                    <tbody>
+                                                        {tableDatai.map((row: any, index: any) => (
+                                                            <tr key={row.id} style={{ border: '1px solid black' }}>
+                                                                <td
+                                                                    style={{
+                                                                        border: "1px solid black",
+                                                                        textAlign: "center",
+                                                                    }}
+                                                                >
+                                                                    <DeleteIcon
+                                                                        onClick={() => {
+                                                                            if (tableDatai.length > 1) {
+                                                                                deleteRow1(index)
+                                                                            } else {
+                                                                                alert("Atleast one row should be there");
+                                                                            }
+                                                                        }}
+                                                                        style={{ cursor: "pointer" }}
+                                                                    />
+                                                                </td>
+                                                                <td
+                                                                    style={{
+                                                                        border: "1px solid black",
+                                                                        // textAlign: "center",
+                                                                    }}
+                                                                >
+                                                                    <Autocomplete
+                                                                        disablePortal
+                                                                        id="combo-box-demo"
+                                                                        options={itemOption}
+                                                                        value={
+                                                                            itemOption.find((opt) => (opt.value) === parseInt(row?.itemID)) || null
+                                                                        }
+                                                                        fullWidth
+                                                                        size="small"
+                                                                        onChange={(e: any, newValue: any) =>
+                                                                            handleInputChange1(
+                                                                                index,
+                                                                                "itemID",
+                                                                                newValue?.value
+                                                                            )
+                                                                        }
+                                                                        renderInput={(params) => (
+                                                                            <TextField
+                                                                                {...params}
 
-                                            </Table>
-                                        </div> </Grid>
+                                                                            />
+                                                                        )}
+                                                                    />
+                                                                </td>
+                                                                <td style={{ border: "1px solid black", textAlign: "center" }}>
+                                                                    <Autocomplete
+                                                                        disablePortal
+                                                                        id="combo-box-demo"
+                                                                        options={unitOptions}
+                                                                        value={
+                                                                            unitOptions.find((opt) => (opt.value) === row?.unitId) || null
+                                                                        }
+                                                                        fullWidth
+                                                                        size="small"
+                                                                        onChange={(e, newValue: any) =>
+                                                                            handleInputChange1(index, "unitId", newValue?.value)
+                                                                        }
+                                                                        renderInput={(params: any) => (
+                                                                            <TextField
+                                                                                {...params}
+
+                                                                            />
+                                                                        )}
+                                                                    />
+                                                                </td>
+                                                                <td style={{ border: '1px solid black', textAlign: 'center' }}>
+                                                                    <TextField
+                                                                        // type="number"
+                                                                        size="small"
+                                                                        // type="text"
+                                                                        value={row.batchNo}
+                                                                        onChange={(e) => handleInputChange1(index, 'batchNo', e.target.value)}
+                                                                    />
+                                                                </td>
+
+                                                                <td style={{ border: '1px solid black', textAlign: 'center' }}>
+                                                                    <TextField
+                                                                        // type="number"
+                                                                        size="small"
+                                                                        // type="text"
+                                                                        value={row.reqQty}
+                                                                        onChange={(e) => handleInputChange1(index, 'reqQty', e.target.value)}
+                                                                    />
+                                                                </td>
+
+
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+
+                                                </Table>
+                                            </div> </Grid>
                                     )}
-                                {/* Add Indent Button */}
-                                                  {/* <Button
+                                    {/* Add Indent Button */}
+                                    {/* <Button
                                                       variant="contained"
                                                       color="secondary"
                                                       onClick={() => alert("Add Indent functionality not implemented yet!")}
@@ -659,24 +844,24 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                       Add Indent
                                                   </Button> */}
 
-<Button
-    variant="contained"
-    color="secondary"
-    onClick={handleAddIndent}
-    style={{ marginTop: "10px" }}
->
-    Add Indent
-</Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={handleAddIndent}
+                                        style={{ marginTop: "10px" }}
+                                    >
+                                        Add Indent
+                                    </Button>
 
 
 
-                                              </DialogContent>
-                                              <DialogActions>
-                                                  <Button onClick={handleCloseDialog} color="primary">
-                                                      Close
-                                                  </Button>
-                                              </DialogActions>
-                                          </Dialog>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDialog} color="primary">
+                                        Close
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
 
 
 
@@ -684,23 +869,40 @@ const CreateJobCardItemReturn = (props: Props) => {
                                 <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                         <tr>
+                                        <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
                                             {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batch No.</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stock Qty</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>req Qty</th>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issue Qty</th>
+                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Pending Qty</th>
+                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Return Qty</th>
+                                            {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issue Qty</th> */}
 
                                             {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                            <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {tableData.map((row: any, index: any) => (
                                             <tr key={row.id} style={{ border: '1px solid black' }}>
-
+<td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
 
                                                 <td
                                                     style={{
@@ -728,45 +930,48 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         renderInput={(params) => (
                                                             <TextField
                                                                 {...params}
-                                                                // label={
-                                                                //     <CustomLabel
-                                                                //         text={t("text.selectItem")}
-                                                                //         required={false}
-                                                                //     />
-                                                                // }
+                                                            // label={
+                                                            //     <CustomLabel
+                                                            //         text={t("text.selectItem")}
+                                                            //         required={false}
+                                                            //     />
+                                                            // }
                                                             />
                                                         )}
                                                     />
                                                 </td>
 
-                                                      <td
-                                                                            style={{
-                                                                              border: "1px solid black",
-                                                
-                                                                            }}
-                                                                          >
-                                                                            <Autocomplete
-                                                                              disablePortal
-                                                                              id="combo-box-demo"
-                                                                              options={indentOptions}
-                                                                              fullWidth
-                                                                              size="small"
-                                                                              onChange={(e: any, newValue: any) => {
-                                                                                console.log(newValue?.value);
-                                                                                handleInputChange(index, 'indentId', newValue?.value);
-                                                                                handleInputChange(index, 'indentNo', newValue?.label);
-                                                                              }}
-                                                
-                                                                              renderInput={(params: any) => (
-                                                                                <TextField
-                                                                                  {...params}
-                                                                                  // label={
-                                                                                  //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
-                                                                                  // }
-                                                                                />
-                                                                              )}
-                                                                            />
-                                                                          </td>
+                                                <td
+                                                    style={{
+                                                        border: "1px solid black",
+
+                                                    }}
+                                                >
+                                                    <Autocomplete
+                                                        disablePortal
+                                                        id="combo-box-demo"
+                                                        options={indentOptions}
+                                                        value={
+                                                            indentOptions.find((opt: any) => (opt.value) === parseInt(row?.indentId)) || null
+                                                        }
+                                                        fullWidth
+                                                        size="small"
+                                                        onChange={(e: any, newValue: any) => {
+                                                            console.log(newValue?.value);
+                                                            handleInputChange(index, 'indentId', newValue?.value);
+                                                            handleInputChange(index, 'indentNo', newValue?.label);
+                                                        }}
+
+                                                        renderInput={(params: any) => (
+                                                            <TextField
+                                                                {...params}
+                                                            // label={
+                                                            //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
+                                                            // }
+                                                            />
+                                                        )}
+                                                    />
+                                                </td>
                                                 <td style={{ border: "1px solid black", textAlign: "center" }}>
                                                     <Autocomplete
                                                         disablePortal
@@ -783,49 +988,42 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         renderInput={(params: any) => (
                                                             <TextField
                                                                 {...params}
-                                                             //   label={<CustomLabel text={t("text.selectUnit")} />}
+                                                            //   label={<CustomLabel text={t("text.selectUnit")} />}
                                                             />
                                                         )}
                                                     />
                                                 </td>
                                                 <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                     <TextField
-                                                        type="number"
+                                                        //  type="number"
                                                         size="small"
                                                         // type="text"
                                                         value={row.batchNo}
                                                         onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
                                                     />
                                                 </td>
+
                                                 <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                     <TextField
-                                                        type="number"
-                                                        size="small"
-                                                        value={row.stockQty || 0}
-                                                        onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
-                                                    />
-                                                </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                    <TextField
-                                                        type="number"
-                                                        size="small"
-                                                        // type="text"
-                                                        value={row.reqQty}
-                                                        onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
-                                                    />
-                                                </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                    <TextField
-                                                        type="number"
+                                                        //type="number"
                                                         size="small"
                                                         // type="text"
                                                         value={row.issueQty}
                                                         onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
                                                     />
                                                 </td>
-                                                <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
-                                                    <DeleteIcon />
+                                                <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                    <TextField
+                                                        //   type="number"
+                                                        size="small"
+                                                        // type="text"
+                                                        value={row.returnQty}
+                                                        onChange={(e) => handleInputChange(index, 'returnQty', e.target.value)}
+                                                    />
                                                 </td>
+                                                {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                    <DeleteIcon />
+                                                </td> */}
                                             </tr>
                                         ))}
                                     </tbody>

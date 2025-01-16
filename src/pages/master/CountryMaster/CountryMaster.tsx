@@ -322,7 +322,19 @@ export default function CountryMaster() {
             <form onSubmit={formik.handleSubmit}>
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={5}>
-                  <TranslateTextField
+                <TranslateTextField
+  label={t("text.EnterCountryName")}
+  value={formik.values.countryName}
+  onChangeText={(text: string) => handleConversionChange("countryName", text)}
+  required={true}
+  lang={lang}
+  suggestions={["Suggestion 1", "Suggestion 2", "Suggestion 3"]} // Example suggestions
+  onBlur={() => {
+    formik.setFieldTouched("countryName", true);
+  }}
+/>
+
+                  {/* <TranslateTextField
                     label={t("text.EnterCountryName")}
                     value={formik.values.countryName}
                     onChangeText={(text: string) =>
@@ -330,7 +342,7 @@ export default function CountryMaster() {
                     }
                     required={true}
                     lang={lang}
-                  />
+                  /> */}
                   {/* <TextField
                     label={<CustomLabel text={t("text.EnterCountryName")} required={true} />}
                     value={formik.values.countryName}
@@ -352,7 +364,23 @@ export default function CountryMaster() {
                 </Grid>
 
                 <Grid item xs={5}>
-                  <TextField
+                <TextField
+  label={<CustomLabel text={t("text.EnterCountryCode")} />}
+  value={formik.values.countryCode}
+  placeholder={t("text.EnterCountryCode")}
+  size="small"
+  fullWidth
+  name="countryCode"
+  id="countryCode"
+  style={{ backgroundColor: "white" }}
+  onChange={formik.handleChange}
+  onBlur={(e) => {
+    formik.handleBlur(e); // Keep formik's default blur handling
+    formik.setFieldTouched("countryName", false); // Clear translation suggestions for the previous field
+  }}
+/>
+
+                  {/* <TextField
                     label={<CustomLabel text={t("text.EnterCountryCode")} />}
                     value={formik.values.countryCode}
                     placeholder={t("text.EnterCountryCode")}
@@ -363,7 +391,7 @@ export default function CountryMaster() {
                     style={{ backgroundColor: "white" }}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                  />
+                  /> */}
                 </Grid>
                 <Grid item xs={2} sx={{ m: -1 }}>
                   {editId === 0 && (

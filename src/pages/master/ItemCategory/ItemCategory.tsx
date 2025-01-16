@@ -337,7 +337,7 @@ export default function ItemCategory() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -349,7 +349,7 @@ export default function ItemCategory() {
                   </option>
                 ))}
               </select>
-            </Grid> */}
+            </Grid>
           </Grid>
 
           <Divider />
@@ -423,20 +423,14 @@ export default function ItemCategory() {
                 />
               </Grid>
               <Grid item xs={12} sm={4} lg={4}>
-                <TextField
-                  label={
-                    <CustomLabel
-                      text={t("text.EnteritemCategory")}
-                      required={true}
-                    />
-                  }
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  name="itemCategory"
-                  id="itemCategory"
+              <TranslateTextField
+                  label={t("text.EnteritemCategory")}
                   value={formik.values.itemCategory}
-                onChange={formik.handleChange}
+                  onChangeText={(text: string) => handleConversionChange('itemCategory', text)}
+                 
+                  required={true}
+                  lang={lang}
+               
                 
                 />
                 {formik.touched.itemCategory && formik.errors.itemCategory ? (
@@ -447,7 +441,7 @@ export default function ItemCategory() {
               </Grid>
 
               <Grid item xs={12} sm={4} lg={4}>
-                <TextField
+                {/* <TextField
                   label={
                     <CustomLabel
                       text={t("text.EnteritemCategoryAbbre")}
@@ -462,6 +456,17 @@ export default function ItemCategory() {
                   value={formik.values.itemCategoryAbbre}
                   placeholder={t("text.EnteritemCategoryAbbre")}
                   onChange={formik.handleChange}
+                /> */}
+
+<TranslateTextField
+                  label={t("text.EnteritemCategoryAbbre")}
+                  value={formik.values.itemCategoryAbbre}
+                  onChangeText={(text: string) => handleConversionChange('itemCategoryAbbre', text)}
+                 
+                  required={true}
+                  lang={lang}
+               
+                
                 />
               </Grid>
 

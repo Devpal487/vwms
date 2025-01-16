@@ -307,7 +307,7 @@ export default function ZoneMaster() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -319,7 +319,7 @@ export default function ZoneMaster() {
                   </option>
                 ))}
               </select>
-            </Grid>*/}
+            </Grid>
 
           </Grid>
           <Divider />
@@ -328,7 +328,7 @@ export default function ZoneMaster() {
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={2}>
               <Grid xs={12} sm={5} lg={5} item>
-                {/* <TranslateTextField
+                <TranslateTextField
                   label={t("text.enterZoneName")}
                   value={formik.values.zoneName}
                   onChangeText={(text: string) =>
@@ -336,8 +336,8 @@ export default function ZoneMaster() {
                   }
                   required={true}
                   lang={lang}
-                /> */}
-                <TextField
+                />
+                {/* <TextField
                   label={
                     <CustomLabel
                       text={t("text.enterZoneName")}
@@ -352,7 +352,7 @@ export default function ZoneMaster() {
                   value={formik.values.zoneName}
                   placeholder={t("text.enterZoneName")}
                   onChange={formik.handleChange}
-                />
+                /> */}
                 {formik.touched.zoneName && formik.errors.zoneName ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.zoneName}
@@ -399,7 +399,7 @@ export default function ZoneMaster() {
               </Grid>
             </Grid>
           </form>
-
+{/* 
           {isLoading ? (
             <div
               style={{
@@ -410,7 +410,7 @@ export default function ZoneMaster() {
             >
               <CircularProgress />
             </div>
-          ) : (
+          ) : ( */}
             <DataGrids
               isLoading={isLoading}
               rows={zones}
@@ -418,7 +418,7 @@ export default function ZoneMaster() {
               pageSizeOptions={[5, 10, 25, 50, 100]}
               initialPageSize={5}
             />
-          )}
+     
         </Paper>
       </Card>
       <ToastApp />

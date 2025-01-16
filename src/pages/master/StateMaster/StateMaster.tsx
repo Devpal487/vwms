@@ -336,7 +336,7 @@ export default function StateMaster() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -348,7 +348,7 @@ export default function StateMaster() {
                   </option>
                 ))}
               </select>
-            </Grid> */}
+            </Grid>
           </Grid>
 
           <Divider />
@@ -399,7 +399,7 @@ export default function StateMaster() {
               </Grid>
 
               <Grid item xs={3.5} sm={3.5}>
-                {/* <TranslateTextField
+                <TranslateTextField
                   label={t("text.EnterStateName")}
                   value={formik.values.stateName}
                   onChangeText={(text: string) =>
@@ -407,8 +407,8 @@ export default function StateMaster() {
                   }
                   required={true}
                   lang={lang}
-                /> */}
-                <TextField
+                />
+                {/* <TextField
                   label={<CustomLabel text={t("text.EnterStateName")} required={true} />}
                   value={formik.values.stateName}
                   name="stateName"
@@ -419,7 +419,7 @@ export default function StateMaster() {
                   style={{ backgroundColor: "white" }}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                />
+                /> */}
                 {formik.touched.stateName && formik.errors.stateName ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.stateName}
