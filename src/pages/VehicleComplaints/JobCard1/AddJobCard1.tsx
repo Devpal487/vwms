@@ -2272,7 +2272,7 @@ const AddJobCard1 = (props: Props) => {
       gstid: 0,
 
     },
-   
+
   ]);
 
   const [vehicleName, setVehicleName] = useState("");
@@ -2507,7 +2507,7 @@ const AddJobCard1 = (props: Props) => {
 
     onSubmit: async (values) => {
       const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
-      const validItemDetails = tableData1.filter((row:any) => row.itemId && row.qty > 0 && row.rate > 0);
+      const validItemDetails = tableData1.filter((row: any) => row.itemId && row.qty > 0 && row.rate > 0);
 
       // if (validServiceDetails.length === 0) {
       //   toast.error("Add valid service details.");
@@ -2574,7 +2574,7 @@ const AddJobCard1 = (props: Props) => {
   //   updatedServiceDetails[index][field] = value;
   //   formik.setFieldValue("serviceDetail", updatedServiceDetails);
 
-    
+
   // };
 
 
@@ -2625,8 +2625,8 @@ const AddJobCard1 = (props: Props) => {
     //   newData[index].unitName = newData[index].unitName;
     // }
     newData[index].jobCardId = formik.values.jobCardId;
-  //  newData[index].amount = newData[index].unitRate * newData[index].qty;
-  //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    //  newData[index].amount = newData[index].unitRate * newData[index].qty;
+    //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
     newData[index].id = index;
     setTableData(newData);
 
@@ -2636,7 +2636,7 @@ const AddJobCard1 = (props: Props) => {
         //setIsVisibleJWC(true);
       }
     }
-    
+
     let total = 0;
     tableData.forEach(row => {
       total += row.amount;
@@ -2706,8 +2706,8 @@ const AddJobCard1 = (props: Props) => {
     //   newData[index].unitName = newData[index].unitName;
     // }
     newData[index].jobCardId = formik.values.jobCardId;
-   // newData[index].amount = newData[index].unitRate * newData[index].qty;
-   // newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    // newData[index].amount = newData[index].unitRate * newData[index].qty;
+    // newData[index].netAmount = newData[index].unitRate * newData[index].qty;
     newData[index].id = index;
     setTableData1(newData);
 
@@ -2717,9 +2717,9 @@ const AddJobCard1 = (props: Props) => {
         //setIsVisibleJWC(true);
       }
     }
-    
+
     let total = 0;
-    tableData1.forEach((row:any) => {
+    tableData1.forEach((row: any) => {
       total += row.amount;
     })
     formik.setFieldValue("netAmount", total);
@@ -3065,6 +3065,9 @@ const AddJobCard1 = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -3148,7 +3151,7 @@ const AddJobCard1 = (props: Props) => {
                   }}
                 />
               </Grid>
-{/* 
+              {/* 
               <Grid item lg={12} md={12} xs={12} >
                 <ReactQuill
                   id="complaint"
@@ -3162,7 +3165,7 @@ const AddJobCard1 = (props: Props) => {
                   placeholder="Enter your complaint here"
                 />
               </Grid> */}
-   <Grid item xs={12} md={4} sm={4}>
+              <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -3188,7 +3191,7 @@ const AddJobCard1 = (props: Props) => {
 
 
 
-  <Grid item xs={12}>
+              <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
@@ -3206,12 +3209,12 @@ const AddJobCard1 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>
-                    {tableData.map((row, index) => (
+                      {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                      {/* {formik.values.serviceDetail.map((row, index) => (
+                          {/* {formik.values.serviceDetail.map((row, index) => (
                         <tr key={index}> */}
 
-<td
+                          <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -3257,6 +3260,9 @@ const AddJobCard1 = (props: Props) => {
                               sx={{ width: "225px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, "serviceId", newValue?.value)
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -3265,12 +3271,12 @@ const AddJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  // label={
-                                  //   <CustomLabel
-                                  //     text={t("text.SelectServices")}
-                                  //     required={false}
-                                  //   />
-                                  // }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.SelectServices")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -3290,18 +3296,21 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
                               sx={{ width: "140px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  // label={
-                                  //   <CustomLabel
-                                  //     text={t("text.Status")}
-                                  //     required={false}
-                                  //   />
-                                  // }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Status")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -3320,6 +3329,9 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'vendorId', newValue?.value);
                                 handleInputChange(index, 'vendorName', newValue?.label);
@@ -3328,57 +3340,57 @@ const AddJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  // label={
-                                  //   <CustomLabel
-                                  //     text={t("text.Vendor")}
-                                  //     required={false}
-                                  //   />
-                                  // }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Vendor")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
                           </td>
 
                           <td style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
-                            }}
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
                           >
                             <TextField
                               value={row.amount}
                               onChange={(e) =>
-                                handleInputChange(index, "amount", parseFloat(e.target.value)||0)
+                                handleInputChange(index, "amount", parseFloat(e.target.value) || 0)
                               }
-                               size="small"
+                              size="small"
                             />
                           </td>
                           <td style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
-                            }}
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
                           >
                             <TextField
                               value={row.netAmount}
                               onChange={(e) =>
-                                handleInputChange(index, "netAmount", parseFloat(e.target.value)||0)
+                                handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
-                               size="small"
+                              size="small"
                             />
                           </td>
                           <td style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
-                            }}
+                            border: "1px solid black",
+                            textAlign: "center",
+                            width: "10rem"
+                          }}
                           >
                             <TextField
                               value={row.netAmount}
                               onChange={(e) =>
-                                handleInputChange(index, "netAmount", parseFloat(e.target.value)||0)
+                                handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
-                               size="small"
+                              size="small"
                             />
                           </td>
                           <td
@@ -3391,9 +3403,9 @@ const AddJobCard1 = (props: Props) => {
                             <TextField
                               value={row.challanNo}
                               onChange={(e) =>
-                                handleInputChange(index, "challanNo", parseFloat(e.target.value)||0)
+                                handleInputChange(index, "challanNo", parseFloat(e.target.value) || 0)
                               }
-                               size="small"
+                              size="small"
                             />
                           </td>
                           <td
@@ -3487,7 +3499,7 @@ const AddJobCard1 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>
-                    {tableData1.map((row:any, index:any) => (
+                      {tableData1.map((row: any, index: any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
                           <td
                             style={{
@@ -3521,7 +3533,7 @@ const AddJobCard1 = (props: Props) => {
                               }}
                             />
                           </td> */}
-                        
+
 
                           <td
                             style={{
@@ -3536,13 +3548,16 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               sx={{ width: "225px" }}
-                              onChange={(e: any, newValue: any) =>
+                              onChange={(e: any, newValue: any) =>{
+                                if (!newValue) {
+                                return;
+                              }
                                 handleInputChange1(
                                   index,
                                   "itemId",
                                   newValue?.value
                                 )
-                              }
+                              }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -3567,6 +3582,9 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange1(index, 'unitId', newValue?.value);
                                 handleInputChange1(index, 'unitName', newValue?.label);
@@ -3574,12 +3592,12 @@ const AddJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                  // label={
-                                  //   <CustomLabel
-                                  //     text={t("text.Unit")}
-                                  //     required={false}
-                                  //   />
-                                  // }
+                                // label={
+                                //   <CustomLabel
+                                //     text={t("text.Unit")}
+                                //     required={false}
+                                //   />
+                                // }
                                 />
                               )}
                             />
@@ -3598,7 +3616,7 @@ const AddJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onChange={(e) =>
-                                handleInputChange1(index, "qty", parseFloat(e.target.value)||0)
+                                handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
                               }
                             />
                           </td>
@@ -3612,7 +3630,7 @@ const AddJobCard1 = (props: Props) => {
                             <TextField
                               value={row.rate}
                               onChange={(e) =>
-                                handleInputChange1(index, "rate", parseFloat(e.target.value)||0)
+                                handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
                               }
                               size="small"
                               inputProps={{ "aria-readonly": true }}
@@ -3628,7 +3646,7 @@ const AddJobCard1 = (props: Props) => {
                             <TextField
                               value={row.amount}
                               onChange={(e) =>
-                                handleInputChange1(index, "amount", parseFloat(e.target.value)||0)
+                                handleInputChange1(index, "amount", parseFloat(e.target.value) || 0)
                               }
                               size="small"
                               inputProps={{ readOnly: true }}
@@ -3647,6 +3665,9 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange1(index, 'indentId', newValue?.value);
                                 handleInputChange1(index, 'indentNo', newValue?.label);
@@ -3655,9 +3676,9 @@ const AddJobCard1 = (props: Props) => {
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
-                                  // label={
-                                  //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
-                                  // }
+                                // label={
+                                //   <CustomLabel text={t("text.enterIndentNo")} required={true} />
+                                // }
                                 />
                               )}
                             />
@@ -3689,9 +3710,12 @@ const AddJobCard1 = (props: Props) => {
                               options={taxData}
                               fullWidth
                               size="small"
-                              onChange={(e: any, newValue: any) =>
+                              onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange1(index, "gstId", newValue?.value)
-                              }
+                              }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -3845,7 +3869,7 @@ const AddJobCard1 = (props: Props) => {
                   alignItems="center"
                 >
                   {/* Indent Generate Button */}
-                
+
 
                   <Grid item>
                     <Button
@@ -3863,7 +3887,7 @@ const AddJobCard1 = (props: Props) => {
                   </Grid>
 
                   {/* Indent Print Button */}
-                
+
 
                   <Grid item>
                     <Button
@@ -3904,7 +3928,7 @@ const AddJobCard1 = (props: Props) => {
                     {t("text.vendorevaluation")}
                   </Button>
                 </Grid>
-            
+
 
                 {/* Submit Button */}
                 <Grid item >

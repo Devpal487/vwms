@@ -568,7 +568,7 @@ const EditComplaint = (props: Props) => {
                      </Grid>
 
                      {/* Approve 1 */}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
@@ -593,9 +593,9 @@ const EditComplaint = (props: Props) => {
                               />
                            )}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Department 1*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -613,9 +613,9 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Department")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Designation 1*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -633,10 +633,10 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Designation")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
 
                      {/* Approve 2 */}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
@@ -661,9 +661,9 @@ const EditComplaint = (props: Props) => {
                               />
                            )}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Department 2*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -681,9 +681,9 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Department")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Designation 2*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -701,10 +701,10 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Designation")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
 
                      {/* Approve 3 */}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
@@ -729,9 +729,9 @@ const EditComplaint = (props: Props) => {
                               />
                            )}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Department 3*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -749,9 +749,9 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Department")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Designation 3*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -769,10 +769,10 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Designation")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
 
                      {/* Approve 4 */}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
@@ -797,11 +797,11 @@ const EditComplaint = (props: Props) => {
                               />
                            )}
                         />
-                     </Grid>
+                     </Grid> */}
 
 
                      {/* Department 4*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -820,9 +820,9 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Department")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
                      {/* Designation 4*/}
-                     <Grid item xs={12} md={4} sm={4}>
+                     {/* <Grid item xs={12} md={4} sm={4}>
                         <TextField
                            label={
                               <CustomLabel
@@ -840,7 +840,7 @@ const EditComplaint = (props: Props) => {
                            placeholder={t("text.Designation")}
                            onChange={formik.handleChange}
                         />
-                     </Grid>
+                     </Grid> */}
 
                      {/* <Grid item lg={12} md={12} xs={12} marginTop={2}>
                         <ReactQuill
@@ -855,32 +855,32 @@ const EditComplaint = (props: Props) => {
                            placeholder="Enter your complaint here"
                         />
                      </Grid> */}
-<Grid item xs={12} md={12} sm={12}>
-                <div>
-                  {/* <CustomLabel text={t("text.Complaint")} /> */}
-                  <textarea
-                    name="complaint"
-                    id="complaint"
-                    value={formik.values.complaint}
-                    placeholder={t("text.enterComplaint")}
-                    onChange={(e) => {
-                      formik.setFieldValue("complaint", e.target.value);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "100px",
-                      padding: "10px",
-                      boxSizing: "border-box",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontSize: "14px",
-                    }}
-                  />
-                </div>
-                {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                     <Grid item xs={12} md={12} sm={12}>
+                        <div>
+                           {/* <CustomLabel text={t("text.Complaint")} /> */}
+                           <textarea
+                              name="complaint"
+                              id="complaint"
+                              value={formik.values.complaint}
+                              placeholder={t("text.enterComplaint")}
+                              onChange={(e) => {
+                                 formik.setFieldValue("complaint", e.target.value);
+                              }}
+                              style={{
+                                 width: "100%",
+                                 height: "100px",
+                                 padding: "10px",
+                                 boxSizing: "border-box",
+                                 borderRadius: "4px",
+                                 border: "1px solid #ccc",
+                                 fontSize: "14px",
+                              }}
+                           />
+                        </div>
+                        {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
                            <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
                         )}
-              </Grid>
+                     </Grid>
 
                      {/* attachment */}
                      <Grid container spacing={1} item>

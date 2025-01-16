@@ -65,7 +65,7 @@ export default function Employee() {
 
 
   const routeChangeEdit = (row: any) => {
-    console.log("row " + row);
+    console.log("row " + JSON.stringify(row));
 
     let path = `/employeeInfo/EditEmployee`;
     navigate(path, {

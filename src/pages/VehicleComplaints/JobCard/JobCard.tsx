@@ -383,6 +383,12 @@ export default function JobCard() {
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
                },
+               {
+                  field: "status",
+                  headerName: t("text.Status"),
+                  flex: 1,
+                  headerClassName: "MuiDataGrid-colCell",
+               },
                // {
                //    field: "n",
                //    headerName: t("text.Department"),

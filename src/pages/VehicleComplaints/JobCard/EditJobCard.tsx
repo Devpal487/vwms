@@ -77,6 +77,8 @@ const EditJobCard = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleJWC, setIsVisibleJWC] = useState(0);
+  const [isEnable, setIsEnable] = useState(0);
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -230,10 +232,14 @@ const EditJobCard = (props: Props) => {
     getUnitData();
     getComplainData();
     setVehicleName(location.state?.vehicleName);
-    setTableData([...location.state?.serviceDetail || tableData]);
     console.log("location.state", location.state);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
+    if (location.state.status === "Complete") {
+      setTableData([...location.state?.serviceDetail]);
+    } else {
+      setTableData([...location.state?.serviceDetail, tableData]);
+    }
 
   }, [itemId]);
 
@@ -373,7 +379,7 @@ const EditJobCard = (props: Props) => {
       "updatedOn": location.state.updatedOn,
       "companyId": location.state?.companyId,
       "fyId": location.state?.fyId,
-      "totalItemAmount": location.state?.totalItemAmount || 0,
+      "totalItemAmount": 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.itemName || "",
@@ -393,6 +399,10 @@ const EditJobCard = (props: Props) => {
         toast.success(response.data.message);
         setJobCardId(response.data.data.jobCardId);
         setIsVisible(true);
+        setIsVisibleJWC(isVisibleJWC + 1);
+        setIsEnable(isEnable + 1);
+        formik.setFieldValue("jobCardId", response.data.data.jobCardId);
+        formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
         //navigate("/vehiclecomplaint/JobCard");
       } else {
         setToaster(true);
@@ -578,7 +588,7 @@ const EditJobCard = (props: Props) => {
     })
     formik.setFieldValue("netAmount", total);
     formik.setFieldValue("totalServiceAmount", total);
-    formik.setFieldValue("totalItemAmount", total);
+    //formik.setFieldValue("totalItemAmount", total);
   };
 
   const addRow = () => {
@@ -691,7 +701,7 @@ const EditJobCard = (props: Props) => {
                     onChange={(event) => formik.setFieldValue("status", event.target.value)}
                   >
                     <FormControlLabel
-                      value="complete"
+                      value="Complete"
                       control={<Radio color="primary" />}
                       label={t("text.Complete")}
 
@@ -774,7 +784,7 @@ const EditJobCard = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     setItemId(newValue?.value);
@@ -859,6 +869,9 @@ const EditJobCard = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -1037,6 +1050,9 @@ const EditJobCard = (props: Props) => {
                               sx={{ width: "225px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'serviceId', newValue?.value);
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -1068,9 +1084,12 @@ const EditJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
-                              sx={{ width: "140px" }}
+                              sx={{ width: "145px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -1098,6 +1117,9 @@ const EditJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'vendorId', newValue?.value);
                                 handleInputChange(index, 'vendorName', newValue?.label);
@@ -1130,6 +1152,9 @@ const EditJobCard = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'unitId', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
@@ -1162,6 +1187,7 @@ const EditJobCard = (props: Props) => {
                                 formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1176,6 +1202,7 @@ const EditJobCard = (props: Props) => {
                             <TextField
                               value={row.unitRate}
                               onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "80px" }}
@@ -1196,6 +1223,7 @@ const EditJobCard = (props: Props) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
+                              onFocus={(e) => e.target.select()}
                               sx={{ width: "90px" }}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
@@ -1213,6 +1241,7 @@ const EditJobCard = (props: Props) => {
                               onChange={(e) => {
                                 handleInputChange(index, 'netAmount', parseFloat((row.qty * row.unitRate).toString()) || 0);
                               }}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
@@ -1227,9 +1256,10 @@ const EditJobCard = (props: Props) => {
                           >
                             <TextField
                               //value={row.challanStatus}
-                              //onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                              // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                           <td
@@ -1244,6 +1274,7 @@ const EditJobCard = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                           <td
@@ -1259,6 +1290,7 @@ const EditJobCard = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                         </tr>
@@ -1342,7 +1374,37 @@ const EditJobCard = (props: Props) => {
                 </div>
               </Grid>
 
-              {true && (
+              {(isVisibleJWC == 1) ? (
+                <Grid item lg={6} sm={6} xs={12}>
+                  <Button
+                    type="button"
+                    style={{
+                      backgroundColor: "#426aed",
+                      color: "white",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      borderRadius: "8px",
+                      width: "200px",
+                    }}
+                    onClick={() => {
+                      const validTableData = tableData.filter(validateRow);
+                      if (validTableData.length === 0) {
+                        alert("Please add some data in table for further process");
+                        return;
+                      } else {
+                        formik.setFieldValue("status", "JobWork");
+                        handleGenerateChallan(formik.values);
+                        setIsVisibleJWC(isVisibleJWC + 1)
+                        setIsVisible(true);
+                      }
+                    }}
+                  >
+                    {t("text.JobWorkChallan")}
+                  </Button>
+
+                </Grid>
+              ) : (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1372,6 +1434,7 @@ const EditJobCard = (props: Props) => {
 
                 </Grid>
               )}
+
 
 
 
@@ -1474,17 +1537,33 @@ const EditJobCard = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.save")}
-                </Button>
+                {(isEnable < 2) ? (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    disabled={true}
+                    style={{
+                      backgroundColor: `grey`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.save")}
+                  </Button>
+                )}
+
               </Grid>
 
               {/* Reset Button */}

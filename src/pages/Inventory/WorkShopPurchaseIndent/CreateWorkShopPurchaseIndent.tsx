@@ -40,39 +40,39 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
     {
 
 
-    "id": -1,
-    "indentId": 0,
-    "itemId": 0,
-    "unitId": 0,
-    "quantity": 0,
-    "rate": 0,
-    "amount": 0,
-    "approveQuantity": 0,
-    "fyId": 0,
-    "srn": 0,
-    "isDelete": true,
-    "unitName": "",
-    "itemName": ""
-  },
-  {
+      "id": -1,
+      "indentId": 0,
+      "itemId": 0,
+      "unitId": 0,
+      "quantity": 0,
+      "rate": 0,
+      "amount": 0,
+      "approveQuantity": 0,
+      "fyId": 0,
+      "srn": 0,
+      "isDelete": true,
+      "unitName": "",
+      "itemName": ""
+    },
+    {
 
 
-    "id": -1,
-    "indentId": 0,
-    "itemId": 0,
-    "unitId": 0,
-    "quantity": 0,
-    "rate": 0,
-    "amount": 0,
-    "approveQuantity": 0,
-    "fyId": 0,
-    "srn": 0,
-    "isDelete": true,
-    "unitName": "",
-    "itemName": ""
-  }
+      "id": -1,
+      "indentId": 0,
+      "itemId": 0,
+      "unitId": 0,
+      "quantity": 0,
+      "rate": 0,
+      "amount": 0,
+      "approveQuantity": 0,
+      "fyId": 0,
+      "srn": 0,
+      "isDelete": true,
+      "unitName": "",
+      "itemName": ""
+    }
 
-]);
+  ]);
 
 
   const [unitOptions, setUnitOptions] = useState([
@@ -181,20 +181,20 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
     // }),
 
     onSubmit: async (values) => {
-     // values.indentDetail = tableData
+      // values.indentDetail = tableData
       const validTableData = tableData.filter(validateRow);
       if (validTableData.length === 0) {
-             alert("Please add some data in table for further process");
-             return;
-           }
+        alert("Please add some data in table for further process");
+        return;
+      }
       console.log('values', values)
 
 
 
       const response = await api.post(
         `Master/UpsertIndent
-`, 
-         { ...values, indentDetail: validTableData }
+`,
+        { ...values, indentDetail: validTableData }
       );
       if (response.data.status === 1) {
         setToaster(false);
@@ -392,108 +392,108 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
 
               <Grid item xs={12}>
 
-              <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
 
-                <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                  <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                    <tr>
-
-                     
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
-                      <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
+                  <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                      <tr>
 
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row: any, index: any) => (
-                      <tr key={row.id} style={{ border: '1px solid black' }}>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                          if (tableData.length > 1) {
-                            deleteRow(index)
-                          } else {
-                            alert("There should be atleast one row")
-                          }
-                        }}>
-                          <DeleteIcon />
-                        </td>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
 
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={itemOption}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              if (!newValue) {
-                                return;
-                              } else {
-                                handleInputChange(
-                                  index,
-                                  "itemId",
-                                  newValue?.value
-                                )
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row: any, index: any) => (
+                        <tr key={row.id} style={{ border: '1px solid black' }}>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                            if (tableData.length > 1) {
+                              deleteRow(index)
+                            } else {
+                              alert("There should be atleast one row")
+                            }
+                          }}>
+                            <DeleteIcon />
+                          </td>
+
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              // textAlign: "center",
+                            }}
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={itemOption}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                } else {
+                                  handleInputChange(
+                                    index,
+                                    "itemId",
+                                    newValue?.value
+                                  )
+                                }
                               }
-                            }
-                            }
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
                                 // label={
                                 //   <CustomLabel
                                 //     text={t("text.selectItem")}
                                 //     required={false}
                                 //   />
                                 // }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center' }}>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={unitOptions}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              if (!newValue) {
-                                return;
-                              } else {
-                                handleInputChange(
-                                  index,
-                                  "unitId",
-                                  newValue?.value
-                                )
+                                />
+                              )}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center' }}>
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={unitOptions}
+                              fullWidth
+                              size="small"
+                              onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                } else {
+                                  handleInputChange(
+                                    index,
+                                    "unitId",
+                                    newValue?.value
+                                  )
+                                }
                               }
-                            }
-                            }
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
                                 // label={
                                 //   <CustomLabel
                                 //     text={t("text.selectItem")}
                                 //     required={false}
                                 //   />
                                 // }
-                              />
-                            )}
-                          />
-                          {/* <select
+                                />
+                              )}
+                            />
+                            {/* <select
                             value={row.unitId}
                             onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
                             style={{ width: '95%', height: '35px' }}
@@ -505,50 +505,50 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
                               </option>
                             ))}
                           </select> */}
-                        </td>
+                          </td>
 
 
-                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                          <TextField
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
 
-                            size="small"
-                            // type="text"
-                            value={row.quantity}
-                            onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
-                          <TextField
+                              size="small"
+                              // type="text"
+                              value={row.quantity}
+                              onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                            <TextField
 
-                            size="small"
-                            // type="text"
-                            value={row.approveQuantity}
-                            onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
-                        <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                          <TextField
+                              size="small"
+                              // type="text"
+                              value={row.approveQuantity}
+                              onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
 
-                            size="small"
-                            // type="text"
-                            value={row.rate}
-                            onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                          />
-                        </td>
+                              size="small"
+                              // type="text"
+                              value={row.rate}
+                              onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
+                            />
+                          </td>
 
-                        <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
-                          <TextField
-                            // type="number"
-                            value={row.amount.toFixed(2)}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                       
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
+                          <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                            <TextField
+                              // type="number"
+                              value={row.amount.toFixed(2)}
+                              size="small"
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                          </td>
+
+                        </tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
                       <tr>
                         <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
@@ -561,8 +561,8 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
 
 
                     </tfoot>
-                </Table>
-             </div> </Grid>
+                  </Table>
+                </div> </Grid>
 
 
               <Grid item xs={12} md={12} lg={12}>

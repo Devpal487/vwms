@@ -421,6 +421,9 @@ const CreateStaffIndent = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event, newValue) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                   }}

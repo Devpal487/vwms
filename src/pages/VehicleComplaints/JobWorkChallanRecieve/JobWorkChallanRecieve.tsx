@@ -159,7 +159,9 @@ export default function JobWorkChallanRecieve() {
             ...Item,
             serialNo: index + 1,
             id: Item.challanRcvNo,
-            challanRcvDate: formatDate(Item.challanRcvDate)
+            challanRcvDate: formatDate(Item.challanRcvDate),
+            jobCardDate:formatDate(Item.jobCardDate),
+            challanDate:formatDate(Item.challanDate),
          }));
          setItem(arr);
          setIsLoading(false);

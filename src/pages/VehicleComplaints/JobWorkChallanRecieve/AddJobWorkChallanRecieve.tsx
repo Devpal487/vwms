@@ -481,10 +481,12 @@ const AddJobWorkChallanRecieve = (props: Props) => {
         setIsEnable(false);
         toast.success(response.data.message + "\nYour JobCard Status is Completed successfully!");
         formik.setFieldValue("challanRcvNo", response.data.data.challanRcvNo)
-        await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
-        await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+        //await updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+        setTimeout(() => {
+          updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
+          setIsVisible(true);
+        }, 500);
         setJobCardId(location.state?.jobCardId || formik.values.jobCardId);
-        setIsVisible(true);
         //navigate("/vehiclecomplaint/JobWorkChallanRecieve")
       } else {
         setToaster(true);
@@ -517,9 +519,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
       "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
       "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
-      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalServiceAmount,
+      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)].totalServiceAmount,
       "netAmount": formik.values.netAmount,
-      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
+      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName || formik.values.vehicleNo,
       "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
       "serviceDetail": [...(jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail)],
       "update": true
@@ -638,11 +640,13 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     // if (field === 'netAmount') {
     //   newData[index].netAmount = newData[index].amount + newData[index].amount * (newData[index].gst / 100);
     // }
-    if (field === 'gst') {
+    if (field === 'gst' || field === 'gstId') {
       newData[index].gst = newData[index].gst;
       newData[index].cgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
       newData[index].sgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
-      newData[index].netAmount = (newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2);
+      newData[index].netAmount = parseFloat((newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2));
+    } else {
+      newData[index].netAmount = (newData[index].serviceCharge * newData[index].qty);
     }
     // if (field === 'cgst') {
     //   newData[index].cgst = newData[index].cgst;
@@ -654,7 +658,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       newData[index].serviceCharge = newData[index].serviceCharge;
     }
     newData[index].amount = newData[index].serviceCharge * newData[index].qty;
-    newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
+    //newData[index].netAmount = newData[index].serviceCharge * newData[index].qty;
     newData[index].jobCardId = location.state?.jobCardId || 0;
     setTableData(newData);
 
@@ -664,12 +668,14 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       }
     }
     let total = 0;
+    let netAmt = 0;
     tableData.forEach(row => {
       total += row.amount;
+      netAmt += row.amount + row.amount * (row.gst / 100);
     })
-    formik.setFieldValue("netAmount", total + total * (newData[index].gst / 100));
+    formik.setFieldValue("netAmount", netAmt);
     formik.setFieldValue("serviceAmount", total);
-    formik.setFieldValue("estAmount", total + total * (newData[index].gst / 100));
+    formik.setFieldValue("estAmount", netAmt);
   };
 
   const addRow = () => {
@@ -1263,6 +1269,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               sx={{ width: "230px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'serviceId', newValue?.value);
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -1293,6 +1302,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               sx={{ width: "135px" }}
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'unitId', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
@@ -1320,6 +1332,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.qty}
                               onChange={(e) => handleInputChange(index, 'qty', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1334,6 +1347,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.serviceCharge}
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
@@ -1349,6 +1363,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.serviceCharge * row.qty}
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
@@ -1368,6 +1383,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                 handleInputChange(index, 'gstId', newValue.value);
                               }}
@@ -1392,6 +1410,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.cgst}
                               onChange={(e) => handleInputChange(index, 'cgst', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1406,6 +1425,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                             <TextField
                               value={row.sgst}
                               onChange={(e) => handleInputChange(index, 'sgst', parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -1422,6 +1442,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               //onChange={(e) => handleInputChange(index, 'netAmount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                         </tr>
@@ -1510,7 +1531,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 color="secondary"
               >
               </Button>
-              {/* {isVisible && (
+              {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1523,35 +1544,35 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                       borderRadius: "8px",
                       width: "100px",
                     }}
-                    onClick={() => {
-                      navigate("/vehiclecomplaint/AddJobCard", {
+                    onClick={async () => {
+                      navigate("/vehiclecomplaint/AddJobCard", await {
                         state: {
-                         "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
-      "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
-      "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
-      "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
-      "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
-      "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
-      "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
-      "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
-      "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
-      "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
-      "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
-      "status": "Complete",
-      "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
-      "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
-      "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
-      "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
-      "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
-      "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
-      "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
-      "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
-      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalServiceAmount,
-      "netAmount": formik.values.netAmount,
-      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
-      "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
-      "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail,
-      "update": true
+                          "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
+                          "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
+                          "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
+                          "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
+                          "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
+                          "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
+                          "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
+                          "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
+                          "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
+                          "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
+                          "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
+                          "status": "Complete",
+                          "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
+                          "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
+                          "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
+                          "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
+                          "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
+                          "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
+                          "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
+                          "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
+                          "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalServiceAmount,
+                          "netAmount": formik.values.netAmount,
+                          "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName,
+                          "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
+                          "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail,
+                          "update": true
                         },
                       });
                     }}
@@ -1560,7 +1581,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )} */}
+              )}
             </Grid>
 
           </form>
