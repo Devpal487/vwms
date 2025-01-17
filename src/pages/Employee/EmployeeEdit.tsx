@@ -43,15 +43,15 @@ type Props = {};
 
 const EmployeeEdit = (props: Props) => {
   const { i18n, t } = useTranslation();
-  
+
   const [EmpDesignation, setEmpDesignation] = useState<any>([
     { value: "-1", label: t("text.SelectDesignation") },
   ]);
   const [Department, setDepartment] = useState<any>([
-    { value: "-1", label:t("text.SelectDepartment") },
+    { value: "-1", label: t("text.SelectDepartment") },
   ]);
   const [StateOption, setStateOption] = useState<any>([
-    { value: "-1", label:t("text.SelectState") },
+    { value: "-1", label: t("text.SelectState") },
   ]);
   const [Country, setCountry] = useState<any>([
     { value: "-1", label: t("text.SelectCountry") },
@@ -81,7 +81,7 @@ const EmployeeEdit = (props: Props) => {
     };
     api
       .post(
-         `Designation/GetDesignationmaster`,
+        `Designation/GetDesignationmaster`,
         collectData
       )
       .then((res) => {
@@ -108,13 +108,13 @@ const EmployeeEdit = (props: Props) => {
       });
   };
 
-  const getState = (id:any) => {
+  const getState = (id: any) => {
     const collectData = {
       "stateId": -1,
-  "countryId": id
+      "countryId": id
     };
     api
-      .post( `State/GetStateMaster`, collectData)
+      .post(`State/GetStateMaster`, collectData)
       .then((res) => {
         const arr = res.data.data.map((item: any) => ({
           label: item.stateName + " - " + item.stateCode,
@@ -129,7 +129,7 @@ const EmployeeEdit = (props: Props) => {
       countryId: -1,
     };
     api
-      .post( `Country/GetCountryMaster`, collectData)
+      .post(`Country/GetCountryMaster`, collectData)
       .then((res) => {
         const arr = res.data.data.map((item: any) => ({
           label: item.countryName,
@@ -139,7 +139,7 @@ const EmployeeEdit = (props: Props) => {
       });
   };
 
-  const getDistrict = (id:any) => {
+  const getDistrict = (id: any) => {
     const collectData = {
       cityId: -1,
       stateId: id
@@ -201,7 +201,7 @@ const EmployeeEdit = (props: Props) => {
     };
 
     api
-      .post( `EmpMaster/GetEmpmaster`, collectData)
+      .post(`EmpMaster/GetEmpmaster`, collectData)
       .then((res) => {
         console.log("result" + JSON.stringify(res.data.data[0]["imageFile"]));
 
@@ -226,7 +226,7 @@ const EmployeeEdit = (props: Props) => {
     };
 
     api
-      .post( `EmpMaster/GetEmpmaster`, collectData)
+      .post(`EmpMaster/GetEmpmaster`, collectData)
       .then((res) => {
         console.log(
           "result" + JSON.stringify(res.data.data[0]["signatureFile"])
@@ -300,7 +300,7 @@ const EmployeeEdit = (props: Props) => {
   };
 
   let navigate = useNavigate();
-  
+
 
   const [toaster, setToaster] = useState(false);
 
@@ -458,7 +458,7 @@ const EmployeeEdit = (props: Props) => {
       );
 
       const response = await api.post(
-          `EmpMaster/AddUpdateEmpmaster`,
+        `EmpMaster/AddUpdateEmpmaster`,
         filteredValues
       );
       if (response.data.isSuccess) {
@@ -941,7 +941,7 @@ const EmployeeEdit = (props: Props) => {
                   size="small"
                   value={
                     EmpDesignation.find(
-                      (option:any) => option.value === formik.values.empDesignationId
+                      (option: any) => option.value === formik.values.empDesignationId
                     ) || null
                   }
                   onChange={(event, newValue: any) => {
@@ -986,11 +986,11 @@ const EmployeeEdit = (props: Props) => {
                   options={Department}
                   fullWidth
                   size="small"
-                   value={
+                  value={
                     Department.find(
-                       (option:any) => option.value === formik.values.empDeptId
-                     ) || null
-                   }
+                      (option: any) => option.value === formik.values.empDeptId
+                    ) || null
+                  }
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empDeptId", newValue?.value);
                     formik.setFieldTouched("empDeptId", true);
@@ -1033,12 +1033,12 @@ const EmployeeEdit = (props: Props) => {
                   size="small"
                   value={
                     Country.find(
-                     (option:any) => option.value === formik.values.empCountryID
-                   ) || null
+                      (option: any) => option.value === formik.values.empCountryID
+                    ) || null
                   }
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empCountryID", newValue?.value);
-                    if(newValue){
+                    if (newValue) {
                       getState(newValue?.value);
                     }
                     formik.setFieldTouched("empCountryID", true);
@@ -1082,12 +1082,12 @@ const EmployeeEdit = (props: Props) => {
                   size="small"
                   value={
                     StateOption.find(
-                  (option:any) => option.value === formik.values.empStateId
-                  ) || null
+                      (option: any) => option.value === formik.values.empStateId
+                    ) || null
                   }
                   onChange={(event, newValue: any) => {
                     formik.setFieldValue("empStateId", newValue?.value);
-                    if(newValue){
+                    if (newValue) {
                       getDistrict(newValue?.value);
                     }
                     formik.setFieldTouched("empStateId", true);
@@ -1223,7 +1223,7 @@ const EmployeeEdit = (props: Props) => {
                   size="small"
                   value={
                     Gender.find(
-                      (option: any) => option.value+"" === formik.values.gender
+                      (option: any) => option.value + "" === formik.values.gender
                     ) || null
                   }
                   onChange={(event, newValue: any) => {
@@ -1463,7 +1463,7 @@ const EmployeeEdit = (props: Props) => {
                     InputLabelProps={{ shrink: true }}
                     label={
                       <strong style={{ color: "#000" }}>
-                         {t("text.AttachedSignature")}
+                        {t("text.AttachedSignature")}
                       </strong>
                     }
                     size="small"

@@ -77,7 +77,7 @@ const AddComplaintApproval = (props: Props) => {
    const [isVisible, setIsVisible] = useState(false);
 
    const [vehicleOption, setVehicleOption] = useState([
-      { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
+      { value: -1, label: t("text.VehicleNo"), label2: "", name: "", empId: "" },
    ]);
    const [empOption, setEmpOption] = useState([
       { value: 1, label: t("text.EmpName"), department: "", designation: "" },
@@ -102,6 +102,8 @@ const AddComplaintApproval = (props: Props) => {
 
    const [complaintData, setComplaintData] = useState([
       {
+         label: "",
+         value: -1,
          sno: 0,
          compId: 0,
          itemID: 0,
@@ -137,11 +139,14 @@ const AddComplaintApproval = (props: Props) => {
    const [Img, setImg] = useState("");
 
    useEffect(() => {
-      getVehicleDetails();
+      getComplaintData();
       getDeptData();
       getDesignationData();
       getEmpData();
-      getComplaintData();
+      getVehicleDetails();
+      // const timeoutId = setTimeout(() => {
+      // }, 500);
+      // return () => clearTimeout(timeoutId);
    }, []);
 
    const getLabelById = (option: any, id: any) => {
@@ -150,11 +155,13 @@ const AddComplaintApproval = (props: Props) => {
    };
 
    const getVehicleDetails = async () => {
+      await getComplaintData();
       const response = await api.get(`Master/GetVehicleDetail?ItemMasterId=-1`);
       const data = response.data.data;
       const arr = data.map((Item: any, index: any) => ({
          value: Item.itemMasterId,
          label: Item.vehicleNo,
+         label2: Item.vehicleNo,
          name: Item.itemName,
          empId: Item.empId,
       }));
@@ -190,6 +197,8 @@ const AddComplaintApproval = (props: Props) => {
       const data = response.data.data;
       const arr = data.map((Item: any, index: any) => ({
          ...Item,
+         label: Item.vehicleNo + `(ComplainNo:${Item.complaintNo})`,
+         value: Item.itemID
       }));
       setComplaintData(arr);
    };
@@ -445,13 +454,25 @@ const AddComplaintApproval = (props: Props) => {
                         <Autocomplete
                            disablePortal
                            id="combo-box-demo"
-                           options={vehicleOption.filter((e) => {
-                              for (let i = 0; i < complaintData.length; i++) {
-                                 if (e.value == complaintData[i].itemID) {
-                                    return e;
+                           options={
+                              complaintData.filter((e) => {
+                                 for (let i = complaintData.length - 1; i >= 0; i--) {
+                                    if (complaintData[i].status === "pending") {
+                                       return e;
+                                    }
                                  }
-                              }
-                           })}
+                              })
+                              // vehicleOption.filter((e) => {
+                              //    for (let i = complaintData.length - 1; i >= 0; i--) {
+                              //       if (e.value === complaintData[i].itemID && complaintData[i].status === "pending") {
+                              //          if (e.label === e.label2) {
+                              //             e.label = e.label + `(ComplainNo : ${complaintData[i].complaintNo})`
+                              //          }
+                              //          return e;
+                              //       }
+                              //    }
+                              // })
+                           }
                            value={formik.values.vehicleNo}
                            fullWidth
                            size="small"
@@ -461,156 +482,79 @@ const AddComplaintApproval = (props: Props) => {
                                  formik.setFieldValue("vehicleNo", "");
                               } else {
                                  formik.setFieldValue("itemID", newValue?.value);
-                                 formik.setFieldValue("vehicleNo", newValue?.label);
+                                 formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
                                  formik.setFieldValue("empId", newValue?.empId);
                                  formik.setFieldValue(
                                     "sno",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].sno
+                                    newValue?.sno
                                  );
                                  formik.setFieldValue(
                                     "compId",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].compId
+                                    newValue?.compId
                                  );
                                  formik.setFieldValue(
                                     "complaintType",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintType
+                                    newValue?.complaintType
                                  );
                                  formik.setFieldValue(
                                     "complaintDoc",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintDoc
+                                    newValue?.complaintDoc
                                  );
                                  formik.setFieldValue(
                                     "empId",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].empId
+                                    newValue?.empId
                                  );
                                  formik.setFieldValue(
                                     "complaint",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaint
+                                    newValue?.complaint
                                  );
                                  formik.setFieldValue(
                                     "complaintNo",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintNo
+                                    newValue?.complaintNo
                                  );
                                  formik.setFieldValue(
                                     "createdBy",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].createdBy
+                                    newValue?.createdBy
                                  );
                                  formik.setFieldValue(
                                     "updatedBy",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].updatedBy
+                                    newValue?.updatedBy
                                  );
                                  formik.setFieldValue(
                                     "currentReading",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].currentReading
+                                    newValue?.currentReading
                                  );
                                  formik.setFieldValue(
                                     "createdOn",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].createdOn
+                                    newValue?.createdOn
                                  );
                                  formik.setFieldValue(
                                     "complaintDate",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintDate
+                                    newValue?.complaintDate
                                  );
                                  formik.setFieldValue(
                                     "updatedOn",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].updatedOn
+                                    newValue?.updatedOn
                                  );
                                  formik.setFieldValue(
                                     "jobCardNo",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ]?.jobCardNo ||
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintNo
+                                    newValue?.jobCardNo || ""
                                  );
                                  formik.setFieldValue(
                                     "file",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ]?.file || ""
+                                    newValue?.file || ""
                                  );
                                  formik.setFieldValue(
                                     "fileOldName",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ]?.fileOldName || ""
+                                    newValue?.fileOldName || ""
                                  );
                                  formik.setFieldValue(
                                     "vehicleName",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].vehicleName
+                                    newValue?.vehicleName
                                  );
                                  formik.setFieldValue(
                                     "empName",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].empName
+                                    newValue?.empName
                                  );
                               }
                            }}
@@ -1062,32 +1006,32 @@ const AddComplaintApproval = (props: Props) => {
                         )}
                      </Grid> */}
 
-<Grid item xs={12} md={12} sm={12}>
-                <div>
-                  {/* <CustomLabel text={t("text.Complaint")} /> */}
-                  <textarea
-                    name="complaint"
-                    id="complaint"
-                    value={formik.values.complaint}
-                    placeholder={t("text.enterComplaint")}
-                    onChange={(e) => {
-                      formik.setFieldValue("complaint", e.target.value);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "100px",
-                      padding: "10px",
-                      boxSizing: "border-box",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontSize: "14px",
-                    }}
-                  />
-                </div>
-                {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                     <Grid item xs={12} md={12} sm={12}>
+                        <div>
+                           {/* <CustomLabel text={t("text.Complaint")} /> */}
+                           <textarea
+                              name="complaint"
+                              id="complaint"
+                              value={formik.values.complaint}
+                              placeholder={t("text.enterComplaint")}
+                              onChange={(e) => {
+                                 formik.setFieldValue("complaint", e.target.value);
+                              }}
+                              style={{
+                                 width: "100%",
+                                 height: "100px",
+                                 padding: "10px",
+                                 boxSizing: "border-box",
+                                 borderRadius: "4px",
+                                 border: "1px solid #ccc",
+                                 fontSize: "14px",
+                              }}
+                           />
+                        </div>
+                        {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
                            <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
                         )}
-              </Grid>
+                     </Grid>
 
                      {/* attachment */}
                      <Grid container spacing={1} item>
