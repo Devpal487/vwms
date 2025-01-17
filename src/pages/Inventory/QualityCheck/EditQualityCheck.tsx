@@ -1136,6 +1136,7 @@ const EditQualityCheck = (props: Props) => {
                             value={row.batchNo}
                             size="small"
                             onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
                         <td
@@ -1148,7 +1149,8 @@ const EditQualityCheck = (props: Props) => {
                             size="small"
                             value={row.mrnQty}
                             onChange={(e) => handleInputChange(index, "mrnQty", e.target.value)}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1161,7 +1163,8 @@ const EditQualityCheck = (props: Props) => {
                             value={row.acceptQty}
                             onChange={(e) => handleInputChange(index, "acceptQty", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1174,7 +1177,8 @@ const EditQualityCheck = (props: Props) => {
                             value={row.rejectQty}
                             onChange={(e) => handleInputChange(index, "rejectQty", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1187,7 +1191,8 @@ const EditQualityCheck = (props: Props) => {
                             value={row.rate}
                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                        />
                         </td>
                         <td
                           style={{

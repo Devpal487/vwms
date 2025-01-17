@@ -972,9 +972,11 @@ const CreatePurchaseInvoice = () => {
                                 onChange={(event) => {
                                   const value: any = event.target.value;
                                   handleInputChange(index, "quantity", value);
+                                  
                                   // if (!isNaN(value) || value === '' || value === '.') {
                                   // }
                                 }}
+                                onFocus={e => e.target.select()}
                                 inputProps={{
                                   step: "any",
                                   min: "0"
@@ -995,6 +997,7 @@ const CreatePurchaseInvoice = () => {
                                 size="small"
                                 value={row.rate}
                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
+                                onFocus={e => e.target.select()}
                                 inputProps={{ step: "any", min: "0" }}
                               />
                             </td>
@@ -1007,6 +1010,7 @@ const CreatePurchaseInvoice = () => {
                               <TextField
                                 value={row.amount}
                                 size="small"
+                               // onFocus={e => e.target.select()}
                                 inputProps={{ readOnly: true }}
                               />
                             </td>

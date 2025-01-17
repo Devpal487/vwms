@@ -560,7 +560,8 @@ const EditJobCardIndent = (props: Props) => {
                                                             // type="text"
                                                             value={row.quantity}
                                                             onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                                        />
+                                                            onFocus={(e) => {e.target.select()}}
+                                                       />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
                                                         <TextField
@@ -569,7 +570,8 @@ const EditJobCardIndent = (props: Props) => {
                                                             // type="text"
                                                             value={row.approveQuantity}
                                                             onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                                                        />
+                                                            onFocus={(e) => {e.target.select()}}
+                                                      />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
                                                         <TextField
@@ -578,6 +580,7 @@ const EditJobCardIndent = (props: Props) => {
                                                             // type="text"
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
+                                                            onFocus={(e) => {e.target.select()}}
                                                         />
                                                     </td>
 
@@ -587,6 +590,7 @@ const EditJobCardIndent = (props: Props) => {
                                                             value={row.amount.toFixed(2)}
                                                             size="small"
                                                             inputProps={{ "aria-readonly": true }}
+                                                        
                                                         />
                                                     </td>
 

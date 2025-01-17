@@ -212,6 +212,7 @@ const CreateJobcardItemIssue = (props: Props) => {
             });
         }
         setUnitOptions(arr);
+        
     };
     // const GetempData = async () => {
     //     const collectData = {
@@ -658,7 +659,8 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                 // type="text"
                                                                 value={row.batchNo}
                                                                 onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                            />
+                                                                onFocus={(e) => {e.target.select()}}
+                                                          />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
@@ -666,7 +668,8 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                 size="small"
                                                                 value={row.stockQty || 0}
                                                                 onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
-                                                            />
+                                                                onFocus={(e) => {e.target.select()}}
+                                                           />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
@@ -675,6 +678,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                 // type="text"
                                                                 value={row.reqQty}
                                                                 onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
+                                                                onFocus={(e) => {e.target.select()}}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
@@ -684,6 +688,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                 // type="text"
                                                                 value={row.issueQty}
                                                                 onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
+                                                                onFocus={(e) => {e.target.select()}}
                                                             />
                                                         </td>
                                                         {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>

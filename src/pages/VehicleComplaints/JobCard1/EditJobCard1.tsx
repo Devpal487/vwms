@@ -1654,69 +1654,7 @@ const EditJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                          {/* <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={unitOption}
-                            value={row.unitName}
-                            fullWidth
-                            size="small"
-                            onChange={(e: any, newValue: any) => {
-                              console.log(newValue?.value);
-                              handleInputChange(index, 'unitId', newValue?.value);
-                              handleInputChange(index, 'unitName', newValue?.label);
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                label={
-                                  <CustomLabel
-                                    text={t("text.Unit")}
-                                    required={false}
-                                  />
-                                }
-                              />
-                            )}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.qty}
-                            onChange={(e) => {
-                              handleInputChange(index, 'qty', parseInt(e.target.value) || 0);
-                              formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
-                              setTotalAmount(row.qty * row.unitRate);
-                            }}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            width: "10rem"
-                          }}
-                        >
-                          <TextField
-                            value={row.unitRate}
-                            onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td> */}
+                        
                           <td
                             style={{
                               border: "1px solid black",
@@ -1729,6 +1667,7 @@ const EditJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "amount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               sx={{ width: "90px" }}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
@@ -1746,6 +1685,7 @@ const EditJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                               sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
@@ -1763,7 +1703,8 @@ const EditJobCard1 = (props: Props) => {
                               // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                              onFocus={e => e.target.select()}
+                           />
                           </td>
                           <td
                             style={{
@@ -1777,7 +1718,8 @@ const EditJobCard1 = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                              onFocus={e => e.target.select()}
+                           />
                           </td>
                           <td
                             style={{
@@ -1790,6 +1732,7 @@ const EditJobCard1 = (props: Props) => {
                               value={row.challanRemark}
                               onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
                               size="small"
+                              onFocus={e => e.target.select()}
                               inputProps={{ "aria-readonly": true }}
                               sx={{ width: "100px" }}
                             />
@@ -1967,6 +1910,7 @@ const EditJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                             />
                           </td>
                           <td
@@ -1983,7 +1927,8 @@ const EditJobCard1 = (props: Props) => {
                               }
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                           onFocus={e => e.target.select()}
+                           />
                           </td>
                           <td
                             style={{
@@ -2040,7 +1985,8 @@ const EditJobCard1 = (props: Props) => {
                               onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                              onFocus={e => e.target.select()}
+                           />
                           </td>
                           <td
                             style={{

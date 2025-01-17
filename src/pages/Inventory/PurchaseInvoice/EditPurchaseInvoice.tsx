@@ -982,6 +982,7 @@ const EditPurchaseInvoice = () => {
                                                             // if (!isNaN(value) || value === '' || value === '.') {
                                                             // }
                                                         }}
+                                                        onFocus={e => e.target.select()}
                                                         inputProps={{
                                                             step: "any",
                                                             min: "0"
@@ -1003,7 +1004,8 @@ const EditPurchaseInvoice = () => {
                                                          value={row.rate}
                                                         onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                         inputProps={{ step: "any", min: "0" }}
-                                                    />
+                                                        onFocus={e => e.target.select()}
+                                                   />
                                                 </td>
                                                 <td
                                                     style={{
