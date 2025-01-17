@@ -280,7 +280,7 @@ export default function Unitmaster() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -292,7 +292,7 @@ export default function Unitmaster() {
                   </option>
                 ))}
               </select>
-            </Grid> */}
+            </Grid>
           </Grid>
 
           <Divider />
@@ -301,14 +301,14 @@ export default function Unitmaster() {
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={2}>
               <Grid xs={12} sm={5} lg={5} item>
-                {/* <TranslateTextField
+                <TranslateTextField
                   label={t("text.enterunitName")}
                   value={formik.values.unitName}
                   onChangeText={(text: string) => handleConversionChange('unitName', text)}
                   required={true}
                   lang={lang}
-                /> */}
-                <TextField
+                />
+                {/* <TextField
                   label={
                     <CustomLabel
                       text={t("text.enterunitName")}
@@ -323,7 +323,7 @@ export default function Unitmaster() {
                   value={formik.values.unitName}
                   placeholder={t("text.enterunitName")}
                   onChange={formik.handleChange}
-                />
+                /> */}
                 {formik.touched.unitName && formik.errors.unitName ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.unitName}

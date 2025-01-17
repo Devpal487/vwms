@@ -293,7 +293,7 @@ export default function Taxmaster() {
                             </Typography>
                         </Grid>
 
-                        {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+                        <Grid item lg={2} md={2} xs={12} marginTop={2}>
                             <select
                                 className="language-dropdown"
                                 value={lang}
@@ -305,7 +305,7 @@ export default function Taxmaster() {
                                     </option>
                                 ))}
                             </select>
-                        </Grid> */}
+                        </Grid>
                     </Grid>
 
                     <Divider />
@@ -313,11 +313,11 @@ export default function Taxmaster() {
                     <Box height={10} />
                     <form onSubmit={formik.handleSubmit}>
                         <Grid item xs={12} container spacing={2}>
-                            {/* <Grid xs={12} sm={4} lg={4} item>
-                                <TextField
+                             <Grid xs={12} sm={4} lg={4} item>
+                                <TranslateTextField
                                     label={t("text.entertaxName")}
                                     value={formik.values.taxName}
-                                   //onChange={(text: string) => handleChange('taxName', text)}
+                                    onChangeText={(text: string) => handleConversionChange('taxName', text)}
                                     required={true}
                                     lang={lang}
                                 />
@@ -326,9 +326,9 @@ export default function Taxmaster() {
                                         {formik.errors.taxName}
                                     </div>
                                 ) : null}
-                            </Grid> */}
+                            </Grid> 
 
-                            <Grid item xs={12} sm={4} lg={4}>
+                            {/* <Grid item xs={12} sm={4} lg={4}>
                                 <TextField
                                     label={
                                         <CustomLabel
@@ -350,7 +350,7 @@ export default function Taxmaster() {
                                         {formik.errors.taxName}
                                     </div>
                                 ) : null}
-                            </Grid>
+                            </Grid> */}
 
                             <Grid item xs={12} sm={4} lg={4}>
                                 <TextField

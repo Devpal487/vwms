@@ -2586,9 +2586,7 @@ const AddJobCard1 = (props: Props) => {
       newData[index].serviceId = newData[index].serviceId;
       newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    // if (field === 'serviceName') {
-    //   newData[index].serviceName = newData[index].serviceName;
-    // }
+
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
@@ -2608,32 +2606,16 @@ const AddJobCard1 = (props: Props) => {
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
-    // if (field === 'qty') {
-    //   newData[index].qty = newData[index].qty;
-    // }
-    // if (field === 'unitRate') {
-    //   newData[index].unitRate = newData[index].unitRate;
-    // }
-    // if (field === 'unitId') {
-    //   newData[index].unitId = newData[index].unitId;
-    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    // }
-    // if (field === 'vendorName') {
-    //   newData[index].vendorName = newData[index].vendorName;
-    // }
-    // if (field === 'unitName') {
-    //   newData[index].unitName = newData[index].unitName;
-    // }
+  
     newData[index].jobCardId = formik.values.jobCardId;
-    //  newData[index].amount = newData[index].unitRate * newData[index].qty;
-    //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+   
     newData[index].id = index;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
       if (index === tableData.length - 1) {
         addRow();
-        //setIsVisibleJWC(true);
+        
       }
     }
 
@@ -2667,54 +2649,24 @@ const AddJobCard1 = (props: Props) => {
       newData[index].serviceId = newData[index].serviceId;
       newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    // if (field === 'serviceName') {
-    //   newData[index].serviceName = newData[index].serviceName;
-    // }
+    
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
-    // if (field === 'vendorId') {
-    //   newData[index].vendorId = newData[index].vendorId;
-    //   newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
-    // }
-    // if (field === 'challanRemark') {
-    //   newData[index].challanRemark = newData[index].challanRemark;
-    // }
-    // if (field === 'challanNo') {
-    //   newData[index].challanNo = newData[index].challanNo;
-    // }
-    // if (field === 'challanStatus') {
-    //   newData[index].challanStatus = newData[index].challanStatus;
-    // }
+   
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
-    // if (field === 'qty') {
-    //   newData[index].qty = newData[index].qty;
-    // }
-    // if (field === 'unitRate') {
-    //   newData[index].unitRate = newData[index].unitRate;
-    // }
-    // if (field === 'unitId') {
-    //   newData[index].unitId = newData[index].unitId;
-    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    // }
-    // if (field === 'vendorName') {
-    //   newData[index].vendorName = newData[index].vendorName;
-    // }
-    // if (field === 'unitName') {
-    //   newData[index].unitName = newData[index].unitName;
-    // }
+    
     newData[index].jobCardId = formik.values.jobCardId;
-    // newData[index].amount = newData[index].unitRate * newData[index].qty;
-    // newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    
     newData[index].id = index;
     setTableData1(newData);
 
     if (newData[index].itemId && newData[index].qty && newData[index].rate) {
       if (index === tableData1.length - 1) {
         handleAddItem();
-        //setIsVisibleJWC(true);
+        
       }
     }
 
@@ -3065,9 +3017,6 @@ const AddJobCard1 = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    if (!newValue) {
-                      return;
-                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -3259,13 +3208,12 @@ const AddJobCard1 = (props: Props) => {
                               // value={row.serviceId}
                               sx={{ width: "225px" }}
                               size="small"
-                              onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
+                              onChange={(_, newValue: any) => {
+                                if (newValue) {
+                                  console.log(newValue?.value);
+                                  handleInputChange(index, "serviceId", newValue?.value)
+                                  handleInputChange(index, 'serviceName', newValue?.label);
                                 }
-                                console.log(newValue?.value);
-                                handleInputChange(index, "serviceId", newValue?.value)
-                                handleInputChange(index, 'serviceName', newValue?.label);
 
                               }}
                               renderInput={(params) => (
@@ -3296,9 +3244,6 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
-                                }
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
                               sx={{ width: "140px" }}
@@ -3328,24 +3273,17 @@ const AddJobCard1 = (props: Props) => {
                               // value={row.vendorName}
                               fullWidth
                               size="small"
-                              onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
+                              onChange={(_, newValue: any) => {
+                                if (newValue) {
+                                  handleInputChange(index, 'vendorId', newValue.value);
+                                  handleInputChange(index, 'vendorName', newValue.label);
                                 }
-                                console.log(newValue?.value);
-                                handleInputChange(index, 'vendorId', newValue?.value);
-                                handleInputChange(index, 'vendorName', newValue?.label);
                               }}
                               sx={{ width: "330px" }}
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Vendor")}
-                                //     required={false}
-                                //   />
-                                // }
+
                                 />
                               )}
                             />
@@ -3386,7 +3324,7 @@ const AddJobCard1 = (props: Props) => {
                           }}
                           >
                             <TextField
-                              value={row.netAmount}
+                              // value={row.netAmount}
                               onChange={(e) =>
                                 handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
@@ -3548,16 +3486,13 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               sx={{ width: "225px" }}
-                              onChange={(e: any, newValue: any) =>{
-                                if (!newValue) {
-                                return;
-                              }
+                              onChange={(e: any, newValue: any) =>
                                 handleInputChange1(
                                   index,
                                   "itemId",
                                   newValue?.value
                                 )
-                              }}
+                              }
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -3582,9 +3517,6 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
-                                }
                                 console.log(newValue?.value);
                                 handleInputChange1(index, 'unitId', newValue?.value);
                                 handleInputChange1(index, 'unitName', newValue?.label);
@@ -3644,7 +3576,7 @@ const AddJobCard1 = (props: Props) => {
                             }}
                           >
                             <TextField
-                              value={row.amount}
+                              value={row.rate * row.qty}
                               onChange={(e) =>
                                 handleInputChange1(index, "amount", parseFloat(e.target.value) || 0)
                               }
@@ -3665,9 +3597,6 @@ const AddJobCard1 = (props: Props) => {
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
-                                }
                                 console.log(newValue?.value);
                                 handleInputChange1(index, 'indentId', newValue?.value);
                                 handleInputChange1(index, 'indentNo', newValue?.label);
@@ -3710,12 +3639,9 @@ const AddJobCard1 = (props: Props) => {
                               options={taxData}
                               fullWidth
                               size="small"
-                              onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
-                                }
+                              onChange={(e: any, newValue: any) =>
                                 handleInputChange1(index, "gstId", newValue?.value)
-                              }}
+                              }
                               renderInput={(params) => (
                                 <TextField
                                   {...params}

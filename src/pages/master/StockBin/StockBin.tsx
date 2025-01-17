@@ -321,7 +321,7 @@ export default function StockBin() {
               </Typography>
             </Grid>
 
-            {/* <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -333,7 +333,7 @@ export default function StockBin() {
                   </option>
                 ))}
               </select>
-            </Grid> */}
+            </Grid>
           </Grid>
 
           <Divider />
@@ -346,13 +346,11 @@ export default function StockBin() {
             <Grid item xs={12} container spacing={3}>
               
 
-              {/* <Grid item xs={12} lg={4}>
-                <TextField
+              <Grid item xs={12} lg={4}>
+                <TranslateTextField
                
-                  label={<CustomLabel text={t("text.StockBinName")}}
+               label={t("text.StockBinName")}
                   value={formik.values.binName}
-                  name="binName"
-                  id="binName"
                   onChangeText={(text: string) =>
                     handleConversionChange("binName", text)
                   }
@@ -364,29 +362,29 @@ export default function StockBin() {
                     {formik.errors.binName}
                   </div>
                 ) : null}
-              </Grid> */}
+              </Grid>
 
-              <Grid xs={12} lg={4} item>
-              <TextField
-                label={<CustomLabel text={t("text.StockBinName")}
-                required={true} />}
-                value={formik.values.binName}
-                name="binName"
-                id="binName"
-                placeholder={t("text.StockBinName")}
-                size="small"
-                fullWidth
-                style={{ backgroundColor: "white" }}
-                onChange={formik.handleChange}
-               // required={true}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.binName && formik.errors.binName ? (
-                  <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.binName}
-                  </div>
-                ) : null}
-            </Grid>
+            {/* //   <Grid xs={12} lg={4} item>
+            //   <TextField
+            //     label={<CustomLabel text={t("text.StockBinName")}
+            //     required={true} />}
+            //     value={formik.values.binName}
+            //     name="binName"
+            //     id="binName"
+            //     placeholder={t("text.StockBinName")}
+            //     size="small"
+            //     fullWidth
+            //     style={{ backgroundColor: "white" }}
+            //     onChange={formik.handleChange}
+            //    // required={true}
+            //     onBlur={formik.handleBlur}
+            //   />
+            //   {formik.touched.binName && formik.errors.binName ? (
+            //       <div style={{ color: "red", margin: "5px" }}>
+            //         {formik.errors.binName}
+            //       </div>
+            //     ) : null}
+            // </Grid> */}
 
               <Grid xs={12} lg={4} item>
                 <TextField
