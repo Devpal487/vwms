@@ -941,6 +941,7 @@ const GetorderData = async () => {
                                 newValue?.value
                               )
                             }
+                         
                             renderInput={(params) => (
                               <TextField
                                 {...params}
@@ -1000,6 +1001,7 @@ const GetorderData = async () => {
                             value={row.batchNo}
                             size="small"
                             onChange={(e) =>handleInputChange(index,"batchNo",e.target.value)}
+                            onFocus={(e) => {e.target.select()}}
                           />
                         </td>
                         <td
@@ -1012,6 +1014,7 @@ const GetorderData = async () => {
                             size="small"
                             value={row.balQuantity}
                             onChange={(e) =>handleInputChange(index,"balQuantity",e.target.value)}
+                            onFocus={(e) => {e.target.select()}}
                           />
                         </td>
                         <td
@@ -1025,7 +1028,8 @@ const GetorderData = async () => {
                             value={row.quantity}
                             onChange={(e) =>handleInputChange(index,"quantity",e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1038,7 +1042,8 @@ const GetorderData = async () => {
                             value={row.rate}
                             onChange={(e) => handleInputChange(index,"rate",e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{

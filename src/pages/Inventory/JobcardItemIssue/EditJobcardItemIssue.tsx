@@ -153,9 +153,9 @@ const EditJobcardItemIssue = (props: Props) => {
             "issueId": 0,
 
             batchNo: item?.batchNo,
-            itemID: item?.itemID,
+            itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.issueQty,
+            issueQty: item?.approveQuantity,
             reqQty: item?.quantity,
             unitName: "",
             itemName: "",
@@ -326,21 +326,6 @@ const EditJobcardItemIssue = (props: Props) => {
             "indentNo": "",
             "stockQty": 0,
 
-            // "id": 0,
-            // "issueId": -1,
-            // "itemID": 0,
-            // "batchNo": "",
-            // "indentId": 0,
-            // "unitId": 0,
-            // "reqQty": 0,
-            // "issueQty": 0,
-            // "stockQty": 0,
-            // "itemName": "",
-            // "indentNo": "",
-            // "srn": 0,
-            // "unitName": "",
-            // // unit:"",
-            // "returnItem": true
         }]);
     };
 
@@ -552,6 +537,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{width: "175px"}}
                                                                 onChange={(e: any, newValue: any) =>
                                                                     handleInputChange(
                                                                         index,
@@ -583,6 +569,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{width: "175px"}}
                                                                 onChange={(e, newValue: any) =>
                                                                     handleInputChange(index, "unitId", newValue?.value)
                                                                 }
@@ -596,38 +583,42 @@ const EditJobcardItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                               // type="number"
                                                                 size="small"
                                                                 // type="text"
-                                                                value={row.batchNo}
+                                                                value={row.batchNo||""}
                                                                 onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                            />
+                                                           onFocus={e => e.target.select()}
+                                                           />
                                                         </td>
 
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                                //type="number"
                                                                 size="small"
                                                                 value={row.stockQty || 0}
-                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
-                                                            />
+                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value)||0)}
+                                                           onFocus={e => e.target.select()}
+                                                           />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                                //type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.reqQty}
-                                                                onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
+                                                                onChange={(e) => handleInputChange(index, 'reqQty', parseFloat(e.target.value)||0)}
+                                                            onFocus={e => e.target.select()}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                                type="number"
+                                                               // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.issueQty}
-                                                                onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
+                                                                onChange={(e) => handleInputChange(index, 'issueQty', parseFloat(e.target.value)||0)}
+                                                            onFocus={e =>e.target.focus()}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>

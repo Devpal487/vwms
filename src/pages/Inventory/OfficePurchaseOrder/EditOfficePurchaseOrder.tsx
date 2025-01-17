@@ -1399,6 +1399,7 @@ reader.readAsDataURL(file);
                               const value: any = event.target.value;
                               handleInputChange(index, "qty", value);
                             }}
+                            onFocus={e => e.target.select()}
                             inputProps={{
                               step: "any",
                               min: "0",
@@ -1420,6 +1421,7 @@ reader.readAsDataURL(file);
                                 );
                               }
                             }}
+                            onFocus={e => e.target.select()}
                             inputProps={{
                               step: "any",
                               min: "0",

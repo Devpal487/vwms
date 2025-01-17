@@ -979,6 +979,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             onChange={(e, newValue: any) =>
                               handleInputChange(index, "unitId", newValue?.value)
                             }
+                            
                             renderInput={(params: any) => (
                               <TextField
                                 {...params}
@@ -995,9 +996,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         >
                           <TextField
                             size="small"
-                            // value={row.balQuantity}
+                             value={row.balQuantity}
                             onChange={(e) => handleInputChange(index, "balQuantity", e.target.value)}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1007,10 +1009,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         >
                           <TextField
                             size="small"
-                            // value={row.quantity}
+                             value={row.quantity}
                             onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         <td
                           style={{
@@ -1020,10 +1023,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         >
                           <TextField
                             size="small"
-                            // value={row.rate}
+                            value={row.rate}
                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
-                          />
+                            onFocus={e => e.target.select()}
+                         />
                         </td>
                         {/* <td
                           style={{
@@ -1135,6 +1139,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         {t("text.Totalnetamount")}
 
                       </td>
+                      
                       <td style={{ textAlign: "center", border: "1px solid black" }}>
                         {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                       </td>

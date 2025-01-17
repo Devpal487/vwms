@@ -1193,6 +1193,7 @@ const CreateOfficePurchaseOrder = () => {
                                                    step: "any",
                                                    min: "0"
                                                }}
+                                               onFocus={e => e.target.select()}
                                                size="small"
                                            />
                                        </td>
@@ -1210,6 +1211,7 @@ const CreateOfficePurchaseOrder = () => {
                                                         // value={row.rate}
                                                         onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                         inputProps={{ step: "any", min: "0" }}
+                                                        onFocus={e => e.target.select()}
                                                     />
                                                 </td>
                                                 <td
@@ -1222,7 +1224,8 @@ const CreateOfficePurchaseOrder = () => {
                                                         value={row.amount}
                                                         size="small"
                                                         inputProps={{ readOnly: true }}
-                                                    />
+                                                       // onFocus={e => e.target.select()}
+                                                   />
                                                 </td>
                                                 <td
                                                     style={{

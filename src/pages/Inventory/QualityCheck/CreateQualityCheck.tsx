@@ -1045,6 +1045,7 @@ const CreateQualityCheck = (props: Props) => {
                                   e.target.value
                                 )
                               }
+                              onFocus={e => e.target.select()}
                             />
                           </td>
                           <td
@@ -1059,6 +1060,7 @@ const CreateQualityCheck = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "mrnQty", e.target.value)
                               }
+                              onFocus={e => e.target.select()}
                             />
                           </td>
 
@@ -1078,6 +1080,7 @@ const CreateQualityCheck = (props: Props) => {
                                   e.target.value
                                 )
                               }
+                              onFocus={e => e.target.select()}
                               inputProps={{ step: "any", min: "0" }}
                             />
                           </td>
@@ -1097,6 +1100,7 @@ const CreateQualityCheck = (props: Props) => {
                                   e.target.value
                                 )
                               }
+                              onFocus={e => e.target.select()}
                               inputProps={{ step: "any", min: "0" }}
                             />
                           </td>
@@ -1113,6 +1117,7 @@ const CreateQualityCheck = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "rate", e.target.value)
                               }
+                              onFocus={e => e.target.select()}
                               inputProps={{ step: "any", min: "0" }}
                             />
                           </td>
@@ -1255,6 +1260,7 @@ const CreateQualityCheck = (props: Props) => {
                                 // if (!isNaN(value) || value === '' || value === '.') {
                                 // }
                               }}
+                              onFocus={e => e.target.select()}
                               inputProps={{
                                 step: "any",
                                 min: "0",

@@ -3300,6 +3300,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "amount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                             />
                           </td>
@@ -3314,6 +3315,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                             />
                           </td>
@@ -3328,6 +3330,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                             />
                           </td>
@@ -3343,6 +3346,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange(index, "challanNo", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                             />
                           </td>
@@ -3358,7 +3362,8 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'challanRemark', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                              onFocus={e => e.target.select()}
+                           />
                           </td>
 
                         </tr>
@@ -3550,6 +3555,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                             />
                           </td>
                           <td
@@ -3564,6 +3570,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                             />
@@ -3580,6 +3587,7 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) =>
                                 handleInputChange1(index, "amount", parseFloat(e.target.value) || 0)
                               }
+                              onFocus={e => e.target.select()}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
@@ -3624,7 +3632,8 @@ const AddJobCard1 = (props: Props) => {
                               onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                            />
+                              onFocus={e => e.target.select()}
+                           />
                           </td>
 
                           <td

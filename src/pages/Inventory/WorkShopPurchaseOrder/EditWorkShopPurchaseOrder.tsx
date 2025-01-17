@@ -1068,6 +1068,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                                 // if (!isNaN(value) || value === '' || value === '.') {
                                                                 // }
                                                             }}
+                                                            onFocus={e => e.target.select()}
                                                             inputProps={{
                                                                 step: "any",
                                                                 min: "0"
@@ -1089,7 +1090,8 @@ const EditWorkShopPurchaseOrder = () => {
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                             inputProps={{ step: "any", min: "0" }}
-                                                        />
+                                                            onFocus={e => e.target.select()}
+                                                       />
                                                     </td>
                                                     <td
                                                         style={{
@@ -1101,6 +1103,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                             value={row.amount}
                                                             size="small"
                                                             inputProps={{ readOnly: true }}
+                                                          //  onFocus={e => e.target.select()}
                                                         />
                                                     </td>
                                                     <td

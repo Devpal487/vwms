@@ -543,8 +543,10 @@ const CreateStaffIndent = (props: Props) => {
               size="small"
               // type="text"
               value={row.quantity}
+             
               onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-            />
+              onFocus={e => e.target.select()}
+           />
           </td>
           <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
             <TextField
@@ -553,6 +555,7 @@ const CreateStaffIndent = (props: Props) => {
               // type="text"
               value={row.approveQuantity}
               onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
+              onFocus={e => e.target.select()}
             />
           </td>
           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
@@ -562,7 +565,8 @@ const CreateStaffIndent = (props: Props) => {
               // type="text"
               value={row.rate}
               onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-            />
+              onFocus={e => e.target.select()}
+           />
           </td>
 
           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
