@@ -1102,7 +1102,7 @@ const EditPurchaseInvoice = () => {
                                         ))}
                                     </tbody>
                                     <tfoot>
-                                        <tr>
+                                        {/* <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.TotalAmount")}
 
@@ -1110,8 +1110,8 @@ const EditPurchaseInvoice = () => {
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
                                                 {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                                             </td>
-                                        </tr>
-                                        <tr>
+                                        </tr> */}
+                                        {/* <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.Totaltaxamount")}
 
@@ -1120,7 +1120,7 @@ const EditPurchaseInvoice = () => {
                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
                                                 {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                         <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.Totalnetamount")}

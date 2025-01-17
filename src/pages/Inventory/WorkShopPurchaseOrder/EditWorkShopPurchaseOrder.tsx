@@ -1012,6 +1012,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                             options={itemOption}
                                                             fullWidth
                                                             size="small"
+                                                            sx={{ width: "155px" }}
                                                             value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
                                                             onChange={(e: any, newValue: any) =>
                                                                 handleInputChange(
@@ -1046,6 +1047,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                             options={unitOptions}
                                                             fullWidth
                                                             size="small"
+                                                            sx={{ width: "155px" }}
                                                             value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
                                                             onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
                                                             renderInput={(params) => (
@@ -1091,7 +1093,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                             inputProps={{ step: "any", min: "0" }}
                                                             onFocus={e => e.target.select()}
-                                                       />
+                                                        />
                                                     </td>
                                                     <td
                                                         style={{
@@ -1103,7 +1105,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                             value={row.amount}
                                                             size="small"
                                                             inputProps={{ readOnly: true }}
-                                                          //  onFocus={e => e.target.select()}
+                                                        //  onFocus={e => e.target.select()}
                                                         />
                                                     </td>
                                                     <td
@@ -1194,30 +1196,30 @@ const EditWorkShopPurchaseOrder = () => {
                                                     {t("text.TotalAmount")}
 
                                                 </td>
-                                                <td style={{ textAlign: "center", border: "1px solid black" }}>
+                                                <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            {/* <tr>
                                                 <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                     {t("text.Totaltaxamount")}
 
 
                                                 </td>
-                                                <td style={{ textAlign: "center", border: "1px solid black" }}>
+                                                <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
                                                 </td>
-                                            </tr>
+                                            </tr> */}
                                             <tr>
                                                 <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                     {t("text.Totalnetamount")}
 
                                                 </td>
-                                                <td style={{ textAlign: "center", border: "1px solid black" }}>
+                                                <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                                                 </td>
                                             </tr>
-                                        </tfoot> 
+                                        </tfoot>
                                     </Table>
                                 </div>   </Grid>
 

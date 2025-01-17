@@ -453,10 +453,11 @@ const CreateStaffItemReturn = (props: Props) => {
     const handleAddIndent = () => {
         // Merge `tableDatai` into `tableData` with additional fields like indentNo
         const mergedData = [
-            ...tableData,
+            
             ...tableDatai.map((item: any) => ({
                 ...item,
-                indentNo: formik.values.returnIndentNo, // Add the selected indent number
+                indentNo: formik.values.returnIndentNo, 
+                ...tableData,// Add the selected indent number
             })),
         ];
     

@@ -214,31 +214,7 @@ const CreateJobcardItemIssue = (props: Props) => {
         setUnitOptions(arr);
         
     };
-    // const GetempData = async () => {
-    //     const collectData = {
-    //         empid: -1,
-    //         userId: "",
-
-    //     };
-    //     const response = await api.post(`Employee/GetEmployee`, collectData);
-    //     const data = response.data.data;
-    //     console.log('data', data)
-    //     const arr = data.map((item: any) => ({
-    //         label: item?.empName,
-    //         value: item?.empid
-
-    //     }))
-    //     // for (let index = 0; index < data.length; index++) {
-    //     //   arr.push({
-    //     //     label: data[index]["empName"],
-    //     //     value: data[index]["empId"],
-    //     //   });
-    //     // }
-    //     setempOption(arr);
-    // };
-
-
-
+ 
     const handleActionChange = (event: any) => {
         setSelectedAction(event.target.value);
     };
@@ -291,19 +267,14 @@ const CreateJobcardItemIssue = (props: Props) => {
             // empId: Yup.string()
             //     .required(t("text.reqEmpName")),
         }),
-
         onSubmit: async (values) => {
 
             const validTableData = tableData;
             values.itemIssueDetail = tableData
-
-
             if (validTableData.length === 0) {
                 toast.error("Please add some data in table for further process");
                 return;
             }
-
-
             const response = await api.post(
                 `ItemIssue/UpsertItemIssue`,
                 values
@@ -320,29 +291,16 @@ const CreateJobcardItemIssue = (props: Props) => {
 
         },
     });
-
-
-
     const handleInputChange = (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
-
-
-
         setTableData(updatedData);
     };
     const deleteRow = (index: number) => {
         const updatedData = tableData.filter((_: any, i: number) => i !== index);
         setTableData(updatedData);
     };
-
-
-
-
     const back = useNavigate();
-
-
-
     const addRow = () => {
         setTableData([...tableData, {
             "id": 0,
@@ -358,22 +316,6 @@ const CreateJobcardItemIssue = (props: Props) => {
             "returnItem": true,
             "indentNo": "",
             "stockQty": 0,
-
-            // "id": 0,
-            // "issueId": -1,
-            // "itemID": 0,
-            // "batchNo": "",
-            // "indentId": 0,
-            // "unitId": 0,
-            // "reqQty": 0,
-            // "issueQty": 0,
-            // "stockQty": 0,
-            // "itemName": "",
-            // "indentNo": "",
-            // "srn": 0,
-            // "unitName": "",
-            // // unit:"",
-            // "returnItem": true
         }]);
     };
 
@@ -497,28 +439,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 />
 
                             </Grid>
-                            {/* <Grid item xs={12} sm={4} lg={4}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={empOption}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event, newValue) => {
-                                        console.log(newValue?.value);
-                                        formik.setFieldValue("empId", newValue?.value);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={<CustomLabel text={t("text.selectemp_name")} required={true} />}
-                                        />
-                                    )}
-                                />
-                                {formik.touched.empId && formik.errors.empId && (
-                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-                                )}
-                            </Grid> */}
+
 
 
                             <Grid item lg={4} xs={12}>
