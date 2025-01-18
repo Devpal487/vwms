@@ -125,50 +125,68 @@ const CreateJobCardItemReturn = (props: Props) => {
             indentId: -1,
             indentNo: "",
             empId: -1,
+          //  "issueId":-1,"indentId":-1,"empId":-1
         };
 
-
         const response = await api.post(`Master/GetIndent`, collectData);
+       // const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
         const data = response.data.data;
         console.log("indent option", data)
         const arr = [];
         for (let index = 0; index < data.length; index++) {
             arr.push({
-                label: data[index]["indentNo"],
+                label: data[index]["indentNo"] || 0,
+              //  value: data[index]["issueId"]|| "",
                 value: data[index]["indentId"],
+
 
             });
         };
         setIndentOptions(arr);
     };
 
-    const GetIndentIDById = async (issueId: any) => {
+    const GetIndentIDById = async (itemID: any) => {
         const collectData = {
-            indentId: issueId,
-            indentNo: "",
-            empId: -1,
+            // indentId: issueId,
+            // indentNo: "",
+            // empId: -1,
+            "issueId":itemID,"indentId":-1,"empId":-1
         };
     
         try {
-            const response = await api.post(`Master/GetIndent`, collectData);
-            const data = response.data.data[0]?.indentDetail || [];
-    
+            const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
+            const data = response.data.data[0]?.itemIssueDetail || [];
+           // formik.setFieldValue('itemIssueDetail', data);
+
             console.log("Fetched Data from API:", data);
     
             const indentDetails = data.map((item: any, index: any) => ({
+                // id: index + 1,
+                // issueId: 0,
+                // itemID: item.itemId || 0,
+                // unitId: item.unitId || 0,
+                // batchNo: item.batchNo || "",
+                // indentId: issueId,
+                // reqQty: item.quantity || 0,
+                // issueQty: item.approveQuantity || 0,
+                // itemName: item.itemName || "",
+                // unitName: item.unitName || "",
+                // indentNo: item.indentNo || "",
+                // stockQty: item.stockQty || 0,
+                // returnItem: true,
                 id: index + 1,
-                issueId: 0,
-                itemID: item.itemId || 0,
-                unitId: item.unitId || 0,
-                batchNo: item.batchNo || "",
-                indentId: issueId,
-                reqQty: item.quantity || 0,
-                issueQty: item.approveQuantity || 0,
-                itemName: item.itemName || "",
-                unitName: item.unitName || "",
-                indentNo: item.indentNo || "",
-                stockQty: item.stockQty || 0,
-                returnItem: true,
+                "returnId": -1,
+                indentId: item?.indentId || 0,
+                batchNo: item?.batchNo || "",
+                itemID: item?.itemID,
+                issueQty: item?.issueQty,
+    
+                unitId: item?.unitId,
+    
+                unitName: item?.unitName,
+                itemName: item?.itemName,
+                returnQty: 0,
+    
             }));
     
             console.log("Transformed Data for tableDatai:", indentDetails);
@@ -406,7 +424,7 @@ const CreateJobCardItemReturn = (props: Props) => {
         if (newValue) {
             console.log("Selected Indent:", newValue);
             formik.setFieldValue("returnIndentNo", newValue.label.toString());
-            formik.setFieldValue("indentId", newValue.value);
+           // formik.setFieldValue("indentId", newValue.value);
     
             await GetIndentIDById(newValue.value);
     
@@ -577,7 +595,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                 console.log("check value", newValue);
                                                 if (newValue) {
                                                     GetIndentIDById(newValue?.value);
-                                                    formik.setFieldValue("indentId", newValue?.value);
+                                                 //   formik.setFieldValue("indentId", newValue?.value);
                                                     formik.setFieldValue("returnIndentNo", newValue?.label?.toString() || "");
                                                 }
                                             }}

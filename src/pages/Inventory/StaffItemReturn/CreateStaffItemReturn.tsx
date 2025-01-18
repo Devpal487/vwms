@@ -427,6 +427,7 @@ const CreateStaffItemReturn = (props: Props) => {
                 "indentId": 0,
                 "returnQty": 0,
                 "issueQty": 0
+                
             },
         ]);
     };

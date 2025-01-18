@@ -92,6 +92,9 @@ const EditStaffIndent = (props: Props) => {
     const [empOption, setempOption] = useState([
         { value: "-1", label: t("text.empid") },
     ]);
+     const [VnoOption, setVnoOption] = useState([
+            { value: -1, label: t("text.itemMasterId") },
+        ]);
     // const [itemOption, setitemOption] = useState<any>([]);
 
 
@@ -102,12 +105,22 @@ const EditStaffIndent = (props: Props) => {
         getTransDataById(location.state.id);
         GetUnitData();
         // GetmaxindentData();
-
+        getVnoData();
     }, []);
 
 
     console.log("🚀 ~ CreateIndentForm ~ tableData:", tableData)
-
+    const getVnoData = async () => {
+        const response = await api.get(
+            `Master/GetVehicleDetail?ItemMasterId=-1`,
+        );
+        const data = response.data.data;
+        const arr = data.map((Item: any, index: any) => ({
+            value: Item.itemMasterId,
+            label: Item.vehicleNo
+        }));
+        setVnoOption(arr);
+    };
     const GetUnitData = async () => {
         const collectData = {
             unitId: -1,

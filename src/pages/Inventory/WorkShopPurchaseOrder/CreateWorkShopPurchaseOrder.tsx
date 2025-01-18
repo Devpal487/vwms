@@ -65,58 +65,57 @@ const CreateWorkShopPurchaseOrder = () => {
     // const initialRowData: any = {
     const [tableData, setTableData] = useState<any>([
         {
-        "sno": 0,
-        "id": -1,
-        "orderId": 0,
-        "itemId": 0,
-        "quantity": 0,
-        "rate": 0,
-        "amount": 0,
-        "gstId": 0,
-        "gstRate": 0,
-        "cgst": 0,
-        "sgst": 0,
-        "igst": 0,
-        "cgstid": 0,
-        "sgstid": 0,
-        "igstid": 0,
-        "gst": 0,
-        "netAmount": 0,
-        "fyId": 0,
-        "srn": 0,
-        "balQuantity": 0,
-        "isDelete": true,
-        "itemName": ""
+            // "sno": 0,
+            // "id": -1,
+            // "orderId": 0,
+            // "itemId": 0,
+            // "quantity": 0,
+            // "rate": 0,
+            // "amount": 0,
+            // "gstId": 0,
+            // "gstRate": 0,
+            // "cgst": 0,
+            // "sgst": 0,
+            // "igst": 0,
+            // "cgstid": 0,
+            // "sgstid": 0,
+            // "igstid": 0,
+            // "gst": 0,
+            // "netAmount": 0,
+            // "fyId": 0,
+            // "srn": 0,
+            // "balQuantity": 0,
+            // "isDelete": true,
+            // "itemName": ""
 
+            "sno": 0,
+            "id": -1,
+            "orderId": 0,
+            "itemId": 0,
+            "unitId": 0,
+            "quantity": 0,
+            "rate": 0,
+            "amount": 0,
+            "gstId": 0,
+            "gstRate": 0,
+            "cgst": 0,
+            "sgst": 0,
+            "igst": 0,
+            "cgstid": 0,
+            "sgstid": 0,
+            "igstid": 0,
+            "gst": 0,
+            "netAmount": 0,
+            "fyId": 0,
+            "srn": 0,
+            "balQuantity": 0,
+            "isDelete": true,
+            "itemName": "",
+            "unit": ""
 
-    },
-    // {
-    //     "sno": 0,
-    //     "id": -1,
-    //     "orderId": 0,
-    //     "itemId": 0,
-    //     "quantity": 0,
-    //     "rate": 0,
-    //     "amount": 0,
-    //     "gstId": 0,
-    //     "gstRate": 0,
-    //     "cgst": 0,
-    //     "sgst": 0,
-    //     "igst": 0,
-    //     "cgstid": 0,
-    //     "sgstid": 0,
-    //     "igstid": 0,
-    //     "gst": 0,
-    //     "netAmount": 0,
-    //     "fyId": 0,
-    //     "srn": 0,
-    //     "balQuantity": 0,
-    //     "isDelete": true,
-    //     "itemName": ""
+        },
 
-
-    // }
-]);
+    ]);
 
     // const [tableData, setTableData] = useState([{ ...initialRowData }]);
     const [taxData, setTaxData] = useState<any>([]);
@@ -215,19 +214,45 @@ const CreateWorkShopPurchaseOrder = () => {
     };
 
 
+    //     const getPurchaseOrderNo = async () => {
+    //         try {
+    //             const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo
+    // `);
+
+
+    //             if (result?.data?.isSuccess && result?.data?.data?.orderNo) {
+    //                 formik.setFieldValue("orderNo", result.data.data.orderNo);
+    //             } else {
+    //                 console.warn("Order number not found in the API response:", result);
+    //                 formik.setFieldValue("orderNo", "");
+    //             }
+    //         } catch (error) {
+
+    //             if (error instanceof Error) {
+    //                 console.error("Error while fetching the order number:", error.message);
+    //             } else {
+    //                 console.error("An unexpected error occurred:", error);
+    //             }
+    //             formik.setFieldValue("orderNo", "");
+    //         }
+    //     };
     const getPurchaseOrderNo = async () => {
         try {
-            const result = await api.get(`PurchaseOrder/GetPurchaseOrderNo`);
+            const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo`);
 
-
-            if (result?.data?.status === 1 && result?.data?.data?.orderNo) {
-                formik.setFieldValue("orderNo", result.data.data.orderNo);
+            if (result?.data?.isSuccess && Array.isArray(result.data.data) && result.data.data.length > 0) {
+                const orderNo = result.data.data[0]?.orderNo;
+                if (orderNo) {
+                    formik.setFieldValue("orderNo", orderNo);
+                } else {
+                    console.warn("Order number not found in the first data entry:", result);
+                    formik.setFieldValue("orderNo", "");
+                }
             } else {
-                console.warn("Order number not found in the API response:", result);
+                console.warn("API response is not in the expected format or data array is empty:", result);
                 formik.setFieldValue("orderNo", "");
             }
         } catch (error) {
-
             if (error instanceof Error) {
                 console.error("Error while fetching the order number:", error.message);
             } else {
@@ -379,7 +404,6 @@ const CreateWorkShopPurchaseOrder = () => {
         setDocOpen(true);
         const base64Prefix = "data:image/jpg;base64,";
 
-
         let imageData = '';
         switch (event) {
             case "pOrderDoc":
@@ -394,64 +418,57 @@ const CreateWorkShopPurchaseOrder = () => {
         }
     };
 
-    const otherDocChangeHandler = (event: any, params: any) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        const fileExtension = file.name.split('.').pop()?.toLowerCase();
-        if (!['jpg'].includes(fileExtension || '')) {
-            alert("Only .jpg image file is allowed to be uploaded.");
+    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+        const pOrderDoc = event.target.files?.[0];
+        if (!pOrderDoc) return;
+    
+        const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+        if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+            alert("Only .jpg, .jpeg, or .png image files are allowed.");
             event.target.value = '';
             return;
         }
-
+    
         const reader = new FileReader();
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-            const base64String = e.target?.result as string;
-            const base64Data = base64String.split(',')[1];
-            formik.setFieldValue(params, base64Data);
-
-            formik.setFieldValue('pOrderDoc', fileExtension);
-
-
-
-            console.log(`File '${file.name}' loaded as base64 string`);
-            console.log("base64Data", base64Data);
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            formik.setFieldValue(params, base64String); // Include the prefix statically.
         };
-        reader.onerror = (error) => {
-            console.error("Error reading file:", error);
+        reader.onerror = () => {
             alert("Error reading file. Please try again.");
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(pOrderDoc);
     };
+    
 
+    // const otherDocChangeHandler = (event: any, params: any) => {
+    //     const pOrderDoc = event.target.files?.[0];
+    //     if (!pOrderDoc) return;
 
+    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+    //     if (!['jpg'].includes(fileExtension || '')) {
+    //         alert("Only .jpg image file is allowed to be uploaded.");
+    //         event.target.value = '';
+    //         return;
+    //     }
 
-    //     const validateItem = (item: any) => {
-    //         return (
-    //         //     item.itemNameId && item.itemNameId !== -1 &&
-    //         // (item.unit || item.unit === 0) && 
-    //         // parseFloat(item.qty) > 0 &&
-    //         // parseFloat(item.rate) > 0 &&
+    //     const reader = new FileReader();
+    //     reader.onload = (e: ProgressEvent<FileReader>) => {
+    //         const base64String = e.target?.result as string;
+    //         const base64Data = base64String.split(',')[1];
+    //         formik.setFieldValue(params, base64Data);
 
-    //         // parseFloat(item.amount) >= 0 &&
-    //         // (parseFloat(item.tax1) >= 0 || item.tax1 === "") &&
-    //         // (parseFloat(item.taxId1) >= 0 || item.taxId1 === "") &&
-    //         // (parseFloat(item.discount) >= 0 || item.discount === "") &&
-    //         // parseFloat(item.discountAmount) >= 0 &&
-    //         // parseFloat(item.netAmount) >= 0
-    //         item.itemId && item.itemId !== -1 &&
-    //     //    (item.unitId || item.unitId === 0) && 
-    //         parseFloat(item.quantity) > 0 &&
-    //         parseFloat(item.rate) > 0 &&
-    //         parseFloat(item.amount) >= 0 &&
-    // (parseFloat(item.cgst) >= 0 || item.cgst === "") &&
-    //         (parseFloat(item.cgstid) >= 0 || item.cgstid === "") &&
-    //        // (parseFloat(item.discount) >= 0 || item.discount === "") &&
-    //     //    parseFloat(item.discountAmount) >= 0 &&
-    //         parseFloat(item.netAmount) >= 0
-    //         );
+    //         console.log(`pOrderDoc '${pOrderDoc.name}' loaded as base64 string`);
+    //         console.log("base64Data", base64Data);
     //     };
+    //     reader.onerror = (error) => {
+    //         console.error("Error reading file:", error);
+    //         alert("Error reading file. Please try again.");
+    //     };
+    //     reader.readAsDataURL(pOrderDoc);
+    // };
+
+
 
     const validateRow = (row: any) => {
         return row.itemId && row.unitId && row.rate > 0;
@@ -460,9 +477,6 @@ const CreateWorkShopPurchaseOrder = () => {
 
     const formik = useFormik({
         initialValues: {
-
-
-            "sno": 0,
             "orderId": 0,
             "indentId": null,
             "orderNo": "",
@@ -476,7 +490,7 @@ const CreateWorkShopPurchaseOrder = () => {
             "totalSGST": 0,
             "totalIGST": 0,
             "netAmount": 0,
-            "status": "Open",
+            "status": "",
             "orderType": "",
             "createdBy": "",
             "updatedBy": "",
@@ -491,17 +505,13 @@ const CreateWorkShopPurchaseOrder = () => {
             "pOrderDoc": "",
             "purchaseOrderDetail": [],
             "isSelected": true,
-            "file": "",
-            "fileOldName": "",
             "indentNo": "",
-            "unitId": 0,
-            "itemName": "",
-            "unitName": ""
+            "itemName": ""
 
         },
-       
+
         validationSchema: Yup.object({
-            file: Yup.string()
+            pOrderDoc: Yup.string()
                 .required("Image required"),
             indentId: Yup.string().required("Indnet no required"),
             //   vendorId:Yup.string().required("Vendor is rquired"),
@@ -516,7 +526,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 return;
             }
             console.log('values', values)
-           
+
             const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`,
                 //     ...values,
                 //     purchaseOrderDetail: filteredTableData,
@@ -567,7 +577,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 };
             }
         }
-       
+
         else if (field === "quantity") {
             item.quantity = value === "" ? 0 : parseFloat(value);
         } else if (field === "rate") {
@@ -603,7 +613,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 addRow();
             }
         }
-       // addRow();
+        // addRow();
 
         let total = 0;
         tableData.forEach((row: any) => {
@@ -852,7 +862,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         size="small"
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
-                                        onChange={(e) => otherDocChangeHandler(e, "file")}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
                                         required={true}
                                     />
                                 </Grid>
@@ -879,7 +889,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                             />
                                         ) : (
                                             <img
-                                                src={`data:image/jpg;base64,${formik.values.file}`}
+                                                src={`data:image/jpg;base64,${formik.values.pOrderDoc}`}
                                                 style={{
                                                     width: 150,
                                                     height: 100,
@@ -890,7 +900,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                             />
                                         )}
                                         <Typography
-                                            onClick={() => modalOpenHandle1("file")}
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
                                             style={{
                                                 textDecorationColor: "blue",
                                                 textDecorationLine: "underline",
@@ -916,14 +926,20 @@ const CreateWorkShopPurchaseOrder = () => {
                                             />
                                         ) : (
                                             <img
-                                                alt="preview image"
-                                                src={"data:image/jpg;base64," + Img}
-                                                style={{
-                                                    width: "170vh",
-                                                    height: "75vh",
-                                                    borderRadius: 10,
-                                                }}
-                                            />
+                                            src={formik.values.pOrderDoc.startsWith('data:image/jpeg;base64,') 
+                                                ? formik.values.pOrderDoc 
+                                                : `data:image/jpeg;base64,${formik.values.pOrderDoc}`}
+                                            alt="Preview"
+                                            style={{
+                                                width: 150,
+                                                height: 100,
+                                                border: "1px solid grey",
+                                                borderRadius: 10,
+                                                padding: "2px",
+                                            }}
+                                        />
+                                        
+
                                         )}
                                     </Box>
                                 </Modal>
@@ -1174,7 +1190,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                                 inputProps={{ step: "any", min: "0" }}
                                                                 onFocus={e => e.target.select()}
-                                                           />
+                                                            />
                                                         </td>
                                                         <td
                                                             style={{
@@ -1186,8 +1202,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 value={row.amount}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
-                                                               // onFocus={e => e.target.select()}
-                                                           />
+                                                            // onFocus={e => e.target.select()}
+                                                            />
                                                         </td>
                                                         <td
                                                             style={{
@@ -1257,7 +1273,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
-                                                                textAlign: "center",
+                                                                textAlign: "end",
                                                             }}
                                                         >
                                                             <TextField

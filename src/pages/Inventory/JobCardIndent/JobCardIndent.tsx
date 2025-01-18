@@ -187,6 +187,13 @@ export default function JobCardIndent() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
+          //  {
+          //   field: "vehicleNo",
+          //   headerName: t("text.vehicleNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
+
          
           {
             field: "indentDate",
@@ -197,6 +204,7 @@ export default function JobCardIndent() {
               return dayjs(params.row.indentDate).format("DD-MMM-YYYY")
             },
           },
+
           {
             field: "remark",
             headerName: t("text.Remark1"),

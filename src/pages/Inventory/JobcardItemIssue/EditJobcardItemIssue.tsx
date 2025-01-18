@@ -92,25 +92,16 @@ const EditJobcardItemIssue = (props: Props) => {
     ]);
     useEffect(() => {
         GetIndentID();
-        GetIndentIDById(location.state.issueId);
-     //   getTransDataById(location.state.id);
+       // GetIndentIDById(location.state.issueId);
+      // getTransDataById(location.state.id);
         getVehicleDetails();
         GetitemData();
         GetUnitData();
         GetempData();
+        GetItemChild(location.state.issueId)
     }, []);
 
-    const getVehicleDetails = async () => {
-        const response = await api.get(
-            `Master/GetVehicleDetail?ItemMasterId=-1`,
-        );
-        const data = response.data.data;
-        const arr = data.map((Item: any, index: any) => ({
-            value: Item.itemMasterId,
-            label: Item.vehicleNo
-        }));
-        setVehicleOption(arr);
-    };
+ 
     const GetIndentID = async () => {
         const collectData = {
             indentId: -1,
@@ -134,6 +125,43 @@ const EditJobcardItemIssue = (props: Props) => {
     };
 
 
+    const GetItemChild = async (issueID: any) => {
+        const collectData = {
+            "issueId": issueID,
+            "indentId": -1,
+            "empId": -1
+        };
+        const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
+        const data = response.data.data[0]['itemIssueDetail'];
+
+        console.log("indent option22", data)
+        // let arr: any = [];
+
+        const indent = data.map((item: any, index: any) => ({
+
+            id: item.id,
+            "issueId": item.issueId,
+
+            batchNo: item?.batchNo,
+            itemID: item?.itemID,
+            unitId: item?.unitId,
+            issueQty: item?.issueQty,
+            reqQty: item?.reqQty,
+            unitName: item?.unitName,
+            itemName: item?.itemName,
+            indentNo: item?.indentNo,
+            "srn": item?.srn,
+            //"unitName": "",
+            "returnItem": item?.returnItem,
+            stockQty: item?.stockQty
+
+
+        }))
+
+        setTableData(indent);
+        setIsIndentSelected(true);
+
+    };
     const GetIndentIDById = async (itemID: any) => {
         const collectData = {
             indentId: itemID,
@@ -151,9 +179,9 @@ const EditJobcardItemIssue = (props: Props) => {
         const indent = data.map((item: any, index: any) => ({
 
             id: index + 1,
-            "issueId": 0,
+            "issueId": -1,
 
-            batchNo: item?.batchNo,
+            // batchNo: item?.batchNo,
             itemID: item?.itemId,
             unitId: item?.unitId,
             issueQty: item?.approveQuantity,
@@ -227,7 +255,17 @@ const EditJobcardItemIssue = (props: Props) => {
         // }
         setempOption(arr);
     };
-
+   const getVehicleDetails = async () => {
+        const response = await api.get(
+            `Master/GetVehicleDetail?ItemMasterId=-1`,
+        );
+        const data = response.data.data;
+        const arr = data.map((Item: any, index: any) => ({
+            value: Item.itemMasterId,
+            label: Item.vehicleNo
+        }));
+        setVehicleOption(arr);
+    };
 
 
     const handleActionChange = (event: any) => {
@@ -294,6 +332,18 @@ const EditJobcardItemIssue = (props: Props) => {
     const handleInputChange = (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
+        if (field === 'reqQty' || field === 'issueQty') {
+            
+            updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
+
+            // console.log("stockQty",updatedData[index].stockQty, updatedData[index].reqQty,updatedData[index].issueQty)
+
+        } else if (field === 'reqQty') {
+            updatedData[index].reqQty = parseInt(value)
+
+        } else if (field === 'issueQty') {
+            updatedData[index].issueQty = parseInt(value)
+        }
 
 
 
@@ -304,11 +354,11 @@ const EditJobcardItemIssue = (props: Props) => {
         setTableData(updatedData);
     };
 
-    useEffect(() => {
-        if (location?.state?.itemIssueDetail) {
-            setTableData(location.state.itemIssueDetail);
-        }
-    }, [location.state]);
+    // useEffect(() => {
+    //     if (location?.state?.itemIssueDetail) {
+    //         setTableData(location.state.itemIssueDetail);
+    //     }
+    // }, [location.state]);
 
 
     const back = useNavigate();
@@ -591,7 +641,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                // type="number"
                                                                 size="small"
                                                                 // type="text"
-                                                                value={row.batchNo||""}
+                                                                value={row.batchNo}
                                                                 onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
                                                            onFocus={e => e.target.select()}
                                                            />
