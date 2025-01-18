@@ -346,7 +346,7 @@ const AddJobWorkChallan = (props: Props) => {
       "companyId": 0,
       "fyId": 0,
       "serviceAmount": location.state?.totalServiceAmount || location.state?.serviceAmount || 0,
-      "itemAmount": location.state?.totalServiceAmount || 0,
+      "itemAmount": 0,
       "netAmount": location.state?.netAmount || 0,
       "status": location.state?.status || "",
       "rcvDate": defaultValues,

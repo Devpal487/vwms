@@ -335,7 +335,7 @@ export default function RoleMaster() {
 
     // console.log(collectData);
     api
-      .delete(`Auth/DeleteRole?RoleId=${delete_id}`)
+      .get(`Auth/DeleteRole?RoleId=${delete_id}`)
       .then((response) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);

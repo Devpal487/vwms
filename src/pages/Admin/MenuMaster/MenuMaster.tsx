@@ -2,6 +2,7 @@ import * as React from "react";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   Divider,
@@ -41,7 +42,7 @@ interface MenuPermission {
   isDel: boolean;
 }
 
-export default function CountryMaster() {
+export default function MenuMaster() {
   const { i18n, t } = useTranslation();
   const { defaultValues, defaultValuestime } = getISTDate();
 
@@ -59,38 +60,18 @@ export default function CountryMaster() {
   const [lang, setLang] = useState<Language>("en");
 
   useEffect(() => {
-    // const dataString = localStorage.getItem("userdata");
-    // if (dataString) {
-    //   const data = JSON.parse(dataString);
-    //   if (data && data.length > 0) {
-    //     const userPermissionData = data[0]?.userPermission;
-    //     if (userPermissionData && userPermissionData.length > 0) {
-    //       const menudata = userPermissionData[0]?.parentMenu;
-    //       for (let index = 0; index < menudata.length; index++) {
-    //         const childMenudata = menudata[index]?.childMenu;
-    //         const pathrow = childMenudata.find(
-    //           (x: any) => x.path === location.pathname
-    //         );
-    //         console.log("data", pathrow);
-    //         if (pathrow) {
 
-    //           setPermissionData(pathrow);
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
     getList();
   }, [isLoading]);
 
   let delete_id = "";
   const accept = () => {
     const collectData = {
-      countryId: delete_id,
+      menuId: delete_id
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`CountryMaster/DeleteCountry`, collectData)
+      .post(`Auth/DeleteMenu`, collectData)
       .then((response) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);
@@ -106,8 +87,8 @@ export default function CountryMaster() {
     toast.warn("Rejected: You have rejected", { autoClose: 3000 });
   };
 
-  const handledeleteClick = (del_id: any) => {
-    delete_id = del_id;
+  const handledeleteClick = (row: any) => {
+    delete_id = row.menuId;
     confirmDialog({
       message: "Do you want to delete this record ?",
       header: "Delete Confirmation",
@@ -119,17 +100,17 @@ export default function CountryMaster() {
   };
 
   const getList = () => {
-    const collectData = {
-      countryId: -1,
-    };
     try {
-      api.post(`CountryMaster/GetCountry`, collectData).then((res) => {
+      const collectData = {
+        "menuId": -1
+      }
+      api.post(`Auth/GetMenu`, collectData).then((res) => {
         console.log("result" + JSON.stringify(res.data.data));
         const data = res.data.data;
         const arr = data.map((item: any, index: any) => ({
           ...item,
           serialNo: index + 1,
-          id: item.countryId,
+          id: item.menuId,
         }));
         setRows(arr);
         setIsLoading(false);
@@ -170,7 +151,7 @@ export default function CountryMaster() {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        handledeleteClick(params.row.id);
+                        handledeleteClick(params.row);
                       }}
                     />
                     {/* ) : ( 
@@ -188,14 +169,14 @@ export default function CountryMaster() {
               headerClassName: "MuiDataGrid-colCell",
             },
             {
-              field: "countryName",
-              headerName: t("text.CountryName"),
+              field: "menuName",
+              headerName: t("text.MenuName"),
               flex: 1,
               headerClassName: "MuiDataGrid-colCell",
             },
             {
-              field: "countryCode",
-              headerName: t("text.CountryCode"),
+              field: "pageUrl",
+              headerName: t("text.PageURL"),
               flex: 1,
               headerClassName: "MuiDataGrid-colCell",
             },
@@ -211,12 +192,8 @@ export default function CountryMaster() {
   };
 
   const validationSchema = Yup.object({
-    countryName: Yup.string().test(
-      "required",
-      t("text.reqCountryName"),
-      function (value: any) {
-        return value && value.trim() !== "";
-      }
+    menuName: Yup.string().required(
+      ("Menu Name is required"),
     ),
   });
 
@@ -224,19 +201,50 @@ export default function CountryMaster() {
 
   const formik = useFormik({
     initialValues: {
-      countryId: 0,
-      countryName: "",
-      countryCode: "",
-      createdBy: "admin",
-      updatedBy: "admin",
-      createdOn: defaultValuestime,
-      updatedOn: defaultValuestime
+      "sno": 0,
+      "menuId": 0,
+      "menuName": "",
+      "parentId": 0,
+      "pageUrl": "",
+      "icon": "",
+      "displayNo": 0,
+      "isMenu": true,
+      "isAdd": true,
+      "isEdit": true,
+      "isDel": true,
+      "isView": true,
+      "isPrint": true,
+      "isExport": true,
+      "isRelease": true,
+      "isPost": true,
+      "subMenu": [],
+      "menuParentName": {
+        // "sno": 0,
+        // "menuId": 0,
+        // "menuName": "",
+        // "parentId": 0,
+        // "pageUrl": "",
+        // "icon": "",
+        // "displayNo": 0,
+        // "isMenu": true,
+        // "isAdd": true,
+        // "isEdit": true,
+        // "isDel": true,
+        // "isView": true,
+        // "isPrint": true,
+        // "isExport": true,
+        // "isRelease": true,
+        // "isPost": true,
+        // "menuParentName": "",
+        // "srNo": 0
+      },
+      "roleID": ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      values.countryId = editId;
+      values.menuId = editId;
 
-      const response = await api.post(`CountryMaster/UpsertCountry`, values);
+      const response = await api.post(`Auth/UpsertMenu`, values);
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
@@ -253,8 +261,11 @@ export default function CountryMaster() {
   const requiredFields = ["countryName"];
 
   const routeChangeEdit = (row: any) => {
-    formik.setFieldValue("countryName", row.countryName);
-    formik.setFieldValue("countryCode", row.countryCode);
+    formik.setFieldValue("menuId", row.menuId);
+    formik.setFieldValue("menuName", row.menuName);
+    formik.setFieldValue("parentId", row.parentId);
+    formik.setFieldValue("pageUrl", row.pageUrl);
+    formik.setFieldValue("displayNo", row.displayNo);
     setEditId(row.id);
   };
 
@@ -297,7 +308,7 @@ export default function CountryMaster() {
                   sx={{ padding: "20px" }}
                   align="left"
                 >
-                  {t("text.CountryMaster")}
+                  {t("text.MenuCreate")}
                 </Typography>
               </Grid>
 
@@ -322,76 +333,80 @@ export default function CountryMaster() {
             <form onSubmit={formik.handleSubmit}>
               <Grid item xs={12} container spacing={2}>
                 <Grid item xs={5}>
-                  <TranslateTextField
-                    label={t("text.EnterCountryName")}
-                    value={formik.values.countryName}
-                    onChangeText={(text: string) => handleConversionChange("countryName", text)}
-                    required={true}
-                    lang={lang}
-                    suggestions={["Suggestion 1", "Suggestion 2", "Suggestion 3"]} // Example suggestions
-                    onBlur={() => {
-                      formik.setFieldTouched("countryName", true);
-                    }}
-                  />
-
-                  {/* <TranslateTextField
-                    label={t("text.EnterCountryName")}
-                    value={formik.values.countryName}
-                    onChangeText={(text: string) =>
-                      handleConversionChange("countryName", text)
-                    }
-                    required={true}
-                    lang={lang}
-                  /> */}
-                  {/* <TextField
-                    label={<CustomLabel text={t("text.EnterCountryName")} required={true} />}
-                    value={formik.values.countryName}
-                    placeholder={t("text.EnterCountryName")}
+                  <TextField
+                    label={<CustomLabel text={t("text.EnterMenuName")} required={true} />}
+                    value={formik.values.menuName}
+                    placeholder={t("text.EnterMenuName")}
                     size="small"
                     fullWidth
-                    name="countryName"
-                    id="countryName"
+                    name="menuName"
+                    id="menuName"
                     style={{ backgroundColor: "white" }}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                  /> */}
-
-                  {formik.touched.countryName && formik.errors.countryName ? (
+                  />
+                  {formik.touched.menuName && formik.errors.menuName ? (
                     <div style={{ color: "red", margin: "5px" }}>
-                      {formik.errors.countryName}
+                      {formik.errors.menuName}
                     </div>
                   ) : null}
                 </Grid>
 
                 <Grid item xs={5}>
                   <TextField
-                    label={<CustomLabel text={t("text.EnterCountryCode")} />}
-                    value={formik.values.countryCode}
-                    placeholder={t("text.EnterCountryCode")}
+                    label={<CustomLabel text={t("text.EnterPageURL")} />}
+                    value={formik.values.pageUrl}
+                    placeholder={t("text.EnterPageURL")}
                     size="small"
                     fullWidth
-                    name="countryCode"
-                    id="countryCode"
+                    name="pageUrl"
+                    id="pageUrl"
                     style={{ backgroundColor: "white" }}
-                    onChange={formik.handleChange}
-                    onBlur={(e) => {
-                      formik.handleBlur(e); // Keep formik's default blur handling
-                      formik.setFieldTouched("countryName", false); // Clear translation suggestions for the previous field
+                    onChange={(e) => {
+                      formik.setFieldValue("pageUrl", e.target.value);
                     }}
                   />
+                </Grid>
 
-                  {/* <TextField
-                    label={<CustomLabel text={t("text.EnterCountryCode")} />}
-                    value={formik.values.countryCode}
-                    placeholder={t("text.EnterCountryCode")}
+                <Grid item xs={5}>
+                  <TextField
+                    label={<CustomLabel text={t("text.DisplayNo")} />}
+                    value={formik.values.pageUrl}
+                    placeholder={t("text.DisplayNo")}
                     size="small"
                     fullWidth
-                    name="countryCode"
-                    id="countryCode"
+                    name="displayNo"
+                    id="displayNo"
                     style={{ backgroundColor: "white" }}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  /> */}
+                    onChange={(e) => {
+                      formik.setFieldValue("displayNo", e.target.value);
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={5}>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={parentMenuOption}
+                    fullWidth
+                    size="small"
+                    onChange={(event: any, newValue: any) => {
+                      console.log(newValue?.value);
+                      formik.setFieldValue("parentId", newValue?.value);
+                      formik.setFieldValue("menuParentName.parentId", newValue?.value);
+                      formik.setFieldValue("menuParentName.menuParentName", newValue?.label);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={<CustomLabel text={t("text.ParentMenu")} required={false} />}
+                        name="parentId"
+                        id="parentId"
+                        placeholder={t("text.ParentMenu")}
+                      />
+                    )}
+                  />
                 </Grid>
                 <Grid item xs={2} sx={{ m: -1 }}>
                   {editId === 0 && (
@@ -446,3 +461,50 @@ export default function CountryMaster() {
     </>
   );
 }
+
+const parentMenuOption = [
+  {
+    value: 1,
+    label: "Master"
+  },
+  {
+    value: 2,
+    label: "Admin"
+  },
+  {
+    value: 3,
+    label: "Inventory"
+  },
+  {
+    value: 4,
+    label: "emailsystem"
+  },
+  {
+    value: 5,
+    label: "employeeInfo"
+  },
+  {
+    value: 6,
+    label: "vehiclecomplaint"
+  },
+  {
+    value: 7,
+    label: "vendorinfo"
+  },
+  {
+    value: 8,
+    label: "vehiclemaster"
+  },
+  {
+    value: 9,
+    label: "Reports"
+  },
+  {
+    value: 10,
+    label: "UserManagement"
+  },
+  {
+    value: 11,
+    label: "security"
+  },
+]
