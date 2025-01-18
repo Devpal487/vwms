@@ -63,6 +63,7 @@ const CreatePurchaseInvoice = () => {
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
+  const [purchaseData,setPurchaseData]=useState<any>([]);
   // const initialRowData: any = {
   const [tableData, setTableData] = useState<any>([{
     id: -1,
@@ -178,7 +179,7 @@ const CreatePurchaseInvoice = () => {
     if (result.data.isSuccess) {
       const arr =
         result?.data?.data?.map((item: any) => ({
-          label: `${item.venderId} - ${item.name}`,
+          label: item.name,
           value: item.venderId,
           details: item,
         })) || [];
@@ -214,30 +215,30 @@ const CreatePurchaseInvoice = () => {
       orderId: itemId,
 
       indentId: -1,
-      //  indentNo: "",
-      //empId: -1,
+
     };
     const response = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
     const data = response.data.data[0]['purchaseOrderDetail'];
+    setPurchaseData(data);
 
     console.log("indent option", data)
-    // let arr: any = [];
+
 
     const purchase = data.map((item: any, index: any) => ({
 
       id: index + 1,
       "invoiceId": 0,
-      gstId:item?.gstId,
+      gstId: item?.gstId,
       rate: item?.rate,
       cgst: item?.cgst,
       sgst: item?.sgst,
       igst: item?.igst,
       netAmount: item?.netAmount,
-      //batchNo: item?.batchNo,
+
       itemId: item?.itemId,
       unitId: item?.unitId,
       quantity: item?.quantity,
-      //reqQty: item?.quantity,
+
       amount: item?.amount,
       unitName: "",
       itemName: "",
@@ -254,15 +255,15 @@ const CreatePurchaseInvoice = () => {
 
   };
 
-  const handleVendorSelect = (event: any, newValue: any) => {
-    if (newValue && newValue.value !== "-1") {
-      setVendorDetail(newValue.details); // Set vendor details for display
-      formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
-    } else {
-      setVendorDetail(null); // Clear vendor details
-      formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
-    }
-  };
+  // const handleVendorSelect = (event: any, newValue: any) => {
+  //   if (newValue && newValue.value !== "-1") {
+  //     setVendorDetail(newValue.details); // Set vendor details for display
+  //     formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
+  //   } else {
+  //     setVendorDetail(null); // Clear vendor details
+  // //     formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
+  //   }
+  // };
 
 
   console.log("tableData.....", tableData);
@@ -600,9 +601,11 @@ const CreatePurchaseInvoice = () => {
 
                     console.log("check value", newValue);
                     if (newValue) {
-                        GetOrderIDById(newValue?.value);
-                    formik.setFieldValue("orderNo", newValue?.label);
-                    formik.setFieldValue("orderId", newValue?.value);
+                      GetOrderIDById(newValue?.value);
+                      formik.setFieldValue("orderNo", newValue?.label);
+                      formik.setFieldValue("orderId", newValue?.value);
+                      formik.setFieldValue("vendorId", purchaseData[0]?.vendorId);
+                      //formik.setFieldValue("name", purchaseData[purchaseData.findIndex((item: any) => item.orderId === newValue?.value)]?.name);
                     }
                   }}
                   renderInput={(params) => (
@@ -643,27 +646,28 @@ const CreatePurchaseInvoice = () => {
               </Grid>
 
               <Grid item lg={4} xs={12}>
-                                <Autocomplete
-                                    disablePortal
-                                    id="combo-box-demo"
-                                    options={vendorData}
-                                    fullWidth
-                                    size="small"
-                                    onChange={(event: any, newValue: any) => {
-                                        console.log(newValue?.value);
-                                        formik.setFieldValue("vendorId", newValue?.value);
-                                        formik.setFieldValue("name", newValue?.label);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            label={
-                                                <CustomLabel text={t("text.Vendorname")} required={false} />
-                                            }
-                                        />
-                                    )}
-                                />
-                            </Grid>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={vendorData}
+                  value={formik.values.vendorId}
+                  fullWidth
+                  size="small"
+                  onChange={(event: any, newValue: any) => {
+                    console.log(newValue?.value);
+                    formik.setFieldValue("vendorId", newValue?.value);
+                    //formik.setFieldValue("name", newValue?.label);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={
+                        <CustomLabel text={t("text.Vendorname")} required={false} />
+                      }
+                    />
+                  )}
+                />
+              </Grid>
 
               {/* <Grid item lg={4} xs={12} md={6}>
                 <Autocomplete
@@ -972,7 +976,7 @@ const CreatePurchaseInvoice = () => {
                                 onChange={(event) => {
                                   const value: any = event.target.value;
                                   handleInputChange(index, "quantity", value);
-                                  
+
                                   // if (!isNaN(value) || value === '' || value === '.') {
                                   // }
                                 }}
@@ -1010,7 +1014,7 @@ const CreatePurchaseInvoice = () => {
                               <TextField
                                 value={row.amount}
                                 size="small"
-                               // onFocus={e => e.target.select()}
+                                // onFocus={e => e.target.select()}
                                 inputProps={{ readOnly: true }}
                               />
                             </td>
@@ -1097,17 +1101,17 @@ const CreatePurchaseInvoice = () => {
                         ))}
                       </tbody>
                       <tfoot>
-                        <tr>
+                        {/* <tr>
                           <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                             {t("text.TotalAmount")}
 
                           </td>
                           <td style={{ textAlign: "end", border: "1px solid black" }}>
                             <b></b>{formik.values.netAmount}
-                            {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
+                           
                           </td>
-                        </tr>
-                        <tr>
+                        </tr> */}
+                        {/* <tr>
                           <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                             {t("text.Totaltaxamount")}
 
@@ -1117,7 +1121,7 @@ const CreatePurchaseInvoice = () => {
 
                             {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
                           </td>
-                        </tr>
+                        </tr> */}
                         <tr>
                           <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                             {t("text.Totalnetamount")}

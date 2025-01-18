@@ -93,6 +93,7 @@ const EditJobcardItemIssue = (props: Props) => {
     useEffect(() => {
         GetIndentID();
         GetIndentIDById(location.state.issueId);
+     //   getTransDataById(location.state.id);
         getVehicleDetails();
         GetitemData();
         GetUnitData();
@@ -257,7 +258,7 @@ const EditJobcardItemIssue = (props: Props) => {
             // jobCardNo: defaultValues,
             empName: location.state.empName,
             vehicleNo: location.state.vehicleNo,
-            itemIssueDetail: []
+            itemIssueDetail: location.state.itemIssueDetail||[]
 
         },
         onSubmit: async (values) => {
@@ -303,7 +304,11 @@ const EditJobcardItemIssue = (props: Props) => {
         setTableData(updatedData);
     };
 
-
+    useEffect(() => {
+        if (location?.state?.itemIssueDetail) {
+            setTableData(location.state.itemIssueDetail);
+        }
+    }, [location.state]);
 
 
     const back = useNavigate();

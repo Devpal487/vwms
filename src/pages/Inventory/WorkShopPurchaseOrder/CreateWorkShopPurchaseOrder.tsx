@@ -1281,7 +1281,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {/* <tr>
                                                     <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totaltaxamount")}
 
@@ -1291,7 +1291,7 @@ const CreateWorkShopPurchaseOrder = () => {
 
                                                         {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
                                                     </td>
-                                                </tr>
+                                                </tr> */}
                                                 <tr>
                                                     <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totalnetamount")}
