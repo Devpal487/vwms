@@ -78,6 +78,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const inputRef = useRef<HTMLButtonElement>(null);
 
   const [jobWorkChallanData, setJobWorkChallanData] = useState([{
+    value: -1,
+    label: "",
     "challanNo": 0,
     "challanDate": defaultValues,
     "complainId": 0,
@@ -349,6 +351,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       ...Item,
+      value: Item.itemId,
+      label: Item.vehicleNo + `(JobCardNo:${Item.jobCardId})`
     }));
     setJobWorkChallanData(arr);
   };
@@ -778,13 +782,18 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption.filter(e => {
-                    for (let i = 0; i < jobWorkChallanData.length; i++) {
-                      if (e.value == jobWorkChallanData[i].itemId) {
-                        return e;
-                      }
-                    }
-                  })}
+                  options={
+                    jobWorkChallanData.filter((e) => {
+                      return e;
+                    })
+                    //   vehicleOption.filter(e => {
+                    //   for (let i = 0; i < jobWorkChallanData.length; i++) {
+                    //     if (e.value == jobWorkChallanData[i].itemId) {
+                    //       return e;
+                    //     }
+                    //   }
+                    // })
+                  }
                   value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
@@ -794,8 +803,28 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     } else {
                       console.log(newValue?.value);
                       formik.setFieldValue("itemId", newValue?.value)
-                      formik.setFieldValue("vehicleNo", newValue?.label);
-                      setTableDataValues(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobWorkChallanDetail);
+                      formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
+                      setTableDataValues([...(jobWorkChallanData[jobWorkChallanData.findIndex(e => e.itemId === newValue?.value)]?.jobWorkChallanDetail), {
+                        id: 0,
+                        challanRcvNo: 0,
+                        jobCardId: 0,
+                        serviceId: 0,
+                        serviceCharge: 0,
+                        vendorId: 0,
+                        remark: "",
+                        cgstid: 0,
+                        sgstid: 0,
+                        gstid: 0,
+                        cgst: 0,
+                        sgst: 0,
+                        gst: 0,
+                        unitId: 0,
+                        qty: 0,
+                        amount: 0,
+                        netAmount: 0,
+                        serviceName: "",
+                        unitName: ""
+                      }]);
                       formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanNo);
                       formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.complainId);
                       formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empId);

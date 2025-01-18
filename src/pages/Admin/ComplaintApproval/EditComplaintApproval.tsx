@@ -144,6 +144,7 @@ const EditComplaintApproval = (props: Props) => {
       getEmpData();
       getComplaintData();
 
+      console.log("location", location.state)
       const timeoutId = setTimeout(() => {
          if (inputRef.current) {
             inputRef.current.click(); // Programmatically click the button
@@ -244,6 +245,11 @@ const EditComplaintApproval = (props: Props) => {
       setDesignationOption(arr);
    };
 
+   function convertToYYYYMMDD(dateString: any) {
+      const [day, month, year] = dateString.split("-");
+      return `${year}-${month}-${day}`;
+   }
+
    const formik = useFormik({
       initialValues: {
          sno: location.state?.sno || 0,
@@ -263,7 +269,7 @@ const EditComplaintApproval = (props: Props) => {
          status: "inprogress",
          currentReading: location.state?.currentReading,
          createdOn: location.state?.createdOn,
-         complaintDate: dayjs(location.state?.complaintDate).format("YYYY-MM-DD"),
+         complaintDate: convertToYYYYMMDD(location.state?.complaintDate),
          updatedOn: location.state?.updatedOn,
          compAppdt: location.state?.compAppdt || "",
          jobCardNo: location.state?.jobCardNo || location.state?.complaintNo || "",
@@ -473,6 +479,8 @@ const EditComplaintApproval = (props: Props) => {
                            value={formik.values.vehicleNo}
                            fullWidth
                            size="small"
+                           disabled
+                           sx={{ color: "#000" }}
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  formik.setFieldValue("itemID", "");
@@ -1061,32 +1069,32 @@ const EditComplaintApproval = (props: Props) => {
                         />
                      </Grid>
 
-<Grid item xs={12} md={12} sm={12}>
-                <div>
-                  {/* <CustomLabel text={t("text.Complaint")} /> */}
-                  <textarea
-                    name="complaint"
-                    id="complaint"
-                    value={formik.values.complaint}
-                    placeholder={t("text.enterComplaint")}
-                    onChange={(e) => {
-                      formik.setFieldValue("complaint", e.target.value);
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "100px",
-                      padding: "10px",
-                      boxSizing: "border-box",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontSize: "14px",
-                    }}
-                  />
-                </div>
-                {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
+                     <Grid item xs={12} md={12} sm={12}>
+                        <div>
+                           {/* <CustomLabel text={t("text.Complaint")} /> */}
+                           <textarea
+                              name="complaint"
+                              id="complaint"
+                              value={formik.values.complaint}
+                              placeholder={t("text.enterComplaint")}
+                              onChange={(e) => {
+                                 formik.setFieldValue("complaint", e.target.value);
+                              }}
+                              style={{
+                                 width: "100%",
+                                 height: "100px",
+                                 padding: "10px",
+                                 boxSizing: "border-box",
+                                 borderRadius: "4px",
+                                 border: "1px solid #ccc",
+                                 fontSize: "14px",
+                              }}
+                           />
+                        </div>
+                        {!formik.values.complaint && formik.touched.complaint && formik.errors.complaint && (
                            <div style={{ color: "red", margin: "5px" }}>{formik.errors.complaint.toString()}</div>
                         )}
-              </Grid>
+                     </Grid>
                      {/* <Grid item lg={12} md={12} xs={12} marginTop={2}>
                         <ReactQuill
                            id="complaint"

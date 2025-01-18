@@ -82,7 +82,7 @@ const AddJobCard = (props: Props) => {
   const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
+    { value: -1, label: t("text.VehicleNo"), label2: "", vehicleName: "", empId: "" },
   ]);
   const [empOption, setEmpOption] = useState([
     { value: 1, label: t("text.EmpName"), department: "", designation: "" },
@@ -97,6 +97,8 @@ const AddJobCard = (props: Props) => {
     { value: -1, label: t("text.Unit") },
   ]);
   const [complainOption, setComplainOption] = useState([{
+    label: "",
+    value: "",
     "sno": 0,
     "compId": 0,
     "itemID": 0,
@@ -283,6 +285,7 @@ const AddJobCard = (props: Props) => {
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
       label: Item.vehicleNo,
+      label2: Item.vehicleNo,
       vehicleName: Item.itemName,
       empId: Item.empId
     }));
@@ -361,6 +364,9 @@ const AddJobCard = (props: Props) => {
       compId: Item.compId,
       complaintDate: Item.complaintDate,
       complaint: Item.complaint,
+      complaintNo: Item.complaintNo,
+      vehicleNo: Item.vehicleNo,
+      label: Item.vehicleNo + `(ComplainNo:${Item.complaintNo})`
     }));
     setComplainOption(arr);
   };
@@ -870,13 +876,30 @@ const AddJobCard = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption.filter(e => {
-                    for (let i = 0; i < complainOption.length; i++) {
-                      if (e.value == complainOption[i].itemID) {
+                  options={
+                    complainOption.filter((e) => {
+                      if (e.status !== "pending") {
                         return e;
                       }
-                    }
-                  })}
+                    })
+                    // vehicleOption.filter((e) => {
+                    //   for (let i = complainOption.length - 1; i >= 0; i--) {
+                    //     if (e.value == complainOption[i].itemID && complainOption[i].compId) {
+                    //       if (e.label === e.label2) {
+                    //         e.label = e.label + `(ComplainNo : ${complainOption[i].complaintNo})`
+                    //       }
+                    //       return e;
+                    //     }
+                    //   }
+                    // })
+                    // vehicleOption.filter(e => {
+                    //   for (let i = 0; i < complainOption.length; i++) {
+                    //     if (e.value == complainOption[i].itemID && complainOption[i].compId) {
+                    //       return (e);
+                    //     }
+                    //   }
+                    // })
+                  }
                   ref={inputRef}
                   value={formik.values.itemName}
                   fullWidth
@@ -886,50 +909,50 @@ const AddJobCard = (props: Props) => {
                       return;
                     } else {
                       setItemId(newValue?.value);
-                      formik.setFieldValue("itemName", newValue?.label);
+                      //formik.setFieldValue("itemName", newValue?.label2);
+                      formik.setFieldValue("itemName", newValue?.vehicleNo);
                       formik.setFieldValue("itemId", newValue?.value);
                       formik.setFieldValue("empId", newValue?.empId);
-                      formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
-                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
-                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
+                      formik.setFieldValue("empName", newValue?.empName);
+                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.designation);
+                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.department);
                       setVehicleName(newValue?.vehicleName);
 
-                      formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
-                      formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
-                      formik.setFieldValue("complainDate", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaintDate);
-                      formik.setFieldValue("currenReading", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.currentReading);
-                      formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
-                      // setTableData([...(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail) ,{
-                      //   id: 0,
-                      //   jobCardId: 0,
-                      //   serviceId: 0,
-                      //   amount: 0,
-                      //   jobWorkReq: true,
-                      //   vendorId: 0,
-                      //   challanRemark: "",
-                      //   challanNo: 0,
-                      //   challanDate: defaultValues,
-                      //   challanRcvNo: 0,
-                      //   challanRcvDate: defaultValues,
-                      //   challanStatus: "",
-                      //   netAmount: 0,
-                      //   qty: 0,
-                      //   unitRate: 0,
-                      //   unitId: 0,
-                      //   vendorName: "",
-                      //   serviceName: "",
-                      //   unitName: "",
-                      //   cgstid: 0,
-                      //   sgstid: 0,
-                      //   gstid: 0,
-                      //   gst: 0
-                      // }]);
-                      // formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
-                      // formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
-                      // formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
-                      // formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.totalServiceAmount || "");
-                      // formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.netAmount || 0);
-                      // console.log("@@@@@@@@@@@@@@@@@@@" + JSON.stringify(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail))
+                      formik.setFieldValue("complainId", newValue?.compId);
+                      formik.setFieldValue("complain", newValue?.complaint);
+                      formik.setFieldValue("complainDate", newValue?.complaintDate);
+                      formik.setFieldValue("currenReading", newValue?.currentReading);
+                      formik.setFieldValue("status", newValue?.status);
+                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.jobCardId || 0);
+                      formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.jobCardNo || "");
+                      formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.fileNo || "");
+                      formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.totalServiceAmount || "");
+                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.netAmount || 0);
+                      setTableData([...jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.serviceDetail, {
+                        id: 0,
+                        jobCardId: 0,
+                        serviceId: 0,
+                        amount: 0,
+                        jobWorkReq: true,
+                        vendorId: 0,
+                        challanRemark: "",
+                        challanNo: 0,
+                        challanDate: defaultValues,
+                        challanRcvNo: 0,
+                        challanRcvDate: defaultValues,
+                        challanStatus: "",
+                        netAmount: 0,
+                        qty: 0,
+                        unitRate: 0,
+                        unitId: 0,
+                        vendorName: "",
+                        serviceName: "",
+                        unitName: "",
+                        cgstid: 0,
+                        sgstid: 0,
+                        gstid: 0,
+                        gst: 0
+                      }]);
                     }
                   }}
                   renderInput={(params) => (

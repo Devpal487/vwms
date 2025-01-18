@@ -247,6 +247,7 @@ const AddComplaint = (props: Props) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
                setIsVisible(true);
+               navigate(`/vehiclecomplaint/Complaint`)
             } else {
                toast.error(response.data.message);
                setToaster(true);
@@ -403,9 +404,9 @@ const AddComplaint = (props: Props) => {
                </Grid>
                <Divider />
                <br />
-               <ToastContainer />
+               {/* <ToastContainer /> */}
                <form onSubmit={formik.handleSubmit}>
-                  {/* {toaster === false ? "" : <ToastApp />} */}
+                  {toaster === false ? "" : <ToastApp />}
 
                   <Grid container spacing={2}>
 
@@ -998,7 +999,7 @@ const AddComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
-                  {isVisible && (
+                  {/* {isVisible && (
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
                            type="button"
@@ -1022,7 +1023,7 @@ const AddComplaint = (props: Props) => {
                         </Button>
 
                      </Grid>
-                  )}
+                  )} */}
 
 
                </form>

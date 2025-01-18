@@ -160,8 +160,8 @@ export default function JobWorkChallanRecieve() {
             serialNo: index + 1,
             id: Item.challanRcvNo,
             challanRcvDate: formatDate(Item.challanRcvDate),
-            jobCardDate:formatDate(Item.jobCardDate),
-            challanDate:formatDate(Item.challanDate),
+            jobCardDate: formatDate(Item.jobCardDate),
+            challanDate: formatDate(Item.challanDate),
          }));
          setItem(arr);
          setIsLoading(false);
@@ -236,12 +236,12 @@ export default function JobWorkChallanRecieve() {
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
                },
-               // {
-               //    field: "jobCardNo",
-               //    headerName: t("text.JobCardNo"),
-               //    flex: 1,
-               //    headerClassName: "MuiDataGrid-colCell",
-               // },
+               {
+                  field: "jobCardId",
+                  headerName: t("text.JobCardNo"),
+                  flex: 1,
+                  headerClassName: "MuiDataGrid-colCell",
+               },
                {
                   field: "jobCardDate",
                   headerName: t("text.JobCardDate"),

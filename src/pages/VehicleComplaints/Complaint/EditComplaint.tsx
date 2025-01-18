@@ -1029,7 +1029,7 @@ const EditComplaint = (props: Props) => {
                      color="secondary"
                   >
                   </Button>
-                  {isVisible && (
+                  {/* {isVisible && (
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
                            type="button"
@@ -1053,7 +1053,7 @@ const EditComplaint = (props: Props) => {
                         </Button>
 
                      </Grid>
-                  )}
+                  )} */}
 
 
                </form>

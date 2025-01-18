@@ -14,12 +14,6 @@ import CountryMaster from "../pages/master/CountryMaster/CountryMaster";
 import CityMaster from "../pages/master/CityMaster/CityMaster";
 import Taxmaster from '../pages/master/Taxmaster/Taxmaster';
 import Unitmaster from "../pages/master/Unitmaster/Unitmaster";
-import PoleInstallation from "../pages/PoleInstallation/PoleInstallation";
-import PoleInstallationAdd from "../pages/PoleInstallation/PoleInstallationAdd";
-import PoleInstallationEdit from "../pages/PoleInstallation/PoleInstallationEdit";
-import LightInstallation from "../pages/LightInstallation/LightInstallation";
-import LightInstallationAdd from "../pages/LightInstallation/LightInstallationAdd";
-import LightInstallationEdit from "../pages/LightInstallation/LightInstallationEdit";
 import MaterialRecieptNoteMaster from "../pages/Inventory/MaterialRecieptNote/MaterialRecieptNoteMaster";
 import CreateMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/CreateMaterialRecieptNote";
 import EditMaterialRecieptNote from "../pages/Inventory/MaterialRecieptNote/EditMaterialRecieptNote";
@@ -805,63 +799,7 @@ const appRoutes: RouteType[] = [
 
 
   //==================Start DocManagement====================
-  {
-    path: "/installation",
-    element: <DashboardPageLayout />,
-    state: "installation",
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "installation.index",
-      },
-
-      {
-        path: "/installation/PoleInstallation",
-        element: <PoleInstallation />,
-        state: "installation.PoleInstallation",
-        sidebarProps: {
-          displayText: "Pole Installation",
-        }
-      },
-      {
-        path: "/installation/PoleInstallationAdd",
-        element: <PoleInstallationAdd />,
-        state: "installation.PoleInstallationAdd",
-        // sidebarProps: {
-        //   displayText: "Advertisement Entry Add",
-        // }
-      },
-      {
-        path: "/installation/PoleInstallationEdit",
-        element: <PoleInstallationEdit />,
-        state: "installation.PoleInstallationEdit",
-      },
-
-
-      {
-        path: "/installation/LightInstallation",
-        element: <LightInstallation />,
-        state: "installation.LightInstallation",
-        sidebarProps: {
-          displayText: "Light Installation",
-        }
-      },
-      {
-        path: "/installation/LightInstallationAdd",
-        element: <LightInstallationAdd />,
-        state: "installation.LightInstallationAdd",
-        // sidebarProps: {
-        //   displayText: "Advertisement Entry Add",
-        // }
-      },
-      {
-        path: "/installation/LightInstallationEdit",
-        element: <LightInstallationEdit />,
-        state: "installation.LightInstallationEdit",
-      },
-    ],
-  },
+ 
   //===================End Library===================
 
   // {
