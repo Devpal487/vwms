@@ -161,6 +161,7 @@ import ComplaintApproval from "../pages/Admin/ComplaintApproval/ComplaintApprova
 import EditComplaintApproval from "../pages/Admin/ComplaintApproval/EditComplaintApproval";
 import Juridiction from "../pages/UserManagementMaster/Juridiction/Juridiction";
 import MenuMaster from "../pages/Admin/MenuMaster/MenuMaster";
+import HelpCreation from "../pages/Admin/HelpCreation/HelpCreation";
 
 
 
@@ -1739,6 +1740,14 @@ const appRoutes: RouteType[] = [
         state: "Admin.MenuCreate",
         sidebarProps: {
           displayText: "Menu Create",
+        },
+      },
+      {
+        path: "/Admin/HelpCreation",
+        element: <HelpCreation/>,
+        state: "Admin.HelpCreation",
+        sidebarProps: {
+          displayText: "Help Creation",
         },
       },
 

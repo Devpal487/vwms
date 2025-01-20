@@ -413,7 +413,7 @@ const MainLayout = () => {
               path: "/vehiclecomplaint/Complaint",
               displayNo: 0,
             },
-            (isVisible ? 
+            (isVisible ?
               {
                 menuId: 2,
                 menuName: "Job Card",
@@ -427,8 +427,8 @@ const MainLayout = () => {
                 displayNo: 0,
               }
             ),
-            
-           
+
+
             {
               menuId: 3,
               menuName: "Job Work Challan",
@@ -744,13 +744,18 @@ const MainLayout = () => {
               path: "/Admin/Flowmaster",
               displayNo: 0,
             },
-            // {
-            //   menuId: 3,
-            //   menuName: "Menu Create",
-            //   path: "/Admin/MenuCreate",
-            //   displayNo: 0,
-            // },
-
+            {
+              menuId: 3,
+              menuName: "Menu Create",
+              path: "/Admin/MenuCreate",
+              displayNo: 0,
+            },
+            {
+              menuId: 4,
+              menuName: "HelpCreation",
+              path: "/Admin/HelpCreation",
+              displayNo: 0,
+            },
 
 
           ],

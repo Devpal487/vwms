@@ -46,6 +46,7 @@ export default function MenuMaster() {
   const { i18n, t } = useTranslation();
   const { defaultValues, defaultValuestime } = getISTDate();
 
+  const [parentName,setParentName] = useState("");  
   const [columns, setColumns] = useState<any>([]);
   const [rows, setRows] = useState<any>([]);
   const [editId, setEditId] = useState(0);
@@ -71,12 +72,12 @@ export default function MenuMaster() {
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`Auth/DeleteMenu`, collectData)
+      .delete(`Menu/DeleteMenuMaster`, { data: collectData })
       .then((response) => {
-        if (response.data.status === 1) {
-          toast.success(response.data.message);
+        if (response.data.isSuccess) {
+          toast.success(response.data.mesg);
         } else {
-          toast.error(response.data.message);
+          toast.error(response.data.mesg);
         }
         getList();
       });
@@ -104,7 +105,7 @@ export default function MenuMaster() {
       const collectData = {
         "menuId": -1
       }
-      api.post(`Auth/GetMenu`, collectData).then((res) => {
+      api.post(`Menu/GetMenuMaster`, collectData).then((res) => {
         console.log("result" + JSON.stringify(res.data.data));
         const data = res.data.data;
         const arr = data.map((item: any, index: any) => ({
@@ -217,43 +218,25 @@ export default function MenuMaster() {
       "isExport": true,
       "isRelease": true,
       "isPost": true,
-      "subMenu": [],
-      "menuParentName": {
-        // "sno": 0,
-        // "menuId": 0,
-        // "menuName": "",
-        // "parentId": 0,
-        // "pageUrl": "",
-        // "icon": "",
-        // "displayNo": 0,
-        // "isMenu": true,
-        // "isAdd": true,
-        // "isEdit": true,
-        // "isDel": true,
-        // "isView": true,
-        // "isPrint": true,
-        // "isExport": true,
-        // "isRelease": true,
-        // "isPost": true,
-        // "menuParentName": "",
-        // "srNo": 0
-      },
-      "roleID": ""
+      "helpedit": "",
+      "childId": 0,
+      "parentName": ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       values.menuId = editId;
 
-      const response = await api.post(`Auth/UpsertMenu`, values);
-      if (response.data.status === 1) {
+      const response = await api.post(`Menu/AddUpdateMenuMaster`, values);
+      if (response.data.isSuccess) {
         setToaster(false);
-        toast.success(response.data.message);
+        toast.success(response.data.mesg);
         formik.resetForm();
+        formik.setFieldValue("parentName","")
         getList();
         setEditId(0);
       } else {
         setToaster(true);
-        toast.error(response.data.message);
+        toast.error(response.data.mesg);
       }
     },
   });
@@ -371,15 +354,15 @@ export default function MenuMaster() {
                 <Grid item xs={5}>
                   <TextField
                     label={<CustomLabel text={t("text.DisplayNo")} />}
-                    value={formik.values.pageUrl}
-                    placeholder={t("text.DisplayNo")}
+                    value={formik.values.displayNo}
+                    placeholder={t("text.displayNo")}
                     size="small"
                     fullWidth
                     name="displayNo"
                     id="displayNo"
                     style={{ backgroundColor: "white" }}
                     onChange={(e) => {
-                      formik.setFieldValue("displayNo", e.target.value);
+                      formik.setFieldValue("displayNo", parseFloat(e.target.value) || 0);
                     }}
                   />
                 </Grid>
@@ -389,13 +372,13 @@ export default function MenuMaster() {
                     disablePortal
                     id="combo-box-demo"
                     options={parentMenuOption}
+                    value={formik.values?.parentName || parentName}
                     fullWidth
                     size="small"
                     onChange={(event: any, newValue: any) => {
-                      console.log(newValue?.value);
                       formik.setFieldValue("parentId", newValue?.value);
-                      formik.setFieldValue("menuParentName.parentId", newValue?.value);
-                      formik.setFieldValue("menuParentName.menuParentName", newValue?.label);
+                      formik.setFieldValue("parentName", newValue?.label);
+                      setParentName(newValue?.label);
                     }}
                     renderInput={(params) => (
                       <TextField

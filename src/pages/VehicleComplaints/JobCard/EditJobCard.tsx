@@ -236,7 +236,7 @@ const EditJobCard = (props: Props) => {
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
     if (location.state.status === "Complete") {
-      setTableData([...location.state?.serviceDetail]);
+      setTableData([...location.state?.serviceDetail, tableData]);
     } else {
       setTableData([...location.state?.serviceDetail, tableData]);
     }

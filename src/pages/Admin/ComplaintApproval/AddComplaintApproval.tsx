@@ -556,6 +556,10 @@ const AddComplaintApproval = (props: Props) => {
                                     "empName",
                                     newValue?.empName
                                  );
+                                 formik.setFieldValue(
+                                    "file",
+                                    newValue?.file || ""
+                                 );
                               }
                            }}
                            renderInput={(params) => (
