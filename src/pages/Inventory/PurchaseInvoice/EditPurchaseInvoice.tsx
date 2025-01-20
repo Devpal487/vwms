@@ -84,6 +84,7 @@ const EditPurchaseInvoice = () => {
 
 
   };
+  const [items, setItems] = useState<any>([{ ...initialRowData }]);
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const { t } = useTranslation();
   const location = useLocation();
@@ -143,11 +144,50 @@ const EditPurchaseInvoice = () => {
     GetUnitData();
     GetorderData();
     getVendorData();
-    //getPurchaseInvoiceById(location.state.id);
+    getPurchaseInvoiceById(location.state.id);
     // GetIndentID();
   }, []);
 
+  const getPurchaseInvoiceById = async (id: any) => {
+   
+      const collectData = {
+        invoiceId: id,
+      };
+      try {
+        const result = await api.post(`PurchaseInv/GetPurchaseInvoice`, collectData);
+        const data = result.data.data;
 
+        console.log("🚀 ~ getPurchaseInvoiceById ~ data:", data);
+
+        if (data.length > 0) {
+            const formattedData = data[0]['purchaseInvoiceDetail'].map((item: any, index: number) => ({
+              invoiceId: item.invoiceId,
+              orderId: item.orderId,
+                id: index + 1,
+                itemId: item.itemId,
+                quantity: item.quantity,
+                rate: item.rate,
+                amount: item.amount,
+                gstId: item.gstId,
+                gstRate: item.gstRate,
+                cgst: item.cgst,
+                sgst: item.sgst,
+                igst: item.igst,
+                netAmount: item.netAmount,
+                itemName: item.itemName,
+                unitId: item.unitId,
+                unitName: item.unitName,
+            }));
+            setTableData(formattedData);
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+      // API call
+     
+  
+  
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
       "venderId": -1,
@@ -307,10 +347,10 @@ const EditPurchaseInvoice = () => {
       if (selectedTax) {
         item.gstRate = parseFloat(selectedTax.label) || 0;
         item.gstId = selectedTax.value || 0;
-        item.cgstid = selectedTax.value || 0;
-        item.sgstid = selectedTax.value || 0;
-        item.igstid = 0;
-        item.gst = item.gstRate;
+        item.cgst = selectedTax.value || 0;
+        item.sgst = selectedTax.value || 0;
+        item.igst = 0;
+       // item.gst = item.gstRate;
       }
     } else {
       item[field] = value;
@@ -416,6 +456,7 @@ const EditPurchaseInvoice = () => {
       releasedOn: dayjs(location.state.releasedOn || defaultValues).format("YYYY-MM-DD"),
       postedOn: dayjs(location.state.postedOn || defaultValues).format("YYYY-MM-DD"),
       srn: location.state.srn || 0,
+      purchaseInvoiceDetail: [],
 
     },
 
@@ -676,6 +717,7 @@ const EditPurchaseInvoice = () => {
                   size="small"
                   id="combo-box-demo"
                   options={vendorOptions}
+                  value={vendorOptions.find((option: any) => option.value === formik.values.vendorId) || null}
                   onChange={handleVendorSelect}
                   renderInput={(params) => (
                     <TextField
@@ -691,7 +733,7 @@ const EditPurchaseInvoice = () => {
                 />
               </Grid>
 
-              {vendorDetail?.gstinNo && (
+              {/* {vendorDetail?.gstinNo && (
                 <Grid item lg={4} xs={12} md={6}>
                   <TextField
                     label={
@@ -767,7 +809,7 @@ const EditPurchaseInvoice = () => {
                     InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
-              )}
+              )} */}
 
 <Grid item xs={12} md={12} lg={12}>
                             <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
@@ -917,7 +959,8 @@ const EditPurchaseInvoice = () => {
                                                 <td
                                                     style={{
                                                         border: "1px solid black",
-                                                        // textAlign: "center",
+                                                         textAlign: "center",
+                                                         width: "170px"
                                                     }}
                                                 >
                                                     <Autocomplete
@@ -952,6 +995,7 @@ const EditPurchaseInvoice = () => {
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
+                                                            width: "170px"
                                                     }}
                                                 >
                                                     <Autocomplete
@@ -1019,35 +1063,35 @@ const EditPurchaseInvoice = () => {
                                                         inputProps={{ readOnly: true }}
                                                     />
                                                 </td>
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        id="combo-box-demo"
-                                                        options={taxData}
-                                                        fullWidth
-                                                        size="small"
-                                                        value={taxData.find((opt: any) => opt.value === row.gstId) || null}
-                                                        onChange={(e: any, newValue: any) =>
-                                                            handleInputChange(index, "gstId", newValue?.value)
-                                                        }
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                            // label={
-                                                            //     <CustomLabel
-                                                            //         text={t("text.tax")}
-                                                            //         required={false}
-                                                            //     />
-                                                            // }
-                                                            />
-                                                        )}
-                                                    />
-                                                </td>
+                                                   <td
+                                                                             style={{
+                                                                               border: "1px solid black",
+                                                                               textAlign: "center",
+                                                                             }}
+                                                                           >
+                                                                             <Autocomplete
+                                                                               disablePortal
+                                                                               id="combo-box-demo"
+                                                                               options={taxData}
+                                                                               fullWidth
+                                                                               size="small"
+                                                                               value={taxData.find((opt: any) => opt.value === row.gstId) || null}
+                                                                               onChange={(e: any, newValue: any) =>
+                                                                                 handleInputChange(index, "gstId", newValue?.value)
+                                                                               }
+                                                                               renderInput={(params) => (
+                                                                                 <TextField
+                                                                                   {...params}
+                                                                                 // label={
+                                                                                 //     <CustomLabel
+                                                                                 //         text={t("text.tax")}
+                                                                                 //         required={false}
+                                                                                 //     />
+                                                                                 // }
+                                                                                 />
+                                                                               )}
+                                                                             />
+                                                                           </td>
 
                                                 <td
                                                     style={{

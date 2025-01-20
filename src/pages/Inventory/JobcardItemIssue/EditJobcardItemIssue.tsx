@@ -92,16 +92,16 @@ const EditJobcardItemIssue = (props: Props) => {
     ]);
     useEffect(() => {
         GetIndentID();
-       // GetIndentIDById(location.state.issueId);
-      // getTransDataById(location.state.id);
+        // GetIndentIDById(location.state.issueId);
+        // getTransDataById(location.state.id);
         getVehicleDetails();
         GetitemData();
         GetUnitData();
-        GetempData();
+      //  GetempData();
         GetItemChild(location.state.issueId)
     }, []);
 
- 
+
     const GetIndentID = async () => {
         const collectData = {
             indentId: -1,
@@ -178,21 +178,24 @@ const EditJobcardItemIssue = (props: Props) => {
 
         const indent = data.map((item: any, index: any) => ({
 
+       
             id: index + 1,
             "issueId": -1,
 
-            // batchNo: item?.batchNo,
+            batchNo: item?.batchNo,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.approveQuantity,
-            reqQty: item?.quantity,
+            issueQty: item?.issueQty || 0,
+
+            reqQty: item?.approveQuantity,
+
             unitName: "",
             itemName: "",
             indentNo: "",
-            "srn": 0,
+            srn: item?.srn,
+            stockQty: 0,
             //"unitName": "",
             "returnItem": true
-
 
         }))
 
@@ -233,29 +236,29 @@ const EditJobcardItemIssue = (props: Props) => {
         }
         setUnitOptions(arr);
     };
-    const GetempData = async () => {
-        const collectData = {
-            empid: -1,
-            userId: "",
+    // const GetempData = async () => {
+    //     const collectData = {
+    //         empid: -1,
+    //         userId: "",
 
-        };
-        const response = await api.post(`Employee/GetEmployee`, collectData);
-        const data = response.data.data;
-        console.log('data', data)
-        const arr = data.map((item: any) => ({
-            label: item?.empName,
-            value: item?.empid
+    //     };
+    //     const response = await api.post(`Employee/GetEmployee`, collectData);
+    //     const data = response.data.data;
+    //     console.log('data', data)
+    //     const arr = data.map((item: any) => ({
+    //         label: item?.empName,
+    //         value: item?.empid
 
-        }))
-        // for (let index = 0; index < data.length; index++) {
-        //   arr.push({
-        //     label: data[index]["empName"],
-        //     value: data[index]["empId"],
-        //   });
-        // }
-        setempOption(arr);
-    };
-   const getVehicleDetails = async () => {
+    //     }))
+    //     // for (let index = 0; index < data.length; index++) {
+    //     //   arr.push({
+    //     //     label: data[index]["empName"],
+    //     //     value: data[index]["empId"],
+    //     //   });
+    //     // }
+    //     setempOption(arr);
+    // };
+    const getVehicleDetails = async () => {
         const response = await api.get(
             `Master/GetVehicleDetail?ItemMasterId=-1`,
         );
@@ -296,7 +299,7 @@ const EditJobcardItemIssue = (props: Props) => {
             // jobCardNo: defaultValues,
             empName: location.state.empName,
             vehicleNo: location.state.vehicleNo,
-            itemIssueDetail: location.state.itemIssueDetail||[]
+            itemIssueDetail: location.state.itemIssueDetail || []
 
         },
         onSubmit: async (values) => {
@@ -333,7 +336,7 @@ const EditJobcardItemIssue = (props: Props) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
         if (field === 'reqQty' || field === 'issueQty') {
-            
+
             updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
 
             // console.log("stockQty",updatedData[index].stockQty, updatedData[index].reqQty,updatedData[index].issueQty)
@@ -491,7 +494,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                     value={
                                         vehicleOption.find((option: any) => option.value === formik.values.vehicleitem) || null
                                     }
-                                   // value={itemValue}
+                                    // value={itemValue}
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
@@ -592,7 +595,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
-                                                                sx={{width: "175px"}}
+                                                                sx={{ width: "175px" }}
                                                                 onChange={(e: any, newValue: any) =>
                                                                     handleInputChange(
                                                                         index,
@@ -624,7 +627,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
-                                                                sx={{width: "175px"}}
+                                                                sx={{ width: "175px" }}
                                                                 onChange={(e, newValue: any) =>
                                                                     handleInputChange(index, "unitId", newValue?.value)
                                                                 }
@@ -638,13 +641,13 @@ const EditJobcardItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                               // type="number"
+                                                                // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.batchNo}
                                                                 onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                           onFocus={e => e.target.select()}
-                                                           />
+                                                                onFocus={e => e.target.select()}
+                                                            />
                                                         </td>
 
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
@@ -652,9 +655,9 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 //type="number"
                                                                 size="small"
                                                                 value={row.stockQty || 0}
-                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value)||0)}
-                                                           onFocus={e => e.target.select()}
-                                                           />
+                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value) || 0)}
+                                                                onFocus={e => e.target.select()}
+                                                            />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
@@ -662,18 +665,18 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.reqQty}
-                                                                onChange={(e) => handleInputChange(index, 'reqQty', parseFloat(e.target.value)||0)}
-                                                            onFocus={e => e.target.select()}
+                                                                onChange={(e) => handleInputChange(index, 'reqQty', parseFloat(e.target.value) || 0)}
+                                                                onFocus={e => e.target.select()}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                               // type="number"
+                                                                // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.issueQty}
-                                                                onChange={(e) => handleInputChange(index, 'issueQty', parseFloat(e.target.value)||0)}
-                                                            onFocus={e =>e.target.focus()}
+                                                                onChange={(e) => handleInputChange(index, 'issueQty', parseFloat(e.target.value) || 0)}
+                                                                onFocus={e => e.target.focus()}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>

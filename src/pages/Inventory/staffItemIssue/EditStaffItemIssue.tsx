@@ -724,7 +724,7 @@ const EditStaffItemIssue = (props: Props) => {
         GetIndentID();
        // GetIndentIDById(location.state.issueId);
       // getTransDataById(location.state.id);
-        getVehicleDetails();
+    //   getVehicleDetails();
         GetitemData();
         GetUnitData();
         GetempData();
@@ -811,18 +811,20 @@ const EditStaffItemIssue = (props: Props) => {
             id: index + 1,
             "issueId": -1,
 
-            // batchNo: item?.batchNo,
+            batchNo: item?.batchNo,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.approveQuantity,
-            reqQty: item?.quantity,
+            issueQty: item?.issueQty || 0,
+
+            reqQty: item?.approveQuantity,
+
             unitName: "",
             itemName: "",
             indentNo: "",
-            "srn": 0,
+            srn: item?.srn,
+            stockQty: 0,
             //"unitName": "",
             "returnItem": true
-
 
         }))
 
@@ -926,7 +928,7 @@ const EditStaffItemIssue = (props: Props) => {
             // jobCardNo: defaultValues,
             empName: location.state.empName,
             vehicleNo: location.state.vehicleNo,
-            itemIssueDetail: location.state.itemIssueDetail||[]
+            itemIssueDetail: []
 
         },
         onSubmit: async (values) => {
@@ -1278,14 +1280,13 @@ const EditStaffItemIssue = (props: Props) => {
                                                         </td>
 
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                            <TextField
-                                                                //type="number"
-                                                                size="small"
-                                                                value={row.stockQty || 0}
-                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value)||0)}
-                                                           onFocus={e => e.target.select()}
-                                                           />
-                                                        </td>
+                                                        <TextField
+                                                           // type="number"
+                                                            size="small"
+                                                            value={row.reqQty - row.issueQty || 0}
+                                                           // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
+                                                        />
+                                                    </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
                                                                 //type="number"

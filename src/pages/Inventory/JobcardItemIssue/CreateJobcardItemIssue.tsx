@@ -294,6 +294,19 @@ const CreateJobcardItemIssue = (props: Props) => {
     const handleInputChange = (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
+
+        if (field === 'reqQty' || field === 'issueQty') {
+            updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
+
+            // console.log("stockQty",updatedData[index].stockQty, updatedData[index].reqQty,updatedData[index].issueQty)
+
+        } else if (field === 'reqQty') {
+            updatedData[index].reqQty = parseInt(value)
+
+        } else if (field === 'issueQty') {
+            updatedData[index].issueQty = parseInt(value)
+        }
+
         setTableData(updatedData);
     };
     const deleteRow = (index: number) => {
@@ -301,23 +314,23 @@ const CreateJobcardItemIssue = (props: Props) => {
         setTableData(updatedData);
     };
     const back = useNavigate();
-    const addRow = () => {
-        setTableData([...tableData, {
-            "id": 0,
-            "issueId": -1,
-            "itemID": 0,
-            "unitId": 0,
-            "batchNo": "",
-            "indentId": 0,
-            "reqQty": 0,
-            "issueQty": 0,
-            "itemName": "",
-            "unitName": "",
-            "returnItem": true,
-            "indentNo": "",
-            "stockQty": 0,
-        }]);
-    };
+    // const addRow = () => {
+    //     setTableData([...tableData, {
+    //         "id": 0,
+    //         "issueId": -1,
+    //         "itemID": 0,
+    //         "unitId": 0,
+    //         "batchNo": "",
+    //         "indentId": 0,
+    //         "reqQty": 0,
+    //         "issueQty": 0,
+    //         "itemName": "",
+    //         "unitName": "",
+    //         "returnItem": true,
+    //         "indentNo": "",
+    //         "stockQty": 0,
+    //     }]);
+    // };
 
 
     return (
@@ -394,6 +407,8 @@ const CreateJobcardItemIssue = (props: Props) => {
                                             GetIndentIDById(newValue?.value);
                                             formik.setFieldValue("indentId", newValue?.value);
                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
+                                            formik.setFieldValue("vehicleitem", newValue?.vehicleitem);
+                                           // formik.setFieldValue("empName", newValue?.empName?.toString() || "");
                                         }
                                     }}
 
@@ -587,8 +602,8 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                             <TextField
                                                                // type="number"
                                                                 size="small"
-                                                                value={row.stockQty || 0}
-                                                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                                                value={row.reqQty - row.issueQty || 0}
+                                                               // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
                                                                 onFocus={(e) => {e.target.select()}}
                                                            />
                                                         </td>

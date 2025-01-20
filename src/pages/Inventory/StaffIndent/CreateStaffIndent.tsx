@@ -91,7 +91,9 @@ const CreateStaffIndent = (props: Props) => {
   const [empOption, setempOption] = useState([
     { value: "-1", label: t("text.empid") },
   ]);
-
+  const [maxindentOption, setmaxindentOption] = useState([
+    { value: "-1", label: t("text.indentID") },
+  ]);
 
 
   useEffect(() => {
@@ -276,7 +278,10 @@ const CreateStaffIndent = (props: Props) => {
 
       newData[index].amount = rate * approveQuantity;
     }
+    if (field === 'approveQuantity') {
+      newData[index].approveQuantity = value;
 
+    }
 
     setTableData(newData);
 
@@ -311,7 +316,6 @@ const CreateStaffIndent = (props: Props) => {
       },
     ]);
   };
-
 
   const deleteRow = (index: any) => {
     const newData = tableData.filter((_: any, i: any) => i !== index);
@@ -410,10 +414,32 @@ const CreateStaffIndent = (props: Props) => {
               </Grid>
 
 
-
-
-
               <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={empOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    console.log(newValue?.value);
+                    formik.setFieldValue("empId", newValue?.value);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.selectemp_name")} />}
+                    />
+                  )}
+                />
+
+                {formik.touched.empId && formik.errors.empId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
+                )}
+              </Grid>
+
+
+              {/* <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -438,7 +464,7 @@ const CreateStaffIndent = (props: Props) => {
                 {formik.touched.empId && formik.errors.empId && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
                 )}
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12}>
 

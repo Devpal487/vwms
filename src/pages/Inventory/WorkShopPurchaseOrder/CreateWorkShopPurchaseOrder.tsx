@@ -394,52 +394,97 @@ const CreateWorkShopPurchaseOrder = () => {
     };
 
 
-
-
     const handlePanClose1 = () => {
         setDocOpen(false);
     };
 
     const modalOpenHandle1 = (event: string) => {
         setDocOpen(true);
-        const base64Prefix = "data:image/jpg;base64,";
+        const base64Prefix = "data:image/jpeg;base64,";
 
         let imageData = '';
         switch (event) {
             case "pOrderDoc":
                 imageData = formik.values.pOrderDoc;
                 break;
+            default:
+                imageData = '';
         }
         if (imageData) {
-            console.log("imageData", base64Prefix + imageData);
-            setImg(base64Prefix + imageData);
+            const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+            console.log("imageData", imgSrc);
+            setImg(imgSrc);
         } else {
             setImg('');
         }
     };
 
     const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-        const pOrderDoc = event.target.files?.[0];
-        if (!pOrderDoc) return;
-    
-        const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
         if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
             alert("Only .jpg, .jpeg, or .png image files are allowed.");
             event.target.value = '';
             return;
         }
-    
+
         const reader = new FileReader();
         reader.onload = () => {
             const base64String = reader.result as string;
-            formik.setFieldValue(params, base64String); // Include the prefix statically.
+            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
         reader.onerror = () => {
             alert("Error reading file. Please try again.");
         };
-        reader.readAsDataURL(pOrderDoc);
+        reader.readAsDataURL(file);
     };
-    
+
+    // const handlePanClose1 = () => {
+    //     setDocOpen(false);
+    // };
+
+    // const modalOpenHandle1 = (event: string) => {
+    //     setDocOpen(true);
+    //     const base64Prefix = "data:image/jpg;base64,";
+
+    //     let imageData = '';
+    //     switch (event) {
+    //         case "pOrderDoc":
+    //             imageData = formik.values.pOrderDoc;
+    //             break;
+    //     }
+    //     if (imageData) {
+    //         console.log("imageData", base64Prefix + imageData);
+    //         setImg(base64Prefix + imageData);
+    //     } else {
+    //         setImg('');
+    //     }
+    // };
+
+    // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    //     const pOrderDoc = event.target.files?.[0];
+    //     if (!pOrderDoc) return;
+
+    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+    //     if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+    //         alert("Only .jpg, .jpeg, or .png image files are allowed.");
+    //         event.target.value = '';
+    //         return;
+    //     }
+
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //         const base64String = reader.result as string;
+    //         formik.setFieldValue(params, base64String); // Include the prefix statically.
+    //     };
+    //     reader.onerror = () => {
+    //         alert("Error reading file. Please try again.");
+    //     };
+    //     reader.readAsDataURL(pOrderDoc);
+    // };
+
 
     // const otherDocChangeHandler = (event: any, params: any) => {
     //     const pOrderDoc = event.target.files?.[0];
@@ -489,7 +534,7 @@ const CreateWorkShopPurchaseOrder = () => {
             "totalCGST": 0,
             "totalSGST": 0,
             "totalIGST": 0,
-            "netAmount": 0,
+            "netAmount": 0, 
             "status": "",
             "orderType": "",
             "createdBy": "",
@@ -844,9 +889,100 @@ const CreateWorkShopPurchaseOrder = () => {
                                 />
                             </Grid>
 
-
-
                             <Grid container spacing={1} item>
+                                <Grid
+                                    xs={12}
+                                    md={4}
+                                    sm={4}
+                                    item
+                                    style={{ marginBottom: "30px", marginTop: "30px" }}
+                                >
+                                    <TextField
+                                        type="file"
+                                        inputProps={{ accept: "image/*" }}
+                                        InputLabelProps={{ shrink: true }}
+                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
+                                        size="small"
+                                        fullWidth
+                                        style={{ backgroundColor: "white" }}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
+                                        required
+                                    />
+                                </Grid>
+                                <Grid xs={12} md={4} sm={4} item></Grid>
+
+                                <Grid xs={12} md={4} sm={4} item>
+                                    <Grid
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-around",
+                                            alignItems: "center",
+                                            margin: "10px",
+                                        }}
+                                    >
+                                        {formik.values.pOrderDoc ? (
+                                            <img
+                                                src={
+                                                    formik.values.pOrderDoc.startsWith("data:image")
+                                                        ? formik.values.pOrderDoc
+                                                        : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
+                                                }
+                                                alt="Preview"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                    padding: "2px",
+                                                }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={nopdf}
+                                                alt="No document"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        )}
+                                        <Typography
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
+                                            style={{
+                                                textDecorationColor: "blue",
+                                                textDecorationLine: "underline",
+                                                color: "blue",
+                                                fontSize: "15px",
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            {t("text.Preview")}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Modal open={docOpen} onClose={handlePanClose1}>
+                                    <Box sx={style}>
+                                        {Img ? (
+                                            <img
+                                                src={Img}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "170vh",
+                                                    height: "75vh",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Typography>No Image to Preview</Typography>
+                                        )}
+                                    </Box>
+                                </Modal>
+                            </Grid>;
+
+                            {/* <Grid container spacing={1} item>
                                 <Grid
                                     xs={12}
                                     md={4}
@@ -938,12 +1074,20 @@ const CreateWorkShopPurchaseOrder = () => {
                                                 padding: "2px",
                                             }}
                                         />
-                                        
+                                    //     <img
+                                    //     alt="preview image"
+                                    //     src={Img}
+                                    //     style={{
+                                    //       width: "170vh",
+                                    //       height: "75vh",
+                                    //       borderRadius: 10,
+                                    //     }}
+                                    //   />
 
                                         )}
                                     </Box>
                                 </Modal>
-                            </Grid>
+                            </Grid> */}
                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}>
 
                             </Grid>

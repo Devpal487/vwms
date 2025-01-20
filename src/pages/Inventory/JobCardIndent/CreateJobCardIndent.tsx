@@ -209,9 +209,7 @@ const CreateJobCardIndent = (props: Props) => {
       "postedBy": "",
       "releasedOn": defaultValues,
       "postedOn": defaultValues,
-      indentDetail: [
-
-      ],
+      indentDetail: [],
       srn: 0
     },
 
@@ -293,7 +291,7 @@ const CreateJobCardIndent = (props: Props) => {
       {
 
         id: tableData.length + 1,
-        "indentId": 0,
+      "indentId": 0,
         "itemId": 0,
         "unitId": 0,
         "quantity": 0,
@@ -302,10 +300,9 @@ const CreateJobCardIndent = (props: Props) => {
         "approveQuantity": 0,
         "fyId": 0,
         "srn": 0,
-        "sno": 0,
         "isDelete": true,
         "unitName": "",
-        "item": ""
+        "itemName": ""
       },
     ]);
   };

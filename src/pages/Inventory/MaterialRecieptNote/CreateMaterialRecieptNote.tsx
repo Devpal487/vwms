@@ -43,6 +43,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
   ]);
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
+  const [orderVendorData, setOrderVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
 
@@ -88,6 +90,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
   ];
 
   useEffect(() => {
+    getPurchaseOrder()
     getMRNNo();
     getVendorData();
     getTaxData();
@@ -213,6 +216,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
         item = {
           ...item,
           mrnType: selectedItem?.value?.toString(),
+
           orderId: selectedItem?.value,
           orderNo: selectedItem?.label,
         };
@@ -281,7 +285,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
       row.itemId &&
       row.batchNo &&
       row.balQuantity > 0 &&
-      row.quantityquantity > 0 &&
+      row.quantity > 0 &&
       row.rate > 0
     );
   };
@@ -383,7 +387,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
         tableData[0].cgstid === 0 &&
         tableData[0].sgstid === 0 &&
         tableData[0].igstid === 0 &&
-        //   tableData[0].gst === "" &&
+        tableData[0].unitId === "" &&
         tableData[0].netAmount === 0 &&
         Object.keys(tableData[0].item).length === 0;
 
@@ -417,6 +421,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
           row.igstid === 0 &&
           row.gst === 0 &&
           row.netAmount === "" &&
+          row.unitId === "" &&
           Object.keys(row.item).length === 0
         );
       });
@@ -443,6 +448,74 @@ const CreateMaterialRecieptNote = (props: Props) => {
   });
 
   const back = useNavigate();
+
+  const getPurchaseOrderById = async (id: any) => {
+
+    const collectData = {
+      "orderId": id,
+      "indentId": -1
+    };
+
+    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const transData = result?.data?.data[0]["purchaseOrderDetail"];
+    let arr: any = [];
+    for (let i = 0; i < transData.length; i++) {
+      arr.push({
+
+        id: -1,
+        mrnId: -1,
+        orderId: transData[i]["orderId"],
+        itemId: transData[i]["itemId"],
+        unitId: transData[i]["unitId"],
+        quantity: transData[i]["quantity"],
+        rate: transData[i]["rate"],
+        amount: transData[i]["amount"],
+        gstId: transData[i]["gstId"],
+        gstRate: transData[i]["gstRate"],
+        "cgst": transData[i]["cgst"],
+        "sgst": transData[i]["sgst"],
+        "igst": transData[i]["igst"],
+        "cgstid": transData[i]["cgstid"],
+        "sgstid": transData[i]["sgstid"],
+        "igstid": transData[i]["igstid"],
+        netAmount: transData[i]["netAmount"],
+
+        orderNo: "",
+        "batchNo": "",
+        "serialNo": "",
+        "qcStatus": "",
+        "balQuantity": 0,
+        "qcApplicable": true
+
+
+
+      });
+    }
+    // arr.push({ ...initialRowData });
+    setTableData(arr);
+  }
+
+  const getPurchaseOrder = async () => {
+
+    const collectData = {
+      "orderId": -1,
+      "indentId": -1
+    };
+
+    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const transData = result?.data?.data[0]["purchaseOrderDetail"];
+
+    const data = result.data.data;
+    const orderArr = data.map((item: any) => ({
+      ...item,
+      id: item.orderId,
+      value: item.orderId,
+      label : item.orderNo,
+    }));
+    setOrderData(orderArr);
+  };
+
+
 
   console.log("formik.values", formik.values);
 
@@ -633,7 +706,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid>
                 <Divider />
 
-                <Grid item lg={4} xs={12} md={6}>
+                {/* <Grid item lg={4} xs={12} md={6}>
                   <Autocomplete
                     disablePortal
                     size="small"
@@ -652,7 +725,44 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       />
                     )}
                   />
+                </Grid> */}
+
+
+                <Grid item lg={4} xs={12}>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={vendorData}
+                    fullWidth
+                    size="small"
+
+                    onChange={(event: any, newValue: any) => {
+                      handleVendorSelect(event, newValue);
+                      console.log(newValue?.value);
+                      //getPurchaseOrderById(newValue?.value);
+                      formik.setFieldValue('vendorId', newValue?.value);
+                      const arr: any = [];
+                      orderData.map((item: any) => {
+                        if (item.id === newValue?.value) {
+                          arr.push(item);
+                        }
+                      });
+                      setOrderVendorData(arr);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={
+                          <CustomLabel
+                            text={t("text.SelectOrderNO")}
+                            required={false}
+                          />
+                        }
+                      />
+                    )}
+                  />
                 </Grid>
+
 
                 {vendorDetail?.gstinNo && (
                   <Grid item lg={4} xs={12} md={6}>
@@ -728,6 +838,31 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       style={{ backgroundColor: "white" }}
                       onBlur={formik.handleBlur}
                       InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
+
+                {vendorDetail?.mobileNo && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <Autocomplete
+                      disablePortal
+                      size="small"
+                      id="combo-box-demo"
+                      options={orderVendorData}
+                      onChange={(e,newValue:any) => {
+                        getPurchaseOrderById(newValue?.id);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={
+                            <CustomLabel
+                              text={t("text.SelectOrderNO")}
+                              required={false}
+                            />
+                          }
+                        />
+                      )}
                     />
                   </Grid>
                 )}
@@ -889,7 +1024,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-
+                              width: "120px"
                             }}
                           >
                             <Autocomplete
@@ -917,7 +1052,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-
+                              width: "160px"
                             }}
                           >
                             <Autocomplete
@@ -948,15 +1083,16 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
+                              width: "130px"
                             }}
                           >
                             <TextField
-                              // value={row.batchNo}
+                              value={row.batchNo}
                               size="small"
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                             />
                           </td>
-                          <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          <td style={{ border: "1px solid black", textAlign: "center", width: "130px" }}>
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
