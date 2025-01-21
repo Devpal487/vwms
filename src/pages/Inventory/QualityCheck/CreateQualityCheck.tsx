@@ -1597,19 +1597,18 @@ const CreateQualityCheck = (props: Props) => {
 
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
-      venderId: -1,
-      countryId: -1,
-      stateId: -1,
-      cityId: -1,
+      "venderId": -1,
+      "countryId": -1,
+      "stateId": -1,
+      "cityId": -1
     });
     if (result.data.isSuccess) {
       const arr =
         result?.data?.data?.map((item: any) => ({
-          label: item.name,
+          label: `${item.name}`,
           value: item.venderId,
-          //details: item,
+          details: item,
         })) || [];
-      console.log("dataaaaaa", result.data.data)
 
       setVendorData([
         { value: "-1", label: t("text.SelectVendor") },
@@ -1633,9 +1632,18 @@ const CreateQualityCheck = (props: Props) => {
     }
   };
 
-  const handleVendorSelect = (event: any, newValue: any) => {
-    console.log(newValue?.value);
+  // const handleVendorSelect = (event: any, newValue: any) => {
+  //   console.log(newValue?.value);
 
+  // };
+  const handleVendorSelect = (event: any, newValue: any) => {
+    if (newValue && newValue.value !== "-1") {
+      setVendorDetail(newValue.details); // Set vendor details for display
+      formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
+    } else {
+      setVendorDetail(null); // Clear vendor details
+      formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
+    }
   };
 
   const handleInputChange = (index: number, field: string, value: any) => {
@@ -2139,8 +2147,106 @@ const CreateQualityCheck = (props: Props) => {
                   </Typography>
                 </Grid>
                 <Divider />
+ <Grid item lg={4} xs={12} md={6}>
+                  <Autocomplete
+                    disablePortal
+                    size="small"
+                    id="combo-box-demo"
+                    options={vendorData}
+                    value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
+                    onChange={handleVendorSelect}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={
+                          <CustomLabel
+                            text={t("text.SelectVendor")}
+                            required={false}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                </Grid>
 
-                <Grid item lg={4} xs={12} md={6}>
+                {vendorDetail?.gstinNo && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <TextField
+                      label={
+                        <CustomLabel
+                          text={t("text.vendorGstin")}
+                          required={false}
+                        />
+                      }
+                      value={vendorDetail?.gstinNo}
+                      placeholder={t("text.vendorGstin")}
+                      size="small"
+                      fullWidth
+                      style={{ backgroundColor: "white" }}
+                      onBlur={formik.handleBlur}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
+
+                {vendorDetail?.contactPerson && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <TextField
+                      label={
+                        <CustomLabel
+                          text={t("text.vendorContactPerson")}
+                          required={false}
+                        />
+                      }
+                      value={vendorDetail?.contactPerson}
+                      placeholder={t("text.vendorContactPerson")}
+                      size="small"
+                      fullWidth
+                      style={{ backgroundColor: "white" }}
+                      onBlur={formik.handleBlur}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
+
+                {vendorDetail?.permanentAddress && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <TextField
+                      label={
+                        <CustomLabel
+                          text={t("text.vendorAddress")}
+                          required={false}
+                        />
+                      }
+                      value={vendorDetail?.permanentAddress}
+                      size="small"
+                      fullWidth
+                      style={{ backgroundColor: "white" }}
+                      onBlur={formik.handleBlur}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
+
+                {vendorDetail?.mobileNo && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <TextField
+                      label={
+                        <CustomLabel
+                          text={t("text.vendorMobileNo")}
+                          required={false}
+                        />
+                      }
+                      value={vendorDetail?.mobileNo}
+                      size="small"
+                      fullWidth
+                      style={{ backgroundColor: "white" }}
+                      onBlur={formik.handleBlur}
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Grid>
+                )}
+                {/* <Grid item lg={4} xs={12} md={6}>
                   <Autocomplete
                     disablePortal
                     size="small"
@@ -2165,7 +2271,7 @@ const CreateQualityCheck = (props: Props) => {
                       />
                     )}
                   />
-                </Grid>
+                </Grid> */}
 
               </Grid>
 

@@ -12,6 +12,7 @@ const resources = {
       text: {
         ////
         /////
+        SelectOrderNO:"Select Order No.",
         enterComplaint:"Enter Complaint",
         docNo:"Document No.",
         particular:"Particular",

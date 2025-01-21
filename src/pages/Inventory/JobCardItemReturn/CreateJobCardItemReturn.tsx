@@ -988,7 +988,7 @@ const CreateJobCardItemReturn = (props: Props) => {
         const arr = [];
         for (let index = 0; index < data.length; index++) {
             arr.push({
-                label: data[index]["indentNo"] || 0,
+                label: data[index]["indentNno"] || 0,
                 value: data[index]["issueId"] || "",
 
             });
@@ -1342,7 +1342,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px',width:"30%" }}>Item Name</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th> */}
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Qty</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>ReturnQty</th>
@@ -1414,7 +1414,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             )}
                                                         />
                                                     </td>
-                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
                                                             type="number"
                                                             size="small"
@@ -1422,7 +1422,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             value={row.batchNo}
                                                             onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
                                                         />
-                                                    </td> */}
+                                                    </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
                                                            // type="number"

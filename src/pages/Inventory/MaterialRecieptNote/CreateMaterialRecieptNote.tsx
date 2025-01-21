@@ -46,10 +46,36 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const [orderData, setOrderData] = useState([]);
   const [orderVendorData, setOrderVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
+  const [IsbatchNO, setBatchno] = useState("");
   const initialRowData: any = {
 
+    // "sno": 0,
+    // "id": 0,
+    // "mrnId": 0,
+    // "orderId": 0,
+    // "orderNo": "",
+    // "batchNo": "",
+    // "serialNo": "",
+    // "qcStatus": "",
+    // "itemId": 0,
+    // "balQuantity": 0,
+    // "quantity": 0,
+    // "rate": 0,
+    // "amount": 0,
+    // "gstId": 0,
+    // "gstRate": 0,
+    // "cgst": 0,
+    // "sgst": 0,
+    // "igst": 0,
+    // "cgstid": 0,
+    // "sgstid": 0,
+    // "igstid": 0,
+    // "netAmount": 0,
+    // "unitId": 0,
+    // "qcApplicable": true
+
     "sno": 0,
-    "id": -1,
+    "id": 0,
     "mrnId": 0,
     "orderId": 0,
     "orderNo": "",
@@ -71,7 +97,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
     "igstid": 0,
     "netAmount": 0,
     "unitId": 0,
-    "qcApplicable": true
+    "totalGst": 0,
+    "qcApplicable": true,
+    "isDelete": false,
+    "itemName": "",
+    "unitName": ""
 
 
   };
@@ -97,6 +127,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     GetitemData();
     GetorderData();
     GetUnitData();
+    getBATCHNo();
   }, []);
   const GetUnitData = async () => {
     const collectData = {
@@ -119,6 +150,33 @@ const CreateMaterialRecieptNote = (props: Props) => {
       formik.setFieldValue("mrnNo", result.data.data[0]["mrnNo"]);
     }
   };
+
+  // const getBATCHNo = async () => {
+  //   const result = await api.get(`QualityCheck/GetMaxBatchNo`);
+  //   if (result?.data.status === 1) {
+  //     formik.setFieldValue("batchNo", result.data.data[0]["batchNo"]);
+  //   }
+  // };
+  const getBATCHNo = async () => {
+    try {
+      const response = await api.get(`QualityCheck/GetMaxBatchNo`);
+      if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
+         
+         setBatchno(response.data.data[0].batchNo)
+      } else {
+        toast.error(response?.data?.message || "Failed to fetch batch number");
+        return ""; // Return empty if no batch number is found
+      }
+    } catch (error) {
+      toast.error("Error fetching batch number");
+      return ""; // Return empty in case of an error
+    }
+  };
+
+  console.log("Fetching batchNo from API...");
+
+
+
 
   const GetitemData = async () => {
     const collectData = {
@@ -203,78 +261,110 @@ const CreateMaterialRecieptNote = (props: Props) => {
       formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
     }
   };
-  const handleInputChange = (index: number, field: string, value: any) => {
+
+  const handleInputChange = async (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
 
     if (field === "orderNo") {
-      const selectedItem = orderOption.find(
-        (option: any) => option.value === value
-      );
-      console.log(selectedItem);
+      const selectedItem = orderOption.find((option: any) => option.value === value);
       if (selectedItem) {
         item = {
           ...item,
-          mrnType: selectedItem?.value?.toString(),
+          orderId: selectedItem.value,
+          orderNo: selectedItem.label,
+        };
 
-          orderId: selectedItem?.value,
-          orderNo: selectedItem?.label,
-        };
+        // Fetch batch number for the selected orderNo
+        const batchNo = await getBATCHNo();
+        if (batchNo) {
+          item.batchNo = batchNo; // Set the fetched batch number
+        }
       }
-    } else if (field === "itemId") {
-      const selectedItem = itemOption.find(
-        (option: any) => option.value === value
-      );
-      console.log(selectedItem);
-      if (selectedItem) {
-        item = {
-          ...item,
-          itemId: selectedItem?.value,
-          itemName: selectedItem?.label,
-          item: selectedItem?.details,
-        };
-      }
-    } else if (field === "batchNo") {
-      item.batchNo = value?.toString();
-    } else if (field === "balQuantity") {
-      item.balQuantity = value === "" ? 0 : parseFloat(value);
-    } else if (field === "quantity") {
-      item.quantity = value === "" ? 0 : parseFloat(value);
-    } else if (field === "rate") {
-      item.rate = value === "" ? 0 : parseFloat(value);
-    } else if (field === "gstId") {
-      const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-      if (selectedTax) {
-        item.gstRate = parseFloat(selectedTax.label) || 0;
-        item.gstId = selectedTax.value || 0;
-        item.cgstid = selectedTax.value || 0;
-        item.sgstid = selectedTax.value || 0;
-        item.igstid = 0;
-        item.gst = item.gstRate;
-      }
-    } else {
-      item[field] = value;
     }
-    item.amount =
-      (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-    item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
-      2
-    );
-    item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
-    item.sgst = item.gst / 2;
-    item.cgst = item.gst / 2;
-    item.igst = 0;
-
-    formik.setFieldValue("totalAmount", item.netAmount);
 
     updatedItems[index] = item;
-    setTableData(updatedItems);
-    updateTotalAmounts(updatedItems);
+    setTableData([...updatedItems]);
 
-    if (isRowFilled(item) && index === updatedItems.length - 1) {
-      addRow();
-    }
+    console.log("Updated tableData:", updatedItems); // Debugging
   };
+
+
+
+
+
+  // const handleInputChange = (index: number, field: string, value: any) => {
+  //   const updatedItems = [...tableData];
+  //   let item = { ...updatedItems[index] };
+
+  //   if (field === "orderNo") {
+  //     const selectedItem = orderOption.find(
+  //       (option: any) => option.value === value
+  //     );
+  //     console.log(selectedItem);
+  //     if (selectedItem) {
+  //       item = {
+  //         ...item,
+  //         mrnType: selectedItem?.value?.toString(),
+
+  //         orderId: selectedItem?.value,
+  //         orderNo: selectedItem?.label,
+  //       };
+  //     }
+  //   } else if (field === "itemId") {
+  //     const selectedItem = itemOption.find(
+  //       (option: any) => option.value === value
+  //     );
+  //     console.log(selectedItem);
+  //     if (selectedItem) {
+  //       item = {
+  //         ...item,
+  //         itemId: selectedItem?.value,
+  //         itemName: selectedItem?.label,
+  //         item: selectedItem?.details,
+  //       };
+  //     }
+  //   } else if (field === "batchNo") {
+  //     item.batchNo = value?.toString();
+  //   } else if (field === "balQuantity") {
+  //     item.balQuantity = value === "" ? 0 : parseFloat(value);
+  //   } else if (field === "quantity") {
+  //     item.quantity = value === "" ? 0 : parseFloat(value);
+  //   } else if (field === "rate") {
+  //     item.rate = value === "" ? 0 : parseFloat(value);
+  //   } else if (field === "gstId") {
+  //     const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+  //     if (selectedTax) {
+  //       item.gstRate = parseFloat(selectedTax.label) || 0;
+  //       item.gstId = selectedTax.value || 0;
+  //       item.cgstid = selectedTax.value || 0;
+  //       item.sgstid = selectedTax.value || 0;
+  //       item.igstid = 0;
+  //       item.gst = item.gstRate;
+  //     }
+  //   } else {
+  //     item[field] = value;
+  //   }
+  //   item.amount =
+  //     (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+  //   item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
+  //     2
+  //   );
+  //   item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
+  //   item.sgst = item.gst / 2;
+  //   item.cgst = item.gst / 2;
+  //   item.igst = 0;
+
+  //   formik.setFieldValue("totalAmount", item.netAmount);
+
+  //   updatedItems[index] = item;
+  //   setTableData(updatedItems);
+  //   updateTotalAmounts(updatedItems);
+
+  //   if (isRowFilled(item) && index === updatedItems.length - 1) {
+  //     addRow();
+  //   }
+  // };
 
   console.log("tableData.....", tableData);
 
@@ -359,6 +449,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
       "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
+      "purOrderId": 0,
+      "vendorName": "",
+      "name": "",
+      "netAmountv": 0,
       "mrnDetail": []
 
 
@@ -425,12 +519,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
           Object.keys(row.item).length === 0
         );
       });
-      // const payload = { ...values, vendorId: values.vendorId }; // Only send vendorId
-      // console.log("Payload:", payload);
+
 
       const payload = { ...values };
       console.log("Payload:", payload);
-      //   values.vendorId = vendorDetail;
+
 
       const response = await api.post(`QualityCheck/UpsertMrn`, {
         ...values,
@@ -462,8 +555,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
     for (let i = 0; i < transData.length; i++) {
       arr.push({
 
-        id: -1,
-        mrnId: -1,
+        id: i + 1,
+        mrnId: 0,
         orderId: transData[i]["orderId"],
         itemId: transData[i]["itemId"],
         unitId: transData[i]["unitId"],
@@ -479,9 +572,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
         "sgstid": transData[i]["sgstid"],
         "igstid": transData[i]["igstid"],
         netAmount: transData[i]["netAmount"],
-
+        batchNo:IsbatchNO ||"",
         orderNo: "",
-        "batchNo": "",
+       // "batchNo": "",
         "serialNo": "",
         "qcStatus": "",
         "balQuantity": 0,
@@ -510,7 +603,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
       ...item,
       id: item.orderId,
       value: item.orderId,
-      label : item.orderNo,
+      label: item.orderNo,
     }));
     setOrderData(orderArr);
   };
@@ -754,7 +847,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         {...params}
                         label={
                           <CustomLabel
-                            text={t("text.SelectOrderNO")}
+                            text={t("text.SelectVendor")}
                             required={false}
                           />
                         }
@@ -849,7 +942,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       size="small"
                       id="combo-box-demo"
                       options={orderVendorData}
-                      onChange={(e,newValue:any) => {
+                      onChange={(e, newValue: any) => {
                         getPurchaseOrderById(newValue?.id);
                       }}
                       renderInput={(params) => (
@@ -985,7 +1078,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         >
                           SGST
                         </th>
-                        <th
+                        {/* <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -993,7 +1086,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           }}
                         >
                           IGST
-                        </th>
+                        </th> */}
 
 
                         <th
@@ -1031,6 +1124,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={orderOption}
+                              value={orderOption.find((opt: any) => opt.value === row.orderId) || null}
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) =>
@@ -1052,7 +1146,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              width: "160px"
+                              // textAlign: "center",
                             }}
                           >
                             <Autocomplete
@@ -1061,6 +1155,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               options={itemOption}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
+                              value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(
                                   index,
@@ -1087,11 +1183,16 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             }}
                           >
                             <TextField
-                              value={row.batchNo}
+                              value={row.batchNo || ""} // Bind to row.batchNo
+                              id="BatchNo"
+                              name="BatchNo"
                               size="small"
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                             />
                           </td>
+
+
+
                           <td style={{ border: "1px solid black", textAlign: "center", width: "130px" }}>
                             <Autocomplete
                               disablePortal
@@ -1122,8 +1223,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
-                              value={row.balQuantity}
-                              onChange={(e) => handleInputChange(index, "balQuantity", e.target.value)}
+                              value={row.quantity}
+                              onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               onFocus={e => e.target.select()}
                             />
                           </td>
@@ -1168,6 +1269,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               options={taxData}
                               fullWidth
                               size="small"
+                              value={taxData.find((opt: any) => opt.value === row.gstId) || null}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(index, "gstId", newValue?.value)
                               }
@@ -1204,7 +1306,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               inputProps={{ readOnly: true }}
                             />
                           </td>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1215,7 +1317,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1234,8 +1336,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalnetamount")}
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalAmount")}
 
                         </td>
 
@@ -1243,7 +1345,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totaltaxamount")}
 
@@ -1252,10 +1354,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalgrossamount")}
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
 
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>

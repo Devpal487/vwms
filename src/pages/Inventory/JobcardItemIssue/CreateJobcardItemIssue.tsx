@@ -62,18 +62,16 @@ const CreateJobcardItemIssue = (props: Props) => {
         "id": 0,
         "issueId": 0,
         "itemID": 0,
+        "unitId": 0,
         "batchNo": "",
         "indentId": 0,
-        "unitId": 0,
         "reqQty": 0,
         "issueQty": 0,
-        "stockQty": 0,
         "itemName": "",
-        "indentNo": "",
-        "srn": 0,
         "unitName": "",
-        //unit:"",
         "returnItem": true,
+        "indentNo": "",
+        "stockQty": 0,
 
 
 
@@ -131,7 +129,8 @@ const CreateJobcardItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
-
+                vehicleitem: data[index]["vehicleitem"],
+               // empName: data[index]["empName"],
             });
         };
         setIndentOptions(arr);
@@ -156,22 +155,21 @@ const CreateJobcardItemIssue = (props: Props) => {
         const indent = data.map((item: any, index: any) => ({
 
             id: index + 1,
-            "issueId": 0,
-
-
-            batchNo: item?.batchNo,
+            "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
+            batchNo: item?.batchNo,
+            indentId: item?.indentId,
             issueQty: item?.approveQuantity,
             reqQty: item?.quantity,
-
-            unitName: "",
-            //unit:"",
-            itemName: "",
+          //  "amount" : item?.amount,
+            itemName:item?.itemName,
+            unitName:item?.unitName,
             indentNo: "",
             "srn": 0,
             // "unitName": "",
-            "returnItem": true
+            "returnItem": true,
+            "stockQty": 0
 
 
         }))
@@ -240,22 +238,6 @@ const CreateJobcardItemIssue = (props: Props) => {
             "indentNno": "",
             "empName": "",
             "vehicleNo": "",
-            // "issueId": 0,
-            // "issueDate": defaultValues,
-            // "indentId": 0,
-            // "issueLocation": "",
-            // "issueType": "",
-            // "vehicleitem": 0,
-            // "empId": null,
-            // "createdBy": "",
-            // "updatedBy": "",
-            // "createdOn": defaultValues,
-            // "updatedOn": defaultValues,
-            // "indentNo": "",
-            // "empName": "",
-            // "srn": 0,
-            // "jobId": 0,
-            // "jobCardNo": "",
             itemIssueDetail: [],
 
 
@@ -271,10 +253,10 @@ const CreateJobcardItemIssue = (props: Props) => {
 
             const validTableData = tableData;
             values.itemIssueDetail = tableData
-            if (validTableData.length === 0) {
-                toast.error("Please add some data in table for further process");
-                return;
-            }
+            // if (validTableData.length === 0) {
+            //     toast.error("Please add some data in table for further process");
+            //     return;
+            // }
             const response = await api.post(
                 `ItemIssue/UpsertItemIssue`,
                 values
@@ -314,23 +296,23 @@ const CreateJobcardItemIssue = (props: Props) => {
         setTableData(updatedData);
     };
     const back = useNavigate();
-    // const addRow = () => {
-    //     setTableData([...tableData, {
-    //         "id": 0,
-    //         "issueId": -1,
-    //         "itemID": 0,
-    //         "unitId": 0,
-    //         "batchNo": "",
-    //         "indentId": 0,
-    //         "reqQty": 0,
-    //         "issueQty": 0,
-    //         "itemName": "",
-    //         "unitName": "",
-    //         "returnItem": true,
-    //         "indentNo": "",
-    //         "stockQty": 0,
-    //     }]);
-    // };
+    const addRow = () => {
+        setTableData([...tableData, {
+            "id": 0,
+            "issueId": -1,
+            "itemID": 0,
+            "unitId": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "reqQty": 0,
+            "issueQty": 0,
+            "itemName": "",
+            "unitName": "",
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0,
+        }]);
+    };
 
 
     return (
@@ -434,20 +416,21 @@ const CreateJobcardItemIssue = (props: Props) => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={vehicleOption}
-                                    value={itemValue}
+                                    value={vehicleOption.find((opt) => opt.value === formik.values.vehicleitem) || null}
+                                    // value={itemValue}
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log(newValue?.value);
                                         formik.setFieldValue("vehicleitem", newValue?.value);
-                                        setItemValue(newValue?.label)
+                                        //setItemValue(newValue?.label)
                                     }}
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
                                             label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                                            name="vehicleitem"
-                                            id="vehicleitem"
+                                           // name="vehicleitem"
+                                          //  id="vehicleitem"
                                             placeholder={t("text.VehicleNo")}
                                         />
                                     )}
