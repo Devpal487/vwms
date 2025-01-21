@@ -12,44 +12,44 @@ const resources = {
       text: {
         ////
         /////
-        enterComplaint:"Enter Complaint",
-        docNo:"Document No.",
-        particular:"Particular",
-        itemName:"Item Name",
-        unitName:"Unit Name",
-        docDate:"Document Date",
-        opening:"Opening",
-        inQty:"In Qty",
-        outQty:"Out Qty",
-        vendor:"Vendor",
-        balance:"Balance",
-        age:"Age",
-        selectcomplainNo:"Enter Complaint No.",
+        enterComplaint: "Enter Complaint",
+        docNo: "Document No.",
+        particular: "Particular",
+        itemName: "Item Name",
+        unitName: "Unit Name",
+        docDate: "Document Date",
+        opening: "Opening",
+        inQty: "In Qty",
+        outQty: "Out Qty",
+        vendor: "Vendor",
+        balance: "Balance",
+        age: "Age",
+        selectcomplainNo: "Enter Complaint No.",
 
-        complaintDate:"Complaint Date",
-        closingdate:"Closing Date",
-        vehicleNo12:"Vehicle No.",
-        ItemType1:"Item Type",
-        ShortName1:"Short Name",
+        complaintDate: "Complaint Date",
+        closingdate: "Closing Date",
+        vehicleNo12: "Vehicle No.",
+        ItemType1: "Item Type",
+        ShortName1: "Short Name",
 
-       //stockbin
-       StockBinName1:"StockBin Name",
-       binCode1:"StockBin Code",
-       binCode:" Enter StockBin Code",
-        Flowmaster:"Flow Master",
-        release:"RELEASE",
-        post:"POST",
-        TotalAmount:"Total Amount:",
-        vendorevaluation:"Vendor Evaluation",
-        preReading:"Pre Reading",
-        gst:"GST",
-        Sgst:"SGST",
-        Cgst:"CGST",
-        Igst:"IGST",
-        indentGenerate:"Indent Generate",
-        indentprint:"Indent Print",
-        Outsource:"OutSource",
-        InhouseandOutsource:"Inhouse and OutSource",
+        //stockbin
+        StockBinName1: "StockBin Name",
+        binCode1: "StockBin Code",
+        binCode: " Enter StockBin Code",
+        Flowmaster: "Flow Master",
+        release: "RELEASE",
+        post: "POST",
+        TotalAmount: "Total Amount:",
+        vendorevaluation: "Vendor Evaluation",
+        preReading: "Pre Reading",
+        gst: "GST",
+        Sgst: "SGST",
+        Cgst: "CGST",
+        Igst: "IGST",
+        indentGenerate: "Indent Generate",
+        indentprint: "Indent Print",
+        Outsource: "OutSource",
+        InhouseandOutsource: "Inhouse and OutSource",
         AddComplaintApproval: "Create Complaint Approval",
         ComplaintApproval: "Complaint Approval",
         EditComplaintApproval: "Edit Complaint Approval",
@@ -2999,7 +2999,7 @@ const resources = {
         TotalItemAmount: "Total Item Amount",
         TotalOutsourceItemAmount: "Total Outsource Item Amount",
         TotalServiceAmount: "Total Service Amount",
-       // TotalAmount: "Total Amount",
+        // TotalAmount: "Total Amount",
         NetAmount: "Net Amount",
 
         reqBrandName: "Brand Name is required",
@@ -8801,7 +8801,7 @@ const resources = {
         AddJobCard: "Add Job Card",
         EditJobCard: "Edit Job Card",
         Services: "Services",
-        complainStatus12:"Status",
+        complainStatus12: "Status",
         ComplainStatus: "Complain Status",
         WorkshoapService: "Workshop Service",
         VendorItemDetail: "Vendor Item Detail",
@@ -8843,26 +8843,17 @@ const resources = {
         Path: "Path",
         SelectItem: "Select Item",
         ComplainApproveDate: "Complain Approve Date",
+        EnterJuridiction: "Enter Juridiction",
+        EnterLocation: "Enter Location",
+        Juridiction: "Juridiction",
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+        selectempname:"Select Employeee Name",
+        userid:"Enter userId",
+        role:"Role",
+        MenuCreate:"Menu Creation",
+        DisplayNo:"Enter Display No",
+        ParentMenu:"Select Parent Menu",
       },
 
       content: {},
@@ -10274,7 +10265,7 @@ const resources = {
         issueQty: "जारी मात्रा",
         reqQty: "अनुरोधित मात्रा",
         stockQty: "स्टॉक मात्रा",
-        
+
         Batchno: "बैच संख्या",
         SelectItem: "आइटम चुनें",
         VehicleNos1: "वाहन संख्या चुनें",
@@ -12981,7 +12972,20 @@ const resources = {
         Path: "पथ",
         SelectTax: "कर चुनें",
         SelectItem: "आइटम चुनें",
+
+        EnterJuridiction: "क्षेत्राधिकार दर्ज करें",
+        EnterLocation: "स्थान दर्ज करें",
+        Juridiction: "क्षेत्राधिकार",
+        
+        selectempname:"कर्मचारी का नाम चुनें",
+        userid:"उपयोगकर्ता आईडी दर्ज करें",
+        role:"भूमिका",
+
+        MenuCreate: "मेनू निर्माण",
+        DisplayNo: "डिस्प्ले नंबर दर्ज करें",
+        ParentMenu: "पैरेंट मेनू चुनें",
       },
+
       content: {},
     },
   },

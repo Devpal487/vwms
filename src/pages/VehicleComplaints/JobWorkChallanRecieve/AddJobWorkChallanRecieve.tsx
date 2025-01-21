@@ -804,7 +804,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                       console.log(newValue?.value);
                       formik.setFieldValue("itemId", newValue?.value)
                       formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
-                      setTableDataValues([...(jobWorkChallanData[jobWorkChallanData.findIndex(e => e.itemId === newValue?.value)]?.jobWorkChallanDetail), {
+                      setTableDataValues([...(jobWorkChallanData[jobWorkChallanData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.jobWorkChallanDetail), {
                         id: 0,
                         challanRcvNo: 0,
                         jobCardId: 0,
@@ -825,28 +825,28 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                         serviceName: "",
                         unitName: ""
                       }]);
-                      formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanNo);
-                      formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.complainId);
-                      formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empId);
-                      formik.setFieldValue("itemId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemId);
-                      formik.setFieldValue("jobCardId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId);
-                      formik.setFieldValue("vendorId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorId);
-                      formik.setFieldValue("estAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
-                      formik.setFieldValue("serviceAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.serviceAmount);
-                      formik.setFieldValue("itemAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.itemAmount);
-                      formik.setFieldValue("netAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.netAmount);
-                      formik.setFieldValue("fyId", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.fyId);
-                      formik.setFieldValue("cgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgst);
-                      formik.setFieldValue("sgst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgst);
-                      formik.setFieldValue("gst", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gst);
-                      formik.setFieldValue("gstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.gstid);
-                      formik.setFieldValue("cgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.cgstid);
-                      formik.setFieldValue("sgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.sgstid);
+                      formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.challanNo);
+                      formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.complainId);
+                      formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.empId );
+                      formik.setFieldValue("itemId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.itemId);
+                      formik.setFieldValue("jobCardId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.jobCardId);
+                      formik.setFieldValue("vendorId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.vendorId);
+                      formik.setFieldValue("estAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.netAmount);
+                      formik.setFieldValue("serviceAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.serviceAmount);
+                      formik.setFieldValue("itemAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.itemAmount);
+                      formik.setFieldValue("netAmount", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.netAmount);
+                      formik.setFieldValue("fyId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.fyId);
+                      formik.setFieldValue("cgst", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.cgst);
+                      formik.setFieldValue("sgst", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.sgst);
+                      formik.setFieldValue("gst", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.gst);
+                      formik.setFieldValue("gstid", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.gstid);
+                      formik.setFieldValue("cgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.cgstid);
+                      formik.setFieldValue("sgstid", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.sgstid);
                       formik.setFieldValue("vendorName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.vendorName);
-                      formik.setFieldValue("empName", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.empName);
-                      formik.setFieldValue("jobCardNo", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardId.toString);
-                      formik.setFieldValue("jobCardDate", jobWorkChallanData.find(e => e.itemId === newValue?.value)?.jobCardDate || defaultValues);
-                      formik.setFieldValue("challanDate", dayjs(jobWorkChallanData.find(e => e.itemId === newValue?.value)?.challanDate).format('YYYY-MM-DD') || defaultValues);
+                      formik.setFieldValue("empName", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.empName);
+                      formik.setFieldValue("jobCardNo", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.jobCardId.toString);
+                      formik.setFieldValue("jobCardDate", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.jobCardDate || defaultValues);
+                      formik.setFieldValue("challanDate", dayjs(jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.challanDate).format('YYYY-MM-DD') || defaultValues);
                     }
                   }}
                   renderInput={(params) => (
@@ -1552,7 +1552,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 ref={inputRef}
                 onClick={(e) => {
                   setTimeout(() => {
-                    formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId)?.challanNo || 0);
+                    formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId  && e.jobCardId == location.state?.jobCardId)?.challanNo || 0);
                   }, 400);
                 }}
                 sx={{ display: "none" }}

@@ -11,6 +11,8 @@ import {
   Button,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { ToastContainer,toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Flowmaster() {
   const { t } = useTranslation();
@@ -23,8 +25,12 @@ export default function Flowmaster() {
 
   };
 
+  const navigate = useNavigate()
+
   const handleSubmit = () => {
     console.log("Selected Option:", selectedOption);
+    navigate("/home");
+    //toast.success("")
     window.location.reload()
     // Add your form submission logic here
   };
