@@ -71,6 +71,7 @@ const EditWorkShopPurchaseOrder = () => {
         "id": -1,
         "orderId": 0,
         "itemId": 0,
+        "unitId": 0,
         "quantity": 0,
         "rate": 0,
         "amount": 0,
@@ -88,7 +89,8 @@ const EditWorkShopPurchaseOrder = () => {
         "srn": 0,
         "balQuantity": 0,
         "isDelete": true,
-        "itemName": ""
+        "itemName": "",
+        "unit": ""
     };
     const [tableData, setTableData] = useState([{ ...initialRowData }]);
     const [taxData, setTaxData] = useState<any>([]);
@@ -381,49 +383,42 @@ const EditWorkShopPurchaseOrder = () => {
 
     const modalOpenHandle1 = (event: string) => {
         setDocOpen(true);
-        const base64Prefix = "data:image/jpg;base64,";
-
+        const base64Prefix = "data:image/jpeg;base64,";
 
         let imageData = '';
         switch (event) {
             case "pOrderDoc":
                 imageData = formik.values.pOrderDoc;
                 break;
+            default:
+                imageData = '';
         }
         if (imageData) {
-            console.log("imageData", base64Prefix + imageData);
-            setImg(base64Prefix + imageData);
+            const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+            console.log("imageData", imgSrc);
+            setImg(imgSrc);
         } else {
             setImg('');
         }
     };
 
-    const otherDocChangeHandler = (event: any, params: any) => {
+    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
         const fileExtension = file.name.split('.').pop()?.toLowerCase();
-        if (!['jpg'].includes(fileExtension || '')) {
-            alert("Only .jpg image file is allowed to be uploaded.");
+        if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+            alert("Only .jpg, .jpeg, or .png image files are allowed.");
             event.target.value = '';
             return;
         }
 
         const reader = new FileReader();
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-            const base64String = e.target?.result as string;
-            const base64Data = base64String.split(',')[1];
-            formik.setFieldValue(params, base64Data);
-
-            formik.setFieldValue('pOrderDoc', fileExtension);
-
-
-
-            console.log(`File '${file.name}' loaded as base64 string`);
-            console.log("base64Data", base64Data);
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
-        reader.onerror = (error) => {
-            console.error("Error reading file:", error);
+        reader.onerror = () => {
             alert("Error reading file. Please try again.");
         };
         reader.readAsDataURL(file);
@@ -431,7 +426,7 @@ const EditWorkShopPurchaseOrder = () => {
     const formik = useFormik({
         initialValues: {
 
-            sno: location?.state?.sno || 0,
+            // sno: location?.state?.sno || 0,
             orderId: location?.state?.orderId || 0,
             indentId: location?.state?.indentId || 0,
             orderNo: location?.state?.orderNo || "",
@@ -460,12 +455,12 @@ const EditWorkShopPurchaseOrder = () => {
             pOrderDoc: location?.state?.pOrderDoc || "",
             purchaseOrderDetail: location?.state?.purchaseOrderDetail || [],
             isSelected: location?.state?.isSelected !== undefined ? location.state.isSelected : true,
-            file: location?.state?.file || "",
-            fileOldName: location?.state?.fileOldName || "",
+            // file: location?.state?.file || "",
+            // fileOldName: location?.state?.fileOldName || "",
             indentNo: location?.state?.indentNo || "",
-            unitId: location?.state?.unitId || 0,
+            //  unitId: location?.state?.unitId || 0,
             itemName: location?.state?.itemName || "",
-            unitName: location?.state?.unitName || "",
+            // unitName: location?.state?.unitName || "",
 
 
 
@@ -745,112 +740,97 @@ const EditWorkShopPurchaseOrder = () => {
                                     )}
                                 />
                             </Grid>
-
-
-
                             <Grid container spacing={1} item>
-                                <Grid
-                                    xs={12}
-                                    md={4}
-                                    sm={4}
-                                    item
-                                    style={{ marginBottom: "30px", marginTop: "30px" }}
-                                ><TextField
-                                        type="file"
-                                        inputProps={{ accept: "image/*" }}
-                                        InputLabelProps={{ shrink: true }}
-                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
-                                        size="small"
-                                        fullWidth
-                                        onChange={(e) => otherDocChangeHandler(e, "file")}
-                                        required={true}
-                                    />
+  <Grid
+    xs={12}
+    md={4}
+    sm={4}
+    item
+    style={{ marginBottom: "30px", marginTop: "30px" }}
+  >
+    <TextField
+      type="file"
+      inputProps={{ accept: "image/*" }}
+      InputLabelProps={{ shrink: true }}
+      label={<CustomLabel text={t("text.pOrderDoc")} />}
+      size="small"
+      fullWidth
+      style={{ backgroundColor: "white" }}
+      onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
+    
+    />
+  </Grid>
+  <Grid xs={12} md={4} sm={4} item></Grid>
 
-                                    {/* <TextField
-                                        type="file"
-                                        inputProps={{ accept: "image/*" }}
-                                        InputLabelProps={{ shrink: true }}
-                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
-                                        size="small"
-                                        fullWidth
-                                        style={{ backgroundColor: "white" }}
-                                        onChange={(e) => otherDocChangeHandler(e, "file")}
-                                    /> */}
-                                </Grid>
-                                <Grid xs={12} md={4} sm={4} item></Grid>
+  <Grid xs={12} md={4} sm={4} item>
+    <Grid
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        margin: "10px",
+      }}
+    >
+      {formik.values.pOrderDoc ? (
+        <img
+          src={formik.values.pOrderDoc}
+          alt="Preview"
+          style={{
+            width: 150,
+            height: 100,
+            border: "1px solid grey",
+            borderRadius: 10,
+            padding: "2px",
+          }}
+        />
+      ) : (
+        <img
+          src={nopdf} // Default placeholder image
+          alt="No document"
+          style={{
+            width: 150,
+            height: 100,
+            border: "1px solid grey",
+            borderRadius: 10,
+          }}
+        />
+      )}
+      <Typography
+        onClick={() => modalOpenHandle1("pOrderDoc")}
+        style={{
+          textDecorationColor: "blue",
+          textDecorationLine: "underline",
+          color: "blue",
+          fontSize: "15px",
+          cursor: "pointer",
+        }}
+      >
+        {t("text.Preview")}
+      </Typography>
+    </Grid>
+  </Grid>
 
-                                <Grid xs={12} md={4} sm={4} item>
-                                    <Grid
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-around",
-                                            alignItems: "center",
-                                            margin: "10px",
-                                        }}
-                                    >
-                                        {formik.values.pOrderDoc == "" ? (
-                                            <img
-                                                src={nopdf}
-                                                style={{
-                                                    width: 150,
-                                                    height: 100,
-                                                    border: "1px solid grey",
-                                                    borderRadius: 10,
-                                                }}
-                                            />
-                                        ) : (
-                                            <img
-                                                src={`data:image/jpg;base64,${formik.values.file}`}
-                                                style={{
-                                                    width: 150,
-                                                    height: 100,
-                                                    border: "1px solid grey",
-                                                    borderRadius: 10,
-                                                    padding: "2px",
-                                                }}
-                                            />
-                                        )}
-                                        <Typography
-                                            onClick={() => modalOpenHandle1("file")}
-                                            style={{
-                                                textDecorationColor: "blue",
-                                                textDecorationLine: "underline",
-                                                color: "blue",
-                                                fontSize: "15px",
-                                                cursor: "pointer",
-                                            }}
+  <Modal open={docOpen} onClose={handlePanClose1}>
+    <Box sx={style}>
+      {Img ? (
+        <img
+          src={Img}
+          alt="Preview"
+          style={{
+            width: "170vh",
+            height: "75vh",
+            borderRadius: 10,
+          }}
+        />
+      ) : (
+        <Typography>No Image to Preview</Typography>
+      )}
+    </Box>
+  </Modal>
+</Grid>
 
-                                        >
-                                            {t("text.Preview")}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
 
-                                <Modal open={docOpen} onClose={handlePanClose1}>
-                                    <Box sx={style}>
-                                        {Img == "" ? (
-                                            // eslint-disable-next-line jsx-a11y/alt-text
-                                            <img
-                                                // src={nopdf}
-                                                style={{
-                                                    width: "170vh",
-                                                    height: "75vh",
-                                                }}
-                                            />
-                                        ) : (
-                                            <img
-                                                alt="preview image"
-                                                src={"data:image/png;base64," + Img}
-                                                style={{
-                                                    width: "170vh",
-                                                    height: "75vh",
-                                                    borderRadius: 10,
-                                                }}
-                                            />
-                                        )}
-                                    </Box>
-                                </Modal>
-                            </Grid>
+
 
 
                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}></Grid>

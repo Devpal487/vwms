@@ -115,6 +115,8 @@ const CreateStaffItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
+                empId: data[index]["empId"],
+                empName: data[index]["empName"],
 
             });
         };
@@ -153,7 +155,8 @@ const CreateStaffItemIssue = (props: Props) => {
           //unit:"",
             itemName: "",
             indentNo: "",
-            "srn": 0,
+            
+            stockQty:0,
        // "unitName": "",
             "returnItem": true
 
@@ -239,7 +242,7 @@ const CreateStaffItemIssue = (props: Props) => {
             "indentId": 0,
             "issueLocation": "",
             "issueType": "",
-            "vehicleitem": 0,
+            "vehicleitem": -1,
             "empId": null,
             "createdBy": "",
             "updatedBy": "",
@@ -247,6 +250,7 @@ const CreateStaffItemIssue = (props: Props) => {
             "updatedOn": defaultValues,
             "indentNo": "",
             "empName": "",
+            "vehicleNo": "",
             "srn": 0,
             "jobId": 0,
             "jobCardNo": "",
@@ -295,7 +299,17 @@ const CreateStaffItemIssue = (props: Props) => {
     const handleInputChange = (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
+        if (field === 'reqQty' || field === 'issueQty') {
+            updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
 
+            // console.log("stockQty",updatedData[index].stockQty, updatedData[index].reqQty,updatedData[index].issueQty)
+
+        } else if (field === 'reqQty') {
+            updatedData[index].reqQty = parseInt(value)
+
+        } else if (field === 'issueQty') {
+            updatedData[index].issueQty = parseInt(value)
+        }
 
 
         setTableData(updatedData);
@@ -312,25 +326,25 @@ const CreateStaffItemIssue = (props: Props) => {
 
 
 
-    const addRow = () => {
-        setTableData([...tableData, {
-            "id": 0,
-            "issueId": -1,
-            "itemID": 0,
-            "batchNo": "",
-            "indentId": 0,
-            "unitId": 0,
-            "reqQty": 0,
-            "issueQty": 0,
-            "stockQty": 0,
-            "itemName": "",
-            "indentNo": "",
-            "srn": 0,
-            "unitName": "",
-           // unit:"",
-            "returnItem": true
-        }]);
-    };
+    // const addRow = () => {
+    //     setTableData([...tableData, {
+    //         "id": 0,
+    //         "issueId": 0,
+    //         "itemID": 0,
+    //         "batchNo": "",
+    //         "indentId": 0,
+    //         "unitId": 0,
+    //         "reqQty": 0,
+    //         "issueQty": 0,
+    //         "stockQty": 0,
+    //         "itemName": "",
+    //         "indentNo": "",
+    //         "srn": 0,
+    //         "unitName": "",
+    //        // unit:"",
+    //         "returnItem": true
+    //     }]);
+    // };
 
 
     return (
@@ -407,6 +421,8 @@ const CreateStaffItemIssue = (props: Props) => {
                                             GetIndentIDById(newValue?.value);
                                             formik.setFieldValue("indentId", newValue?.value);
                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
+                                            formik.setFieldValue("empId", newValue?.empId);
+                                            formik.setFieldValue("empName", newValue?.empName?.toString() || "");
                                         }
                                     }}
 
@@ -433,6 +449,7 @@ const CreateStaffItemIssue = (props: Props) => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={empOption}
+                                    value={empOption.find((opt: any) => opt.value === formik.values.empId) || null}
                                     fullWidth
                                     size="small"
                                     onChange={(event, newValue) => {
@@ -563,8 +580,9 @@ const CreateStaffItemIssue = (props: Props) => {
                                                         <TextField
                                                            // type="number"
                                                             size="small"
-                                                            value={row.stockQty || 0}
-                                                            onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                                            value={row.reqQty - row.issueQty || 0}
+                                                          //  value={row.stockQty || 0}
+                                                           // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
                                                             onFocus={e => e.target.select()}
                                                         />
                                                     </td>

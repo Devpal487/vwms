@@ -195,86 +195,7 @@ const EditQualityCheck = (props: Props) => {
     }
   }, [tableData]);
 
-  // const GetitemData = async () => {
-  //   const collectData = {
-  //     itemMasterId: -1,
-  //   };
-  //   const response = await api.post(`ItemMaster/GetItemMaster`, collectData);
-  //   const data = response.data.data;
-  //   const arr =
-  //     data?.map((item: any) => ({
-  //       label: `${item.itemName}`,
-  //       value: item.itemMasterId,
-  //       details: item,
-  //     })) || [];
-  //   setitemOption([{ value: -1, label: t("text.selectItem"), details: "" }, ...arr]);
-  // };
-
-  // const GetorderData = async () => {
-  //   const collectData = {
-  //     id: -1,
-  //   };
-  //   const response = await api.post(`PurchaseInvoice/GetPurchaseInvoice`, collectData);
-  //   const data = response.data.data;
-  //   const arr = [];
-  //   for (let index = 0; index < data.length; index++) {
-  //     arr.push({
-  //       label: data[index]["orderNo"],
-  //       value: data[index]["id"],
-  //     });
-  //   }
-  //   setorderOption(arr);
-  // };
-
-  // const getVendorData = async () => {
-  //   const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
-  //     venderId: -1,
-  //   });
-  //   if (result.data.isSuccess) {
-  //     const arr =
-  //       result?.data?.data?.map((item: any) => ({
-  //         label: `${item.venderId} - ${item.name}`,
-  //         value: item.venderId,
-  //         details: item,
-  //       })) || [];
-
-  //     setVendorData([
-  //       { value: "-1", label: t("text.SelectVendor") },
-  //       ...arr,
-  //     ] as any);
-  //   }
-  // };
-
-  // // const getVendorDatabyID = async (id: any) => {
-  // //   const result = await api.post(`VendorMaster/Ge3tVendorMaster`, {
-  // //     venderId: id,
-  // //   });
-  // //   if (result.data.isSuccess) {
-  // //     const arr =
-  // //       result?.data?.data?.map((item: any) => ({
-  // //         details: item
-  // //       })) || [];
-
-  // //     setVendorDetail(arr[0]['details']);
-  // //   }
-  // // };
-
-  // // console.log("setVendorDetail", vendorDetail);
-
-  // const getTaxData = async () => {
-  //   const result = await api.post(`TaxMaster/GetTaxMaster`, {
-  //     taxId: -1,
-  //   });
-  //   if (result.data.isSuccess) {
-  //     const arr =
-  //       result?.data?.data?.map((item: any) => ({
-  //         label: `${item.taxPercentage}`,
-  //         value: item.taxId,
-  //       })) || [];
-
-  //     setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
-  //   }
-  // };
+  
 
   const GetitemData = async () => {
     const collectData = {
@@ -323,7 +244,7 @@ const EditQualityCheck = (props: Props) => {
     if (result.data.isSuccess) {
       const arr =
         result?.data?.data?.map((item: any) => ({
-          label: `${item.venderId} - ${item.name}`,
+          label: item.name,
           value: item.venderId,
           details: item,
         })) || [];
@@ -351,6 +272,17 @@ const EditQualityCheck = (props: Props) => {
   };
 
 
+  // const handleVendorSelect = (event: any, newValue: any) => {
+  //   if (newValue) {
+  //     // Set vendorId and vendor name correctly
+  //     formik.setFieldValue("vendor", newValue.details?.name || ""); // Set vendor name
+  //     formik.setFieldValue("vendorId", newValue?.value || 0); // Set vendorId
+  //   } else {
+  //     // Reset values when no vendor is selected
+  //     formik.setFieldValue("vendor", ""); // Reset vendor name
+  //     formik.setFieldValue("vendorId", 0); // Reset vendorId
+  //   }
+  // };
   const handleVendorSelect = (event: any, newValue: any) => {
     if (newValue) {
       // Set vendorId and vendor name correctly
@@ -1328,267 +1260,8 @@ const EditQualityCheck = (props: Props) => {
                 </Table>
              </div>
               </Grid>
-              {/* 
-              <Grid container item spacing={2} xs={12} md={12} lg={12}>
-                <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalAmount"
-                    name="totalAmount"
-                    label={
-                      <CustomLabel
-                        text={t("text.totalAmount")}
-                        required={false}
-                      />
-                    }
-                    value={formik.values.totalAmount}
-                    placeholder={t("text.totalAmount")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    // onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalAmount",
-                          t("text.totalAmountReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalAmount",
-                          t("text.totalAmountReadOnly")
-                        );
-                      },
-                    }}
-                    error={
-                      formik.touched.totalAmount &&
-                      Boolean(formik.errors.totalAmount)
-                    }
-                    helperText={
-                      formik.touched.totalAmount && formik.errors.totalAmount
-                    }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid>
-                <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalTax"
-                    name="totalTax"
-                    label={
-                      <CustomLabel text={t("text.totalTax")} required={false} />
-                    }
-                    value={(
-                      (parseFloat(formik.values.totalCGST) || 0) +
-                      (parseFloat(formik.values.totalSGST) || 0) +
-                      (parseFloat(formik.values.totalIGST) || 0)
-                    ).toFixed(2)} // Ensures the value is formatted to two decimal places
-                    placeholder={t("text.totalTax")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalTax",
-                          t("text.totalTaxReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalTax",
-                          t("text.totalTaxReadOnly")
-                        );
-                      },
-                    }}
-                    // error={
-                    //   formik.touched.totalTax &&
-                    //   Boolean(formik.errors.totalTax)
-                    // }
-                    // helperText={
-                    //   formik.touched.totalTax && formik.errors.totalTax
-                    // }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid>
-                {/* <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalCGST"
-                    name="totalCGST"
-                    label={
-                      <CustomLabel
-                        text={t("text.totalCGST")}
-                        required={false}
-                      />
-                    }
-                    value={formik.values.totalCGST}
-                    placeholder={t("text.totalCGST")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    // onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalCGST",
-                          t("text.totalCGSTReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalCGST",
-                          t("text.totalCGSTReadOnly")
-                        );
-                      },
-                    }}
-                    error={
-                      formik.touched.totalCGST &&
-                      Boolean(formik.errors.totalCGST)
-                    }
-                    helperText={
-                      formik.touched.totalCGST && formik.errors.totalCGST
-                    }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid> */}
-              {/* <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalSGST"
-                    name="totalSGST"
-                    label={
-                      <CustomLabel
-                        text={t("text.totalSGST")}
-                        required={false}
-                      />
-                    }
-                    value={formik.values.totalSGST}
-                    placeholder={t("text.totalSGST")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    // onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalSGST",
-                          t("text.totalSGSTReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalSGST",
-                          t("text.totalSGSTReadOnly")
-                        );
-                      },
-                    }}
-                    error={
-                      formik.touched.totalSGST &&
-                      Boolean(formik.errors.totalSGST)
-                    }
-                    helperText={
-                      formik.touched.totalSGST && formik.errors.totalSGST
-                    }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid> */}
-              {/* <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalIGST"
-                    name="totalIGST"
-                    label={
-                      <CustomLabel
-                        text={t("text.totalIGST")}
-                        required={false}
-                      />
-                    }
-                    value={formik.values.totalIGST}
-                    placeholder={t("text.totalIGST")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    // onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalIGST",
-                          t("text.totalIGSTReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalIGST",
-                          t("text.totalIGSTReadOnly")
-                        );
-                      },
-                    }}
-                    error={
-                      formik.touched.totalIGST &&
-                      Boolean(formik.errors.totalIGST)
-                    }
-                    helperText={
-                      formik.touched.totalIGST && formik.errors.totalIGST
-                    }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid>
-                <Grid item lg={4} xs={12}>
-                  <TextField
-                    id="totalGrossAmount"
-                    name="totalGrossAmount"
-                    label={
-                      <CustomLabel
-                        text={t("text.totalGrossAmount")}
-                        required={false}
-                      />
-                    }
-                    value={formik.values.totalGrossAmount}
-                    placeholder={t("text.totalGrossAmount")}
-                    size="small"
-                    fullWidth
-                    style={{ backgroundColor: "white" }}
-                    onBlur={formik.handleBlur}
-                    inputProps={{
-                      readOnly: true,
-                      onClick: (e) => {
-                        e.currentTarget.focus();
-                        formik.setFieldError(
-                          "totalGrossAmount",
-                          t("text.totalGrossAmountReadOnly")
-                        );
-                      },
-                      onFocus: (e) => {
-                        formik.setFieldError(
-                          "totalGrossAmount",
-                          t("text.totalGrossAmountReadOnly")
-                        );
-                      },
-                    }}
-                    error={
-                      formik.touched.totalGrossAmount &&
-                      Boolean(formik.errors.totalGrossAmount)
-                    }
-                    helperText={
-                      formik.touched.totalGrossAmount &&
-                      formik.errors.totalGrossAmount
-                    }
-                    FormHelperTextProps={{ style: { color: "red" } }}
-                  />
-                </Grid>
-              </Grid> */}
+             
+             
 
               <Grid item xs={12} md={12} lg={12}>
               <TextField

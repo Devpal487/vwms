@@ -92,6 +92,9 @@ const EditStaffIndent = (props: Props) => {
     const [empOption, setempOption] = useState([
         { value: "-1", label: t("text.empid") },
     ]);
+     const [VnoOption, setVnoOption] = useState([
+            { value: -1, label: t("text.itemMasterId") },
+        ]);
     // const [itemOption, setitemOption] = useState<any>([]);
 
 
@@ -102,12 +105,22 @@ const EditStaffIndent = (props: Props) => {
         getTransDataById(location.state.id);
         GetUnitData();
         // GetmaxindentData();
-
+      //  getVnoData();
     }, []);
 
 
     console.log("🚀 ~ CreateIndentForm ~ tableData:", tableData)
-
+    // const getVnoData = async () => {
+    //     const response = await api.get(
+    //         `Master/GetVehicleDetail?ItemMasterId=-1`,
+    //     );
+    //     const data = response.data.data;
+    //     const arr = data.map((Item: any, index: any) => ({
+    //         value: Item.itemMasterId,
+    //         label: Item.vehicleNo
+    //     }));
+    //     setVnoOption(arr);
+    // };
     const GetUnitData = async () => {
         const collectData = {
             unitId: -1,
@@ -148,7 +161,23 @@ const EditStaffIndent = (props: Props) => {
                     unitId: item.unitId,
                     unitName: item.unitName,
                 }));
-                setTableData(formattedData);
+                setTableData([
+                    ...formattedData,
+                    {
+                        id: 0,
+                        indentId: 0,
+                        itemId: 0,
+                        quantity: 0,
+                        rate: 0,
+                        amount: 0,
+                        approveQuantity: 0,
+                        fyId: 0,
+                        srn: 0,
+                        isDelete: true,
+                        unitId: 0,
+                        unitName: "",
+                    },])
+
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -416,10 +445,35 @@ const EditStaffIndent = (props: Props) => {
                             </Grid>
 
 
-
-
-
                             <Grid item xs={12} sm={4} lg={4}>
+                                <Autocomplete
+                                    disablePortal
+                                    id="combo-box-demo"
+                                    options={empOption}
+                                    fullWidth
+                                    value={
+                                        empOption.find(
+                                            (opt: any) => opt.value === formik.values.empId
+                                        ) || null
+                                    }
+                                    size="small"
+                                    onChange={(event, newValue) => {
+                                        console.log(newValue?.value);
+                                        formik.setFieldValue("empId", newValue?.value);
+                                        //formik.setFieldValue("empName", newValue?.label);
+                                    }}
+
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label={<CustomLabel text={t("text.selectemp_name")} />}
+                                        />
+                                    )}
+                                />
+                            </Grid>
+
+
+                            {/* <Grid item xs={12} sm={4} lg={4}>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
@@ -447,7 +501,7 @@ const EditStaffIndent = (props: Props) => {
                                         />
                                     )}
                                 />
-                            </Grid>
+                            </Grid> */}
 
 
 

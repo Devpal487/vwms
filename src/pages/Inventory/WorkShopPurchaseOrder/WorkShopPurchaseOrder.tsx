@@ -74,11 +74,11 @@ export default function WorkShopPurchaseOrder() {
     };
 
     let delete_id = "";
-
+let delete_indentId = "";
     const accept = () => {
         const collectData = {
             orderId: delete_id,
-            "indentId": 0
+            "indentId": delete_indentId
         };
         
         api
@@ -97,9 +97,10 @@ export default function WorkShopPurchaseOrder() {
         toast.warn("Rejected: You have rejected", { autoClose: 3000 });
     };
 
-    const handledeleteClick = (del_id: any) => {
+    const handledeleteClick = (row: any) => {
        
-        delete_id = del_id;
+        delete_id = row.orderId;
+        delete_indentId = row.indentId;
         confirmDialog({
             message: "Do you want to delete this record ?",
             header: "Delete Confirmation",
@@ -163,7 +164,7 @@ export default function WorkShopPurchaseOrder() {
                                             cursor: "pointer",
                                         }}
                                         onClick={() => {
-                                            handledeleteClick(params.row.id);
+                                            handledeleteClick(params.row);
                                         }}
                                     />
                                 </Stack>,
