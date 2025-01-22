@@ -159,6 +159,9 @@ import JobCard1 from "../pages/VehicleComplaints/JobCard1/JobCard1";
 import Flowmaster from "../pages/Admin/Flowmaster/flowmaster";
 import ComplaintApproval from "../pages/Admin/ComplaintApproval/ComplaintApproval";
 import EditComplaintApproval from "../pages/Admin/ComplaintApproval/EditComplaintApproval";
+import Juridiction from "../pages/UserManagementMaster/Juridiction/Juridiction";
+import MenuMaster from "../pages/Admin/MenuMaster/MenuMaster";
+import HelpCreation from "../pages/Admin/HelpCreation/HelpCreation";
 
 
 
@@ -956,15 +959,20 @@ const appRoutes: RouteType[] = [
         state: "security.index",
       },
 
-
-
-
       {
         path: "/security/RoleMaster",
         element: <RoleMaster />,
         state: "security.RoleMaster",
         sidebarProps: {
           displayText: "Role Master",
+        }
+      },
+      {
+        path: "/security/Jurisdiction",
+        element: <Juridiction />,
+        state: "security.Jurisdiction",
+        sidebarProps: {
+          displayText: "Jurisdiction",
         }
       },
     ],
@@ -1724,6 +1732,22 @@ const appRoutes: RouteType[] = [
         state: "Admin.Flowmaster",
         sidebarProps: {
           displayText: "Flow Master",
+        },
+      },
+      {
+        path: "/Admin/MenuCreate",
+        element: <MenuMaster/>,
+        state: "Admin.MenuCreate",
+        sidebarProps: {
+          displayText: "Menu Create",
+        },
+      },
+      {
+        path: "/Admin/HelpCreation",
+        element: <HelpCreation/>,
+        state: "Admin.HelpCreation",
+        sidebarProps: {
+          displayText: "Help Creation",
         },
       },
 

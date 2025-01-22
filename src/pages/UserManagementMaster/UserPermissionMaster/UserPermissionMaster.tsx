@@ -88,8 +88,8 @@ function childMenuCreateData(
   //     "icon": "",
   //     "displayNo": 0,
   //     "parentDisplayNo": 0
-      //userId:any,    
-      userId: any,
+  //userId:any,    
+  userId: any,
   menuId: string,
   menuName: string,
   parentId: number,
@@ -106,11 +106,11 @@ function childMenuCreateData(
   // icon:any,
   // displayNo: number,
   // parentDisplayNo: number
- 
+
 ): any {
   return {
-   // userId,
-   userId,
+    // userId,
+    userId,
     menuId,
     menuName,
     parentId,
@@ -139,11 +139,11 @@ interface MenuPermission {
 
 export default function UserPermissionMaster() {
 
-    const [roleOption, setRoleOption] = useState([
+  const [roleOption, setRoleOption] = useState([
     { value: "-1", label: "Select Role Name" },
   ]);
   const [empOption, setempOption] = useState([
-    { value: -1, label: ("text.empid") },
+    { value: -1, label: ("text.empid"), deptId: -1, desgId: -1, deptName: "", desgName: "" },
   ]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -162,7 +162,7 @@ export default function UserPermissionMaster() {
 
   const location = useLocation();
   const { i18n, t } = useTranslation();
-  const {defaultValues} = getISTDate();
+  const { defaultValues } = getISTDate();
 
   function handleFilter(event: any) {
     const newRows = rows.filter((rowss: { roleName: string }) => {
@@ -188,69 +188,49 @@ export default function UserPermissionMaster() {
   };
 
   const getroleData = () => {
-   
-        api
-          .get(`Auth/GetRoles`,
-          )
-          .then((res) => {
-            const arr = [];
-            console.log("GetRoleMaster" + JSON.stringify(res.data.data));
-            for (let index = 0; index < res.data.data.length; index++) {
-              arr.push({
-                label: res.data.data[index]["name"],
-                value: res.data.data[index]["id"],
-              });
-            }
-            setRoleOption(arr);
-          });
-      };
-    
 
-      const getempData = async () => {
-            const collectData = {
-              "orderby": "",
-              "pageNo": 0,
-              "pageSize": 0,
-              "intnotnullvalue1": 0,
-              "userId": "",
-        
-              "str1": "",
-              "str2": "",
-              "str3": "",
-              "str4": "",
-              "str5": "",
-              "intvalue1": 0,
-              "intvalue2": 0,
-              "intvalue3": 0,
-              "intvalue4": 0,
-              "intnotnullvalue2": 0,
-              "intnotnullvalue3": 0,
-              "dec1": 0,
-              "dec2": 0,
-              "dec3": 0,
-              "dec4": 0,
-              "flag": true,
-              "data": "",
-              "success": true,
-              "error": "",
-              "selectPerindex": 0,
-              "show": true
-            };
-            const response = await api.post(`Employee/GetEmployee`, collectData);
-            const data = response.data.data;
-            const arr = [];
-            for (let index = 0; index < data.length; index++) {
-              arr.push({
-                label: data[index]["empName"],
-                value: data[index]["empid"],
-              });
-            }
-            setempOption(arr);
-          };
+    api
+      .get(`Auth/GetRoles`,)
+      .then((res) => {
+        const arr = [];
+        console.log("GetRoleMaster" + JSON.stringify(res.data.data));
+        for (let index = 0; index < res.data.data.length; index++) {
+          arr.push({
+            label: res.data.data[index]["name"],
+            value: res.data.data[index]["id"],
+          });
+        }
+        setRoleOption(arr);
+      });
+  };
+
+
+  const getempData = async () => {
+    const collectData = {
+      "empid": -1,
+      "userId": ""
+    };
+    const response = await api.post(`Employee/GetEmployee`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["empName"],
+        value: data[index]["empid"],
+        deptId: data[index]["empDeptId"],
+        desgId: data[index]["empDesignationId"],
+        deptName: data[index]["departmentName"],
+        desgName: data[index]["designationName"]
+      });
+    }
+    setempOption(arr);
+  };
   useEffect(() => {
-        getroleData();
-        getempData();
-      }, []);
+    getroleData();
+    getempData();
+  }, []);
+
+
   // const validationSchema = Yup.object({
   //   roleName: Yup.string().test(
   //     "required",
@@ -260,78 +240,97 @@ export default function UserPermissionMaster() {
   //     }
   //   ),
   // });
+
+
   const formik = useFormik({
     initialValues: {
       "empid": 0,
-            "empName": "",
-            // "empCode": "",
-            // "empPerAddress": "",
-            // "empLocalAddress": "",
-            // "empFatherName": "",
-            // "empspauseName": "",
-            // "empMotherName": "",
-            // "empMobileNo": "",
-            // "empStatus": "",
-            // "empPanNumber": "",
-            // "empAddharNo": "",
-            // "empDob": defaultValues,
-            // "empJoiningDate": defaultValues,
-            // "empretirementDate": defaultValues,
-            // "empDesignationId": 0,
-            // "empDeptId": 0,
-            // "empStateId": 0,
-            // "empCountryID": 0,
-            // "empCityId": 0,
-            // "empPincode": 0,
-            // "createdBy": "",
-            // "updatedBy": "",
-            // "createdOn": defaultValues,
-            // "updatedOn":defaultValues,
-            "userId": "",
-            "roleId": "",
-            // "imageFile": "",
-            // "signatureFile": "",
-            // "email": "",
-            // "dlno": "",
-            // "gender": "",
-            // "departmentName": "",
-            // "designationName": "",
-            // "empStateName": "",
-            // "empCountryName": "",
-            // "empCityName": "",
-            // "srno": 0,
-            // "empDepName": "",
-            "registerModel": {
-          "id": "",
-          "username": "",
-          "email": "user@example.com",
-          "password": "1234",
-          "role": ""
-        },
-            "userPermission": [],
-            "checked": true,
-      
+      "empName": "",
+      // "empCode": "",
+      // "empPerAddress": "",
+      // "empLocalAddress": "",
+      // "empFatherName": "",
+      // "empspauseName": "",
+      // "empMotherName": "",
+      // "empMobileNo": "",
+      // "empStatus": "",
+      // "empPanNumber": "",
+      // "empAddharNo": "",
+      // "empDob": "2025-01-18T07:13:41.724Z",
+      // "empJoiningDate": "2025-01-18T07:13:41.724Z",
+      // "empretirementDate": "2025-01-18T07:13:41.724Z",
+      // "empDeptId": 0,
+      // "empDesignationId": 0,
+      // "empStateId": 0,
+      // "empCountryID": 0,
+      // "empCityId": 0,
+      // "empPincode": 0,
+      // "createdBy": "",
+      // "updatedBy": "",
+      // "createdOn": "2025-01-18T07:13:41.724Z",
+      // "updatedOn": "2025-01-18T07:13:41.724Z",
+      // "userId": "",
+      // "roleId": "",
+      // "imageFile": "",
+      // "signatureFile": "",
+      // "adharImageFile": "",
+      // "panFile": "",
+      // "driverLicenceFile": "",
+      // "email": "",
+      // "dlno": "",
+      // "gender": "",
+      // "eZoneID": 0,
+      // "srno": 0,
+      "empDepName": "",
+      "registerModel": {
+        "id": "",
+        "username": "",
+        "email": "user@example.com",
+        "password": "",
+        "role": ""
+      },
+      "userPermission": [],
+      "listCommGroup": [
+        {
+          "groupId": 0,
+          "name": "",
+          "description": "",
+          "type": "",
+          "isActive": true,
+          "createdBy": "",
+          "updatedBy": "",
+          "createdOn": "2025-01-18T07:13:41.724Z",
+          "updatedOn": "2025-01-18T07:13:41.724Z",
+          "isSelected": true
+        }
+      ],
+      "zoneName": "",
+      "designationName": "",
+      "departmentName": "",
+      "empCityName": "",
+      "empCountryName": "",
+      "empStateName": ""
     },
-   // validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: async (values: any) => {
       values.userPermission = childMenuRecords;
       if (editID !== "-1") {
-          values.roleId = editID; // Include the roleId for updating
+        values.roleId = editID; // Include the roleId for updating
       }
       const response = await api.post(`Employee/UpsertEmpPermission`, values);
       if (response.data.status === 1) {
-          toast.success(response.data.message);
-          navigate("/UserManagement/UserPermissionMaster");
-          setOpen(false);
-          getList();
+        toast.success(response.data.message);
+        navigate("/UserManagement/UserPermissionMaster");
+        setOpen(false);
+        getList();
       } else {
-          toast.error(response.data.message);
+        toast.error(response.data.message);
       }
-  },
-    
+    },
+
   });
 
-//  const requiredFields = ["roleName"];
+  //  const requiredFields = ["roleName"];
   useEffect(() => {
     getList();
   }, []);
@@ -349,7 +348,7 @@ export default function UserPermissionMaster() {
   };
 
   const getList = () => {
-    api.get("Auth/GetRoleMaster").then((res) => {
+    api.get("Auth/GetRoles").then((res) => {
       const arr = [];
       // console.log("result" + JSON.stringify(res.data.data));
       for (let index = 0; index < res.data.data.length; index++) {
@@ -373,22 +372,22 @@ export default function UserPermissionMaster() {
   const getModalList = () => {
 
 
-  const collectData = {
-    RoleId: -1,
-  };
+    const collectData = {
+      RoleId: -1,
+    };
 
-    api.get("Auth/GetRolePermission",{params:collectData}).then((res) => {
+    api.get("Auth/GetRolePermission", { params: collectData }).then((res) => {
       const arr = [];
-    
+
       for (let index = 0; index < res.data.data.length; index++) {
         arr.push(
           childMenuCreateData(
             "-1",
-           
+
             res.data.data[index]["menuId"],
             res.data.data[index]["menuName"],
             res.data.data[index]["parentId"],
-          
+
             res.data.data[index]["isAdd"],
             res.data.data[index]["isEdit"],
             res.data.data[index]["isDel"],
@@ -400,10 +399,10 @@ export default function UserPermissionMaster() {
           )
         );
       }
-    
+
       setRows(arr);
       setChildMenuRecords(arr);
-    
+
     });
   };
 
@@ -414,22 +413,22 @@ export default function UserPermissionMaster() {
   };
 
   const routeChangeEdit = (row: any) => {
-  
+
     console.log(row.roleName);
 
-   
+
     setEditID(row.id);
     setOpen(true);
-  
-    formik.setFieldValue("roleName", row.name); 
-    
+
+    formik.setFieldValue("roleName", row.name);
+
   };
 
 
   let navigate = useNavigate();
 
   const handleSelectAll = (value: string, evnt: any) => {
-    
+
     if (value == "isAdd") {
       setChildMenuRecords((prevData: any) =>
         prevData.map((item: any) => ({
@@ -491,7 +490,7 @@ export default function UserPermissionMaster() {
 
   const handleCheckboxChange = (id: any, header: string) => {
     if (header == "isAdd") {
-     
+
       setChildMenuRecords((prevData: any) =>
         prevData.map((item: any) =>
           item.menuId === id ? { ...item, isAdd: !item.isAdd } : item
@@ -561,11 +560,11 @@ export default function UserPermissionMaster() {
   //           }}
   //           onClick={() => routeChangeEdit(params.row)}
   //         />
-         
+
   //       </Stack>
   //     ),
   //   },
-   
+
   //   {
   //     field: "name",
   //     headerName: t("text.RoleName"),
@@ -614,7 +613,7 @@ export default function UserPermissionMaster() {
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
-           
+
             <Button
               onClick={handleOpen}
               variant="contained"
@@ -624,7 +623,7 @@ export default function UserPermissionMaster() {
             >
               {t("text.add")}
             </Button>
-          
+
           </Stack>
           {/* {isLoading ? (
             <div
@@ -724,7 +723,7 @@ export default function UserPermissionMaster() {
               </Grid> */}
 
               <Grid item xs={12} sm={4} lg={4}>
-                 <Autocomplete
+                <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={empOption}
@@ -734,6 +733,12 @@ export default function UserPermissionMaster() {
                     console.log(newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
                     formik.setFieldValue("empid", newValue?.value);
+                    formik.setFieldValue("registerModel.username", newValue?.label);
+                    // formik.setFieldValue("empDeptId", newValue?.deptId);
+                    // formik.setFieldValue("empDesignationId", newValue?.desgId);
+                    // formik.setFieldValue("departmentName", newValue?.deptName);
+                    formik.setFieldValue("empDepName", newValue?.deptName);
+                    // formik.setFieldValue("designationName", newValue?.desgName);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -744,40 +749,44 @@ export default function UserPermissionMaster() {
                 />
               </Grid>
 
-               
-
-                  <Grid item xs={12} sm={4} lg={4}>
-                    <TextField
-                      label={<CustomLabel text={t("text.userid")} required={true} />}
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      name="userId"
-                      id="userId"
-                     value={formik.values.userId}
-                      placeholder={t("text.userid")}
-                   onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    />
-         
-                  </Grid>
 
 
-                  <Grid item xs={12} sm={4} lg={4}>
-                    <TextField
-                      label={<CustomLabel text={t("text.password")} required={true} />}
-                      variant="outlined"
-                      fullWidth
-                      size="small"
-                      name="password"
-                      id="password"
-                       value={formik.values.password}
-                      placeholder={t("text.password")}
-                     onChange={formik.handleChange}
-                     onBlur={formik.handleBlur}
-                    />
-        
-                  </Grid>
+              <Grid item xs={12} sm={4} lg={4}>
+                <TextField
+                  label={<CustomLabel text={t("text.userid")} required={true} />}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="userId"
+                  id="userId"
+                  value={formik.values.userId}
+                  placeholder={t("text.userid")}
+                  onChange={(e) => {
+                    formik.setFieldValue("userId", e.target.value);
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+
+              </Grid>
+
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <TextField
+                  label={<CustomLabel text={t("text.password")} required={true} />}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="password"
+                  id="password"
+                  value={formik.values.password}
+                  placeholder={t("text.Password")}
+                  onChange={(e) => {
+                    formik.setFieldValue("registerModel.password", e.target.value)
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+
+              </Grid>
 
 
 
@@ -792,6 +801,7 @@ export default function UserPermissionMaster() {
                     console.log(newValue?.value);
                     //formik.setFieldValue("role", newValue?.label);
                     formik.setFieldValue("roleId", newValue?.value);
+                    formik.setFieldValue("registerModel.role", newValue?.label);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -1001,10 +1011,10 @@ export default function UserPermissionMaster() {
                                   style={{
                                     border: "1px solid black",
                                     fontSize: "2.7vh",
-                                   
+
                                   }}
                                 >
-                                
+
                                   <td style={{ padding: "10px" }}>
                                     {rows.menuName}
                                   </td>
@@ -1017,7 +1027,7 @@ export default function UserPermissionMaster() {
                                           "isAdd"
                                         )
                                       }
-        
+
                                       checked={
                                         childMenuRecords[key]["isAdd"]
                                           ? true

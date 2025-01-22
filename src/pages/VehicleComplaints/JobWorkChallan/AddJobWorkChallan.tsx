@@ -346,7 +346,7 @@ const AddJobWorkChallan = (props: Props) => {
       "companyId": 0,
       "fyId": 0,
       "serviceAmount": location.state?.totalServiceAmount || location.state?.serviceAmount || 0,
-      "itemAmount": location.state?.totalServiceAmount || 0,
+      "itemAmount": 0,
       "netAmount": location.state?.netAmount || 0,
       "status": location.state?.status || "",
       "rcvDate": defaultValues,
@@ -667,7 +667,7 @@ const AddJobWorkChallan = (props: Props) => {
                       console.log(newValue);
                       formik.setFieldValue("vehicleNo", newValue?.itemName);
                       formik.setFieldValue("itemId", newValue?.value);
-                      setTableDataValues([...jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.serviceDetail, {
+                      setTableDataValues([...jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.serviceDetail, {
                         id: 0,
                         challanNo: 0,
                         jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
@@ -688,16 +688,16 @@ const AddJobWorkChallan = (props: Props) => {
                         serviceName: "",
                         unitName: ""
                       }]);
-                      formik.setFieldValue("complainId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.complainId);
-                      formik.setFieldValue("empId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.empId);
-                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.jobCardId);
-                      formik.setFieldValue("serviceAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.totalServiceAmount);
-                      formik.setFieldValue("itemAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.totalServiceAmount);
-                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.netAmount);
-                      formik.setFieldValue("status", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.status);
-                      formik.setFieldValue("empName", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.empName);
-                      formik.setFieldValue("jobCardDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.jobCardDate);
-                      formik.setFieldValue("complainDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value)]?.complainDate);
+                      formik.setFieldValue("complainId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.complainId);
+                      formik.setFieldValue("empId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.empId);
+                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.jobCardId);
+                      formik.setFieldValue("serviceAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.totalServiceAmount);
+                      formik.setFieldValue("itemAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.totalServiceAmount);
+                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.netAmount);
+                      formik.setFieldValue("status", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.status);
+                      formik.setFieldValue("empName", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.empName);
+                      formik.setFieldValue("jobCardDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.jobCardDate);
+                      formik.setFieldValue("complainDate", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.complainDate);
                     }
                   }}
                   renderInput={(params) => (

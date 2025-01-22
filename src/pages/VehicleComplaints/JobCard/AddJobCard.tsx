@@ -910,6 +910,8 @@ const AddJobCard = (props: Props) => {
                       return;
                     } else {
                       setItemId(newValue?.value);
+                      console.log("newValue" + JSON.stringify(newValue));
+                      console.log("newValue" + JSON.stringify(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail));
                       //formik.setFieldValue("itemName", newValue?.label2);
                       formik.setFieldValue("itemName", newValue?.vehicleNo);
                       formik.setFieldValue("itemId", newValue?.value);
@@ -924,12 +926,13 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("complainDate", newValue?.complaintDate);
                       formik.setFieldValue("currenReading", newValue?.currentReading);
                       formik.setFieldValue("status", newValue?.status);
-                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.jobCardId || 0);
-                      formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.jobCardNo || "");
-                      formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.fileNo || "");
-                      formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.totalServiceAmount || "");
-                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.netAmount || 0);
-                      setTableData([...jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.itemID)]?.serviceDetail, {
+                      formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.jobCardId || 0);
+                      formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.jobCardNo || "");
+                      formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.fileNo || "");
+                      formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.totalServiceAmount || "");
+                      formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.netAmount || 0);
+                      setTableData([...jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail,
+                      {
                         id: 0,
                         jobCardId: 0,
                         serviceId: 0,
@@ -954,6 +957,31 @@ const AddJobCard = (props: Props) => {
                         gstid: 0,
                         gst: 0
                       }]);
+                      // setTableData([...jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId) || (e.itemId == newValue?.itemID))]?.serviceDetail, {
+                      //   id: 0,
+                      //   jobCardId: 0,
+                      //   serviceId: 0,
+                      //   amount: 0,
+                      //   jobWorkReq: true,
+                      //   vendorId: 0,
+                      //   challanRemark: "",
+                      //   challanNo: 0,
+                      //   challanDate: defaultValues,
+                      //   challanRcvNo: 0,
+                      //   challanRcvDate: defaultValues,
+                      //   challanStatus: "",
+                      //   netAmount: 0,
+                      //   qty: 0,
+                      //   unitRate: 0,
+                      //   unitId: 0,
+                      //   vendorName: "",
+                      //   serviceName: "",
+                      //   unitName: "",
+                      //   cgstid: 0,
+                      //   sgstid: 0,
+                      //   gstid: 0,
+                      //   gst: 0
+                      // }]);
                     }
                   }}
                   renderInput={(params) => (
