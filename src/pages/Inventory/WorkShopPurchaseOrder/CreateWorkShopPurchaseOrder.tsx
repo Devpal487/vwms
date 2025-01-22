@@ -556,9 +556,9 @@ const CreateWorkShopPurchaseOrder = () => {
         },
 
         validationSchema: Yup.object({
-            pOrderDoc: Yup.string()
-                .required("Image required"),
-            indentId: Yup.string().required("Indnet no required"),
+            // pOrderDoc: Yup.string()
+            //     .required("Image required"),
+             indentId: Yup.string().required("Indnet no required"),
             //   vendorId:Yup.string().required("Vendor is rquired"),
 
 
@@ -590,40 +590,11 @@ const CreateWorkShopPurchaseOrder = () => {
     });
     console.log("formik.values", formik.values);
     //  const back = useNavigate();
-
     const handleInputChange = (index: number, field: string, value: any) => {
         const updatedItems = [...tableData];
         let item = { ...updatedItems[index] };
-
-        if (field === "orderNo") {
-            const selectedItem = orderOption.find(
-                (option: any) => option.value === value
-            );
-            console.log(selectedItem);
-            if (selectedItem) {
-                item = {
-                    ...item,
-                    // mrnType: selectedItem?.value?.toString(),
-                    orderId: selectedItem?.value,
-                    orderNo: selectedItem?.label,
-                };
-            }
-        } else if (field === "itemId") {
-            const selectedItem = itemOption.find(
-                (option: any) => option.value === value
-            );
-            console.log(selectedItem);
-            if (selectedItem) {
-                item = {
-                    ...item,
-                    itemId: selectedItem?.value,
-                    itemName: selectedItem?.label,
-                    item: selectedItem?.details,
-                };
-            }
-        }
-
-        else if (field === "quantity") {
+    
+        if (field === "quantity") {
             item.quantity = value === "" ? 0 : parseFloat(value);
         } else if (field === "rate") {
             item.rate = value === "" ? 0 : parseFloat(value);
@@ -632,45 +603,118 @@ const CreateWorkShopPurchaseOrder = () => {
             if (selectedTax) {
                 item.gstRate = parseFloat(selectedTax.label) || 0;
                 item.gstId = selectedTax.value || 0;
-                item.cgstid = selectedTax.value || 0;
-                item.sgstid = selectedTax.value || 0;
-                item.igstid = 0;
-                item.gst = item.gstRate;
-            }
-        } else {
-            item[field] = value;
-        }
-        item.amount =
-            (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-        item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-        item.netAmount = (item.amount + (parseFloat(item.gst) || 0));
-        item.sgst = item.gst / 2;
-        item.cgst = item.gst / 2;
-        item.igst = 0;
-
-        formik.setFieldValue("totalAmount", item.netAmount);
-
-        tableData[index] = item;
-        setTableData(tableData);
-        updateTotalAmounts(tableData);
-        if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
-            if (index === tableData.length - 1) {
-                addRow();
+                item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
+                item.sgst = item.gst / 2;
+                item.cgst = item.gst / 2;
+                item.igst = 0;
             }
         }
-        // addRow();
-
-        let total = 0;
-        tableData.forEach((row: any) => {
-            total += row.amount;
-        })
-        formik.setFieldValue("netAmount", total);
-        formik.setFieldValue("totalServiceAmount", total);
-        formik.setFieldValue("totalItemAmount", total);
-        // if (isRowFilled(item) && index === updatedItems.length - 1) {
-        //     addRow();
-        // }
+    
+        // Update item totals
+        item.amount = (item.quantity || 0) * (item.rate || 0);
+        item.netAmount = item.amount + (item.gst || 0);
+        updatedItems[index] = item;
+    
+        // Update the table data
+        setTableData(updatedItems);
+    
+        // Calculate total and update Formik parent values
+        const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
+        const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
+    
+        formik.setFieldValue("totalAmount", totalAmount);
+        formik.setFieldValue("netAmount", totalNetAmount);
+    
+        // Add new row logic if necessary
+        if (
+            updatedItems[index].quantity > 0 &&
+            updatedItems[index].rate > 0 &&
+            index === updatedItems.length - 1
+        ) {
+            addRow();
+        }
     };
+    
+    // const handleInputChange = (index: number, field: string, value: any) => {
+    //     const updatedItems = [...tableData];
+    //     let item = { ...updatedItems[index] };
+
+    //     if (field === "orderNo") {
+    //         const selectedItem = orderOption.find(
+    //             (option: any) => option.value === value
+    //         );
+    //         console.log(selectedItem);
+    //         if (selectedItem) {
+    //             item = {
+    //                 ...item,
+    //                 // mrnType: selectedItem?.value?.toString(),
+    //                 orderId: selectedItem?.value,
+    //                 orderNo: selectedItem?.label,
+    //             };
+    //         }
+    //     } else if (field === "itemId") {
+    //         const selectedItem = itemOption.find(
+    //             (option: any) => option.value === value
+    //         );
+    //         console.log(selectedItem);
+    //         if (selectedItem) {
+    //             item = {
+    //                 ...item,
+    //                 itemId: selectedItem?.value,
+    //                 itemName: selectedItem?.label,
+    //                 item: selectedItem?.details,
+    //             };
+    //         }
+    //     }
+
+    //     else if (field === "quantity") {
+    //         item.quantity = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "rate") {
+    //         item.rate = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "gstId") {
+    //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+    //         if (selectedTax) {
+    //             item.gstRate = parseFloat(selectedTax.label) || 0;
+    //             item.gstId = selectedTax.value || 0;
+    //             item.cgstid = selectedTax.value || 0;
+    //             item.sgstid = selectedTax.value || 0;
+    //             item.igstid = 0;
+    //             item.gst = item.gstRate;
+    //         }
+    //     } else {
+    //         item[field] = value;
+    //     }
+    //     item.amount =
+    //         (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+    //     item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
+    //     item.netAmount = (item.amount + (parseFloat(item.gst) || 0));
+    //     item.sgst = item.gst / 2;
+    //     item.cgst = item.gst / 2;
+    //     item.igst = 0;
+
+    //     formik.setFieldValue("totalAmount", item.netAmount);
+
+    //     tableData[index] = item;
+    //     setTableData(tableData);
+    //     updateTotalAmounts(tableData);
+    //     if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
+    //         if (index === tableData.length - 1) {
+    //             addRow();
+    //         }
+    //     }
+    //     // addRow();
+
+    //     let total = 0;
+    //     tableData.forEach((row: any) => {
+    //         total += row.amount;
+    //     })
+    //     formik.setFieldValue("netAmount", total);
+    //     formik.setFieldValue("totalServiceAmount", total);
+    //     formik.setFieldValue("totalItemAmount", total);
+    //     // if (isRowFilled(item) && index === updatedItems.length - 1) {
+    //     //     addRow();
+    //     // }
+    // };
 
     const addRow = () => {
         setTableData([...tableData, {
@@ -906,7 +950,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
                                         onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-                                        required
+                                        // required
                                     />
                                 </Grid>
                                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -1192,7 +1236,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                     >
                                                         SGST
                                                     </th >
-                                                    <th
+                                                    {/* <th
                                                         style={{
                                                             border: "1px solid black",
                                                             textAlign: "center",
@@ -1200,7 +1244,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         }}
                                                     >
                                                         IGST
-                                                    </th >
+                                                    </th > */}
                                                     {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -1361,6 +1405,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 options={taxData}
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 onChange={(e: any, newValue: any) =>
                                                                     handleInputChange(index, "gstId", newValue?.value)
                                                                 }
@@ -1387,6 +1432,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                             <TextField
                                                                 value={row.cgst}
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
                                                             />
                                                         </td>
@@ -1399,10 +1445,11 @@ const CreateWorkShopPurchaseOrder = () => {
                                                             <TextField
                                                                 value={row.sgst}
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
                                                             />
                                                         </td>
-                                                        <td
+                                                        {/* <td
                                                             style={{
                                                                 border: "1px solid black",
                                                                 textAlign: "center",
@@ -1413,7 +1460,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             />
-                                                        </td>
+                                                        </td> */}
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
@@ -1432,12 +1479,12 @@ const CreateWorkShopPurchaseOrder = () => {
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.TotalAmount")}
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
-                                                        <b></b>{formik.values.netAmount}
+                                                        <b></b>{formik.values.totalAmount}
                                                         {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                                                     </td>
                                                 </tr>
@@ -1453,14 +1500,14 @@ const CreateWorkShopPurchaseOrder = () => {
                                                     </td>
                                                 </tr> */}
                                                 <tr>
-                                                    <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totalnetamount")}
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
-
-                                                        {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)}
+                                                        <b></b>{formik.values.totalAmount}
+                                                        {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)} */}
                                                     </td>
                                                 </tr>
                                             </tfoot>

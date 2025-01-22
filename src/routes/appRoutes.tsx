@@ -162,6 +162,7 @@ import EditComplaintApproval from "../pages/Admin/ComplaintApproval/EditComplain
 import Juridiction from "../pages/UserManagementMaster/Juridiction/Juridiction";
 import MenuMaster from "../pages/Admin/MenuMaster/MenuMaster";
 import HelpCreation from "../pages/Admin/HelpCreation/HelpCreation";
+import ItemConsumedReport from "../pages/Reports/ItemConsumedReport/ItemConsumedReport";
 
 
 
@@ -1294,6 +1295,14 @@ const appRoutes: RouteType[] = [
         state: "Reports.JobCardStatus",
         sidebarProps: {
           displayText: "Job Card Status",
+        }
+      },
+      {
+        path: "/Reports/ItemConsumedReport",
+        element: <ItemConsumedReport />,
+        state: "Reports.ItemConsumedReport",
+        sidebarProps: {
+          displayText: "ItemConsumedReport",
         }
       },
 

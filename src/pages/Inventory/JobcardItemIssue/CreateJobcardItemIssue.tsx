@@ -55,6 +55,7 @@ const CreateJobcardItemIssue = (props: Props) => {
     const [isIndentSelected, setIsIndentSelected] = useState(false);
     const [selectedAction, setSelectedAction] = useState(null);
     const [items, setItems] = useState<any>([]);
+      const [IsbatchNO, setBatchno] = useState("");
     //const [tableData, setTableData] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([{
 
@@ -98,10 +99,25 @@ const CreateJobcardItemIssue = (props: Props) => {
         GetIndentID();
         GetitemData();
         GetUnitData();
+        getBATCHNo();
       //  GetempData();
         getVehicleDetails();
     }, []);
-
+    const getBATCHNo = async () => {
+        try {
+          const response = await api.get(`QualityCheck/GetMaxBatchNo`);
+          if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
+             
+             setBatchno(response.data.data[0].batchNo)
+          } else {
+            toast.error(response?.data?.message || "Failed to fetch batch number");
+            return ""; // Return empty if no batch number is found
+          }
+        } catch (error) {
+          toast.error("Error fetching batch number");
+          return ""; // Return empty in case of an error
+        }
+      };
     const getVehicleDetails = async () => {
         const response = await api.get(
             `Master/GetVehicleDetail?ItemMasterId=-1`,
@@ -158,9 +174,9 @@ const CreateJobcardItemIssue = (props: Props) => {
             "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            batchNo: item?.batchNo,
+           // batchNo: item?.batchNo,
             indentId: item?.indentId,
-            issueQty: item?.approveQuantity,
+           // stockQty: item?.approveQuantity,
             reqQty: item?.quantity,
           //  "amount" : item?.amount,
             itemName:item?.itemName,
@@ -169,7 +185,9 @@ const CreateJobcardItemIssue = (props: Props) => {
             "srn": 0,
             // "unitName": "",
             "returnItem": true,
-            "stockQty": 0
+            "stockQty": 0,
+            issueQty:0,
+            batchNo:IsbatchNO ||"",
 
 
         }))
@@ -273,7 +291,7 @@ const CreateJobcardItemIssue = (props: Props) => {
 
         },
     });
-    const handleInputChange = (index: any, field: any, value: any) => {
+    const handleInputChange = async(index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
 
@@ -288,7 +306,13 @@ const CreateJobcardItemIssue = (props: Props) => {
         } else if (field === 'issueQty') {
             updatedData[index].issueQty = parseInt(value)
         }
-
+        const batchNo = await getBATCHNo();
+        if (field === 'batchNo') {
+            updatedData[index].batchNo = parseInt(value)
+        }
+        // if (batchNo) {
+        //   item.batchNo = batchNo; // Set the fetched batch number
+        // }
         setTableData(updatedData);
     };
     const deleteRow = (index: number) => {
@@ -572,14 +596,14 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                                                                                                                                                                                        </select> */}
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                            <TextField
-                                                               // type="number"
-                                                                size="small"
-                                                                // type="text"
-                                                                value={row.batchNo}
-                                                                onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                                onFocus={(e) => {e.target.select()}}
-                                                          />
+                                                          <TextField
+                                                                                       value={row.batchNo || ""} // Bind to row.batchNo
+                                                                                       id="BatchNo"
+                                                                                       name="BatchNo"
+                                                                                       size="small"
+                                                                                       sx={{ width: "150px" }}
+                                                                                       onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                                                                                     />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField

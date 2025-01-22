@@ -262,109 +262,114 @@ const CreateMaterialRecieptNote = (props: Props) => {
     }
   };
 
+  // const handleInputChange = async (index: number, field: string, value: any) => {
+  //   const updatedItems = [...tableData];
+  //   let item = { ...updatedItems[index] };
+
+  //   if (field === "orderNo") {
+  //     const selectedItem = orderOption.find((option: any) => option.value === value);
+  //     if (selectedItem) {
+  //       item = {
+  //         ...item,
+  //         orderId: selectedItem.value,
+  //         orderNo: selectedItem.label,
+  //       };
+
+  //       // Fetch batch number for the selected orderNo
+        // const batchNo = await getBATCHNo();
+        // if (batchNo) {
+        //   item.batchNo = batchNo; // Set the fetched batch number
+        // }
+        
+  //     }
+  //   }
+
+  //   updatedItems[index] = item;
+  //   setTableData([...updatedItems]);
+
+  //   console.log("Updated tableData:", updatedItems); // Debugging
+  // };
+
+
+
+
+
   const handleInputChange = async (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
 
     if (field === "orderNo") {
-      const selectedItem = orderOption.find((option: any) => option.value === value);
+      const selectedItem = orderOption.find(
+        (option: any) => option.value === value
+      );
+      console.log(selectedItem);
       if (selectedItem) {
         item = {
           ...item,
-          orderId: selectedItem.value,
-          orderNo: selectedItem.label,
-        };
+          mrnType: selectedItem?.value?.toString(),
 
-        // Fetch batch number for the selected orderNo
-        const batchNo = await getBATCHNo();
-        if (batchNo) {
-          item.batchNo = batchNo; // Set the fetched batch number
-        }
+          orderId: selectedItem?.value,
+          orderNo: selectedItem?.label,
+        };
       }
+    } else if (field === "itemId") {
+      const selectedItem = itemOption.find(
+        (option: any) => option.value === value
+      );
+      console.log(selectedItem);
+      if (selectedItem) {
+        item = {
+          ...item,
+          itemId: selectedItem?.value,
+          itemName: selectedItem?.label,
+          item: selectedItem?.details,
+        };
+      }
+    } else if (field === "batchNo") {
+      item.batchNo = value?.toString();
+    } else if (field === "balQuantity") {
+      item.balQuantity = value === "" ? 0 : parseFloat(value);
+    } else if (field === "quantity") {
+      item.quantity = value === "" ? 0 : parseFloat(value);
+    } else if (field === "rate") {
+      item.rate = value === "" ? 0 : parseFloat(value);
+    } else if (field === "gstId") {
+      const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+      if (selectedTax) {
+        item.gstRate = parseFloat(selectedTax.label) || 0;
+        item.gstId = selectedTax.value || 0;
+        item.cgstid = selectedTax.value || 0;
+        item.sgstid = selectedTax.value || 0;
+        item.igstid = 0;
+        item.gst = item.gstRate;
+      }
+    } else {
+      item[field] = value;
     }
+    item.amount =
+      (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+    item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
+      2
+    );
+    const batchNo = await getBATCHNo();
+    if (batchNo) {
+      item.batchNo = batchNo; // Set the fetched batch number
+    }
+    item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
+    item.sgst = item.gst / 2;
+    item.cgst = item.gst / 2;
+    item.igst = 0;
+
+    formik.setFieldValue("totalAmount", item.netAmount);
 
     updatedItems[index] = item;
-    setTableData([...updatedItems]);
+    setTableData(updatedItems);
+    updateTotalAmounts(updatedItems);
 
-    console.log("Updated tableData:", updatedItems); // Debugging
+    if (isRowFilled(item) && index === updatedItems.length - 1) {
+      addRow();
+    }
   };
-
-
-
-
-
-  // const handleInputChange = (index: number, field: string, value: any) => {
-  //   const updatedItems = [...tableData];
-  //   let item = { ...updatedItems[index] };
-
-  //   if (field === "orderNo") {
-  //     const selectedItem = orderOption.find(
-  //       (option: any) => option.value === value
-  //     );
-  //     console.log(selectedItem);
-  //     if (selectedItem) {
-  //       item = {
-  //         ...item,
-  //         mrnType: selectedItem?.value?.toString(),
-
-  //         orderId: selectedItem?.value,
-  //         orderNo: selectedItem?.label,
-  //       };
-  //     }
-  //   } else if (field === "itemId") {
-  //     const selectedItem = itemOption.find(
-  //       (option: any) => option.value === value
-  //     );
-  //     console.log(selectedItem);
-  //     if (selectedItem) {
-  //       item = {
-  //         ...item,
-  //         itemId: selectedItem?.value,
-  //         itemName: selectedItem?.label,
-  //         item: selectedItem?.details,
-  //       };
-  //     }
-  //   } else if (field === "batchNo") {
-  //     item.batchNo = value?.toString();
-  //   } else if (field === "balQuantity") {
-  //     item.balQuantity = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "quantity") {
-  //     item.quantity = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "rate") {
-  //     item.rate = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "gstId") {
-  //     const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-  //     if (selectedTax) {
-  //       item.gstRate = parseFloat(selectedTax.label) || 0;
-  //       item.gstId = selectedTax.value || 0;
-  //       item.cgstid = selectedTax.value || 0;
-  //       item.sgstid = selectedTax.value || 0;
-  //       item.igstid = 0;
-  //       item.gst = item.gstRate;
-  //     }
-  //   } else {
-  //     item[field] = value;
-  //   }
-  //   item.amount =
-  //     (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-  //   item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
-  //     2
-  //   );
-  //   item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
-  //   item.sgst = item.gst / 2;
-  //   item.cgst = item.gst / 2;
-  //   item.igst = 0;
-
-  //   formik.setFieldValue("totalAmount", item.netAmount);
-
-  //   updatedItems[index] = item;
-  //   setTableData(updatedItems);
-  //   updateTotalAmounts(updatedItems);
-
-  //   if (isRowFilled(item) && index === updatedItems.length - 1) {
-  //     addRow();
-  //   }
-  // };
 
   console.log("tableData.....", tableData);
 
@@ -1117,7 +1122,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              width: "120px"
+                              //width: "135px"
                             }}
                           >
                             <Autocomplete
@@ -1127,6 +1132,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               value={orderOption.find((opt: any) => opt.value === row.orderId) || null}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(
                                   index,
@@ -1179,7 +1185,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
-                              width: "130px"
+                              //width: "150px"
                             }}
                           >
                             <TextField
@@ -1187,13 +1193,14 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               id="BatchNo"
                               name="BatchNo"
                               size="small"
+                              sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                             />
                           </td>
 
 
 
-                          <td style={{ border: "1px solid black", textAlign: "center", width: "130px" }}>
+                          <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
@@ -1203,6 +1210,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               }
                               fullWidth
                               size="small"
+                              sx={{ width: "130px" }}
                               onChange={(e, newValue: any) =>
                                 handleInputChange(index, "unitId", newValue?.value)
                               }
@@ -1223,6 +1231,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              sx={{ width: "70px" }}
                               value={row.quantity}
                               onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               onFocus={e => e.target.select()}
@@ -1237,6 +1246,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.quantity}
+                              sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
                               onFocus={e => e.target.select()}
@@ -1251,6 +1261,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.rate}
+                              sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
                               onFocus={e => e.target.select()}
@@ -1269,6 +1280,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               options={taxData}
                               fullWidth
                               size="small"
+                              sx={{ width: "80px" }}
                               value={taxData.find((opt: any) => opt.value === row.gstId) || null}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(index, "gstId", newValue?.value)
@@ -1291,6 +1303,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.cgst.toFixed(2)}
                               size="small"
+                              sx={{ width: "100px" }}
                               inputProps={{ readOnly: true }}
                             />
                           </td>
@@ -1303,6 +1316,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.sgst.toFixed(2)}
                               size="small"
+                              sx={{ width: "100px" }}
                               inputProps={{ readOnly: true }}
                             />
                           </td>
@@ -1327,6 +1341,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.netAmount}
                               size="small"
+                              sx={{ width: "100px" }}
                               inputProps={{ readOnly: true }}
                             />
                           </td>
@@ -1340,7 +1355,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           {t("text.TotalAmount")}
 
                         </td>
-
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.totalAmount}
+                        </td> */}
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
@@ -1360,6 +1377,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           {t("text.Totalnetamount")}
 
                         </td>
+
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.netAmount}
+                        </td> */}
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                         </td>

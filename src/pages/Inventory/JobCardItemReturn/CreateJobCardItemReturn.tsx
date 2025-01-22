@@ -73,7 +73,7 @@
 //             "returnQty": 0,
 //             "issueQty": 0
 //         },
-    
+
 
 
 //     ]);
@@ -94,7 +94,7 @@
 //             "indentNo": "",
 //             "stockQty": 0
 //         },
-        
+
 //     ]);
 
 //     console.log("🚀 ~ CreateJobCardItemReturn ~ tableData:", tableData)
@@ -152,14 +152,14 @@
 //             // empId: -1,
 //             "issueId":itemID,"indentId":-1,"empId":-1
 //         };
-    
+
 //         try {
 //             const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
 //             const data = response.data.data[0]?.itemIssueDetail || [];
 //            // formik.setFieldValue('itemIssueDetail', data);
 
 //             console.log("Fetched Data from API:", data);
-    
+
 //             const indentDetails = data.map((item: any, index: any) => ({
 //                 // id: index + 1,
 //                 // issueId: 0,
@@ -180,17 +180,17 @@
 //                 batchNo: item?.batchNo || "",
 //                 itemID: item?.itemID,
 //                 issueQty: item?.issueQty,
-    
+
 //                 unitId: item?.unitId,
-    
+
 //                 unitName: item?.unitName,
 //                 itemName: item?.itemName,
 //                 returnQty: 0,
-    
+
 //             }));
-    
+
 //             console.log("Transformed Data for tableDatai:", indentDetails);
-    
+
 //             setTableDatai(indentDetails); 
 //             setIsIndentSelected(indentDetails.length > 0); 
 //         } catch (error) {
@@ -199,7 +199,7 @@
 //             setIsIndentSelected(false);
 //         }
 //     };
-    
+
 //     console.log("check table", tableData)
 //     const [showIndentField, setShowIndentField] = useState(false);
 //     const GetitemData = async () => {
@@ -247,7 +247,7 @@
 //             value: item?.empid
 
 //         }))
- 
+
 //         setempOption(arr);
 //     };
 
@@ -284,7 +284,7 @@
 //         //     //     .required(t("text.reqEmpName")),
 //         // }),
 
-      
+
 
 //         onSubmit: async (values) => {
 //             // Filter and format itemReturnDetail
@@ -297,19 +297,19 @@
 //                 returnQty: row.returnQty || 0,
 //                 issueQty: row.issueQty || 0,
 //             }));
-    
+
 //             // Prepare payload
 //             const payload = {
 //                 ...values,
 //                 itemReturnDetail: formattedItemReturnDetail, 
 //                 itemIssueDetail: tableDatai,                
 //             };
-    
+
 //             console.log("Payload to Submit:", payload);
-    
+
 //             try {
 //                 const response = await api.post(`Master/UpsertItemReturn`, payload);
-    
+
 //                 if (response.data.status === 1) {
 //                     toast.success(response.data.message);
 //                     navigate("/Inventory/JobCardItemReturn");
@@ -321,11 +321,11 @@
 //                 toast.error("Failed to submit data. Please check the console for details.");
 //             }
 //         },
-        
-        
+
+
 
 //     });
- 
+
 
 //     const handleOpenDialog = () => {
 //         setOpenDialog(true);
@@ -370,7 +370,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -403,7 +403,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -417,7 +417,7 @@
 //     };
 
 
-  
+
 
 //     const [showTable, setShowTable] = useState(false); 
 //     const handleIndentChange = async (event: any, newValue: any) => {
@@ -425,9 +425,9 @@
 //             console.log("Selected Indent:", newValue);
 //             formik.setFieldValue("returnIndentNo", newValue.label.toString());
 //            // formik.setFieldValue("indentId", newValue.value);
-    
+
 //             await GetIndentIDById(newValue.value);
-    
+
 //             console.log("Updated tableDatai:", tableDatai);
 //             console.log("Is Indent Selected:", isIndentSelected);
 //         }
@@ -470,28 +470,28 @@
 //         }]);
 //     };
 //     const handleAddIndent = () => {
-        
+
 //         const mergedData = [
-            
+
 //             ...tableDatai.map((item: any) => ({
 //                 ...item,
 //                 indentNo: formik.values.returnIndentNo, 
 //                 ...tableData,
 //             })),
 //         ];
-    
-       
+
+
 //         const uniqueData = mergedData.filter(
 //             (item, index, self) =>
 //                 index === self.findIndex((t) => t.itemID === item.itemID)
 //         );
-    
+
 //         setTableData(uniqueData);
 //         setOpenDialog(false);     
 //     };
-    
- 
-  
+
+
+
 
 
 //     return (
@@ -745,7 +745,7 @@
 //                                                         renderInput={(params) => (
 //                                                             <TextField
 //                                                                 {...params}
-                                                           
+
 //                                                             />
 //                                                         )}
 //                                                     />
@@ -971,13 +971,13 @@ const CreateJobCardItemReturn = (props: Props) => {
         GetIndentID();
         GetitemData();
         GetUnitData();
-      //  GetempData();
+        //  GetempData();
     }, []);
 
 
     const GetIndentID = async () => {
         const collectData = {
-           "issueId":-1,"indentId":-1,"empId":-1
+            "issueId": -1, "indentId": -1, "empId": -1
 
         };
 
@@ -999,7 +999,7 @@ const CreateJobCardItemReturn = (props: Props) => {
 
     const GetIndentIDById = async (itemID: any) => {
         const collectData = {
-           "issueId":itemID,"indentId":-1,"empId":-1
+            "issueId": itemID, "indentId": -1, "empId": -1
 
         };
         const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
@@ -1097,18 +1097,18 @@ const CreateJobCardItemReturn = (props: Props) => {
 
 
             "returnId": 0,
-           // "storeId": 0,
-            "returnDate":new Date().toISOString().slice(0,10),
+            // "storeId": 0,
+            "returnDate": new Date().toISOString().slice(0, 10),
             "returnType": "",
             "returnIndentNo": "",
             "createdBy": "",
             "updatedBy": "",
             "createdOn": new Date().toISOString(),
-            "updatedOn":new Date().toISOString(),
+            "updatedOn": new Date().toISOString(),
             "itemReturnDetail": [],
             "itemIssueDetail": [],
             "srn": 0,
-           // "storeName": ""
+            // "storeName": ""
 
 
         },
@@ -1340,7 +1340,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px',width:"30%" }}>Item Name</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "30%" }}>Item Name</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
@@ -1360,7 +1360,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         style={{
                                                             border: "1px solid black",
                                                             // textAlign: "center",
-                                                            width:"30p%"
+                                                            width: "30p%"
                                                         }}
                                                     >
                                                         <Autocomplete
@@ -1393,7 +1393,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             )}
                                                         />
                                                     </td>
-                                                    <td style={{ border: "1px solid black", textAlign: "center" , width:"20%"}}>
+                                                    <td style={{ border: "1px solid black", textAlign: "center", width: "20%" }}>
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
@@ -1414,18 +1414,25 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             )}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            //width: "150px"
+                                                        }}
+                                                    >
                                                         <TextField
-                                                            type="number"
+                                                            value={row.batchNo || ""} // Bind to row.batchNo
+                                                            id="BatchNo"
+                                                            name="BatchNo"
                                                             size="small"
-                                                            // type="text"
-                                                            value={row.batchNo}
-                                                            onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
+                                                            sx={{ width: "150px" }}
+                                                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                                                         />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             value={row.issueQty - row.returnQty}
                                                         // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
@@ -1433,7 +1440,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.issueQty}
@@ -1443,7 +1450,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.returnQty}
