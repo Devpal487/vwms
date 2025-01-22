@@ -37,36 +37,36 @@ const EditMaterialRecieptNote = (props: Props) => {
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
   const location = useLocation();
-
+const [orderData, setOrderData] = useState([]);
+  const [orderVendorData, setOrderVendorData] = useState([]);
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
-    id: -1,
-    mrnId: 0,
-    mrnType: "",
-    orderId: "",
-    orderNo: "",
-    batchNo: "",
-    serialNo: "",
-    qcStatus: "",
-    itemId: "",
-    balQuantity: "",
-    quantity: "",
-    rate: "",
-    amount: "",
-    gstId: "",
-    gstRate: "",
-    cgst: "",
-    sgst: "",
-    igst: "",
-    cgstid: "",
-    sgstid: "",
-    igstid: "",
-    gst: "",
-    netAmount: "",
+    "sno": 0,
+    "id": 0,
+    "mrnId": 0,
+    "orderId": 0,
+    "orderNo": "",
+    "batchNo": "",
+    "serialNo": "",
+    "qcStatus": "",
+    "itemId": 0,
+    "balQuantity": 0,
+    "quantity": 0,
+    "rate": 0,
+    "amount": 0,
+    "gstId": 0,
+    "gstRate": 0,
+    "cgst": 0,
+    "sgst": 0,
+    "igst": 0,
+    "cgstid": 0,
+    "sgstid": 0,
+    "igstid": 0,
+    "netAmount": 0,
     "unitId": 0,
-    item: {},
+    "qcApplicable": true
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
@@ -93,6 +93,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     GetitemData();
     GetorderData();
     GetUnitData();
+    getPurchaseOrder()
   }, []);
 
   const GetUnitData = async () => {
@@ -117,7 +118,7 @@ const EditMaterialRecieptNote = (props: Props) => {
       .then((response) => {
         if (response.data.data.length > 0) {
           //  if (response.data && response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
-          const data = response.data.data[0]['mrnDetailResp'];
+          const data = response.data.data[0]['mrnDetail'];
           if (data != null) {
             const arr = data?.map((item: any) => {
               return {
@@ -435,8 +436,8 @@ const EditMaterialRecieptNote = (props: Props) => {
       updatedOn: defaultValues,
       companyId: location.state.companyId,
       fyId: location.state.fyId,
+     // mrnDetail: [],
       mrnDetail: [],
-      mrnDetailResp: [],
       vendor: {},
       name: location.state.name || '',
       netAmountv: location.state.netAmountv,
@@ -508,7 +509,7 @@ const EditMaterialRecieptNote = (props: Props) => {
       const response = await api.post(`QualityCheck/UpsertMrn`, {
         ...values,
         // mrnDetail: filteredTableData,
-        mrnDetailResp: filteredTableData,
+        mrnDetail: filteredTableData,
 
       });
       if (response.data.status === 1) {
@@ -523,7 +524,73 @@ const EditMaterialRecieptNote = (props: Props) => {
   });
 
   const back = useNavigate();
+  const getPurchaseOrderById = async (id: any) => {
 
+    const collectData = {
+      "orderId": id,
+      "indentId": -1
+    };
+
+    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const transData = result?.data?.data[0]["purchaseOrderDetail"];
+    let arr: any = [];
+    for (let i = 0; i < transData.length; i++) {
+      arr.push({
+
+        id: i+1,
+        mrnId: 0,
+        orderId: transData[i]["orderId"],
+        itemId: transData[i]["itemId"],
+        unitId: transData[i]["unitId"],
+        quantity: transData[i]["quantity"],
+        rate: transData[i]["rate"],
+        amount: transData[i]["amount"],
+        gstId: transData[i]["gstId"],
+        gstRate: transData[i]["gstRate"],
+        "cgst": transData[i]["cgst"],
+        "sgst": transData[i]["sgst"],
+        "igst": transData[i]["igst"],
+        "cgstid": transData[i]["cgstid"],
+        "sgstid": transData[i]["sgstid"],
+        "igstid": transData[i]["igstid"],
+        netAmount: transData[i]["netAmount"],
+
+        orderNo: "",
+        "batchNo": "",
+        "serialNo": "",
+        "qcStatus": "",
+        "balQuantity": 0,
+        "qcApplicable": true
+
+
+
+      });
+    }
+    // arr.push({ ...initialRowData });
+    setTableData(arr);
+
+    
+  }
+
+  const getPurchaseOrder = async () => {
+
+    const collectData = {
+      "orderId": -1,
+      "indentId": -1
+    };
+
+    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const transData = result?.data?.data[0]["purchaseOrderDetail"];
+
+    const data = result.data.data;
+    const orderArr = data.map((item: any) => ({
+      ...item,
+      id: item.orderId,
+      value: item.orderId,
+      label: item.orderNo,
+    }));
+    setOrderData(orderArr);
+  };
   return (
     <div>
       <div
@@ -711,8 +778,41 @@ const EditMaterialRecieptNote = (props: Props) => {
                   </Typography>
                 </Grid>
                 <Divider />
+                <Grid item lg={4} xs={12}>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={vendorData}
+                    fullWidth
+                    size="small"
 
-                <Grid item lg={4} xs={12} md={6}>
+                    onChange={(event: any, newValue: any) => {
+                      handleVendorSelect(event, newValue);
+                      console.log(newValue?.value);
+                      //getPurchaseOrderById(newValue?.value);
+                      formik.setFieldValue('vendorId', newValue?.value);
+                      const arr: any = [];
+                      orderData.map((item: any) => {
+                        if (item.id === newValue?.value) {
+                          arr.push(item);
+                        }
+                      });
+                      setOrderVendorData(arr);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={
+                          <CustomLabel
+                            text={t("text.SelectVendor")}
+                            required={false}
+                          />
+                        }
+                      />
+                    )}
+                  />
+                </Grid>
+                {/* <Grid item lg={4} xs={12} md={6}>
                   <Autocomplete
                     disablePortal
                     size="small"
@@ -731,7 +831,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                       />
                     )}
                   />
-                </Grid>
+                </Grid> */}
 
                 {vendorDetail?.gstinNo && (
                   <Grid item lg={4} xs={12} md={6}>
@@ -810,6 +910,31 @@ const EditMaterialRecieptNote = (props: Props) => {
                     />
                   </Grid>
                 )}
+
+{vendorDetail?.mobileNo && (
+                  <Grid item lg={4} xs={12} md={6}>
+                    <Autocomplete
+                      disablePortal
+                      size="small"
+                      id="combo-box-demo"
+                      options={orderVendorData}
+                      onChange={(e, newValue: any) => {
+                        getPurchaseOrderById(newValue?.id);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={
+                            <CustomLabel
+                              text={t("text.SelectOrderNO")}
+                              required={false}
+                            />
+                          }
+                        />
+                      )}
+                    />
+                  </Grid>
+                )}
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
@@ -853,7 +978,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                         >
                           {t("text.ItemName")}
                         </th>
-                        <th
+                        {/* <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -861,7 +986,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           }}
                         >
                           {t("text.BatchNo")}
-                        </th>
+                        </th> */}
 
                         <th
                           style={{
@@ -928,7 +1053,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                         >
                           SGST
                         </th>
-                        <th
+                        {/* <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -936,7 +1061,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           }}
                         >
                           IGST
-                        </th>
+                        </th> */}
 
                         <th
                           style={{
@@ -987,12 +1112,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.selectMRN")}
-                                //     required={false}
-                                //   />
-                                // }
+                              
                                 />
                               )}
                             />
@@ -1021,19 +1141,14 @@ const EditMaterialRecieptNote = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.selectItem")}
-                                //     required={false}
-                                //   />
-                                // }
+                          
                                 />
                               )}
                             />
                           </td>
 
 
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1045,7 +1160,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                               onFocus={(e) => { e.target.select() }}
                             />
-                          </td>
+                          </td> */}
                           <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <Autocomplete
                               disablePortal
@@ -1076,8 +1191,8 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
-                              value={row.balQuantity}
-                              onChange={(e) => handleInputChange(index, "balQuantity", e.target.value)}
+                              value={row.quantity}
+                              onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               onFocus={(e) => { e.target.select() }}
                             />
                           </td>
@@ -1131,12 +1246,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.tax")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1166,7 +1276,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                                                         inputProps={{ readOnly: true }}
                                                       />
                                                     </td>
-                                                    <td
+                                                    {/* <td
                                                       style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -1177,19 +1287,8 @@ const EditMaterialRecieptNote = (props: Props) => {
                                                         size="small"
                                                         inputProps={{ readOnly: true }}
                                                       />
-                                                    </td>
-                          {/* <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <TextField
-                              value={(row.cgst + row.sgst + row.igst) || 0}
-                              size="small"
-                              inputProps={{ readOnly: true }}
-                            />
-                          </td> */}
+                                                    </td> */}
+                        
 
                           <td
                             style={{
@@ -1209,23 +1308,23 @@ const EditMaterialRecieptNote = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totaltaxamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalgrossamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>

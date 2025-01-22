@@ -368,6 +368,7 @@ const AddJobCard = (props: Props) => {
       vehicleNo: Item.vehicleNo,
       label: Item.vehicleNo + `(ComplainNo:${Item.complaintNo})`
     }));
+    
     setComplainOption(arr);
   };
 

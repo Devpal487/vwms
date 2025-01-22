@@ -12,6 +12,47 @@ const resources = {
       text: {
         ////
         /////
+
+        SelectOrderNO:"Select Order No.",
+        enterComplaint:"Enter Complaint",
+        docNo:"Document No.",
+        particular:"Particular",
+        itemName:"Item Name",
+        unitName:"Unit Name",
+        docDate:"Document Date",
+        opening:"Opening",
+        inQty:"In Qty",
+        outQty:"Out Qty",
+        vendor:"Vendor",
+        balance:"Balance",
+        age:"Age",
+        selectcomplainNo:"Enter Complaint No.",
+
+        complaintDate:"Complaint Date",
+        closingdate:"Closing Date",
+        vehicleNo12:"Vehicle No.",
+        ItemType1:"Item Type",
+        ShortName1:"Short Name",
+
+       //stockbin
+       StockBinName1:"StockBin Name",
+       binCode1:"StockBin Code",
+       binCode:" Enter StockBin Code",
+        Flowmaster:"Flow Master",
+        release:"RELEASE",
+        post:"POST",
+        TotalAmount:"Total Amount:",
+        vendorevaluation:"Vendor Evaluation",
+        preReading:"Pre Reading",
+        gst:"GST",
+        Sgst:"SGST",
+        Cgst:"CGST",
+        Igst:"IGST",
+        indentGenerate:"Indent Generate",
+        indentprint:"Indent Print",
+        Outsource:"OutSource",
+        InhouseandOutsource:"Inhouse and OutSource",
+
         enterComplaint: "Enter Complaint",
         docNo: "Document No.",
         particular: "Particular",
@@ -50,6 +91,7 @@ const resources = {
         indentprint: "Indent Print",
         Outsource: "OutSource",
         InhouseandOutsource: "Inhouse and OutSource",
+
         AddComplaintApproval: "Create Complaint Approval",
         ComplaintApproval: "Complaint Approval",
         EditComplaintApproval: "Edit Complaint Approval",

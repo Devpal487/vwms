@@ -1069,6 +1069,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                     >
                                                         <TextField
                                                             size="small"
+                                                   
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                             inputProps={{ step: "any", min: "0" }}

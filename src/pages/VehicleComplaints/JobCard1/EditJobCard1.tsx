@@ -63,7 +63,11 @@ const style = {
 };
 
 const EditJobCard1 = (props: Props) => {
+  const [isIndentGenerateEnabled, setIsIndentGenerateEnabled] = useState(false);
+  const [isIndentPrintEnabled, setIsIndentPrintEnabled] = useState(false);
+  const [isChallanEnabled, setIsChallanEnabled] = useState(false);
   const [isIndentEnabled, setIsIndentEnabled] = useState(false);
+
   const location = useLocation();
   let navigate = useNavigate();
   const { t } = useTranslation();
@@ -77,10 +81,10 @@ const EditJobCard1 = (props: Props) => {
     { value: "-1", label: t("text.SelectindentNo") },
   ]);
   const [itemOption, setitemOption] = useState<any>([]);
-  const [vehicleOption, setVehicleOption] = useState([
+  const [vehicleOption, setVehicleOption] = useState<any>([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
   ]);
-  const [empOption, setEmpOption] = useState([
+  const [empOption, setEmpOption] = useState<any>([
     { value: 1, label: t("text.EmpName"), department: "", designation: "" },
   ]);
   const [serviceOption, setServiceOption] = useState([
@@ -249,7 +253,7 @@ const EditJobCard1 = (props: Props) => {
 
   ]);
 
-  const [tableData, setTableData] = useState([
+  const [tableData, setTableData] = useState<any>([
     {
       id: 0,
       jobCardId: 0,
@@ -306,22 +310,128 @@ const EditJobCard1 = (props: Props) => {
 
   useEffect(() => {
     getVehicleDetails();
+    getJobCardData();
     getEmpData();
     getServiceData();
     getVendorData();
     getUnitData();
     getComplainData();
+    setVehicleName(location.state?.vehicleName);
+    setDeptValue(location.state?.department);
+    setDesgValue(location.state?.designation);
+    // if (location.state.status === "Complete") {
+    //   setTableData([...location.state?.serviceDetail]);
+    //   setTableData1([...location.state?.itemDetail]);
+    // } else {
+    //   setTableData([...location.state?.serviceDetail, tableData]);
+    //   setTableData1([...location.state?.itemDetail, tableData1]);
+    // }
+
     GetitemData();
     getTaxData();
     GetIndentID();
-    setTableData(formik.values.serviceDetail);
-    //
-    setTableData([...location.state?.serviceDetail || tableData]);
-    setVehicleName(location.state?.vehicleName);
-    getJobCardData();
-    setDeptValue(location.state?.department);
-    setDesgValue(location.state?.designation);
   }, [itemId]);
+  const getVehicleDetails = async () => {
+    const response = await api.get(
+      `Master/GetVehicleDetail?ItemMasterId=-1`,
+    );
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      value: Item.itemMasterId,
+      label: Item.vehicleNo,
+      vehicleName: Item.itemName,
+      empId: Item.empId
+    }));
+    setVehicleOption(arr);
+  };
+  const getUnitData = async () => {
+    const collectData = {
+      "unitId": -1
+    };
+    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["unitName"],
+        value: data[index]["unitId"],
+      });
+    }
+    setUnitOption(arr);
+  };
+  const getVendorData = async () => {
+    const collectData = {
+      "venderId": -1,
+      "countryId": -1,
+      "stateId": -1,
+      "cityId": -1
+    };
+    const response = await api.post(`Master/GetVendorMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["name"],
+        value: data[index]["venderId"],
+      });
+    }
+    setVendorOption(arr);
+  };
+  const getEmpData = async () => {
+    const collectData = {
+      "empid": -1,
+      "userId": ""
+    };
+    const response = await api.post(`Employee/GetEmployee`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["empName"],
+        value: data[index]["empid"],
+        department: data[index]["departmentName"],
+        designation: data[index]["designationName"],
+      });
+    }
+    setEmpOption(arr);
+  };
+  const getComplainData = async () => {
+    const collectData = {
+      "id": -1,
+      "empid": -1,
+      "itemId": -1
+    };
+    const response = await api.post(`Master/GetComplaint`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+      value: Item.compId,
+      compId: Item.compId,
+      complaintDate: Item.complaintDate,
+      complaint: Item.complaint,
+    }));
+    setComplainOption(arr);
+  };
+
+  const getServiceData = async () => {
+    const collectData = {
+      "serviceId": -1
+    };
+    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
+    const data = response.data.data;
+    //console.log("Vendor data==>  ",data);
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["serviceName"],
+        value: data[index]["serviceId"],
+      });
+    }
+    setServiceOption(arr);
+  };
+
   const GetIndentID = async () => {
     const collectData = {
       indentId: -1,
@@ -373,151 +483,8 @@ const EditJobCard1 = (props: Props) => {
     }
     setitemOption(arr);
   };
-  const getVehicleDetails = async () => {
-    const response = await api.get(
-      `Master/GetVehicleDetail?ItemMasterId=-1`,
-    );
-    const data = response.data.data;
-    const arr = data.map((Item: any, index: any) => ({
-      value: Item.itemMasterId,
-      label: Item.vehicleNo,
-      vehicleName: Item.itemName,
-      empId: Item.empId
-    }));
-    setVehicleOption(arr);
-  };
-
-  const getEmpData = async () => {
-    const collectData = {
-      "empid": -1,
-      "userId": ""
-    };
-    const response = await api.post(`Employee/GetEmployee`, collectData);
-    const data = response.data.data;
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["empName"],
-        value: data[index]["empid"],
-        department: data[index]["departmentName"],
-        designation: data[index]["designationName"],
-      });
-    }
-    setEmpOption(arr);
-  };
-
-  // const getComplainData = async () => {
-  //   const collectData = {
-  //     "id": -1,
-  //     "empid": -1,
-  //     "itemId": -1
-  //   };
-  //   const response = await api.post(`Master/GetComplaint`, collectData);
-  //   const data = response.data.data;
-  //   const arr = [];
-  //   for (let index = 0; index < data.length; index++) {
-  //     arr.push({
-  //       label: data[index]["complaint"],
-  //       value: data[index]["compId"],
-  //       empId: data[index]["empId"],
-  //       jobCardNo: data[index]["jobCardNo"],
-  //     });
-  //   }
-  //   setComplainOption(arr);
-  // };
-
-  // const getServiceData = async () => {
-  //   const collectData = {
-  //     "serviceId": -1
-  //   };
-  //   const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
-  //   const data = response.data.data;
-  //   //console.log("Vendor data==>  ",data);
-  //   const arr = [];
-  //   for (let index = 0; index < data.length; index++) {
-  //     arr.push({
-  //       label: data[index]["serviceName"],
-  //       value: data[index]["serviceId"],
-  //     });
-  //   }
-  //   setServiceOption(arr);
-  // };
-
-  const getUnitData = async () => {
-    const collectData = {
-      "unitId": -1
-    };
-    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["unitName"],
-        value: data[index]["unitId"],
-      });
-    }
-    setUnitOption(arr);
-  };
-
-  const getVendorData = async () => {
-    const collectData = {
-      "venderId": -1,
-      "countryId": -1,
-      "stateId": -1,
-      "cityId": -1
-    };
-    const response = await api.post(`Master/GetVendorMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["name"],
-        value: data[index]["venderId"],
-      });
-    }
-    setVendorOption(arr);
-  };
-
-
-  const getComplainData = async () => {
-    const collectData = {
-      "id": -1,
-      "empid": -1,
-      "itemId": -1
-    };
-    const response = await api.post(`Master/GetComplaint`, collectData);
-    const data = response.data.data;
-    const arr = data.map((Item: any, index: any) => ({
-      ...Item,
-      value: Item.compId,
-      compId: Item.compId,
-      complaintDate: Item.complaintDate,
-      complaint: Item.complaint,
-    }));
-    setComplainOption(arr);
-  };
-
-  const getServiceData = async () => {
-    const collectData = {
-      "serviceId": -1
-    };
-    const response = await api.post(`ServiceMaster/GetServiceMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["serviceName"],
-        value: data[index]["serviceId"],
-      });
-    }
-    setServiceOption(arr);
-  };
-
   const validateRow = (row: any) => {
-    return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
+    return row.serviceName > 0;
     //  return row.serviceName && row.serviceId && row.vendorId && row.challanNo > 0;
   };
 
@@ -544,7 +511,7 @@ const EditJobCard1 = (props: Props) => {
       "updatedOn": location.state.updatedOn,
       "companyId": location.state?.companyId,
       "fyId": location.state?.fyId,
-      "totalItemAmount": location.state?.totalItemAmount || 0,
+      "totalItemAmount": 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.itemName || "",
@@ -555,18 +522,19 @@ const EditJobCard1 = (props: Props) => {
     },
 
     onSubmit: async (values) => {
-      const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
-      const validItemDetails = tableData1.filter((row: any) => row.itemId && row.qty > 0 && row.rate > 0);
 
-      // if (validServiceDetails.length === 0) {
-      //   toast.error("Add valid service details.");
-      //   return;
-      // }
+      const validServiceDetails = tableData.filter(validateRow);
+      const validItemDetails = tableData1.filter(validateItem);
 
-      // if (validItemDetails.length === 0) {
-      //   toast.error("Add valid item details.");
-      //   return;
-      // }
+      if (validServiceDetails.length === 0) {
+        toast.error("Add valid service details.");
+        return;
+      }
+
+      if (validItemDetails.length === 0) {
+        toast.error("Add valid item details.");
+        return;
+      }
 
       const payload = {
         ...values,
@@ -574,35 +542,22 @@ const EditJobCard1 = (props: Props) => {
         itemDetail: validItemDetails,
       };
 
-      try {
+      
         const response = await api.post(`Master/UpsertJobCardInhouse`, payload);
         if (response.data.status === 1) {
           toast.success(response.data.message);
+          setJobCardId(response.data.data.jobCardId);
+          formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
+          formik.setFieldValue("jobCardId", response.data.data.jobCardId);
+          setIsIndentGenerateEnabled(true);
+          //  setIsIndentEnabled(true);
         } else {
+          setToaster(true);
           toast.error(response.data.message);
         }
-      } catch (error) {
-        console.error("Error:", error);
-        toast.error("Failed to submit.");
-      }
+  
     },
-    // onSubmit: async (values) => {
 
-    //   const validTableData = tableData.filter(validateRow);
-    //   if (validTableData.length === 0) {
-    //     toast.error("Please add some data in table for further process");
-    //     return;
-    //   }
-    //   const response = await api.post(`Master/UpsertJobCard`, { ...values, serviceDetail: validTableData });
-    //   console.log("@@@@===>>", values);
-    //   if (response.data.status === 1) {
-    //     toast.success(response.data.message);
-    //     navigate("/vehiclecomplaint/JobCard");
-    //   } else {
-    //     setToaster(true);
-    //     toast.error(response.data.message);
-    //   }
-    // },
   });
 
   const getJobCardData = async () => {
@@ -618,20 +573,70 @@ const EditJobCard1 = (props: Props) => {
     setJobCardData(arr);
   };
   const handleGenerateIndent = async (values: any) => {
-    const validTableData = tableData.filter(validateRow);
-    // if (validTableData.length === 0) {
-    //   toast.error("Please add some data in table for further process");
-    //   return;
-    // }
-    const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validTableData, ItemDetail: validateItem });
-    if (response.data.status === 1) {
-      toast.success(response.data?.message || "JOBCARD Indent Generated");
-      setJobCardId(response.data.data.jobCardId);
-    } else {
-      setToaster(true);
-      toast.error(response.data.message);
+    const validServiceDetails = (tableData || []).filter(validateRow);
+    const validItemDetails = (tableData1 || []).filter(validateItem);
+  
+    if (validServiceDetails.length === 0) {
+      toast.error("Add valid service details.");
+      return;
     }
-  }; 
+  
+    if (validItemDetails.length === 0) {
+      toast.error("Add valid item details.");
+      return;
+    }
+  
+    const payload = {
+      ...values,
+      serviceDetail: validServiceDetails,
+      itemDetail: validItemDetails,
+    };
+  
+    try {
+      const response = await api.post(`Master/GenerateIndent`, payload);
+      if (response.data.status === 1) {
+        toast.success(response.data?.message || "JOBCARD Indent Generated");
+        setIsIndentGenerateEnabled(false); // Disable "Indent Generate"
+        setIsIndentPrintEnabled(true); // Enable "Indent Print"
+        setJobCardId(response.data.data.jobCardId);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error generating indent:", error);
+      toast.error("Failed to generate indent.");
+    }
+  };
+  
+  // const handleGenerateIndent = async (values: any) => {
+  //   const validServiceDetails = tableData.filter(validateRow);
+  //     const validItemDetails = tableData1.filter(validateItem);
+
+  //     if (validServiceDetails.length === 0) {
+  //       toast.error("Add valid service details.");
+  //       return;
+  //     }
+
+  //     if (validItemDetails.length === 0) {
+  //       toast.error("Add valid item details.");
+  //       return;
+  //     }
+  //     const payload = {
+  //       ...values,
+  //       serviceDetail: validServiceDetails,
+  //       itemDetail: validItemDetails,
+  //     };
+  //   const response = await api.post(`Master/GenerateIndent`, {payload });
+  //   if (response.data.status === 1) {
+  //     toast.success(response.data?.message || "JOBCARD Indent Generated");
+  //     setIsIndentGenerateEnabled(false); // Disable "Indent Generate"
+  //     setIsIndentPrintEnabled(true); // Enable "Indent Print"
+  //     setJobCardId(response.data.data.jobCardId);
+  //   } else {
+  //     setToaster(true);
+  //     toast.error(response.data.message);
+  //   }
+  // };
 
   const handleGenerateChallan = async (values: any) => {
     const validTableData = tableData.filter(validateRow);
@@ -709,7 +714,7 @@ const EditJobCard1 = (props: Props) => {
     }
 
     let total = 0;
-    tableData.forEach(row => {
+    tableData.forEach((row:any) => {
       total += row.amount;
     })
     formik.setFieldValue("netAmount", total);
@@ -721,51 +726,42 @@ const EditJobCard1 = (props: Props) => {
     const newData: any = [...tableData1];
     newData[index][field] = value;
 
-    if (field === 'serviceId') {
-      newData[index].serviceId = newData[index].serviceId;
-      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    if (field === 'itemId') {
+      newData[index].itemId = newData[index].itemId;
+      newData[index].itemName = itemOption[itemOption.findIndex((e: any) => e.value == newData[index].itemId)].label;
+      //newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    // if (field === 'serviceName') {
-    //   newData[index].serviceName = newData[index].serviceName;
-    // }
+    if (field === 'unitID') {
+      newData[index].unitID = newData[index].unitID;
+      newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
+    }
+    if (field === 'unitName') {
+      newData[index].unitName = newData[index].unitName;
+
+    }
+    if (field === 'indentId') {
+      newData[index].indentId = newData[index].indentId;
+      newData[index].indentNo = indentOptions[indentOptions.findIndex(e => e.value == newData[index].indentId)].label;
+    }
+    if (field === 'indentNo') {
+      newData[index].indentNo = newData[index].indentNo;
+    }
+    if (field === 'qty') {
+      newData[index].qty = newData[index].qty;
+
+    }
+    if (field === 'rate') {
+      newData[index].rate = newData[index].rate;
+    }
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
-    // if (field === 'vendorId') {
-    //   newData[index].vendorId = newData[index].vendorId;
-    //   newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
-    // }
-    // if (field === 'challanRemark') {
-    //   newData[index].challanRemark = newData[index].challanRemark;
-    // }
-    // if (field === 'challanNo') {
-    //   newData[index].challanNo = newData[index].challanNo;
-    // }
-    // if (field === 'challanStatus') {
-    //   newData[index].challanStatus = newData[index].challanStatus;
-    // }
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
-    // if (field === 'qty') {
-    //   newData[index].qty = newData[index].qty;
-    // }
-    // if (field === 'unitRate') {
-    //   newData[index].unitRate = newData[index].unitRate;
-    // }
-    // if (field === 'unitId') {
-    //   newData[index].unitId = newData[index].unitId;
-    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    // }
-    // if (field === 'vendorName') {
-    //   newData[index].vendorName = newData[index].vendorName;
-    // }
-    // if (field === 'unitName') {
-    //   newData[index].unitName = newData[index].unitName;
-    // }
     newData[index].jobCardId = formik.values.jobCardId;
-    // newData[index].amount = newData[index].unitRate * newData[index].qty;
-    // newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    newData[index].amount = newData[index].unitRate * newData[index].qty;
+    newData[index].netAmount = newData[index].unitRate * newData[index].qty;
     newData[index].id = index;
     setTableData1(newData);
 
@@ -835,9 +831,13 @@ const EditJobCard1 = (props: Props) => {
     ]);
   };
   const deleteRow = (index: any) => {
-    const newData = tableData.filter((_, i) => i !== index);
+    const newData = tableData.filter((_:any, i:any) => i !== index);
     setTableData(newData);
   };
+  const deleteRow1 = (index: any) => {
+    const newData = tableData1.filter((_: any, i: any) => i !== index);
+    setTableData1(newData);
+  }
 
   const validateItem = (item: any) => {
     console.log("item validateItem", item);
@@ -845,10 +845,9 @@ const EditJobCard1 = (props: Props) => {
       item.itemId &&
       item.unit &&
       item.qty > 0 &&
-      item.rate > 0 &&
-      item.amount >= 0 &&
-      item.gstRate >= 0 &&
-      item.netAmount >= 0
+      item.rate > 0 
+      //item.amount >= 0
+
     );
   };
   const buttonStyle = (enabled: any) => ({
@@ -861,249 +860,7 @@ const EditJobCard1 = (props: Props) => {
     cursor: enabled ? "pointer" : "not-allowed", // Change cursor for disabled
   });
 
-  // const handlePanClose = () => {
-  //   setPanOpen(false);
-  // };
-  // const modalOpenHandle = (event: any) => {
-  //   setPanOpen(true);
-  //   if (event === "jobCardModel.imageFile") {
-  //     setModalImg(formik.values.imageFile);
-  //   }
-  // };
-  // const ConvertBase64 = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
 
-  // const base64ToByteArray = (base64: string): Uint8Array => {
-  //   // Remove the data URL scheme if it exists
-  //   const base64String = base64.split(",")[1];
-
-  //   // Decode the Base64 string
-  //   const binaryString = window.atob(base64String);
-  //   const len = binaryString.length;
-  //   const bytes = new Uint8Array(len);
-
-  //   // Convert binary string to Uint8Array
-  //   for (let i = 0; i < len; i++) {
-  //     bytes[i] = binaryString.charCodeAt(i);
-  //   }
-
-  //   return bytes;
-  // };
-
-  // const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-  //   let binary = "";
-  //   const len = uint8Array.byteLength;
-  //   for (let i = 0; i < len; i++) {
-  //     binary += String.fromCharCode(uint8Array[i]);
-  //   }
-  //   return window.btoa(binary);
-  // };
-
-  // const otherDocChangeHandler = async (event: any, params: string) => {
-  //   console.log("Image file change detected");
-
-  //   if (event.target.files && event.target.files[0]) {
-  //     const file = event.target.files[0];
-  //     const fileNameParts = file.name.split(".");
-  //     const fileExtension =
-  //       fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-  //     if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-  //       alert(
-  //         "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-  //       );
-  //       event.target.value = null;
-  //       return;
-  //     }
-
-  //     try {
-  //       const base64Data = (await ConvertBase64(file)) as string;
-  //       console.log("Base64 image data:", base64Data);
-
-  //       // Convert Base64 to Uint8Array
-  //       const byteArray = base64ToByteArray(base64Data);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-  //       // Convert Uint8Array to base64 string
-  //       const base64String = uint8ArrayToBase64(byteArray);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-  //       // Set value in Formik
-  //       formik.setFieldValue(params, base64String);
-
-  //       let outputCheck =
-  //         "data:image/png;base64," + formik.values.imageFile;
-  //       console.log(outputCheck);
-  //     } catch (error) {
-  //       console.error("Error converting image file to Base64:", error);
-  //     }
-  //   }
-  // };
-
-  // const handleInputChange = (index: any, field: any, value: any) => {
-  //   const newData: any = [...tableData];
-  //   newData[index][field] = value;
-
-  //   if (field === 'serviceId') {
-  //     newData[index].serviceId = newData[index].serviceId;
-  //   }
-  //   if (field === 'serviceName') {
-  //     newData[index].serviceName = newData[index].serviceName;
-  //   }
-  //   if (field === 'amount') {
-  //     newData[index].amount = newData[index].amount;
-  //   }
-  //   if (field === 'vendorId') {
-  //     newData[index].vendorId = newData[index].vendorId;
-  //   }
-  //   if (field === 'challanRemark') {
-  //     newData[index].challanRemark = newData[index].challanRemark;
-  //   }
-  //   if (field === 'challanNo') {
-  //     newData[index].challanNo = newData[index].challanNo;
-  //   }
-  //   if (field === 'challanStatus') {
-  //     newData[index].challanStatus = newData[index].challanStatus;
-  //   }
-  //   if (field === 'netAmount') {
-  //     newData[index].netAmount = newData[index].netAmount;
-  //   }
-  //   if (field === 'qty') {
-  //     newData[index].qty = newData[index].qty;
-  //   }
-  //   if (field === 'unitRate') {
-  //     newData[index].unitRate = newData[index].unitRate;
-  //   }
-  //   if (field === 'unitId') {
-  //     newData[index].unitId = newData[index].unitId;
-  //   }
-  //   if (field === 'vendorName') {
-  //     newData[index].vendorName = newData[index].vendorName;
-  //   }
-  //   if (field === 'unitName') {
-  //     newData[index].unitName = newData[index].unitName;
-  //   }
-  //   newData[index].amount = newData[index].unitRate * newData[index].qty;
-  //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
-
-  //   setTableData(newData);
-
-  //   if (newData[index].serviceId && newData[index].vendorName && newData[index].challanNo > 0) {
-  //     if (index === tableData.length - 1) {
-  //       addRow();
-  //     }
-  //   }
-  //   let total = 0;
-  //   tableData.forEach(row => {
-  //     total += row.amount;
-  //   })
-  //   formik.setFieldValue("netAmount", total);
-  //   formik.setFieldValue("totalServiceAmount", total);
-  //   formik.setFieldValue("totalItemAmount", total);
-  // };
-  // const handleInputChange = (index: any, field: any, value: any) => {
-  //   const newData: any = [...tableData];
-  //   newData[index][field] = value;
-  //   if (field === 'serviceId') {
-  //     newData[index].serviceId = newData[index].serviceId;
-  //     newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
-  //   }
-  //   // if (field === 'serviceName') {
-  //   //   newData[index].serviceName = newData[index].serviceName;
-  //   // }
-  //   if (field === 'amount') {
-  //     newData[index].amount = newData[index].amount;
-  //   }
-  //   if (field === 'vendorId') {
-  //     newData[index].vendorId = newData[index].vendorId;
-  //     newData[index].vendorName = vendorOption[vendorOption.findIndex(e => e.value == newData[index].vendorId)].label;
-  //   }
-  //   if (field === 'challanRemark') {
-  //     newData[index].challanRemark = newData[index].challanRemark;
-  //   }
-  //   if (field === 'challanNo') {
-  //     newData[index].challanNo = newData[index].challanNo;
-  //   }
-  //   if (field === 'challanStatus') {
-  //     newData[index].challanStatus = newData[index].challanStatus;
-  //   }
-  //   if (field === 'netAmount') {
-  //     newData[index].netAmount = newData[index].netAmount;
-  //   }
-  //   if (field === 'qty') {
-  //     newData[index].qty = newData[index].qty;
-  //   }
-  //   if (field === 'unitRate') {
-  //     newData[index].unitRate = newData[index].unitRate;
-  //   }
-  //   if (field === 'unitId') {
-  //     newData[index].unitId = newData[index].unitId;
-  //     newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-  //   }
-  //   // if (field === 'vendorName') {
-  //   //   newData[index].vendorName = newData[index].vendorName;
-  //   // }
-  //   // if (field === 'unitName') {
-  //   //   newData[index].unitName = newData[index].unitName;
-  //   // }
-  //   newData[index].jobCardId = formik.values.jobCardId;
-  //   newData[index].amount = newData[index].unitRate * newData[index].qty;
-  //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
-
-  //   setTableData(newData);
-
-  //   if (newData[index].serviceId && newData[index].vendorName && newData[index].qty && newData[index].unitRate > 0) {
-  //     if (index === tableData.length - 1) {
-  //       addRow();
-  //     }
-  //   }
-  //   let total = 0;
-  //   tableData.forEach(row => {
-  //     total += row.amount;
-  //   })
-  //   formik.setFieldValue("netAmount", total);
-  //   formik.setFieldValue("totalServiceAmount", total);
-  //   formik.setFieldValue("totalItemAmount", total);
-  // };
-  // const addRow = () => {
-  //   setTableData([...tableData, {
-  //     id: 0,
-  //     jobCardId: 0,
-  //     serviceId: 0,
-  //     amount: 0,
-  //     jobWorkReq: true,
-  //     vendorId: 0,
-  //     challanRemark: "",
-  //     challanNo: 0,
-  //     challanDate: "2024-12-20T11:08:20.068Z",
-  //     challanRcvNo: 0,
-  //     challanRcvDate: "2024-12-20T11:08:20.068Z",
-  //     challanStatus: "",
-  //     netAmount: 0,
-  //     qty: 0,
-  //     unitRate: 0,
-  //     unitId: 0,
-  //     vendorName: "",
-  //     serviceName: "",
-  //     unitName: "",
-  //     cgstid: 0,
-  //     sgstid: 0,
-  //     gstid: 0,
-  //     gst: 0
-  //   },
-  //   ]);
-  // };
-
-  // const deleteRow = (index: any) => {
-  //   const newData = tableData.filter((_, i) => i !== index);
-  //   setTableData(newData);
-  // };
 
   const handleSave = async (values: any) => {
     const validTableData = tableData.filter(validateRow);
@@ -1193,13 +950,13 @@ const EditJobCard1 = (props: Props) => {
                     onChange={(event) => formik.setFieldValue("status", event.target.value)}
                   >
                     <FormControlLabel
-                      value="complete"
+                      value="Complete"
                       control={<Radio color="primary" />}
                       label={t("text.Complete")}
 
                     />
                     <FormControlLabel
-                      value="jobwork"
+                      value="JobWork"
                       control={<Radio color="primary" />}
                       label={t("text.JobWork")}
                     />
@@ -1213,22 +970,7 @@ const EditJobCard1 = (props: Props) => {
                 </FormControl>
               </Grid>
 
-              {/* RadioButton */}
-              {/* <Grid item xs={12} sm={12} lg={12}>
-                <FormControl>
-                  <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="licensing"
-                    name="radio-buttons-group"
-                  >
-                    <div style={{ display: "flex" }}>
-                      <FormControlLabel value="complete" control={<Radio />} label={t("text.Complete")} />
-                      <FormControlLabel value="jobwork" control={<Radio />} label={t("text.JobWork")} />
-                      <FormControlLabel value="inprogress" control={<Radio />} label={t("text.InProgress")} />
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-              </Grid> */}
+            
 
               {/* File number */}
               {/* <Grid item xs={12} md={4} sm={4}>
@@ -1282,7 +1024,7 @@ const EditJobCard1 = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption.filter(e => {
+                  options={vehicleOption.filter((e:any) => {
                     if (e.value == location.state?.itemId) {
                       return e;
                     }
@@ -1298,9 +1040,9 @@ const EditJobCard1 = (props: Props) => {
                     formik.setFieldValue("itemName", newValue?.label);
                     formik.setFieldValue("itemId", newValue?.value);
                     formik.setFieldValue("empId", newValue?.empId);
-                    formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value == newValue?.empId)].label);
-                    setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].designation);
-                    setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)].department);
+                    formik.setFieldValue("empName", empOption[empOption.findIndex((e:any) => e.value == newValue?.empId)].label);
+                    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == newValue?.empId)].designation);
+                    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == newValue?.empId)].department);
                     console.log(complainOption);
                     formik.setFieldValue("complainId", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.compId);
                     formik.setFieldValue("complain", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.complaint);
@@ -1309,22 +1051,18 @@ const EditJobCard1 = (props: Props) => {
                     formik.setFieldValue("status", complainOption[complainOption.findIndex(e => e.itemID == newValue?.value)]?.status || "Complete");
                     // formik.setFieldValue("serviceType", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceType || tableData);
                     //setTableData(jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.serviceDetail || tableData);
-                    formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardId || 0);
-                    formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.jobCardNo || "");
-                    formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => e.itemId == newValue?.value)]?.fileNo || "");
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="vehicleNo"
-                      id="vehicleNo"
+                      name="itemName"
+                      id="itemName"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
               </Grid>
-
 
               {/* Vehicle name */}
               <Grid item xs={12} md={4} sm={4}>
@@ -1340,7 +1078,7 @@ const EditJobCard1 = (props: Props) => {
                   size="small"
                   name="VehicleName"
                   id="VehicleName"
-                  value={vehicleName || vehicleOption[vehicleOption.findIndex(e => e.value === formik.values.itemId)]?.vehicleName}
+                  value={vehicleName || vehicleOption[vehicleOption.findIndex((e:any) => e.value === formik.values.itemId)]?.vehicleName}
                   placeholder={t("text.VehicleName")}
                   onChange={(e) => {
                   }}
@@ -1370,8 +1108,8 @@ const EditJobCard1 = (props: Props) => {
                 />
               </Grid> */}
 
-              {/* UnderControlOf */}
-              <Grid item xs={12} md={4} sm={4}>
+           {/* UnderControlOf */}
+           <Grid item xs={12} md={4} sm={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -1380,6 +1118,9 @@ const EditJobCard1 = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    }
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
@@ -1441,6 +1182,8 @@ const EditJobCard1 = (props: Props) => {
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
+
+              {/* CurrentReadingKM */}
               <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
@@ -1465,7 +1208,6 @@ const EditJobCard1 = (props: Props) => {
               {/* Complaint */}
               <Grid item xs={12} md={4} sm={4}>
                 <TextField
-
                   label={
                     <CustomLabel
                       text={t("text.enterComplaint")}
@@ -1485,28 +1227,7 @@ const EditJobCard1 = (props: Props) => {
                 />
               </Grid>
 
-              {/* CurrentReadingKM */}
-              {/* <Grid item xs={12} md={4} sm={4}>
-                <TextField
-                  label={
-                    <CustomLabel
-                      text={t("text.ReadingKM")}
-                    //required={true}
-                    />
-                  }
-                  variant="outlined"
-                  fullWidth
-                  size="small"
-                  name="currenReading"
-                  id="currenReading"
-                  value={formik.values.currenReading}
-                  placeholder={t("text.ReadingKM")}
-                  onChange={(e) => {
-                    formik.setFieldValue("currenReading", parseFloat(e.target.value) || 0);
-                  }}
-                />
-              </Grid> */}
-
+           
 
 
               <Grid item xs={12}>
@@ -1527,7 +1248,7 @@ const EditJobCard1 = (props: Props) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.map((row, index) => (
+                      {tableData.map((row:any, index:any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
                           <td
                             style={{
@@ -1556,12 +1277,15 @@ const EditJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={serviceOption}
-                             // value={row.serviceId}
+                              // value={row.serviceId}
                               fullWidth
                               sx={{ width: "225px" }}
                               size="small"
                               value={serviceOption.find((opt: any) => opt.value === row.serviceId) || null}
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                } 
                                 console.log(newValue?.value);
                                 handleInputChange(index, 'serviceId', newValue?.value);
                                 handleInputChange(index, 'serviceName', newValue?.label);
@@ -1588,11 +1312,14 @@ const EditJobCard1 = (props: Props) => {
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
-                              options={["JobWork"]}
+                              options={["Inhouse"]}
                               value={row.challanStatus}
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
+                                if (!newValue) {
+                                  return;
+                                }
                                 handleInputChange(index, 'challanStatus', newValue);
                               }}
                               sx={{ width: "140px" }}
@@ -1609,19 +1336,7 @@ const EditJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                          {/* <td
-                          style={{
-                            border: "1px solid black",
-                            // textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.challanStatus}
-                            onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
-                            size="small"
-                            inputProps={{ "aria-readonly": true }}
-                          />
-                        </td> */}
+                        
                           <td
                             style={{
                               border: "1px solid black",
@@ -1632,9 +1347,10 @@ const EditJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={vendorOption}
-                             // value={row.vendorId}
+                              // value={row.vendorId}
                               fullWidth
                               size="small"
+                              disabled
                               value={vendorOption.find((opt: any) => opt.value === row.vendorId) || null}
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
@@ -1654,7 +1370,7 @@ const EditJobCard1 = (props: Props) => {
                               )}
                             />
                           </td>
-                        
+
                           <td
                             style={{
                               border: "1px solid black",
@@ -1681,9 +1397,9 @@ const EditJobCard1 = (props: Props) => {
                             }}
                           >
                             <TextField
-                              value={row.netAmount}
+                              value={row.amount}
                               onChange={(e) =>
-                                handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
+                                handleInputChange(index, "amount", parseFloat(e.target.value) || 0)
                               }
                               onFocus={e => e.target.select()}
                               size="small"
@@ -1704,7 +1420,7 @@ const EditJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
-                           />
+                            />
                           </td>
                           <td
                             style={{
@@ -1719,7 +1435,7 @@ const EditJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
-                           />
+                            />
                           </td>
                           <td
                             style={{
@@ -1751,15 +1467,7 @@ const EditJobCard1 = (props: Props) => {
                     type="button"
                     disabled={!isIndentEnabled} // Disable initially
                     style={buttonStyle(isIndentEnabled)}
-                    // style={{
-                    //   backgroundColor: `var(--header-background)`, // Use the same color as previous buttons
-                    //   color: "white",
-                    //   padding: "6px 12px", // Smaller padding for a smaller size
-                    //   fontSize: "12px", // Smaller font size
-                    //   borderRadius: "8px",
-                    //   minWidth: "120px", // Set consistent button width
-                    //   textAlign: "center",
-                    // }}
+                 
                     onClick={() => {
                       const validTableData = tableData.filter(validateRow);
                       if (validTableData.length === 0) {
@@ -1770,15 +1478,7 @@ const EditJobCard1 = (props: Props) => {
                         handleGenerateChallan(formik.values);
                       }
                     }}
-                  // onClick={() => {
-                  //   const validTableData = tableData.filter(validateRow);
-                  //   if (validTableData.length === 0) {
-                  //     alert("Please add some data in table for further process");
-                  //     return;
-                  //   } else {
-                  //     formik.setFieldValue("status", "jobwork");
-                  //   }
-                  // }}
+                 
                   >
                     {t("text.JobWorkChallan")}
                   </Button>
@@ -1927,8 +1627,8 @@ const EditJobCard1 = (props: Props) => {
                               }
                               size="small"
                               inputProps={{ "aria-readonly": true }}
-                           onFocus={e => e.target.select()}
-                           />
+                              onFocus={e => e.target.select()}
+                            />
                           </td>
                           <td
                             style={{
@@ -1986,7 +1686,7 @@ const EditJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
-                           />
+                            />
                           </td>
                           <td
                             style={{
@@ -2156,35 +1856,36 @@ const EditJobCard1 = (props: Props) => {
                   alignItems="center"
                 >
                   {/* Indent Generate Button */}
+
                   <Grid item>
                     <Button
                       type="button"
-                      disabled={!isIndentEnabled} // Disable initially
-                      style={buttonStyle(isIndentEnabled)}
+                      disabled={!isIndentGenerateEnabled}
+                      style={buttonStyle(isIndentGenerateEnabled)}
                       onClick={() => {
-                        // Indent Generate logic
-                        formik.setFieldValue("status", "inhouse");
-                        handleGenerateIndent(formik.values)
+                        handleGenerateIndent(formik.values);
                       }}
                     >
                       {t("text.indentGenerate")}
                     </Button>
                   </Grid>
-
                   {/* Indent Print Button */}
                   <Grid item>
                     <Button
                       type="button"
-                      disabled={!isIndentEnabled} // Disable initially
-                      style={buttonStyle(isIndentEnabled)}
+                      disabled={!isIndentPrintEnabled}
+                      style={buttonStyle(isIndentPrintEnabled)}
                       onClick={() => {
-                        // Indent Print logic
-                        formik.setFieldValue("status", "indentPrint");
+                        //   formik.setFieldValue("status", "indentPrint");
                       }}
                     >
                       {t("text.indentprint")}
                     </Button>
                   </Grid>
+
+
+
+
                 </Grid>
 
               )}
@@ -2225,9 +1926,9 @@ const EditJobCard1 = (props: Props) => {
                       minWidth: "120px", // Set a fixed width
                       textAlign: "center",
                     }}
-                    onClick={() => handleSave(formik.values)}
+                  //  onClick={() => handleSave(formik.values)}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 </Grid>
 

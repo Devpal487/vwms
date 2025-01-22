@@ -74,6 +74,9 @@ const style = {
 };
 
 const AddJobCard1 = (props: Props) => {
+  const [isIndentGenerateEnabled, setIsIndentGenerateEnabled] = useState(false);
+const [isIndentPrintEnabled, setIsIndentPrintEnabled] = useState(false);
+const [isChallanEnabled, setIsChallanEnabled] = useState(false);
   const [isIndentEnabled, setIsIndentEnabled] = useState(false);
   const location = useLocation();
   let navigate = useNavigate();
@@ -315,6 +318,14 @@ const AddJobCard1 = (props: Props) => {
     getTaxData();
     GetIndentID();
     setVehicleName(location.state?.vehicleName);
+    setDesgValue(location.state?.designation || "");
+    setDeptValue(location.state?.department || "");
+ let total =0;
+ tableData.forEach(row => {
+   total += row.amount;
+ })
+ formik.setFieldValue("totalServiceAmount", total);
+ formik.setFieldValue("netAmount", total);
   }, []);
   const GetIndentID = async () => {
     const collectData = {
@@ -510,7 +521,7 @@ const AddJobCard1 = (props: Props) => {
       itemId: 0,
       currenReading: 0,
       complain: "",
-      status: "",
+      status: "inprogress",
       serviceType: "",
       createdBy: "",
       updatedBy: "",
@@ -552,7 +563,8 @@ const AddJobCard1 = (props: Props) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);
           formik.setFieldValue("jobCardId", response.data.data.jobCardId);
-          setIsIndentEnabled(true);
+          setIsIndentGenerateEnabled(true); 
+        //  setIsIndentEnabled(true);
         } else {
           toast.error(response.data.message);
         }
@@ -573,6 +585,8 @@ const AddJobCard1 = (props: Props) => {
     const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validServiceDetails, itemDetail: validItemDetails });
     if (response.data.status === 1) {
       toast.success(response.data?.message || "JOBCARD Indent Generated");
+      setIsIndentGenerateEnabled(false); // Disable "Indent Generate"
+      setIsIndentPrintEnabled(true); // Enable "Indent Print"
       setJobCardId(response.data.data.jobCardId);
     } else {
       setToaster(true);
@@ -768,6 +782,11 @@ const AddJobCard1 = (props: Props) => {
   const deleteRow = (index: any) => {
     const newData = tableData.filter((_, i) => i !== index);
     setTableData(newData);
+  };
+
+  const deleteRow1 = (index: any) => {
+    const newData = tableData1.filter((_:any, i:any) => i !== index);
+    setTableData1(newData);
   };
 
   const validateItem = (item: any) => {
@@ -1510,7 +1529,7 @@ const AddJobCard1 = (props: Props) => {
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData1.length > 1) {
-                                  deleteRow(index)
+                                  deleteRow1(index)
                                 } else {
                                   alert("Atleast one row should be there");
                                 }
@@ -1803,36 +1822,33 @@ const AddJobCard1 = (props: Props) => {
 
 
                   <Grid item>
-                    <Button
-                      type="button"
-                      disabled={!isIndentEnabled} // Disable initially
-                      style={buttonStyle(isIndentEnabled)}
-                      onClick={() => {
-                        // Indent Generate logic
-                        formik.setFieldValue("status", "inhouse");
-                        handleGenerateIndent(formik.values)
-                      }}
-                    >
-                      {t("text.indentGenerate")}
-                    </Button>
-                  </Grid>
+  <Button
+    type="button"
+    disabled={!isIndentGenerateEnabled}
+    style={buttonStyle(isIndentGenerateEnabled)}
+    onClick={() => {
+      handleGenerateIndent(formik.values);
+    }}
+  >
+    {t("text.indentGenerate")}
+  </Button>
+</Grid>
 
-                  {/* Indent Print Button */}
+<Grid item>
+  <Button
+    type="button"
+    disabled={!isIndentPrintEnabled}
+    style={buttonStyle(isIndentPrintEnabled)}
+    onClick={() => {
+   //   formik.setFieldValue("status", "indentPrint");
+    }}
+  >
+    {t("text.indentprint")}
+  </Button>
+</Grid>
 
 
-                  <Grid item>
-                    <Button
-                      type="button"
-                      disabled={!isIndentEnabled} // Disable initially
-                      style={buttonStyle(isIndentEnabled)}
-                      onClick={() => {
-                        // Indent Print logic
-                        formik.setFieldValue("status", "indentPrint");
-                      }}
-                    >
-                      {t("text.indentprint")}
-                    </Button>
-                  </Grid>
+  
                 </Grid>
 
               )}

@@ -1132,7 +1132,7 @@ const EditJobCardItemReturn = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/staffindent/StaffItemReturn");
+                navigate("/staffindent/JobCardItemReturn");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);
