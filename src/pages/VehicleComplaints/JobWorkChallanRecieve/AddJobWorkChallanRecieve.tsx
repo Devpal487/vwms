@@ -439,8 +439,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "serviceAmount": location.state?.serviceAmount,
       "itemAmount": location.state?.itemAmount,
       "netAmount": location.state?.netAmount,
-      "createdBy": "",
-      "updatedBy": "",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "releasedBy": "",
@@ -501,122 +501,171 @@ const AddJobWorkChallanRecieve = (props: Props) => {
 
 
   const updateJobCardStatusStatus = async (jobCardId: number) => {
-    await getJobCardData();
-    const collectData = {
-      "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
-      "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
-      "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
-      "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
-      "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
-      "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
-      "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
-      "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
-      "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
-      "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
-      "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
-      "status": "Complete",
-      "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
-      "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
-      "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
-      "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
-      "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
-      "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
-      "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
-      "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
-      "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)].totalServiceAmount,
-      "netAmount": formik.values.netAmount,
-      "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName || formik.values.vehicleNo,
-      "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
-      "serviceDetail": [...(jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceDetail)],
-      "update": true
-    };
-    await api.post(`Master/UpsertJobCard`, collectData);
+    await getJobCardData().then(() => {
+      const collectData = {
+        "jobCardId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardId,
+        "jobCardNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardNo,
+        "fileNo": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fileNo,
+        "imageFile": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.imageFile,
+        "jobCardDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.jobCardDate,
+        "complainId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainId,
+        "complainDate": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complainDate,
+        "empId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empId,
+        "itemId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemId,
+        "currenReading": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.currenReading,
+        "complain": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.complain,
+        "status": "Complete",
+        "serviceType": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.serviceType,
+        "createdBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdBy,
+        "updatedBy": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedBy,
+        "createdOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.createdOn,
+        "updatedOn": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.updatedOn,
+        "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
+        "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
+        "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
+        "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)].totalServiceAmount,
+        "netAmount": formik.values.netAmount,
+        "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName || formik.values.vehicleNo,
+        "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
+        "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)]?.serviceDetail || [],
+        "update": true
+      };
+      api.post(`Master/UpsertJobCard`, collectData);
+    })
   }
+
 
   const handlePanClose = () => {
     setPanOpen(false);
   };
-  const modalOpenHandle = (event: any) => {
+
+  const modalOpenHandle = (event: string) => {
     setPanOpen(true);
-    if (event === "file") {
-      setModalImg(formik.values.file);
+    const base64Prefix = "data:image/jpeg;base64,";
+
+    let imageData = '';
+    switch (event) {
+      case "challanRcvDoc":
+        imageData = formik.values.challanRcvDoc;
+        break;
+      default:
+        imageData = '';
+    }
+    if (imageData) {
+      const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+      console.log("imageData", imgSrc);
+      setImg(imgSrc);
+    } else {
+      setImg('');
     }
   };
-  const ConvertBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
-  const base64ToByteArray = (base64: string): Uint8Array => {
-    // Remove the data URL scheme if it exists
-    const base64String = base64.split(",")[1];
+  const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    // Decode the Base64 string
-    const binaryString = window.atob(base64String);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-
-    // Convert binary string to Uint8Array
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+      alert("Only .jpg, .jpeg, or .png image files are allowed.");
+      event.target.value = '';
+      return;
     }
 
-    return bytes;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+    };
+    reader.onerror = () => {
+      alert("Error reading file. Please try again.");
+    };
+    reader.readAsDataURL(file);
   };
 
-  const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-    let binary = "";
-    const len = uint8Array.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(uint8Array[i]);
-    }
-    return window.btoa(binary);
-  };
+  // const handlePanClose = () => {
+  //   setPanOpen(false);
+  // };
+  // const modalOpenHandle = (event: any) => {
+  //   setPanOpen(true);
+  //   if (event === "file") {
+  //     setModalImg(formik.values.file);
+  //   }
+  // };
+  // const ConvertBase64 = (file: File): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result as string);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
 
-  const otherDocChangeHandler = async (event: any, params: string) => {
-    console.log("Image file change detected");
+  // const base64ToByteArray = (base64: string): Uint8Array => {
+  //   // Remove the data URL scheme if it exists
+  //   const base64String = base64.split(",")[1];
 
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const fileNameParts = file.name.split(".");
-      const fileExtension =
-        fileNameParts[fileNameParts.length - 1].toLowerCase();
+  //   // Decode the Base64 string
+  //   const binaryString = window.atob(base64String);
+  //   const len = binaryString.length;
+  //   const bytes = new Uint8Array(len);
 
-      if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-        alert(
-          "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-        );
-        event.target.value = null;
-        return;
-      }
+  //   // Convert binary string to Uint8Array
+  //   for (let i = 0; i < len; i++) {
+  //     bytes[i] = binaryString.charCodeAt(i);
+  //   }
 
-      try {
-        const base64Data = (await ConvertBase64(file)) as string;
-        console.log("Base64 image data:", base64Data);
+  //   return bytes;
+  // };
 
-        // Convert Base64 to Uint8Array
-        const byteArray = base64ToByteArray(base64Data);
-        console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
+  // const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
+  //   let binary = "";
+  //   const len = uint8Array.byteLength;
+  //   for (let i = 0; i < len; i++) {
+  //     binary += String.fromCharCode(uint8Array[i]);
+  //   }
+  //   return window.btoa(binary);
+  // };
 
-        // Convert Uint8Array to base64 string
-        const base64String = uint8ArrayToBase64(byteArray);
-        console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
+  // const otherDocChangeHandler = async (event: any, params: string) => {
+  //   console.log("Image file change detected");
 
-        // Set value in Formik
-        formik.setFieldValue(params, base64String);
+  //   if (event.target.files && event.target.files[0]) {
+  //     const file = event.target.files[0];
+  //     const fileNameParts = file.name.split(".");
+  //     const fileExtension =
+  //       fileNameParts[fileNameParts.length - 1].toLowerCase();
 
-        let outputCheck =
-          "data:image/png;base64," + formik.values.file;
-        console.log(outputCheck);
-      } catch (error) {
-        console.error("Error converting image file to Base64:", error);
-      }
-    }
-  };
+  //     if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
+  //       alert(
+  //         "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
+  //       );
+  //       event.target.value = null;
+  //       return;
+  //     }
+
+  //     try {
+  //       const base64Data = (await ConvertBase64(file)) as string;
+  //       console.log("Base64 image data:", base64Data);
+
+  //       // Convert Base64 to Uint8Array
+  //       const byteArray = base64ToByteArray(base64Data);
+  //       console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
+
+  //       // Convert Uint8Array to base64 string
+  //       const base64String = uint8ArrayToBase64(byteArray);
+  //       console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
+
+  //       // Set value in Formik
+  //       formik.setFieldValue(params, base64String);
+
+  //       let outputCheck =
+  //         "data:image/png;base64," + formik.values.file;
+  //       console.log(outputCheck);
+  //     } catch (error) {
+  //       console.error("Error converting image file to Base64:", error);
+  //     }
+  //   }
+  // };
 
 
   const handleInputChange = (index: any, field: any, value: any) => {
@@ -827,7 +876,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                       }]);
                       formik.setFieldValue("challanNo", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.challanNo);
                       formik.setFieldValue("complainId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.complainId);
-                      formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.empId );
+                      formik.setFieldValue("empId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.empId);
                       formik.setFieldValue("itemId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.itemId);
                       formik.setFieldValue("jobCardId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.jobCardId);
                       formik.setFieldValue("vendorId", jobWorkChallanData.find(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)?.vendorId);
@@ -1078,77 +1127,76 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "file")}
+                    onChange={(e: any) => otherDocChangeHandler(e, "challanRcvDoc")}
                   />
                 </Grid>
-                <Grid xs={12} md={4} sm={4} item></Grid>
 
-                <Grid xs={12} md={4} sm={4} item>
-                  <Grid
+                <Grid xs={12} md={4} sm={4} item></Grid>
+                <Grid
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    margin: "10px",
+                  }}
+                >
+                  {formik.values.challanRcvDoc ? (
+                    <img
+                      src={
+                        formik.values.challanRcvDoc.startsWith("data:image")
+                          ? formik.values.challanRcvDoc
+                          : `data:image/jpeg;base64,${formik.values.challanRcvDoc}`
+                      }
+                      alt="Preview"
+                      style={{
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                        padding: "2px",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={nopdf}
+                      alt="No document"
+                      style={{
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                      }}
+                    />
+                  )}
+                  <Typography
+                    onClick={() => modalOpenHandle("challanRcvDoc")}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                      margin: "10px",
+                      textDecorationColor: "blue",
+                      textDecorationLine: "underline",
+                      color: "blue",
+                      fontSize: "15px",
+                      cursor: "pointer",
+                      padding: "20px",
                     }}
                   >
-                    {formik.values.file == "" ? (
-                      <img
-                        // src={nopdf}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                        }}
-                      />
-                    ) : (
-                      <img
-
-                        src={"data:image/png;base64," + formik.values.file}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                          padding: "2px",
-                        }}
-                      />
-                    )}
-                    <Typography
-                      onClick={() => modalOpenHandle("file")}
-                      style={{
-                        textDecorationColor: "blue",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                        fontSize: "15px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {t("text.Preview")}
-                    </Typography>
-                  </Grid>
+                    {t("text.Preview")}
+                  </Typography>
                 </Grid>
+
                 <Modal open={panOpens} onClose={handlePanClose}>
                   <Box sx={style}>
-                    {modalImg == "" ? (
+                    {Img ? (
                       <img
-                        //  src={nopdf}
-                        style={{
-                          width: "170vh",
-                          height: "75vh",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        alt="preview image"
-                        src={"data:image/png;base64," + modalImg}
+                        src={Img}
+                        alt="Preview"
                         style={{
                           width: "170vh",
                           height: "75vh",
                           borderRadius: 10,
                         }}
                       />
+                    ) : (
+                      <Typography>No Image to Preview</Typography>
                     )}
                   </Box>
                 </Modal>
@@ -1552,7 +1600,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 ref={inputRef}
                 onClick={(e) => {
                   setTimeout(() => {
-                    formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId  && e.jobCardId == location.state?.jobCardId)?.challanNo || 0);
+                    formik.setFieldValue("challanNo", formik.values.challanNo || jobWorkChallanData.find(e => e.itemId === location.state?.itemId && e.jobCardId == location.state?.jobCardId)?.challanNo || 0);
                   }, 400);
                 }}
                 sx={{ display: "none" }}

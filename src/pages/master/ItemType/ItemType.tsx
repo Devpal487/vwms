@@ -84,8 +84,8 @@ export default function ItemType() {
       itemTypeMasterId:0,
       itemType: "",
       itemTypecode: "",
-      createdBy: "admin",
-      updatedBy: "admin",
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
 
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,

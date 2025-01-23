@@ -66,10 +66,10 @@ export default function Department() {
          "departmentId": 0,
          "departmentName": "",
          "departmentShortname": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-14T06:21:05.348Z",
-         "updatedOn": "2024-12-14T06:21:05.348Z"
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,    
       },
 
       validationSchema: Yup.object({

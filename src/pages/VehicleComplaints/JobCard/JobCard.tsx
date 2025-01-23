@@ -173,7 +173,7 @@ export default function JobCard() {
       navigate(path, {
          state: {
             ...row,
-            // serviceDetail: [jobCardData[jobCardData.findIndex(e => e.jobCardId == row.jobCardId)]?.serviceDetail, {
+            // serviceDetail: jobCardData[jobCardData.findIndex(e => e.jobCardId == row.jobCardId)]?.serviceDetail || [{
             //    id: 0,
             //    jobCardId: 0,
             //    serviceId: 0,
@@ -192,7 +192,7 @@ export default function JobCard() {
             //    unitId: 0,
             //    vendorName: "",
             //    serviceName: "",
-            //    unitName: "", 
+            //    unitName: "",
             //    cgstid: 0,
             //    sgstid: 0,
             //    gstid: 0,
@@ -208,41 +208,41 @@ export default function JobCard() {
       navigate(path);
    };
 
-   let delete_id = "";
 
-   const accept = () => {
-      const collectData = {
-         campaignId: delete_id
-      }
-      api
-         .post(`Comm/DeleteCampaign`, collectData)
-         .then((response) => {
-            if (response.data.status === 1) {
-               toast.success(response.data.message);
-            } else {
-               toast.error(response.data.message);
-            }
-            fetchJobCardData();
-         });
-   };
+   // let delete_id = "";
+   // const accept = () => {
+   //    const collectData = {
+   //       campaignId: delete_id
+   //    }
+   //    api
+   //       .post(`Comm/DeleteCampaign`, collectData)
+   //       .then((response) => {
+   //          if (response.data.status === 1) {
+   //             toast.success(response.data.message);
+   //          } else {
+   //             toast.error(response.data.message);
+   //          }
+   //          fetchJobCardData();
+   //       });
+   // };
 
-   const reject = () => {
-      // toast.warn({summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-      toast.warn("Rejected: You have rejected", { autoClose: 3000 });
-   };
+   // const reject = () => {
+   //    // toast.warn({summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+   //    toast.warn("Rejected: You have rejected", { autoClose: 3000 });
+   // };
 
-   const handledeleteClick = (del_id: any) => {
-      // console.log(del_id + " del_id ");
-      delete_id = del_id;
-      confirmDialog({
-         message: "Do you want to delete this record ?",
-         header: "Delete Confirmation",
-         icon: "pi pi-info-circle",
-         acceptClassName: "p=-button-danger",
-         accept,
-         reject,
-      });
-   };
+   // const handledeleteClick = (del_id: any) => {
+   //    // console.log(del_id + " del_id ");
+   //    delete_id = del_id;
+   //    confirmDialog({
+   //       message: "Do you want to delete this record ?",
+   //       header: "Delete Confirmation",
+   //       icon: "pi pi-info-circle",
+   //       acceptClassName: "p=-button-danger",
+   //       accept,
+   //       reject,
+   //    });
+   // };
 
 
    function formatDate(dateString: string) {
