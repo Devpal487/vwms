@@ -76,8 +76,8 @@ const AddCampagianTemplate = (props: Props) => {
             "template": "",
             "templateType": "",
             "smsTemplateID": 0,
-            "createdBy": "",
-            "updatedBy": "",
+            "createdBy": "adminvm",
+            "updatedBy": "adminvm",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "srno": 0

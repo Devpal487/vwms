@@ -42,7 +42,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -308,9 +308,9 @@ const [vNO, setVno] = useState("");
     try {
       const collectData = {
         vehicleNo: vend,
-        jobCardDate: formik.values.fromDate, 
-        dateFrom: formik.values.fromDate,
-        dateTo: formik.values.toDate,
+        jobCardDate: formik.values.dateFrom, 
+        dateFrom: formik.values.dateFrom,
+        dateTo: formik.values.dateTo,
       };
       const response = await api.post(`Master/GetvVehicleItemConsumed`, collectData);
       const data = response?.data;
@@ -425,8 +425,8 @@ const [vNO, setVno] = useState("");
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      dateFrom: "",
+      dateTo: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -435,6 +435,13 @@ const [vNO, setVno] = useState("");
       displayLabel: "",
       index: 0,
     },
+     validationSchema: Yup.object({
+      dateTo: Yup.string()
+            .required("To date required"),
+            dateFrom: Yup.string()
+            .required("From date required"),
+        
+        }),
     onSubmit: async (values) => {
       
     },
@@ -492,6 +499,9 @@ const [vNO, setVno] = useState("");
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue) {
+                    return;
+                  }
                  
                   setVendor(newValue.label);
                 }}
@@ -512,17 +522,19 @@ const [vNO, setVno] = useState("");
           <Grid item xs={12} sm={4} lg={4}>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="dateFrom"
+                name="dateFrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.dateFrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.dateFrom && Boolean(formik.errors.dateFrom)}
+                helperText={formik.touched.dateFrom && formik.errors.dateFrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -531,15 +543,17 @@ const [vNO, setVno] = useState("");
              <Grid item xs={12} sm={4} lg={4}>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="dateTo"
+                name="dateTo"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.dateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.dateTo && Boolean(formik.errors.dateTo)}
+                helperText={formik.touched.dateTo && formik.errors.dateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -571,7 +585,8 @@ const [vNO, setVno] = useState("");
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
-              <Button
+           
+            <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -580,16 +595,22 @@ const [vNO, setVno] = useState("");
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
-
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        dateFrom: true,
+                        dateTo: true,
+                        
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >

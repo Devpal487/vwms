@@ -40,7 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -338,8 +338,8 @@ export default function OutSourceService() {
         "jobCardNo": formik.values.JobCardNo,
         "serviceName": formik.values.Service,
         "vendor":Vend,
-        "jobCardDatefrom": formik.values.fromDate,
-        "jobCardDateTo": formik.values.toDate
+        "jobCardDatefrom": formik.values.jobCardDatefrom,
+        "jobCardDateTo": formik.values.jobCardDateTo
       };
       const response = await api.post(
         `Report/GetServiceVehicleApi`,
@@ -459,8 +459,8 @@ export default function OutSourceService() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      jobCardDatefrom: "",
+      jobCardDateTo: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -473,6 +473,13 @@ export default function OutSourceService() {
       JobCardNo: "",
 
     },
+     validationSchema: Yup.object({
+      jobCardDatefrom: Yup.string()
+            .required("JobCard from Date required"),
+            jobCardDateTo: Yup.string()
+            .required("JobCard To Date required"),
+        
+        }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -538,6 +545,10 @@ export default function OutSourceService() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue)
+                  {
+                    return;
+                  }
 
                   setVno(newValue.label);
                 }}
@@ -601,6 +612,9 @@ export default function OutSourceService() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue){
+                    return;
+                  }
 
                   setVend(newValue.label);
                 }}
@@ -623,17 +637,19 @@ export default function OutSourceService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="jobCardDatefrom"
+                name="jobCardDatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.jobCardDatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobCardDatefrom && Boolean(formik.errors.jobCardDatefrom)}
+  helperText={formik.touched.jobCardDatefrom && formik.errors.jobCardDatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -642,15 +658,17 @@ export default function OutSourceService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="jobCardDateTo"
+                name="jobCardDateTo"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.jobCardDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobCardDateTo && Boolean(formik.errors.jobCardDateTo)}
+  helperText={formik.touched.jobCardDateTo && formik.errors.jobCardDateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -684,7 +702,38 @@ export default function OutSourceService() {
 
 
             <Grid xs={12} sm={4} md={4} item>
-              <Button
+
+
+            <Button
+  type="submit"
+  fullWidth
+  style={{
+    backgroundColor: `var(--header-background)`,
+    color: "white",
+    marginTop: "10px",
+  }}
+  onClick={() => {
+    // Trigger validation
+    formik.validateForm().then((errors) => {
+      if (Object.keys(errors).length === 0) {
+        // No validation errors, call API
+        fetchZonesData();
+        setVisible(true);
+      } else {
+        // Show errors in the form
+        formik.setTouched({
+          jobCardDatefrom: true,
+          jobCardDateTo: true,
+        });
+        toast.error("Please fill in all required fields.");
+      }
+    });
+  }}
+  startIcon={<VisibilityIcon />}
+>
+  Show
+</Button>
+              {/* <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -707,7 +756,7 @@ export default function OutSourceService() {
                 startIcon={<VisibilityIcon />}
               >
                 Show
-              </Button>
+              </Button> */}
             </Grid>
 
 

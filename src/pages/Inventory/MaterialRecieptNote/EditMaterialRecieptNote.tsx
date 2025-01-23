@@ -40,10 +40,10 @@ const EditMaterialRecieptNote = (props: Props) => {
 const [orderData, setOrderData] = useState([]);
   const [orderVendorData, setOrderVendorData] = useState([]);
   const [toaster, setToaster] = useState(false);
-  const [vendorData, setVendorData] = useState([]);
+  const [vendorData, setVendorData] = useState<any>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
-    "sno": 0,
+  "sno": 0,
     "id": 0,
     "mrnId": 0,
     "orderId": 0,
@@ -66,11 +66,15 @@ const [orderData, setOrderData] = useState([]);
     "igstid": 0,
     "netAmount": 0,
     "unitId": 0,
-    "qcApplicable": true
+    "totalGst": 0,
+    "qcApplicable": true,
+    "isDelete": false,
+    "itemName": "",
+    "unitName": ""
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
- const [unitOptions, setUnitOptions] = useState([
+ const [unitOptions, setUnitOptions] = useState<any>([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
   const [orderOption, setorderOption] = useState([
@@ -124,7 +128,7 @@ const [orderData, setOrderData] = useState([]);
               return {
                 id: item.id,
                 mrnId: item.mrnId,
-                mrnType: item.mrnId,
+               // mrnType: item.mrnId,
                 orderId: item.orderId,
                 orderNo: item.orderNo,
                 batchNo: item.batchNo,
@@ -143,9 +147,13 @@ const [orderData, setOrderData] = useState([]);
                 cgstid: item.cgstid,
                 sgstid: item.sgstid,
                 igstid: item.igstid,
-                gst: item.gst,
+                totalGst: item.gst,
                 netAmount: item.netAmount,
-                item: {},
+                unitId: item.unitId,
+                itemName: item.itemName,
+                unitName: item.unitName,
+
+                //item: {},
               }
             })
             setTableData(arr);
@@ -430,18 +438,19 @@ const [orderData, setOrderData] = useState([]);
       netAmount: location.state.netAmount,
       qcApplicable: location.state.qcApplicable,
       qcStatus: location.state.qcStatus,
-      createdBy: defaultValues,
-      updatedBy: defaultValues,
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: location.state.companyId,
       fyId: location.state.fyId,
-     // mrnDetail: [],
-      mrnDetail: [],
-      vendor: {},
+     purOrderId:location.state.purOrderId,
+     vendorName:location.state.vendorName,
+      // vendor: {},
       name: location.state.name || '',
       netAmountv: location.state.netAmountv,
-      srn: location.state.srn,
+      mrnDetail: [],
+     
     },
 
     onSubmit: async (values) => {
@@ -504,7 +513,7 @@ const [orderData, setOrderData] = useState([]);
           Object.keys(row.item).length === 0
         );
       });
-      values.vendor = vendorDetail;
+      values= vendorDetail;
 
       const response = await api.post(`QualityCheck/UpsertMrn`, {
         ...values,
@@ -783,10 +792,17 @@ const [orderData, setOrderData] = useState([]);
                     disablePortal
                     id="combo-box-demo"
                     options={vendorData}
+                    value={
+                      vendorData[vendorData.findIndex((e:any) => e.value == formik.values.vendorId)]?.label || ""
+                  }
                     fullWidth
                     size="small"
 
                     onChange={(event: any, newValue: any) => {
+                      if(!newValue)
+                      {
+                        return ;
+                      }
                       handleVendorSelect(event, newValue);
                       console.log(newValue?.value);
                       //getPurchaseOrderById(newValue?.value);
@@ -1100,11 +1116,14 @@ const [orderData, setOrderData] = useState([]);
                               options={orderOption}
                               fullWidth
                               size="small"
-                              value={orderOption.find((opt: any) => opt.value == row.orderId)}
+                              value={
+                                orderOption[orderOption.findIndex((e:any) => e.value == row.orderId)]?.label || ""
+                            }
+                             // value={orderOption.find((opt: any) => opt.value == row.orderId)}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(
                                   index,
-                                  "orderNo",
+                                  "orderId",
                                   newValue?.value
                                 )
                               }
@@ -1130,7 +1149,10 @@ const [orderData, setOrderData] = useState([]);
                               options={itemOption}
                               fullWidth
                               size="small"
-                              value={itemOption.find((opt: any) => opt.value === row.itemId)}
+                              value={
+                                itemOption[itemOption.findIndex((e:any) => e.value == row.itemId)]?.label || ""
+                            }
+                              //value={itemOption.find((opt: any) => opt.value === row.itemId)}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(
                                   index,
@@ -1167,8 +1189,11 @@ const [orderData, setOrderData] = useState([]);
                               id="combo-box-demo"
                               options={unitOptions}
                               value={
-                                unitOptions.find((opt) => (opt.value) === row?.unitId) || null
-                              }
+                                unitOptions[unitOptions.findIndex((e:any) => e.value == row.unitId)]?.label || ""
+                            }
+                              // value={
+                              //   unitOptions.find((opt) => (opt.value) === row?.unitId) || null
+                              // }
                               fullWidth
                               size="small"
                               onChange={(e, newValue: any) =>
@@ -1239,7 +1264,10 @@ const [orderData, setOrderData] = useState([]);
                               options={taxData}
                               fullWidth
                               size="small"
-                              value={taxData.find((opt: any) => opt.value == row.gstId)}
+                              value={
+                                taxData[taxData.findIndex((e:any) => e.value == row.gstId)]?.label || ""
+                            }
+                              // value={taxData.find((opt: any) => opt.value == row.gstId)}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange(index, "gstId", newValue?.value)
                               }

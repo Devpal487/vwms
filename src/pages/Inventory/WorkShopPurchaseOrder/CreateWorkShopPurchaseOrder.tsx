@@ -378,13 +378,13 @@ const CreateWorkShopPurchaseOrder = () => {
                 acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
                 return acc;
             },
-            {
-                // totalAmount: 0,
-                totalCGST: 0,
-                totalSGST: 0,
-                totalIGST: 0,
-                totalGrossAmount: 0,
-            }
+            // {
+            //     // totalAmount: 0,
+            //     totalCGST: 0,
+            //     totalSGST: 0,
+            //     totalIGST: 0,
+            //     totalGrossAmount: 0,
+            // }
         );
 
         formik.setValues({
@@ -537,8 +537,8 @@ const CreateWorkShopPurchaseOrder = () => {
             "netAmount": 0, 
             "status": "",
             "orderType": "",
-            "createdBy": "",
-            "updatedBy": "",
+            "createdBy": "adminvm",
+            "updatedBy": "adminvm",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "companyId": 0,
@@ -559,7 +559,7 @@ const CreateWorkShopPurchaseOrder = () => {
             // pOrderDoc: Yup.string()
             //     .required("Image required"),
              indentId: Yup.string().required("Indnet no required"),
-            //   vendorId:Yup.string().required("Vendor is rquired"),
+              vendorId:Yup.string().required("Vendor is rquired"),
 
 
         }),
@@ -905,11 +905,14 @@ const CreateWorkShopPurchaseOrder = () => {
                                         <TextField
                                             {...params}
                                             label={
-                                                <CustomLabel text={t("text.Vendorname")} required={false} />
+                                                <CustomLabel text={t("text.Vendorname")} required={true} />
                                             }
                                         />
                                     )}
                                 />
+                                {formik.touched.vendorId && formik.errors.vendorId && (
+                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId}</div>
+                                )}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -1506,7 +1509,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
-                                                        <b></b>{formik.values.totalAmount}
+                                                        <b></b>{formik.values.netAmount}
                                                         {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)} */}
                                                     </td>
                                                 </tr>

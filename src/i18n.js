@@ -12,6 +12,11 @@ const resources = {
       text: {
         ////
         /////
+        item:"Item",
+        ItemConsumedReport:"Item Consumed Report",
+        VehicleItemConsumed:"Vehicle Item Consumed",
+        complainStatus:"Complaint Status",
+        jobcardStatus:"Jobcard Status",
         itemconsumedname:"Select Item Consumed Name",
         itemsConsumed:"Items Consumed",
         Vehicle:"Vehicle",

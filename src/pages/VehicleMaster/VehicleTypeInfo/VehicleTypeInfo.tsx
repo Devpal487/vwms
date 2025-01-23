@@ -119,11 +119,11 @@ export default function VehicleTypeInfo() {
          "sessionD1": 0,
          "sessionD2": 0,
          "petroName": "",
-         "createdOn": "2024-12-18T05:03:20.188Z",
-         "effectiveDate": "2024-12-18T05:03:20.188Z",
-         "updateOn": "2024-12-18T05:03:20.188Z",
-         "createdBy": "",
-         "updatedBy": ""
+         "createdOn": defaultValuestime,
+         "effectiveDate": defaultValuestime,
+         "updateOn": defaultValuestime,
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm"
       },
 
       validationSchema: Yup.object({

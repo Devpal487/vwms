@@ -68,10 +68,10 @@ export default function BrandMaster() {
          "brandname": "",
          "brandshortname": "",
          "brandCode": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-10T05:48:51.072Z",
-         "updatedOn": "2024-12-10T05:48:51.072Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srno": 0
       },
 
@@ -120,10 +120,10 @@ export default function BrandMaster() {
          "brandname": delete_name,
          "brandshortname": "",
          "brandCode": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-10T05:34:16.609Z",
-         "updatedOn": "2024-12-10T05:34:16.609Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn":defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srno": 0
       }
       console.log("collectData " + JSON.stringify(collectData));

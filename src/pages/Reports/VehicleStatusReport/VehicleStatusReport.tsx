@@ -40,7 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -85,32 +85,14 @@ export default function VehicleStatusReport() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    const headers = ["Date", "Vehicle No", "Complain Status", "JobCard No", "Jobcard Status"];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      moment(item?.complaintDate).format("DD-MM-YYYY") || "",
+      item?.vehicleNo || "", // Vehicle No
+      item?.complainStatus || "", // Driver
+      item?.jobCardNo || "", // Mobile No
+      item?.jobcardStatus || "",
     ]);
 
     // Create HTML table
@@ -209,7 +191,7 @@ export default function VehicleStatusReport() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Date", "Vehicle No", "Complain Status", "JobCard No", "Jobcard Status"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -242,11 +224,11 @@ export default function VehicleStatusReport() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
+        moment(item?.complaintDate).format("DD-MM-YYYY") || "",
         item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.complainStatus || "", // Driver
+        item?.jobCardNo || "", // Mobile No
+        item?.jobcardStatus || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -282,25 +264,22 @@ export default function VehicleStatusReport() {
   let navigate = useNavigate();
   const { t } = useTranslation();
 
-  // useEffect(() => {
-  //   getData();
-  //   getPeriod();
+  useEffect(() => {
 
-  //   getVehicleNo();
-  // }, []);
+  }, []);
 
 
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "complaintDateFrom": formik.values.fromDate,
-        "complaintDateTo": formik.values.toDate
+        "complaintDateFrom": formik.values.complaintDateFrom,
+        "complaintDateTo": formik.values.complaintDateTo
       };
       const response = await api.post(
         `Report/GetVehicleStatusApi`,
         collectData
       );
-      const data = response?.data;
+      const data = response?.data.data;
 
       const Print = data.map((item: any, index: any) => ({
         ...item,
@@ -316,13 +295,13 @@ export default function VehicleStatusReport() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo"),
@@ -335,7 +314,7 @@ export default function VehicleStatusReport() {
           {
             field: "complaintDate",
             headerName: t("text.complaintDate"),
-            flex: 1.2,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
@@ -345,7 +324,7 @@ export default function VehicleStatusReport() {
           {
             field: "complainStatus",
             headerName: t("text.complainStatus"),
-            flex: 1,
+            flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
@@ -356,45 +335,45 @@ export default function VehicleStatusReport() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "jobCardDate",
-            headerName: t("text.jobCardDate"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            renderCell: (params) => {
-              return moment(params.row.jobCardDate).format("DD-MM-YYYY");
-            },
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "challanDate",
-            headerName: t("text.challanDate"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            // align: 'right',
-            // headerAlign: 'right',
-            renderCell: (params) => {
-              return moment(params.row.challanDate).format("DD-MM-YYYY");
-            },
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "challanRcvDate",
-            headerName: t("text.challanRcvDate"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            renderCell: (params) => {
-              return moment(params.row.challanRcvDate).format("DD-MM-YYYY");
-            },
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "complainStatus",
-            headerName: t("text.complainStatus"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "jobCardDate",
+          //   headerName: t("text.jobCardDate"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   renderCell: (params) => {
+          //     return moment(params.row.jobCardDate).format("DD-MM-YYYY");
+          //   },
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "challanDate",
+          //   headerName: t("text.challanDate"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   // align: 'right',
+          //   // headerAlign: 'right',
+          //   renderCell: (params) => {
+          //     return moment(params.row.challanDate).format("DD-MM-YYYY");
+          //   },
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "challanRcvDate",
+          //   headerName: t("text.challanRcvDate"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   renderCell: (params) => {
+          //     return moment(params.row.challanRcvDate).format("DD-MM-YYYY");
+          //   },
+          //   cellClassName: "wrap-text", // Added here
+          // },
+          // {
+          //   field: "complainStatus",
+          //   headerName: t("text.complainStatus"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "jobcardStatus",
             headerName: t("text.jobcardStatus"),
@@ -402,7 +381,7 @@ export default function VehicleStatusReport() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-        
+
         ];
         setColumns(columns as any);
       }
@@ -429,11 +408,19 @@ export default function VehicleStatusReport() {
 
   const formik = useFormik({
     initialValues: {
-     
-      fromDate: "",
-      toDate: "",
-      
+      genderID: -1,
+      complaintDateFrom: "",
+      complaintDateTo: "",
+
     },
+    validationSchema: Yup.object({
+      complaintDateTo
+        : Yup.string()
+          .required("Complaint To date required"),
+      complaintDateFrom: Yup.string()
+        .required("Complaint from date required"),
+
+    }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -495,17 +482,19 @@ export default function VehicleStatusReport() {
             <Grid xs={12} sm={6} md={6} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="complaintDateFrom"
+                name="complaintDateFrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.complaintDateFrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.complaintDateFrom && Boolean(formik.errors.complaintDateFrom)}
+                helperText={formik.touched.complaintDateFrom && formik.errors.complaintDateFrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -514,15 +503,17 @@ export default function VehicleStatusReport() {
             <Grid xs={12} sm={6} md={6} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="complaintDateTo"
+                name="complaintDateTo"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.complaintDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.complaintDateTo && Boolean(formik.errors.complaintDateTo)}
+                helperText={formik.touched.complaintDateTo && formik.errors.complaintDateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -565,24 +556,29 @@ export default function VehicleStatusReport() {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        complaintDateFrom: true,
+                        complaintDateTo: true,
 
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >
                 Show
               </Button>
+
             </Grid>
-
-
             <Grid xs={12} sm={4} md={4} item>
               <Button
                 type="button"

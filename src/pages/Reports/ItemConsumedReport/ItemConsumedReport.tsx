@@ -40,7 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -51,7 +51,7 @@ interface MenuPermission {
 export default function JobCardStatus() {
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -67,9 +67,9 @@ export default function JobCardStatus() {
     { value: -1, label: "Select Vehicle No " },
   ]);
   const [itemOption, setitemOption] = useState([
-        { value: -1, label:"Select Unit" },
-    ]);
-    const [itmNO, setitmno] = useState("");
+    { value: -1, label: "Select Unit" },
+  ]);
+  const [itmNO, setitmno] = useState("");
   const [Period, setPeriod] = useState([{ value: -1, label: "Select Period" }]);
   const [vNO, setVno] = useState("");
 
@@ -88,14 +88,14 @@ export default function JobCardStatus() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = ["item", "Vehicle No", "jobcardNo", "indent No", "jobcardDate"];
+    const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
     const rows = isPrint.map((item: any) => [
-            
-        item?.item || "", // Vehicle No
-        item?.vehicleNo || "", // Driver
-        item?.jobcardNo || "", // Mobile No
-        item?.indentNo || "",
-        moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
+
+      item?.item || "", // Vehicle No
+      item?.vehicleNo || "", // Driver
+      item?.jobCardNo || "", // Mobile No
+      item?.indentNo || "",
+      moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
     ]);
 
     // Create HTML table
@@ -137,11 +137,11 @@ export default function JobCardStatus() {
           </thead>
           <tbody>
             ${rows
-              .map(
-                (row) =>
-                  `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-              )
-              .join("")}
+        .map(
+          (row) =>
+            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+        )
+        .join("")}
           </tbody>
         </table>
       </body>
@@ -194,7 +194,7 @@ export default function JobCardStatus() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["item", "Vehicle No", "jobcardNo", "indent No", "jobcardDate"];
+    const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -227,10 +227,10 @@ export default function JobCardStatus() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        
+
         item?.item || "", // Vehicle No
         item?.vehicleNo || "", // Driver
-        item?.jobcardNo || "", // Mobile No
+        item?.jobCardNo || "", // Mobile No
         item?.indentNo || "",
         moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
       ];
@@ -273,7 +273,7 @@ export default function JobCardStatus() {
     getVehicleNo();
   }, []);
 
- 
+
 
   const getVehicleNo = () => {
 
@@ -288,166 +288,107 @@ export default function JobCardStatus() {
   };
   const GetitemData = async () => {
     const collectData = {
-        itemMasterId: -1,
+      itemMasterId: -1,
     };
     const response = await api.get(`ItemMaster/GetItemMaster`, {});
     const data = response.data.data;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
-        arr.push({
-            label: data[index]["itemName"],
-            value: data[index]["itemMasterId"],
-        });
+      arr.push({
+        label: data[index]["itemName"],
+        value: data[index]["itemMasterId"],
+      });
     };
     setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
-};
- 
-const fetchZonesData = async () => {
-  try {
+  };
+
+  const fetchZonesData = async () => {
+    try {
       const collectData = {
-          jobCardNofrom: formik.values.JobCardNoFrom,
-          jobCardNoTo: formik.values.JobCardNoTo,
-          vehicleNo: vNO,
-          item: itmNO,
-          jobcarddatefrom: formik.values.fromDate,
-          jobcarddateto: formik.values.toDate,
+        jobCardNofrom: formik.values.jobCardNofrom,
+        jobCardNoTo: formik.values.jobCardNoTo,
+        vehicleNo: vNO,
+        item: itmNO,
+        jobCardDatefrom: formik.values.jobCardDatefrom,
+        jobCardDateTo: formik.values.jobCardDateTo,
       };
 
       const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
-      const data = response?.data.data;
+      const data = response?.data;
+      const Print = data.map((item: any, index: any) => ({
+        ...item,
+      }));
+      setPrint(Print);
+      const zonesWithIds = data.map((zone: any, index: any) => ({
+        ...zone,
+        serialNo: index + 1,
+        id: index + 1,
+      }));
+      setZones(zonesWithIds);
+      setIsLoading(false);
 
-      if (data && Array.isArray(data)) {
-          const zonesWithIds:any = data.map((item, index) => ({
-              ...item,
-              id: index + 1, // Add unique ID
-          }));
-          setZones(zonesWithIds);
-          console.log("Zones updated:", zonesWithIds);
-      } else {
-          console.warn("Unexpected API response format:", response);
+       if (data.length > 0) {
+              const columns: GridColDef[] = [
+          {
+            field: "item",
+            headerName: t("text.item"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+          {
+            field: "vehicleNo",
+            headerName: t("text.VehicleNo"),
+            flex: 1.4,
+            cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
+          },
+          {
+            field: "jobCardNo",
+            headerName: t("text.JobCardNo"),
+            flex: 1.5,
+            // align: "right",
+            // headerAlign: "right",
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+
+          },
+          {
+            field: "complaintDate",
+            headerName: t("text.complaintDate"),
+            flex: 1.3,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+          },
+          {
+            field: "jobcardDate",
+            headerName: t("text.JobCardDate"),
+            flex: 1.5,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.jobcardDate).format("DD-MM-YYYY");
+            },
+          },
+          {
+            field: "indentNo",
+            headerName: t("text.indentNo"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+
+        ];
+        setColumns(columns as any);
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching data:", error);
-  }
-};
-
-<DataGrid
-  rows={zones}
-  columns={columns}
-  autoHeight
-  pageSizeOptions={[5, 10, 25]}
-  sx={{
-      "& .MuiDataGrid-columnHeaders": {
-          backgroundColor: "#42b6f5",
-          color: "white",
-      },
-      "& .MuiDataGrid-cell": {
-          whiteSpace: "normal",
-          wordWrap: "break-word",
-      },
-  }}
-/>;
-
-
-  // const fetchZonesData = async () => {
-  //   try {
-  //     const collectData = {
-  //       jobCardNofrom:formik.values.JobCardNoFrom,
-  //       jobCardNoTo:formik.values.JobCardNoTo,
-  //       vehicleNo:vNO,
-  //       item: itmNO,
-  //       // complaintfrom:formik.values.ComplainDateFrom,
-  //       // complaintTo:formik.values.ComplainDateTo,
-  //       jobcarddatefrom:formik.values.fromDate,
-  //       jobcarddateto:formik.values.toDate,
-
-  //       // "item": "",
-  //       // "vehicleNo": "",
-  //       // "jobCardNofrom": "",
-  //       // "jobCardNoTo": "",
-  //       // "jobCardDatefrom": "2021-01-22T12:53:08.706Z",
-  //       // "jobCardDateTo": "2025-01-22T12:53:08.706Z"
-  //     };
-  //     const response = await api.post(
-  //       `Report/GetvItemConsumedApi`,
-  //       collectData
-  //     );
-  //     const data = response?.data.data;
-
-  //     const Print = data.map((item: any, index: any) => ({
-  //       ...item,
-  //     }));
-  //     setPrint(Print);
-  //     const zonesWithIds = data.map((zone: any, index: any) => ({
-  //       ...zone,
-  //       serialNo: index + 1,
-  //       id: index + 1,
-  //     }));
-  //     setZones(zonesWithIds);
-  //     setIsLoading(false);
-
-  //     if (data.length > 0) {
-  //       const columns: GridColDef[] = [
-  //         {
-  //           field: "item",
-  //           headerName: t("text.item"),
-  //           flex: 1,
-  //           headerClassName: "MuiDataGrid-colCell",
-  //           cellClassName: "wrap-text", // Added here
-  //         },
-  //         {
-  //           field: "vehicleNo",
-  //           headerName: t("text.VehicleNo"),
-  //           flex: 1.4,
-  //           cellClassName: "wrap-text", // Added here
-  //           headerClassName: "MuiDataGrid-colCell",
-  //         },
-  //         {
-  //           field: "jobcardNo",
-  //           headerName: t("text.JobCardNo"),
-  //           flex: 1.5,
-  //           // align: "right",
-  //           // headerAlign: "right",
-  //           headerClassName: "MuiDataGrid-colCell",
-  //           cellClassName: "wrap-text", // Added here
-
-  //         },
-  //         {
-  //           field: "complaintDate",
-  //           headerName: t("text.complaintDate"),
-  //           flex: 1.3,
-  //           headerClassName: "MuiDataGrid-colCell",
-  //           cellClassName: "wrap-text", // Added here
-  //           renderCell: (params) => {
-  //             return moment(params.row.complaintDate).format("DD-MM-YYYY");
-  //           },
-  //         },
-  //         {
-  //           field: "jobcardDate",
-  //           headerName: t("text.JobCardDate"),
-  //           flex: 1.5,
-  //           headerClassName: "MuiDataGrid-colCell",
-  //           cellClassName: "wrap-text", // Added here
-  //           renderCell: (params) => {
-  //             return moment(params.row.jobcardDate).format("DD-MM-YYYY");
-  //           },
-  //         },
-  //         {
-  //           field: "indentNo",
-  //           headerName: t("text.indentNo"),
-  //           flex: 1,
-  //           headerClassName: "MuiDataGrid-colCell",
-  //           cellClassName: "wrap-text", // Added here
-  //         },
-       
-  //       ];
-  //       setColumns(columns as any);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     // setLoading(false);
-  //   }
-  // };
+      // setLoading(false);
+    }
+  };
 
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
@@ -468,8 +409,8 @@ const fetchZonesData = async () => {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      jobCardDatefrom: "",
+      jobCardDateTo: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -477,11 +418,18 @@ const fetchZonesData = async () => {
       daysOnly: false,
       displayLabel: "",
       index: 0,
-      JobCardNoFrom: "",
-      JobCardNoTo: "",
-      ComplainDateFrom: "",
-      ComplainDateTo: "",
+      jobCardNofrom: "",
+      jobCardNoTo: "",
+      // ComplainDateFrom: "",
+      // ComplainDateTo: "",
     },
+    validationSchema: Yup.object({
+
+      jobCardDatefrom: Yup.string()
+        .required("Jobcard from date required"),
+      jobCardDateTo: Yup.string()
+        .required("Jobcard  to date  required"),
+    }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -538,20 +486,22 @@ const fetchZonesData = async () => {
           <Box height={10} />
 
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
-          <Grid xs={12} sm={4} md={4} item>
+            <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="jobCardDatefrom"
+                name="jobCardDatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.jobCardDatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobCardDatefrom && Boolean(formik.errors.jobCardDatefrom)}
+                helperText={formik.touched.jobCardDatefrom && formik.errors.jobCardDatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -560,15 +510,17 @@ const fetchZonesData = async () => {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="jobCardDateTo"
+                name="jobCardDateTo"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.jobCardDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobCardDateTo && Boolean(formik.errors.jobCardDateTo)}
+                helperText={formik.touched.jobCardDateTo && formik.errors.jobCardDateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -582,8 +534,11 @@ const fetchZonesData = async () => {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if (!newValue) {
+                    return;
+                  }
 
-                    setitmno(newValue.label);
+                  setitmno(newValue.label);
                 }}
 
                 renderInput={(params: any) => (
@@ -602,7 +557,7 @@ const fetchZonesData = async () => {
             </Grid>
 
 
-          <Grid item xs={12} sm={4} lg={4}>
+            <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
                 disablePortal
@@ -611,6 +566,9 @@ const fetchZonesData = async () => {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if (!newValue) {
+                    return;
+                  }
 
                   setVno(newValue.label);
                 }}
@@ -630,14 +588,14 @@ const fetchZonesData = async () => {
               />
             </Grid>
 
-        
+
 
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoFrom")} />}
-                value={formik.values.JobCardNoFrom}
-                name="JobCardNoFrom"
-                id="JobCardNoFrom"
+                value={formik.values.jobCardNofrom}
+                name="jobCardNofrom"
+                id="jobCardNofrom"
                 placeholder={t("text.JobCardNoFrom")}
                 size="small"
                 fullWidth
@@ -650,9 +608,9 @@ const fetchZonesData = async () => {
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoTo")} />}
-                value={formik.values.JobCardNoTo}
-                name="JobCardNoTo"
-                id="JobCardNoTo"
+                value={formik.values.jobCardNoTo}
+                name="jobCardNoTo"
+                id="jobCardNoTo"
                 placeholder={t("text.JobCardNoTo")}
                 size="small"
                 fullWidth
@@ -662,7 +620,7 @@ const fetchZonesData = async () => {
               />
             </Grid>
 
-          
+
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
@@ -700,16 +658,22 @@ const fetchZonesData = async () => {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
 
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                        jobCardDatefrom: true,
+                        jobCardDateTo: true,
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >
@@ -773,25 +737,25 @@ const fetchZonesData = async () => {
                   </div>
                 ) : (
                   <DataGrid
-                  rows={zones} // Use rows from the processed API response
-                  columns={columns} // Use columns defined in fetchZonesData
-                  autoHeight
-                  pageSizeOptions={[5, 10, 25, 50]}
-                  initialState={{
+                    rows={zones} // Use rows from the processed API response
+                    columns={columns} // Use columns defined in fetchZonesData
+                    autoHeight
+                    pageSizeOptions={[5, 10, 25, 50]}
+                    initialState={{
                       pagination: { paginationModel: { pageSize: 5 } },
-                  }}
-                  sx={{
+                    }}
+                    sx={{
                       "& .MuiDataGrid-columnHeaders": {
-                          backgroundColor: "#42b6f5",
-                          color: "white",
+                        backgroundColor: "#42b6f5",
+                        color: "white",
                       },
                       "& .MuiDataGrid-cell": {
-                          whiteSpace: "normal",
-                          wordWrap: "break-word",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
                       },
-                  }}
-              />
-              
+                    }}
+                  />
+
                 )}
               </Grid>
             )}

@@ -40,6 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
+import * as Yup from "yup";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -342,8 +343,8 @@ export default function StockLedgerReport() {
         "itemName":isItem,
         "vehicleNo":vNO,
         "docNo":formik.values.DocumentNo,
-        "docdatefrom":formik.values.fromDate,
-        "docdateto":formik.values.toDate
+        "docdatefrom":formik.values.docdatefrom,
+        "docdateto":formik.values.docdateto
       };
       const response = await api.post(
         `Report/GetvStockLedger2Api`,
@@ -488,8 +489,8 @@ export default function StockLedgerReport() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      docdatefrom: "",
+      docdateto: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -499,6 +500,15 @@ export default function StockLedgerReport() {
       index: 0,
       DocumentNo: "",
     },
+ validationSchema: Yup.object({
+  docdateto: Yup.string()
+        .required("document To date required"),
+        docdatefrom: Yup.string()
+        .required("document from date required"),
+    
+     
+    }),
+
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -564,6 +574,9 @@ export default function StockLedgerReport() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue){
+                    return;
+                  }
                   
                   setVno(newValue.label);
                 }}
@@ -593,6 +606,9 @@ export default function StockLedgerReport() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue){
+                    return;
+                  }
                   
                   setItem(newValue.label);
                 }}
@@ -620,17 +636,19 @@ export default function StockLedgerReport() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="docdatefrom"
+                name="docdatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.docdatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.docdatefrom && Boolean(formik.errors.docdatefrom)}
+                helperText={formik.touched.docdatefrom && formik.errors.docdatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -639,15 +657,17 @@ export default function StockLedgerReport() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="docdateto"
+                name="docdateto"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.docdateto}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.docdateto && Boolean(formik.errors.docdateto)}
+                helperText={formik.touched.docdateto && formik.errors.docdateto}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -697,7 +717,8 @@ export default function StockLedgerReport() {
 
 
             <Grid xs={12} sm={4} md={4} item>
-              <Button
+
+            <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -706,21 +727,28 @@ export default function StockLedgerReport() {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
-
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        docdatefrom: true,
+                        docdateto: true,
+                       
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >
                 Show
               </Button>
+              
             </Grid>
 
 

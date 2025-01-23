@@ -85,8 +85,8 @@ const EditSmsEventSettings = (props: Props) => {
             "sendingType": location.state.sendingType,
             "message": location.state.message,
             "isActive": location.state.isActive,
-            "createdBy": "",
-            "updatedBy": "",
+            "createdBy": "adminvm",
+            "updatedBy": "adminvm",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "srn": location.state.srn

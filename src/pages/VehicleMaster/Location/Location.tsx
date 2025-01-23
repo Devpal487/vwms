@@ -69,10 +69,10 @@ export default function Location() {
          "locID": 0,
          "locName": "",
          "parentID": 0,
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-12T04:56:26.562Z",
-         "updatedOn": "2024-12-12T04:56:26.562Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srNo": 0
       },
 

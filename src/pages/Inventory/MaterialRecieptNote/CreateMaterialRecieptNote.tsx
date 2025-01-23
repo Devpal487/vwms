@@ -448,8 +448,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
       "netAmount": 0.0,
       "qcApplicable": true,
       "qcStatus": "",
-      "createdBy": "",
-      "updatedBy": "",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,
@@ -486,8 +486,12 @@ const CreateMaterialRecieptNote = (props: Props) => {
         tableData[0].cgstid === 0 &&
         tableData[0].sgstid === 0 &&
         tableData[0].igstid === 0 &&
-        tableData[0].unitId === "" &&
+        tableData[0].unitId === 0 &&
+        tableData[0].totalGst === 0 &&
+        tableData[0].itemName === 0 &&
+        tableData[0].unitName === 0 &&
         tableData[0].netAmount === 0 &&
+    
         Object.keys(tableData[0].item).length === 0;
 
       if (isFirstRowDefault) {
@@ -521,6 +525,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
           row.gst === 0 &&
           row.netAmount === "" &&
           row.unitId === "" &&
+          tableData[0].totalGst === 0 &&
+          tableData[0].itemName === 0 &&
+          tableData[0].unitName === 0 &&
+        //  tableData[0].netAmount === 0 &&
           Object.keys(row.item).length === 0
         );
       });
@@ -583,6 +591,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
         "serialNo": "",
         "qcStatus": "",
         "balQuantity": 0,
+        "itemName": "",
+      "unitName": "",
+      "totalGst": 0,
         "qcApplicable": true
 
 

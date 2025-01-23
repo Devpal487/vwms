@@ -52,8 +52,8 @@ import {
     description: "",
     type: "",
     isActive: true,
-      createdBy: "",
-      updatedBy: "",
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime
 
@@ -69,8 +69,8 @@ import {
         description: location.state.description,
         type: location.state.type,
         isActive: location.state.isActive,
-        createdBy: "",
-        updatedBy: "",
+        createdBy: "adminvm",
+        updatedBy: "adminvm",
         createdOn: defaultValuestime,
         updatedOn: defaultValuestime
       },
