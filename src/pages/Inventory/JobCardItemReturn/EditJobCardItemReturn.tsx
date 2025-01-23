@@ -1317,7 +1317,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "30%" }}>Item Name</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th> */}
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Qty</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>ReturnQty</th>
@@ -1389,15 +1389,22 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             )}
                                                         />
                                                     </td>
-                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                            type="number"
-                                                            size="small"
-                                                            // type="text"
-                                                            value={row.batchNo}
-                                                            onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                        />
-                                                    </td> */}
+                                                   <td
+                                                                            style={{
+                                                                              border: "1px solid black",
+                                                                              textAlign: "center",
+                                                                              //width: "150px"
+                                                                            }}
+                                                                          >
+                                                                            <TextField
+                                                                              value={row.batchNo || ""} // Bind to row.batchNo
+                                                                              id="BatchNo"
+                                                                              name="BatchNo"
+                                                                              size="small"
+                                                                              sx={{ width: "150px" }}
+                                                                              onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                                                                            />
+                                                                          </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
                                                            // type="number"

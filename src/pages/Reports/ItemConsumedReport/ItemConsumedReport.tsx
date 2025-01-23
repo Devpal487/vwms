@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
@@ -50,11 +48,10 @@ interface MenuPermission {
   isDel: boolean;
 }
 
-export default function VehicleItemConsumed() {
-    const location = useLocation();
+export default function JobCardStatus() {
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -66,24 +63,15 @@ export default function VehicleItemConsumed() {
 
   const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
 
-  const [VendorOption, setVendorOption] = useState([
-    { value: -1, label: "Select Vendor " },
-  ]);
-
-
-  const [ItemOption, setItemOps] = useState([
-    { value: -1, label: "Select Item" },
-  ]);
- const [VnoOption, setVnoOption] = useState([
+  const [VnoOption, setVnoOption] = useState([
     { value: -1, label: "Select Vehicle No " },
   ]);
-
-  const { vehicleNo } = location.state || {};
-const [vNO, setVno] = useState("");
+  const [itemOption, setitemOption] = useState([
+        { value: -1, label:"Select Unit" },
+    ]);
+    const [itmNO, setitmno] = useState("");
   const [Period, setPeriod] = useState([{ value: -1, label: "Select Period" }]);
-  const [vend, setVendor] = useState("");
-
-  const [isItem, setItem] = useState("");
+  const [vNO, setVno] = useState("");
 
   const [vType, setVType] = useState([]);
 
@@ -98,18 +86,17 @@ const [vNO, setVno] = useState("");
       console.error("No data to export to Tabular HTML.");
       return;
     }
-    const headers = ["vehicle No.", "Vehicle", "JobCard No.","Items Consumed",  "JobCard Date"];
 
+    // Prepare headers and rows for HTML table
+    const headers = ["item", "Vehicle No", "jobcardNo", "indent No", "jobcardDate"];
     const rows = isPrint.map((item: any) => [
-      
-      item?.vehicleNo || "",
-        item?.vehicle || "",
-        item?.jobCardNo || "",
-        item?.itemsConsumed || "",
-        moment(item?.jobCardDate).format("DD-MM-YYYY")
-    
+            
+        item?.item || "", // Vehicle No
+        item?.vehicleNo || "", // Driver
+        item?.jobcardNo || "", // Mobile No
+        item?.indentNo || "",
+        moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
     ]);
-
 
     // Create HTML table
     let html = `
@@ -150,11 +137,11 @@ const [vNO, setVno] = useState("");
           </thead>
           <tbody>
             ${rows
-        .map(
-          (row) =>
-            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-        )
-        .join("")}
+              .map(
+                (row) =>
+                  `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+              )
+              .join("")}
           </tbody>
         </table>
       </body>
@@ -207,7 +194,7 @@ const [vNO, setVno] = useState("");
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["vehicle No.", "Vehicle", "JobCard No.","Items Consumed",  "JobCard Date"];
+    const headers = ["item", "Vehicle No", "jobcardNo", "indent No", "jobcardDate"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -240,11 +227,12 @@ const [vNO, setVno] = useState("");
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        item?.vehicleNo || "",
-        item?.vehicle || "", 
-        item?.jobCardNo || "",
-        item?.itemsConsumed || "",
-        moment(item?.jobCardDate).format("DD-MM-YYYY")
+        
+        item?.item || "", // Vehicle No
+        item?.vehicleNo || "", // Driver
+        item?.jobcardNo || "", // Mobile No
+        item?.indentNo || "",
+        moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -257,13 +245,16 @@ const [vNO, setVno] = useState("");
       yPosition += 10;
 
       if (yPosition > 180) {
+        // Adjust this to your content size for landscape
         doc.addPage();
-        yPosition = 10; 
+        yPosition = 10; // Reset position on new page
       }
     });
+
+    // Save the generated PDF with a filename
     doc.save("VehicleTrack_data.pdf");
   };
-
+  // Handle Download Button Click
   const handleDownload = () => {
     if (selectedFormat === "excel") {
       downloadExcel();
@@ -278,133 +269,185 @@ const [vNO, setVno] = useState("");
   const { t } = useTranslation();
 
   useEffect(() => {
-    
-    getItem();
-
-    getVendor();
+    GetitemData();
+    getVehicleNo();
   }, []);
 
-  const getItem = () => {
-    api.get(`ItemMaster/GetItemMaster?ItemMasterId=-1`).then((res) => {
-      const arr = res?.data?.data?.map((item: any) => ({
-        label: item?.itemName,
-        value: item?.itemMasterId,
-       
-      }));
-      setItemOps(arr);
-    });
-  };
+ 
 
-  const getVendor = () => {
+  const getVehicleNo = () => {
+
     api.get(`Master/GetVehicleDetail?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.vehicleNo,
         value: item.itemMasterId,
       }));
-      setVendorOption(arr);
+      setVnoOption(arr);
+      GetitemData();
     });
   };
-  const fetchZonesData = async () => {
-    try {
+  const GetitemData = async () => {
+    const collectData = {
+        itemMasterId: -1,
+    };
+    const response = await api.get(`ItemMaster/GetItemMaster`, {});
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+        arr.push({
+            label: data[index]["itemName"],
+            value: data[index]["itemMasterId"],
+        });
+    };
+    setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+};
+ 
+const fetchZonesData = async () => {
+  try {
       const collectData = {
-        vehicleNo: vend,
-        jobCardDate: formik.values.fromDate, 
-        dateFrom: formik.values.fromDate,
-        dateTo: formik.values.toDate,
+          jobCardNofrom: formik.values.JobCardNoFrom,
+          jobCardNoTo: formik.values.JobCardNoTo,
+          vehicleNo: vNO,
+          item: itmNO,
+          jobcarddatefrom: formik.values.fromDate,
+          jobcarddateto: formik.values.toDate,
       };
-      const response = await api.post(`Master/GetvVehicleItemConsumed`, collectData);
-      const data = response?.data;
 
-      const Print = data.map((item: any, index: any) => ({
-        ...item,
-      }));
-      setPrint(Print);
-      const zonesWithIds = data.map((zone: any, index: any) => ({
-        ...zone,
-        serialNo: index + 1,
-        id: index + 1,
-      }));
-      setZones(zonesWithIds);
-      setIsLoading(false);
+      const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
+      const data = response?.data.data;
 
-      if (data.length > 0) {
-        const columns: GridColDef[] = [
-          // {
-          //   field: "serialNo",
-          //   headerName: t("text.SrNo"),
-          //   flex: 0.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          {
-            field: "vehicle",
-            headerName: t("text.Vehicle"),
-            flex: 1.3,
-            cellClassName: "wrap-text", // Added here
-
-          },
-          {
-            field: "vehicleNo",
-            headerName: t("text.vehicleNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "modelNo",
-            headerName: t("text.modelNo"),
-            flex: 1,
-
-            // align: "right",
-            // headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "jobCardNo",
-            headerName: t("text.jobCardNo"),
-            flex: 1,
-            // align: "right",
-            // headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "itemsConsumed",
-            headerName: t("text.itemsConsumed"),
-            flex: 1,
-            // align: "right",
-            // headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          // {
-          //   field: "vendor",
-          //   headerName: t("text.Vendor"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          {
-            field: "jobCardDate",
-            headerName: t("text.jobCardDate"),
-            flex: 1,
-            renderCell: (params) => {
-              return moment(params.row.jobCardDate).format("DD-MM-YYYY");
-            },
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-
-        ];
-        setColumns(columns as any);
+      if (data && Array.isArray(data)) {
+          const zonesWithIds:any = data.map((item, index) => ({
+              ...item,
+              id: index + 1, // Add unique ID
+          }));
+          setZones(zonesWithIds);
+          console.log("Zones updated:", zonesWithIds);
+      } else {
+          console.warn("Unexpected API response format:", response);
       }
-    } catch (error) {
+  } catch (error) {
       console.error("Error fetching data:", error);
-      // setLoading(false);
-    }
-  };
+  }
+};
+
+<DataGrid
+  rows={zones}
+  columns={columns}
+  autoHeight
+  pageSizeOptions={[5, 10, 25]}
+  sx={{
+      "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: "#42b6f5",
+          color: "white",
+      },
+      "& .MuiDataGrid-cell": {
+          whiteSpace: "normal",
+          wordWrap: "break-word",
+      },
+  }}
+/>;
+
+
+  // const fetchZonesData = async () => {
+  //   try {
+  //     const collectData = {
+  //       jobCardNofrom:formik.values.JobCardNoFrom,
+  //       jobCardNoTo:formik.values.JobCardNoTo,
+  //       vehicleNo:vNO,
+  //       item: itmNO,
+  //       // complaintfrom:formik.values.ComplainDateFrom,
+  //       // complaintTo:formik.values.ComplainDateTo,
+  //       jobcarddatefrom:formik.values.fromDate,
+  //       jobcarddateto:formik.values.toDate,
+
+  //       // "item": "",
+  //       // "vehicleNo": "",
+  //       // "jobCardNofrom": "",
+  //       // "jobCardNoTo": "",
+  //       // "jobCardDatefrom": "2021-01-22T12:53:08.706Z",
+  //       // "jobCardDateTo": "2025-01-22T12:53:08.706Z"
+  //     };
+  //     const response = await api.post(
+  //       `Report/GetvItemConsumedApi`,
+  //       collectData
+  //     );
+  //     const data = response?.data.data;
+
+  //     const Print = data.map((item: any, index: any) => ({
+  //       ...item,
+  //     }));
+  //     setPrint(Print);
+  //     const zonesWithIds = data.map((zone: any, index: any) => ({
+  //       ...zone,
+  //       serialNo: index + 1,
+  //       id: index + 1,
+  //     }));
+  //     setZones(zonesWithIds);
+  //     setIsLoading(false);
+
+  //     if (data.length > 0) {
+  //       const columns: GridColDef[] = [
+  //         {
+  //           field: "item",
+  //           headerName: t("text.item"),
+  //           flex: 1,
+  //           headerClassName: "MuiDataGrid-colCell",
+  //           cellClassName: "wrap-text", // Added here
+  //         },
+  //         {
+  //           field: "vehicleNo",
+  //           headerName: t("text.VehicleNo"),
+  //           flex: 1.4,
+  //           cellClassName: "wrap-text", // Added here
+  //           headerClassName: "MuiDataGrid-colCell",
+  //         },
+  //         {
+  //           field: "jobcardNo",
+  //           headerName: t("text.JobCardNo"),
+  //           flex: 1.5,
+  //           // align: "right",
+  //           // headerAlign: "right",
+  //           headerClassName: "MuiDataGrid-colCell",
+  //           cellClassName: "wrap-text", // Added here
+
+  //         },
+  //         {
+  //           field: "complaintDate",
+  //           headerName: t("text.complaintDate"),
+  //           flex: 1.3,
+  //           headerClassName: "MuiDataGrid-colCell",
+  //           cellClassName: "wrap-text", // Added here
+  //           renderCell: (params) => {
+  //             return moment(params.row.complaintDate).format("DD-MM-YYYY");
+  //           },
+  //         },
+  //         {
+  //           field: "jobcardDate",
+  //           headerName: t("text.JobCardDate"),
+  //           flex: 1.5,
+  //           headerClassName: "MuiDataGrid-colCell",
+  //           cellClassName: "wrap-text", // Added here
+  //           renderCell: (params) => {
+  //             return moment(params.row.jobcardDate).format("DD-MM-YYYY");
+  //           },
+  //         },
+  //         {
+  //           field: "indentNo",
+  //           headerName: t("text.indentNo"),
+  //           flex: 1,
+  //           headerClassName: "MuiDataGrid-colCell",
+  //           cellClassName: "wrap-text", // Added here
+  //         },
+       
+  //       ];
+  //       setColumns(columns as any);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     // setLoading(false);
+  //   }
+  // };
 
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
@@ -434,9 +477,24 @@ const [vNO, setVno] = useState("");
       daysOnly: false,
       displayLabel: "",
       index: 0,
+      JobCardNoFrom: "",
+      JobCardNoTo: "",
+      ComplainDateFrom: "",
+      ComplainDateTo: "",
     },
     onSubmit: async (values) => {
-      
+      //   const response = await api.post(
+      //     `Gender/AddUpdateGenderMaster`,
+      //     values
+      //   );
+      //   try {
+      //     setToaster(false);
+      //     toast.success(response.data.mesg);
+      //     navigate("/master/GenderMaster");
+      //   } catch (error) {
+      //     setToaster(true);
+      //     toast.error(response.data.mesg);
+      //   }
     },
   });
 
@@ -473,43 +531,14 @@ const [vNO, setVno] = useState("");
             sx={{ padding: "20px" }}
             align="left"
           >
-            {t("text.VehicleItemConsumed")}
+            {t("text.ItemConsumedReport")}
           </Typography>
           <Divider />
 
           <Box height={10} />
 
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
-          
-
-       
-           <Grid item xs={12} sm={4} lg={4}>
-              <Autocomplete
-                //multiple
-                disablePortal
-                id="combo-box-demo"
-                options={VendorOption}
-                fullWidth
-                size="small"
-                onChange={(event: any, newValue: any) => {
-                 
-                  setVendor(newValue.label);
-                }}
-               
-               
-                renderInput={(params: any) => (
-                  <TextField
-                    {...params}
-                    label={
-                      <CustomLabel text={t("text.VehicleNos1")} required={false} />
-                    }
-                  />
-                )}
-                popupIcon={null}
-              />
-            </Grid>
-
-          <Grid item xs={12} sm={4} lg={4}>
+          <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
                 id="fromDate"
@@ -528,7 +557,7 @@ const [vNO, setVno] = useState("");
             </Grid>
 
             {/* To Date Input */}
-             <Grid item xs={12} sm={4} lg={4}>
+            <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
                 id="toDate"
@@ -543,6 +572,97 @@ const [vNO, setVno] = useState("");
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
+
+            <Grid item xs={12} sm={4} lg={4}>
+              <Autocomplete
+                //multiple
+                disablePortal
+                id="combo-box-demo"
+                options={itemOption}
+                fullWidth
+                size="small"
+                onChange={(event: any, newValue: any) => {
+
+                    setitmno(newValue.label);
+                }}
+
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    label={
+                      <CustomLabel
+                        text={t("text.itemconsumedname")}
+                        required={false}
+                      />
+                    }
+                  />
+                )}
+                popupIcon={null}
+              />
+            </Grid>
+
+
+          <Grid item xs={12} sm={4} lg={4}>
+              <Autocomplete
+                //multiple
+                disablePortal
+                id="combo-box-demo"
+                options={VnoOption}
+                fullWidth
+                size="small"
+                onChange={(event: any, newValue: any) => {
+
+                  setVno(newValue.label);
+                }}
+
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    label={
+                      <CustomLabel
+                        text={t("text.VehicleNos1")}
+                        required={false}
+                      />
+                    }
+                  />
+                )}
+                popupIcon={null}
+              />
+            </Grid>
+
+        
+
+            <Grid xs={12} md={4} lg={4} item>
+              <TextField
+                label={<CustomLabel text={t("text.JobCardNoFrom")} />}
+                value={formik.values.JobCardNoFrom}
+                name="JobCardNoFrom"
+                id="JobCardNoFrom"
+                placeholder={t("text.JobCardNoFrom")}
+                size="small"
+                fullWidth
+                style={{ backgroundColor: "white" }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+
+            <Grid xs={12} md={4} lg={4} item>
+              <TextField
+                label={<CustomLabel text={t("text.JobCardNoTo")} />}
+                value={formik.values.JobCardNoTo}
+                name="JobCardNoTo"
+                id="JobCardNoTo"
+                placeholder={t("text.JobCardNoTo")}
+                size="small"
+                fullWidth
+                style={{ backgroundColor: "white" }}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </Grid>
+
+          
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
@@ -653,41 +773,25 @@ const [vNO, setVno] = useState("");
                   </div>
                 ) : (
                   <DataGrid
-                    rows={zones}
-                    columns={adjustedColumns}
-                    rowSpacingType="border"
-                    autoHeight
-                    // slots={{
-                    //   toolbar: GridToolbar,
-                    // }}
-                    pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                      value: size,
-                      label: `${size}`,
-                    }))}
-                    initialState={{
+                  rows={zones} // Use rows from the processed API response
+                  columns={columns} // Use columns defined in fetchZonesData
+                  autoHeight
+                  pageSizeOptions={[5, 10, 25, 50]}
+                  initialState={{
                       pagination: { paginationModel: { pageSize: 5 } },
-                    }}
-                    slotProps={{
-                      toolbar: {
-                        showQuickFilter: true,
-                      },
-                    }}
-                    sx={{
-                      border: 0,
+                  }}
+                  sx={{
                       "& .MuiDataGrid-columnHeaders": {
-                        backgroundColor: "#42b6f5", // Header background color
-                        color: "white", // Header text color
-                      },
-                      "& .MuiDataGrid-columnHeaderTitle": {
-                        color: "white", // Header title text color
+                          backgroundColor: "#42b6f5",
+                          color: "white",
                       },
                       "& .MuiDataGrid-cell": {
-                        whiteSpace: "normal", 
-                        wordWrap: "break-word", 
-                        overflowWrap: "break-word", 
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
                       },
-                    }}
-                  />
+                  }}
+              />
+              
                 )}
               </Grid>
             )}
@@ -698,6 +802,3 @@ const [vNO, setVno] = useState("");
     </>
   );
 }
-
-
-

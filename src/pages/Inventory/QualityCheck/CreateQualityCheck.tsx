@@ -760,7 +760,7 @@
 //                 fontSize={12}
 //                 fontWeight={800}
 //               ></Grid>
-              
+
 
 //               <Grid item xs={12} md={12} lg={12}>
 //                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
@@ -1398,7 +1398,7 @@
 // };
 
 // export default CreateQualityCheck;
-  
+
 
 import {
   Autocomplete,
@@ -1435,7 +1435,12 @@ const CreateQualityCheck = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
-
+  const [unitOptions, setUnitOptions] = useState([
+    { value: "-1", label: t("text.SelectUnitId") },
+  ]);
+  const [orderOption, setorderOption] = useState([
+      { value: -1, label: t("text.id") },
+    ]);
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
@@ -1479,16 +1484,50 @@ const CreateQualityCheck = (props: Props) => {
   ];
 
   useEffect(() => {
-   // getMRNNo();
+    // getMRNNo();
+    GetorderData();
     getVendorData();
     getTaxData();
     GetitemData();
-   // GetstoreData();
+    GetUnitData();
     GetmrnData();
     GetQcData();
   }, []);
 
-
+  const GetorderData = async () => {
+    const collectData = {
+      "orderId": -1,
+      "indentId": -1
+    };
+    const response = await api.post(
+      `PurchaseOrder/GetPurchaseOrder`,
+      collectData
+    );
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["orderNo"],
+        value: data[index]["orderId"],
+      });
+    }
+    setorderOption(arr);
+  };
+  const GetUnitData = async () => {
+    const collectData = {
+      unitId: -1,
+    };
+    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["unitName"],
+        value: data[index]["unitId"],
+      });
+    }
+    setUnitOptions(arr);
+  };
   const GetmrnData = async () => {
     try {
       const collectData = {
@@ -1509,8 +1548,8 @@ const CreateQualityCheck = (props: Props) => {
           value: item.mrnId,
           vendorId: item.vendorId,
           vendorName: item.vendorName,
-          bill_ChalanNo:item.bill_ChalanNo,
-          shipmentNo:item.shipmentNo
+          bill_ChalanNo: item.bill_ChalanNo,
+          shipmentNo: item.shipmentNo
 
 
         }));
@@ -1583,7 +1622,7 @@ const CreateQualityCheck = (props: Props) => {
     const collectData = {
       itemMasterId: -1,
     };
-  const response = await api.get(`ItemMaster/GetItemMaster`,{} );
+    const response = await api.get(`ItemMaster/GetItemMaster`, {});
     const data = response.data.data;
     const arr =
       data?.map((item: any) => ({
@@ -1869,7 +1908,7 @@ const CreateQualityCheck = (props: Props) => {
   const back = useNavigate();
 
   const getPurchaseOrderByIndent = async (id: any) => {
-    const collectData={
+    const collectData = {
       "mrnId": id,
       // "show": true,
       // "exportOption": "",
@@ -1900,17 +1939,17 @@ const CreateQualityCheck = (props: Props) => {
         rejectQty: transData[i]["balQuantity"],
         rate: transData[i]["rate"],
         amount: transData[i]["amount"],
-        gst: transData[i]["gst"],
+        //gst: transData[i]["gst"],
         gstId: transData[i]["gstId"],
         gstRate: transData[i]["gstRate"],
         cgst: transData[i]["cgst"],
         sgst: transData[i]["sgst"],
         igst: transData[i]["igst"],
         netAmount: transData[i]["netAmount"],
-        totalGst: transData[i]["totalGst"],
+        //totalGst: transData[i]["totalGst"],
         batchNo: transData[i]["batchNo"],
-        unitId:transData[i]["unitId"],
-        unitName:transData[i]["unitName"],
+        unitId: transData[i]["unitId"],
+        unitName: transData[i]["unitName"],
 
       });
     }
@@ -2017,7 +2056,7 @@ const CreateQualityCheck = (props: Props) => {
                     formik.setFieldValue('vendor', newValue?.vendorName);
                     formik.setFieldValue('bill_ChalanNo', newValue?.bill_ChalanNo);
                     formik.setFieldValue('shipmentNo', newValue?.shipmentNo);
-                    
+
 
 
                     getVendorData()
@@ -2147,7 +2186,7 @@ const CreateQualityCheck = (props: Props) => {
                   </Typography>
                 </Grid>
                 <Divider />
- <Grid item lg={4} xs={12} md={6}>
+                <Grid item lg={4} xs={12} md={6}>
                   <Autocomplete
                     disablePortal
                     size="small"
@@ -2276,6 +2315,7 @@ const CreateQualityCheck = (props: Props) => {
               </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
+              <div style={{ overflow: "scroll", margin: 0, padding: 0 }}>
                 <Table
                   style={{
                     borderCollapse: "collapse",
@@ -2296,7 +2336,15 @@ const CreateQualityCheck = (props: Props) => {
                       >
                         {t("text.Action")}
                       </th>
-
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.OrderNo")}
+                      </th>
                       <th
                         style={{
                           border: "1px solid black",
@@ -2305,6 +2353,24 @@ const CreateQualityCheck = (props: Props) => {
                         }}
                       >
                         {t("text.ItemName")}
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.BatchNo")}
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.unit")}
                       </th>
                       <th
                         style={{
@@ -2355,7 +2421,7 @@ const CreateQualityCheck = (props: Props) => {
                           padding: "5px",
                         }}
                       >
-                        {t("text.Amount")}
+                        {t("text.GSTRate")}
                       </th>
                       <th
                         style={{
@@ -2364,19 +2430,30 @@ const CreateQualityCheck = (props: Props) => {
                           padding: "5px",
                         }}
                       >
-                        {t("text.GSTRate")}
+                        CGST
                       </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        SGST
+                      </th>
+                      {/* <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.Amount")}
+                      </th> */}
+
                       {
 
-                        <th
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            padding: "5px",
-                          }}
-                        >
-                          {t("text.totalTax")}
-                        </th>
+
                       }
                       <th
                         style={{
@@ -2403,24 +2480,50 @@ const CreateQualityCheck = (props: Props) => {
                             style={{ cursor: "pointer" }}
                           />
                         </td>
+
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            //width: "135px"
+                          }}
+                        >
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={orderOption}
+                            value={orderOption.find((opt: any) => opt.value === row.orderId) || null}
+                            fullWidth
+                            size="small"
+                            sx={{ width: "155px" }}
+                            onChange={(e: any, newValue: any) =>
+                              handleInputChange(
+                                index,
+                                "orderNo",
+                                newValue?.value
+                              )
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+
+                              />
+                            )}
+                          />
+                        </td>
                         <td
                           style={{
                             border: "1px solid black",
                             // textAlign: "center",
-                            width: "20%"
                           }}
                         >
                           <Autocomplete
                             disablePortal
                             id="combo-box-demo"
                             options={itemOption}
-                            value={
-                              itemOption.find(
-                                (opt: any) => opt.value == row.itemId
-                              ) || null
-                            }
                             fullWidth
                             size="small"
+                            sx={{ width: "155px" }}
+                            value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
                             onChange={(e: any, newValue: any) =>
                               handleInputChange(
                                 index,
@@ -2431,18 +2534,54 @@ const CreateQualityCheck = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.selectItem")}
-                                //     required={false}
-                                //   />
-                                // }
-                                placeholder={t("text.selectItem")}
+
                               />
                             )}
                           />
                         </td>
 
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            //width: "150px"
+                          }}
+                        >
+                          <TextField
+                            value={row.batchNo || ""} // Bind to row.batchNo
+                            id="BatchNo"
+                            name="BatchNo"
+                            size="small"
+                            sx={{ width: "150px" }}
+                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                          />
+                        </td>
+
+
+
+                        <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={unitOptions}
+                            value={
+                              unitOptions.find((opt) => (opt.value) === row?.unitId) || null
+                            }
+                            fullWidth
+                            size="small"
+                            sx={{ width: "130px" }}
+                            onChange={(e, newValue: any) =>
+                              handleInputChange(index, "unitId", newValue?.value)
+                            }
+
+                            renderInput={(params: any) => (
+                              <TextField
+                                {...params}
+                              //  label={<CustomLabel text={t("text.selectUnit")} />}
+                              />
+                            )}
+                          />
+                        </td>
 
                         <td
                           style={{
@@ -2497,22 +2636,13 @@ const CreateQualityCheck = (props: Props) => {
                           <TextField
                             size="small"
                             value={row.rate}
+                            sx={{ width: "70px" }}
                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                            inputProps={{ readOnly: true }}
+                            inputProps={{ step: "any", min: "0" }}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
-                        <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.amount}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td>
+
                         <td
                           style={{
                             border: "1px solid black",
@@ -2523,26 +2653,33 @@ const CreateQualityCheck = (props: Props) => {
                             disablePortal
                             id="combo-box-demo"
                             options={taxData}
-                            value={
-                              taxData.find((opt: any) => opt.value === row.gstId) || null
-                            }
                             fullWidth
                             size="small"
+                            sx={{ width: "80px" }}
+                            value={taxData.find((opt: any) => opt.value === row.gstId) || null}
                             onChange={(e: any, newValue: any) =>
                               handleInputChange(index, "gstId", newValue?.value)
                             }
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.tax")}
-                                //     required={false}
-                                //   />
-                                // }
-                                placeholder={t("text.tax")}
+
                               />
                             )}
+                          />
+                        </td>
+
+                        <td
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                          }}
+                        >
+                          <TextField
+                            value={row.cgst.toFixed(2)}
+                            size="small"
+                            sx={{ width: "100px" }}
+                            inputProps={{ readOnly: true }}
                           />
                         </td>
                         <td
@@ -2552,11 +2689,9 @@ const CreateQualityCheck = (props: Props) => {
                           }}
                         >
                           <TextField
-                            value={row.totalGst}
-                            onChange={(e: any) =>
-                              handleInputChange(index, "totalGst", row.totalGst)
-                            }
+                            value={row.sgst.toFixed(2)}
                             size="small"
+                            sx={{ width: "100px" }}
                             inputProps={{ readOnly: true }}
                           />
                         </td>
@@ -2570,6 +2705,7 @@ const CreateQualityCheck = (props: Props) => {
                           <TextField
                             value={row.netAmount}
                             size="small"
+                            sx={{ width: "100px" }}
                             inputProps={{ readOnly: true }}
                           />
                         </td>
@@ -2578,33 +2714,44 @@ const CreateQualityCheck = (props: Props) => {
                     ))}
                   </tbody>
                   <tfoot>
-                    <tr>
-                      <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Net Amount:
-                      </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Tax Amount:
-                      </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.totalGst) || 0), 0).toFixed(2)}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                        Total Gross Amount:
-                      </td>
-                      <td style={{ textAlign: "center", border: "1px solid black" }}>
-                        {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
-                      </td>
-                    </tr>
-                  </tfoot>
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalAmount")}
+
+                        </td>
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.totalAmount}
+                        </td> */}
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      {/* <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totaltaxamount")}
+
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr> */}
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
+                        </td>
+
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.netAmount}
+                        </td> */}
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                    </tfoot>
                 </Table>
-              </Grid>
+           </div>   </Grid>
 
 
 

@@ -876,32 +876,34 @@ export default function VehicleItemService() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    // const headers = [
+    //   "Date",
+    //   "Vehicle No",
+    //   "Driver",
+    //   "Mobile No",
+    //   "Department",
+    //   "Distance(KM)",
+    //   "Running",
+    //   "Idle",
+    //   "Start Time",
+    //   "End Time",
+    //   "Fuel Consumption",
+    // ];
+    const headers = [ "Vehicle No", "JobCard No", "Item", "Item Name","Complaint Date"];
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
+      // Vehicle No (formatted date)
       item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      item?.jobCardNo || "", // Driver
+      item?.item, // Driver Mobile No
+      item?.itemName,
+      moment(item?.complainDate).format("DD-MM-YYYY") || "",
+      // item?.distanceKM,
+      // item?.running,
+      // item?.idle,
+      // item?.startTime,
+      // item?.endTime,
+      // item?.fuelConsumption,
     ]);
 
     // Create HTML table
@@ -1000,7 +1002,7 @@ export default function VehicleItemService() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = [ "Vehicle No", "JobCard No", "Item", "Item Name","Complaint Date",];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -1033,11 +1035,12 @@ export default function VehicleItemService() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+      
+      item?.vehicleNo || "", // Vehicle Type
+      item?.jobCardNo || "", // Driver
+      item?.item, // Driver Mobile No
+      item?.itemName,
+      moment(item?.complainDate).format("DD-MM-YYYY") || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -1106,15 +1109,22 @@ export default function VehicleItemService() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo": formik.values.vehicleNo,
-        "jobCardNofrom": formik.values.jobCardNofrom,
-        "jobCardNoTo": formik.values.jobCardNoTo,
-        "complainDatefrom": "2021-01-11T07:51:03.389Z",
-        "complainDateTo": defaultValues,
-        "challanStatus": ""
+        // "vehicleNo": formik.values.vehicleNo,
+        // "jobCardNofrom": formik.values.jobCardNofrom,
+        // "jobCardNoTo": formik.values.jobCardNoTo,
+        // "complainDatefrom": "2021-01-11T07:51:03.389Z",
+        // "complainDateTo": defaultValues,
+        // "challanStatus": ""
+
+        "complaintDateFrom": "2021-01-22T11:40:43.485Z",
+  "complaintDateTo": defaultValues,
+  "vehcileNo": formik.values.vehcileNo,
+  "jobCardNoFrom": formik.values.jobCardNoFrom,
+  "jobCardNoTo": formik.values.jobCardNoTo,
+  "isStatus_Complete": false
       };
       const response = await api.post(
-        `Report/GetVehicleItemServiceApi`,
+        `Master/GetVehicleItemService`,
         collectData
       );
       const data = response?.data;
@@ -1173,13 +1183,13 @@ export default function VehicleItemService() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "challanNo",
-            headerName: t("text.ChallanNo"),
-            flex: 1.3,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "challanNo",
+          //   headerName: t("text.ChallanNo"),
+          //   flex: 1.3,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "itemName",
             headerName: t("text.ItemName"),
@@ -1196,13 +1206,13 @@ export default function VehicleItemService() {
             headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "service",
-            headerName: t("text.Service"),
-            flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "service",
+          //   headerName: t("text.Service"),
+          //   flex: 1.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
 
         ];
         setColumns(columns as any);
@@ -1231,11 +1241,17 @@ export default function VehicleItemService() {
   const formik = useFormik({
     initialValues: {
      // genderID: -1,
-      vehicleNo: location.state?.vehicleNo || "",
-      jobCardNofrom: "",
-      jobCardNoTo: "",
-      complainDateTo: "",
-      complainDatefrom: "",
+      // vehicleNo: location.state?.vehicleNo || "",
+      // jobCardNofrom: "",
+      // jobCardNoTo: "",
+      // complainDateTo: "",
+      // complainDatefrom: "",
+      "complaintDateFrom": "",
+      "complaintDateTo": "",
+      "vehcileNo": location.state?.vehicleNo || "",
+      "jobCardNoFrom": "",
+      "jobCardNoTo": "",
+      "isStatus_Complete": false
    
      
     },
@@ -1302,7 +1318,7 @@ export default function VehicleItemService() {
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
-                value={formik.values.vehicleNo}
+                value={formik.values.vehcileNo}
 
                 fullWidth
                 size="small"
@@ -1358,7 +1374,7 @@ export default function VehicleItemService() {
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoFrom")} />}
-                value={formik.values.jobCardNofrom}
+                value={formik.values.jobCardNoFrom}
                 name="jobCardNofrom"
                 id="jobCardNofrom"
                 placeholder={t("text.JobCardNoFrom")}
@@ -1394,7 +1410,7 @@ export default function VehicleItemService() {
                 label={
                   <CustomLabel text={t("text.FromDate")} required={false} />
                 }
-                value={formik.values.complainDatefrom}
+                value={formik.values.complaintDateFrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
@@ -1411,7 +1427,7 @@ export default function VehicleItemService() {
                 id="complainDateTo"
                 name="complainDateTo"
                 label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.complainDateTo}
+                value={formik.values.complaintDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth

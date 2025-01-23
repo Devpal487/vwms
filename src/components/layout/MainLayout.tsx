@@ -589,7 +589,13 @@ const MainLayout = () => {
               path: "/Reports/WorkshoapService",
               displayNo: 0,
             },
-
+            {
+              menuId: 2,
+              menuName: "Item Consumed",
+              path: "/Reports/ItemConsumedReport",
+              displayNo: 0,
+            },
+           
             {
               menuId: 3,
               menuName: "Vendor Item Detail",
