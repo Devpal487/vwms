@@ -145,10 +145,10 @@ const AddOrganization = (props: Props) => {
       "companyLogo": "",
       "gstnNo": "",
       "panNo": "",
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-14T09:54:26.532Z",
-      "updatedOn": "2024-12-14T09:54:26.532Z",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
       "cityName": ""
     },
     validationSchema: Yup.object({

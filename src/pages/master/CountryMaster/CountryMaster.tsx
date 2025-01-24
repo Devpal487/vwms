@@ -227,8 +227,8 @@ export default function CountryMaster() {
       countryId: 0,
       countryName: "",
       countryCode: "",
-      createdBy: "admin",
-      updatedBy: "admin",
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime
     },

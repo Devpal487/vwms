@@ -67,10 +67,10 @@ export default function Designation() {
          "designationId": 0,
          "designationName": "",
          "designationCode": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-14T06:43:15.831Z",
-         "updatedOn": "2024-12-14T06:43:15.831Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn":defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srn": 0
       },
 

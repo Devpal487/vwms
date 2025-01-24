@@ -249,8 +249,8 @@ export default function ZoneMaster() {
       zoneAbbrevation: "",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
-      createdBy: "admin",
-      updatedBy: "admin",
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {

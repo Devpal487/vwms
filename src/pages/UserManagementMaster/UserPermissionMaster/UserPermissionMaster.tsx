@@ -49,7 +49,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "180vh",
+  width: "90vw",
   height: "90vh",
   bgcolor: "#f5f5f5",
   border: "1px solid #000",
@@ -246,41 +246,41 @@ export default function UserPermissionMaster() {
     initialValues: {
       "empid": 0,
       "empName": "",
-      // "empCode": "",
-      // "empPerAddress": "",
-      // "empLocalAddress": "",
-      // "empFatherName": "",
-      // "empspauseName": "",
-      // "empMotherName": "",
-      // "empMobileNo": "",
-      // "empStatus": "",
-      // "empPanNumber": "",
-      // "empAddharNo": "",
-      // "empDob": "2025-01-18T07:13:41.724Z",
-      // "empJoiningDate": "2025-01-18T07:13:41.724Z",
-      // "empretirementDate": "2025-01-18T07:13:41.724Z",
-      // "empDeptId": 0,
-      // "empDesignationId": 0,
-      // "empStateId": 0,
-      // "empCountryID": 0,
-      // "empCityId": 0,
-      // "empPincode": 0,
-      // "createdBy": "",
-      // "updatedBy": "",
-      // "createdOn": "2025-01-18T07:13:41.724Z",
-      // "updatedOn": "2025-01-18T07:13:41.724Z",
-      // "userId": "",
-      // "roleId": "",
-      // "imageFile": "",
-      // "signatureFile": "",
-      // "adharImageFile": "",
-      // "panFile": "",
-      // "driverLicenceFile": "",
-      // "email": "",
-      // "dlno": "",
-      // "gender": "",
-      // "eZoneID": 0,
-      // "srno": 0,
+      "empCode": "",
+      "empPerAddress": "",
+      "empLocalAddress": "",
+      "empFatherName": "",
+      "empspauseName": "",
+      "empMotherName": "",
+      "empMobileNo": "",
+      "empStatus": "",
+      "empPanNumber": "",
+      "empAddharNo": "",
+      "empDob": "2025-01-18T07:13:41.724Z",
+      "empJoiningDate": "2025-01-18T07:13:41.724Z",
+      "empretirementDate": "2025-01-18T07:13:41.724Z",
+      "empDeptId": 0,
+      "empDesignationId": 0,
+      "empStateId": 0,
+      "empCountryID": 0,
+      "empCityId": 0,
+      "empPincode": 0,
+      "createdBy": "",
+      "updatedBy": "",
+      "createdOn": "2025-01-18T07:13:41.724Z",
+      "updatedOn": "2025-01-18T07:13:41.724Z",
+      "userId": "",
+      "roleId": "",
+      "imageFile": "",
+      "signatureFile": "",
+      "adharImageFile": "",
+      "panFile": "",
+      "driverLicenceFile": "",
+      "email": "",
+      "dlno": "",
+      "gender": "",
+      "eZoneID": 0,
+      "srno": 0,
       "empDepName": "",
       "registerModel": {
         "id": "",
@@ -321,6 +321,8 @@ export default function UserPermissionMaster() {
       if (response.data.status === 1) {
         toast.success(response.data.message);
         navigate("/UserManagement/UserPermissionMaster");
+        formik.resetForm();
+        getModalList();
         setOpen(false);
         getList();
       } else {
@@ -344,7 +346,7 @@ export default function UserPermissionMaster() {
 
   const handleOpen = () => {
     setOpen(true);
-    getModalList();
+    //getModalList();
   };
 
   const getList = () => {
@@ -369,14 +371,14 @@ export default function UserPermissionMaster() {
     });
   };
 
-  const getModalList = () => {
+  const getModalList = (userId: any = -1, roleId: any = -1) => {
 
 
     const collectData = {
       RoleId: -1,
     };
 
-    api.get("Auth/GetRolePermission", { params: collectData }).then((res) => {
+    api.post(`Auth/GetUserPermissionRole?UserId=${userId}&RoleId=${roleId}`, { params: collectData }).then((res) => {
       const arr = [];
 
       for (let index = 0; index < res.data.data.length; index++) {
@@ -734,11 +736,7 @@ export default function UserPermissionMaster() {
                     formik.setFieldValue("empName", newValue?.label);
                     formik.setFieldValue("empid", newValue?.value);
                     formik.setFieldValue("registerModel.username", newValue?.label);
-                    // formik.setFieldValue("empDeptId", newValue?.deptId);
-                    // formik.setFieldValue("empDesignationId", newValue?.desgId);
-                    // formik.setFieldValue("departmentName", newValue?.deptName);
-                    formik.setFieldValue("empDepName", newValue?.deptName);
-                    // formik.setFieldValue("designationName", newValue?.desgName);
+
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -802,6 +800,7 @@ export default function UserPermissionMaster() {
                     //formik.setFieldValue("role", newValue?.label);
                     formik.setFieldValue("roleId", newValue?.value);
                     formik.setFieldValue("registerModel.role", newValue?.label);
+                    getModalList(formik.values?.userId || "-1", newValue?.value);
                   }}
                   renderInput={(params) => (
                     <TextField

@@ -168,9 +168,9 @@ export default function Complaint() {
    const fetchComplaintData = async () => {
       try {
          const collectData = {
-            "id": -1,
-            "empid": -1,
-            "itemId": -1
+            "compId": -1,
+            "empId": -1
+
          };
          const response = await api.post(
             `Master/GetComplaint`,
@@ -408,7 +408,7 @@ export default function Complaint() {
             </Paper>
          </Card>
          <ToastApp />
-    
+
 
       </>
    );

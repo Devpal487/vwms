@@ -122,8 +122,8 @@ export default function FinancialYear() {
       "fromDate": defaultValuestime,
       "toDate": defaultValuestime,
       "currentYear": true,
-      "createdBy": "",
-      "updatedBy": "",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
       "createdOn": defaultValuestime,
       "updatedOn": defaultValuestime
     },

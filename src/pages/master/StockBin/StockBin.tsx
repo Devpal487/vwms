@@ -119,8 +119,8 @@ export default function StockBin() {
       binName: "",
       binCode: "",
       companyId:0,
-      createdBy: "admin",
-      updatedBy: "admin",
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
 
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,

@@ -24,7 +24,7 @@ import {
   Modal,
   Box,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -50,7 +50,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import { FormatItalic } from "@mui/icons-material";
-import { setTimeout } from "timers/promises";
 
 
 type Props = {};
@@ -79,6 +78,7 @@ const EditJobCard = (props: Props) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleJWC, setIsVisibleJWC] = useState(0);
   const [isEnable, setIsEnable] = useState(0);
+  //const inputRef = useRef<HTMLButtonElement>(null);
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -235,12 +235,10 @@ const EditJobCard = (props: Props) => {
     console.log("location.state", location.state);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
-    if (location.state.status === "Complete") {
-      setTableData([...location.state?.serviceDetail, tableData]);
-    } else {
-      setTableData([...location.state?.serviceDetail, tableData]);
-    }
-
+    const timeoutId: any = setTimeout(() => {
+      handleStateData();
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [itemId]);
 
   const getVehicleDetails = async () => {
@@ -350,6 +348,25 @@ const EditJobCard = (props: Props) => {
     setServiceOption(arr);
   };
 
+  const handleStateData = async () => {
+    const collectData = {
+      "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCard`, collectData);
+    const data = response.data.data;
+
+    setTableData(data[0].serviceDetail || tableData);
+
+    // await getJobCardData().then(() => {
+    //   if (location.state.status === "Complete") {
+    //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
+    //   } else {
+    //     setTableData([...location.state?.serviceDetail, tableData]);
+    //   }
+    // })
+  }
+
 
 
   const validateRow = (row: any) => {
@@ -444,88 +461,136 @@ const EditJobCard = (props: Props) => {
   const handlePanClose = () => {
     setPanOpen(false);
   };
-  const modalOpenHandle = (event: any) => {
+
+  const modalOpenHandle = (event: string) => {
     setPanOpen(true);
-    if (event === "imageFile") {
-      setModalImg(formik.values.imageFile);
+    const base64Prefix = "data:image/jpeg;base64,";
+
+    let imageData = '';
+    switch (event) {
+      case "imageFile":
+        imageData = formik.values.imageFile;
+        break;
+      default:
+        imageData = '';
     }
-  };
-  const ConvertBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
-  const base64ToByteArray = (base64: string): Uint8Array => {
-    // Remove the data URL scheme if it exists
-    const base64String = base64.split(",")[1];
-
-    // Decode the Base64 string
-    const binaryString = window.atob(base64String);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-
-    // Convert binary string to Uint8Array
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    return bytes;
-  };
-
-  const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-    let binary = "";
-    const len = uint8Array.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(uint8Array[i]);
-    }
-    return window.btoa(binary);
-  };
-
-  const otherDocChangeHandler = async (event: any, params: string) => {
-    console.log("Image file change detected");
-
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const fileNameParts = file.name.split(".");
-      const fileExtension =
-        fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-      if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-        alert(
-          "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-        );
-        event.target.value = null;
-        return;
-      }
-
-      try {
-        const base64Data = (await ConvertBase64(file)) as string;
-        console.log("Base64 image data:", base64Data);
-
-        // Convert Base64 to Uint8Array
-        const byteArray = base64ToByteArray(base64Data);
-        console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-        // Convert Uint8Array to base64 string
-        const base64String = uint8ArrayToBase64(byteArray);
-        console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-        // Set value in Formik
-        formik.setFieldValue(params, base64String);
-
-        let outputCheck =
-          "data:image/png;base64," + formik.values.imageFile;
-        console.log(outputCheck);
-      } catch (error) {
-        console.error("Error converting image file to Base64:", error);
-      }
+    if (imageData) {
+      const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+      console.log("imageData", imgSrc);
+      setImg(imgSrc);
+    } else {
+      setImg('');
     }
   };
 
+  const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+      alert("Only .jpg, .jpeg, or .png image files are allowed.");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+    };
+    reader.onerror = () => {
+      alert("Error reading file. Please try again.");
+    };
+    reader.readAsDataURL(file);
+  };
+
+
+
+  // const handlePanClose = () => {
+  //   setPanOpen(false);
+  // };
+  // const modalOpenHandle = (event: any) => {
+  //   setPanOpen(true);
+  //   if (event === "imageFile") {
+  //     setModalImg(formik.values.imageFile);
+  //   }
+  // };
+  // const ConvertBase64 = (file: File): Promise<string> => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result as string);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
+
+  // const base64ToByteArray = (base64: string): Uint8Array => {
+  //   // Remove the data URL scheme if it exists
+  //   const base64String = base64.split(",")[1];
+
+  //   // Decode the Base64 string
+  //   const binaryString = window.atob(base64String);
+  //   const len = binaryString.length;
+  //   const bytes = new Uint8Array(len);
+
+  //   // Convert binary string to Uint8Array
+  //   for (let i = 0; i < len; i++) {
+  //     bytes[i] = binaryString.charCodeAt(i);
+  //   }
+
+  //   return bytes;
+  // };
+
+  // const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
+  //   let binary = "";
+  //   const len = uint8Array.byteLength;
+  //   for (let i = 0; i < len; i++) {
+  //     binary += String.fromCharCode(uint8Array[i]);
+  //   }
+  //   return window.btoa(binary);
+  // };
+
+  // const otherDocChangeHandler = async (event: any, params: string) => {
+  //   console.log("Image file change detected");
+
+  //   if (event.target.files && event.target.files[0]) {
+  //     const file = event.target.files[0];
+  //     const fileNameParts = file.name.split(".");
+  //     const fileExtension =
+  //       fileNameParts[fileNameParts.length - 1].toLowerCase();
+
+  //     if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
+  //       alert(
+  //         "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
+  //       );
+  //       event.target.value = null;
+  //       return;
+  //     }
+
+  //     try {
+  //       const base64Data = (await ConvertBase64(file)) as string;
+  //       console.log("Base64 image data:", base64Data);
+
+  //       // Convert Base64 to Uint8Array
+  //       const byteArray = base64ToByteArray(base64Data);
+  //       console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
+
+  //       // Convert Uint8Array to base64 string
+  //       const base64String = uint8ArrayToBase64(byteArray);
+  //       console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
+
+  //       // Set value in Formik
+  //       formik.setFieldValue(params, base64String);
+
+  //       let outputCheck =
+  //         "data:image/png;base64," + formik.values.imageFile;
+  //       console.log(outputCheck);
+  //     } catch (error) {
+  //       console.error("Error converting image file to Base64:", error);
+  //     }
+  //   }
+  // };
   const handleInputChange = (index: any, field: any, value: any) => {
     const newData: any = [...tableData];
     newData[index][field] = value;
@@ -1459,76 +1524,76 @@ const EditJobCard = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "imageFile")}
+                    onChange={(e: any) => otherDocChangeHandler(e, "imageFile")}
                   />
                 </Grid>
-                <Grid xs={12} md={4} sm={4} item></Grid>
 
-                <Grid xs={12} md={4} sm={4} item>
-                  <Grid
+                <Grid xs={12} md={4} sm={4} item></Grid>
+                <Grid
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    margin: "10px",
+                  }}
+                >
+                  {formik.values.imageFile ? (
+                    <img
+                      src={
+                        formik.values.imageFile.startsWith("data:image")
+                          ? formik.values.imageFile
+                          : `data:image/jpeg;base64,${formik.values.imageFile}`
+                      }
+                      alt="Preview"
+                      style={{
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                        padding: "2px",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={nopdf}
+                      alt="No document"
+                      style={{
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                      }}
+                    />
+                  )}
+                  <Typography
+                    onClick={() => modalOpenHandle("imageFile")}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                      margin: "10px",
+                      textDecorationColor: "blue",
+                      textDecorationLine: "underline",
+                      color: "blue",
+                      fontSize: "15px",
+                      cursor: "pointer",
+                      padding: "20px",
                     }}
                   >
-                    {formik.values.imageFile == "" ? (
-                      <img
-                        // src={nopdf}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={"data:image/png;base64," + formik.values.imageFile}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                          padding: "2px",
-                        }}
-                      />
-                    )}
-                    <Typography
-                      onClick={() => modalOpenHandle("imageFile")}
-                      style={{
-                        textDecorationColor: "blue",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                        fontSize: "15px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {t("text.Preview")}
-                    </Typography>
-                  </Grid>
+                    {t("text.Preview")}
+                  </Typography>
                 </Grid>
+
                 <Modal open={panOpens} onClose={handlePanClose}>
                   <Box sx={style}>
-                    {modalImg == "" ? (
+                    {Img ? (
                       <img
-                        //  src={nopdf}
-                        style={{
-                          width: "170vh",
-                          height: "75vh",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        alt="preview image"
-                        src={"data:image/png;base64," + modalImg}
+                        src={Img}
+                        alt="Preview"
                         style={{
                           width: "170vh",
                           height: "75vh",
                           borderRadius: 10,
                         }}
                       />
+                    ) : (
+                      <Typography>No Image to Preview</Typography>
                     )}
                   </Box>
                 </Modal>
@@ -1584,6 +1649,19 @@ const EditJobCard = (props: Props) => {
                   {t("text.reset")}
                 </Button>
               </Grid>
+
+              {/* <Button
+                ref={inputRef}
+                onClick={(e) => {
+                  setTimeout(() => {
+                    handleStateData();
+                  }, 400);
+                }}
+                sx={{ display: "none" }}
+                variant="contained"
+                color="secondary"
+              >
+              </Button> */}
 
               {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>

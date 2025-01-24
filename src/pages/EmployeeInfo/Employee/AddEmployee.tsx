@@ -295,20 +295,20 @@ const AddEmployee = (props: Props) => {
     empPanNumber: Yup.string()
       .matches(/^[A-Z]{3}[A-ZHPTCF][A-Z]\d{4}[A-Z]$/, "Invalid PAN format")
       .required(t("text.PanNoRequired")),
-    empPerAddress: Yup.string().test(
-      "required",
-      t("text.PermanentAddressRequired"),
-      function (value: any) {
-        return value && value.trim() !== "";
-      }
-    ),
-    empPincode: Yup.string().test(
-      "required",
-      t("text.PincodeRequired"),
-      function (value: any) {
-        return value && value.trim() !== "";
-      }
-    ),
+    // empPerAddress: Yup.string().test(
+    //   "required",
+    //   t("text.PermanentAddressRequired"),
+    //   function (value: any) {
+    //     return value && value.trim() !== "";
+    //   }
+    // ),
+    // empPincode: Yup.string().test(
+    //   "required",
+    //   t("text.PincodeRequired"),
+    //   function (value: any) {
+    //     return value && value.trim() !== "";
+    //   }
+    // ),
     empAddharNo: Yup.string()
       .required(t("text.AdharNoRequired"))
       .test("len", "Aadhaar number must be exactly 12 digits", (val: any) =>
@@ -330,19 +330,19 @@ const AddEmployee = (props: Props) => {
       "empStatus": "",
       "empPanNumber": "",
       "empAddharNo": "",
-      "empDob": "2024-12-14T06:04:07.938Z",
-      "empJoiningDate": "2024-12-14T06:04:07.938Z",
-      "empretirementDate": "2024-12-14T06:04:07.938Z",
+      "empDob": defaultValuestime,
+      "empJoiningDate": defaultValuestime,
+      "empretirementDate": defaultValuestime,
       "empDeptId": 0,
       "empDesignationId": 0,
       "empStateId": 0,
       "empCountryID": 0,
       "empCityId": 0,
       "empPincode": 0,
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-14T06:04:07.938Z",
-      "updatedOn": "2024-12-14T06:04:07.938Z",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime,
       "userId": "",
       "roleId": "",
       "imageFile": "",
@@ -677,7 +677,7 @@ const AddEmployee = (props: Props) => {
                   }
                   value={formik.values.email}
                   placeholder={t("text.EmailId")}
-                  type="email"
+                  //type="email"
                   size="small"
                   fullWidth
                   onChange={(e) => {
@@ -898,7 +898,7 @@ const AddEmployee = (props: Props) => {
                 <TranslateTextField
                   label={t("text.PermanentAddress")}
                   onChangeText={(text: string) => formik.setFieldValue("empPerAddress", text)}
-                  required={true}
+                  required={false}
                   lang={lang}
                   value={formik.values.empPerAddress}
                 />
@@ -910,7 +910,7 @@ const AddEmployee = (props: Props) => {
                 <TranslateTextField
                   label={t("text.LocalAddress")}
                   onChangeText={(text: string) => formik.setFieldValue("empLocalAddress", text)}
-                  required={true}
+                  required={false}
                   lang={lang}
                   value={formik.values.empLocalAddress}
                 />
