@@ -19,6 +19,7 @@ import {
   Autocomplete,
   ListItemText,
 } from "@mui/material";
+import * as Yup from "yup";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -49,6 +50,12 @@ interface MenuPermission {
 }
 
 export default function JobCardStatus() {
+  const StatusOption = [
+    // { value: "-1", label: "select Option" },
+    { value: "Complete", label: "Complete" },
+    { value: "InProgress", label: "InProgress" },
+    { value: "JobWork", label: "JobWork" },
+  ];
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +76,7 @@ export default function JobCardStatus() {
 
   const [Period, setPeriod] = useState([{ value: -1, label: "Select Period" }]);
   const [vNO, setVno] = useState("");
+  const [sNO, setsno] = useState("");
 
   const [vType, setVType] = useState([]);
 
@@ -85,32 +93,15 @@ export default function JobCardStatus() {
     }
 
     // Prepare headers and rows for HTML table
-    const headers = [
-      "Date",
-      "Vehicle No",
-      "Driver",
-      "Mobile No",
-      "Department",
-      "Distance(KM)",
-      "Running",
-      "Idle",
-      "Start Time",
-      "End Time",
-      "Fuel Consumption",
-    ];
+    const headers = ["Jobcard Date", "Vehicle No", "Jobcard No", "Complaint Date", "Status"];
+
 
     const rows = isPrint.map((item: any) => [
-      moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      item?.vehicleNo || "", // Vehicle Type
-      item?.driverName || "", // Driver
-      item?.mobileNo, // Driver Mobile No
-      item?.department,
-      item?.distanceKM,
-      item?.running,
-      item?.idle,
-      item?.startTime,
-      item?.endTime,
-      item?.fuelConsumption,
+      moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
+      item?.vehicleNo || "", // Vehicle No
+      item?.jobcardNo || "", // Driver
+      item?.complaintDate || "", // Mobile No
+      item?.status || "",
     ]);
 
     // Create HTML table
@@ -152,11 +143,11 @@ export default function JobCardStatus() {
           </thead>
           <tbody>
             ${rows
-              .map(
-                (row) =>
-                  `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-              )
-              .join("")}
+        .map(
+          (row) =>
+            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+        )
+        .join("")}
           </tbody>
         </table>
       </body>
@@ -209,7 +200,7 @@ export default function JobCardStatus() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Date", "Vehicle No", "Driver", "Mobile No", "Running"];
+    const headers = ["Jobcard Date", "Vehicle No", "Jobcard No", "Complaint Date", "Status"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -242,11 +233,11 @@ export default function JobCardStatus() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        moment(item?.trackDate).format("DD-MM-YYYY") || "",
+        moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
         item?.vehicleNo || "", // Vehicle No
-        item?.driverName || "", // Driver
-        item?.mobileNo || "", // Mobile No
-        item?.running || "",
+        item?.jobcardNo || "", // Driver
+        item?.complaintDate || "", // Mobile No
+        item?.status || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -283,11 +274,11 @@ export default function JobCardStatus() {
   const { t } = useTranslation();
 
   useEffect(() => {
-   
+
     getVehicleNo();
   }, []);
 
- 
+
 
   const getVehicleNo = () => {
 
@@ -300,19 +291,19 @@ export default function JobCardStatus() {
     });
   };
 
- 
+
 
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        jobcardNofrom:formik.values.JobCardNoFrom,
-        jobcardNoto:formik.values.JobCardNoTo,
-        vehicleNo:vNO,
-        status: "",
-        complaintfrom:formik.values.ComplainDateFrom,
-        complaintTo:formik.values.ComplainDateTo,
-        jobcarddatefrom:formik.values.fromDate,
-        jobcarddateto:formik.values.toDate,
+        jobcardNofrom: formik.values.JobCardNoFrom,
+        jobcardNoto: formik.values.JobCardNoTo,
+        vehicleNo: vNO,
+        status: sNO,
+        complaintfrom: formik.values.complaintfrom,
+        complaintTo: formik.values.complaintTo,
+        jobcarddatefrom: formik.values.jobcarddatefrom,
+        jobcarddateto: formik.values.jobcarddateto,
       };
       const response = await api.post(
         `Report/GetJobcardstatusApi`,
@@ -334,13 +325,13 @@ export default function JobCardStatus() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "vehicleNo",
             headerName: t("text.VehicleNo"),
@@ -421,8 +412,8 @@ export default function JobCardStatus() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      jobcarddatefrom: "",
+      jobcarddateto: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -432,9 +423,20 @@ export default function JobCardStatus() {
       index: 0,
       JobCardNoFrom: "",
       JobCardNoTo: "",
-      ComplainDateFrom: "",
-      ComplainDateTo: "",
+      complaintfrom: "",
+      complaintTo: "",
     },
+
+    validationSchema: Yup.object({
+      complaintTo: Yup.string()
+        .required("Complaint To date required"),
+      complaintfrom: Yup.string()
+        .required("Complaint from date required"),
+      jobcarddatefrom: Yup.string()
+        .required("Jobcard from date required"),
+      jobcarddateto: Yup.string()
+        .required("Jobcard  to date  required"),
+    }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -491,7 +493,7 @@ export default function JobCardStatus() {
           <Box height={10} />
 
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
-          <Grid item xs={12} sm={4} lg={4}>
+            <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
                 disablePortal
@@ -500,6 +502,9 @@ export default function JobCardStatus() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if (!newValue) {
+                    return;
+                  }
 
                   setVno(newValue.label);
                 }}
@@ -519,36 +524,35 @@ export default function JobCardStatus() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={4} lg={4}>
+            <Grid item lg={4} xs={12}>
               <Autocomplete
-                multiple
                 disablePortal
                 id="combo-box-demo"
-                options={VnoOption}
+                options={StatusOption}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-                  const selectedVno = newValue.map((item: any) => item.value);
-                  setVno(selectedVno);
+                  if (!newValue) {
+                    return;
+                  }
+                  console.log(newValue?.value);
+                  setsno(newValue.label);
+                  //formik.setFieldValue("status", newValue?.value.toString());
                 }}
-                disableCloseOnSelect
-                renderOption={(props, option, { selected }) => (
-                  <li {...props}>
-                    <Checkbox style={{ marginRight: 8 }} checked={selected} />
-                    <ListItemText primary={option.label} />
-                  </li>
-                )}
-                renderInput={(params: any) => (
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label={
-                      <CustomLabel text={t("text.Status")} required={false} />
+                      <CustomLabel
+                        text={t("text.Status")}
+                        required={false}
+                      />
                     }
                   />
                 )}
-                popupIcon={null}
               />
             </Grid>
+
 
             <Grid xs={12} md={4} lg={4} item>
               <TextField
@@ -583,42 +587,44 @@ export default function JobCardStatus() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="ComplainDateFrom"
-                name="ComplainDateFrom"
+                id="complaintfrom"
+                name="complaintfrom"
                 label={
-                  <CustomLabel
-                    text={t("text.ComplainDateFrom")}
-                    required={false}
-                  />
+                  <CustomLabel text={t("text.ComplainDateFrom")} required={true} />
                 }
-                value={formik.values.ComplainDateFrom}
+                value={formik.values.complaintfrom}
                 placeholder={t("text.ComplainDateFrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.complaintfrom && Boolean(formik.errors.complaintfrom)}
+                helperText={formik.touched.complaintfrom && formik.errors.complaintfrom}
                 InputLabelProps={{ shrink: true }}
               />
+
             </Grid>
 
             {/* To Date Input */}
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="ComplainDateTo"
-                name="ComplainDateTo"
+                id="complaintTo"
+                name="complaintTo"
                 label={
                   <CustomLabel
                     text={t("text.ComplainDateTo")}
-                    required={false}
+                    required={true}
                   />
                 }
-                value={formik.values.ComplainDateTo}
+                value={formik.values.complaintTo}
                 placeholder={t("text.ComplainDateTo")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.complaintTo && Boolean(formik.errors.complaintTo)}
+                helperText={formik.touched.complaintTo && formik.errors.complaintTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -626,17 +632,19 @@ export default function JobCardStatus() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="jobcarddatefrom"
+                name="jobcarddatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.jobcarddatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobcarddatefrom && Boolean(formik.errors.jobcarddatefrom)}
+                helperText={formik.touched.jobcarddatefrom && formik.errors.jobcarddatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -645,15 +653,17 @@ export default function JobCardStatus() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="jobcarddateto"
+                name="jobcarddateto"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.jobcarddateto}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.jobcarddateto && Boolean(formik.errors.jobcarddateto)}
+                helperText={formik.touched.jobcarddateto && formik.errors.jobcarddateto}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -685,7 +695,40 @@ export default function JobCardStatus() {
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
+
               <Button
+                type="submit"
+                fullWidth
+                style={{
+                  backgroundColor: `var(--header-background)`,
+                  color: "white",
+                  marginTop: "10px",
+                }}
+                onClick={() => {
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        complaintfrom: true,
+                        complaintTo: true,
+                        jobcarddatefrom: true,
+                        jobcarddateto: true,
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
+                }}
+                startIcon={<VisibilityIcon />}
+              >
+                Show
+              </Button>
+
+              {/* <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -708,7 +751,7 @@ export default function JobCardStatus() {
                 startIcon={<VisibilityIcon />}
               >
                 Show
-              </Button>
+              </Button> */}
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>

@@ -1830,8 +1830,8 @@ const CreateQualityCheck = (props: Props) => {
       disPer: 0,
       disAmt: 0,
       netAmount: 0,
-      createdBy: defaultValues,
-      updatedBy: defaultValues,
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: 0,
@@ -1878,6 +1878,7 @@ const CreateQualityCheck = (props: Props) => {
         tableData[0].netAmount === "" &&
         tableData[0].reason === "" &&
         tableData[0].batchNo === "" &&
+        tableData[0].mrnNo === "" &&
 
         Object.keys(tableData[0].item).length === 0;
 
@@ -1927,7 +1928,8 @@ const CreateQualityCheck = (props: Props) => {
         id: transData[i]["id"],
         qcId: transData[i]["mrnId"],
         mrnId: transData[i]["mrnId"],
-        mrnNo: formik.values.mrnNo,
+       mrnNo: "",
+
         reason: formik.values.remark,
         orderId: transData[i]["orderId"],
         orderNo: transData[i]["orderNo"],

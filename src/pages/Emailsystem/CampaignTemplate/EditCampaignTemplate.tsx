@@ -83,8 +83,8 @@ const EditCampagianTemplate = (props: Props) => {
             "template": location.state.template,
             "templateType": location.state.templateType,
             "smsTemplateID": location.state.smsTemplateID,
-            "createdBy": "",
-            "updatedBy": "",
+            "createdBy": "adminvm",
+            "updatedBy": "adminvm",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "srno": 0

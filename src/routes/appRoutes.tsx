@@ -72,7 +72,7 @@ import JobWorkChallanRecieve from "../pages/VehicleComplaints/JobWorkChallanReci
 import AddJobWorkChallanRecieve from "../pages/VehicleComplaints/JobWorkChallanRecieve/AddJobWorkChallanRecieve";
 import EditJobWorkChallanRecieve from "../pages/VehicleComplaints/JobWorkChallanRecieve/EditJobWorkChallanRecieve";
 import ComplainStatus from "../pages/Reports/ComplainStatus/ComplainStatus";
-import WorkshoapService from "../pages/Reports/WorkshoapService/WorkshoapService";
+import WorkshopService from "../pages/Reports/WorkshopService/WorkshopService";
 import VendorItemDetail from "../pages/Reports/VendorItemDetail/VendorItemDetail";
 import VendorEvaluationReport from "../pages/Reports/VendorEvaluationReport/VendorEvaluationReport";
 import VehicleStatusReport from "../pages/Reports/VehicleStatusReport/VehicleStatusReport";
@@ -1193,11 +1193,11 @@ const appRoutes: RouteType[] = [
 
 
       {
-        path: "/Reports/WorkshoapService",
-        element: <WorkshoapService />,
-        state: "Reports.WorkshoapService",
+        path: "/Reports/WorkshopService",
+        element: <WorkshopService />,
+        state: "Reports.WorkshopService",
         sidebarProps: {
-          displayText: "Workshoap Service",
+          displayText: "Workshop Service",
         }
       },
 

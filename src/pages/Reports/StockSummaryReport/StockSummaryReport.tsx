@@ -40,7 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -63,12 +63,12 @@ export default function StockSummaryReport() {
 
   const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
 
- 
 
-  
+
+
   const [isItem, setItem] = useState("");
 
- 
+
 
   const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFormat((event.target as HTMLInputElement).value);
@@ -79,7 +79,7 @@ export default function StockSummaryReport() {
       console.error("No data to export to Tabular HTML.");
       return;
     }
-   const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"]
+    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"]
     // Prepare headers and rows for HTML table
     // const headers = [
     //   "Date",
@@ -107,7 +107,7 @@ export default function StockSummaryReport() {
       // item?.startTime,
       // item?.endTime,
       // item?.fuelConsumption,
-      item?.itemname|| "",
+      item?.itemname || "",
       item?.opbal || "", // Vehicle No
       item?.inqty || "", // Driver
       item?.outqty || "", // Mobile No
@@ -153,11 +153,11 @@ export default function StockSummaryReport() {
           </thead>
           <tbody>
             ${rows
-              .map(
-                (row) =>
-                  `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-              )
-              .join("")}
+        .map(
+          (row) =>
+            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+        )
+        .join("")}
           </tbody>
         </table>
       </body>
@@ -243,7 +243,7 @@ export default function StockSummaryReport() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-        item?.itemname|| "",
+        item?.itemname || "",
         item?.opbal || "", // Vehicle No
         item?.inqty || "", // Driver
         item?.outqty || "", // Mobile No
@@ -285,14 +285,14 @@ export default function StockSummaryReport() {
 
   useEffect(() => {
     getData();
-    
+
   }, []);
 
- 
 
- 
+
+
   const getData = () => {
-    
+
     api.get(`ItemMaster/GetItemMaster?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.itemName,
@@ -301,14 +301,14 @@ export default function StockSummaryReport() {
       setOption(arr);
     });
   };
- 
+
 
   const fetchZonesData = async () => {
     try {
       const collectData = {
         itemname: isItem,
-        voucherdatefrom: formik.values.fromDate,
-        voucherdateto: formik.values.toDate,
+        voucherdatefrom: formik.values.voucherdatefrom,
+        voucherdateto: formik.values.voucherdateto,
       };
       const response = await api.post(
         `Report/GetvStockSummaryApi`,
@@ -407,8 +407,8 @@ export default function StockSummaryReport() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      voucherdatefrom: "",
+      voucherdateto: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -417,6 +417,14 @@ export default function StockSummaryReport() {
       displayLabel: "",
       index: 0,
     },
+
+    validationSchema: Yup.object({
+      voucherdateto: Yup.string()
+        .required("Voucher To date required"),
+      voucherdatefrom: Yup.string()
+        .required("Voucher from date required"),
+      
+    }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -475,17 +483,21 @@ export default function StockSummaryReport() {
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
-               // multiple
+                // multiple
                 disablePortal
                 id="combo-box-demo"
                 options={option}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-                 
+                  if(!newValue)
+                  {
+                    return;
+                  }
+
                   setItem(newValue.label);
                 }}
-               
+
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -501,17 +513,19 @@ export default function StockSummaryReport() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="voucherdatefrom"
+                name="voucherdatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.voucherdatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.voucherdatefrom && Boolean(formik.errors.voucherdatefrom)}
+                helperText={formik.touched.voucherdatefrom && formik.errors.voucherdatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -520,15 +534,17 @@ export default function StockSummaryReport() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="voucherdateto"
+                name="voucherdateto"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.voucherdateto}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.voucherdateto && Boolean(formik.errors.voucherdateto)}
+                helperText={formik.touched.voucherdateto && formik.errors.voucherdateto}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -560,7 +576,7 @@ export default function StockSummaryReport() {
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
-              <Button
+            <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -569,21 +585,28 @@ export default function StockSummaryReport() {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
-
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        voucherdatefrom: true,
+                        voucherdateto: true,
+                      
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >
                 Show
               </Button>
+             
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>

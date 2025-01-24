@@ -1098,8 +1098,8 @@ const EditStaffItemReturn = (props: Props) => {
             returnIndentNo: location.state.returnIndentNo,
             srn: location.state.srn,
             storeName: location.state.storeName || "",
-            createdBy: "",
-            updatedBy: "",
+            createdBy: "adminvm",
+            updatedBy: "adminvm",
             createdOn: defaultValues,
             updatedOn: defaultValues,
 

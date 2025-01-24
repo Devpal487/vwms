@@ -196,8 +196,8 @@ const EditemailcampgiontForm = (props: Props) => {
             "toTime": location.state.toTime,
 
 
-            "createdBy": "",
-            "updatedBy": "",
+            "createdBy": "adminvm",
+            "updatedBy": "adminvm",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             listGroups: location.state?.listGroups || [],

@@ -134,10 +134,10 @@ const AddLicensingInsuranceMaster = (props: Props) => {
       "attachment": "",
       "attachMentName": "",
       "licenceType": "",
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-13T09:11:21.146Z",
-      "updatedOn": "2024-12-13T09:11:21.146Z",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
       "file": ""
     },
 

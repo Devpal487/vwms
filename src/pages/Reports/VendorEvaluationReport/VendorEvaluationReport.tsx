@@ -50,11 +50,15 @@ interface MenuPermission {
 
 export default function VendorEvaluationReport() {
   const [zones, setZones] = useState([]);
+     const { t } = useTranslation();
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
+ const [vehicleTypeValue, setVehicleTypeValue] = useState("");
+   const [vehicleTypeOption, setVehicleTypeOption] = useState([
+      { value: -1, label: t("text.VehicleType") },
+   ]);
   const [option, setOption] = useState([
     { value: "-1", label: "Vehicle Type" },
   ]);
@@ -63,7 +67,7 @@ export default function VendorEvaluationReport() {
 
   const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
 
-  const [VnoOption, setVnoOption] = useState([
+ const [VnoOption, setVnoOption] = useState([
     { value: -1, label: "Select Vehicle No " },
   ]);
 
@@ -280,12 +284,12 @@ export default function VendorEvaluationReport() {
   };
 
   let navigate = useNavigate();
-  const { t } = useTranslation();
+
 
   useEffect(() => {
-    getData();
+    // getData();
     getPeriod();
-
+    getVehicletypeData();
     getVehicleNo();
   }, []);
 
@@ -305,61 +309,28 @@ export default function VendorEvaluationReport() {
   };
 
   const getVehicleNo = () => {
-    const collectData = {
-      orderby: "",
-      pageNo: 0,
-      pageSize: 0,
-      intnotnullvalue1: 0,
-      userId: "",
 
-      str1: "",
-      str2: "",
-      str3: "",
-      str4: "",
-      str5: "",
-      intvalue1: 0,
-      intvalue2: 0,
-      intvalue3: 0,
-      intvalue4: 0,
-      intnotnullvalue2: 0,
-      intnotnullvalue3: 0,
-      date1: new Date().toISOString(),
-      date2: new Date().toISOString(),
-      date3: new Date().toISOString(),
-      date4: new Date().toISOString(),
-      dec1: 0,
-      dec2: 0,
-      dec3: 0,
-      dec4: 0,
-      flag: true,
-      data: "",
-      success: true,
-      error: "",
-      selectPerindex: 0,
-      show: true,
-    };
-    api.post(`Dashboard/GetvVehicleNo`, collectData).then((res) => {
+    api.get(`Master/GetVehicleDetail?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.vehicleNo,
-        value: item.vehicleNo,
+        value: item.itemMasterId,
       }));
       setVnoOption(arr);
     });
   };
-
-  const getData = () => {
-    const collectData = {
-      vehicleTypeId: -1,
-      vehicleTypename: "",
-    };
-    api.post(`VehicleType/GetVehicleType`, collectData).then((res) => {
-      const arr = res?.data?.data.map((item: any) => ({
-        label: item.vehicleTypename,
-        value: item.vehicleTypeId,
-      }));
-      setOption(arr);
-    });
-  };
+  const getVehicletypeData = async () => {
+    const response = await api.get(`Master/GetVehicleType?VehicleTypeId=-1`);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+       arr.push({
+          label: data[index]["vehicleTypename"],
+          value: data[index]["vehicleTypeId"],
+       });
+    }
+    setVehicleTypeOption(arr);
+ }
+ 
   let currentDate = new Date();
 
   currentDate.setDate(currentDate.getDate() - 1);
@@ -810,8 +781,36 @@ export default function VendorEvaluationReport() {
                 }}
               />
             </Grid>
+            <Grid item lg={4} sm={4} xs={12}>
+                        <Autocomplete
+                           disablePortal
+                           id="combo-box-demo"
+                           options={vehicleTypeOption}
+                           value={vehicleTypeValue}
+                           fullWidth
+                           size="small"
+                           onChange={(event: any, newValue: any) => {
+                              if (!newValue) {
+                                 return;
+                              }
+                              console.log(newValue?.value);
+                              formik.setFieldValue("vehicleTypeId", parseInt(newValue.value));
+                              setVehicleTypeValue(newValue?.label);
 
-            <Grid xs={12} sm={4} md={4} item>
+                           }}
+                           renderInput={(params) => (
+                              <TextField
+                                 {...params}
+                                 label={<CustomLabel text={t("text.VehicleType")} required={false} />}
+                                 name="vehicleTypeId"
+                                 id="vehicleTypeId"
+                                 placeholder={t("text.VehicleType")}
+                              />
+                           )}
+                        />
+                     </Grid>
+
+            {/* <Grid xs={12} sm={4} md={4} item>
               <Autocomplete
                 multiple
                 disablePortal
@@ -842,9 +841,9 @@ export default function VendorEvaluationReport() {
                   />
                 )}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12} sm={4} lg={4}>
+            {/* <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 multiple
                 disablePortal
@@ -863,6 +862,37 @@ export default function VendorEvaluationReport() {
                     <ListItemText primary={option.label} />
                   </li>
                 )}
+                renderInput={(params: any) => (
+                  <TextField
+                    {...params}
+                    label={
+                      <CustomLabel
+                        text={t("text.VehicleNos1")}
+                        required={false}
+                      />
+                    }
+                  />
+                )}
+                popupIcon={null}
+              />
+            </Grid> */}
+
+            <Grid item xs={12} sm={4} lg={4}>
+              <Autocomplete
+                //multiple
+                disablePortal
+                id="combo-box-demo"
+                options={VnoOption}
+                fullWidth
+                size="small"
+                onChange={(event: any, newValue: any) => {
+                  if (!newValue) {
+                    return;
+                  }
+
+                  setVno(newValue.label);
+                }}
+
                 renderInput={(params: any) => (
                   <TextField
                     {...params}

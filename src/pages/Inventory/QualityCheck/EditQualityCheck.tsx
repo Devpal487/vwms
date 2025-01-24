@@ -38,7 +38,7 @@ const EditQualityCheck = (props: Props) => {
   const location = useLocation();
 
   const [toaster, setToaster] = useState(false);
-  const [vendorData, setVendorData] = useState([]);
+  const [vendorData, setVendorData] = useState<any>([]);
   // const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
 "id": -1,
@@ -60,7 +60,9 @@ const EditQualityCheck = (props: Props) => {
     "netAmount": 0,
     "reason": "",
     "batchNo": "",
-    "unitId": 0
+    "unitId": 0,
+    mrnNo:0
+
   };
   type MrnOption = {
     label: string;
@@ -168,6 +170,7 @@ const EditQualityCheck = (props: Props) => {
                 sgst: item.sgst,
                 igst: item.igst,
                 gst: item.gst,
+                mrnNo: "",
                 reason: item.reason,
                 netAmount: item.netAmount
                 //  item: {},
@@ -247,12 +250,9 @@ const EditQualityCheck = (props: Props) => {
           label: item.name,
           value: item.venderId,
           details: item,
-        })) || [];
+        }));
 
-      setVendorData([
-        { value: "-1", label: t("text.SelectVendor") },
-        ...arr,
-      ] as any);
+      setVendorData(arr);
     }
   };
 
@@ -470,8 +470,8 @@ const EditQualityCheck = (props: Props) => {
       netAmount: location.state.netAmount,
       // qcApplicable: location.state.qcApplicable,
       // qcStatus: location.state.qcStatus,
-      createdBy: defaultValues,
-      updatedBy: defaultValues,
+      createdBy: "adminvm",
+      updatedBy: "adminvm",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: location.state.companyId,
@@ -505,6 +505,7 @@ const EditQualityCheck = (props: Props) => {
         tableData[0].netAmount === "" &&
         tableData[0].reason === "" &&
         tableData[0].batchNo === "" &&
+        tableData[0].mrnNo === "" &&
         Object.keys(tableData[0].item).length === 0;
 
       if (isFirstRowDefault) {
@@ -524,7 +525,7 @@ const EditQualityCheck = (props: Props) => {
           row.mrnQty === "" &&
           row.acceptQty === "" &&
           row.rejectQty === "" &&
-          // row.quantity === "" &&
+          row.mrnNo === "" &&
           row.rate === "" &&
           row.amount === "" &&
           row.gstId === "" &&
@@ -753,6 +754,9 @@ const EditQualityCheck = (props: Props) => {
                     size="small"
                     id="combo-box-demo"
                     options={vendorData}
+                    value={
+                      vendorData[vendorData.findIndex((e:any) => e.value == formik.values.vendorId)]?.label || ""
+                  }
                     getOptionLabel={(option: any) => option.label}  // Display vendor name
                     // value={
                     //   vendorData.find((vendor: any) => vendor.value === formik.values.vendorId) || null
@@ -1001,7 +1005,10 @@ const EditQualityCheck = (props: Props) => {
                             options={orderOption}
                             fullWidth
                             size="small"
-                            value={orderOption.find((opt: any) => opt.value == row.orderId)}
+                            value={
+                              orderOption[orderOption.findIndex((e:any) => e.value == row.orderId)]?.label || ""
+                          }
+                          //  value={orderOption.find((opt: any) => opt.value == row.orderId)}
                             onChange={(e: any, newValue: any) =>
                               handleInputChange(
                                 index,
@@ -1035,7 +1042,11 @@ const EditQualityCheck = (props: Props) => {
                             options={itemOption}
                             fullWidth
                             size="small"
-                            value={itemOption.find((opt: any) => opt.value === row.itemId)}
+                            value={
+                              itemOption[itemOption.findIndex((e:any) => e.value == row.itemId)]?.label || ""
+                          }
+                           
+                          //value={itemOption.find((opt: any) => opt.value == row.itemId)}
                             onChange={(e: any, newValue: any) =>
                               handleInputChange(
                                 index,
@@ -1150,7 +1161,10 @@ const EditQualityCheck = (props: Props) => {
                             options={taxData}
                             fullWidth
                             size="small"
-                            value={taxData.find((opt: any) => opt.value == row.gstId)}
+                            value={
+                              taxData[taxData.findIndex((e:any) => e.value == row.gstId)]?.label || ""
+                          }
+                            //value={taxData.find((opt: any) => opt.value == row.gstId)}
                             onChange={(e: any, newValue: any) =>
                               handleInputChange(index, "gstId", newValue?.value)
                             }

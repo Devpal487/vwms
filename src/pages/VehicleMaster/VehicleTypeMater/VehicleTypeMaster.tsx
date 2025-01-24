@@ -70,10 +70,10 @@ export default function VehicleTypeMaster() {
       "vehicleTypename": "",
       "shortName": "",
       "vehicleCode": "",
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-10T07:56:27.661Z",
-      "updatedOn": "2024-12-10T07:56:27.661Z",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime,
       "srno": 0
     },
 
@@ -112,10 +112,10 @@ export default function VehicleTypeMaster() {
       "vehicleTypename": delete_name,
       "shortName": "",
       "vehicleCode": "",
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-10T07:44:22.304Z",
-      "updatedOn": "2024-12-10T07:44:22.304Z",
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime,
       "srno": 0
     }
     console.log("collectData " + JSON.stringify(collectData));

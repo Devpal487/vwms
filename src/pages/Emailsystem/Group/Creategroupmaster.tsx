@@ -53,8 +53,8 @@ const Creategroupmaster = (props: Props) => {
   "description": "",
   "type": "",
   "isActive": "true",
-    createdBy: "",
-    updatedBy: "",
+    createdBy: "adminvm",
+    updatedBy: "adminvm",
     createdOn: defaultValuestime,
     updatedOn: defaultValuestime
   };
@@ -70,8 +70,8 @@ const Creategroupmaster = (props: Props) => {
   "description": "",
   "type": "",
   "isActive": true,
-    createdBy: "",
-    updatedBy: "",
+    createdBy: "adminvm",
+    updatedBy: "adminvm",
     createdOn: defaultValuestime,
     updatedOn: defaultValuestime
     },

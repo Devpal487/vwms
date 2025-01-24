@@ -71,10 +71,10 @@ export default function FuelTypeMaster() {
          "fuelTypename": "",
          "shortName": "",
          "fuelCode": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-10T06:37:30.785Z",
-         "updatedOn": "2024-12-10T06:37:30.785Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srno": 0
       },
 
@@ -121,10 +121,10 @@ export default function FuelTypeMaster() {
          "fuelTypename": delete_name,
          "shortName": "",
          "fuelCode": "",
-         "createdBy": "",
-         "updatedBy": "",
-         "createdOn": "2024-12-10T06:39:17.839Z",
-         "updatedOn": "2024-12-10T06:39:17.839Z",
+         "createdBy": "adminvm",
+         "updatedBy": "adminvm",
+         "createdOn": defaultValuestime,
+         "updatedOn": defaultValuestime,
          "srno": 0
       }
       console.log("collectData " + JSON.stringify(collectData));

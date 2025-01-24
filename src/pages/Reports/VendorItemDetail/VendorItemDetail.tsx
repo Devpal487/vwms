@@ -40,7 +40,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
-
+import * as Yup from "yup";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -107,7 +107,7 @@ export default function VendorItemDetail() {
     //   "Fuel Consumption",
     // ];
 
-    const headers = ["mrnNo", "itemName", "netAmount", "vendor", "mrnDate"];
+    const headers = ["Mrn No.", "Item Name", "Net Amount", "Vendor", "Mrn Date"];
 
     const rows = isPrint.map((item: any) => [
       // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
@@ -228,7 +228,7 @@ export default function VendorItemDetail() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["mrnNo", "itemName", "netAmount", "vendor", "mrnDate"];
+    const headers = ["Mrn No.", "Item Name", "Net Amount", "Vendor", "Mrn Date"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -345,8 +345,8 @@ export default function VendorItemDetail() {
       const collectData = {
         vendor: vend,
         itemName: isItem,
-        mrnDatefrom: formik.values.fromDate,
-        mrnDateTo: formik.values.toDate,
+        mrnDatefrom: formik.values.mrnDatefrom,
+        mrnDateTo: formik.values.mrnDateTo,
       };
       const response = await api.post(`Report/GetVendorItemApi`, collectData);
       const data = response?.data;
@@ -461,8 +461,8 @@ export default function VendorItemDetail() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      fromDate: "",
-      toDate: "",
+      mrnDatefrom: "",
+      mrnDateTo: "",
       days: 0,
       parentId: 0,
       startDate: "",
@@ -471,6 +471,14 @@ export default function VendorItemDetail() {
       displayLabel: "",
       index: 0,
     },
+
+     validationSchema: Yup.object({
+      mrnDateTo: Yup.string()
+            .required("Mrn To date required"),
+            mrnDatefrom: Yup.string()
+            .required("Mrn from date required"),
+        
+        }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -536,6 +544,11 @@ export default function VendorItemDetail() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue)
+                  {
+                    return;
+                  }
+                    
                   
                   setItem(newValue.label);
                 }}
@@ -562,6 +575,10 @@ export default function VendorItemDetail() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
+                  if(!newValue)
+                  {
+                    return;
+                  }
                  
                   setVendor(newValue.label);
                 }}
@@ -582,17 +599,19 @@ export default function VendorItemDetail() {
             <Grid xs={12} sm={3} md={3} item>
               <TextField
                 type="date"
-                id="fromDate"
-                name="fromDate"
+                id="mrnDatefrom"
+                name="mrnDatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.FromDate")} required={true} />
                 }
-                value={formik.values.fromDate}
+                value={formik.values.mrnDatefrom}
                 placeholder={t("text.FromDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.mrnDatefrom && Boolean(formik.errors.mrnDatefrom)}
+                helperText={formik.touched.mrnDatefrom && formik.errors.mrnDatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -601,15 +620,17 @@ export default function VendorItemDetail() {
             <Grid xs={12} sm={3} md={3} item>
               <TextField
                 type="date"
-                id="toDate"
-                name="toDate"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
-                value={formik.values.toDate}
+                id="mrnDateTo"
+                name="mrnDateTo"
+                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                value={formik.values.mrnDateTo}
                 placeholder={t("text.ToDate")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                error={formik.touched.mrnDateTo && Boolean(formik.errors.mrnDateTo)}
+                helperText={formik.touched.mrnDateTo && formik.errors.mrnDateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -641,7 +662,7 @@ export default function VendorItemDetail() {
             </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
-              <Button
+            <Button
                 type="submit"
                 fullWidth
                 style={{
@@ -650,16 +671,22 @@ export default function VendorItemDetail() {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
-
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
-                  fetchZonesData();
-                  setVisible(true);
-                  // }
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        mrnDateTo: true,
+                        mrnDatefrom: true,
+                      
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
                 }}
                 startIcon={<VisibilityIcon />}
               >
