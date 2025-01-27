@@ -92,7 +92,7 @@ const EditEmployee = (props: Props) => {
     getZoneData();
     getEmailData();
 
-    console.log("location=>",JSON.stringify(location.state))
+    console.log("location=>", JSON.stringify(location.state))
   }, []);
 
   const getZoneData = async () => {
@@ -959,6 +959,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
+                  value={formik.values.empCountryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -966,6 +967,7 @@ const EditEmployee = (props: Props) => {
                       return;
                     }
                     formik.setFieldValue("empCountryID", newValue?.value);
+                    formik.setFieldValue("empCountryName", newValue?.label);
                     formik.setFieldTouched("empCountryID", true);
                     formik.setFieldTouched("empCountryID", false);
                     getState(newValue?.value);
@@ -990,6 +992,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
+                  value={formik.values.empStateName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -997,6 +1000,7 @@ const EditEmployee = (props: Props) => {
                       return;
                     }
                     formik.setFieldValue("empStateId", newValue?.value);
+                    formik.setFieldValue("empStateName", newValue?.label);
                     formik.setFieldTouched("empStateId", true);
                     formik.setFieldTouched("empStateId", false);
                     getCity(newValue?.value);
@@ -1020,6 +1024,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
+                  value={formik.values.empCityName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -1027,6 +1032,7 @@ const EditEmployee = (props: Props) => {
                       return;
                     }
                     formik.setFieldValue("empCityId", newValue?.value);
+                    formik.setFieldValue("empCityName", newValue?.label);
                     formik.setFieldTouched("empCityId", true);
                     formik.setFieldTouched("empCityId", false);
                   }}
@@ -1049,6 +1055,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={zoneOption}
+                  value={formik.values.zoneName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {

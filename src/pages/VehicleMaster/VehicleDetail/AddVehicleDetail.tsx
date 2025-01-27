@@ -67,45 +67,49 @@ const AddVehicleDetail = (props: Props) => {
    const { defaultValues, defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
-   const [zoneValue, setZoneValue] = useState("");
+
    const [zoneOption, setzoneOption] = useState([
       { value: -1, label: t("text.zoneID") },
    ]);
-   const [categoryValue, setCategoryValue] = useState("");
+
    const [categoryOption, setCategoryOption] = useState([
       { value: -1, label: t("text.Category") },
    ]);
-   const [itemTypeValue, setItemTypeValue] = useState("");
+
    const [itemTypeOption, setitemTypeOption] = useState([
       { value: -1, label: t("text.Type") },
    ]);
-   const [unitValue, setUnitValue] = useState("");
+
    const [unitOption, setUnitOption] = useState([
       { value: -1, label: t("text.Unit") },
    ]);
-   const [taxValue, setTaxValue] = useState("");
+
    const [taxOption, setTaxOption] = useState([
       { value: -1, label: t("text.Tax") },
    ]);
-   const [vehicleTypeValue, setVehicleTypeValue] = useState("");
+
    const [vehicleTypeOption, setVehicleTypeOption] = useState([
       { value: -1, label: t("text.VehicleType") },
    ]);
-   const [brandValue, setBrandValue] = useState("");
+
    const [brandOption, setBrandOption] = useState([
       { value: -1, label: t("text.BrandName") },
    ]);
-   const [fuelTypeValue, setFuelTypeValue] = useState("");
+
    const [fuelTypeOption, setFuelTypeOption] = useState([
       { value: -1, label: t("text.FuelType") },
    ]);
 
    const [empValue, setEmpValue] = useState("");
-   const [departmentValue, setDepartmentValue] = useState("");
-   const [designationValue, setDesignationValue] = useState("");
+
    const [empOption, setEmpOption] = useState([
       { value: 1, label: t("text.EmpName"), department: "", designation: "" },
    ]);
+
+   const [panOpens, setPanOpen] = React.useState(false);
+   const [modalImg, setModalImg] = useState("");
+   const [Opens, setOpen] = React.useState(false);
+   const [Img, setImg] = useState("");
 
    useEffect(() => {
       getzoneData();
@@ -267,7 +271,7 @@ const AddVehicleDetail = (props: Props) => {
          "itemName": "",
          "itemCode": "",
          "itemTypeId": 0,
-         "itemFlag": "V",
+         "itemFlag": "v",
          "itemCategoryId": 0,
          "unitId": 0,
          "empId": 0,
@@ -287,20 +291,29 @@ const AddVehicleDetail = (props: Props) => {
          "createdBy": "adminvm",
          "updatedBy": "adminvm",
          "mileage": 0,
-         "createdOn": defaultValuestime,
-         "updatedOn": defaultValuestime,
+         "createdOn": defaultValues,
+         "updatedOn": defaultValues,
          "zoneName": "",
-         //"vehiclePhotoFile": "",
+         "vehiclePhotoFile": "",
+         "deptName": "",
+         "desigName": "",
          "vehicleTypeId": 0,
          "brandTypeId": 0,
          "fuelTypeId": 0,
          "devid": "",
-         "vehicleWeight": 0
+         "vehicleWeight": 0,
+         "empName": "",
+         "unitName": "",
+         "itemCatName": "",
+         "taxName": "",
+         "vehicleType": "",
+         "fuelName": "",
+         "brandName": ""
       },
       validationSchema: Yup.object({
          itemName: Yup.string()
             .required(t("Vehicle Name is required")),
-            vehicleNo: Yup.string()
+         vehicleNo: Yup.string()
             .required(t("Vehicle Number is required")),
       }),
 
@@ -315,6 +328,69 @@ const AddVehicleDetail = (props: Props) => {
          }
       },
    });
+
+
+   const handlePanClose = () => {
+      setPanOpen(false);
+   };
+
+   const modalOpenHandle = (event: string) => {
+      setPanOpen(true);
+      const base64Prefix = "data:image/jpeg;base64,";
+
+      let imageData = '';
+      switch (event) {
+         case "filename":
+            imageData = formik.values.filename;
+            break;
+         case "vehiclePhotoFile":
+            imageData = formik.values.vehiclePhotoFile;
+            break;
+         default:
+            imageData = '';
+      }
+      if (imageData) {
+         const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+         console.log("imageData", imgSrc);
+         setImg(imgSrc);
+      } else {
+         setImg('');
+      }
+   };
+
+   const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      // Validate file type (only allow images)
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+         alert("Only .jpg, .jpeg, or .png image files are allowed.");
+         event.target.value = ''; // Clear input field
+         return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+         const base64String = reader.result as string;
+
+         // Use regex to remove the base64 prefix dynamically
+         const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+         if (base64Content) {
+            formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+         } else {
+            alert("Error processing image data.");
+         }
+      };
+
+      reader.onerror = () => {
+         alert("Error reading file. Please try again.");
+      };
+
+      reader.readAsDataURL(file);
+   };
+
 
 
 
@@ -392,10 +468,8 @@ const AddVehicleDetail = (props: Props) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
-                              formik.setFieldValue("vZoneID", parseInt(newValue.value));
-                              formik.setFieldValue("zoneName", newValue.label.toString());
-                              setZoneValue(newValue?.label)
+                              formik.setFieldValue("vZoneID", parseInt(newValue?.value || -1));
+                              formik.setFieldValue("zoneName", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -475,16 +549,15 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={categoryOption}
-                           value={categoryValue || ""}
+                           value={formik.values.itemCatName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("itemCategoryId", parseInt(newValue.value));
-                              setCategoryValue(newValue?.label);
+                              formik.setFieldValue("itemCatName", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -504,7 +577,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={itemTypeOption}
-                           value={itemTypeValue}
+                           value={itemTypeOption[itemTypeOption.findIndex(item => item.value === formik.values.itemTypeId)]?.label || ""}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -513,7 +586,7 @@ const AddVehicleDetail = (props: Props) => {
                               }
                               console.log(newValue?.value);
                               formik.setFieldValue("itemTypeId", parseInt(newValue.value))
-                              setItemTypeValue(newValue?.label);
+
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -533,17 +606,15 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={unitOption}
-                           value={unitValue}
+                           value={formik.values.unitName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("unitId", parseInt(newValue.value));
-                              setUnitValue(newValue?.label);
-
+                              formik.setFieldValue("unitName", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -563,16 +634,15 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={taxOption}
-                           value={taxValue}
+                           value={formik.values.taxName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("taxId", parseInt(newValue.value));
-                              setTaxValue(newValue?.label);
+                              formik.setFieldValue("taxName", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -705,18 +775,17 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={empOption}
-                           value={empValue}
+                           value={formik.values.empName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("empId", parseInt(newValue.value));
-                              setEmpValue(newValue?.label);
-                              setDepartmentValue(newValue?.department);
-                              setDesignationValue(newValue?.designation);
+                              formik.setFieldValue("empName", newValue.label);
+                              formik.setFieldValue("deptName", newValue?.department);
+                              formik.setFieldValue("desigName", newValue?.designation);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -744,7 +813,7 @@ const AddVehicleDetail = (props: Props) => {
                            size="small"
                            name="Department"
                            id="Department"
-                           value={departmentValue}
+                           value={formik.values.deptName}
                            placeholder={t("text.Department")}
                            disabled={true}
                         />
@@ -764,7 +833,7 @@ const AddVehicleDetail = (props: Props) => {
                            size="small"
                            name="Designation"
                            id="Designation"
-                           value={designationValue}
+                           value={formik.values.desigName}
                            placeholder={t("text.Designation")}
                            disabled={true}
                         />
@@ -776,7 +845,7 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={vehicleTypeOption}
-                           value={vehicleTypeValue}
+                           value={formik.values.vehicleType}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
@@ -785,8 +854,7 @@ const AddVehicleDetail = (props: Props) => {
                               }
                               console.log(newValue?.value);
                               formik.setFieldValue("vehicleTypeId", parseInt(newValue.value));
-                              setVehicleTypeValue(newValue?.label);
-
+                              formik.setFieldValue("vehicleType", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -806,16 +874,15 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={brandOption}
-                           value={brandValue}
+                           value={formik.values.brandName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("brandTypeId", parseInt(newValue.value));
-                              setBrandValue(newValue?.label);
+                              formik.setFieldValue("brandName", newValue.label);
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -835,16 +902,16 @@ const AddVehicleDetail = (props: Props) => {
                            disablePortal
                            id="combo-box-demo"
                            options={fuelTypeOption}
-                           value={fuelTypeValue}
+                           value={formik.values.fuelName}
                            fullWidth
                            size="small"
                            onChange={(event: any, newValue: any) => {
                               if (!newValue) {
                                  return;
                               }
-                              //console.log(newValue?.value);
                               formik.setFieldValue("fuelTypeId", parseInt(newValue.value));
-                              setFuelTypeValue(newValue?.label);
+                              formik.setFieldValue("fuelName", newValue.label);
+
                            }}
                            renderInput={(params) => (
                               <TextField
@@ -969,6 +1036,208 @@ const AddVehicleDetail = (props: Props) => {
                               formik.setFieldValue("tankCapacity", parseInt(e.target.value));
                            }}
                         />
+                     </Grid>
+
+                     {/* attachment */}
+                     <Grid container spacing={1} item>
+                        <Grid
+                           xs={12}
+                           md={4}
+                           sm={4}
+                           item
+                           style={{ marginBottom: "30px", marginTop: "30px" }}
+                        >
+                           <TextField
+                              type="file"
+                              inputProps={{ accept: "image/*" }}
+                              InputLabelProps={{ shrink: true }}
+                              label={
+                                 <strong style={{ color: "#000" }}>
+                                    {t("text.RCDocument")}
+                                 </strong>
+                              }
+                              size="small"
+                              fullWidth
+                              style={{ backgroundColor: "white" }}
+                              onChange={(e: any) => otherDocChangeHandler(e, "filename")}
+                           />
+                        </Grid>
+
+                        <Grid xs={12} md={4} sm={4} item></Grid>
+                        <Grid
+                           style={{
+                              display: "flex",
+                              justifyContent: "space-around",
+                              alignItems: "center",
+                              margin: "10px",
+                           }}
+                        >
+                           {formik.values.filename ? (
+                              <img
+                                 src={
+                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.filename)
+                                       ? formik.values.filename
+                                       : `data:image/jpeg;base64,${formik.values.filename}`
+                                 }
+                                 alt="Complaint Document Preview"
+                                 style={{
+                                    width: 150,
+                                    height: 100,
+                                    border: "1px solid grey",
+                                    borderRadius: 10,
+                                    padding: "2px",
+                                    objectFit: "cover",  // Ensures proper scaling
+                                 }}
+                              />
+                           ) : (
+                              <img
+                                 src={nopdf}
+                                 alt="No document available"
+                                 style={{
+                                    width: 150,
+                                    height: 100,
+                                    border: "1px solid grey",
+                                    borderRadius: 10,
+                                 }}
+                              />
+                           )}
+
+                           <Typography
+                              onClick={() => modalOpenHandle("filename")}
+                              style={{
+                                 textDecorationColor: "blue",
+                                 textDecorationLine: "underline",
+                                 color: "blue",
+                                 fontSize: "15px",
+                                 cursor: "pointer",
+                                 padding: "20px",
+                              }}
+                              role="button"
+                              aria-label="Preview Document"
+                           >
+                              {t("text.Preview")}
+                           </Typography>
+                        </Grid>
+
+
+                        <Modal open={panOpens} onClose={handlePanClose}>
+                           <Box sx={style}>
+                              {Img ? (
+                                 <img
+                                    src={Img}
+                                    alt="Preview"
+                                    style={{
+                                       width: "170vh",
+                                       height: "75vh",
+                                       borderRadius: 10,
+                                    }}
+                                 />
+                              ) : (
+                                 <Typography>No Image to Preview</Typography>
+                              )}
+                           </Box>
+                        </Modal>
+                     </Grid>
+
+                     {/* attachment */}
+                     <Grid container spacing={1} item>
+                        <Grid
+                           xs={12}
+                           md={4}
+                           sm={4}
+                           item
+                           style={{ marginBottom: "30px", marginTop: "30px" }}
+                        >
+                           <TextField
+                              type="file"
+                              inputProps={{ accept: "image/*" }}
+                              InputLabelProps={{ shrink: true }}
+                              label={
+                                 <strong style={{ color: "#000" }}>
+                                    {t("text.VehicleImage")}
+                                 </strong>
+                              }
+                              size="small"
+                              fullWidth
+                              style={{ backgroundColor: "white" }}
+                              onChange={(e: any) => otherDocChangeHandler(e, "vehiclePhotoFile")}
+                           />
+                        </Grid>
+
+                        <Grid xs={12} md={4} sm={4} item></Grid>
+                        <Grid
+                           style={{
+                              display: "flex",
+                              justifyContent: "space-around",
+                              alignItems: "center",
+                              margin: "10px",
+                           }}
+                        >
+                           {formik.values.vehiclePhotoFile ? (
+                              <img
+                                 src={
+                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.vehiclePhotoFile)
+                                       ? formik.values.vehiclePhotoFile
+                                       : `data:image/jpeg;base64,${formik.values.vehiclePhotoFile}`
+                                 }
+                                 alt="Complaint Document Preview"
+                                 style={{
+                                    width: 150,
+                                    height: 100,
+                                    border: "1px solid grey",
+                                    borderRadius: 10,
+                                    padding: "2px",
+                                    objectFit: "cover",  // Ensures proper scaling
+                                 }}
+                              />
+                           ) : (
+                              <img
+                                 src={nopdf}
+                                 alt="No document available"
+                                 style={{
+                                    width: 150,
+                                    height: 100,
+                                    border: "1px solid grey",
+                                    borderRadius: 10,
+                                 }}
+                              />
+                           )}
+
+                           <Typography
+                              onClick={() => modalOpenHandle("vehiclePhotoFile")}
+                              style={{
+                                 textDecorationColor: "blue",
+                                 textDecorationLine: "underline",
+                                 color: "blue",
+                                 fontSize: "15px",
+                                 cursor: "pointer",
+                                 padding: "20px",
+                              }}
+                              role="button"
+                              aria-label="Preview Document"
+                           >
+                              {t("text.Preview")}
+                           </Typography>
+                        </Grid>
+
+
+                        <Modal open={panOpens} onClose={handlePanClose}>
+                           <Box sx={style}>
+                              {Img ? (
+                                 <img
+                                    src={Img}
+                                    alt="Preview"
+                                    style={{
+                                       width: "170vh",
+                                       height: "75vh",
+                                       borderRadius: 10,
+                                    }}
+                                 />
+                              ) : (
+                                 <Typography>No Image to Preview</Typography>
+                              )}
+                           </Box>
+                        </Modal>
                      </Grid>
 
 

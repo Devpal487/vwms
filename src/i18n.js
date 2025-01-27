@@ -8910,6 +8910,10 @@ const resources = {
         currFinYear:"Current Financial Year",
 
 
+        RCDocument:"Attach RC Document",
+        VehicleImage:"Attach Vehicle Image",
+
+
 
 
 
@@ -13099,6 +13103,9 @@ const resources = {
         StockBinName1:"स्टॉक बिन का नाम",
         binCode:"स्टॉक बिन कोड",
         binCode1:"स्टॉक बिन कोड",
+
+        RCDocument:"आरसी दस्तावेज़ संलग्न करें",
+        VehicleImage:"वाहन छवि संलग्न करें",
       },
 
       content: {},
