@@ -167,7 +167,7 @@ const EditJobCard1 = (props: Props) => {
         "igst": 0,
         "netAmount": 0,
         "srno": 0,
-        "isDelete": true,
+        "isDelete": false,
         "prevReading": 0
       }
     ],
@@ -227,7 +227,7 @@ const EditJobCard1 = (props: Props) => {
       "igst": 0,
       "netAmount": 0,
       "srno": 0,
-      "isDelete": true,
+      "isDelete": false,
       "prevReading": 0
     },
     {
@@ -247,7 +247,7 @@ const EditJobCard1 = (props: Props) => {
       "igst": 0,
       "netAmount": 0,
       "srno": 0,
-      "isDelete": true,
+      "isDelete": false,
       "prevReading": 0
     },
 
@@ -326,7 +326,10 @@ const EditJobCard1 = (props: Props) => {
     //   setTableData([...location.state?.serviceDetail, tableData]);
     //   setTableData1([...location.state?.itemDetail, tableData1]);
     // }
-
+    // const timeoutId: any = setTimeout(() => {
+    //   handleStateData();
+    // }, 300);
+console.log("location.state",(location.state));
     GetitemData();
     getTaxData();
     GetIndentID();
@@ -430,6 +433,30 @@ const EditJobCard1 = (props: Props) => {
     }
     setServiceOption(arr);
   };
+
+  // const handleStateData = async () => {
+  //   const collectData = {
+  //     "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
+  //     "status": ""
+  //   };
+  //   const response = await api.post(`Master/GetJobCard`, collectData);
+  //   const data = response.data.data;
+
+  //   if (data[0].itemDetail.length > 0) {
+  //     setTableData(data[0].itemDetail);
+  //   }
+
+  //   setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.department || location.state?.department || "");
+  //   setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.designation || location.state?.designation || "");
+
+  //   // await getJobCardData().then(() => {
+  //   //   if (location.state.status === "Complete") {
+  //   //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
+  //   //   } else {
+  //   //     setTableData([...location.state?.serviceDetail, tableData]);
+  //   //   }
+  //   // })
+  // }
 
   const GetIndentID = async () => {
     const collectData = {
@@ -661,11 +688,10 @@ const EditJobCard1 = (props: Props) => {
       newData[index].serviceId = newData[index].serviceId;
       newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    // if (field === 'serviceName') {
-    //   newData[index].serviceName = newData[index].serviceName;
-    // }
+
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
+      newData[index].netAmount = newData[index].amount;
     }
     if (field === 'vendorId') {
       newData[index].vendorId = newData[index].vendorId;
@@ -683,101 +709,75 @@ const EditJobCard1 = (props: Props) => {
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
-    // if (field === 'qty') {
-    //   newData[index].qty = newData[index].qty;
-    // }
-    // if (field === 'unitRate') {
-    //   newData[index].unitRate = newData[index].unitRate;
-    // }
-    // if (field === 'unitId') {
-    //   newData[index].unitId = newData[index].unitId;
-    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    // }
-    // if (field === 'vendorName') {
-    //   newData[index].vendorName = newData[index].vendorName;
-    // }
-    // if (field === 'unitName') {
-    //   newData[index].unitName = newData[index].unitName;
-    // }
+
     newData[index].jobCardId = formik.values.jobCardId;
-    //  newData[index].amount = newData[index].unitRate * newData[index].qty;
-    //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+
     newData[index].id = index;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
       if (index === tableData.length - 1) {
         addRow();
-        //setIsVisibleJWC(true);
+
       }
     }
 
     let total = 0;
+    let netAmt = 0;
     tableData.forEach((row:any) => {
       total += row.amount;
+      netAmt += row.amount;
     })
-    formik.setFieldValue("netAmount", total);
+    tableData1.forEach((row: any) => {
+      netAmt += row.amount;
+    })
     formik.setFieldValue("totalServiceAmount", total);
-    formik.setFieldValue("totalItemAmount", total);
+    formik.setFieldValue("netAmount", netAmt);
   };
 
   const handleInputChange1 = (index: any, field: any, value: any) => {
     const newData: any = [...tableData1];
     newData[index][field] = value;
 
-    if (field === 'itemId') {
-      newData[index].itemId = newData[index].itemId;
-      newData[index].itemName = itemOption[itemOption.findIndex((e: any) => e.value == newData[index].itemId)].label;
-      //newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    if (field === 'serviceId') {
+      newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    if (field === 'unitID') {
-      newData[index].unitID = newData[index].unitID;
-      newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    }
-    if (field === 'unitName') {
-      newData[index].unitName = newData[index].unitName;
 
-    }
-    if (field === 'indentId') {
-      newData[index].indentId = newData[index].indentId;
-      newData[index].indentNo = indentOptions[indentOptions.findIndex(e => e.value == newData[index].indentId)].label;
-    }
-    if (field === 'indentNo') {
-      newData[index].indentNo = newData[index].indentNo;
-    }
-    if (field === 'qty') {
-      newData[index].qty = newData[index].qty;
-
-    }
-    if (field === 'rate') {
-      newData[index].rate = newData[index].rate;
-    }
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
+
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
+
     newData[index].jobCardId = formik.values.jobCardId;
-    newData[index].amount = newData[index].unitRate * newData[index].qty;
-    newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    newData[index].amount = newData[index].qty * newData[index].rate;
+    newData[index].netAmount = newData[index].qty * newData[index].rate;
+
     newData[index].id = index;
     setTableData1(newData);
 
     if (newData[index].itemId && newData[index].qty && newData[index].rate) {
       if (index === tableData1.length - 1) {
         handleAddItem();
-        //setIsVisibleJWC(true);
+
       }
     }
 
+
     let total = 0;
+    let netAmt = 0;
     tableData1.forEach((row: any) => {
       total += row.amount;
+      netAmt += row.amount;
     })
-    formik.setFieldValue("netAmount", total);
-    formik.setFieldValue("totalServiceAmount", total);
+    tableData.forEach((row: any) => {
+      netAmt += row.amount;
+    })
     formik.setFieldValue("totalItemAmount", total);
+    formik.setFieldValue("netAmount", netAmt);
   };
 
   const addRow = () => {
@@ -803,7 +803,6 @@ const EditJobCard1 = (props: Props) => {
     },
     ]);
   };
-
   const handleAddItem = () => {
     setTableData1([
       ...tableData1,

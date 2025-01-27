@@ -701,9 +701,10 @@ const EditWorkShopPurchaseOrder = () => {
                                     options={vendorData}
                                     fullWidth
                                     size="small"
-                                    value={
-                                        vendorData.find((option: any) => option.value === formik.values.vendorId) || null
-                                    }
+                                    value={formik.values.name}
+                                    // value={
+                                    //     vendorData.find((option: any) => option.value === formik.values.vendorId) || null
+                                    // }
                                     onChange={(event: any, newValue: any) => {
                                         if (newValue) {
                                             formik.setFieldValue("vendorId", newValue.value);

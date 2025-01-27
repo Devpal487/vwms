@@ -909,7 +909,7 @@ const EditPurchaseInvoice = () => {
                                             >
                                                 SGST
                                             </th >
-                                            <th
+                                            {/* <th
                                                 style={{
                                                     border: "1px solid black",
                                                     textAlign: "center",
@@ -917,7 +917,7 @@ const EditPurchaseInvoice = () => {
                                                 }}
                                             >
                                                 IGST
-                                            </th >
+                                            </th > */}
                                             {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -1117,7 +1117,7 @@ const EditPurchaseInvoice = () => {
                                                         inputProps={{ readOnly: true }}
                                                     />
                                                 </td>
-                                                <td
+                                                {/* <td
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -1128,7 +1128,7 @@ const EditPurchaseInvoice = () => {
                                                         size="small"
                                                         inputProps={{ readOnly: true }}
                                                     />
-                                                </td>
+                                                </td> */}
                                                 <td
                                                     style={{
                                                         border: "1px solid black",
@@ -1166,7 +1166,7 @@ const EditPurchaseInvoice = () => {
                                             </td>
                                         </tr> */}
                                         <tr>
-                                            <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                            <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.Totalnetamount")}
 
                                             </td>

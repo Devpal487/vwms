@@ -968,7 +968,133 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
               </Grid>
 
               {/* VehicleNumber */}
+
               <Grid item xs={12} md={4} sm={4}>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={
+                    complainOption.filter((e) => {
+                      if (e.status !== "pending") {
+                        return e;
+                      }
+                    })
+                    // vehicleOption.filter((e) => {
+                    //   for (let i = complainOption.length - 1; i >= 0; i--) {
+                    //     if (e.value == complainOption[i].itemID && complainOption[i].compId) {
+                    //       if (e.label === e.label2) {
+                    //         e.label = e.label + `(ComplainNo : ${complainOption[i].complaintNo})`
+                    //       }
+                    //       return e;
+                    //     }
+                    //   }
+                    // })
+                    // vehicleOption.filter(e => {
+                    //   for (let i = 0; i < complainOption.length; i++) {
+                    //     if (e.value == complainOption[i].itemID && complainOption[i].compId) {
+                    //       return (e);
+                    //     }
+                    //   }
+                    // })
+                  }
+                  ref={inputRef}
+                  value={formik.values.vehicleNo || location.state?.vehicleNo}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue: any) => {
+                    if (!newValue) {
+                      return;
+                    } else {
+                      setItemId(newValue?.value);
+                      console.log("newValue" + JSON.stringify(newValue));
+                      console.log("newValue" + JSON.stringify(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail));
+                      //formik.setFieldValue("itemName", newValue?.label2);
+                      formik.setFieldValue("itemName", newValue?.vehicleNo);
+                      formik.setFieldValue("itemId", newValue?.itemID);
+                      formik.setFieldValue("empId", newValue?.empId);
+                      formik.setFieldValue("empName", newValue?.empName);
+                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.designation);
+                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.department);
+                      setVehicleName(newValue?.vehicleName);
+
+                      formik.setFieldValue("complainId", newValue?.compId);
+                      formik.setFieldValue("complain", newValue?.complaint);
+                      formik.setFieldValue("complainDate", newValue?.complaintDate);
+                      formik.setFieldValue("currenReading", newValue?.currentReading);
+                      formik.setFieldValue("status", newValue?.status);
+                      // formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.jobCardId || 0);
+                      // formik.setFieldValue("jobCardNo", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.jobCardNo || "");
+                      // formik.setFieldValue("fileNo", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.fileNo || "");
+                      // formik.setFieldValue("totalServiceAmount", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.totalServiceAmount || "");
+                      // formik.setFieldValue("netAmount", jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.netAmount || 0);
+                      // setTableData(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail || [
+                      //   {
+                      //     id: 0,
+                      //     jobCardId: 0,
+                      //     serviceId: 0,
+                      //     amount: 0,
+                      //     jobWorkReq: true,
+                      //     vendorId: 0,
+                      //     challanRemark: "",
+                      //     challanNo: 0,
+                      //     challanDate: defaultValues,
+                      //     challanRcvNo: 0,
+                      //     challanRcvDate: defaultValues,
+                      //     challanStatus: "",
+                      //     netAmount: 0,
+                      //     qty: 0,
+                      //     unitRate: 0,
+                      //     unitId: 0,
+                      //     vendorName: "",
+                      //     serviceName: "",
+                      //     unitName: "",
+                      //     cgstid: 0,
+                      //     sgstid: 0,
+                      //     gstid: 0,
+                      //     gst: 0
+                      //   }]);
+                      // setTableData([...jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId) || (e.itemId == newValue?.itemID))]?.serviceDetail, {
+                      //   id: 0,
+                      //   jobCardId: 0,
+                      //   serviceId: 0,
+                      //   amount: 0,
+                      //   jobWorkReq: true,
+                      //   vendorId: 0,
+                      //   challanRemark: "",
+                      //   challanNo: 0,
+                      //   challanDate: defaultValues,
+                      //   challanRcvNo: 0,
+                      //   challanRcvDate: defaultValues,
+                      //   challanStatus: "",
+                      //   netAmount: 0,
+                      //   qty: 0,
+                      //   unitRate: 0,
+                      //   unitId: 0,
+                      //   vendorName: "",
+                      //   serviceName: "",
+                      //   unitName: "",
+                      //   cgstid: 0,
+                      //   sgstid: 0,
+                      //   gstid: 0,
+                      //   gst: 0
+                      // }]);
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      name="itemName"
+                      id="itemName"
+                      placeholder={t("text.VehicleNo")}
+                    />
+                  )}
+                />
+                {!formik.values.vehicleNo && formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                )}
+              </Grid>
+              {/* <Grid item xs={12} md={4} sm={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -1063,7 +1189,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* Vehicle name */}
               <Grid item xs={12} md={4} sm={4}>
