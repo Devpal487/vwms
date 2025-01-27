@@ -70,7 +70,7 @@ export default function VehicleDetail() {
     getEmpData();
     const timeoutId = setTimeout(() => {
       fetchVehicleDetailData();
-    }, 100);
+    }, 300);
     return () => clearTimeout(timeoutId);
   }, [isLoading]);
 

@@ -177,7 +177,7 @@ const EditItemContract = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      //"contractId": 0,
+      "contractId": location.state?.contractId,
       "vendorId": location.state.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
@@ -532,7 +532,7 @@ const EditItemContract = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={<CustomLabel text={t("text.SelectItem")} required={false} />}
+                                //label={<CustomLabel text={t("text.SelectItem")} required={false} />}
                                 name="itemName"
                                 id="itemName"
                                 placeholder={t("text.SelectItem")}

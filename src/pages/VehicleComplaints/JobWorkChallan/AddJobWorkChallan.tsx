@@ -181,8 +181,12 @@ const AddJobWorkChallan = (props: Props) => {
     getServiceData();
     getUnitData();
     getTaxData();
-    setTableDataValues();
     getJobCardData();
+    if (location.state?.jobCardId) {
+      setTableDataValuesByLocation();
+      return;
+    }
+    setTableDataValues(location.state?.jobCardId || -1);
     console.log("location.state==>" + JSON.stringify(location.state))
   }, []);
 
@@ -288,11 +292,8 @@ const AddJobWorkChallan = (props: Props) => {
   };
 
 
-
-
-
-  const setTableDataValues = (values = location.state?.serviceDetail || jobCardData[0].serviceDetail) => {
-    const data = values;
+  const setTableDataValuesByLocation = async (value = location.state?.jobCardId) => {
+    const data = location.state.serviceDetail;
     const arr = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({
@@ -319,7 +320,80 @@ const AddJobWorkChallan = (props: Props) => {
     }
     formik.setFieldValue("vendorId", data[0]?.vendorId);
     formik.setFieldValue("vendorName", data[0]?.vendorName);
-    setTableData(arr);
+    if (arr.length > 0) {
+      setTableData(arr);
+    }
+    //console.log("tabledata"+JSON.stringify(tableData))
+  }
+
+
+
+
+  const setTableDataValues = async (value: number) => {
+    if (value === -1 || value === null || value === undefined) {
+      return;
+    }
+    const collectData = {
+      "jobCardId": value,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCard`, collectData);
+    const data = response.data.data[0].serviceDetail;
+    console.log("resData" + JSON.stringify(data));
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        id: 0,
+        challanNo: data[index].challanNo,
+        jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
+        serviceId: data[index].serviceId,
+        serviceCharge: data[index].unitRate,
+        vendorId: data[index]?.vendorId,
+        remark: "",
+        qty: data[index].qty,
+        unitId: data[index].unitId,
+        amount: data[index].amount,
+        netAmount: data[index].netAmount,
+        gstid: 0,
+        cgstid: 0,
+        sgstid: 0,
+        gst: 0,
+        cgst: 0,
+        sgst: 0,
+        serviceName: data[index].serviceName,
+        unitName: data[index].unitName
+      });
+    }
+    formik.setFieldValue("vendorId", data[0]?.vendorId);
+    formik.setFieldValue("vendorName", data[0]?.vendorName);
+    if (arr.length > 0) {
+      setTableData(arr);
+    } else {
+      setTableData([
+        {
+          id: 0,
+          challanNo: 0,
+          jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
+          serviceId: 0,
+          serviceCharge: 0,
+          vendorId: 0,
+          remark: "",
+          qty: 0,
+          unitId: 0,
+          amount: 0,
+          netAmount: 0,
+          gstid: 0,
+          cgstid: 0,
+          sgstid: 0,
+          gst: 0,
+          cgst: 0,
+          sgst: 0,
+          serviceName: "",
+          unitName: ""
+        },
+      ])
+    }
+    //console.log("tabledata"+JSON.stringify(tableData))
   }
 
 
@@ -440,6 +514,8 @@ const AddJobWorkChallan = (props: Props) => {
     };
     reader.readAsDataURL(file);
   };
+
+
 
 
 
@@ -717,27 +793,7 @@ const AddJobWorkChallan = (props: Props) => {
                       console.log(newValue);
                       formik.setFieldValue("vehicleNo", newValue?.itemName);
                       formik.setFieldValue("itemId", newValue?.value);
-                      setTableDataValues([...jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.serviceDetail, {
-                        id: 0,
-                        challanNo: 0,
-                        jobCardId: location.state?.jobCardId || jobCardData[0].jobCardId,
-                        serviceId: 0,
-                        serviceCharge: 0,
-                        vendorId: 0,
-                        remark: "",
-                        qty: 0,
-                        unitId: 0,
-                        amount: 0,
-                        netAmount: 0,
-                        gstid: 0,
-                        cgstid: 0,
-                        sgstid: 0,
-                        gst: 0,
-                        cgst: 0,
-                        sgst: 0,
-                        serviceName: "",
-                        unitName: ""
-                      }]);
+                      setTableDataValues(newValue?.jobCardId || -1);
                       formik.setFieldValue("complainId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.complainId);
                       formik.setFieldValue("empId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.empId);
                       formik.setFieldValue("jobCardId", jobCardData[jobCardData.findIndex(e => e.itemId === newValue?.value && e.jobCardId == newValue?.jobCardId)]?.jobCardId);

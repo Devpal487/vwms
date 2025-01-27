@@ -1061,7 +1061,7 @@ const AddEmployee = (props: Props) => {
               </Grid>
 
               {/* Email group */}
-              <Grid item xs={12} sm={6} lg={6}>
+              {/* <Grid item xs={12} sm={6} lg={6}>
                 <Autocomplete
                   disableCloseOnSelect
                   multiple
@@ -1103,10 +1103,10 @@ const AddEmployee = (props: Props) => {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* Mobile number group */}
-              <Grid item xs={12} sm={6} lg={6}>
+              {/* <Grid item xs={12} sm={6} lg={6}>
                 <Autocomplete
                   disableCloseOnSelect
                   multiple
@@ -1148,7 +1148,7 @@ const AddEmployee = (props: Props) => {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
 
 

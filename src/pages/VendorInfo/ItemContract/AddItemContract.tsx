@@ -498,7 +498,7 @@ const AddItemContract = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={<CustomLabel text={t("text.SelectItem")} required={false} />}
+                                //label={<CustomLabel text={t("text.SelectItem")} required={false} />}
                                 name="itemName"
                                 id="itemName"
                                 placeholder={t("text.SelectItem")}

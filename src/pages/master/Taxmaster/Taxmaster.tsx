@@ -24,7 +24,7 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getId } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import ButtonWithLoader from "../../../utils/ButtonWithLoader";
 import CustomLabel from "../../../CustomLable";
 import Languages from "../../../Languages";
@@ -50,6 +50,7 @@ export default function Taxmaster() {
     const [isLoading, setIsLoading] = useState(true);
     const location = useLocation();
     const [lang, setLang] = useState<Language>("en");
+    const { defaultValuestime } = getISTDate();
     const [permissionData, setPermissionData] = useState<MenuPermission>({
         isAdd: false,
         isEdit: false,
@@ -228,13 +229,13 @@ export default function Taxmaster() {
             taxId: 0,
             taxName: "",
             taxPercentage: "",
-            effectiveDate: "",
+            effectiveDate: dayjs(defaultValuestime).format("YYYY-MM-DD"),
 
 
             createdBy: "adminvm",
             updatedBy: "adminvm",
-            createdOn: new Date().toISOString(),
-            updatedOn: new Date().toISOString(),
+            createdOn: defaultValuestime,
+            updatedOn: defaultValuestime,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {

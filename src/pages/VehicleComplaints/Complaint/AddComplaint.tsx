@@ -223,10 +223,14 @@ const AddComplaint = (props: Props) => {
          "complaintDate": defaultValues,
          "updatedOn": defaultValues,
          "compAppdt": defaultValues,
-         "jobCardNo": "",
+         "srno": 0,
          "file": "",
          "fileOldName": "",
+         "totaldays": 0,
+         "outDate": defaultValues,
+         "outId": 0,
          "vehicleNo": "",
+         "jobCardNo": "",
          "vehicleName": "",
          "empName": ""
       },
@@ -287,24 +291,63 @@ const AddComplaint = (props: Props) => {
    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
       const file = event.target.files?.[0];
       if (!file) return;
-
+   
+      // Validate file type (only allow images)
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
          alert("Only .jpg, .jpeg, or .png image files are allowed.");
-         event.target.value = '';
+         event.target.value = ''; // Clear input field
          return;
       }
-
+   
       const reader = new FileReader();
       reader.onload = () => {
          const base64String = reader.result as string;
-         formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+         
+         // Use regex to remove the base64 prefix dynamically
+         const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+         
+         if (base64Content) {
+            formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+         } else {
+            alert("Error processing image data.");
+         }
       };
+   
       reader.onerror = () => {
          alert("Error reading file. Please try again.");
       };
+   
       reader.readAsDataURL(file);
    };
+   
+
+
+   // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+   //    const file = event.target.files?.[0];
+   //    if (!file) return;
+
+   //    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+   //    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+   //       alert("Only .jpg, .jpeg, or .png image files are allowed.");
+   //       event.target.value = '';
+   //       return;
+   //    }
+
+   //    const reader = new FileReader();
+   //    reader.onload = () => {
+   //       const base64String = reader.result as string;
+   //       if (base64String.startsWith("data:image/jpeg;base64,",0)){
+   //          formik.setFieldValue(params, (base64String).slice(23)); 
+   //       } else {
+   //          formik.setFieldValue(params, (base64String).slice(22)); 
+   //       }
+   //    };
+   //    reader.onerror = () => {
+   //       alert("Error reading file. Please try again.");
+   //    };
+   //    reader.readAsDataURL(file);
+   // };
 
 
 
@@ -951,23 +994,24 @@ const AddComplaint = (props: Props) => {
                            {formik.values.complaintDoc ? (
                               <img
                                  src={
-                                    // formik.values.complaintDoc.startsWith("data:image")?
-                                    formik.values.complaintDoc
-                                    // : `data:image/jpeg;base64,${formik.values.complaintDoc}`
+                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.complaintDoc)
+                                       ? formik.values.complaintDoc
+                                       : `data:image/jpeg;base64,${formik.values.complaintDoc}`
                                  }
-                                 alt="Preview"
+                                 alt="Complaint Document Preview"
                                  style={{
                                     width: 150,
                                     height: 100,
                                     border: "1px solid grey",
                                     borderRadius: 10,
                                     padding: "2px",
+                                    objectFit: "cover",  // Ensures proper scaling
                                  }}
                               />
                            ) : (
                               <img
                                  src={nopdf}
-                                 alt="No document"
+                                 alt="No document available"
                                  style={{
                                     width: 150,
                                     height: 100,
@@ -976,6 +1020,7 @@ const AddComplaint = (props: Props) => {
                                  }}
                               />
                            )}
+
                            <Typography
                               onClick={() => modalOpenHandle("complaintDoc")}
                               style={{
@@ -986,10 +1031,13 @@ const AddComplaint = (props: Props) => {
                                  cursor: "pointer",
                                  padding: "20px",
                               }}
+                              role="button"
+                              aria-label="Preview Document"
                            >
                               {t("text.Preview")}
                            </Typography>
                         </Grid>
+
 
                         <Modal open={panOpens} onClose={handlePanClose}>
                            <Box sx={style}>

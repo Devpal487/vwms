@@ -132,7 +132,7 @@ const EditUploadDocuments = (props: Props) => {
       "createdBy": location.state.createdBy,
       "updatedBy": location.state.updatedBy,
       "file": location.state.file,
-      "fileOldName": location.state.fileOldName,
+      "fileOldName": location.state?.fileOldName || "",
       "empName": location.state.empName,
       "vehicleNo": location.state.vehicleNo
     },

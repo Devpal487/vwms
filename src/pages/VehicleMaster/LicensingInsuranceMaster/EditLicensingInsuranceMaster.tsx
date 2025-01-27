@@ -145,6 +145,8 @@ const EditLicensingInsuranceMaster = (props: Props) => {
       "createdOn": location.state.createdOn,
       "updatedOn": location.state.updatedOn,
       "file": location.state?.file || "",
+      "vendorName": location.state?.vendorName || "",
+      "vehicleNo": location.state?.vehicleNo || ""
     },
     // validationSchema: Yup.object({
     //   indentNo: Yup.string()
@@ -170,8 +172,8 @@ const EditLicensingInsuranceMaster = (props: Props) => {
   };
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
-    if (event === "file") {
-      setModalImg(formik.values.file);
+    if (event === "attachment") {
+      setModalImg(formik.values.attachment);
     }
   };
   const ConvertBase64 = (file: File): Promise<string> => {
@@ -242,7 +244,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
         formik.setFieldValue(params, base64String);
 
         let outputCheck =
-          "data:image/png;base64," + formik.values.file;
+          "data:image/png;base64," + formik.values.attachment;
         console.log(outputCheck);
       } catch (error) {
         console.error("Error converting image file to Base64:", error);
@@ -335,12 +337,13 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vehicleOption}
-                  value={getLabelById(vehicleOption, formik.values.itemId)}
+                  value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("itemId", newValue?.value);
+                    formik.setFieldValue("vehicleNo", newValue?.label);
                     setItemValue(newValue?.label)
                   }}
                   renderInput={(params) => (
@@ -364,12 +367,13 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
-                  value={getLabelById(vendorOption, formik.values.vendorId)}
+                  value={formik.values.vendorName}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vendorId", newValue?.value);
+                    formik.setFieldValue("vendorName", newValue?.label);
                     setVendorValue(newValue?.label);
                   }}
                   renderInput={(params) => (
@@ -539,7 +543,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "file")}
+                    onChange={(e) => otherDocChangeHandler(e, "attachment")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -553,7 +557,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                       margin: "10px",
                     }}
                   >
-                    {formik.values.file == "" ? (
+                    {formik.values.attachment == "" ? (
                       <img
                         // src={nopdf}
                         style={{
@@ -566,7 +570,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     ) : (
                       <img
 
-                        src={"data:image/png;base64," + formik.values.file}
+                        src={"data:image/png;base64," + formik.values.attachment}
                         style={{
                           width: 150,
                           height: 100,
@@ -577,7 +581,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("file")}
+                      onClick={() => modalOpenHandle("attachment")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",

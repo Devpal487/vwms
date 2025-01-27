@@ -22,7 +22,7 @@ import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import HOST_URL from '../../../utils/Url';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import {
    DataGrid,
@@ -170,7 +170,6 @@ export default function Complaint() {
          const collectData = {
             "compId": -1,
             "empId": -1
-
          };
          const response = await api.post(
             `Master/GetComplaint`,

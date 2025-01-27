@@ -71,7 +71,7 @@ const LoginPage1 = () => {
                );
                localStorage.setItem(
                   "username",
-                  JSON.stringify(response.data.data.responseData.username)
+                  JSON.stringify(response.data.data.userDetails.userName)
                );
                localStorage.setItem("ApplicationFlow", "outsource");
                sessionStorage.setItem(

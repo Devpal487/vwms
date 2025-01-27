@@ -12,53 +12,53 @@ const resources = {
       text: {
         ////
         /////
-        item:"Item",
-        ItemConsumedReport:"Item Consumed Report",
-        VehicleItemConsumed:"Vehicle Item Consumed",
-        complainStatus:"Complaint Status",
-        jobcardStatus:"Jobcard Status",
-        itemconsumedname:"Select Item Consumed Name",
-        itemsConsumed:"Items Consumed",
-        Vehicle:"Vehicle",
-        SelectOrderNO:"Select Order No.",
-        enterComplaint:"Enter Complaint",
-        docNo:"Document No.",
-        particular:"Particular",
-        itemName:"Item Name",
-        unitName:"Unit Name",
-        docDate:"Document Date",
-        opening:"Opening",
-        inQty:"In Qty",
-        outQty:"Out Qty",
-        vendor:"Vendor",
-        balance:"Balance",
-        age:"Age",
-        selectcomplainNo:"Enter Complaint No.",
+        item: "Item",
+        ItemConsumedReport: "Item Consumed Report",
+        VehicleItemConsumed: "Vehicle Item Consumed",
+        complainStatus: "Complaint Status",
+        jobcardStatus: "Jobcard Status",
+        itemconsumedname: "Select Item Consumed Name",
+        itemsConsumed: "Items Consumed",
+        Vehicle: "Vehicle",
+        SelectOrderNO: "Select Order No.",
+        enterComplaint: "Enter Complaint",
+        docNo: "Document No.",
+        particular: "Particular",
+        itemName: "Item Name",
+        unitName: "Unit Name",
+        docDate: "Document Date",
+        opening: "Opening",
+        inQty: "In Qty",
+        outQty: "Out Qty",
+        vendor: "Vendor",
+        balance: "Balance",
+        age: "Age",
+        selectcomplainNo: "Enter Complaint No.",
 
-        complaintDate:"Complaint Date",
-        closingdate:"Closing Date",
-        vehicleNo12:"Vehicle No.",
-        ItemType1:"Item Type",
-        ShortName1:"Short Name",
+        complaintDate: "Complaint Date",
+        closingdate: "Closing Date",
+        vehicleNo12: "Vehicle No.",
+        ItemType1: "Item Type",
+        ShortName1: "Short Name",
 
-       //stockbin
-       StockBinName1:"StockBin Name",
-       binCode1:"StockBin Code",
-       binCode:" Enter StockBin Code",
-        Flowmaster:"Flow Master",
-        release:"RELEASE",
-        post:"POST",
-        TotalAmount:"Total Amount:",
-        vendorevaluation:"Vendor Evaluation",
-        preReading:"Pre Reading",
-        gst:"GST",
-        Sgst:"SGST",
-        Cgst:"CGST",
-        Igst:"IGST",
-        indentGenerate:"Indent Generate",
-        indentprint:"Indent Print",
-        Outsource:"OutSource",
-        InhouseandOutsource:"Inhouse and OutSource",
+        //stockbin
+        StockBinName1: "StockBin Name",
+        binCode1: "StockBin Code",
+        binCode: " Enter StockBin Code",
+        Flowmaster: "Flow Master",
+        release: "RELEASE",
+        post: "POST",
+        TotalAmount: "Total Amount:",
+        vendorevaluation: "Vendor Evaluation",
+        preReading: "Pre Reading",
+        gst: "GST",
+        Sgst: "SGST",
+        Cgst: "CGST",
+        Igst: "IGST",
+        indentGenerate: "Indent Generate",
+        indentprint: "Indent Print",
+        Outsource: "OutSource",
+        InhouseandOutsource: "Inhouse and OutSource",
 
         enterComplaint: "Enter Complaint",
         docNo: "Document No.",
@@ -8896,13 +8896,63 @@ const resources = {
         EnterLocation: "Enter Location",
         Juridiction: "Juridiction",
 
+        selectempname: "Select Employeee Name",
+        userid: "Enter userId",
+        role: "Role",
+        MenuCreate: "Menu Creation",
+        DisplayNo: "Enter Display No",
+        ParentMenu: "Select Parent Menu",
 
-        selectempname:"Select Employeee Name",
-        userid:"Enter userId",
-        role:"Role",
-        MenuCreate:"Menu Creation",
-        DisplayNo:"Enter Display No",
-        ParentMenu:"Select Parent Menu",
+        Add1: "Add",
+        View1: "View",
+        Username: "Username",
+        password: "Password",
+        currFinYear:"Current Financial Year",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       },
 
       content: {},
@@ -13025,14 +13075,30 @@ const resources = {
         EnterJuridiction: "क्षेत्राधिकार दर्ज करें",
         EnterLocation: "स्थान दर्ज करें",
         Juridiction: "क्षेत्राधिकार",
-        
-        selectempname:"कर्मचारी का नाम चुनें",
-        userid:"उपयोगकर्ता आईडी दर्ज करें",
-        role:"भूमिका",
+
+        selectempname: "कर्मचारी का नाम चुनें",
+        userid: "उपयोगकर्ता आईडी दर्ज करें",
+        role: "भूमिका",
 
         MenuCreate: "मेनू निर्माण",
         DisplayNo: "डिस्प्ले नंबर दर्ज करें",
         ParentMenu: "पैरेंट मेनू चुनें",
+
+        Add1: "जोड़ें",
+        View1: "देखना",
+        Username: "उपयोगकर्ता नाम",
+        password: "पासवर्ड",
+
+        entertaxName: "कर का नाम दर्ज करें",
+        entertaxPercentage: "कर प्रतिशत दर्ज करें",
+        entereffectiveDate: "प्रभावी तिथि दर्ज करें",
+
+        ItemType:"वस्तु का प्रकार",
+        currFinYear:"चालू वित्तीय वर्ष",
+        StockBinName:"स्टॉक बिन का नाम",
+        StockBinName1:"स्टॉक बिन का नाम",
+        binCode:"स्टॉक बिन कोड",
+        binCode1:"स्टॉक बिन कोड",
       },
 
       content: {},

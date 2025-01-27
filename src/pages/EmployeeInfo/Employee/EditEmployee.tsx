@@ -336,8 +336,8 @@ const EditEmployee = (props: Props) => {
       "empPanNumber": location.state?.empPanNumber,
       "empAddharNo": location.state?.empAddharNo,
       "empDob": dayjs(location.state?.empDob).format("YYYY-MM-DD"),
-      "empJoiningDate": dayjs(location.state?.empJoiningDate).format("YYYY-MM-DD"),
-      "empretirementDate": dayjs(location.state?.empretirementDate).format("YYYY-MM-DD"),
+      "empJoiningDate": dayjs(location.state?.empJoiningDate || defaultValuestime).format("YYYY-MM-DD"),
+      "empretirementDate": dayjs(location.state?.empretirementDate || defaultValuestime).format("YYYY-MM-DD"),
       "empDeptId": location.state?.empDeptId,
       "empDesignationId": location.state?.empDesignationId,
       "empStateId": location.state?.empStateId,
@@ -350,11 +350,11 @@ const EditEmployee = (props: Props) => {
       "updatedOn": location.state?.updatedOn,
       "userId": location.state?.userId,
       "roleId": location.state?.roleId,
-      "imageFile": location.state?.imageFile,
-      "signatureFile": location.state?.signatureFile,
-      "adharImageFile": location.state?.adharImageFile,
-      "panFile": location.state?.panFile,
-      "driverLicenceFile": location.state?.driverLicenceFile,
+      "imageFile": location.state?.imageFile || "",
+      "signatureFile": location.state?.signatureFile || "",
+      "adharImageFile": location.state?.adharImageFile || "",
+      "panFile": location.state?.panFile || "",
+      "driverLicenceFile": location.state?.driverLicenceFile || "",
       "email": location.state?.email,
       "dlno": location.state?.dlno,
       "gender": location.state?.gender,
@@ -362,18 +362,18 @@ const EditEmployee = (props: Props) => {
       "srno": location.state?.srno,
       "empDepName": location.state?.empDepName,
       "registerModel": {
-        "id": location.state?.id,
-        "username": location.state?.username,
-        "email": location.state?.email,
-        "password": location.state?.password,
-        "role": location.state?.role
+        "id": "",
+        "username": "",
+        "email": "user@example.com",
+        "password": "12345",
+        "role": ""
       },
       "userPermission": [
         {
-          "sno": location.state?.sno,
-          "userId": location.state?.userId,
-          "menuId": location.state?.menuId,
-          "parentId": location.state?.parentId,
+          "sno": 0,
+          "userId": "",
+          "menuId": 0,
+          "parentId": 0,
           "isAdd": true,
           "isEdit": true,
           "isDel": true,
@@ -382,24 +382,63 @@ const EditEmployee = (props: Props) => {
           "isExport": true,
           "isRelease": true,
           "isPost": true,
-          "menuName": location.state?.menuName,
-          "srn": location.state?.srn
+          "menuName": "",
+          "srn": 0
         }
       ],
       "listCommGroup": [
         {
-          "groupId": location.state?.groupId ,
-          "name": location.state?.name,
-          "description": location.state?.description,
-          "type": location.state?.type,
+          "groupId": 0,
+          "name": "",
+          "description": "",
+          "type": "",
           "isActive": true,
-          "createdBy": location.state?.createdBy,
-          "updatedBy": location.state?.updatedBy,
-          "createdOn": location.state?.createdOn,
-          "updatedOn": location.state?.updatedOn,
+          "createdBy": "",
+          "updatedBy": "",
+          "createdOn": "2024-12-14T06:04:07.938Z",
+          "updatedOn": "2024-12-14T06:04:07.938Z",
           "isSelected": true
         }
       ],
+      // "registerModel": {
+      //   "id": (location.state?.id || "").toString(),
+      //   "username": location.state?.username,
+      //   "email": location.state?.email,
+      //   "password": location.state?.password,
+      //   "role": location.state?.role
+      // },
+      // "userPermission": [
+      //   {
+      //     "sno": location.state?.sno,
+      //     "userId": location.state?.userId,
+      //     "menuId": location.state?.menuId,
+      //     "parentId": location.state?.parentId,
+      //     "isAdd": true,
+      //     "isEdit": true,
+      //     "isDel": true,
+      //     "isView": true,
+      //     "isPrint": true,
+      //     "isExport": true,
+      //     "isRelease": true,
+      //     "isPost": true,
+      //     "menuName": location.state?.menuName,
+      //     "srn": location.state?.srn
+      //   }
+      // ],
+      // "listCommGroup": [
+      //   {
+      //     "groupId": location.state?.groupId ,
+      //     "name": location.state?.name,
+      //     "description": location.state?.description,
+      //     "type": location.state?.type,
+      //     "isActive": true,
+      //     "createdBy": location.state?.createdBy,
+      //     "updatedBy": location.state?.updatedBy,
+      //     "createdOn": location.state?.createdOn,
+      //     "updatedOn": location.state?.updatedOn,
+      //     "isSelected": true
+      //   }
+      // ],
       "zoneName": location.state?.zoneName,
       "designationName": location.state?.designationName,
       "departmentName": location.state?.departmentName,
@@ -1058,7 +1097,7 @@ const EditEmployee = (props: Props) => {
               </Grid>
 
               {/* Email group */}
-              <Grid item xs={12} sm={6} lg={6}>
+              {/* <Grid item xs={12} sm={6} lg={6}>
                 <Autocomplete
                   disableCloseOnSelect
                   multiple
@@ -1100,10 +1139,10 @@ const EditEmployee = (props: Props) => {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
               {/* Mobile number group */}
-              <Grid item xs={12} sm={6} lg={6}>
+              {/* <Grid item xs={12} sm={6} lg={6}>
                 <Autocomplete
                   disableCloseOnSelect
                   multiple
@@ -1145,7 +1184,7 @@ const EditEmployee = (props: Props) => {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
 
 
 

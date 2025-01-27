@@ -185,6 +185,7 @@ const EditServiceContract = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
+      "contractId": location.state?.contractId,
       "vendorId": location.state.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
@@ -543,7 +544,7 @@ const EditServiceContract = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={<CustomLabel text={t("text.ServiceName")} required={false} />}
+                                //label={<CustomLabel text={t("text.ServiceName")} required={false} />}
                                 name="serviceName"
                                 id="serviceName"
                                 placeholder={t("text.ServiceName")}
