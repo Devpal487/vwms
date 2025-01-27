@@ -234,7 +234,7 @@ export default function VehicleTypeInfo() {
             serialNo: index + 1,
             id: item.id,
             effectiveDate: formatDate(item.effectiveDate),
-            // vehicleName: vehicleTypeOption[vehicleTypeOption.findIndex(e => e.value === item.vehicleTypeId)]?.label
+            vehicleName: vehicleTypeOption[vehicleTypeOption.findIndex(e => e.value === item.vehicleTypeId)]?.label || item.vehicleName
 
          }));
          setItem(arr);

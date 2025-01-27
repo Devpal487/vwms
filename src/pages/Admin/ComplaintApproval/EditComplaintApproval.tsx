@@ -142,7 +142,8 @@ const EditComplaintApproval = (props: Props) => {
       getDeptData();
       getDesignationData();
       getEmpData();
-      getComplaintData();
+      //getComplaintData();
+      fetchImage(location.state?.compId || formik.values.compId);
 
       console.log("location", location.state)
       const timeoutId = setTimeout(() => {
@@ -201,9 +202,8 @@ const EditComplaintApproval = (props: Props) => {
 
    const getComplaintData = async () => {
       const collectData = {
-         id: -1,
-         empid: -1,
-         itemId: -1,
+         "compId": -1,
+         "empId": -1
       };
       const response = await api.post(`Master/GetComplaint`, collectData);
       const data = response.data.data;
@@ -245,6 +245,19 @@ const EditComplaintApproval = (props: Props) => {
       setDesignationOption(arr);
    };
 
+   const fetchImage = async (compId: any = location.state?.compId || 0) => {
+      const collectData = {
+         "compId": compId,
+         "empId": -1
+      };
+      const response = await api.post(
+         `Master/GetComplaint`,
+         collectData
+      );
+      const data = response.data.data;
+      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+   }
+
    function convertToYYYYMMDD(dateString: any) {
       const [day, month, year] = dateString.split("-");
       return `${year}-${month}-${day}`;
@@ -256,14 +269,14 @@ const EditComplaintApproval = (props: Props) => {
          compId: parseInt(location.state?.complaintNo) - 1 || 0,
          itemID: location.state?.itemID,
          complaintType: location.state?.complaintType,
-         complaintDoc: location.state?.complaintDoc || "",
+         complaintDoc: "",
          empId: location.state?.empId,
          approveEmp4: 0,
          approveEmp3: 0,
          approveEmp2: 0,
          approveEmp1: 0,
          complaint: location.state?.complaint,
-         complaintNo: location.state?.complaintNo,
+         complaintNo: (location.state?.complaintNo),
          createdBy: location.state?.createdBy,
          updatedBy: location.state?.updatedBy,
          status: "inprogress",
@@ -291,9 +304,11 @@ const EditComplaintApproval = (props: Props) => {
       }),
       onSubmit: async (values) => {
          try {
+            //values.complaintDoc = values.complaintDoc.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
             const response = await api.post(`Master/UpsertComplaint`, values);
             if (response.data.status === 1) {
                toast.success(response.data.message);
+               navigate("/Admin/ComplaintApproval")
                if (localStorage.getItem("ApplicationFlow") === "outsource") {
                   setIsVisible(true);
                } else {
@@ -336,28 +351,62 @@ const EditComplaintApproval = (props: Props) => {
       }
    };
 
+
    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
       const file = event.target.files?.[0];
       if (!file) return;
 
+      // Validate file type (only allow images)
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
          alert("Only .jpg, .jpeg, or .png image files are allowed.");
-         event.target.value = '';
+         event.target.value = ''; // Clear input field
          return;
       }
 
       const reader = new FileReader();
       reader.onload = () => {
          const base64String = reader.result as string;
-         formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+
+         // Use regex to remove the base64 prefix dynamically
+         const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+         if (base64Content) {
+            formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+         } else {
+            alert("Error processing image data.");
+         }
       };
+
       reader.onerror = () => {
          alert("Error reading file. Please try again.");
       };
+
       reader.readAsDataURL(file);
    };
 
+
+   // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+   //    const file = event.target.files?.[0];
+   //    if (!file) return;
+
+   //    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+   //    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+   //       alert("Only .jpg, .jpeg, or .png image files are allowed.");
+   //       event.target.value = '';
+   //       return;
+   //    }
+
+   //    const reader = new FileReader();
+   //    reader.onload = () => {
+   //       const base64String = reader.result as string;
+   //       formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+   //    };
+   //    reader.onerror = () => {
+   //       alert("Error reading file. Please try again.");
+   //    };
+   //    reader.readAsDataURL(file);
+   // };
 
 
    // const handlePanClose = () => {
@@ -509,9 +558,9 @@ const EditComplaintApproval = (props: Props) => {
                </Grid>
                <Divider />
                <br />
-               <ToastContainer />
+               {/* <ToastContainer /> */}
                <form onSubmit={formik.handleSubmit}>
-                  {/* {toaster === false ? "" : <ToastApp />} */}
+                  {toaster === false ? "" : <ToastApp />}
                   <Grid container spacing={2}>
                      {/* VehicleNumber */}
                      <Grid item xs={12} md={4} sm={4}>
@@ -1297,6 +1346,7 @@ const EditComplaintApproval = (props: Props) => {
                         ref={inputRef}
                         onClick={(e) => {
                            setTimeout(() => {
+                              //fetchImage(location.state?.compId || formik.values.compId);
                               formik.setFieldValue("approveEmp1", location.state?.approveEmp1 || 0);
                               formik.setFieldValue("approveEmp2", location.state?.approveEmp2 || 0);
                               formik.setFieldValue("approveEmp3", location.state?.approveEmp3 || 0);

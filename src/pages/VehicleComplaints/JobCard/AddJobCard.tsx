@@ -292,6 +292,27 @@ const AddJobCard = (props: Props) => {
     setVehicleOption(arr);
   };
 
+  const getComplainData = async () => {
+    const collectData = {
+      "compId": -1,
+      "empId": -1
+    };
+    const response = await api.post(`Master/GetComplaint`, collectData);
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      ...Item,
+      value: Item.compId,
+      compId: Item.compId,
+      complaintDate: Item.complaintDate,
+      complaint: Item.complaint,
+      complaintNo: Item.complaintNo,
+      vehicleNo: Item.vehicleNo,
+      label: Item.vehicleNo + `(ComplainNo:${Item.complaintNo})`
+    }));
+
+    setComplainOption(arr);
+  };
+
   const getUnitData = async () => {
     const collectData = {
       "unitId": -1
@@ -346,30 +367,6 @@ const AddJobCard = (props: Props) => {
       });
     }
     setEmpOption(arr);
-  };
-
-
-
-  const getComplainData = async () => {
-    const collectData = {
-      "id": -1,
-      "empid": -1,
-      "itemId": -1
-    };
-    const response = await api.post(`Master/GetComplaint`, collectData);
-    const data = response.data.data;
-    const arr = data.map((Item: any, index: any) => ({
-      ...Item,
-      value: Item.compId,
-      compId: Item.compId,
-      complaintDate: Item.complaintDate,
-      complaint: Item.complaint,
-      complaintNo: Item.complaintNo,
-      vehicleNo: Item.vehicleNo,
-      label: Item.vehicleNo + `(ComplainNo:${Item.complaintNo})`
-    }));
-
-    setComplainOption(arr);
   };
 
   const getServiceData = async () => {
@@ -690,7 +687,6 @@ const AddJobCard = (props: Props) => {
     })
     formik.setFieldValue("netAmount", total);
     formik.setFieldValue("totalServiceAmount", total);
-    // formik.setFieldValue("totalItemAmount", total);
   };
 
   const addRow = () => {
@@ -1419,7 +1415,7 @@ const AddJobCard = (props: Props) => {
                               value={row.qty}
                               onChange={(e) => {
                                 handleInputChange(index, 'qty', parseInt(e.target.value) || 0);
-                                formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
+                                // formik.setFieldValue("totalServiceAmount", formik.values.totalServiceAmount + row.qty * row.unitRate);
                                 setTotalAmount(row.qty * row.unitRate);
                               }}
                               onFocus={(e) => e.target.select()}

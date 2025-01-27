@@ -232,56 +232,65 @@ export default function UserPermissionMaster() {
 
 
   // const validationSchema = Yup.object({
-  //   roleName: Yup.string().test(
-  //     "required",
-  //     t("text.reqRoleName"),
-  //     function (value: any) {
-  //       return value && value.trim() !== "";
-  //     }
-  //   ),
+  //   "registerModel.password": Yup.string()
+  //     .min(12, `Password should have minimum 6 characters`)
+  //     .required(t("text.reqPassword"))
+  //   // .test("len", "Password should have minimum 6 characters", (val: any) =>
+  //   //   (val.length() >= 6) ? true : false
+  //   // ),
   // });
+  // // const validationSchema = Yup.object({
+  // //   password: Yup.string().test(
+  // //     "required",
+  // //     t("text.reqname"),
+  // //     function (value: any) {
+  // //       return value && value.length() >= 6 ? value : "";
+  // //     }
+  // //   ),
+  // // });
 
 
   const formik = useFormik({
     initialValues: {
       "empid": 0,
       "empName": "",
-      "empCode": "",
-      "empPerAddress": "",
-      "empLocalAddress": "",
-      "empFatherName": "",
-      "empspauseName": "",
-      "empMotherName": "",
-      "empMobileNo": "",
-      "empStatus": "",
-      "empPanNumber": "",
-      "empAddharNo": "",
-      "empDob": "2025-01-18T07:13:41.724Z",
-      "empJoiningDate": "2025-01-18T07:13:41.724Z",
-      "empretirementDate": "2025-01-18T07:13:41.724Z",
-      "empDeptId": 0,
-      "empDesignationId": 0,
-      "empStateId": 0,
-      "empCountryID": 0,
-      "empCityId": 0,
-      "empPincode": 0,
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2025-01-18T07:13:41.724Z",
-      "updatedOn": "2025-01-18T07:13:41.724Z",
+      // "empCode": "",
+      // "empPerAddress": "",
+      // "empLocalAddress": "",
+      // "empFatherName": "",
+      // "empspauseName": "",
+      // "empMotherName": "",
+      // "empMobileNo": "",
+      // "empStatus": "",
+      // "empPanNumber": "",
+      // "empAddharNo": "",
+      // "empDob": defaultValues,
+      // "empJoiningDate": defaultValues,
+      // "empretirementDate": defaultValues,
+      // "empDesignationId": 0,
+      // "empDeptId": 0,
+      // "empStateId": 0,
+      // "empCountryID": 0,
+      // "empCityId": 0,
+      // "empPincode": 0,
+      // "createdBy": "",
+      // "updatedBy": "",
+      // "createdOn": defaultValues,
+      // "updatedOn":defaultValues,
       "userId": "",
       "roleId": "",
-      "imageFile": "",
-      "signatureFile": "",
-      "adharImageFile": "",
-      "panFile": "",
-      "driverLicenceFile": "",
-      "email": "",
-      "dlno": "",
-      "gender": "",
-      "eZoneID": 0,
-      "srno": 0,
-      "empDepName": "",
+      // "imageFile": "",
+      // "signatureFile": "",
+      // "email": "",
+      // "dlno": "",
+      // "gender": "",
+      // "departmentName": "",
+      // "designationName": "",
+      // "empStateName": "",
+      // "empCountryName": "",
+      // "empCityName": "",
+      // "srno": 0,
+      // "empDepName": "",
       "registerModel": {
         "id": "",
         "username": "",
@@ -290,32 +299,25 @@ export default function UserPermissionMaster() {
         "role": ""
       },
       "userPermission": [],
-      "listCommGroup": [
-        {
-          "groupId": 0,
-          "name": "",
-          "description": "",
-          "type": "",
-          "isActive": true,
-          "createdBy": "",
-          "updatedBy": "",
-          "createdOn": "2025-01-18T07:13:41.724Z",
-          "updatedOn": "2025-01-18T07:13:41.724Z",
-          "isSelected": true
-        }
-      ],
-      "zoneName": "",
-      "designationName": "",
-      "departmentName": "",
-      "empCityName": "",
-      "empCountryName": "",
-      "empStateName": ""
+      "checked": true,
+
     },
-    // validationSchema: validationSchema,
+    //validationSchema: validationSchema,
+
+    // validationSchema: Yup.object({
+    //   password: Yup.string()
+    //     .required(t("text.reqPassword"))
+    // }),
+
+
     onSubmit: async (values: any) => {
       values.userPermission = childMenuRecords;
       if (editID !== "-1") {
         values.roleId = editID; // Include the roleId for updating
+      }
+      if (values.registerModel.password.length < 6) {
+        toast.error("Password should have minimum 6 characters");
+        return;
       }
       const response = await api.post(`Employee/UpsertEmpPermission`, values);
       if (response.data.status === 1) {
@@ -616,7 +618,7 @@ export default function UserPermissionMaster() {
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
 
-            <Button
+            {/* <Button
               onClick={handleOpen}
               variant="contained"
               endIcon={<AddCircleIcon />}
@@ -624,7 +626,7 @@ export default function UserPermissionMaster() {
               style={{ backgroundColor: `var(--header-background)` }}
             >
               {t("text.add")}
-            </Button>
+            </Button> */}
 
           </Stack>
           {/* {isLoading ? (
@@ -671,6 +673,494 @@ export default function UserPermissionMaster() {
               </div>
             </Box>
           )} */}
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container spacing={3}>
+              {/* <Grid md={5} item>
+                <TextField
+                  type="text"
+                  value={formik.values.roleName}
+                  label={
+                    <span>
+                      {t("text.enterRoleName")}{" "}
+                      {requiredFields.includes("roleName") && (
+                        <span
+                          style={{
+                            color: formik.values.roleName ? "green" : "red",
+                          }}
+                        >
+                          *
+                        </span>
+                      )}
+                    </span>
+                  }
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  name="roleName"
+                  id="roleName"
+                  style={{ marginBottom: "10px" }}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.roleName && formik.errors.roleName ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {String(formik.errors.roleName)}
+                  </div>
+                ) : null}
+              </Grid> */}
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={empOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    console.log(newValue?.value);
+                    formik.setFieldValue("empName", newValue?.label);
+                    formik.setFieldValue("empid", newValue?.value);
+
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.selectempname")} />}
+                    />
+                  )}
+                />
+              </Grid>
+
+
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <TextField
+                  label={<CustomLabel text={t("text.Username")} required={true} />}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="registerModel.username"
+                  id="registerModel.username"
+                  value={formik.values.registerModel.username}
+                  placeholder={t("text.Username")}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+
+              </Grid>
+
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <TextField
+                  label={<CustomLabel text={t("text.password")} required={true} />}
+                  variant="outlined"
+                  fullWidth
+                  size="small"
+                  name="password"
+                  id="password"
+                  value={formik.values.registerModel.password}
+                  placeholder={t("text.Password")}
+                  onChange={(e) => {
+                    formik.setFieldValue("registerModel.password", e.target.value)
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.values.registerModel.password && formik.touched.password && formik.errors.password && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.password.toString()}</div>
+                )}
+
+              </Grid>
+
+
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={roleOption}
+                  fullWidth
+                  size="small"
+                  onChange={(event, newValue) => {
+                    console.log(newValue?.value);
+                    //formik.setFieldValue("role", newValue?.label);
+                    formik.setFieldValue("roleId", newValue?.value);
+                    formik.setFieldValue("registerModel.role", newValue?.label);
+                    getModalList(formik.values?.userId || "-1", newValue?.value);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.role")} />}
+                    />
+                  )}
+                />
+              </Grid>
+
+
+
+              <Grid item lg={3} sm={3}>
+                <Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: `var(--header-color)`,
+                      marginBottom: "10px",
+                      marginTop: "3px",
+                    }}
+                  >
+                    {editID == "-1" ? t("text.save") : t("text.update")}
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid item lg={3} sm={3}>
+                <Button
+                  type="reset"
+                  fullWidth
+                  style={{
+                    backgroundColor: "#F43F5E",
+                    color: "white",
+                    marginBottom: "10px",
+                    marginTop: "3px",
+                  }}
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                    formik.resetForm();
+                  }}
+                >
+                  {t("text.reset")}
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+              <Grid md={12} item>
+                <TableContainer sx={{ maxHeight: "65vh" }}>
+                  <table
+                    style={{
+                      width: "100%",
+                      border: "1px solid black",
+                      borderCollapse: "collapse",
+                    }}
+                  >
+                    <thead style={{ position: "sticky" }}>
+                      <tr
+                        style={{
+                          border: "1px solid black",
+                          fontSize: "2.7vh",
+                          fontWeight: "500",
+                          backgroundColor: `var(--header-background)`,
+                          color: `var(--header-color)`,
+                          textAlign: "center",
+                        }}
+                      >
+                        <td>{t("text.MenuName")}</td>
+                        <td>
+                          {t("text.Add1")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isAdd
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isAdd", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.Edit")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isEdit
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isEdit", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.delete")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isDel
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isDel", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.View1")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isView
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isView", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.Print")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isPrint
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isPrint", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.Export")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isExport
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isExport", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.Release")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isRelease
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isRelease", e.target.checked)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {t("text.Post")} <br />
+                          <input
+                            type="checkbox"
+                            style={{
+                              marginLeft: "10px",
+                              marginRight: "10px",
+                            }}
+                            checked={childMenuRecords.every(
+                              (item: any) => item.isPost
+                            )}
+                            onChange={(e) =>
+                              handleSelectAll("isPost", e.target.checked)
+                            }
+                          />
+                        </td>
+                      </tr>
+                    </thead>
+                    <tbody style={{ color: "#000000" }}>
+                      {childMenuRecords.map(
+                        (rows: any, key: string | number) => {
+                          console.log(childMenuRecords);
+                          return (
+                            <>
+                              {
+                                <tr
+                                  style={{
+                                    border: "1px solid black",
+                                    fontSize: "2.7vh",
+
+                                  }}
+                                >
+
+                                  <td style={{ padding: "10px" }}>
+                                    {rows.menuName}
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isAdd"
+                                        )
+                                      }
+
+                                      checked={
+                                        childMenuRecords[key]["isAdd"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isAdd"
+                                      className="isAdd"
+                                    />
+                                  </td>
+
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isEdit"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isEdit"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isEdit"
+                                      className="isEdit"
+                                    />
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isDel"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isDel"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isDel"
+                                      className="isDel"
+                                    />
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isView"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isView"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isView"
+                                      className="isView"
+                                    />
+                                  </td>
+
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isPrint"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isPrint"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isPrint"
+                                      className="isPrint"
+                                    />
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isExport"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isExport"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isExport"
+                                      className="isExport"
+                                    />
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isRelease"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isRelease"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isRelease"
+                                      className="isRelease"
+                                    />
+                                  </td>
+                                  <td style={{ textAlign: "center" }}>
+                                    <input
+                                      type="checkbox"
+                                      onChange={() =>
+                                        handleCheckboxChange(
+                                          rows.menuId,
+                                          "isPost"
+                                        )
+                                      }
+                                      checked={
+                                        childMenuRecords[key]["isPost"]
+                                          ? true
+                                          : false
+                                      }
+                                      name="isPost"
+                                      className="isPost"
+                                    />
+                                  </td>
+                                </tr>
+                              }
+                            </>
+                          );
+                        }
+                      )}
+                    </tbody>
+                  </table>
+                </TableContainer>
+              </Grid>
+            </Grid>
+          </form>
         </Paper>
       </Card>
 
@@ -735,7 +1225,6 @@ export default function UserPermissionMaster() {
                     console.log(newValue?.value);
                     formik.setFieldValue("empName", newValue?.label);
                     formik.setFieldValue("empid", newValue?.value);
-                    formik.setFieldValue("registerModel.username", newValue?.label);
 
                   }}
                   renderInput={(params) => (
@@ -751,17 +1240,15 @@ export default function UserPermissionMaster() {
 
               <Grid item xs={12} sm={4} lg={4}>
                 <TextField
-                  label={<CustomLabel text={t("text.userid")} required={true} />}
+                  label={<CustomLabel text={t("text.Username")} required={true} />}
                   variant="outlined"
                   fullWidth
                   size="small"
-                  name="userId"
-                  id="userId"
-                  value={formik.values.userId}
-                  placeholder={t("text.userid")}
-                  onChange={(e) => {
-                    formik.setFieldValue("userId", e.target.value);
-                  }}
+                  name="registerModel.username"
+                  id="registerModel.username"
+                  value={formik.values.registerModel.username}
+                  placeholder={t("text.Username")}
+                  onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
 
@@ -776,13 +1263,18 @@ export default function UserPermissionMaster() {
                   size="small"
                   name="password"
                   id="password"
-                  value={formik.values.password}
+                  value={formik.values.registerModel.password}
                   placeholder={t("text.Password")}
                   onChange={(e) => {
                     formik.setFieldValue("registerModel.password", e.target.value)
                   }}
                   onBlur={formik.handleBlur}
                 />
+                {formik.values.registerModel.password.length < 6 && formik.touched.password ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {t("Password should have minimum 6 characters")}
+                  </div>
+                ) : null}
 
               </Grid>
 

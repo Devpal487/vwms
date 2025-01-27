@@ -119,15 +119,19 @@ export default function FinancialYear() {
     initialValues: {
       "fnId": 0,
       "financialYear": "",
-      "fromDate": defaultValuestime,
-      "toDate": defaultValuestime,
+      "fromDate": dayjs(defaultValuestime).format("YYYY-MM-DD"),
+      "toDate": dayjs(defaultValuestime).format("YYYY-MM-DD"),
       "currentYear": true,
       "createdBy": "adminvm",
       "updatedBy": "adminvm",
       "createdOn": defaultValuestime,
       "updatedOn": defaultValuestime
     },
-    //validationSchema: validationSchema,
+    validationSchema: Yup.object({
+      financialYear: Yup.string().required(
+        "Financial Year is required"
+      ),
+    }),
     onSubmit: async (values) => {
       const response = await api.post(
         `FinnacialYear/UpsertFinnacialYear`,
@@ -151,7 +155,7 @@ export default function FinancialYear() {
     formik.setFieldValue("financialYear", row.financialYear);
     formik.setFieldValue("fromDate", dayjs(row.fromDate).format("YYYY-MM-DD"));
     formik.setFieldValue("toDate", dayjs(row.toDate).format("YYYY-MM-DD"));
-   
+
 
     setEditId(row.id);
   };
@@ -394,7 +398,7 @@ export default function FinancialYear() {
 
               <Grid xs={12} md={6} lg={6} item>
                 <TextField
-                  label={<CustomLabel text={t("text.FinancialYear")} />}
+                  label={<CustomLabel text={t("text.FinancialYear")} required={true} />}
                   value={formik.values.financialYear}
                   name="financialYear"
                   id="financialYear"
@@ -405,12 +409,17 @@ export default function FinancialYear() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.financialYear && formik.errors.financialYear ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.financialYear}
+                  </div>
+                ) : null}
               </Grid>
 
               <Grid xs={12} md={6} lg={6} item>
                 <FormControlLabel
                   control={<Checkbox />}
-                  label="Current Financial Year"
+                  label={t("text.currFinYear")}
                 />
               </Grid>
 

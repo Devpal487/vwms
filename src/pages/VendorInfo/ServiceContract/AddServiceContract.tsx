@@ -136,6 +136,7 @@ const AddServiceContract = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
+      //"contractId": 0,
       "vendorId": 0,
       "effectivedate": defaultValues,
       "createdBy": "as",
@@ -494,7 +495,7 @@ const AddServiceContract = (props: Props) => {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
-                                label={<CustomLabel text={t("text.ServiceName")} required={false} />}
+                                //label={<CustomLabel text={t("text.ServiceName")} required={false} />}
                                 name="serviceName"
                                 id="serviceName"
                                 placeholder={t("text.ServiceName")}

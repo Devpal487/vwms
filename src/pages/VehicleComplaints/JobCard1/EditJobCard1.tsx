@@ -399,9 +399,8 @@ const EditJobCard1 = (props: Props) => {
   };
   const getComplainData = async () => {
     const collectData = {
-      "id": -1,
+      "compId": -1,
       "empid": -1,
-      "itemId": -1
     };
     const response = await api.post(`Master/GetComplaint`, collectData);
     const data = response.data.data;

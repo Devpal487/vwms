@@ -66,47 +66,41 @@ export default function LicensingInsuranceMaster() {
   ]);
 
   useEffect(() => {
-    //fetchLicencingData();
-    getVehicleDetails();
-    getVendorData();
-    const timeoutId = setTimeout(() => {
       fetchLicencingData();
-    }, 100);
-    return () => clearTimeout(timeoutId);
   }, [isLoading]);
 
 
-  const getVehicleDetails = async () => {
-    const response = await api.get(
-      `Master/GetVehicleDetail?ItemMasterId=-1`,
-    );
-    const data = response.data.data;
-    const arr = data.map((Item: any, index: any) => ({
-      value: Item.itemMasterId,
-      label: Item.vehicleNo
-    }));
-    setVehicleOption(arr);
-  };
+  // const getVehicleDetails = async () => {
+  //   const response = await api.get(
+  //     `Master/GetVehicleDetail?ItemMasterId=-1`,
+  //   );
+  //   const data = response.data.data;
+  //   const arr = data.map((Item: any, index: any) => ({
+  //     value: Item.itemMasterId,
+  //     label: Item.vehicleNo
+  //   }));
+  //   setVehicleOption(arr);
+  // };
 
-  const getVendorData = async () => {
-    const collectData = {
-      "venderId": -1,
-      "countryId": -1,
-      "stateId": -1,
-      "cityId": -1
-    };
-    const response = await api.post(`Master/GetVendorMaster`, collectData);
-    const data = response.data.data;
-    //console.log("Vendor data==>  ",data);
-    const arr = [];
-    for (let index = 0; index < data.length; index++) {
-      arr.push({
-        label: data[index]["name"],
-        value: data[index]["venderId"],
-      });
-    }
-    setVendorOption(arr);
-  };
+  // const getVendorData = async () => {
+  //   const collectData = {
+  //     "venderId": -1,
+  //     "countryId": -1,
+  //     "stateId": -1,
+  //     "cityId": -1
+  //   };
+  //   const response = await api.post(`Master/GetVendorMaster`, collectData);
+  //   const data = response.data.data;
+  //   //console.log("Vendor data==>  ",data);
+  //   const arr = [];
+  //   for (let index = 0; index < data.length; index++) {
+  //     arr.push({
+  //       label: data[index]["name"],
+  //       value: data[index]["venderId"],
+  //     });
+  //   }
+  //   setVendorOption(arr);
+  // };
 
 
 
@@ -242,12 +236,6 @@ export default function LicensingInsuranceMaster() {
             flex: .3,
             headerClassName: "MuiDataGrid-colCell",
           },
-          // {
-          //   field: "campaignName",
-          //   headerName: t("text.VehicleName"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          // },
           {
             field: "vehicleNo",
             headerName: t("text.VehicleNo"),
@@ -286,12 +274,12 @@ export default function LicensingInsuranceMaster() {
             flex: .6,
             headerClassName: "MuiDataGrid-colCell",
           },
-          {
-            field: "attachment",
-            headerName: t("text.Attachment"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "attachment",
+          //   headerName: t("text.Attachment"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
 
         ];
         setColumns(columns as any);

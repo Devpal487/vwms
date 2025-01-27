@@ -138,7 +138,9 @@ const AddLicensingInsuranceMaster = (props: Props) => {
       "updatedBy": "adminvm",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
-      "file": ""
+      "file": "",
+      "vendorName": "",
+      "vehicleNo": ""
     },
 
     validationSchema: Yup.object({
@@ -172,8 +174,8 @@ const AddLicensingInsuranceMaster = (props: Props) => {
   };
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
-    if (event === "file") {
-      setModalImg(formik.values.file);
+    if (event === "attachment") {
+      setModalImg(formik.values.attachment);
     }
   };
   const ConvertBase64 = (file: File): Promise<string> => {
@@ -244,7 +246,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
         formik.setFieldValue(params, base64String);
 
         let outputCheck =
-          "data:image/png;base64," + formik.values.file;
+          "data:image/png;base64," + formik.values.attachment;
         console.log(outputCheck);
       } catch (error) {
         console.error("Error converting image file to Base64:", error);
@@ -337,12 +339,13 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vehicleOption}
-                  value={itemValue}
+                  value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("itemId", newValue?.value);
+                    formik.setFieldValue("vehicleNo", newValue?.label);
                     setItemValue(newValue?.label)
                   }}
                   renderInput={(params) => (
@@ -366,14 +369,14 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
-                  value={vendorValue}
+                  value={formik.values.vendorName}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vendorId", newValue?.value);
+                    formik.setFieldValue("vendorName", newValue?.label);
                     setVendorValue(newValue?.label);
-
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -542,7 +545,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "file")}
+                    onChange={(e) => otherDocChangeHandler(e, "attachment")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -556,7 +559,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                       margin: "10px",
                     }}
                   >
-                    {formik.values.file == "" ? (
+                    {formik.values.attachment == "" ? (
                       <img
                         // src={nopdf}
                         style={{
@@ -569,7 +572,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                     ) : (
                       <img
 
-                        src={"data:image/png;base64," + formik.values.file}
+                        src={"data:image/png;base64," + formik.values.attachment}
                         style={{
                           width: 150,
                           height: 100,
@@ -580,7 +583,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("file")}
+                      onClick={() => modalOpenHandle("attachment")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",

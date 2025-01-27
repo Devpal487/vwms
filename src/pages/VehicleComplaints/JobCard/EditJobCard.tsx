@@ -237,7 +237,7 @@ const EditJobCard = (props: Props) => {
     setDesgValue(location.state?.designation);
     const timeoutId: any = setTimeout(() => {
       handleStateData();
-    }, 100);
+    }, 300);
     return () => clearTimeout(timeoutId);
   }, [itemId]);
 
@@ -315,9 +315,8 @@ const EditJobCard = (props: Props) => {
 
   const getComplainData = async () => {
     const collectData = {
-      "id": -1,
-      "empid": -1,
-      "itemId": -1
+      "compId": -1,
+      "empId": -1
     };
     const response = await api.post(`Master/GetComplaint`, collectData);
     const data = response.data.data;
@@ -356,7 +355,12 @@ const EditJobCard = (props: Props) => {
     const response = await api.post(`Master/GetJobCard`, collectData);
     const data = response.data.data;
 
-    setTableData(data[0].serviceDetail || tableData);
+    if (data[0].serviceDetail.length > 0) {
+      setTableData(data[0].serviceDetail);
+    }
+
+    setDeptValue(empOption[empOption.findIndex(e => e.value == data.empId)]?.department || location.state?.department || "");
+    setDesgValue(empOption[empOption.findIndex(e => e.value == data.empId)]?.designation || location.state?.designation || "");
 
     // await getJobCardData().then(() => {
     //   if (location.state.status === "Complete") {
@@ -385,7 +389,7 @@ const EditJobCard = (props: Props) => {
       "complainId": location.state?.complainId || 0,
       "complainDate": location.state?.complaintDate || defaultValues,
       "empId": location.state?.empId || 0,
-      "itemId": location.state?.itemID || 0,
+      "itemId": location.state?.itemId || 0,
       "currenReading": location.state?.currenReading || 0,
       "complain": location.state?.complain || "",
       "status": location.state?.status,
@@ -804,8 +808,8 @@ const EditJobCard = (props: Props) => {
                   placeholder={t("text.FileNo")}
                   onChange={(e) => {
                     formik.setFieldValue("fileNo", e.target.value.toString());
-                    setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
-                    setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
+                    // setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
+                    // setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
               </Grid>
@@ -840,11 +844,13 @@ const EditJobCard = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption.filter(e => {
-                    if (e.value == location.state?.itemId) {
-                      return e;
-                    }
-                  })}
+                  options={vehicleOption
+                    .filter(e => {
+                      if (e.value == location.state?.itemId) {
+                        return e;
+                      }
+                    })
+                  }
                   value={formik.values.itemName}
                   fullWidth
                   size="small"
