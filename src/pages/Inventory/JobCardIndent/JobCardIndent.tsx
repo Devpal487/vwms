@@ -129,7 +129,9 @@ export default function JobCardIndent() {
         id: Item.indentId,
         indentNo: Item.indentNo,
         empId: Item.empId,
-      }));
+        
+      }))
+      .filter((Item: any) => Item.indenttype==="JobCard");
       setItem(IndentWithIds);
       setIsLoading(false);
 

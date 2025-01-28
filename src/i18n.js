@@ -12,6 +12,7 @@ const resources = {
       text: {
         ////
         /////
+        type:"Type",
         item: "Item",
         ItemConsumedReport: "Item Consumed Report",
         VehicleItemConsumed: "Vehicle Item Consumed",

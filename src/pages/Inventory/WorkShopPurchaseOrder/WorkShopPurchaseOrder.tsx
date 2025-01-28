@@ -53,9 +53,9 @@ export default function WorkShopPurchaseOrder() {
     const { t } = useTranslation();
 
     useEffect(() => {
-     
+
         fetchZonesData();
-        
+
     }, [isLoading]);
 
 
@@ -74,17 +74,17 @@ export default function WorkShopPurchaseOrder() {
     };
 
     let delete_id = "";
-let delete_indentId = "";
+    let delete_indentId = "";
     const accept = () => {
         const collectData = {
             orderId: delete_id,
             "indentId": delete_indentId
         };
-        
+
         api
-            .post(`PurchaseOrder/DeletePurchaseOrder`,collectData )
+            .post(`PurchaseOrder/DeletePurchaseOrder`, collectData)
             .then((response) => {
-                if (response.data.status===1) {
+                if (response.data.status === 1) {
                     toast.success(response.data.message);
                     fetchZonesData();
                 } else {
@@ -98,7 +98,7 @@ let delete_indentId = "";
     };
 
     const handledeleteClick = (row: any) => {
-       
+
         delete_id = row.orderId;
         delete_indentId = row.indentId;
         confirmDialog({
@@ -114,9 +114,9 @@ let delete_indentId = "";
     const fetchZonesData = async () => {
         try {
             const collectData = {
-               // "id": -1
-               "orderId": -1,
-  "indentId": -1
+                // "id": -1
+                "orderId": -1,
+                "indentId": -1
             };
             const response = await api.post(
                 `PurchaseOrder/GetPurchaseOrder`,
@@ -127,193 +127,195 @@ let delete_indentId = "";
                 ...Item,
                 serialNo: index + 1,
                 id: Item.orderId,
-            }));
-            setItem(IndentWithIds);
-            setIsLoading(false);
+                //status: Item.status === "close",
+            }))
+            .filter((Item: any) => Item.orderType==="Workshop");
+    setItem(IndentWithIds);
+    setIsLoading(false);
 
-            if (data.length > 0) {
-                const columns: GridColDef[] = [
-                    {
-                        field: "actions",
-                        headerClassName: "MuiDataGrid-colCell",
-                        headerName: t("text.Action"),
-                        width: 100,
+    if (data.length > 0) {
+        const columns: GridColDef[] = [
+            {
+                field: "actions",
+                headerClassName: "MuiDataGrid-colCell",
+                headerName: t("text.Action"),
+                width: 100,
 
-                        renderCell: (params) => {
-                            return [
-                                <Stack
-                                    spacing={1}
-                                    direction="row"
-                                    sx={{ alignItems: "center", marginTop: "5px" }}
-                                >
-                                   
-                                    <EditIcon
-                                        style={{
-                                            fontSize: "20px",
-                                            color: "blue",
-                                            cursor: "pointer",
-                                        }}
-                                        className="cursor-pointer"
-                                        onClick={() => routeChangeEdit(params.row)}
-                                    />
-                                   
-                                    <DeleteIcon
-                                        style={{
-                                            fontSize: "20px",
-                                            color: "red",
-                                            cursor: "pointer",
-                                        }}
-                                        onClick={() => {
-                                            handledeleteClick(params.row);
-                                        }}
-                                    />
-                                </Stack>,
-                            ];
-                        },
-                    },
+                renderCell: (params) => {
+                    return [
+                        <Stack
+                            spacing={1}
+                            direction="row"
+                            sx={{ alignItems: "center", marginTop: "5px" }}
+                        >
 
-                     {
-                                           field: "serialNo",
-                                           headerName: t("text.SrNo"),
-                                           flex: 0.4,
-                                           headerClassName: "MuiDataGrid-colCell",
-                                       },
-                                       
-                                       {
-                                           field: "orderNo",
-                                           headerName: t("text.OrderNo"),
-                                           flex: 1,
-                                           headerClassName: "MuiDataGrid-colCell",
-                                       },
-                   
-                                       {
-                                           field: "orderDate",
-                                           headerName: t("text.OrderDate"),
-                                           flex: 1,
-                                           headerClassName: "MuiDataGrid-colCell",
-                                           renderCell(params) {
-                                               return dayjs(params.row.orderDate).format("DD-MMM-YYYY")
-                                           },
-                                       },
-                                       {
-                                           field: "name",
-                                           headerName: t("text.Vendor"),
-                                           flex: 1,
-                                           headerClassName: "MuiDataGrid-colCell",
-                                       },
-                                       {
-                                           field:"status",
-                                           headerName: t("text.Status"),
-                                           flex:1,
-                                       },
-                                       // {
-                                       //     field: "p_InvoiceNo",
-                                       //     headerName: t("text.p_InvoiceNos"),
-                                       //     flex: 1,
-                                       //     headerClassName: "MuiDataGrid-colCell",
-                                       // },
-                                      
-                                       // {
-                                       //     field: "p_InvoiceDate",
-                                       //     headerName: t("text.p_InvoiceDates"),
-                                       //     flex: 1,
-                                       //     headerClassName: "MuiDataGrid-colCell",
-                                       //     renderCell(params) {
-                                       //         return dayjs(params.row.p_InvoiceDate).format("DD-MMM-YYYY")
-                                       //     },
-                                       // },
-                                       // {
-                                       //     field: "freight",
-                                       //     headerName: t("text.freights"),
-                                       //     flex: 1,
-                                       //     headerClassName: "MuiDataGrid-colCell",
-                                       // },
-                                       {
-                                           field: "netAmount",
-                                           headerName: t("text.netAmount"),
-                                           flex: 1,
-                                          // headerClassName: "MuiDataGrid-colCell",
-                                       },
-                ];
-                setColumns(columns as any);
-            }
+                            <EditIcon
+                                style={{
+                                    fontSize: "20px",
+                                    color: "blue",
+                                    cursor: "pointer",
+                                }}
+                                className="cursor-pointer"
+                                onClick={() => routeChangeEdit(params.row)}
+                            />
 
-        } catch (error) {
-            console.error("Error fetching data:", error);
-           
-        }
+                            <DeleteIcon
+                                style={{
+                                    fontSize: "20px",
+                                    color: "red",
+                                    cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                    handledeleteClick(params.row);
+                                }}
+                            />
+                        </Stack>,
+                    ];
+                },
+            },
+
+            {
+                field: "serialNo",
+                headerName: t("text.SrNo"),
+                flex: 0.4,
+                headerClassName: "MuiDataGrid-colCell",
+            },
+
+            {
+                field: "orderNo",
+                headerName: t("text.OrderNo"),
+                flex: 1,
+                headerClassName: "MuiDataGrid-colCell",
+            },
+
+            {
+                field: "orderDate",
+                headerName: t("text.OrderDate"),
+                flex: 1,
+                headerClassName: "MuiDataGrid-colCell",
+                renderCell(params) {
+                    return dayjs(params.row.orderDate).format("DD-MMM-YYYY")
+                },
+            },
+            {
+                field: "name",
+                headerName: t("text.Vendor"),
+                flex: 1,
+                headerClassName: "MuiDataGrid-colCell",
+            },
+            {
+                field: "status",
+                headerName: t("text.Status"),
+                flex: 1,
+            },
+            // {
+            //     field: "p_InvoiceNo",
+            //     headerName: t("text.p_InvoiceNos"),
+            //     flex: 1,
+            //     headerClassName: "MuiDataGrid-colCell",
+            // },
+
+            // {
+            //     field: "p_InvoiceDate",
+            //     headerName: t("text.p_InvoiceDates"),
+            //     flex: 1,
+            //     headerClassName: "MuiDataGrid-colCell",
+            //     renderCell(params) {
+            //         return dayjs(params.row.p_InvoiceDate).format("DD-MMM-YYYY")
+            //     },
+            // },
+            // {
+            //     field: "freight",
+            //     headerName: t("text.freights"),
+            //     flex: 1,
+            //     headerClassName: "MuiDataGrid-colCell",
+            // },
+            {
+                field: "netAmount",
+                headerName: t("text.netAmount"),
+                flex: 1,
+                // headerClassName: "MuiDataGrid-colCell",
+            },
+        ];
+        setColumns(columns as any);
+    }
+
+} catch (error) {
+    console.error("Error fetching data:", error);
+
+}
     };
 
-    const adjustedColumns = columns.map((column: any) => ({
-        ...column,
-    }));
+const adjustedColumns = columns.map((column: any) => ({
+    ...column,
+}));
 
 
-    return (
-        <>
-            <Card
-                style={{
+return (
+    <>
+        <Card
+            style={{
+                width: "100%",
+                // height: "100%",
+                backgroundColor: "#E9FDEE",
+                border: ".5px solid #FF7722 ",
+                marginTop: "3vh"
+            }}
+        >
+            <Paper
+                sx={{
                     width: "100%",
-                    // height: "100%",
-                    backgroundColor: "#E9FDEE",
-                    border: ".5px solid #FF7722 ",
-                    marginTop: "3vh"
+                    overflow: "hidden",
+                    "& .MuiDataGrid-colCell": {
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
+                        fontSize: 17,
+                        fontWeight: 900
+                    },
                 }}
+                style={{ padding: "10px", }}
             >
-                <Paper
-                    sx={{
-                        width: "100%",
-                        overflow: "hidden",
-                        "& .MuiDataGrid-colCell": {
-                            backgroundColor: `var(--grid-headerBackground)`,
-                            color: `var(--grid-headerColor)`,
-                            fontSize: 17,
-                            fontWeight: 900
-                        },
-                    }}
-                    style={{ padding: "10px", }}
+                <ConfirmDialog />
+
+                <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{ padding: "20px" }}
+                    align="left"
                 >
-                    <ConfirmDialog />
+                    {t("text.WorkShopPurchaseOrder")}
+                </Typography>
+                <Divider />
 
-                    <Typography
-                        gutterBottom
-                        variant="h5"
-                        component="div"
-                        sx={{ padding: "20px" }}
-                        align="left"
+                <Box height={10} />
+
+                <Stack direction="row" spacing={2} classes="my-2 mb-2">
+
+                    <Button
+                        onClick={routeChangeAdd}
+                        variant="contained"
+                        endIcon={<AddCircleIcon />}
+                        size="large"
+                        style={{ backgroundColor: `var(--header-background)` }}
                     >
-                        {t("text.WorkShopPurchaseOrder")}
-                    </Typography>
-                    <Divider />
+                        {t("text.add")}
+                    </Button>
 
-                    <Box height={10} />
-
-                    <Stack direction="row" spacing={2} classes="my-2 mb-2">
-                      
-                        <Button
-                            onClick={routeChangeAdd}
-                            variant="contained"
-                            endIcon={<AddCircleIcon />}
-                            size="large"
-                            style={{ backgroundColor: `var(--header-background)` }}
-                        >
-                            {t("text.add")}
-                        </Button>
-                   
-                    </Stack>
+                </Stack>
 
 
-                    <DataGrids
-                        isLoading={isLoading}
-                        rows={item}
-                        columns={adjustedColumns}
-                        pageSizeOptions={[5, 10, 25, 50, 100]}
-                        initialPageSize={5}
-                    />
-                </Paper>
-            </Card>
-            <ToastApp />
+                <DataGrids
+                    isLoading={isLoading}
+                    rows={item}
+                    columns={adjustedColumns}
+                    pageSizeOptions={[5, 10, 25, 50, 100]}
+                    initialPageSize={5}
+                />
+            </Paper>
+        </Card>
+        <ToastApp />
 
-        </>
-    );
+    </>
+);
 }

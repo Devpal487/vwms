@@ -53,9 +53,9 @@ export default function OfficePurchaseOrder() {
     const { t } = useTranslation();
 
     useEffect(() => {
-     
+
         fetchZonesData();
-        
+
     }, [isLoading]);
 
 
@@ -75,18 +75,18 @@ export default function OfficePurchaseOrder() {
 
     let delete_id = "";
     let indent_id = "";
-    
+
     const accept = () => {
         if (!delete_id || !indent_id) {
             toast.error("Missing required information to delete the record.");
             return;
         }
-    
+
         const collectData = {
             orderId: delete_id,
             indentId: indent_id
         };
-    
+
         api
             .post(`PurchaseOrder/DeletePurchaseOrder`, collectData)
             .then((response) => {
@@ -102,16 +102,16 @@ export default function OfficePurchaseOrder() {
                 console.error(error);
             });
     };
-    
+
     const reject = () => {
         toast.warn("Rejected: You have rejected", { autoClose: 3000 });
     };
-    
-    const handledeleteClick = (row:any) => {
-        console.log("row",row)
+
+    const handledeleteClick = (row: any) => {
+        console.log("row", row)
         delete_id = row.orderId;
-        indent_id = row.indentId ; // Define this logic based on your use case
-    
+        indent_id = row.indentId; // Define this logic based on your use case
+
         confirmDialog({
             message: "Do you want to delete this record?",
             header: "Delete Confirmation",
@@ -121,93 +121,84 @@ export default function OfficePurchaseOrder() {
             reject,
         });
     };
-    
-    
-    
 
     const fetchZonesData = async () => {
         try {
             const collectData = {
-               // "id": -1
-               "orderId": -1,
-  "indentId": -1
+                orderId: -1,
+                indentId: -1,
             };
             const response = await api.post(
                 `PurchaseOrder/GetPurchaseOrder`,
                 collectData
             );
             const data = response.data.data;
-            const IndentWithIds = data.map((Item: any, index: any) => ({
-                ...Item,
-                serialNo: index + 1,
-                id: Item.orderId,
-               // id: Item.indentId,
-            }));
+    
+            // Add serial numbers and filter for status "open"
+            const IndentWithIds = data
+                .map((Item: any, index: any) => ({
+                    ...Item,
+                    serialNo: index + 1,
+                    id: Item.orderId,
+                }))
+                .filter((Item: any) => Item.orderType==="Office"); 
+    
             setItem(IndentWithIds);
             setIsLoading(false);
-
-            if (data.length > 0) {
+    
+            if (IndentWithIds.length > 0) {
                 const columns: GridColDef[] = [
                     {
                         field: "actions",
                         headerClassName: "MuiDataGrid-colCell",
                         headerName: t("text.Action"),
                         width: 100,
-
                         renderCell: (params) => {
-                            return [
+                            return (
                                 <Stack
                                     spacing={1}
                                     direction="row"
                                     sx={{ alignItems: "center", marginTop: "5px" }}
                                 >
-                                   
                                     <EditIcon
                                         style={{
                                             fontSize: "20px",
                                             color: "blue",
                                             cursor: "pointer",
                                         }}
-                                        className="cursor-pointer"
                                         onClick={() => routeChangeEdit(params.row)}
                                     />
-                                   
-                                   <DeleteIcon
-    style={{
-        fontSize: "20px",
-        color: "red",
-        cursor: "pointer",
-    }}
-    onClick={() => {
-        handledeleteClick(params.row);
-    }}
-/>
-                                </Stack>,
-                            ];
+                                    <DeleteIcon
+                                        style={{
+                                            fontSize: "20px",
+                                            color: "red",
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => handledeleteClick(params.row)}
+                                    />
+                                </Stack>
+                            );
                         },
                     },
-
                     {
                         field: "serialNo",
                         headerName: t("text.SrNo"),
                         flex: 0.4,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-                    
                     {
                         field: "orderNo",
                         headerName: t("text.OrderNo"),
                         flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-
                     {
                         field: "orderDate",
                         headerName: t("text.OrderDate"),
                         flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
-                        renderCell(params) {
-                            return dayjs(params.row.orderDate).format("DD-MMM-YYYY")
+                        renderCell: (params) => {
+                            return dayjs(params.row.orderDate).format("DD-MMM-YYYY");
                         },
                     },
                     {
@@ -217,48 +208,161 @@ export default function OfficePurchaseOrder() {
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     {
-                        field:"status",
+                        field: "status",
                         headerName: t("text.Status"),
-                        flex:1,
+                        flex: 1,
                     },
-                    // {
-                    //     field: "p_InvoiceNo",
-                    //     headerName: t("text.p_InvoiceNos"),
-                    //     flex: 1,
-                    //     headerClassName: "MuiDataGrid-colCell",
-                    // },
-                   
-                    // {
-                    //     field: "p_InvoiceDate",
-                    //     headerName: t("text.p_InvoiceDates"),
-                    //     flex: 1,
-                    //     headerClassName: "MuiDataGrid-colCell",
-                    //     renderCell(params) {
-                    //         return dayjs(params.row.p_InvoiceDate).format("DD-MMM-YYYY")
-                    //     },
-                    // },
-                    // {
-                    //     field: "freight",
-                    //     headerName: t("text.freights"),
-                    //     flex: 1,
-                    //     headerClassName: "MuiDataGrid-colCell",
-                    // },
                     {
                         field: "netAmount",
                         headerName: t("text.netAmount"),
                         flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-
                 ];
-                setColumns(columns as any);
+                setColumns(columns);
             }
-
         } catch (error) {
             console.error("Error fetching data:", error);
-           
         }
     };
+    
+
+
+    // const fetchZonesData = async () => {
+    //     try {
+    //         const collectData = {
+    //             // "id": -1
+    //             "orderId": -1,
+    //             "indentId": -1
+    //         };
+    //         const response = await api.post(
+    //             `PurchaseOrder/GetPurchaseOrder`,
+    //             collectData
+    //         );
+    //         const data = response.data.data;
+    //         const IndentWithIds = data.map((Item: any, index: any) => ({
+    //             ...Item,
+    //             serialNo: index + 1,
+    //             id: Item.orderId,
+    //             status: Item.status == "open",
+    //             // id: Item.indentId,
+    //         }));
+    //         setItem(IndentWithIds);
+    //         setIsLoading(false);
+
+    //         if (data.length > 0) {
+    //             const columns: GridColDef[] = [
+    //                 {
+    //                     field: "actions",
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                     headerName: t("text.Action"),
+    //                     width: 100,
+
+    //                     renderCell: (params) => {
+    //                         return [
+    //                             <Stack
+    //                                 spacing={1}
+    //                                 direction="row"
+    //                                 sx={{ alignItems: "center", marginTop: "5px" }}
+    //                             >
+
+    //                                 <EditIcon
+    //                                     style={{
+    //                                         fontSize: "20px",
+    //                                         color: "blue",
+    //                                         cursor: "pointer",
+    //                                     }}
+    //                                     className="cursor-pointer"
+    //                                     onClick={() => routeChangeEdit(params.row)}
+    //                                 />
+
+    //                                 <DeleteIcon
+    //                                     style={{
+    //                                         fontSize: "20px",
+    //                                         color: "red",
+    //                                         cursor: "pointer",
+    //                                     }}
+    //                                     onClick={() => {
+    //                                         handledeleteClick(params.row);
+    //                                     }}
+    //                                 />
+    //                             </Stack>,
+    //                         ];
+    //                     },
+    //                 },
+
+    //                 {
+    //                     field: "serialNo",
+    //                     headerName: t("text.SrNo"),
+    //                     flex: 0.4,
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                 },
+
+    //                 {
+    //                     field: "orderNo",
+    //                     headerName: t("text.OrderNo"),
+    //                     flex: 1,
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                 },
+
+    //                 {
+    //                     field: "orderDate",
+    //                     headerName: t("text.OrderDate"),
+    //                     flex: 1,
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                     renderCell(params) {
+    //                         return dayjs(params.row.orderDate).format("DD-MMM-YYYY")
+    //                     },
+    //                 },
+    //                 {
+    //                     field: "name",
+    //                     headerName: t("text.Vendor"),
+    //                     flex: 1,
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                 },
+    //                 {
+    //                     field: "status",
+    //                     headerName: t("text.Status"),
+    //                     flex: 1,
+    //                 },
+    //                 // {
+    //                 //     field: "p_InvoiceNo",
+    //                 //     headerName: t("text.p_InvoiceNos"),
+    //                 //     flex: 1,
+    //                 //     headerClassName: "MuiDataGrid-colCell",
+    //                 // },
+
+    //                 // {
+    //                 //     field: "p_InvoiceDate",
+    //                 //     headerName: t("text.p_InvoiceDates"),
+    //                 //     flex: 1,
+    //                 //     headerClassName: "MuiDataGrid-colCell",
+    //                 //     renderCell(params) {
+    //                 //         return dayjs(params.row.p_InvoiceDate).format("DD-MMM-YYYY")
+    //                 //     },
+    //                 // },
+    //                 // {
+    //                 //     field: "freight",
+    //                 //     headerName: t("text.freights"),
+    //                 //     flex: 1,
+    //                 //     headerClassName: "MuiDataGrid-colCell",
+    //                 // },
+    //                 {
+    //                     field: "netAmount",
+    //                     headerName: t("text.netAmount"),
+    //                     flex: 1,
+    //                     headerClassName: "MuiDataGrid-colCell",
+    //                 },
+
+    //             ];
+    //             setColumns(columns as any);
+    //         }
+
+    //     } catch (error) {
+    //         console.error("Error fetching data:", error);
+
+    //     }
+    // };
 
     const adjustedColumns = columns.map((column: any) => ({
         ...column,
@@ -305,7 +409,7 @@ export default function OfficePurchaseOrder() {
                     <Box height={10} />
 
                     <Stack direction="row" spacing={2} classes="my-2 mb-2">
-                      
+
                         <Button
                             onClick={routeChangeAdd}
                             variant="contained"
@@ -315,17 +419,35 @@ export default function OfficePurchaseOrder() {
                         >
                             {t("text.add")}
                         </Button>
-                   
+
                     </Stack>
 
-
+{/* 
                     <DataGrids
                         isLoading={isLoading}
                         rows={item}
                         columns={adjustedColumns}
                         pageSizeOptions={[5, 10, 25, 50, 100]}
                         initialPageSize={5}
-                    />
+                    /> */}
+                    <DataGrids
+    isLoading={isLoading}
+    rows={item}
+    columns={adjustedColumns}
+    pageSizeOptions={[5, 10, 25, 50, 100]}
+    initialPageSize={5}
+/>
+
+{item.length === 0 && !isLoading && (
+    <Typography
+        variant="h6"
+        align="center"
+        sx={{ marginTop: "20px", color: "gray" }}
+    >
+        {t("text.NoRecordsFound")}
+    </Typography>
+)}
+
                 </Paper>
             </Card>
             <ToastApp />

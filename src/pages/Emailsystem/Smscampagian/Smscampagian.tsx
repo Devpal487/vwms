@@ -135,7 +135,12 @@ export default function Smscampagian() {
         ...Item,
         serialNo: index + 1,
         id: Item.campaignId,
-      }));
+        campaignDate: moment(Item.campaignDate).format("DD-MM-YYYY"),
+       // campaignType: Item.campaignType === "SMS",
+        //   status: Item.status === true ? "open" : "closed", // Map true to "open" and false to "closed"
+       }))
+       .filter((Item: any) => Item.campaignType==="SMS"); 
+     
       setItem(IndentWithIds);
       setIsLoading(false);
 

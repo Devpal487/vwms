@@ -161,6 +161,12 @@ export default function Groupmaster() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
+          {
+            field: "type",
+            headerName: t("text.type"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+          },
 
           {
             field: "description",
