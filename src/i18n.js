@@ -1218,6 +1218,7 @@ const resources = {
         Comment: "Comment",
         DesignationMaster: "Designation Master",
 
+        enteritemType1:"Select Item Type",
         enteritemType: "Enter Item Type",
         enteritemTypecode: "Enter Item Type Code",
         itemType: "Item Type",
@@ -2949,7 +2950,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -5997,7 +5998,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8842,7 +8843,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8912,6 +8913,9 @@ const resources = {
 
         RCDocument:"Attach RC Document",
         VehicleImage:"Attach Vehicle Image",
+        VehicleNum:"VehicleNo",
+        reqLocName:"Location name is required",
+       
 
 
 

@@ -160,7 +160,7 @@ const AddLicensingInsuranceMaster = (props: Props) => {
 
       const response = await api.post(`Master/UpsertLicensing`, values);
       if (response.data.status === 1) {
-        toast.success(response.data.message);
+        toast.success(response.data.message || "Added Successful");
         navigate("/vehiclemaster/LicensingInsuranceMaster")
       } else {
         setToaster(true);

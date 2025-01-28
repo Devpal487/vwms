@@ -69,7 +69,7 @@ const EditUploadDocuments = (props: Props) => {
   const location = useLocation();
 
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo") },
+    { value: -1, label: t("text.VehicleNo"), empId: -1 },
   ]);
   const [empOption, setEmpOption] = useState([
     { value: 1, label: t("text.EmpName"), department: "", designation: "" },
@@ -93,7 +93,8 @@ const EditUploadDocuments = (props: Props) => {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
-      label: Item.vehicleNo
+      label: Item.vehicleNo,
+      empId: Item.empId
     }));
     setVehicleOption(arr);
   };
@@ -125,7 +126,7 @@ const EditUploadDocuments = (props: Props) => {
       "docCode": location.state.docCode,
       "empId": location.state.empId,
       "vehicleId": location.state.vehicleId,
-      "expiry": location.state.expiry,
+      "expiry": dayjs(location.state.expiry).format("YYYY-MM-DD"),
       "doc": location.state.doc,
       "docTypeName": location.state.docTypeName,
       "srno": location.state.srno,
@@ -136,6 +137,12 @@ const EditUploadDocuments = (props: Props) => {
       "empName": location.state.empName,
       "vehicleNo": location.state.vehicleNo
     },
+
+    validationSchema: Yup.object({
+      vehicleNo: Yup.string()
+        .required(t("Vehicle number is required")),
+    }),
+
 
     onSubmit: async (values) => {
 
@@ -157,8 +164,8 @@ const EditUploadDocuments = (props: Props) => {
   };
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
-    if (event === "file") {
-      setModalImg(formik.values.file);
+    if (event === "doc") {
+      setModalImg(formik.values.doc);
     }
   };
   const ConvertBase64 = (file: File): Promise<string> => {
@@ -229,7 +236,7 @@ const EditUploadDocuments = (props: Props) => {
         formik.setFieldValue(params, base64String);
 
         let outputCheck =
-          "data:image/png;base64," + formik.values.file;
+          "data:image/png;base64," + formik.values.doc;
         console.log(outputCheck);
       } catch (error) {
         console.error("Error converting image file to Base64:", error);
@@ -314,18 +321,23 @@ const EditUploadDocuments = (props: Props) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vehicleId", newValue?.value);
                     formik.setFieldValue("vehicleNo", newValue?.label);
-                    formik.setFieldValue("doc", newValue?.label + ".pdf")
+                    formik.setFieldValue("empName", empOption[empOption.findIndex(e => e.value === newValue?.empId)]?.label);
+                    formik.setFieldValue("empId", newValue?.empId);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={false} />}
+                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
                       name="vehicleNo"
                       id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
                 />
+                {formik.touched.vehicleNo && formik.errors.vehicleNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vehicleNo.toString()}</div>
+                )}
+
               </Grid>
 
               {/* Employee */}
@@ -339,8 +351,8 @@ const EditUploadDocuments = (props: Props) => {
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
-                    formik.setFieldValue("empName", newValue?.label);
-                    formik.setFieldValue("empId", newValue?.value);
+                    // formik.setFieldValue("empName", newValue?.label);
+                    // formik.setFieldValue("empId", newValue?.value);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -399,7 +411,7 @@ const EditUploadDocuments = (props: Props) => {
                   value={formik.values.expiry}
                   placeholder={t("text.ExpiryDate")}
                   onChange={(e) => {
-                    formik.setFieldValue("expiry", e.target.value);
+                    formik.setFieldValue("expiry", e.target.value.toString());
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
@@ -427,7 +439,7 @@ const EditUploadDocuments = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "file")}
+                    onChange={(e) => otherDocChangeHandler(e, "doc")}
                   />
                 </Grid>
                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -441,7 +453,7 @@ const EditUploadDocuments = (props: Props) => {
                       margin: "10px",
                     }}
                   >
-                    {formik.values.file == "" ? (
+                    {formik.values.doc == "" ? (
                       <img
                         // src={nopdf}
                         style={{
@@ -454,7 +466,12 @@ const EditUploadDocuments = (props: Props) => {
                     ) : (
                       <img
 
-                        src={"data:image/png;base64," + formik.values.file}
+                        // src={"data:image/png;base64," + formik.values.doc}
+                        src={
+                          /^(data:image\/(jpeg|jpg|png|9j);base64,)/.test(formik.values.doc)
+                            ? formik.values.doc
+                            : `data:image/jpeg;base64,${formik.values.doc}`
+                        }
                         style={{
                           width: 150,
                           height: 100,
@@ -465,7 +482,7 @@ const EditUploadDocuments = (props: Props) => {
                       />
                     )}
                     <Typography
-                      onClick={() => modalOpenHandle("file")}
+                      onClick={() => modalOpenHandle("doc")}
                       style={{
                         textDecorationColor: "blue",
                         textDecorationLine: "underline",

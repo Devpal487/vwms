@@ -132,25 +132,48 @@ const EditOrganization = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
-      "id": location.state.id,
-      "name": location.state.name,
-      "cityId": location.state.cityId,
-      "establishYear": location.state.establishYear,
-      "address": location.state.address,
-      "pincode": location.state.pincode,
-      "officeNo": location.state.officeNo,
-      "mobileNo": location.state.mobileNo,
-      "emailId": location.state.emailId,
-      "websiteName": location.state.websiteName,
-      "director": location.state.director,
-      "companyLogo": location.state.companyLogo,
-      "gstnNo": location.state.gstnNo,
-      "panNo": location.state.panNo,
-      "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
-      "createdOn": location.state.createdOn,
-      "updatedOn": location.state.updatedOn,
-      "cityName": location.state.cityName
+      id: location.state?.id || 0,
+      countryId: location.state?.countryId || 0,
+      stateId: location.state?.stateId || 0,
+      name: location.state?.name || "",
+      cityId: location.state?.cityId || 0,
+      establishYear: location.state?.establishYear || 0,
+      address: location.state?.address || "",
+      pincode: location.state?.pincode || 0,
+      officeNo: location.state?.officeNo || "",
+      mobileNo: location.state?.mobileNo || "",
+      emailId: location.state?.emailId || "",
+      websiteName: location.state?.websiteName || "",
+      director: location.state?.director || "",
+      companyLogo: location.state?.companyLogo || "",
+      gstnNo: location.state?.gstnNo || "",
+      panNo: location.state?.panNo || "",
+      createdBy: location.state?.createdBy || "adminvm",
+      updatedBy: location.state?.updatedBy || "adminvm",
+      createdOn: location.state?.createdOn || defaultValues,
+      updatedOn: location.state?.updatedOn || defaultValues,
+      cityName: location.state?.cityName || "",
+      stateName: location.state?.stateName || "",
+      countryName: location.state?.countryName || "",
+      // "id": location.state.id,
+      // "name": location.state.name,
+      // "cityId": location.state.cityId,
+      // "establishYear": location.state.establishYear,
+      // "address": location.state.address,
+      // "pincode": location.state.pincode,
+      // "officeNo": location.state.officeNo,
+      // "mobileNo": location.state.mobileNo,
+      // "emailId": location.state.emailId,
+      // "websiteName": location.state.websiteName,
+      // "director": location.state.director,
+      // "companyLogo": location.state.companyLogo,
+      // "gstnNo": location.state.gstnNo,
+      // "panNo": location.state.panNo,
+      // "createdBy": location.state.createdBy,
+      // "updatedBy": location.state.updatedBy,
+      // "createdOn": location.state.createdOn,
+      // "updatedOn": location.state.updatedOn,
+      // "cityName": location.state.cityName
     },
     onSubmit: async (values) => {
 
@@ -346,9 +369,12 @@ const EditOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
+                  value={formik.values.countryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    formik.setFieldValue("countryId", newValue?.value);
+                    formik.setFieldValue("countryName", newValue?.label);
                     getState(newValue?.value);
                   }}
                   renderInput={(params) => (
@@ -371,9 +397,12 @@ const EditOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
+                  value={formik.values.stateName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    formik.setFieldValue("stateId", newValue.value);
+                    formik.setFieldValue("stateName", newValue.label);
                     getCity(newValue?.value);
                   }}
                   renderInput={(params) => (
@@ -395,6 +424,7 @@ const EditOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
+                  value={formik.values.cityName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -718,7 +748,7 @@ const EditOrganization = (props: Props) => {
                     )}
                   </Box>
                 </Modal>
-              </Grid> 
+              </Grid>
 
 
               {/* Submit Button */}

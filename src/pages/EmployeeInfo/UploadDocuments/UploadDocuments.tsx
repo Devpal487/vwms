@@ -78,7 +78,7 @@ export default function UploadDocuments() {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
-      label: Item.vehicleNo
+      label: Item.vehicleNo,
     }));
     setVehicleOption(arr);
   };

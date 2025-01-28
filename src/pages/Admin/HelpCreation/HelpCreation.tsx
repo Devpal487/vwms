@@ -168,6 +168,7 @@ export default function HelpCreation() {
             toast.success(response.data.message);
             formik.resetForm();
             setEditorContent("");
+            fetchTotalFile();
          } else {
             setToaster(true);
             toast.error(response.data.message);

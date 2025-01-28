@@ -1055,7 +1055,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={zoneOption}
-                  value={formik.values.zoneName}
+                  value={formik.values?.zoneName || zoneOption[zoneOption.findIndex(e=>e.value == formik.values?.eZoneID)]?.label}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {

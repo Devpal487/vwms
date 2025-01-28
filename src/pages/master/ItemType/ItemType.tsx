@@ -316,7 +316,7 @@ export default function ItemType() {
             <Grid item xs={12} container spacing={3}>
               <Grid item xs={12} lg={4}>
               <TranslateTextField
-                   label={t("text.enteritemType")}
+                   label={t("text.enteritemType1")}
                   value={formik.values.itemType}
                   onChangeText={(text: string) => handleConversionChange('itemType', text)}
                   required={true}

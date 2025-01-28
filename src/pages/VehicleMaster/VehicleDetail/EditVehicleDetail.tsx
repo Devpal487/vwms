@@ -280,7 +280,7 @@ const EditVehicleDetail = (props: Props) => {
          taxId: location.state?.taxId || 0,
          purchaseYear: location.state?.purchaseYear || 0,
          modelNo: location.state?.modelNo || "",
-         serialNo: location.state?.serialNo || "",
+         serialNo: location.state?.serialNo.toString() || "",
          vehicleNo: location.state?.vehicleNo || "",
          tankCapacity: location.state?.tankCapacity || 0,
          actPrice: location.state?.actPrice || 0,
@@ -1076,7 +1076,7 @@ const EditVehicleDetail = (props: Props) => {
                            {formik.values.filename ? (
                               <img
                                  src={
-                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.filename)
+                                    /^(data:image\/(jpeg|jpg|png|xLSPtxB61|9j);base64,)/.test(formik.values.filename)
                                        ? formik.values.filename
                                        : `data:image/jpeg;base64,${formik.values.filename}`
                                  }
@@ -1177,7 +1177,7 @@ const EditVehicleDetail = (props: Props) => {
                            {formik.values.vehiclePhotoFile ? (
                               <img
                                  src={
-                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.vehiclePhotoFile)
+                                    /^(data:image\/(jpeg|jpg|png|xLSPtxB61|9j);base64,)/.test(formik.values.vehiclePhotoFile)
                                        ? formik.values.vehiclePhotoFile
                                        : `data:image/jpeg;base64,${formik.values.vehiclePhotoFile}`
                                  }
