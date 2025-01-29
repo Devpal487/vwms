@@ -131,7 +131,10 @@ const AddOrganization = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
+
       "id": 0,
+      "countryId": 0,
+      "stateId": 0,
       "name": "",
       "cityId": 0,
       "establishYear": 0,
@@ -149,7 +152,28 @@ const AddOrganization = (props: Props) => {
       "updatedBy": "adminvm",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
-      "cityName": ""
+      "cityName": "",
+      "stateName": "",
+      "countryName": ""
+      // "id": 0,
+      // "name": "",
+      // "cityId": 0,
+      // "establishYear": 0,
+      // "address": "",
+      // "pincode": 0,
+      // "officeNo": "",
+      // "mobileNo": "",
+      // "emailId": "",
+      // "websiteName": "",
+      // "director": "",
+      // "companyLogo": "",
+      // "gstnNo": "",
+      // "panNo": "",
+      // "createdBy": "adminvm",
+      // "updatedBy": "adminvm",
+      // "createdOn": defaultValues,
+      // "updatedOn": defaultValues,
+      // "cityName": ""
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -360,9 +384,12 @@ const AddOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
+                  value={formik.values.countryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    formik.setFieldValue("countryId", newValue?.value);
+                    formik.setFieldValue("countryName", newValue?.label);
                     getState(newValue?.value);
                   }}
                   renderInput={(params) => (
@@ -385,9 +412,12 @@ const AddOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
+                  value={formik.values.stateName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
+                    formik.setFieldValue("stateId", newValue.value);
+                    formik.setFieldValue("stateName", newValue.label);
                     getCity(newValue?.value);
                   }}
                   renderInput={(params) => (
@@ -409,6 +439,7 @@ const AddOrganization = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
+                  value={formik.values.cityName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {

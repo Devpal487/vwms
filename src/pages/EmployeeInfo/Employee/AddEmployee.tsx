@@ -597,7 +597,7 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     formik.setFieldValue("gender", newValue);
@@ -842,7 +842,7 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     console.log(newValue?.value);
@@ -872,7 +872,7 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     console.log(newValue?.value);
@@ -917,19 +917,22 @@ const AddEmployee = (props: Props) => {
 
               </Grid>
 
+
               {/* country */}
               <Grid item lg={4} xs={12}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={Country}
+                  value={formik.values.empCountryName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     formik.setFieldValue("empCountryID", newValue?.value);
+                    formik.setFieldValue("empCountryName", newValue?.label);
                     formik.setFieldTouched("empCountryID", true);
                     formik.setFieldTouched("empCountryID", false);
                     getState(newValue?.value);
@@ -954,13 +957,15 @@ const AddEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={StateOption}
+                  value={formik.values.empStateName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     formik.setFieldValue("empStateId", newValue?.value);
+                    formik.setFieldValue("empStateName", newValue?.label);
                     formik.setFieldTouched("empStateId", true);
                     formik.setFieldTouched("empStateId", false);
                     getCity(newValue?.value);
@@ -984,13 +989,15 @@ const AddEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={City}
+                  value={formik.values.empCityName}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     formik.setFieldValue("empCityId", newValue?.value);
+                    formik.setFieldValue("empCityName", newValue?.label);
                     formik.setFieldTouched("empCityId", true);
                     formik.setFieldTouched("empCityId", false);
                   }}
@@ -1013,10 +1020,11 @@ const AddEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={zoneOption}
+                  //value={formik.values?.zoneName || ""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
-                    if(!newValue){
+                    if (!newValue) {
                       return;
                     }
                     formik.setFieldValue("zoneName", newValue?.label);

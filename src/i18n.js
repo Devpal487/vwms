@@ -1218,6 +1218,7 @@ const resources = {
         Comment: "Comment",
         DesignationMaster: "Designation Master",
 
+        enteritemType1:"Select Item Type",
         enteritemType: "Enter Item Type",
         enteritemTypecode: "Enter Item Type Code",
         itemType: "Item Type",
@@ -2949,7 +2950,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -5997,7 +5998,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8842,7 +8843,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8908,6 +8909,13 @@ const resources = {
         Username: "Username",
         password: "Password",
         currFinYear:"Current Financial Year",
+
+
+        RCDocument:"Attach RC Document",
+        VehicleImage:"Attach Vehicle Image",
+        VehicleNum:"VehicleNo",
+        reqLocName:"Location name is required",
+       
 
 
 
@@ -13099,6 +13107,9 @@ const resources = {
         StockBinName1:"स्टॉक बिन का नाम",
         binCode:"स्टॉक बिन कोड",
         binCode1:"स्टॉक बिन कोड",
+
+        RCDocument:"आरसी दस्तावेज़ संलग्न करें",
+        VehicleImage:"वाहन छवि संलग्न करें",
       },
 
       content: {},

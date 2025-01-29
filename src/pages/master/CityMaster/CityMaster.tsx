@@ -232,7 +232,7 @@ export default function FileMaster() {
   const validationSchema = Yup.object({
     stateId: Yup.string().test(
       "required",
-      "Select State Is Required",
+      "State Name is required",
       function (value: any) {
         return value && value.trim() !== "";
       }
@@ -378,7 +378,6 @@ export default function FileMaster() {
                         label={
                           <CustomLabel
                             text={t("text.SelectStateName")}
-                            required={requiredFields.includes("stateId")}
                           />
                         }
                       />
@@ -386,7 +385,7 @@ export default function FileMaster() {
                   />
                   {formik.touched.stateId && formik.errors.stateId ? (
                     <div style={{ color: "red", margin: "5px" }}>
-                      {formik.errors.stateId}
+                      {"State Name is required"}
                     </div>
                   ) : null}
                 </Grid>

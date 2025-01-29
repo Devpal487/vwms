@@ -16,7 +16,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { GridColDef } from "@mui/x-data-grid";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ToastApp from "../../../ToastApp";
@@ -163,14 +163,15 @@ export default function HelpCreation() {
          values.helpedit = editorContent;
          console.log("checktext", values);
          const response = await api.post(`Auth/UpsertHelpMenu`, values);
-         if (response.data.isSuccess) {
+         if (response.data.status === 1) {
             setToaster(false);
-            toast.success(response.data.mesg);
+            toast.success(response.data.message);
             formik.resetForm();
             setEditorContent("");
+            fetchTotalFile();
          } else {
             setToaster(true);
-            toast.error(response.data.mesg);
+            toast.error(response.data.message);
          }
       },
    });
@@ -346,6 +347,7 @@ export default function HelpCreation() {
                </Paper>
             </Card>
          </Grid>
+         <ToastContainer />
          <ToastApp />
       </>
    );
