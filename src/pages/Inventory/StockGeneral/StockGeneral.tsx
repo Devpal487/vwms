@@ -142,7 +142,7 @@ export default function StockGeneral() {
                                     direction="row"
                                     sx={{ alignItems: "center", marginTop: "5px" }}
                                 >
-                                   
+{/*                                    
                                     <EditIcon
                                         style={{
                                             fontSize: "20px",
@@ -151,9 +151,9 @@ export default function StockGeneral() {
                                         }}
                                         className="cursor-pointer"
                                         onClick={() => routeChangeEdit(params.row)}
-                                    />
+                                    /> */}
                                    
-                                    <DeleteIcon
+                                    {/* <DeleteIcon
                                         style={{
                                             fontSize: "20px",
                                             color: "red",
@@ -162,7 +162,7 @@ export default function StockGeneral() {
                                         onClick={() => {
                                             handledeleteClick(params.row.id);
                                         }}
-                                    />
+                                    /> */}
                                 </Stack>,
                             ];
                         },

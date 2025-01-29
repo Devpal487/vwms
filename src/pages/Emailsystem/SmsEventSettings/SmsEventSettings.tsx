@@ -128,7 +128,11 @@ export default function SmsEventSettings() {
         ...Item,
         serialNo: index + 1,
         id: Item.eventId,
-      }));
+        //sendingType: Item.sendingType === "SMS",
+        //   status: Item.status === true ? "open" : "closed", // Map true to "open" and false to "closed"
+       }))
+       .filter((Item: any) => Item.sendingType==="SMS"); 
+     
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -176,12 +180,12 @@ export default function SmsEventSettings() {
             },
           },
 
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
           {
             field: "eventName",
             headerName: t("text.Emaileventname1"),
@@ -194,12 +198,12 @@ export default function SmsEventSettings() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-          // {
-          //   field: "Status",
-          //   headerName: t("text.Status"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          // },
+          {
+            field: "isActive",
+            headerName: t("text.Status"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+          },
 
         ];
         setColumns(columns as any);

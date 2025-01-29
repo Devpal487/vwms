@@ -388,7 +388,8 @@ export default function QualityCheckMaster() {
         ...Item,
         serialNo: index + 1,
         id: Item.returnId,
-      }));
+      }))
+      .filter((Item: any) => Item.returnType === "Staff");
       setItem(IndentWithIds);
       setIsLoading(false);
 

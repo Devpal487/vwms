@@ -167,7 +167,7 @@ const EditJobCard1 = (props: Props) => {
         "igst": 0,
         "netAmount": 0,
         "srno": 0,
-        "isDelete": true,
+        "isDelete": false,
         "prevReading": 0
       }
     ],
@@ -213,6 +213,7 @@ const EditJobCard1 = (props: Props) => {
     {
       "id": 0,
       "jobCardId": 0,
+      unitID: 0,
       "itemId": 0,
       "indentId": 0,
       "indentNo": "",
@@ -227,12 +228,13 @@ const EditJobCard1 = (props: Props) => {
       "igst": 0,
       "netAmount": 0,
       "srno": 0,
-      "isDelete": true,
+      "isDelete": false,
       "prevReading": 0
     },
     {
       "id": 0,
       "jobCardId": 0,
+      unitID: 0,
       "itemId": 0,
       "indentId": 0,
       "indentNo": "",
@@ -247,7 +249,7 @@ const EditJobCard1 = (props: Props) => {
       "igst": 0,
       "netAmount": 0,
       "srno": 0,
-      "isDelete": true,
+      "isDelete": false,
       "prevReading": 0
     },
 
@@ -319,6 +321,9 @@ const EditJobCard1 = (props: Props) => {
     setVehicleName(location.state?.vehicleName);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
+    const timeoutId: any = setTimeout(() => {
+      handleStateData();
+    }, 300);
     // if (location.state.status === "Complete") {
     //   setTableData([...location.state?.serviceDetail]);
     //   setTableData1([...location.state?.itemDetail]);
@@ -326,7 +331,10 @@ const EditJobCard1 = (props: Props) => {
     //   setTableData([...location.state?.serviceDetail, tableData]);
     //   setTableData1([...location.state?.itemDetail, tableData1]);
     // }
-
+    // const timeoutId: any = setTimeout(() => {
+    //   handleStateData();
+    // }, 300);
+console.log("location.state",(location.state));
     GetitemData();
     getTaxData();
     GetIndentID();
@@ -431,6 +439,30 @@ const EditJobCard1 = (props: Props) => {
     setServiceOption(arr);
   };
 
+  const handleStateData = async () => {
+    const collectData = {
+      "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCardInhouse`, collectData);
+    const data = response.data.data;
+
+    if (data[0].itemDetail.length > 0) {
+      setTableData1(data[0].itemDetail);
+    }
+
+    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.department || location.state?.department || "");
+    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.designation || location.state?.designation || "");
+
+    // await getJobCardData().then(() => {
+    //   if (location.state.status === "Complete") {
+    //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
+    //   } else {
+    //     setTableData([...location.state?.serviceDetail, tableData]);
+    //   }
+    // })
+  }
+
   const GetIndentID = async () => {
     const collectData = {
       indentId: -1,
@@ -510,7 +542,7 @@ const EditJobCard1 = (props: Props) => {
       "updatedOn": location.state.updatedOn,
       "companyId": location.state?.companyId,
       "fyId": location.state?.fyId,
-      "totalItemAmount": 0,
+      "totalItemAmount": location.state?.totalItemAmount || 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.itemName || "",
@@ -661,11 +693,10 @@ const EditJobCard1 = (props: Props) => {
       newData[index].serviceId = newData[index].serviceId;
       newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    // if (field === 'serviceName') {
-    //   newData[index].serviceName = newData[index].serviceName;
-    // }
+
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
+      newData[index].netAmount = newData[index].amount;
     }
     if (field === 'vendorId') {
       newData[index].vendorId = newData[index].vendorId;
@@ -683,101 +714,75 @@ const EditJobCard1 = (props: Props) => {
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
-    // if (field === 'qty') {
-    //   newData[index].qty = newData[index].qty;
-    // }
-    // if (field === 'unitRate') {
-    //   newData[index].unitRate = newData[index].unitRate;
-    // }
-    // if (field === 'unitId') {
-    //   newData[index].unitId = newData[index].unitId;
-    //   newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    // }
-    // if (field === 'vendorName') {
-    //   newData[index].vendorName = newData[index].vendorName;
-    // }
-    // if (field === 'unitName') {
-    //   newData[index].unitName = newData[index].unitName;
-    // }
+
     newData[index].jobCardId = formik.values.jobCardId;
-    //  newData[index].amount = newData[index].unitRate * newData[index].qty;
-    //   newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+
     newData[index].id = index;
     setTableData(newData);
 
     if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
       if (index === tableData.length - 1) {
         addRow();
-        //setIsVisibleJWC(true);
+
       }
     }
 
     let total = 0;
+    let netAmt = 0;
     tableData.forEach((row:any) => {
       total += row.amount;
+      netAmt += row.amount;
     })
-    formik.setFieldValue("netAmount", total);
+    tableData1.forEach((row: any) => {
+      netAmt += row.amount;
+    })
     formik.setFieldValue("totalServiceAmount", total);
-    formik.setFieldValue("totalItemAmount", total);
+    formik.setFieldValue("netAmount", netAmt);
   };
 
   const handleInputChange1 = (index: any, field: any, value: any) => {
     const newData: any = [...tableData1];
     newData[index][field] = value;
 
-    if (field === 'itemId') {
-      newData[index].itemId = newData[index].itemId;
-      newData[index].itemName = itemOption[itemOption.findIndex((e: any) => e.value == newData[index].itemId)].label;
-      //newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    if (field === 'serviceId') {
+      newData[index].serviceId = newData[index].serviceId;
+      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
-    if (field === 'unitID') {
-      newData[index].unitID = newData[index].unitID;
-      newData[index].unitName = unitOption[unitOption.findIndex(e => e.value == newData[index].unitId)].label;
-    }
-    if (field === 'unitName') {
-      newData[index].unitName = newData[index].unitName;
 
-    }
-    if (field === 'indentId') {
-      newData[index].indentId = newData[index].indentId;
-      newData[index].indentNo = indentOptions[indentOptions.findIndex(e => e.value == newData[index].indentId)].label;
-    }
-    if (field === 'indentNo') {
-      newData[index].indentNo = newData[index].indentNo;
-    }
-    if (field === 'qty') {
-      newData[index].qty = newData[index].qty;
-
-    }
-    if (field === 'rate') {
-      newData[index].rate = newData[index].rate;
-    }
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
     }
+
     if (field === 'netAmount') {
       newData[index].netAmount = newData[index].netAmount;
     }
+
     newData[index].jobCardId = formik.values.jobCardId;
-    newData[index].amount = newData[index].unitRate * newData[index].qty;
-    newData[index].netAmount = newData[index].unitRate * newData[index].qty;
+    newData[index].amount = newData[index].qty * newData[index].rate;
+    newData[index].netAmount = newData[index].qty * newData[index].rate;
+
     newData[index].id = index;
     setTableData1(newData);
 
     if (newData[index].itemId && newData[index].qty && newData[index].rate) {
       if (index === tableData1.length - 1) {
         handleAddItem();
-        //setIsVisibleJWC(true);
+
       }
     }
 
+
     let total = 0;
+    let netAmt = 0;
     tableData1.forEach((row: any) => {
       total += row.amount;
+      netAmt += row.amount;
     })
-    formik.setFieldValue("netAmount", total);
-    formik.setFieldValue("totalServiceAmount", total);
+    tableData.forEach((row: any) => {
+      netAmt += row.amount;
+    })
     formik.setFieldValue("totalItemAmount", total);
+    formik.setFieldValue("netAmount", netAmt);
   };
 
   const addRow = () => {
@@ -803,13 +808,13 @@ const EditJobCard1 = (props: Props) => {
     },
     ]);
   };
-
   const handleAddItem = () => {
     setTableData1([
       ...tableData1,
       {
         "id": 0,
         "jobCardId": 0,
+        unitID: 0,
         "itemId": 0,
         "indentId": 0,
         "indentNo": "",
@@ -1229,7 +1234,7 @@ const EditJobCard1 = (props: Props) => {
            
 
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
@@ -1269,14 +1274,14 @@ const EditJobCard1 = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={serviceOption}
-                              // value={row.serviceId}
+                             
                               fullWidth
                               sx={{ width: "225px" }}
                               size="small"
@@ -1292,12 +1297,7 @@ const EditJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.SelectServices")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1305,7 +1305,7 @@ const EditJobCard1 = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
@@ -1325,12 +1325,7 @@ const EditJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Status")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1339,14 +1334,14 @@ const EditJobCard1 = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={vendorOption}
-                              // value={row.vendorId}
+                            
                               fullWidth
                               size="small"
                               disabled
@@ -1359,12 +1354,7 @@ const EditJobCard1 = (props: Props) => {
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Vendor")}
-                                //     required={false}
-                                //   />
-                                // }
+                             
                                 />
                               )}
                             />
@@ -1414,8 +1404,7 @@ const EditJobCard1 = (props: Props) => {
                             }}
                           >
                             <TextField
-                              // value={row.challanStatus}
-                              // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                              
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
@@ -1457,9 +1446,9 @@ const EditJobCard1 = (props: Props) => {
                     </tbody>
 
                   </Table>
-                </div>   </Grid>
+                </div>   </Grid> */}
 
-              {true && (
+              {/* {true && (
                 <Grid item lg={6} sm={6} xs={12}>
 
                   <Button
@@ -1483,7 +1472,7 @@ const EditJobCard1 = (props: Props) => {
                   </Button>
 
                 </Grid>
-              )}
+              )} */}
 
               <Grid item xs={12}>
                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
@@ -1491,26 +1480,27 @@ const EditJobCard1 = (props: Props) => {
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "15rem" }}>{t("text.itemName")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px'}}>{t("text.quantity")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
                         <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
                             padding: "5px",
+                            width: "10rem"
                           }}
                         >
                           {t("text.Amount")}
                         </th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px',width: "13rem" }}>{t("text.indentNo")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.preReading")}</th>
                         {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gst")}</th> */}
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
+                        {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Sgst")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Cgst")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th> */}
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.netAmount")}</th>
 
                       </tr>
@@ -1576,10 +1566,11 @@ const EditJobCard1 = (props: Props) => {
                               //value={row.unitName}
                               fullWidth
                               size="small"
-                              value={unitOption.find((opt: any) => opt.value === row.unitId) || null}
+                              value={unitOption.find(e => e.value == row.unitID) || null}
+                             // value={unitOption.find((opt: any) => opt.value === row.unitId) || null}
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleInputChange(index, 'unitId', newValue?.value);
+                                handleInputChange(index, 'unitID', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
                               }}
                               renderInput={(params) => (
@@ -1598,13 +1589,14 @@ const EditJobCard1 = (props: Props) => {
                           <td
                             style={{
                               border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
+                              // textAlign: "center",
+                              // width: "6rem"
                             }}
                           >
                             <TextField
                               value={row.qty}
                               size="small"
+                              sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
                               onChange={(e) =>
                                 handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
@@ -1616,7 +1608,7 @@ const EditJobCard1 = (props: Props) => {
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
-                              width: "10rem"
+                            //  width: "10rem"
                             }}
                           >
                             <TextField
@@ -1625,6 +1617,7 @@ const EditJobCard1 = (props: Props) => {
                                 handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
                               }
                               size="small"
+                              sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
                             />
@@ -1687,7 +1680,7 @@ const EditJobCard1 = (props: Props) => {
                               onFocus={e => e.target.select()}
                             />
                           </td>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1736,8 +1729,8 @@ const EditJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
-                          <td
+                          </td> */}
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1748,7 +1741,7 @@ const EditJobCard1 = (props: Props) => {
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1769,8 +1762,8 @@ const EditJobCard1 = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={7}></td>
-                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        <td colSpan={5}></td>
+                        {/* <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.ItemAmount")}
                         </td>
                         <td colSpan={6}>
@@ -1799,21 +1792,21 @@ const EditJobCard1 = (props: Props) => {
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.IGST")}
-                        </td>
-                        <td colSpan={6}>
+                        </td> */}
+                        {/* <td colSpan={6}>
                           <b>:</b>
-                        </td>
+                        </td> */}
                       </tr>
                       <tr>
-                        <td colSpan={7}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.TotalItemAmount")}
                         </td>
-                        <td colSpan={6} style={{ borderTop: "1px solid black" }}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalItemAmount}
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalOutsourceItemAmount")}
@@ -1821,8 +1814,8 @@ const EditJobCard1 = (props: Props) => {
                         <td colSpan={6}>
                           <b>:</b>
                         </td>
-                      </tr>
-                      <tr>
+                      </tr> */}
+                      {/* <tr>
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
@@ -1830,13 +1823,13 @@ const EditJobCard1 = (props: Props) => {
                         <td colSpan={6}>
                           <b>:</b>{formik.values.totalServiceAmount}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={7}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={6}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>

@@ -221,7 +221,7 @@ export default function OutSourceService() {
 
     const headers = [ "Vehicle No", "jobCard No.", "Item Name", "Service Name"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 70, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -361,13 +361,13 @@ export default function OutSourceService() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "vehicleNo",
             headerName: t("text.VehicleNo"),

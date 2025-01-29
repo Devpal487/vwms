@@ -135,7 +135,14 @@ export default function EmailcampgianMaster() {
         ...Item,
         serialNo: index + 1,
         id: Item.campaignId,
-      }));
+
+        campaignDate: dayjs(Item.campaignDate).format("YYYY-MM-DD"),
+              
+       // campaignType: Item.campaignType == true ? "EMAIL" : "SMS", 
+       }))
+
+       .filter((Item: any) => Item.campaignType==="EMAIL"); 
+      
       setItem(IndentWithIds);
       setIsLoading(false);
 

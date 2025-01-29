@@ -79,7 +79,7 @@ export default function StockSummaryReport() {
       console.error("No data to export to Tabular HTML.");
       return;
     }
-    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"]
+    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Balance"]
     // Prepare headers and rows for HTML table
     // const headers = [
     //   "Date",
@@ -210,7 +210,7 @@ export default function StockSummaryReport() {
     doc.text("Vehicle Data", 14, yPosition);
     yPosition += 10;
 
-    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Ballance"];
+    const headers = ["Item Name", "Opening Bal.", "In Quantity", "Out Quantity", "Balance"];
 
     const columnWidths = [50, 50, 70, 50, 50];
 
@@ -330,25 +330,28 @@ export default function StockSummaryReport() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "itemname",
             headerName: t("text.ItemName"),
             flex: 1,
+            //  align: "right",
+            // headerAlign: "right",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "opbal",
             headerName: t("text.OpeningBallence"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
+            // align: "right",
+            // headerAlign: "right",
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
@@ -356,8 +359,8 @@ export default function StockSummaryReport() {
             field: "inqty",
             headerName: t("text.InQuantuty"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
+            // align: "right",
+            // headerAlign: "right",
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
@@ -365,8 +368,8 @@ export default function StockSummaryReport() {
             field: "outqty",
             headerName: t("text.OutQuantity"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
+            // align: "right",
+            // headerAlign: "right",
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
@@ -374,8 +377,8 @@ export default function StockSummaryReport() {
             field: "bal",
             headerName: t("text.Ballence"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
+            // align: "right",
+            // headerAlign: "right",
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },

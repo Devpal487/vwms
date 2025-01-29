@@ -1442,7 +1442,7 @@ const CreateQualityCheck = (props: Props) => {
       { value: -1, label: t("text.id") },
     ]);
   const [toaster, setToaster] = useState(false);
-  const [vendorData, setVendorData] = useState([]);
+  const [vendorData, setVendorData] = useState<{ label: string; value: string; details: any }[]>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
     id: -1,
@@ -1464,9 +1464,13 @@ const CreateQualityCheck = (props: Props) => {
     netAmount: 0,
     reason: "",
     batchNo: "",
-    totalGst: 0,
+    "unitId": 0,
+      "unitName": "",
+      "itemName": "",
+      "mrnNo": ""
+  //  totalGst: 0,
 
-    item: {},
+   // item: {},
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
@@ -1561,27 +1565,7 @@ const CreateQualityCheck = (props: Props) => {
     }
   };
 
-  // const GetstoreData = async () => {
-  //   try {
-  //     const collectData = {
-  //       "id": -1,
-  //       "unit": -1
-  //     };
-  //     const response = await api.post(`StoreMaster/GetStoreMaster`, collectData);
-  //     const data = response.data.data;
-  //     if (data && data.length > 0) {
-
-  //       const arr = data.map((item: any) => ({
-  //         label: item.storeName,
-  //         value: item.id,
-  //       }));
-
-  //       setstoreOptions(arr);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching QC data:", error);
-  //   }
-  // };
+ 
 
 
   const GetQcData = async () => {
@@ -1611,13 +1595,7 @@ const CreateQualityCheck = (props: Props) => {
   };
 
 
-  // const getMRNNo = async () => {
-  //   const result = await api.get(`Mrn/GetMaxcMrnNo`);
-  //   if (result?.data.status === 1) {
-  //     formik.setFieldValue("mrnNo", result.data.data[0]["mrnNo"]);
-  //   }
-  // };
-
+  
   const GetitemData = async () => {
     const collectData = {
       itemMasterId: -1,
@@ -1734,14 +1712,18 @@ const CreateQualityCheck = (props: Props) => {
 
     // Calculate GST and total amount if gstRate is selected
     if (item.gstRate) {
-      item.totalGst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(2);
-      item.sgst = (parseFloat(item.totalGst) / 2).toFixed(2);
-      item.cgst = (parseFloat(item.totalGst) / 2).toFixed(2);
+      item.totalGst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100)
+      ;
+      item.sgst = (parseFloat(item.totalGst) / 2)
+      ;
+      item.cgst = (parseFloat(item.totalGst) / 2)
+      ;
       item.igst = 0;
     }
 
     // Calculate net amount
-    item.netAmount = (parseFloat(item.amount) + parseFloat(item.totalGst || "0")).toFixed(2);
+    item.netAmount = (parseFloat(item.amount) + parseFloat(item.totalGst || "0"))
+    ;
 
     formik.setFieldValue("totalAmount", item.netAmount);
 
@@ -1815,7 +1797,7 @@ const CreateQualityCheck = (props: Props) => {
       qcNo: "",
       qcDate: defaultValues,
       mrnId: 0,
-      storeid: 0,
+      //storeid: 0,
       mrnType: "",
       vendorId: 0,
       bill_ChalanNo: "",
@@ -1842,7 +1824,7 @@ const CreateQualityCheck = (props: Props) => {
       vendor: "",
       mrnDate: defaultValues,
       mrnNo: "",
-      storeName: ""
+      //storeName: ""
     },
 
     validationSchema: Yup.object({
@@ -1874,7 +1856,12 @@ const CreateQualityCheck = (props: Props) => {
         tableData[0].cgst === "" &&
         tableData[0].sgst === "" &&
         tableData[0].igst === "" &&
-        tableData[0].gst === "" &&
+        tableData[0].unitId === "" &&
+        tableData[0].unitName === "" &&
+        tableData[0].itemName === "" &&
+        // "unitId": 0,
+        // "unitName": "string",
+        // "itemName": "string",
         tableData[0].netAmount === "" &&
         tableData[0].reason === "" &&
         tableData[0].batchNo === "" &&
@@ -1888,8 +1875,8 @@ const CreateQualityCheck = (props: Props) => {
       }
 
       values.qcDetail = tableData
-
-      // values.vendor = vendorDetail;
+      values.vendor = vendorDetail?.label || "";
+       //values.vendor = vendorDetail;
 
       const response = await api.post(`QualityCheck/UpsertQc`,
         values
@@ -1928,13 +1915,13 @@ const CreateQualityCheck = (props: Props) => {
         id: transData[i]["id"],
         qcId: transData[i]["mrnId"],
         mrnId: transData[i]["mrnId"],
-       mrnNo: "",
+     
 
-        reason: formik.values.remark,
+      
         orderId: transData[i]["orderId"],
         orderNo: transData[i]["orderNo"],
         itemId: transData[i]["itemId"],
-        itemName: transData[i]["itemName"],
+       
         // mrnQty: transData[i]["quantity"],
         mrnQty: Number(transData[i]["quantity"]) + Number(transData[i]["balQuantity"]),
         acceptQty: transData[i]["quantity"],
@@ -1948,10 +1935,14 @@ const CreateQualityCheck = (props: Props) => {
         sgst: transData[i]["sgst"],
         igst: transData[i]["igst"],
         netAmount: transData[i]["netAmount"],
+         reason: formik.values.remark,
         //totalGst: transData[i]["totalGst"],
         batchNo: transData[i]["batchNo"],
         unitId: transData[i]["unitId"],
         unitName: transData[i]["unitName"],
+        itemName: transData[i]["itemName"],
+        // mrnNo: transData[i]["mrnNo"],
+        mrnNo: "",
 
       });
     }
@@ -2051,23 +2042,42 @@ const CreateQualityCheck = (props: Props) => {
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    console.log(newValue?.value);
-                    formik.setFieldValue('mrnNo', newValue?.label);
-                    formik.setFieldValue('mrnId', newValue?.value);
-                    formik.setFieldValue('vendorId', newValue?.vendorId);
-                    formik.setFieldValue('vendor', newValue?.vendorName);
-                    formik.setFieldValue('bill_ChalanNo', newValue?.bill_ChalanNo);
-                    formik.setFieldValue('shipmentNo', newValue?.shipmentNo);
-
-
-
-                    getVendorData()
-
-
-
-                    getPurchaseOrderByIndent(newValue?.value)
-                    //formik.setFieldValue("mrnNo", newValue?.value.toString());
+                    if (newValue) {
+                      formik.setFieldValue("mrnNo", newValue.label);
+                      formik.setFieldValue("mrnId", newValue.value);
+                      formik.setFieldValue("vendorId", newValue.vendorId);
+                      formik.setFieldValue("vendor", newValue.vendorName);
+                      formik.setFieldValue("bill_ChalanNo", newValue.bill_ChalanNo);
+                      formik.setFieldValue("shipmentNo", newValue.shipmentNo);
+                  
+                      // Update vendorDetail
+                      const selectedVendor = vendorData.find(
+                        (vendor: any) => vendor.value === newValue.vendorId
+                      );
+                      setVendorDetail(selectedVendor ? selectedVendor.details : null);
+                  
+                      getPurchaseOrderByIndent(newValue.value);
+                    }
                   }}
+                  
+                  // onChange={(event: any, newValue: any) => {
+                  //   console.log(newValue?.value);
+                  //   formik.setFieldValue('mrnNo', newValue?.label);
+                  //   formik.setFieldValue('mrnId', newValue?.value);
+                  //   formik.setFieldValue('vendorId', newValue?.vendorId);
+                  //   formik.setFieldValue('vendor', newValue?.vendor);
+                  //   formik.setFieldValue('bill_ChalanNo', newValue?.bill_ChalanNo);
+                  //   formik.setFieldValue('shipmentNo', newValue?.shipmentNo);
+
+
+
+                  //   getVendorData()
+
+
+
+                  //   getPurchaseOrderByIndent(newValue?.value)
+                  //   //formik.setFieldValue("mrnNo", newValue?.value.toString());
+                  // }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -2416,7 +2426,7 @@ const CreateQualityCheck = (props: Props) => {
                       >
                         {t("text.Rate")}
                       </th>
-                      <th
+                      {/* <th
                         style={{
                           border: "1px solid black",
                           textAlign: "center",
@@ -2424,6 +2434,16 @@ const CreateQualityCheck = (props: Props) => {
                         }}
                       >
                         {t("text.GSTRate")}
+                      </th> */}
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                         {t("text.cgst")}
+                      
                       </th>
                       <th
                         style={{
@@ -2432,16 +2452,7 @@ const CreateQualityCheck = (props: Props) => {
                           padding: "5px",
                         }}
                       >
-                        CGST
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        SGST
+                        {t("text.sgst")}
                       </th>
                       {/* <th
                         style={{
@@ -2556,6 +2567,7 @@ const CreateQualityCheck = (props: Props) => {
                             size="small"
                             sx={{ width: "150px" }}
                             onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
 
@@ -2598,6 +2610,7 @@ const CreateQualityCheck = (props: Props) => {
                               row.mrnQty
                             }
                             onChange={(e) => handleInputChange(index, "mrnQty", e.target.value)}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
                         <td
@@ -2611,6 +2624,7 @@ const CreateQualityCheck = (props: Props) => {
                             value={row.acceptQty}
                             onChange={(e) => handleInputChange(index, "acceptQty", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
                         <td
@@ -2626,6 +2640,7 @@ const CreateQualityCheck = (props: Props) => {
                               const newvalue = Number(row.mrnQty) - Number(row.acceptQty)
                               handleInputChange(index, "rejectQty", newvalue)
                             }}
+                            onFocus={e => e.target.select()}
                             inputProps={{ readOnly: true }}
                           />
                         </td>
@@ -2645,7 +2660,7 @@ const CreateQualityCheck = (props: Props) => {
                           />
                         </td>
 
-                        <td
+                        {/* <td
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -2669,7 +2684,7 @@ const CreateQualityCheck = (props: Props) => {
                               />
                             )}
                           />
-                        </td>
+                        </td> */}
 
                         <td
                           style={{
@@ -2678,7 +2693,7 @@ const CreateQualityCheck = (props: Props) => {
                           }}
                         >
                           <TextField
-                            value={row.cgst.toFixed(2)}
+                            value={row.cgst}
                             size="small"
                             sx={{ width: "100px" }}
                             inputProps={{ readOnly: true }}
@@ -2691,7 +2706,7 @@ const CreateQualityCheck = (props: Props) => {
                           }}
                         >
                           <TextField
-                            value={row.sgst.toFixed(2)}
+                            value={row.sgst}
                             size="small"
                             sx={{ width: "100px" }}
                             inputProps={{ readOnly: true }}
@@ -2717,7 +2732,7 @@ const CreateQualityCheck = (props: Props) => {
                   </tbody>
                   <tfoot>
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
 
                         </td>
@@ -2739,7 +2754,7 @@ const CreateQualityCheck = (props: Props) => {
                         </td>
                       </tr> */}
                       <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
 
                         </td>

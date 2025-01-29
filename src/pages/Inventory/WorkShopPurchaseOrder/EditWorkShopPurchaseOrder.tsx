@@ -701,9 +701,10 @@ const EditWorkShopPurchaseOrder = () => {
                                     options={vendorData}
                                     fullWidth
                                     size="small"
-                                    value={
-                                        vendorData.find((option: any) => option.value === formik.values.vendorId) || null
-                                    }
+                                    value={formik.values.name}
+                                    // value={
+                                    //     vendorData.find((option: any) => option.value === formik.values.vendorId) || null
+                                    // }
                                     onChange={(event: any, newValue: any) => {
                                         if (newValue) {
                                             formik.setFieldValue("vendorId", newValue.value);
@@ -741,93 +742,93 @@ const EditWorkShopPurchaseOrder = () => {
                                 />
                             </Grid>
                             <Grid container spacing={1} item>
-  <Grid
-    xs={12}
-    md={4}
-    sm={4}
-    item
-    style={{ marginBottom: "30px", marginTop: "30px" }}
-  >
-    <TextField
-      type="file"
-      inputProps={{ accept: "image/*" }}
-      InputLabelProps={{ shrink: true }}
-      label={<CustomLabel text={t("text.pOrderDoc")} />}
-      size="small"
-      fullWidth
-      style={{ backgroundColor: "white" }}
-      onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-    
-    />
-  </Grid>
-  <Grid xs={12} md={4} sm={4} item></Grid>
+                                <Grid
+                                    xs={12}
+                                    md={4}
+                                    sm={4}
+                                    item
+                                    style={{ marginBottom: "30px", marginTop: "30px" }}
+                                >
+                                    <TextField
+                                        type="file"
+                                        inputProps={{ accept: "image/*" }}
+                                        InputLabelProps={{ shrink: true }}
+                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
+                                        size="small"
+                                        fullWidth
+                                        style={{ backgroundColor: "white" }}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
 
-  <Grid xs={12} md={4} sm={4} item>
-    <Grid
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        margin: "10px",
-      }}
-    >
-      {formik.values.pOrderDoc ? (
-        <img
-          src={formik.values.pOrderDoc}
-          alt="Preview"
-          style={{
-            width: 150,
-            height: 100,
-            border: "1px solid grey",
-            borderRadius: 10,
-            padding: "2px",
-          }}
-        />
-      ) : (
-        <img
-          src={nopdf} // Default placeholder image
-          alt="No document"
-          style={{
-            width: 150,
-            height: 100,
-            border: "1px solid grey",
-            borderRadius: 10,
-          }}
-        />
-      )}
-      <Typography
-        onClick={() => modalOpenHandle1("pOrderDoc")}
-        style={{
-          textDecorationColor: "blue",
-          textDecorationLine: "underline",
-          color: "blue",
-          fontSize: "15px",
-          cursor: "pointer",
-        }}
-      >
-        {t("text.Preview")}
-      </Typography>
-    </Grid>
-  </Grid>
+                                    />
+                                </Grid>
+                                <Grid xs={12} md={4} sm={4} item></Grid>
 
-  <Modal open={docOpen} onClose={handlePanClose1}>
-    <Box sx={style}>
-      {Img ? (
-        <img
-          src={Img}
-          alt="Preview"
-          style={{
-            width: "170vh",
-            height: "75vh",
-            borderRadius: 10,
-          }}
-        />
-      ) : (
-        <Typography>No Image to Preview</Typography>
-      )}
-    </Box>
-  </Modal>
-</Grid>
+                                <Grid xs={12} md={4} sm={4} item>
+                                    <Grid
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-around",
+                                            alignItems: "center",
+                                            margin: "10px",
+                                        }}
+                                    >
+                                        {formik.values.pOrderDoc ? (
+                                            <img
+                                                src={formik.values.pOrderDoc}
+                                                alt="Preview"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                    padding: "2px",
+                                                }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={nopdf} // Default placeholder image
+                                                alt="No document"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        )}
+                                        <Typography
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
+                                            style={{
+                                                textDecorationColor: "blue",
+                                                textDecorationLine: "underline",
+                                                color: "blue",
+                                                fontSize: "15px",
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            {t("text.Preview")}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Modal open={docOpen} onClose={handlePanClose1}>
+                                    <Box sx={style}>
+                                        {Img ? (
+                                            <img
+                                                src={Img}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "170vh",
+                                                    height: "75vh",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Typography>No Image to Preview</Typography>
+                                        )}
+                                    </Box>
+                                </Modal>
+                            </Grid>
 
 
 
@@ -922,7 +923,8 @@ const EditWorkShopPurchaseOrder = () => {
                                                         padding: "5px",
                                                     }}
                                                 >
-                                                    CGST
+                                                    {t("text.cgst")}
+
                                                 </th>
                                                 <th
                                                     style={{
@@ -931,8 +933,8 @@ const EditWorkShopPurchaseOrder = () => {
                                                         padding: "5px",
                                                     }}
                                                 >
-                                                    SGST
-                                                </th >
+                                                    {t("text.sgst")}
+                                                </th>
                                                 {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -1069,7 +1071,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                     >
                                                         <TextField
                                                             size="small"
-                                                   
+
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                             inputProps={{ step: "any", min: "0" }}

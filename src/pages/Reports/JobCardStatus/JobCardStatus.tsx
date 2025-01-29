@@ -100,7 +100,8 @@ export default function JobCardStatus() {
       moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
       item?.vehicleNo || "", // Vehicle No
       item?.jobcardNo || "", // Driver
-      item?.complaintDate || "", // Mobile No
+      moment(item?.complaintDate).format("DD-MM-YYYY") || "",
+      //item?.complaintDate || "", // Mobile No
       item?.status || "",
     ]);
 
@@ -202,7 +203,7 @@ export default function JobCardStatus() {
 
     const headers = ["Jobcard Date", "Vehicle No", "Jobcard No", "Complaint Date", "Status"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 50, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -236,7 +237,7 @@ export default function JobCardStatus() {
         moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
         item?.vehicleNo || "", // Vehicle No
         item?.jobcardNo || "", // Driver
-        item?.complaintDate || "", // Mobile No
+        moment(item?.complaintDate).format("DD-MM-YYYY") || "",
         item?.status || "",
       ];
 

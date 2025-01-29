@@ -81,7 +81,7 @@ const EditemaileventForm = (props: Props) => {
             "eventId": location.state.eventId,
             "eventName": location.state.eventName,
             "eventType": location.state.eventType,
-            "sendingType": location.state.sendingType,
+            "sendingType": location.state.sendingType||"",
             "message": location.state.message,
             "isActive": location.state.isActive,
             "createdBy": "adminvm",

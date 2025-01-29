@@ -168,7 +168,7 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
       "empId": 0,
       "status": "",
       "releasedBy": "",
-      "indenttype": "",
+      "indenttype": "WorkShopPurchase",
       "postedBy": "",
       "releasedOn": defaultValues,
       "postedOn": defaultValues,

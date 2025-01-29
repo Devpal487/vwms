@@ -235,7 +235,7 @@ export default function MaterialRecieptNoteMaster() {
             headerClassName: "MuiDataGrid-colCell",
             renderCell(params) {
               // console.log("values", params.row);
-              return parseFloat(params.row.totalCGST )+ parseFloat(params.row.totalSGST)
+              return (parseFloat(params.row.totalAmount )+ parseFloat(params.row.totalSGST) + parseFloat(params.row.totalCGST) + parseFloat(params.row.totalIGST)).toFixed(2);
             },
           }, 
           // {

@@ -210,12 +210,12 @@ export default function QualityCheckMaster() {
                 return dayjs(params.row.bill_ChalanDate).format("DD-MMM-YYYY")
               },
           },
-          {
-            field: "mrnType",
-            headerName: t("text.mrnType"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "mrnType",
+          //   headerName: t("text.mrnType"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
         
          
           {

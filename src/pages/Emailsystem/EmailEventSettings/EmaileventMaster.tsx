@@ -127,7 +127,11 @@ export default function EmaileventMaster() {
         ...Item,
         serialNo: index + 1,
         id: Item.eventId,
-      }));
+        //sendingType: Item.sendingType === "EMAIL",
+        //   status: Item.status === true ? "open" : "closed", // Map true to "open" and false to "closed"
+       }))
+       .filter((Item: any) => Item.sendingType==="EMAIL"); 
+      
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -175,12 +179,12 @@ export default function EmaileventMaster() {
             },
           },
 
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
           {
             field: "eventName",
             headerName: t("text.Emaileventname1"),
@@ -193,12 +197,12 @@ export default function EmaileventMaster() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-          // {
-          //   field: "Status",
-          //   headerName: t("text.Status"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          // },
+          {
+            field: "isActive",
+            headerName: t("text.Status"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+          },
 
         ];
         setColumns(columns as any);

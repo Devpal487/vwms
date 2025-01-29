@@ -221,7 +221,7 @@ export default function VehicleAgeReport() {
 
     const headers = ["Item Code", "Vehicle No.", "Purchase Year", "Employee Name", "Age"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 100, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -373,13 +373,13 @@ export default function VehicleAgeReport() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "itemCode",
             headerName: t("text.itemCode"),
@@ -393,28 +393,28 @@ export default function VehicleAgeReport() {
             field: "itemName",
             headerName: t("text.itemName"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "purchaseYear",
             headerName: t("text.purchaseYear"),
             flex: 1.3,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemType",
             headerName: t("text.itemType"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {
@@ -430,7 +430,7 @@ export default function VehicleAgeReport() {
             field: "empName",
             headerName: t("text.empName"),
             flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {
@@ -444,7 +444,7 @@ export default function VehicleAgeReport() {
             field: "age",
             headerName: t("text.age"),
             flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
     

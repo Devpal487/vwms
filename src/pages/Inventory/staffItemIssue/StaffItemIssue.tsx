@@ -128,7 +128,8 @@ export default function VendorMaster() {
         id: zone.issueId,
         empId: zone.empId,
         indentId: zone.indentId,
-      }));
+      }))
+      .filter((Item: any) => Item.issueType==="staff");
       setZones(zonesWithIds);
       setIsLoading(false);
 

@@ -51,8 +51,8 @@ interface MenuPermission {
 }
 
 export default function ComplainStatus() {
-    const { defaultValues } = getISTDate();
-    const location = useLocation();
+  const { defaultValues } = getISTDate();
+  const location = useLocation();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -94,33 +94,19 @@ export default function ComplainStatus() {
       "Vehicle No",
       "Complaint No",
       "Complaint ",
-    //  "jobCard No",
+
       "Complaint Status",
-      // "Running",
-      // "Idle",
-      // "Start Time",
-      // "End Time",
-      // "Fuel Consumption",
+
     ];
 
     const rows = isPrint.map((item: any) => [
-      // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
-      // item?.vehicleNo || "", // Vehicle Type
-      // item?.driverName || "", // Driver
-      // item?.mobileNo, // Driver Mobile No
-      // item?.department,
-      // item?.distanceKM,
-      // item?.running,
-      // item?.idle,
-      // item?.startTime,
-      // item?.endTime,
-      // item?.fuelConsumption,
+
 
       moment(item?.complaintDate).format("DD-MM-YYYY") || "",
       item?.vehicleNo || "", // Vehicle No
       item?.complainNo || "", // Driver
       item?.complaint || "", // Mobile No
-   //   item?.jobCardNo || "",
+      //   item?.jobCardNo || "",
       item?.complainStatus || "",
     ]);
 
@@ -222,7 +208,7 @@ export default function ComplainStatus() {
 
     const headers = ["Date", "Vehicle No", "Complaint No", "Complaint", "Complaint Status"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 80, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -257,7 +243,7 @@ export default function ComplainStatus() {
         item?.vehicleNo || "", // Vehicle No
         item?.complainNo || "", // Driver
         item?.complaint || "", // Mobile No
-       // item?.jobCardNo || "",
+        // item?.jobCardNo || "",
         item?.complainStatus || "",
       ];
 
@@ -299,7 +285,7 @@ export default function ComplainStatus() {
     fetchZonesData();
   }, []);
 
- 
+
 
   const getVehicleNo = () => {
 
@@ -312,19 +298,7 @@ export default function ComplainStatus() {
     });
   };
 
-  // const getData = () => {
-  //   const collectData = {
-  //     vehicleTypeId: -1,
-  //     vehicleTypename: "",
-  //   };
-  //   api.post(`VehicleType/GetVehicleType`, collectData).then((res) => {
-  //     const arr = res?.data?.data.map((item: any) => ({
-  //       label: item.vehicleTypename,
-  //       value: item.vehicleTypeId,
-  //     }));
-  //     setOption(arr);
-  //   });
-  // };
+
   let currentDate = new Date();
 
   currentDate.setDate(currentDate.getDate() - 1);
@@ -334,11 +308,11 @@ export default function ComplainStatus() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo":formik.values.vehicleNo,
-        "complainNo":formik.values.complainNo,
-        "complaintDatefrom":"2021-01-11T07:51:03.389Z",
-        "complaintDateTo":defaultValues,
-        status: formik.values.status, 
+        "vehicleNo": formik.values.vehicleNo || vNO,
+        "complainNo": formik.values.complainNo,
+        "complaintDatefrom": "2021-01-11T07:51:03.389Z",
+        "complaintDateTo": defaultValues,
+        status: formik.values.status,
         "show": true
       };
       const response = await api.post(
@@ -365,45 +339,45 @@ export default function ComplainStatus() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-       
+
           {
             field: "complainNo",
             headerName: t("text.complainNo"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complaint",
             headerName: t("text.complaint"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo12"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "jobCardNo",
             headerName: t("text.jobCardNo"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complainStatus",
             headerName: t("text.complainStatus12"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
-            
+
           },
 
           {
@@ -425,68 +399,7 @@ export default function ComplainStatus() {
               return moment(params.row.updatedOn).format("DD-MM-YYYY");
             },
           },
-          
 
-          // {
-          //   field: "totaldays",
-          //   headerName: t("text.totaldays"),
-          //   flex: 1.3,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "department",
-          //   headerName: t("text.Department"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "distanceKM",
-          //   headerName: t("text.Distance"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   align: "right",
-          //   headerAlign: "right",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "running",
-          //   headerName: t("text.Running"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "idle",
-          //   headerName: t("text.Idle"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "startTime",
-          //   headerName: t("text.StartTime"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "endTime",
-          //   headerName: t("text.EndTime"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "fuelConsumption",
-          //   headerName: t("text.FuelConsumption"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   align: "right",
-          //   headerAlign: "right",
-          //   cellClassName: "wrap-text", // Added here
-          // },
         ];
         setColumns(columns as any);
       }
@@ -495,30 +408,6 @@ export default function ComplainStatus() {
       // setLoading(false);
     }
   };
-
-
-  // const fetchZonesData = async () => {
-  //   try {
-  //     const collectData = {
-  //       vehicleNo: formik.values.vehicleNo,
-  //       complainNo: formik.values.complainNo,
-  //       complaintDatefrom: "2021-01-11T07:51:03.389Z", // Replace with dynamic dates if needed
-  //       complaintDateTo: defaultValues, // This is initialized elsewhere
-  //       status: formik.values.status, // Status captured from navigation
-  //       show: true,
-  //     };
-  //     const response = await api.post(
-  //       `Report/GetvComplainStatusSummaryApi`,
-  //       collectData
-  //     );
-  //     const data = response?.data;
-  //     setZones(data); // Updating the table or list with fetched data
-  //     setIsLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-  
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
   }));
@@ -532,54 +421,21 @@ export default function ComplainStatus() {
 `;
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     genderID: -1,
-  //     vehicleNo: location.state?.vehicleNo || "",
-  //     fromDate: "",
-  //     toDate: "",
-    
-     
-  //     complainNo: "",
-  //   },
-  //   onSubmit: async (values) => {
-  //     //   const response = await api.post(
-  //     //     `Gender/AddUpdateGenderMaster`,
-  //     //     values
-  //     //   );
-  //     //   try {
-  //     //     setToaster(false);
-  //     //     toast.success(response.data.mesg);
-  //     //     navigate("/master/GenderMaster");
-  //     //   } catch (error) {
-  //     //     setToaster(true);
-  //     //     toast.error(response.data.mesg);
-  //     //   }
-  //   },
-  // });
- 
   const formik = useFormik({
     initialValues: {
-      // genderID: -1,
-      // vehicleNo: location.state?.vehicleNo || "",
-      // status: location.state?.status || "", // Capturing the status
-      // fromDate: "",
-      // toDate: "",
-      // complainNo: "",
-
-      "vehicleNo": location.state?.vehicleNo || "",
-  "complainNo": "",
-  "complaintDatefrom": "",
-  "complaintDateTo": "",
-  "status": location.state?.status || "",
-  "show": true
+      genderID: -1,
+      "vehicleNo": location.state?.vehicleNo || vNO,
+      "complainNo": "",
+      "complaintDatefrom": "",
+      "complaintDateTo": "",
+      "status": location.state?.status || "",
+      "show": true
     },
     onSubmit: async (values) => {
       // API call or other logic
     },
   });
-  
+
   return (
     <>
       <Card
@@ -622,31 +478,32 @@ export default function ComplainStatus() {
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
             <Grid item xs={12} sm={3} lg={3}>
               <Autocomplete
-                //multiple
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
-                value={formik.values.vehicleNo}
+                value={VnoOption.find((option) => option.label === formik.values.vehicleNo) || null}
                 fullWidth
                 size="small"
-                onChange={(event: any, newValue: any) => {
-
-                  setVno(newValue?.label);
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setVno(newValue.label); // Update local state
+                    formik.setFieldValue("vehicleNo", newValue.label); // Update Formik value
+                  } else {
+                    setVno(""); // Clear state if no value is selected
+                    formik.setFieldValue("vehicleNo", "");
+                  }
                 }}
-
-                renderInput={(params: any) => (
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label={
-                      <CustomLabel
-                        text={t("text.VehicleNos1")}
-                        required={false}
-                      />
+                      <CustomLabel text={t("text.VehicleNos1")} required={false} />
                     }
                   />
                 )}
                 popupIcon={null}
               />
+
             </Grid>
 
             <Grid xs={12} md={3} lg={3} item>
@@ -729,21 +586,21 @@ export default function ComplainStatus() {
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-              <RadioGroup
-                row
-                value={formik.values.status}
-                onChange={(event) => {
-                formik.setFieldValue("status", event.target.value);
-                fetchZonesData(); // Fetch data based on selected status
-                }}
-              >
-                <FormControlLabel value="PENDING" control={<Radio />} label="Pending" />
-                <FormControlLabel value="INPROGRESS" control={<Radio />} label="InProgress" />
-                <FormControlLabel value="OUTSOURCE" control={<Radio />} label="OutSource" />
-                <FormControlLabel value="COMPLETE" control={<Radio />} label="Complete" />
-                <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" />
-                <FormControlLabel value="all" control={<Radio />} label="All" />
-              </RadioGroup>
+                <RadioGroup
+                  row
+                  value={formik.values.status}
+                  onChange={(event) => {
+                    formik.setFieldValue("status", event.target.value);
+                    fetchZonesData(); // Fetch data based on selected status
+                  }}
+                >
+                  <FormControlLabel value="PENDING" control={<Radio />} label="Pending" />
+                  <FormControlLabel value="INPROGRESS" control={<Radio />} label="InProgress" />
+                  <FormControlLabel value="OUTSOURCE" control={<Radio />} label="OutSource" />
+                  <FormControlLabel value="COMPLETE" control={<Radio />} label="Complete" />
+                  {/* <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" /> */}
+                  <FormControlLabel value="all" control={<Radio />} label="All" />
+                </RadioGroup>
               </FormControl>
             </Grid>
 
@@ -757,16 +614,10 @@ export default function ComplainStatus() {
                   marginTop: "10px",
                 }}
                 onClick={() => {
-                  // const selectedPeriod = formik.values.fromDate
-                  //   ? formik.values.fromDate
-                  //   : formik.values.index;
 
-                  // if (!selectedPeriod) {
-                  //   alert("Please select a period. or custom date");
-                  // } else {
                   fetchZonesData();
                   setVisible(true);
-                  // }
+
                 }}
                 startIcon={<VisibilityIcon />}
               >

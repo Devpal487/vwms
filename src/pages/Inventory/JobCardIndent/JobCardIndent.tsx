@@ -129,7 +129,9 @@ export default function JobCardIndent() {
         id: Item.indentId,
         indentNo: Item.indentNo,
         empId: Item.empId,
-      }));
+        
+      }))
+      .filter((Item: any) => Item.indenttype==="JobCard");
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -274,7 +276,7 @@ export default function JobCardIndent() {
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
            
-              <Button
+              {/* <Button
                 onClick={routeChangeAdd}
                 variant="contained"
                 endIcon={<AddCircleIcon />}
@@ -282,7 +284,7 @@ export default function JobCardIndent() {
                 style={{backgroundColor:`var(--header-background)`}}
               >
                 {t("text.add")}
-              </Button>
+              </Button> */}
             {/* ) } */}
 
            

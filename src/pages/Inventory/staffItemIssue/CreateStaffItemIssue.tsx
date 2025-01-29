@@ -241,7 +241,7 @@ const CreateStaffItemIssue = (props: Props) => {
             "issueDate": defaultValues,
             "indentId": 0,
             "issueLocation": "",
-            "issueType": "",
+            "issueType": "staff",
             "vehicleitem": -1,
             "empId": null,
             "createdBy": "adminvm",

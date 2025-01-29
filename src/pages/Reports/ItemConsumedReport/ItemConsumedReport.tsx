@@ -196,7 +196,7 @@ export default function JobCardStatus() {
 
     const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 50, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -375,7 +375,7 @@ export default function JobCardStatus() {
           },
           {
             field: "indentNo",
-            headerName: t("text.indentNo"),
+            headerName: t("text.indentNo00"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here

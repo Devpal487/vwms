@@ -1459,58 +1459,57 @@ const CreateOfficePurchaseOrder = () => {
     // const initialRowData: any = {
     const [tableData, setTableData] = useState<any>([
         {
-        "sno": 0,
-        "id": -1,
-        "orderId": 0,
-        "itemId": 0,
-        "quantity": 0,
-        "rate": 0,
-        "amount": 0,
-        "gstId": 0,
-        "gstRate": 0,
-        "cgst": 0,
-        "sgst": 0,
-        "igst": 0,
-        "cgstid": 0,
-        "sgstid": 0,
-        "igstid": 0,
-        "gst": 0,
-        "netAmount": 0,
-        "fyId": 0,
-        "srn": 0,
-        "balQuantity": 0,
-        "isDelete": true,
-        "itemName": ""
+            // "sno": 0,
+            // "id": -1,
+            // "orderId": 0,
+            // "itemId": 0,
+            // "quantity": 0,
+            // "rate": 0,
+            // "amount": 0,
+            // "gstId": 0,
+            // "gstRate": 0,
+            // "cgst": 0,
+            // "sgst": 0,
+            // "igst": 0,
+            // "cgstid": 0,
+            // "sgstid": 0,
+            // "igstid": 0,
+            // "gst": 0,
+            // "netAmount": 0,
+            // "fyId": 0,
+            // "srn": 0,
+            // "balQuantity": 0,
+            // "isDelete": true,
+            // "itemName": ""
 
+            "sno": 0,
+            "id": -1,
+            "orderId": 0,
+            "itemId": 0,
+            "unitId": 0,
+            "quantity": 0,
+            "rate": 0,
+            "amount": 0,
+            "gstId": 0,
+            "gstRate": 0,
+            "cgst": 0,
+            "sgst": 0,
+            "igst": 0,
+            "cgstid": 0,
+            "sgstid": 0,
+            "igstid": 0,
+            "gst": 0,
+            "netAmount": 0,
+            "fyId": 0,
+            "srn": 0,
+            "balQuantity": 0,
+            "isDelete": true,
+            "itemName": "",
+            "unit": ""
 
-    },
-    // {
-    //     "sno": 0,
-    //     "id": -1,
-    //     "orderId": 0,
-    //     "itemId": 0,
-    //     "quantity": 0,
-    //     "rate": 0,
-    //     "amount": 0,
-    //     "gstId": 0,
-    //     "gstRate": 0,
-    //     "cgst": 0,
-    //     "sgst": 0,
-    //     "igst": 0,
-    //     "cgstid": 0,
-    //     "sgstid": 0,
-    //     "igstid": 0,
-    //     "gst": 0,
-    //     "netAmount": 0,
-    //     "fyId": 0,
-    //     "srn": 0,
-    //     "balQuantity": 0,
-    //     "isDelete": true,
-    //     "itemName": ""
+        },
 
-
-    // }
-]);
+    ]);
 
     // const [tableData, setTableData] = useState([{ ...initialRowData }]);
     const [taxData, setTaxData] = useState<any>([]);
@@ -1609,19 +1608,45 @@ const CreateOfficePurchaseOrder = () => {
     };
 
 
+    //     const getPurchaseOrderNo = async () => {
+    //         try {
+    //             const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo
+    // `);
+
+
+    //             if (result?.data?.isSuccess && result?.data?.data?.orderNo) {
+    //                 formik.setFieldValue("orderNo", result.data.data.orderNo);
+    //             } else {
+    //                 console.warn("Order number not found in the API response:", result);
+    //                 formik.setFieldValue("orderNo", "");
+    //             }
+    //         } catch (error) {
+
+    //             if (error instanceof Error) {
+    //                 console.error("Error while fetching the order number:", error.message);
+    //             } else {
+    //                 console.error("An unexpected error occurred:", error);
+    //             }
+    //             formik.setFieldValue("orderNo", "");
+    //         }
+    //     };
     const getPurchaseOrderNo = async () => {
         try {
-            const result = await api.get(`PurchaseOrder/GetPurchaseOrderNo`);
+            const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo`);
 
-
-            if (result?.data?.status === 1 && result?.data?.data?.orderNo) {
-                formik.setFieldValue("orderNo", result.data.data.orderNo);
+            if (result?.data?.isSuccess && Array.isArray(result.data.data) && result.data.data.length > 0) {
+                const orderNo = result.data.data[0]?.orderNo;
+                if (orderNo) {
+                    formik.setFieldValue("orderNo", orderNo);
+                } else {
+                    console.warn("Order number not found in the first data entry:", result);
+                    formik.setFieldValue("orderNo", "");
+                }
             } else {
-                console.warn("Order number not found in the API response:", result);
+                console.warn("API response is not in the expected format or data array is empty:", result);
                 formik.setFieldValue("orderNo", "");
             }
         } catch (error) {
-
             if (error instanceof Error) {
                 console.error("Error while fetching the order number:", error.message);
             } else {
@@ -1747,13 +1772,13 @@ const CreateOfficePurchaseOrder = () => {
                 acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
                 return acc;
             },
-            {
-                // totalAmount: 0,
-                totalCGST: 0,
-                totalSGST: 0,
-                totalIGST: 0,
-                totalGrossAmount: 0,
-            }
+            // {
+            //     // totalAmount: 0,
+            //     totalCGST: 0,
+            //     totalSGST: 0,
+            //     totalIGST: 0,
+            //     totalGrossAmount: 0,
+            // }
         );
 
         formik.setValues({
@@ -1763,89 +1788,126 @@ const CreateOfficePurchaseOrder = () => {
     };
 
 
-
-
     const handlePanClose1 = () => {
         setDocOpen(false);
     };
 
     const modalOpenHandle1 = (event: string) => {
         setDocOpen(true);
-        const base64Prefix = "data:image/jpg;base64,";
-
+        const base64Prefix = "data:image/jpeg;base64,";
 
         let imageData = '';
         switch (event) {
             case "pOrderDoc":
                 imageData = formik.values.pOrderDoc;
                 break;
+            default:
+                imageData = '';
         }
         if (imageData) {
-            console.log("imageData", base64Prefix + imageData);
-            setImg(base64Prefix + imageData);
+            const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+            console.log("imageData", imgSrc);
+            setImg(imgSrc);
         } else {
             setImg('');
         }
     };
 
-    const otherDocChangeHandler = (event: any, params: any) => {
+    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
         const file = event.target.files?.[0];
         if (!file) return;
 
         const fileExtension = file.name.split('.').pop()?.toLowerCase();
-        if (!['jpg'].includes(fileExtension || '')) {
-            alert("Only .jpg image file is allowed to be uploaded.");
+        if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+            alert("Only .jpg, .jpeg, or .png image files are allowed.");
             event.target.value = '';
             return;
         }
 
         const reader = new FileReader();
-        reader.onload = (e: ProgressEvent<FileReader>) => {
-            const base64String = e.target?.result as string;
-            const base64Data = base64String.split(',')[1];
-            formik.setFieldValue(params, base64Data);
-
-            formik.setFieldValue('pOrderDoc', fileExtension);
-
-
-
-            console.log(`File '${file.name}' loaded as base64 string`);
-            console.log("base64Data", base64Data);
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
-        reader.onerror = (error) => {
-            console.error("Error reading file:", error);
+        reader.onerror = () => {
             alert("Error reading file. Please try again.");
         };
         reader.readAsDataURL(file);
     };
 
+    // const handlePanClose1 = () => {
+    //     setDocOpen(false);
+    // };
 
+    // const modalOpenHandle1 = (event: string) => {
+    //     setDocOpen(true);
+    //     const base64Prefix = "data:image/jpg;base64,";
 
-    //     const validateItem = (item: any) => {
-    //         return (
-    //         //     item.itemNameId && item.itemNameId !== -1 &&
-    //         // (item.unit || item.unit === 0) && 
-    //         // parseFloat(item.qty) > 0 &&
-    //         // parseFloat(item.rate) > 0 &&
+    //     let imageData = '';
+    //     switch (event) {
+    //         case "pOrderDoc":
+    //             imageData = formik.values.pOrderDoc;
+    //             break;
+    //     }
+    //     if (imageData) {
+    //         console.log("imageData", base64Prefix + imageData);
+    //         setImg(base64Prefix + imageData);
+    //     } else {
+    //         setImg('');
+    //     }
+    // };
 
-    //         // parseFloat(item.amount) >= 0 &&
-    //         // (parseFloat(item.tax1) >= 0 || item.tax1 === "") &&
-    //         // (parseFloat(item.taxId1) >= 0 || item.taxId1 === "") &&
-    //         // (parseFloat(item.discount) >= 0 || item.discount === "") &&
-    //         // parseFloat(item.discountAmount) >= 0 &&
-    //         // parseFloat(item.netAmount) >= 0
-    //         item.itemId && item.itemId !== -1 &&
-    //     //    (item.unitId || item.unitId === 0) && 
-    //         parseFloat(item.quantity) > 0 &&
-    //         parseFloat(item.rate) > 0 &&
-    //         parseFloat(item.amount) >= 0 &&
-    // (parseFloat(item.cgst) >= 0 || item.cgst === "") &&
-    //         (parseFloat(item.cgstid) >= 0 || item.cgstid === "") &&
-    //        // (parseFloat(item.discount) >= 0 || item.discount === "") &&
-    //     //    parseFloat(item.discountAmount) >= 0 &&
-    //         parseFloat(item.netAmount) >= 0
-    //         );
+    // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    //     const pOrderDoc = event.target.files?.[0];
+    //     if (!pOrderDoc) return;
+
+    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+    //     if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+    //         alert("Only .jpg, .jpeg, or .png image files are allowed.");
+    //         event.target.value = '';
+    //         return;
+    //     }
+
+    //     const reader = new FileReader();
+    //     reader.onload = () => {
+    //         const base64String = reader.result as string;
+    //         formik.setFieldValue(params, base64String); // Include the prefix statically.
     //     };
+    //     reader.onerror = () => {
+    //         alert("Error reading file. Please try again.");
+    //     };
+    //     reader.readAsDataURL(pOrderDoc);
+    // };
+
+
+    // const otherDocChangeHandler = (event: any, params: any) => {
+    //     const pOrderDoc = event.target.files?.[0];
+    //     if (!pOrderDoc) return;
+
+    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
+    //     if (!['jpg'].includes(fileExtension || '')) {
+    //         alert("Only .jpg image file is allowed to be uploaded.");
+    //         event.target.value = '';
+    //         return;
+    //     }
+
+    //     const reader = new FileReader();
+    //     reader.onload = (e: ProgressEvent<FileReader>) => {
+    //         const base64String = e.target?.result as string;
+    //         const base64Data = base64String.split(',')[1];
+    //         formik.setFieldValue(params, base64Data);
+
+    //         console.log(`pOrderDoc '${pOrderDoc.name}' loaded as base64 string`);
+    //         console.log("base64Data", base64Data);
+    //     };
+    //     reader.onerror = (error) => {
+    //         console.error("Error reading file:", error);
+    //         alert("Error reading file. Please try again.");
+    //     };
+    //     reader.readAsDataURL(pOrderDoc);
+    // };
+
+
 
     const validateRow = (row: any) => {
         return row.itemId && row.unitId && row.rate > 0;
@@ -1854,9 +1916,6 @@ const CreateOfficePurchaseOrder = () => {
 
     const formik = useFormik({
         initialValues: {
-
-
-            "sno": 0,
             "orderId": 0,
             "indentId": null,
             "orderNo": "",
@@ -1869,9 +1928,9 @@ const CreateOfficePurchaseOrder = () => {
             "totalCGST": 0,
             "totalSGST": 0,
             "totalIGST": 0,
-            "netAmount": 0,
-            "status": "Open",
-            "orderType": "",
+            "netAmount": 0, 
+            "status": "open",
+            "orderType": "Office",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
             "createdOn": defaultValues,
@@ -1885,20 +1944,16 @@ const CreateOfficePurchaseOrder = () => {
             "pOrderDoc": "",
             "purchaseOrderDetail": [],
             "isSelected": true,
-            "file": "",
-            "fileOldName": "",
             "indentNo": "",
-            "unitId": 0,
-            "itemName": "",
-            "unitName": ""
+            "itemName": ""
 
         },
-       
+
         validationSchema: Yup.object({
-            file: Yup.string()
-                .required("Image required"),
-            indentId: Yup.string().required("Indnet no required"),
-            //   vendorId:Yup.string().required("Vendor is rquired"),
+            // pOrderDoc: Yup.string()
+            //     .required("Image required"),
+             indentId: Yup.string().required("Indnet no required"),
+              vendorId:Yup.string().required("Vendor is rquired"),
 
 
         }),
@@ -1910,7 +1965,7 @@ const CreateOfficePurchaseOrder = () => {
                 return;
             }
             console.log('values', values)
-           
+
             const response = await api.post(`PurchaseOrder/UpsertPurchaseOrder`,
                 //     ...values,
                 //     purchaseOrderDetail: filteredTableData,
@@ -1920,7 +1975,7 @@ const CreateOfficePurchaseOrder = () => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/WorkShopPurchaseOrder");
+                navigate("/Inventory/OfficePurchaseOrder");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);
@@ -1929,40 +1984,11 @@ const CreateOfficePurchaseOrder = () => {
     });
     console.log("formik.values", formik.values);
     //  const back = useNavigate();
-
     const handleInputChange = (index: number, field: string, value: any) => {
         const updatedItems = [...tableData];
         let item = { ...updatedItems[index] };
-
-        if (field === "orderNo") {
-            const selectedItem = orderOption.find(
-                (option: any) => option.value === value
-            );
-            console.log(selectedItem);
-            if (selectedItem) {
-                item = {
-                    ...item,
-                    // mrnType: selectedItem?.value?.toString(),
-                    orderId: selectedItem?.value,
-                    orderNo: selectedItem?.label,
-                };
-            }
-        } else if (field === "itemId") {
-            const selectedItem = itemOption.find(
-                (option: any) => option.value === value
-            );
-            console.log(selectedItem);
-            if (selectedItem) {
-                item = {
-                    ...item,
-                    itemId: selectedItem?.value,
-                    itemName: selectedItem?.label,
-                    item: selectedItem?.details,
-                };
-            }
-        }
-       
-        else if (field === "quantity") {
+    
+        if (field === "quantity") {
             item.quantity = value === "" ? 0 : parseFloat(value);
         } else if (field === "rate") {
             item.rate = value === "" ? 0 : parseFloat(value);
@@ -1971,45 +1997,118 @@ const CreateOfficePurchaseOrder = () => {
             if (selectedTax) {
                 item.gstRate = parseFloat(selectedTax.label) || 0;
                 item.gstId = selectedTax.value || 0;
-                item.cgstid = selectedTax.value || 0;
-                item.sgstid = selectedTax.value || 0;
-                item.igstid = 0;
-                item.gst = item.gstRate;
-            }
-        } else {
-            item[field] = value;
-        }
-        item.amount =
-            (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-        item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-        item.netAmount = (item.amount + (parseFloat(item.gst) || 0));
-        item.sgst = item.gst / 2;
-        item.cgst = item.gst / 2;
-        item.igst = 0;
-
-        formik.setFieldValue("totalAmount", item.netAmount);
-
-        tableData[index] = item;
-        setTableData(tableData);
-        updateTotalAmounts(tableData);
-        if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
-            if (index === tableData.length - 1) {
-                addRow();
+                item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
+                item.sgst = item.gst / 2;
+                item.cgst = item.gst / 2;
+                item.igst = 0;
             }
         }
-       // addRow();
-
-        let total = 0;
-        tableData.forEach((row: any) => {
-            total += row.amount;
-        })
-        formik.setFieldValue("netAmount", total);
-        formik.setFieldValue("totalServiceAmount", total);
-        formik.setFieldValue("totalItemAmount", total);
-        // if (isRowFilled(item) && index === updatedItems.length - 1) {
-        //     addRow();
-        // }
+    
+        // Update item totals
+        item.amount = (item.quantity || 0) * (item.rate || 0);
+        item.netAmount = item.amount + (item.gst || 0);
+        updatedItems[index] = item;
+    
+        // Update the table data
+        setTableData(updatedItems);
+    
+        // Calculate total and update Formik parent values
+        const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
+        const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
+    
+        formik.setFieldValue("totalAmount", totalAmount);
+        formik.setFieldValue("netAmount", totalNetAmount);
+    
+        // Add new row logic if necessary
+        if (
+            updatedItems[index].quantity > 0 &&
+            updatedItems[index].rate > 0 &&
+            index === updatedItems.length - 1
+        ) {
+            addRow();
+        }
     };
+    
+    // const handleInputChange = (index: number, field: string, value: any) => {
+    //     const updatedItems = [...tableData];
+    //     let item = { ...updatedItems[index] };
+
+    //     if (field === "orderNo") {
+    //         const selectedItem = orderOption.find(
+    //             (option: any) => option.value === value
+    //         );
+    //         console.log(selectedItem);
+    //         if (selectedItem) {
+    //             item = {
+    //                 ...item,
+    //                 // mrnType: selectedItem?.value?.toString(),
+    //                 orderId: selectedItem?.value,
+    //                 orderNo: selectedItem?.label,
+    //             };
+    //         }
+    //     } else if (field === "itemId") {
+    //         const selectedItem = itemOption.find(
+    //             (option: any) => option.value === value
+    //         );
+    //         console.log(selectedItem);
+    //         if (selectedItem) {
+    //             item = {
+    //                 ...item,
+    //                 itemId: selectedItem?.value,
+    //                 itemName: selectedItem?.label,
+    //                 item: selectedItem?.details,
+    //             };
+    //         }
+    //     }
+
+    //     else if (field === "quantity") {
+    //         item.quantity = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "rate") {
+    //         item.rate = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "gstId") {
+    //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+    //         if (selectedTax) {
+    //             item.gstRate = parseFloat(selectedTax.label) || 0;
+    //             item.gstId = selectedTax.value || 0;
+    //             item.cgstid = selectedTax.value || 0;
+    //             item.sgstid = selectedTax.value || 0;
+    //             item.igstid = 0;
+    //             item.gst = item.gstRate;
+    //         }
+    //     } else {
+    //         item[field] = value;
+    //     }
+    //     item.amount =
+    //         (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+    //     item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
+    //     item.netAmount = (item.amount + (parseFloat(item.gst) || 0));
+    //     item.sgst = item.gst / 2;
+    //     item.cgst = item.gst / 2;
+    //     item.igst = 0;
+
+    //     formik.setFieldValue("totalAmount", item.netAmount);
+
+    //     tableData[index] = item;
+    //     setTableData(tableData);
+    //     updateTotalAmounts(tableData);
+    //     if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
+    //         if (index === tableData.length - 1) {
+    //             addRow();
+    //         }
+    //     }
+    //     // addRow();
+
+    //     let total = 0;
+    //     tableData.forEach((row: any) => {
+    //         total += row.amount;
+    //     })
+    //     formik.setFieldValue("netAmount", total);
+    //     formik.setFieldValue("totalServiceAmount", total);
+    //     formik.setFieldValue("totalItemAmount", total);
+    //     // if (isRowFilled(item) && index === updatedItems.length - 1) {
+    //     //     addRow();
+    //     // }
+    // };
 
     const addRow = () => {
         setTableData([...tableData, {
@@ -2200,11 +2299,14 @@ const CreateOfficePurchaseOrder = () => {
                                         <TextField
                                             {...params}
                                             label={
-                                                <CustomLabel text={t("text.Vendorname")} required={false} />
+                                                <CustomLabel text={t("text.Vendorname")} required={true} />
                                             }
                                         />
                                     )}
                                 />
+                                {formik.touched.vendorId && formik.errors.vendorId && (
+                                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId}</div>
+                                )}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -2228,8 +2330,6 @@ const CreateOfficePurchaseOrder = () => {
                                 />
                             </Grid>
 
-
-
                             <Grid container spacing={1} item>
                                 <Grid
                                     xs={12}
@@ -2246,7 +2346,100 @@ const CreateOfficePurchaseOrder = () => {
                                         size="small"
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
-                                        onChange={(e) => otherDocChangeHandler(e, "file")}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
+                                        // required
+                                    />
+                                </Grid>
+                                <Grid xs={12} md={4} sm={4} item></Grid>
+
+                                <Grid xs={12} md={4} sm={4} item>
+                                    <Grid
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-around",
+                                            alignItems: "center",
+                                            margin: "10px",
+                                        }}
+                                    >
+                                        {formik.values.pOrderDoc ? (
+                                            <img
+                                                src={
+                                                    formik.values.pOrderDoc.startsWith("data:image")
+                                                        ? formik.values.pOrderDoc
+                                                        : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
+                                                }
+                                                alt="Preview"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                    padding: "2px",
+                                                }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={nopdf}
+                                                alt="No document"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        )}
+                                        <Typography
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
+                                            style={{
+                                                textDecorationColor: "blue",
+                                                textDecorationLine: "underline",
+                                                color: "blue",
+                                                fontSize: "15px",
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            {t("text.Preview")}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Modal open={docOpen} onClose={handlePanClose1}>
+                                    <Box sx={style}>
+                                        {Img ? (
+                                            <img
+                                                src={Img}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "170vh",
+                                                    height: "75vh",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Typography>No Image to Preview</Typography>
+                                        )}
+                                    </Box>
+                                </Modal>
+                            </Grid>;
+
+                            {/* <Grid container spacing={1} item>
+                                <Grid
+                                    xs={12}
+                                    md={4}
+                                    sm={4}
+                                    item
+                                    style={{ marginBottom: "30px", marginTop: "30px" }}
+                                >
+                                    <TextField
+                                        type="file"
+                                        inputProps={{ accept: "image/*" }}
+                                        InputLabelProps={{ shrink: true }}
+                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
+                                        size="small"
+                                        fullWidth
+                                        style={{ backgroundColor: "white" }}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
                                         required={true}
                                     />
                                 </Grid>
@@ -2273,7 +2466,7 @@ const CreateOfficePurchaseOrder = () => {
                                             />
                                         ) : (
                                             <img
-                                                src={`data:image/jpg;base64,${formik.values.file}`}
+                                                src={`data:image/jpg;base64,${formik.values.pOrderDoc}`}
                                                 style={{
                                                     width: 150,
                                                     height: 100,
@@ -2284,7 +2477,7 @@ const CreateOfficePurchaseOrder = () => {
                                             />
                                         )}
                                         <Typography
-                                            onClick={() => modalOpenHandle1("file")}
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
                                             style={{
                                                 textDecorationColor: "blue",
                                                 textDecorationLine: "underline",
@@ -2310,18 +2503,32 @@ const CreateOfficePurchaseOrder = () => {
                                             />
                                         ) : (
                                             <img
-                                                alt="preview image"
-                                                src={"data:image/jpg;base64," + Img}
-                                                style={{
-                                                    width: "170vh",
-                                                    height: "75vh",
-                                                    borderRadius: 10,
-                                                }}
-                                            />
+                                            src={formik.values.pOrderDoc.startsWith('data:image/jpeg;base64,') 
+                                                ? formik.values.pOrderDoc 
+                                                : `data:image/jpeg;base64,${formik.values.pOrderDoc}`}
+                                            alt="Preview"
+                                            style={{
+                                                width: 150,
+                                                height: 100,
+                                                border: "1px solid grey",
+                                                borderRadius: 10,
+                                                padding: "2px",
+                                            }}
+                                        />
+                                    //     <img
+                                    //     alt="preview image"
+                                    //     src={Img}
+                                    //     style={{
+                                    //       width: "170vh",
+                                    //       height: "75vh",
+                                    //       borderRadius: 10,
+                                    //     }}
+                                    //   />
+
                                         )}
                                     </Box>
                                 </Modal>
-                            </Grid>
+                            </Grid> */}
                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}>
 
                             </Grid>
@@ -2409,24 +2616,25 @@ const CreateOfficePurchaseOrder = () => {
                                                     </th>
 
                                                     <th
-                                                        style={{
-                                                            border: "1px solid black",
-                                                            textAlign: "center",
-                                                            padding: "5px",
-                                                        }}
-                                                    >
-                                                        CGST
-                                                    </th>
-                                                    <th
-                                                        style={{
-                                                            border: "1px solid black",
-                                                            textAlign: "center",
-                                                            padding: "5px",
-                                                        }}
-                                                    >
-                                                        SGST
-                                                    </th >
-                                                    <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                         {t("text.cgst")}
+                      
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.sgst")}
+                      </th>
+                                                    {/* <th
                                                         style={{
                                                             border: "1px solid black",
                                                             textAlign: "center",
@@ -2434,7 +2642,7 @@ const CreateOfficePurchaseOrder = () => {
                                                         }}
                                                     >
                                                         IGST
-                                                    </th >
+                                                    </th > */}
                                                     {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -2568,7 +2776,7 @@ const CreateOfficePurchaseOrder = () => {
                                                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                                 inputProps={{ step: "any", min: "0" }}
                                                                 onFocus={e => e.target.select()}
-                                                           />
+                                                            />
                                                         </td>
                                                         <td
                                                             style={{
@@ -2580,8 +2788,8 @@ const CreateOfficePurchaseOrder = () => {
                                                                 value={row.amount}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
-                                                               // onFocus={e => e.target.select()}
-                                                           />
+                                                            // onFocus={e => e.target.select()}
+                                                            />
                                                         </td>
                                                         <td
                                                             style={{
@@ -2595,6 +2803,7 @@ const CreateOfficePurchaseOrder = () => {
                                                                 options={taxData}
                                                                 fullWidth
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 onChange={(e: any, newValue: any) =>
                                                                     handleInputChange(index, "gstId", newValue?.value)
                                                                 }
@@ -2621,6 +2830,7 @@ const CreateOfficePurchaseOrder = () => {
                                                             <TextField
                                                                 value={row.cgst}
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
                                                             />
                                                         </td>
@@ -2633,10 +2843,11 @@ const CreateOfficePurchaseOrder = () => {
                                                             <TextField
                                                                 value={row.sgst}
                                                                 size="small"
+                                                                sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
                                                             />
                                                         </td>
-                                                        <td
+                                                        {/* <td
                                                             style={{
                                                                 border: "1px solid black",
                                                                 textAlign: "center",
@@ -2647,11 +2858,11 @@ const CreateOfficePurchaseOrder = () => {
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             />
-                                                        </td>
+                                                        </td> */}
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
-                                                                textAlign: "center",
+                                                                textAlign: "end",
                                                             }}
                                                         >
                                                             <TextField
@@ -2666,16 +2877,16 @@ const CreateOfficePurchaseOrder = () => {
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.TotalAmount")}
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
-                                                        <b></b>{formik.values.netAmount}
+                                                        <b></b>{formik.values.totalAmount}
                                                         {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {/* <tr>
                                                     <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totaltaxamount")}
 
@@ -2685,16 +2896,16 @@ const CreateOfficePurchaseOrder = () => {
 
                                                         {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
                                                     </td>
-                                                </tr>
+                                                </tr> */}
                                                 <tr>
-                                                    <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totalnetamount")}
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
-
-                                                        {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)}
+                                                        <b></b>{formik.values.netAmount}
+                                                        {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)} */}
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -2738,4 +2949,5 @@ const CreateOfficePurchaseOrder = () => {
 };
 
 export default CreateOfficePurchaseOrder;
+
 
