@@ -25,6 +25,7 @@ import {
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -432,94 +433,9 @@ const EditJobWorkChallan = (props: Props) => {
     };
     reader.readAsDataURL(file);
   };
+  
 
 
-
-
-  // const handlePanClose = () => {
-  //   setPanOpen(false);
-  // };
-  // const modalOpenHandle = (event: any) => {
-  //   setPanOpen(true);
-  //   if (event === "file") {
-  //     setModalImg(formik.values.file);
-  //   }
-  // };
-  // const ConvertBase64 = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
-
-  // const base64ToByteArray = (base64: string): Uint8Array => {
-  //   // Remove the data URL scheme if it exists
-  //   const base64String = base64.split(",")[1];
-
-  //   // Decode the Base64 string
-  //   const binaryString = window.atob(base64String);
-  //   const len = binaryString.length;
-  //   const bytes = new Uint8Array(len);
-
-  //   // Convert binary string to Uint8Array
-  //   for (let i = 0; i < len; i++) {
-  //     bytes[i] = binaryString.charCodeAt(i);
-  //   }
-
-  //   return bytes;
-  // };
-
-  // const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-  //   let binary = "";
-  //   const len = uint8Array.byteLength;
-  //   for (let i = 0; i < len; i++) {
-  //     binary += String.fromCharCode(uint8Array[i]);
-  //   }
-  //   return window.btoa(binary);
-  // };
-
-  // const otherDocChangeHandler = async (event: any, params: string) => {
-  //   console.log("Image file change detected");
-
-  //   if (event.target.files && event.target.files[0]) {
-  //     const file = event.target.files[0];
-  //     const fileNameParts = file.name.split(".");
-  //     const fileExtension =
-  //       fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-  //     if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-  //       alert(
-  //         "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-  //       );
-  //       event.target.value = null;
-  //       return;
-  //     }
-
-  //     try {
-  //       const base64Data = (await ConvertBase64(file)) as string;
-  //       console.log("Base64 image data:", base64Data);
-
-  //       // Convert Base64 to Uint8Array
-  //       const byteArray = base64ToByteArray(base64Data);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-  //       // Convert Uint8Array to base64 string
-  //       const base64String = uint8ArrayToBase64(byteArray);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-  //       // Set value in Formik
-  //       formik.setFieldValue(params, base64String);
-
-  //       let outputCheck =
-  //         "data:image/png;base64," + formik.values.file;
-  //       console.log(outputCheck);
-  //     } catch (error) {
-  //       console.error("Error converting image file to Base64:", error);
-  //     }
-  //   }
-  // };
 
   const handleInputChange = (index: any, field: any, value: any) => {
     const newData: any = [...tableData];
@@ -734,7 +650,7 @@ const EditJobWorkChallan = (props: Props) => {
               </Grid>
 
               {/* Challan Number */}
-              {/* <Grid item xs={12} md={4} sm={4}>
+              <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -753,7 +669,7 @@ const EditJobWorkChallan = (props: Props) => {
                     formik.setFieldValue("challanNo", parseInt(e.target.value) || 0)
                   }}
                 />
-              </Grid> */}
+              </Grid>
 
 
               {/* Challan Date */}
@@ -1042,6 +958,12 @@ const EditJobWorkChallan = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
+                             <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData.length > 1) {

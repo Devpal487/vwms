@@ -600,7 +600,7 @@ export default function ComplaintApproval() {
             id: Item.compId,
             complaintDate: formatDate(Item.complaintDate)
          }));
-         setItem(arr);
+         setItem(arr.filter((e:any) => e.status === "pending"));
          setIsLoading(false);
 
          if (data.length > 0) {

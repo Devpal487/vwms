@@ -25,6 +25,7 @@ import {
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -1247,6 +1248,12 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
+                             <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData.length > 1) {

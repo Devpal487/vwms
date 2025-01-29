@@ -24,7 +24,9 @@ import {
   Modal,
   Box,
 } from "@mui/material";
+
 import React, { useEffect, useRef, useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -410,11 +412,11 @@ const EditJobCard = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-          fileNo: Yup.string()
-            .required(t("text.reqFilenumber")),
-          itemName: Yup.string()
-            .required(t("text.reqVehNum")),
-        }),
+      fileNo: Yup.string()
+        .required(t("text.reqFilenumber")),
+      itemName: Yup.string()
+        .required(t("text.reqVehNum")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -518,91 +520,78 @@ const EditJobCard = (props: Props) => {
   };
 
 
+  const saveJobWorkChallanData = async () => {
+    const challanChildData: any = [];
+    tableData.map((item: any, index) => {
+      challanChildData.push({
+        "id": 0,
+        "challanNo": 0,
+        "jobCardId": formik.values.jobCardId,
+        "serviceId": item.serviceId,
+        "serviceCharge": item.unitRate,
+        "vendorId": item.vendorId,
+        "remark": item.challanRemark,
+        "qty": item.qty,
+        "unitId": item.unitId,
+        "amount": item.amount,
+        "netAmount": item.netAmount,
+        "gstid": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "gst": 0,
+        "cgst": 0,
+        "sgst": 0,
+        "serviceName": item.serviceName,
+        "unitName": item.unitName
+      })
+    })
+    const values = {
+      "challanNo": 0,
+      "challanDate": defaultValues,
+      "complainId": formik.values.complainId,
+      "empId": formik.values.empId,
+      "itemId": formik.values.itemId,
+      "jobCardId": formik.values.jobCardId,
+      "vendorId": tableData[0].vendorId,
+      "createdBy": "adminvm",
+      "updatedBy": "adminvm",
+      "createdOn": defaultValues,
+      "updatedOn": defaultValues,
+      "companyId": 0,
+      "fyId": 0,
+      "serviceAmount": formik.values.totalServiceAmount,
+      "itemAmount": formik.values.totalItemAmount,
+      "netAmount": formik.values.netAmount,
+      "status": "JobWork",
+      "rcvDate": defaultValues,
+      "rcvNo": 0,
+      "cgst": 0,
+      "sgst": 0,
+      "gst": 0,
+      "cgstid": 0,
+      "sgstid": 0,
+      "gstid": 0,
+      "challanDoc": "",
+      "fileOldName": "",
+      "file": "",
+      "jobWorkChallanDetail": [...challanChildData],
+      "vehicleNo": "",
+      "vendorName": "",
+      "empName": "",
+      "jobCardDate": "2025-01-29T12:13:20.652Z",
+      "complainDate": "2025-01-29T12:13:20.653Z"
+    }
 
-  // const handlePanClose = () => {
-  //   setPanOpen(false);
-  // };
-  // const modalOpenHandle = (event: any) => {
-  //   setPanOpen(true);
-  //   if (event === "imageFile") {
-  //     setModalImg(formik.values.imageFile);
-  //   }
-  // };
-  // const ConvertBase64 = (file: File): Promise<string> => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
+    const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+    if (response.data.status === 1) {
+      toast.success(response.data.message);
+    } else {
+      setToaster(true);
+      toast.error(response.data.message);
+    }
+  }
 
-  // const base64ToByteArray = (base64: string): Uint8Array => {
-  //   // Remove the data URL scheme if it exists
-  //   const base64String = base64.split(",")[1];
 
-  //   // Decode the Base64 string
-  //   const binaryString = window.atob(base64String);
-  //   const len = binaryString.length;
-  //   const bytes = new Uint8Array(len);
-
-  //   // Convert binary string to Uint8Array
-  //   for (let i = 0; i < len; i++) {
-  //     bytes[i] = binaryString.charCodeAt(i);
-  //   }
-
-  //   return bytes;
-  // };
-
-  // const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-  //   let binary = "";
-  //   const len = uint8Array.byteLength;
-  //   for (let i = 0; i < len; i++) {
-  //     binary += String.fromCharCode(uint8Array[i]);
-  //   }
-  //   return window.btoa(binary);
-  // };
-
-  // const otherDocChangeHandler = async (event: any, params: string) => {
-  //   console.log("Image file change detected");
-
-  //   if (event.target.files && event.target.files[0]) {
-  //     const file = event.target.files[0];
-  //     const fileNameParts = file.name.split(".");
-  //     const fileExtension =
-  //       fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-  //     if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-  //       alert(
-  //         "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-  //       );
-  //       event.target.value = null;
-  //       return;
-  //     }
-
-  //     try {
-  //       const base64Data = (await ConvertBase64(file)) as string;
-  //       console.log("Base64 image data:", base64Data);
-
-  //       // Convert Base64 to Uint8Array
-  //       const byteArray = base64ToByteArray(base64Data);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-  //       // Convert Uint8Array to base64 string
-  //       const base64String = uint8ArrayToBase64(byteArray);
-  //       console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-  //       // Set value in Formik
-  //       formik.setFieldValue(params, base64String);
-
-  //       let outputCheck =
-  //         "data:image/png;base64," + formik.values.imageFile;
-  //       console.log(outputCheck);
-  //     } catch (error) {
-  //       console.error("Error converting image file to Base64:", error);
-  //     }
-  //   }
-  // };
   const handleInputChange = (index: any, field: any, value: any) => {
     const newData: any = [...tableData];
     newData[index][field] = value;
@@ -820,7 +809,7 @@ const EditJobCard = (props: Props) => {
                     // setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
-                 {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
+                {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
                 )}
               </Grid>
@@ -1109,6 +1098,12 @@ const EditJobCard = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData.length > 1) {
@@ -1479,7 +1474,8 @@ const EditJobCard = (props: Props) => {
                         return;
                       } else {
                         formik.setFieldValue("status", "JobWork");
-                        handleGenerateChallan(formik.values);
+                        saveJobWorkChallanData();
+                        //handleGenerateChallan(formik.values);
                         setIsVisibleJWC(isVisibleJWC + 1)
                         setIsVisible(true);
                       }
