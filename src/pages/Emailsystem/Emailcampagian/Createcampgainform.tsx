@@ -20,10 +20,10 @@ import {
 import React, { useEffect, useState } from "react";
 //import selecteddata from "../dpdata";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+//import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+//import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+//import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+//import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import HOST_URL from "../../../utils/Url";
@@ -42,6 +42,7 @@ import moment from "moment";
 import TranslateTextField from "../../../TranslateTextField";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import dayjs from "dayjs";
 type Props = {};
 
 
@@ -181,7 +182,7 @@ const CreatemailcampgiontForm = (props: Props) => {
         initialValues: {
             "campaignId": 0,
             "campaignName": "",
-            "campaignDate": defaultValues,
+            "campaignDate":defaultValues,
             "campaignType": "EMAIL",
             "tamplateId": 0,
             "message": "",
@@ -312,7 +313,10 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     id="campaignDate"
                                     type="date"
                                     placeholder={t("text.Emailcampgiandate")}
-                                    onChange={formik.handleChange}
+                                   // onChange={formik.handleChange}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("campaignDate", e.target.value)
+                                     }}
                                     InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>

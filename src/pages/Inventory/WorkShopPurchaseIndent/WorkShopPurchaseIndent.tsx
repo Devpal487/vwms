@@ -129,7 +129,9 @@ export default function IndentFormMaster() {
         id: Item.indentId,
         indentNo: Item.indentNo,
         empId: Item.empId,
-      }));
+      }))
+      .filter((Item: any) => Item.indenttype==="WorkShopPurchase");
+
       setItem(IndentWithIds);
       setIsLoading(false);
 

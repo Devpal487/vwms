@@ -20,10 +20,10 @@ import {
 import React, { useEffect, useState } from "react";
 // import selecteddata from "../dpdata";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import HOST_URL from "../../../utils/Url";
@@ -41,6 +41,7 @@ import { getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import dayjs from "dayjs";
 type Props = {};
 
 
@@ -179,14 +180,19 @@ const EditemailcampgiontForm = (props: Props) => {
         }
         setTemplateOpation(arr);
     };
+    const inputDate = location.state.campaignDate; // Input in DD-MM-YYYY format
 
-
+    // Split the date into day, month, and year
+    const [day, month, year] = inputDate.split("-");
+ 
+    // Rearrange into YYYY-MM-DD format
+    const formattedDate = `${year}-${month}-${day}`
     const formik = useFormik({
         initialValues: {
 
             "campaignId": location.state.campaignId,
             "campaignName": location.state.campaignName,
-            "campaignDate": moment(location.state.campaignDate).format("YYYY-MM-DD"),
+            "campaignDate":  dayjs(location.state.campaignDate).format("YYYY-MM-DD"),
             "campaignType": location.state.campaignType,
             "tamplateId": location.state.tamplateId,
             "message": location.state.message,
@@ -319,7 +325,10 @@ const EditemailcampgiontForm = (props: Props) => {
                                     id="campaignDate"
                                     type="date"
                                     placeholder={t("text.Emailcampgiandate")}
-                                    onChange={formik.handleChange}
+                                    onChange={(e) => {
+                                        formik.setFieldValue("campaignDate", e.target.value)
+                                     }}
+                                   // onChange={formik.handleChange}
                                     InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>

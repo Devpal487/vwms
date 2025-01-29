@@ -153,7 +153,7 @@ const EditJobcardItemIssue = (props: Props) => {
             "srn": item?.srn,
             //"unitName": "",
             "returnItem": item?.returnItem,
-            stockQty: item?.stockQty
+            //stockQty: item?.stockQty
 
 
         }))
@@ -179,23 +179,42 @@ const EditJobcardItemIssue = (props: Props) => {
         const indent = data.map((item: any, index: any) => ({
 
        
+            // id: index + 1,
+            // "issueId": -1,
+
+            // batchNo: item?.batchNo,
+            // itemID: item?.itemId,
+            // unitId: item?.unitId,
+            // issueQty: item?.issueQty || 0,
+
+            // reqQty: item?.approveQuantity,
+
+            // unitName: "",
+            // itemName: "",
+            // indentNo: "",
+            // srn: item?.srn,
+            // stockQty: 0,
+            // //"unitName": "",
+            // "returnItem": true
+
             id: index + 1,
             "issueId": -1,
-
-            batchNo: item?.batchNo,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.issueQty || 0,
-
+           // batchNo: item?.batchNo,
+            indentId: item?.indentId,
+           // stockQty: item?.approveQuantity,
             reqQty: item?.approveQuantity,
-
-            unitName: "",
-            itemName: "",
+          //  "amount" : item?.amount,
+            itemName:item?.itemName,
+            unitName:item?.unitName,
             indentNo: "",
-            srn: item?.srn,
-            stockQty: 0,
-            //"unitName": "",
-            "returnItem": true
+            "srn": 0,
+            // "unitName": "",
+            "returnItem": true,
+            "stockQty": 0,
+            issueQty:0,
+         //   batchNo:IsbatchNO ||"",
 
         }))
 
@@ -654,7 +673,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                             <TextField
                                                                 //type="number"
                                                                 size="small"
-                                                                value={row.stockQty || 0}
+                                                                value={row.reqQty - row.issueQty || 0}
                                                                 onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value) || 0)}
                                                                 onFocus={e => e.target.select()}
                                                             />

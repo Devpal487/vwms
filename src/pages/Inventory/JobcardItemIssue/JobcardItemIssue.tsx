@@ -440,7 +440,8 @@ export default function JobcardItemIssue() {
         id: zone.issueId,
         empId: zone.empId,
         indentId: zone.indentId,
-      }));
+      }))
+      .filter((Item: any) => Item.issueType==="JobCard");
       setZones(zonesWithIds);
       setIsLoading(false);
 

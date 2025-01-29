@@ -1092,7 +1092,11 @@ export default function VehicleItemService() {
       setVnoOption(arr);
     });
   };
+  let currentDate = new Date();
 
+  currentDate.setDate(currentDate.getDate() - 1);
+
+  let previousDate = currentDate.toISOString();
 
   //    import { useLocation } from 'react-router-dom';
 
@@ -1118,7 +1122,7 @@ export default function VehicleItemService() {
 
         "complaintDateFrom": "2021-01-22T11:40:43.485Z",
   "complaintDateTo": defaultValues,
-  "vehcileNo": formik.values.vehcileNo,
+  "vehcileNo": formik.values.vehcileNo||vNO,
   "jobCardNoFrom": formik.values.jobCardNoFrom,
   "jobCardNoTo": formik.values.jobCardNoTo,
   "isStatus_Complete": false
@@ -1313,33 +1317,33 @@ export default function VehicleItemService() {
 
           <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
             <Grid item xs={12} sm={4} lg={4}>
-              <Autocomplete
-                //multiple
+            <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
-                value={formik.values.vehcileNo}
-
+                value={VnoOption.find((option) => option.label === formik.values.vehcileNo) || null}
                 fullWidth
                 size="small"
-                onChange={(event: any, newValue: any) => {
-                  // vehicleNo  = location.state || {};
-                  setVno(newValue?.label);
+                onChange={(event, newValue) => {
+                  if (newValue) {
+                    setVno(newValue.label); // Update local state
+                    formik.setFieldValue("vehcileNo", newValue.label); // Update Formik value
+                  } else {
+                    setVno(""); // Clear state if no value is selected
+                    formik.setFieldValue("vehcileNo", "");
+                  }
                 }}
-
-                renderInput={(params: any) => (
+                renderInput={(params) => (
                   <TextField
                     {...params}
                     label={
-                      <CustomLabel
-                        text={t("text.VehicleNos1")}
-                        required={false}
-                      />
+                      <CustomLabel text={t("text.VehicleNos1")} required={false} />
                     }
                   />
                 )}
                 popupIcon={null}
               />
+
             </Grid>
 
             {/* <Grid item xs={12} sm={3} lg={3}>
@@ -1405,8 +1409,8 @@ export default function VehicleItemService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="complainDatefrom"
-                name="complainDatefrom"
+                id="complaintDateFrom"
+                name="complaintDateFrom"
                 label={
                   <CustomLabel text={t("text.FromDate")} required={false} />
                 }
@@ -1424,8 +1428,8 @@ export default function VehicleItemService() {
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
-                id="complainDateTo"
-                name="complainDateTo"
+                id="complaintDateTo"
+                name="complaintDateTo"
                 label={<CustomLabel text={t("text.ToDate")} required={false} />}
                 value={formik.values.complaintDateTo}
                 placeholder={t("text.ToDate")}

@@ -175,13 +175,13 @@ const MainLayout = () => {
             },
             {
               menuId: 18,
-              menuName: "Office Purchase Indent",
+              menuName: "Office Pur. Indent",
               path: "/Inventory/OfficePurchaseIndent",
               displayNo: 0,
             },
             {
               menuId: 18,
-              menuName: "Office Purchase Order",
+              menuName: "Office Pur. Order",
               path: "/Inventory/OfficePurchaseOrder",
               displayNo: 0,
             },
@@ -658,12 +658,12 @@ const MainLayout = () => {
               displayNo: 0,
             },
 
-            {
-              menuId: 12,
-              menuName: "Vehicle E-File Report",
-              path: "/Reports/VehicleEfileReport",
-              displayNo: 0,
-            },
+            // {
+            //   menuId: 12,
+            //   menuName: "Vehicle E-File Report",
+            //   path: "/Reports/VehicleEfileReport",
+            //   displayNo: 0,
+            // },
 
 
           

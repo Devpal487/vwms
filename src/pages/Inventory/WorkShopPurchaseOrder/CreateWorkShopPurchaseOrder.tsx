@@ -340,7 +340,7 @@ const CreateWorkShopPurchaseOrder = () => {
             itemName: "",
             indentNo: "",
             "srn": 0,
-
+netAmount: item?.amount,
             "returnItem": true
 
 
@@ -535,8 +535,8 @@ const CreateWorkShopPurchaseOrder = () => {
             "totalSGST": 0,
             "totalIGST": 0,
             "netAmount": 0, 
-            "status": "",
-            "orderType": "",
+            "status": "close",
+            "orderType": "Workshop",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
             "createdOn": defaultValues,
@@ -652,7 +652,7 @@ const CreateWorkShopPurchaseOrder = () => {
     //                 orderNo: selectedItem?.label,
     //             };
     //         }
-    //     } else if (field === "itemId") {
+    //     }  if (field === "itemId") {
     //         const selectedItem = itemOption.find(
     //             (option: any) => option.value === value
     //         );
@@ -667,11 +667,11 @@ const CreateWorkShopPurchaseOrder = () => {
     //         }
     //     }
 
-    //     else if (field === "quantity") {
+    //     if (field === "quantity") {
     //         item.quantity = value === "" ? 0 : parseFloat(value);
-    //     } else if (field === "rate") {
+    //     }  if (field === "rate") {
     //         item.rate = value === "" ? 0 : parseFloat(value);
-    //     } else if (field === "gstId") {
+    //     }  if (field === "gstId") {
     //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
     //         if (selectedTax) {
     //             item.gstRate = parseFloat(selectedTax.label) || 0;
@@ -705,12 +705,14 @@ const CreateWorkShopPurchaseOrder = () => {
     //     // addRow();
 
     //     let total = 0;
+    //     let netAmount1 = 0;
     //     tableData.forEach((row: any) => {
     //         total += row.amount;
+    //         netAmount1 += row.amount + row.gst ;
     //     })
-    //     formik.setFieldValue("netAmount", total);
-    //     formik.setFieldValue("totalServiceAmount", total);
-    //     formik.setFieldValue("totalItemAmount", total);
+    //     formik.setFieldValue("netAmount", netAmount1);
+    //     //formik.setFieldValue("totalServiceAmount", total);
+    //     formik.setFieldValue("totalAmount", total);
     //     // if (isRowFilled(item) && index === updatedItems.length - 1) {
     //     //     addRow();
     //     // }
