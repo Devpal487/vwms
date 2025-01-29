@@ -52,16 +52,16 @@
 //     { value: '2', label: '2023-2024' },
 //     { value: '3', label: '2024-2025' },
 //     { value: '4', label: '2025-2026' },
-//   ];
+// ];
 
 // const CreateStockGeneral = () => {
 //     const navigate = useNavigate();
-  
-//      const { defaultValues } = getISTDate();
+
+//     const { defaultValues } = getISTDate();
 //     const { t } = useTranslation();
 //     const [lang, setLang] = useState<Language>("en");
 //     const [toaster, setToaster] = useState(false);
-//     const [items, setItems] = useState<any>([
+//     const [tableData, setTableData] = useState<any>([
 //         {
 //             id: -1,
 //             purchaseid: -1,
@@ -100,19 +100,25 @@
 //     const [modalImg, setModalImg] = useState("");
 //     const [Opens, setOpen] = React.useState(false);
 //     const [Img, setImg] = useState("");
-//     console.log("items", items);
-
+//     console.log("items", tableData);
+// const[BatchNo,setBatchNo]=useState("");
 //     const back = useNavigate();
 
 //     useEffect(() => {
-//       //  getPurchaseOrderNo();
+//         //  getPurchaseOrderNo();
 //         getTaxData();
 //         GetitemData();
 //         GetUnitData();
+//         getBATCHNo();
 //         // getVendorData();
 //         // GetIndentID();
 //     }, []);
-
+//   const getBATCHNo = async () => {
+//     const result = await api.get(`QualityCheck/GetMaxBatchNo`);
+//     if (result?.data.status === 1) {
+//       formik.setFieldValue("batchNo", result.data.data[0]["batchNo"]);
+//     }
+//   };
 //     // const GetIndentID = async () => {
 //     //     const collectData = {
 //     //         indentId: -1,
@@ -155,7 +161,7 @@
 //     //     );
 //     // };
 
-   
+
 
 //     // const getTaxData = async () => {
 //     //     const res = await api.post(`TaxMaster/GetTaxMaster`, { taxId: -1 });
@@ -170,19 +176,19 @@
 //     const getTaxData = async () => {
 //         const result = await api.post(`UnitMaster/GetTaxMaster
 //     `, {
-//           taxId: -1,
+//             taxId: -1,
 //         });
-//         if (result.data.status===1) {
-//           const arr =
-//             result?.data?.data?.map((item: any) => ({
-//                 label: `${item.taxName} - ${item.taxPercentage}`,
-//                              value: item.taxId,
-//             })) || [];
-    
+//         if (result.data.status === 1) {
+//             const arr =
+//                 result?.data?.data?.map((item: any) => ({
+//                     label: `${item.taxName} - ${item.taxPercentage}`,
+//                     value: item.taxId,
+//                 })) || [];
+
 //             setTaxOption([{ value: "-1", label: t("text.tax") }, ...arr]);
 //         }
-//       };
-  
+//     };
+
 //     const GetitemData = async () => {
 //         const collectData = {
 //             itemMasterId: -1,
@@ -221,124 +227,124 @@
 //             item.itemNameId && item.itemNameId !== -1 &&
 //             (item.unit || item.unit === 0) &&
 //             parseFloat(item.qty) > 0 &&
-//             parseFloat(item.rate) > 0 &&
-//             parseFloat(item.amount) >= 0 &&
-//             (parseFloat(item.tax1) >= 0 || item.tax1 === "") &&
-//             (parseFloat(item.taxId1) >= 0 || item.taxId1 === "") &&
-//             (parseFloat(item.discount) >= 0 || item.discount === "") &&
-//             parseFloat(item.discountAmount) >= 0 &&
-//             parseFloat(item.netAmount) >= 0
+//             parseFloat(item.rate) > 0 
+//            // parseFloat(item.amount) >= 0 &&
+//             // (parseFloat(item.tax1) >= 0 || item.tax1 === "") &&
+//             // (parseFloat(item.taxId1) >= 0 || item.taxId1 === "") &&
+//             // (parseFloat(item.discount) >= 0 || item.discount === "") &&
+//             // parseFloat(item.discountAmount) >= 0 &&
+//             // parseFloat(item.netAmount) >= 0
 //         );
 //     };
 
 //     const formik = useFormik({
 //         initialValues: {
 
-            
 
 
 
-//     "sno": 0,
-//     "entryNo": 0,
-//     "batchNo": "",
-//     "itemId": 0,
-//     "unitID": 0,
-//     "rate": 0,
-//     "inQty": 0,
-//     "outQty": 0,
-//     "voucherId": 0,
-//     "stockBinId": 0,
-//     "voucherType": "",
-//     "voucherDate": defaultValues,
-//     "createdBy": "",
-//     "updatedBy": "",
-//     "createdOn": defaultValues,
-//     "updatedOn": defaultValues,
-//     "expiryDate": defaultValues,
-//     "companyId": 0,
-//     "gstRate": 0,
-//     "cgst": 0,
-//     "sgst": 0,
-//     "igst": 0,
-//     "gstid": 0,
-//     "cgstid": 0,
-//     "sgstid": 0,
-//     "igstid": 0,
-//     "fyearId": 0,
-//     "itemMaster": {
-//     //   "itemMasterId": 0,
-//     //   "itemName": "",
-//     //   "itemCode": "",
-//     //   "itemTypeId": 0,
-//     //   "itemFlag": "",
-//     //   "itemCategoryId": 0,
-//     //   "unitId": 0,
-//     //   "empId": 0,
-//     //   "vZoneID": 0,
-//     //   "taxId": 0,
-//     //   "purchaseYear": 0,
-//     //   "modelNo": "",
-//     //   "serialNo": "",
-//     //   "vehicleNo": "",
-//     //   "tankCapacity": 0,
-//     //   "actPrice": 0,
-//     //   "hsnCode": "",
-//     //   "filename": "",
-//     //   "chesisNo": "",
-//     //   "qcApplicable": true,
-//     //   "depreciationRate": 0,
-//     //   "createdBy": "",
-//     //   "updatedBy": "",
-//     //   "mileage": 0,
-//     //   "createdOn": defaultValues,
-//     //   "updatedOn": defaultValues,
-//     //   "zoneName": "",
-//     //   "vehiclePhotoFile": "",
-//     //   "vehicleTypeId": 0,
-//     //   "brandTypeId": 0,
-//     //   "fuelTypeId": 0,
-//     //   "devid": "",
-//     //   "vehicleWeight": 0
-//     },
-//     "companyMaster": {
-//     //   "id": 0,
-//     //   "name": "",
-//     //   "cityId": 0,
-//     //   "establishYear": 0,
-//     //   "address": "",
-//     //   "pincode": 0,
-//     //   "officeNo": "",
-//     //   "mobileNo": "",
-//     //   "emailId": "",
-//     //   "websiteName": "",
-//     //   "director": "",
-//     //   "companyLogo": "",
-//     //   "gstnNo": "",
-//     //   "panNo": "",
-//     //   "createdBy": "",
-//     //   "updatedBy": "",
-//     //   "createdOn": defaultValues,
-//     //   "updatedOn": defaultValues,
-//     //   "cityName": ""
-//     },
-//     "finnacialYear": {
-//     //   "fnId": 0,
-//     //   "financialYear": "",
-//     //   "fromDate": defaultValues,
-//     //   "toDate":defaultValues ,
-//     //   "currentYear": true,
-//     //   "createdBy": "",
-//     //   "updatedBy": "",
-//     //   "createdOn": defaultValues,
-//     //   "updatedOn": defaultValues,
-//     },
-//     "stockledgerlist": [],
-//     "unitName": ""
-  
-   
-   
-       
-  
+
+//             "sno": 0,
+//             "entryNo": 0,
+//             "batchNo": "",
+//             "itemId": 0,
+//             "unitID": 0,
+//             "rate": 0,
+//             "inQty": 0,
+//             "outQty": 0,
+//             "voucherId": 0,
+//             "stockBinId": 0,
+//             "voucherType": "",
+//             "voucherDate": defaultValues,
+//             "createdBy": "",
+//             "updatedBy": "",
+//             "createdOn": defaultValues,
+//             "updatedOn": defaultValues,
+//             "expiryDate": defaultValues,
+//             "companyId": 0,
+//             "gstRate": 0,
+//             "cgst": 0,
+//             "sgst": 0,
+//             "igst": 0,
+//             "gstid": 0,
+//             "cgstid": 0,
+//             "sgstid": 0,
+//             "igstid": 0,
+//             "fyearId": 0,
+//             "itemMaster": {
+//                 //   "itemMasterId": 0,
+//                 //   "itemName": "",
+//                 //   "itemCode": "",
+//                 //   "itemTypeId": 0,
+//                 //   "itemFlag": "",
+//                 //   "itemCategoryId": 0,
+//                 //   "unitId": 0,
+//                 //   "empId": 0,
+//                 //   "vZoneID": 0,
+//                 //   "taxId": 0,
+//                 //   "purchaseYear": 0,
+//                 //   "modelNo": "",
+//                 //   "serialNo": "",
+//                 //   "vehicleNo": "",
+//                 //   "tankCapacity": 0,
+//                 //   "actPrice": 0,
+//                 //   "hsnCode": "",
+//                 //   "filename": "",
+//                 //   "chesisNo": "",
+//                 //   "qcApplicable": true,
+//                 //   "depreciationRate": 0,
+//                 //   "createdBy": "",
+//                 //   "updatedBy": "",
+//                 //   "mileage": 0,
+//                 //   "createdOn": defaultValues,
+//                 //   "updatedOn": defaultValues,
+//                 //   "zoneName": "",
+//                 //   "vehiclePhotoFile": "",
+//                 //   "vehicleTypeId": 0,
+//                 //   "brandTypeId": 0,
+//                 //   "fuelTypeId": 0,
+//                 //   "devid": "",
+//                 //   "vehicleWeight": 0
+//             },
+//             "companyMaster": {
+//                 //   "id": 0,
+//                 //   "name": "",
+//                 //   "cityId": 0,
+//                 //   "establishYear": 0,
+//                 //   "address": "",
+//                 //   "pincode": 0,
+//                 //   "officeNo": "",
+//                 //   "mobileNo": "",
+//                 //   "emailId": "",
+//                 //   "websiteName": "",
+//                 //   "director": "",
+//                 //   "companyLogo": "",
+//                 //   "gstnNo": "",
+//                 //   "panNo": "",
+//                 //   "createdBy": "",
+//                 //   "updatedBy": "",
+//                 //   "createdOn": defaultValues,
+//                 //   "updatedOn": defaultValues,
+//                 //   "cityName": ""
+//             },
+//             "finnacialYear": {
+//                 //   "fnId": 0,
+//                 //   "financialYear": "",
+//                 //   "fromDate": defaultValues,
+//                 //   "toDate":defaultValues ,
+//                 //   "currentYear": true,
+//                 //   "createdBy": "",
+//                 //   "updatedBy": "",
+//                 //   "createdOn": defaultValues,
+//                 //   "updatedOn": defaultValues,
+//             },
+//             "stockledgerlist": [],
+//             "unitName": ""
+
+
+
+
+
 //             // indentNo: "",
 //             // batchNo: "",
 //             // expiryDate:"",
@@ -360,7 +366,7 @@
 //             // sessionId: -1,
 //             // purchaseinv: [],
 
-            
+
 //         },
 //         validationSchema: Yup.object().shape({
 //             // document_No: Yup.string().required(t("text.reqDocumentNum")),
@@ -371,13 +377,13 @@
 //         }),
 //         onSubmit: async (values) => {
 //             console.log("Form Submitted with values:", values);
-//             const validItems = items.filter((item: any) => validateItem(item));
+//             const validItems = tableData.filter((item: any) => validateItem(item));
 
 //             // Check if there are valid items
-//             if (validItems.length === 0) {
-//                 alert("Please fill in at least one valid item.");
-//                 return;
-//             }
+//             // if (validItems.length === 0) {
+//             //     alert("Please fill in at least one valid item.");
+//             //     return;
+//             // }
 
 //             // Map the valid items, setting values at the first index
 //             const updatedItems = validItems.map((item: any, index: any) => {
@@ -445,8 +451,8 @@
 //         },
 //     });
 
-//     const handleItemChange = (index: any, field: any, value: any) => {
-//         const updatedItems = [...items];
+//     const handleInputChange = (index: any, field: any, value: any) => {
+//         const updatedItems = [...tableData];
 //         const item = updatedItems[index];
 
 //         if (["qty", "rate", "discount", "tax1"].includes(field)) {
@@ -467,20 +473,20 @@
 //         item.netAmount =
 //             item.amount + parseFloat(item.taxId1 || '0') - item.discountAmount;
 
-//         setItems(updatedItems);
+//         setTableData(updatedItems);
 
-//         if (validateItem(item) && index === items.length - 1) {
+//         if (validateItem(item) && index === tableData.length - 1) {
 //             handleAddItem();
 //         }
 //     };
 
-//     const handleRemoveItem = (index: any) => {
-//         const updatedItems = items.filter((_: any, i: any) => i !== index);
-//         setItems(updatedItems);
+//     const deleteRow = (index: any) => {
+//         const updatedItems = tableData.filter((_: any, i: any) => i !== index);
+//         setTableData(updatedItems);
 //     };
 //     const handleAddItem = () => {
-//         setItems([
-//             ...items,
+//         setTableData([
+//             ...tableData,
 //             {
 //                 itemNameId: "",
 //                 unit: "",
@@ -507,13 +513,13 @@
 //     };
 
 //     useEffect(() => {
-//         const calculatedTotalAmount = items.reduce(
+//         const calculatedTotalAmount = tableData.reduce(
 //             (acc: any, item: any) => acc + item.netAmount,
 //             0
 //         );
 //         setTotalAmount(calculatedTotalAmount);
 //         formik.setFieldValue('amount', calculatedTotalAmount.toFixed(2));
-//     }, [items]);
+//     }, [tableData]);
 
 
 //     return (
@@ -573,7 +579,7 @@
 //                     <form onSubmit={formik.handleSubmit}>
 //                         {toaster && <ToastApp />}
 //                         <Grid item xs={12} container spacing={2}>
-//                         <Grid item xs={12} sm={4} lg={4}>
+//                             <Grid item xs={12} sm={4} lg={3}>
 //                                 <TextField
 //                                     label={
 //                                         <CustomLabel
@@ -581,27 +587,27 @@
 //                                             required={true}
 //                                         />
 //                                     }
-//                                     variant="outlined"
+//                                     //variant="outlined"
 //                                     fullWidth
 //                                     size="small"
-//                                     name="batchNo"
+//                                    name="batchNo"
 //                                     id="batchNo"
 //                                     value={formik.values.batchNo}
-//                                     placeholder={t("text.enterbatchNo")}
-//                                     onChange={formik.handleChange}
+//                                     //placeholder={t("text.enterbatchNo")}
+//                                   //  onChange={formik.handleChange}
 //                                 />
-//                                 {formik.touched.batchNo && formik.errors.batchNo ? (
+//                                 {/* {formik.touched.batchNo && formik.errors.batchNo ? (
 //                                     <div style={{ color: "red", margin: "5px" }}>
 //                                         {formik.errors.batchNo}
 //                                     </div>
-//                                 ) : null}
+//                                 ) : null} */}
 //                             </Grid>
 
-                     
 
-                          
 
-//                             <Grid item lg={4} xs={12}>
+
+
+//                             <Grid item lg={3} xs={12}>
 //                                 <TextField
 //                                     id="voucherDate"
 //                                     name="voucherDate"
@@ -629,7 +635,7 @@
 //                                 />
 //                             </Grid>
 
-//                             <Grid item xs={12} sm={4} lg={4}>
+//                             <Grid item xs={12} sm={3} lg={3}>
 //                                 <TextField
 //                                     label={
 //                                         <CustomLabel
@@ -649,11 +655,11 @@
 //                                     InputLabelProps={{ shrink: true }}
 //                                 />
 //                             </Grid>
-                           
 
-                        
 
-//                             <Grid item xs={12} sm={4} lg={4}>
+
+
+//                             <Grid item xs={12} sm={3} lg={3}>
 //                                 <Autocomplete
 //                                     disablePortal
 //                                     id="combo-box-demo"
@@ -672,10 +678,10 @@
 //                                 />
 //                             </Grid>
 
-                         
 
 
-                           
+
+
 
 //                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}>
 //                                 {/* <Typography
@@ -686,9 +692,9 @@
 //                                 </Typography> */}
 
 //                             </Grid>
-
+//                             {/* 
 //                             <Grid item lg={12} md={12} xs={12}>
-//                                 {/* <TableContainer> */}
+                           
 //                                 <Table
 //                                     style={{
 //                                         borderCollapse: "collapse",
@@ -814,7 +820,7 @@
 //                                     <tbody style={{ padding: "2px" }}>
 //                                         {items.map((item: any, index: any) => (
 //                                             <tr key={item.id} style={{ border: "1px solid black", padding: "2px" }}>
-//                                                 {/* <TableCell>{index + 1}</TableCell> */}
+                                              
 //                                                 <td
 //                                                     style={{
 //                                                         border: "1px solid black",
@@ -875,8 +881,7 @@
 //                                                         onChange={(event) => {
 //                                                             const value: any = event.target.value;
 //                                                             handleItemChange(index, "qty", value);
-//                                                             // if (!isNaN(value) || value === '' || value === '.') {
-//                                                             // }
+                                                            
 //                                                         }}
 //                                                         inputProps={{
 //                                                             step: "any",
@@ -986,43 +991,202 @@
 //                                         </tr>
 //                                     </tbody>
 //                                 </Table>
-//                                 {/* </TableContainer> */}
+                                
 //                             </Grid>
 
+//                               <Grid item xs={12}> */}
 
-//                             <Grid item xs={12}>
-//                                 <div style={{ justifyContent: "space-between", flex: 2 }}>
-//                                     <Button
-//                                         type="submit"
-//                                         variant="contained"
-//                                         style={{
-//                                             width: "48%",
-//                                             backgroundColor: `var(--header-background)`,
-//                                             margin: "1%",
-//                                         }}
-//                                     >
-//                                         {t("text.save")}
-//                                     </Button>
 
-//                                     <Button
-//                                         type="reset"
-//                                         variant="contained"
-//                                         style={{
-//                                             width: "48%",
-//                                             backgroundColor: "#F43F5E",
-//                                             margin: "1%",
-//                                         }}
-//                                         onClick={() => formik.resetForm()}
-//                                     >
-//                                         {t("text.reset")}
-//                                     </Button>
-//                                 </div>
-//                             </Grid>
-//                         </Grid>
-//                     </form>
-//                 </CardContent>
-//             </div>
+//                             <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+//                                 <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+//                                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+//                                         <tr>
+
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gst")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.cgst")}</th>
+//                                             <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.sgst")}</th>
+//                                             {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th> */}
+
+
+//                                         </tr>
+//                                     </thead>
+//                                     <tbody>
+//                                         {tableData.map((row: any, index: any) => (
+//                                             <tr key={row.id} style={{ border: '1px solid black' }}>
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+//                                                     if (tableData.length > 1) {
+//                                                         deleteRow(index)
+//                                                     } else {
+//                                                         alert("There should be atleast one row")
+//                                                     }
+//                                                 }}>
+//                                                     <DeleteIcon />
+//                                                 </td>
+
+//                                                 <td
+//                                                     style={{
+//                                                         border: "1px solid black",
+//                                                         // textAlign: "center",
+//                                                     }}
+//                                                 >
+//                                                     <Autocomplete
+//                                                         disablePortal
+//                                                         id="combo-box-demo"
+//                                                         options={itemOption}
+//                                                         fullWidth
+//                                                         size="small"
+//                                                         onChange={(e: any, newValue: any) => {
+//                                                             if (!newValue) {
+//                                                                 return;
+//                                                             } else {
+//                                                                 handleInputChange(
+//                                                                     index,
+//                                                                     "itemId",
+//                                                                     newValue?.value
+//                                                                 )
+//                                                             }
+//                                                         }
+//                                                         }
+//                                                         renderInput={(params) => (
+//                                                             <TextField
+//                                                                 {...params}
+
+//                                                             />
+//                                                         )}
+//                                                     />
+//                                                 </td>
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center' }}>
+
+//                                                     <Autocomplete
+//                                                         disablePortal
+//                                                         id="combo-box-demo"
+//                                                         options={unitOptions}
+//                                                         fullWidth
+//                                                         size="small"
+//                                                         onChange={(e: any, newValue: any) => {
+//                                                             if (!newValue) {
+//                                                                 return;
+//                                                             } else {
+//                                                                 handleInputChange(
+//                                                                     index,
+//                                                                     "unitID",
+//                                                                     newValue?.value
+//                                                                 )
+//                                                             }
+//                                                         }
+//                                                         }
+//                                                         renderInput={(params) => (
+//                                                             <TextField
+//                                                                 {...params}
+
+//                                                             />
+//                                                         )}
+//                                                     />
+
+//                                                 </td>
+
+
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+//                                                     <TextField
+
+//                                                         size="small"
+//                                                         // type="text"
+//                                                         value={row.quantity}
+//                                                         onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
+//                                                         onFocus={(e) => { e.target.select() }}
+//                                                     />
+//                                                 </td>
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+//                                                     <TextField
+
+//                                                         size="small"
+//                                                         // type="text"
+//                                                         value={row.approveQuantity}
+//                                                         onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
+//                                                         onFocus={(e) => { e.target.select() }}
+//                                                     />
+//                                                 </td>
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+//                                                     <TextField
+
+//                                                         size="small"
+//                                                         // type="text"
+//                                                         value={row.rate}
+//                                                         onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
+//                                                         onFocus={(e) => { e.target.select() }}
+//                                                     />
+//                                                 </td>
+
+//                                                 <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+//                                                     <TextField
+//                                                         // type="number"
+//                                                         value={row.amount.toFixed(2)}
+//                                                         size="small"
+//                                                         inputProps={{ "aria-readonly": true }}
+//                                                         onFocus={(e) => { e.target.select() }}
+//                                                     />
+//                                                 </td>
+
+//                                             </tr>
+//                                         ))}
+//                                     </tbody>
+//                                     <tfoot>
+//                                         <tr>
+//                                             <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+//                                                 {t("text.Totalnetamount")}
+
+//                                             </td>
+//                                             <td style={{ textAlign: "center", border: "1px solid black" }}>
+//                                                 {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+//                                             </td>
+//                                         </tr>
+
+
+//                                     </tfoot>
+//                                 </Table>
+//                             </div>   </Grid>
+
+
+//                         <Grid item xs={12}>
+//                             <div style={{ justifyContent: "space-between", flex: 2 }}>
+//                                 <Button
+//                                     type="submit"
+//                                     variant="contained"
+//                                     style={{
+//                                         width: "48%",
+//                                         backgroundColor: `var(--header-background)`,
+//                                         margin: "1%",
+//                                     }}
+//                                 >
+//                                     {t("text.save")}
+//                                 </Button>
+
+//                                 <Button
+//                                     type="reset"
+//                                     variant="contained"
+//                                     style={{
+//                                         width: "48%",
+//                                         backgroundColor: "#F43F5E",
+//                                         margin: "1%",
+//                                     }}
+//                                     onClick={() => formik.resetForm()}
+//                                 >
+//                                     {t("text.reset")}
+//                                 </Button>
+                          
+//                             </div>
+//                     </Grid>
+//                 </form>
+//             </CardContent>
 //         </div>
+//         </div >
 //     );
 // };
 
@@ -1108,24 +1272,6 @@ const CreateStockGeneral = (props: Props) => {
         }
         setOption(arr);
     };
-
-    // const GetitemCategoryData = async () => {
-    //     const collectData = {
-    //         itemCategoryId: -1,
-    //     };
-    //     const response = await api.post(`ItemCategory/GetItemCategoryMaster`, collectData);
-    //     const data = response.data.data;
-    //     const arr = [];
-    //     for (let index = 0; index < data.length; index++) {
-    //         arr.push({
-    //             label: data[index]["itemCategory"],
-    //             value: data[index]["itemCategoryId"],
-
-    //         });
-    //     }
-    //     setitemCategoryOptions(arr);
-    // };
-
     const handleConversionChange = (params: any, text: string) => {
         formik.setFieldValue(params, text);
     };
@@ -1161,92 +1307,8 @@ const CreateStockGeneral = (props: Props) => {
         }
         setUnitOptions(arr);
     };
-
-    //     const getTaxData = async () => {
-//         const result = await api.post(`UnitMaster/GetTaxMaster
-//     `, {
-//           taxId: -1,
-//         });
-//         if (result.data.status===1) {
-//           const arr =
-//             result?.data?.data?.map((item: any) => ({
-//                 label: `${item.taxName} - ${item.taxPercentage}`,
-//                              value: item.taxId,
-//             })) || [];
-    
-//             setTaxOption([{ value: "-1", label: t("text.tax") }, ...arr]);
-//         }
-//       };
-  
-//     const GetitemData = async () => {
-//         const collectData = {
-//             itemMasterId: -1,
-//         };
-//         const response = await api.get(`ItemMaster/GetItemMaster`, {});
-//         const data = response.data.data;
-//         const arr = [];
-//         for (let index = 0; index < data.length; index++) {
-//             arr.push({
-//                 label: data[index]["itemName"],
-//                 value: data[index]["itemMasterId"],
-//             });
-//         };
-//         setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
-//     };
-//     const GetUnitData = async () => {
-//         const collectData = {
-//             unitId: -1,
-//         };
-//         const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
-//         const data = response.data.data;
-//         const arr = [];
-//         for (let index = 0; index < data.length; index++) {
-//             arr.push({
-//                 label: data[index]["unitName"],
-//                 value: data[index]["unitId"],
-//             });
-//         }
-//         setUnitOptions(arr);
-//     };
-
-
     const formik = useFormik({
         initialValues: {
-            // entryNo: 0,
-            // batchNo: "",
-            // itemId: -1,
-            // unitID: -1,
-            // rate: '',
-            // inQty: '',
-            // outQty: 0,
-            // voucherId: -1,
-            // stockBinId: -1,
-            // voucherType: "",
-            // voucherDate: "1990-10-28",
-            // createdBy: "",
-            // updatedBy: "",
-            // createdOn: defaultValuestime,
-            // updatedOn: defaultValuestime,
-            // expiryDate: "",
-            // companyId: -1,
-            // gstRate: '',
-            // cgst: '',
-            // sgst: '',
-            // igst: '',
-            // gstid: '',
-            // cgstid: '',
-            // sgstid: '',
-            // igstid: '',
-            // fyearId: -1,
-            // stockledgerlist: [],
-            // srn: 0,
-            // bal: -1,
-            // itemName: "",
-            // unitName: "",
-            // openning: 0,
-            // partyCode: ""
-
-            
     "sno": 0,
     "entryNo": 0,
     "batchNo": "",

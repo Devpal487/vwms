@@ -860,7 +860,7 @@ const CreatePurchaseInvoice = () => {
                           >
                             SGST
                           </th >
-                          <th
+                          {/* <th
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -868,7 +868,7 @@ const CreatePurchaseInvoice = () => {
                             }}
                           >
                             IGST
-                          </th >
+                          </th > */}
                           {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -1072,7 +1072,7 @@ const CreatePurchaseInvoice = () => {
                                 inputProps={{ readOnly: true }}
                               />
                             </td>
-                            <td
+                            {/* <td
                               style={{
                                 border: "1px solid black",
                                 textAlign: "center",
@@ -1083,7 +1083,7 @@ const CreatePurchaseInvoice = () => {
                                 size="small"
                                 inputProps={{ readOnly: true }}
                               />
-                            </td>
+                            </td> */}
                             <td
                               style={{
                                 border: "1px solid black",
@@ -1123,7 +1123,7 @@ const CreatePurchaseInvoice = () => {
                           </td>
                         </tr> */}
                         <tr>
-                          <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                             {t("text.Totalnetamount")}
 
                           </td>
