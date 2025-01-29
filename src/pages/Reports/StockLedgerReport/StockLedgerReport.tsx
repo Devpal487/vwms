@@ -223,7 +223,7 @@ export default function StockLedgerReport() {
 
     const headers = ["Date", "Item Name", "Unit Name", "Particular", "Document No."];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [35, 35, 35, 110, 35];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -366,13 +366,13 @@ export default function StockLedgerReport() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.5,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "docNo",
             headerName: t("text.docNo"),
@@ -386,21 +386,21 @@ export default function StockLedgerReport() {
             field: "particular",
             headerName: t("text.particular"),
             flex: 1.9,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemName",
             headerName: t("text.itemName"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "unitName",
             headerName: t("text.unitName"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             
           },
@@ -408,7 +408,7 @@ export default function StockLedgerReport() {
             field: "docDate",
             headerName: t("text.docDate"),
             flex: 1.3,
-            headerClassName: "MuiDataGrid-colCell",
+            //headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
               return moment(params.row.docDate).format("DD-MM-YYYY");
@@ -418,7 +418,7 @@ export default function StockLedgerReport() {
             field: "opening",
             headerName: t("text.opening"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             //align: 'right',
            // headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
@@ -427,28 +427,28 @@ export default function StockLedgerReport() {
             field: "inQty",
             headerName: t("text.inQty"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "outQty",
             headerName: t("text.outQty"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vendor",
             headerName: t("text.vendor"),
             flex: 1.5,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "balance",
             headerName: t("text.balance"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {

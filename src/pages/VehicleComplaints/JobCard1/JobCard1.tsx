@@ -264,7 +264,7 @@ export default function JobCard() {
             "status": ""
          };
          const response = await api.post(
-            `Master/GetJobCard`,
+            `Master/GetJobCardInhouse`,
             collectData
          );
          const data = response.data.data;

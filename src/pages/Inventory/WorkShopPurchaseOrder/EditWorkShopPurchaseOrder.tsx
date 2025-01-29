@@ -923,7 +923,8 @@ const EditWorkShopPurchaseOrder = () => {
                                                         padding: "5px",
                                                     }}
                                                 >
-                                                    CGST
+                                                    {t("text.cgst")}
+
                                                 </th>
                                                 <th
                                                     style={{
@@ -932,8 +933,8 @@ const EditWorkShopPurchaseOrder = () => {
                                                         padding: "5px",
                                                     }}
                                                 >
-                                                    SGST
-                                                </th >
+                                                    {t("text.sgst")}
+                                                </th>
                                                 {/* <th
                                                     style={{
                                                         border: "1px solid black",

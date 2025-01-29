@@ -209,7 +209,7 @@ const [vNO, setVno] = useState("");
 
     const headers = ["vehicle No.", "Vehicle", "JobCard No.","Items Consumed",  "JobCard Date"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 50, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;

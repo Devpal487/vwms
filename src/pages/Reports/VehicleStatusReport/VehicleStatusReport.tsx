@@ -307,6 +307,7 @@ export default function VehicleStatusReport() {
             headerName: t("text.vehicleNo"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
             // renderCell: (params) => {
             //   return moment(params.row.trackDate).format("DD-MM-YYYY");
             // },

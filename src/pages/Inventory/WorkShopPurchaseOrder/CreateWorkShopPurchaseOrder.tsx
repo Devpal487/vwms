@@ -340,7 +340,7 @@ const CreateWorkShopPurchaseOrder = () => {
             itemName: "",
             indentNo: "",
             "srn": 0,
-netAmount: item?.amount,
+            netAmount: item?.amount,
             "returnItem": true
 
 
@@ -534,7 +534,7 @@ netAmount: item?.amount,
             "totalCGST": 0,
             "totalSGST": 0,
             "totalIGST": 0,
-            "netAmount": 0, 
+            "netAmount": 0,
             "status": "close",
             "orderType": "Workshop",
             "createdBy": "adminvm",
@@ -558,8 +558,8 @@ netAmount: item?.amount,
         validationSchema: Yup.object({
             // pOrderDoc: Yup.string()
             //     .required("Image required"),
-             indentId: Yup.string().required("Indnet no required"),
-              vendorId:Yup.string().required("Vendor is rquired"),
+            indentId: Yup.string().required("Indnet no required"),
+            vendorId: Yup.string().required("Vendor is rquired"),
 
 
         }),
@@ -590,51 +590,113 @@ netAmount: item?.amount,
     });
     console.log("formik.values", formik.values);
     //  const back = useNavigate();
-    const handleInputChange = (index: number, field: string, value: any) => {
-        const updatedItems = [...tableData];
-        let item = { ...updatedItems[index] };
-    
-        if (field === "quantity") {
-            item.quantity = value === "" ? 0 : parseFloat(value);
-        } else if (field === "rate") {
-            item.rate = value === "" ? 0 : parseFloat(value);
-        } else if (field === "gstId") {
-            const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-            if (selectedTax) {
-                item.gstRate = parseFloat(selectedTax.label) || 0;
-                item.gstId = selectedTax.value || 0;
-                item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-                item.sgst = item.gst / 2;
-                item.cgst = item.gst / 2;
-                item.igst = 0;
+    // const handleInputChange = (index: number, field: string, value: any) => {
+    //     const updatedItems = [...tableData];
+    //     let item = { ...updatedItems[index] };
+
+    //     if (field === "quantity") {
+    //         item.quantity = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "rate") {
+    //         item.rate = value === "" ? 0 : parseFloat(value);
+    //     } else if (field === "gstId") {
+    //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+    //         if (selectedTax) {
+    //             item.gstRate = parseFloat(selectedTax.label) || 0;
+    //             item.gstId = selectedTax.value || 0;
+    //             item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
+    //             item.sgst = item.gst / 2;
+    //             item.cgst = item.gst / 2;
+    //             item.igst = 0;
+    //         }
+    //     }
+
+    //     // Update item totals
+    //     item.amount = (item.quantity || 0) * (item.rate || 0);
+    //     item.netAmount = item.amount + (item.gst || 0);
+    //     updatedItems[index] = item;
+
+    //     // Update the table data
+    //     setTableData(updatedItems);
+
+    //     // Calculate total and update Formik parent values
+    //     const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
+    //     const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
+
+    //     formik.setFieldValue("totalAmount", totalAmount);
+    //     formik.setFieldValue("netAmount", totalNetAmount);
+
+    //     // Add new row logic if necessary
+    //     if (
+    //         updatedItems[index].quantity > 0 &&
+    //         updatedItems[index].rate > 0 &&
+    //         index === updatedItems.length - 1
+    //     ) {
+    //         addRow();
+    //     }
+    // };
+    const handleInputChange = (index: any, field: any, value: any) => {
+        const newData: any = [...tableData];
+        newData[index][field] = value;
+        let rate = 0;
+        if (field === 'orderId') {
+            newData[index].orderId = newData[index].orderId;
+        }
+        if (field === 'orderNo') {
+            newData[index].orderNo = newData[index].orderNo;
+        }
+        if (field === 'quantity') {
+            newData[index].quantity = newData[index].quantity;
+        }
+        if (field === 'unitId') {
+            newData[index].unitId = newData[index].unitId;
+        }
+        if (field === 'unitName') {
+            newData[index].unitName = newData[index].unitName;
+        }
+        if (field === 'amount') {
+            newData[index].amount = newData[index].amount;
+        }
+        // if (field === 'netAmount') {
+        //   newData[index].netAmount = newData[index].amount + newData[index].amount * (newData[index].gst / 100);
+        // }
+        if (field === 'gst' || field === 'gstId') {
+            newData[index].gst = newData[index].gst;
+            newData[index].cgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+            newData[index].sgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+            newData[index].netAmount = parseFloat((newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2));
+        } else {
+            newData[index].netAmount = (newData[index].rate * newData[index].quantity);
+        }
+        // if (field === 'cgst') {
+        //   newData[index].cgst = newData[index].cgst;
+        // }
+        // if (field === 'sgst') {
+        //   newData[index].sgst = newData[index].sgst;
+        // }
+        // if (field === 'serviceCharge') {
+        //   newData[index].serviceCharge = newData[index].serviceCharge;
+        // }
+        newData[index].amount = newData[index].rate * newData[index].quantity;
+
+        //newData[index].jobCardId = location.state?.jobCardId || 0;
+        newData[index].challanNo = 0;
+
+        setTableData(newData);
+
+        if (newData[index].unitId > 0 && newData[index].quantity && newData[index].amount > 0) {
+            if (index === tableData.length - 1) {
+                addRow();
             }
         }
-    
-        // Update item totals
-        item.amount = (item.quantity || 0) * (item.rate || 0);
-        item.netAmount = item.amount + (item.gst || 0);
-        updatedItems[index] = item;
-    
-        // Update the table data
-        setTableData(updatedItems);
-    
-        // Calculate total and update Formik parent values
-        const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
-        const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
-    
-        formik.setFieldValue("totalAmount", totalAmount);
-        formik.setFieldValue("netAmount", totalNetAmount);
-    
-        // Add new row logic if necessary
-        if (
-            updatedItems[index].quantity > 0 &&
-            updatedItems[index].rate > 0 &&
-            index === updatedItems.length - 1
-        ) {
-            addRow();
-        }
+        let total = 0;
+        let netAmt = 0;
+        tableData.forEach((row: any) => {
+            total += row.amount;
+            netAmt += row.amount + row.amount * (row.gst / 100);
+        })
+        formik.setFieldValue("netAmount", netAmt);
+        formik.setFieldValue("totalAmount", total);
     };
-    
     // const handleInputChange = (index: number, field: string, value: any) => {
     //     const updatedItems = [...tableData];
     //     let item = { ...updatedItems[index] };
@@ -955,7 +1017,7 @@ netAmount: item?.amount,
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
                                         onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-                                        // required
+                                    // required
                                     />
                                 </Grid>
                                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -1230,7 +1292,8 @@ netAmount: item?.amount,
                                                             padding: "5px",
                                                         }}
                                                     >
-                                                        CGST
+                                                        {t("text.cgst")}
+
                                                     </th>
                                                     <th
                                                         style={{
@@ -1239,8 +1302,8 @@ netAmount: item?.amount,
                                                             padding: "5px",
                                                         }}
                                                     >
-                                                        SGST
-                                                    </th >
+                                                        {t("text.sgst")}
+                                                    </th>
                                                     {/* <th
                                                         style={{
                                                             border: "1px solid black",
@@ -1392,7 +1455,8 @@ netAmount: item?.amount,
                                                             }}
                                                         >
                                                             <TextField
-                                                                value={row.amount}
+                                                                value={row.rate * row.quantity}
+                                                                onChange={(e) => handleInputChange(index, 'amount', (row.rate * row.quantity) || 0)}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             // onFocus={e => e.target.select()}
@@ -1408,12 +1472,17 @@ netAmount: item?.amount,
                                                                 disablePortal
                                                                 id="combo-box-demo"
                                                                 options={taxData}
+                                                                value={row.gst}
                                                                 fullWidth
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
-                                                                onChange={(e: any, newValue: any) =>
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return;
+                                                                    }
+                                                                    handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                                                     handleInputChange(index, "gstId", newValue?.value)
-                                                                }
+                                                                }}
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
@@ -1436,6 +1505,8 @@ netAmount: item?.amount,
                                                         >
                                                             <TextField
                                                                 value={row.cgst}
+                                                                onChange={(e) => handleInputChange(index, 'cgst', parseFloat(e.target.value) || 0)}
+                                                                onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
@@ -1449,6 +1520,8 @@ netAmount: item?.amount,
                                                         >
                                                             <TextField
                                                                 value={row.sgst}
+                                                                onChange={(e) => handleInputChange(index, 'sgst', parseFloat(e.target.value) || 0)}
+                                                                onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
@@ -1474,6 +1547,7 @@ netAmount: item?.amount,
                                                         >
                                                             <TextField
                                                                 value={row.netAmount}
+                                                                // value={(row.amount + row.amount * (row.gst / 100)||0)}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             />

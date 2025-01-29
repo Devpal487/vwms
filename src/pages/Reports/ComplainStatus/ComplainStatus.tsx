@@ -208,7 +208,7 @@ export default function ComplainStatus() {
 
     const headers = ["Date", "Vehicle No", "Complaint No", "Complaint", "Complaint Status"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 80, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -339,7 +339,7 @@ export default function ComplainStatus() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
 
@@ -347,35 +347,35 @@ export default function ComplainStatus() {
             field: "complainNo",
             headerName: t("text.complainNo"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complaint",
             headerName: t("text.complaint"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo12"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "jobCardNo",
             headerName: t("text.jobCardNo"),
             flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complainStatus",
             headerName: t("text.complainStatus12"),
             flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
 
           },
@@ -598,7 +598,7 @@ export default function ComplainStatus() {
                   <FormControlLabel value="INPROGRESS" control={<Radio />} label="InProgress" />
                   <FormControlLabel value="OUTSOURCE" control={<Radio />} label="OutSource" />
                   <FormControlLabel value="COMPLETE" control={<Radio />} label="Complete" />
-                  <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" />
+                  {/* <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" /> */}
                   <FormControlLabel value="all" control={<Radio />} label="All" />
                 </RadioGroup>
               </FormControl>

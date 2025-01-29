@@ -213,6 +213,7 @@ const EditJobCard1 = (props: Props) => {
     {
       "id": 0,
       "jobCardId": 0,
+      unitID: 0,
       "itemId": 0,
       "indentId": 0,
       "indentNo": "",
@@ -233,6 +234,7 @@ const EditJobCard1 = (props: Props) => {
     {
       "id": 0,
       "jobCardId": 0,
+      unitID: 0,
       "itemId": 0,
       "indentId": 0,
       "indentNo": "",
@@ -319,6 +321,9 @@ const EditJobCard1 = (props: Props) => {
     setVehicleName(location.state?.vehicleName);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
+    const timeoutId: any = setTimeout(() => {
+      handleStateData();
+    }, 300);
     // if (location.state.status === "Complete") {
     //   setTableData([...location.state?.serviceDetail]);
     //   setTableData1([...location.state?.itemDetail]);
@@ -434,29 +439,29 @@ console.log("location.state",(location.state));
     setServiceOption(arr);
   };
 
-  // const handleStateData = async () => {
-  //   const collectData = {
-  //     "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
-  //     "status": ""
-  //   };
-  //   const response = await api.post(`Master/GetJobCard`, collectData);
-  //   const data = response.data.data;
+  const handleStateData = async () => {
+    const collectData = {
+      "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
+      "status": ""
+    };
+    const response = await api.post(`Master/GetJobCardInhouse`, collectData);
+    const data = response.data.data;
 
-  //   if (data[0].itemDetail.length > 0) {
-  //     setTableData(data[0].itemDetail);
-  //   }
+    if (data[0].itemDetail.length > 0) {
+      setTableData1(data[0].itemDetail);
+    }
 
-  //   setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.department || location.state?.department || "");
-  //   setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.designation || location.state?.designation || "");
+    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.department || location.state?.department || "");
+    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.designation || location.state?.designation || "");
 
-  //   // await getJobCardData().then(() => {
-  //   //   if (location.state.status === "Complete") {
-  //   //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
-  //   //   } else {
-  //   //     setTableData([...location.state?.serviceDetail, tableData]);
-  //   //   }
-  //   // })
-  // }
+    // await getJobCardData().then(() => {
+    //   if (location.state.status === "Complete") {
+    //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
+    //   } else {
+    //     setTableData([...location.state?.serviceDetail, tableData]);
+    //   }
+    // })
+  }
 
   const GetIndentID = async () => {
     const collectData = {
@@ -537,7 +542,7 @@ console.log("location.state",(location.state));
       "updatedOn": location.state.updatedOn,
       "companyId": location.state?.companyId,
       "fyId": location.state?.fyId,
-      "totalItemAmount": 0,
+      "totalItemAmount": location.state?.totalItemAmount || 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
       "itemName": location.state?.itemName || "",
@@ -809,6 +814,7 @@ console.log("location.state",(location.state));
       {
         "id": 0,
         "jobCardId": 0,
+        unitID: 0,
         "itemId": 0,
         "indentId": 0,
         "indentNo": "",
@@ -1228,7 +1234,7 @@ console.log("location.state",(location.state));
            
 
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
@@ -1268,14 +1274,14 @@ console.log("location.state",(location.state));
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={serviceOption}
-                              // value={row.serviceId}
+                             
                               fullWidth
                               sx={{ width: "225px" }}
                               size="small"
@@ -1291,12 +1297,7 @@ console.log("location.state",(location.state));
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.SelectServices")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1304,7 +1305,7 @@ console.log("location.state",(location.state));
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
@@ -1324,12 +1325,7 @@ console.log("location.state",(location.state));
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Status")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1338,14 +1334,14 @@ console.log("location.state",(location.state));
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={vendorOption}
-                              // value={row.vendorId}
+                            
                               fullWidth
                               size="small"
                               disabled
@@ -1358,12 +1354,7 @@ console.log("location.state",(location.state));
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Vendor")}
-                                //     required={false}
-                                //   />
-                                // }
+                             
                                 />
                               )}
                             />
@@ -1413,8 +1404,7 @@ console.log("location.state",(location.state));
                             }}
                           >
                             <TextField
-                              // value={row.challanStatus}
-                              // onChange={(e) => handleInputChange(index, 'challanStatus', (e.target.value))}
+                              
                               size="small"
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
@@ -1456,9 +1446,9 @@ console.log("location.state",(location.state));
                     </tbody>
 
                   </Table>
-                </div>   </Grid>
+                </div>   </Grid> */}
 
-              {true && (
+              {/* {true && (
                 <Grid item lg={6} sm={6} xs={12}>
 
                   <Button
@@ -1482,7 +1472,7 @@ console.log("location.state",(location.state));
                   </Button>
 
                 </Grid>
-              )}
+              )} */}
 
               <Grid item xs={12}>
                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
@@ -1490,26 +1480,27 @@ console.log("location.state",(location.state));
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "15rem" }}>{t("text.itemName")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.quantity")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px'}}>{t("text.quantity")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
                         <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
                             padding: "5px",
+                            width: "10rem"
                           }}
                         >
                           {t("text.Amount")}
                         </th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px',width: "13rem" }}>{t("text.indentNo")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.preReading")}</th>
                         {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gst")}</th> */}
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
+                        {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Sgst")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Cgst")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th> */}
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.netAmount")}</th>
 
                       </tr>
@@ -1575,10 +1566,11 @@ console.log("location.state",(location.state));
                               //value={row.unitName}
                               fullWidth
                               size="small"
-                              value={unitOption.find((opt: any) => opt.value === row.unitId) || null}
+                              value={unitOption.find(e => e.value == row.unitID) || null}
+                             // value={unitOption.find((opt: any) => opt.value === row.unitId) || null}
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
-                                handleInputChange(index, 'unitId', newValue?.value);
+                                handleInputChange(index, 'unitID', newValue?.value);
                                 handleInputChange(index, 'unitName', newValue?.label);
                               }}
                               renderInput={(params) => (
@@ -1597,13 +1589,14 @@ console.log("location.state",(location.state));
                           <td
                             style={{
                               border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
+                              // textAlign: "center",
+                              // width: "6rem"
                             }}
                           >
                             <TextField
                               value={row.qty}
                               size="small"
+                              sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
                               onChange={(e) =>
                                 handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
@@ -1615,7 +1608,7 @@ console.log("location.state",(location.state));
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
-                              width: "10rem"
+                            //  width: "10rem"
                             }}
                           >
                             <TextField
@@ -1624,6 +1617,7 @@ console.log("location.state",(location.state));
                                 handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
                               }
                               size="small"
+                              sx={{ width: "90px" }}
                               inputProps={{ "aria-readonly": true }}
                               onFocus={e => e.target.select()}
                             />
@@ -1686,7 +1680,7 @@ console.log("location.state",(location.state));
                               onFocus={e => e.target.select()}
                             />
                           </td>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1735,8 +1729,8 @@ console.log("location.state",(location.state));
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
-                          <td
+                          </td> */}
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1747,7 +1741,7 @@ console.log("location.state",(location.state));
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1768,8 +1762,8 @@ console.log("location.state",(location.state));
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={7}></td>
-                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        <td colSpan={5}></td>
+                        {/* <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.ItemAmount")}
                         </td>
                         <td colSpan={6}>
@@ -1798,21 +1792,21 @@ console.log("location.state",(location.state));
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.IGST")}
-                        </td>
-                        <td colSpan={6}>
+                        </td> */}
+                        {/* <td colSpan={6}>
                           <b>:</b>
-                        </td>
+                        </td> */}
                       </tr>
                       <tr>
-                        <td colSpan={7}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.TotalItemAmount")}
                         </td>
-                        <td colSpan={6} style={{ borderTop: "1px solid black" }}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalItemAmount}
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalOutsourceItemAmount")}
@@ -1820,8 +1814,8 @@ console.log("location.state",(location.state));
                         <td colSpan={6}>
                           <b>:</b>
                         </td>
-                      </tr>
-                      <tr>
+                      </tr> */}
+                      {/* <tr>
                         <td colSpan={7}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
@@ -1829,13 +1823,13 @@ console.log("location.state",(location.state));
                         <td colSpan={6}>
                           <b>:</b>{formik.values.totalServiceAmount}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={7}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={6}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>

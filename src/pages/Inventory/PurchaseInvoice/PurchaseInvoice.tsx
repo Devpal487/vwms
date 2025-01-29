@@ -203,31 +203,37 @@ export default function PurchaseInvoice() {
                         },
                     },
                     {
-                        field: "name",
-                        headerName: t("text.name"),
+                        field: "orderNo",
+                        headerName: t("text.orderNo11"),
                         flex: 1.5,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-                    {
-                        field: "totalAmount",
-                        headerName: t("text.Amount"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
-                    {
-                        field: "totalGrossAmount",
-                        headerName: t("text.GrossAmount"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
+                    // {
+                    //     field: "name",
+                    //     headerName: t("text.name"),
+                    //     flex: 1.5,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
+                    // {
+                    //     field: "totalAmount",
+                    //     headerName: t("text.Amount"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
+                    // {
+                    //     field: "totalGrossAmount",
+                    //     headerName: t("text.netAmount"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
                    
-                    {
-                        field: "netAmount",
-                        headerName: t("text.netAmount"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
+                    // {
+                    //     field: "netAmount",
+                    //     headerName: t("text.netAmount"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
                        
-                    },
+                    // },
                     // {
                     //     field: "freight",
                     //     headerName: t("text.freights"),

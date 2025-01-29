@@ -230,7 +230,7 @@ export default function VendorItemDetail() {
 
     const headers = ["Mrn No.", "Item Name", "Net Amount", "Vendor", "Mrn Date"];
 
-    const columnWidths = [50, 50, 70, 50, 50];
+    const columnWidths = [50, 50, 50, 70, 50];
 
     const headerHeight = 8;
     const headerY = yPosition;
@@ -369,21 +369,21 @@ export default function VendorItemDetail() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 0.5,
-            headerClassName: "MuiDataGrid-colCell",
+         //   headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "mrnNo",
             headerName: t("text.mrnNo"),
-            flex: 1.3,
+            flex: 1,
             cellClassName: "wrap-text", // Added here
 
           },
           {
             field: "itemName",
             headerName: t("text.ItemName"),
-            flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
+            flex: 1,
+            //headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
@@ -391,34 +391,34 @@ export default function VendorItemDetail() {
             headerName: t("text.Quantity"),
             flex: 1,
 
-            align: "right",
-            headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
+            // align: "right",
+            // headerAlign: "right",
+            //headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "rate",
             headerName: t("text.Rate"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
+            // align: "right",
+            // headerAlign: "right",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "netAmount",
             headerName: t("text.NetAmount"),
             flex: 1,
-            align: "right",
-            headerAlign: "right",
-            headerClassName: "MuiDataGrid-colCell",
+            // align: "right",
+            // headerAlign: "right",
+          //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vendor",
             headerName: t("text.Vendor"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
+            flex: 1.7,
+         //   headerClassName: "MuiDataGrid-colCell",
 
             cellClassName: "wrap-text", // Added here
           },
@@ -429,7 +429,7 @@ export default function VendorItemDetail() {
             renderCell: (params) => {
               return moment(params.row.mrnDate).format("DD-MM-YYYY");
             },
-            headerClassName: "MuiDataGrid-colCell",
+           // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
 

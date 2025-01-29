@@ -92,9 +92,16 @@ export default function HomePage() {
   const [searchTerm5, setSearchTerm5] = useState("");
 
   let navigate = useNavigate();
+  // const handleClick1 = (key: any) => {
+  //   navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
+  // };
   const handleClick1 = (key: any) => {
+    if (key.toLowerCase() === "inhouse") {
+      return; // Do nothing for inhouse status
+    }
     navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
   };
+  
   // <Button onClick={() => handleClick1("pending")}>Pending Complaints</Button>
 
   
@@ -119,7 +126,7 @@ export default function HomePage() {
   const handlePending = () => fetchComplaintStatus("pending", setpending);
   const handleInProgress = () => fetchComplaintStatus("inprogress", setprogress);
   const handleOutsource = () => fetchComplaintStatus("JobWork", setoutsource);
-  const handleInHouse = () => fetchComplaintStatus("pending", setinhouse); // Adjust the status as needed
+  const handleInHouse = () => fetchComplaintStatus("inprogress", setinhouse); // Adjust the status as needed
   const handleClosed = () => fetchComplaintStatus("Complete", setclosed);
   const [activeTab, setActiveTab] = useState(0);
   const [columns, setColumns] = useState<GridColDef[]>([]);
@@ -805,7 +812,7 @@ export default function HomePage() {
           api.get("Dashboard/GetComplaintsStatus?Status=pending"),
           api.get("Dashboard/GetComplaintsStatus?Status=inprogress"),
           api.get("Dashboard/GetComplaintsStatus?Status=JobWork"),
-          api.get("Dashboard/GetComplaintsStatus?Status=pending"),
+          api.get("Dashboard/GetComplaintsStatus?Status=inprogress"),
           api.get("Dashboard/GetComplaintsStatus?Status=Complete"),
         ]);
         const data = {
@@ -2372,7 +2379,7 @@ th, td {
                       >
                         Complaint Status <br />
                       </Typography>
-                      <div style={{ padding: "1%" }}>
+                      {/* <div style={{ padding: "1%" }}>
                         {Object.keys(complaints).map((key) => (
                           <div key={key}>
                             <Typography
@@ -2393,7 +2400,30 @@ th, td {
                             />
                           </div>
                         ))}
-                      </div>
+                      </div> */}
+                      <div style={{ padding: "1%" }}>
+  {Object.keys(complaints).map((key) => (
+    <div key={key}>
+      <Typography
+        variant="h6"
+        style={{
+          color: key.toLowerCase() === "inhouse" ? "grey" : getColor(key),
+          cursor: key.toLowerCase() === "inhouse" ? "default" : "pointer",
+          fontSize: "100%",
+          margin: "2.5%",
+        }}
+        onClick={() => key.toLowerCase() !== "inhouse" && handleClick1(key)}
+      >
+        {key.toUpperCase()}: {complaints[key as keyof typeof complaints]}
+      </Typography>
+      <ProgressBar
+        completed={calculatePercentage(complaints[key as keyof typeof complaints])}
+        bgColor={getColor(key)}
+      />
+    </div>
+  ))}
+</div>
+
                     </Grid>
                   </Card>
                 </motion.div>

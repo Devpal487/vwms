@@ -72,7 +72,7 @@
 //             "returnQty": 0,
 //             "issueQty": 0
 //         },
-    
+
 
 
 //     ]);
@@ -93,7 +93,7 @@
 //             "indentNo": "",
 //             "stockQty": 0
 //         },
-        
+
 //     ]);
 
 //     console.log("🚀 ~ CreateStaffItemReturn ~ tableData:", tableData)
@@ -145,14 +145,14 @@
 //         const collectData = {
 //             "issueId":id1,"indentId":-1,"empId":-1
 //         };
-    
+
 //         try {
 //             const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
 //         const data = response.data.data[0]['itemIssueDetail'];
 //         formik.setFieldValue('itemIssueDetail', data);
-    
+
 //             console.log("Fetched Data from API:", data);
-    
+
 //             const indentDetails = data.map((item: any, index: any) => ({
 //                 id: index + 1,
 //                 issueId: 0,
@@ -168,9 +168,9 @@
 //                 stockQty: item.stockQty || 0,
 //                 returnItem: true,
 //             }));
-    
+
 //             console.log("Transformed Data for tableDatai:", indentDetails);
-    
+
 //             setTableDatai(indentDetails); // Set transformed data to tableDatai
 //             setIsIndentSelected(indentDetails.length > 0); // Show table if data exists
 //         } catch (error) {
@@ -179,7 +179,7 @@
 //             setIsIndentSelected(false);
 //         }
 //     };
-    
+
 //     console.log("check table", tableData)
 //     const [showIndentField, setShowIndentField] = useState(false);
 //     const GetitemData = async () => {
@@ -227,7 +227,7 @@
 //             value: item?.empid
 
 //         }))
- 
+
 //         setempOption(arr);
 //     };
 
@@ -264,7 +264,7 @@
 //         //     //     .required(t("text.reqEmpName")),
 //         // }),
 
-      
+
 
 //         onSubmit: async (values) => {
 //             // Filter and format itemReturnDetail
@@ -277,19 +277,19 @@
 //                 returnQty: row.returnQty || 0,
 //                 issueQty: row.issueQty || 0,
 //             }));
-    
+
 //             // Prepare payload
 //             const payload = {
 //                 ...values,
 //                 itemReturnDetail: formattedItemReturnDetail, // Ensure proper structure
 //                 itemIssueDetail: tableDatai,                // Use as-is
 //             };
-    
+
 //             console.log("Payload to Submit:", payload);
-    
+
 //             try {
 //                 const response = await api.post(`Master/UpsertItemReturn`, payload);
-    
+
 //                 if (response.data.status === 1) {
 //                     toast.success(response.data.message);
 //                     navigate("/Inventory/StaffItemReturn");
@@ -301,11 +301,11 @@
 //                 toast.error("Failed to submit data. Please check the console for details.");
 //             }
 //         },
-        
-        
+
+
 
 //     });
- 
+
 
 //     const handleOpenDialog = () => {
 //         setOpenDialog(true);
@@ -350,7 +350,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -383,7 +383,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -397,7 +397,7 @@
 //     };
 
 
-  
+
 
 //     const [showTable, setShowTable] = useState(false); // State to control table visibility
 //     const handleIndentChange = async (event: any, newValue: any) => {
@@ -405,9 +405,9 @@
 //             console.log("Selected Indent:", newValue);
 //             formik.setFieldValue("returnIndentNo", newValue.label.toString());
 //             formik.setFieldValue("indentId", newValue.value);
-    
+
 //             await GetIndentIDById(newValue.value);
-    
+
 //             console.log("Updated tableDatai:", tableDatai);
 //             console.log("Is Indent Selected:", isIndentSelected);
 //         }
@@ -427,7 +427,7 @@
 //                 "indentId": 0,
 //                 "returnQty": 0,
 //                 "issueQty": 0
-                
+
 //             },
 //         ]);
 //     };
@@ -454,26 +454,26 @@
 //     const handleAddIndent = () => {
 //         // Merge `tableDatai` into `tableData` with additional fields like indentNo
 //         const mergedData = [
-            
+
 //             ...tableDatai.map((item: any) => ({
 //                 ...item,
 //                 indentNo: formik.values.returnIndentNo, 
 //                 ...tableData,// Add the selected indent number
 //             })),
 //         ];
-    
+
 //         // Remove duplicates by ensuring unique `itemID`
 //         const uniqueData = mergedData.filter(
 //             (item, index, self) =>
 //                 index === self.findIndex((t) => t.itemID === item.itemID)
 //         );
-    
+
 //         setTableData(uniqueData); // Update tableData with merged rows
 //         setOpenDialog(false);     // Close the dialog
 //     };
-    
- 
-  
+
+
+
 
 
 //     return (
@@ -615,7 +615,7 @@
 //                                     style={{ cursor: "pointer" }}
 //                                 />
 //                             </td>
-                            
+
 //                             <td style={{ border: "1px solid black" }}>{row.itemName}</td>
 //                             <td style={{ border: "1px solid black" }}>{row.unitName}</td>
 //                             <td style={{ border: "1px solid black" }}>{row.batchNo}</td>
@@ -681,7 +681,7 @@
 //                                                     />
 //                                                 </td>
 //                                                 <td style={{ border: "1px solid black" }}>{row.itemName}</td>
-                                            
+
 //                                                 <td
 //                                                     style={{
 //                                                         border: "1px solid black",
@@ -707,7 +707,7 @@
 //                                                         renderInput={(params: any) => (
 //                                                             <TextField
 //                                                                 {...params}
-                                                          
+
 //                                                             />
 //                                                         )}
 //                                                     />
@@ -750,7 +750,7 @@
 //                                                            // type="number"
 //                                                             size="small"
 //                                                             value={(row.issueQty - row.returnQty) ||0}
-                                                        
+
 //                                                         />
 //                                                     </td>
 //                                                 <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
@@ -909,13 +909,13 @@ const CreateStaffItemReturn = (props: Props) => {
         GetIndentID();
         GetitemData();
         GetUnitData();
-      //  GetempData();
+        //  GetempData();
     }, []);
 
 
     const GetIndentID = async () => {
         const collectData = {
-           "issueId":-1,"indentId":-1,"empId":-1
+            "issueId": -1, "indentId": -1, "empId": -1
 
         };
 
@@ -937,7 +937,7 @@ const CreateStaffItemReturn = (props: Props) => {
 
     const GetIndentIDById = async (itemID: any) => {
         const collectData = {
-           "issueId":itemID,"indentId":-1,"empId":-1
+            "issueId": itemID, "indentId": -1, "empId": -1
 
         };
         const response = await api.post(`ItemIssue/GetItemIssue`, collectData);
@@ -1035,18 +1035,18 @@ const CreateStaffItemReturn = (props: Props) => {
 
 
             "returnId": 0,
-           // "storeId": 0,
-            "returnDate":new Date().toISOString().slice(0,10),
-            "returnType": "",
+            // "storeId": 0,
+            "returnDate": new Date().toISOString().slice(0, 10),
+            "returnType": "Staff",
             "returnIndentNo": "",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
             "createdOn": new Date().toISOString(),
-            "updatedOn":new Date().toISOString(),
+            "updatedOn": new Date().toISOString(),
             "itemReturnDetail": [],
             "itemIssueDetail": [],
             "srn": 0,
-           // "storeName": ""
+            // "storeName": ""
 
 
         },
@@ -1172,7 +1172,7 @@ const CreateStaffItemReturn = (props: Props) => {
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.CreateStaffItemReturn")}
+                                {t("text.createStaffItemReturn")}
                             </Typography>
                         </Grid>
 
@@ -1277,16 +1277,13 @@ const CreateStaffItemReturn = (props: Props) => {
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px',width:"30%" }}>Item Name</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Qty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>ReturnQty</th>
-
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
+                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Qty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ReturnQty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1298,7 +1295,7 @@ const CreateStaffItemReturn = (props: Props) => {
                                                         style={{
                                                             border: "1px solid black",
                                                             // textAlign: "center",
-                                                            width:"30p%"
+                                                            width: "30%"
                                                         }}
                                                     >
                                                         <Autocomplete
@@ -1321,17 +1318,17 @@ const CreateStaffItemReturn = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={
-                                                                        <CustomLabel
-                                                                            text={t("text.selectItem")}
-                                                                            required={false}
-                                                                        />
-                                                                    }
+                                                                    // label={
+                                                                    //     <CustomLabel
+                                                                    //         text={t("text.selectItem")}
+                                                                    //         required={false}
+                                                                    //     />
+                                                                    // }
                                                                 />
                                                             )}
                                                         />
                                                     </td>
-                                                    <td style={{ border: "1px solid black", textAlign: "center" , width:"20%"}}>
+                                                    <td style={{ border: "1px solid black", textAlign: "center", width: "20%" }}>
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
@@ -1347,31 +1344,39 @@ const CreateStaffItemReturn = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                    // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            //width: "150px"
+                                                        }}
+                                                    >
                                                         <TextField
-                                                            type="number"
+                                                            value={row.batchNo || ""} // Bind to row.batchNo
+                                                            id="BatchNo"
+                                                            name="BatchNo"
                                                             size="small"
-                                                            // type="text"
-                                                            value={row.batchNo}
-                                                            onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
+                                                            sx={{ width: "150px" }}
+                                                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                                                         />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             value={row.issueQty - row.returnQty}
+                                                            onFocus={(e) => e.target.select()}
                                                         // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
                                                         />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.issueQty}
@@ -1381,7 +1386,7 @@ const CreateStaffItemReturn = (props: Props) => {
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.returnQty}

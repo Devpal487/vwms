@@ -114,7 +114,8 @@ export default function JobCardItemReturn() {
         ...Item,
         serialNo: index + 1,
         id: Item.returnId,
-      }));
+      }))
+      .filter((Item: any) => Item.returnType === "JobCard");
       setItem(IndentWithIds);
       setIsLoading(false);
 
