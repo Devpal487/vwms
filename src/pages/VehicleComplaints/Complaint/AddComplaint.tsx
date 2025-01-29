@@ -237,11 +237,11 @@ const AddComplaint = (props: Props) => {
 
       validationSchema: Yup.object({
          itemID: Yup.string()
-            .required("Vehicle Number is required"),
+            .required(t("text.reqVehNum")),
          complaintDate: Yup.string()
             .required("Complain date is required"),
          complaint: Yup.string()
-            .required("Complaint is required"),
+            .required(t("text.reqComplain")),
       }),
 
       onSubmit: async (values) => {

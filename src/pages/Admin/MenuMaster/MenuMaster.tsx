@@ -194,7 +194,7 @@ export default function MenuMaster() {
 
   const validationSchema = Yup.object({
     menuName: Yup.string().required(
-      ("Menu Name is required"),
+      t("text.reqMenuName"),
     ),
   });
 

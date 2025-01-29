@@ -254,7 +254,7 @@ const EditComplaint = (props: Props) => {
       initialValues: {
          "sno": location.state.sno,
          "compId": location.state.compId,
-         "itemID": location.state.itemID,
+         "itemID": location.state?.itemID,
          "complaintType": location.state.complaintType,
          "complaintDoc": location.state.complaintDoc,
          "empId": location.state.empId,
@@ -262,7 +262,7 @@ const EditComplaint = (props: Props) => {
          "approveEmp3": location.state.approveEmp3,
          "approveEmp2": location.state.approveEmp2,
          "approveEmp1": location.state.approveEmp1,
-         "complaint": location.state.complaint,
+         "complaint": location.state?.complaint || "",
          "complaintNo": location.state.complaintNo,
          "createdBy": location.state.createdBy,
          "updatedBy": location.state.updatedBy,
@@ -279,6 +279,14 @@ const EditComplaint = (props: Props) => {
          "vehicleName": location.state.vehicleName,
          "empName": location.state.empName,
       },
+
+      validationSchema: Yup.object({
+         itemID: Yup.string()
+            .required(t("text.reqVehNum")),
+         complaint: Yup.string()
+            .required(t("text.reqComplain")),
+      }),
+
       onSubmit: async (values) => {
          try {
             const response = await api.post(`Master/UpsertComplaint`, values);
@@ -300,88 +308,88 @@ const EditComplaint = (props: Props) => {
 
 
    const handlePanClose = () => {
-         setPanOpen(false);
-      };
-   
-      const modalOpenHandle = (event: string) => {
-         setPanOpen(true);
-         const base64Prefix = "data:image/jpeg;base64,";
-   
-         let imageData = '';
-         switch (event) {
-            case "complaintDoc":
-               imageData = formik.values.complaintDoc;
-               break;
-            default:
-               imageData = '';
-         }
-         if (imageData) {
-            const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
-            console.log("imageData", imgSrc);
-            setImg(imgSrc);
+      setPanOpen(false);
+   };
+
+   const modalOpenHandle = (event: string) => {
+      setPanOpen(true);
+      const base64Prefix = "data:image/jpeg;base64,";
+
+      let imageData = '';
+      switch (event) {
+         case "complaintDoc":
+            imageData = formik.values.complaintDoc;
+            break;
+         default:
+            imageData = '';
+      }
+      if (imageData) {
+         const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+         console.log("imageData", imgSrc);
+         setImg(imgSrc);
+      } else {
+         setImg('');
+      }
+   };
+
+
+
+   const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      // Validate file type (only allow images)
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+         alert("Only .jpg, .jpeg, or .png image files are allowed.");
+         event.target.value = ''; // Clear input field
+         return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+         const base64String = reader.result as string;
+
+         // Use regex to remove the base64 prefix dynamically
+         const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+         if (base64Content) {
+            formik.setFieldValue(params, base64Content); // Store the stripped base64 string
          } else {
-            setImg('');
+            alert("Error processing image data.");
          }
       };
 
-      
+      reader.onerror = () => {
+         alert("Error reading file. Please try again.");
+      };
 
-      const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-            const file = event.target.files?.[0];
-            if (!file) return;
-         
-            // Validate file type (only allow images)
-            const fileExtension = file.name.split('.').pop()?.toLowerCase();
-            if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-               alert("Only .jpg, .jpeg, or .png image files are allowed.");
-               event.target.value = ''; // Clear input field
-               return;
-            }
-         
-            const reader = new FileReader();
-            reader.onload = () => {
-               const base64String = reader.result as string;
-               
-               // Use regex to remove the base64 prefix dynamically
-               const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
-               
-               if (base64Content) {
-                  formik.setFieldValue(params, base64Content); // Store the stripped base64 string
-               } else {
-                  alert("Error processing image data.");
-               }
-            };
-         
-            reader.onerror = () => {
-               alert("Error reading file. Please try again.");
-            };
-         
-            reader.readAsDataURL(file);
-         };
-   
-      // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-      //    const file = event.target.files?.[0];
-      //    if (!file) return;
-   
-      //    const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      //    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-      //       alert("Only .jpg, .jpeg, or .png image files are allowed.");
-      //       event.target.value = '';
-      //       return;
-      //    }
-   
-      //    const reader = new FileReader();
-      //    reader.onload = () => {
-      //       const base64String = reader.result as string;
-      //       formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
-      //    };
-      //    reader.onerror = () => {
-      //       alert("Error reading file. Please try again.");
-      //    };
-      //    reader.readAsDataURL(file);
-      // };
-   
-   
+      reader.readAsDataURL(file);
+   };
+
+   // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+   //    const file = event.target.files?.[0];
+   //    if (!file) return;
+
+   //    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+   //    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+   //       alert("Only .jpg, .jpeg, or .png image files are allowed.");
+   //       event.target.value = '';
+   //       return;
+   //    }
+
+   //    const reader = new FileReader();
+   //    reader.onload = () => {
+   //       const base64String = reader.result as string;
+   //       formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+   //    };
+   //    reader.onerror = () => {
+   //       alert("Error reading file. Please try again.");
+   //    };
+   //    reader.readAsDataURL(file);
+   // };
+
+
 
 
 
@@ -574,6 +582,9 @@ const EditComplaint = (props: Props) => {
                               />
                            )}
                         />
+                        {formik.touched.itemID && formik.errors.itemID && (
+                           <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemID.toString()}</div>
+                        )}
                      </Grid>
 
                      {/* Vehicle name */}

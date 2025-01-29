@@ -86,43 +86,35 @@ export default function FolderLocation() {
     //getCountryName();
   }, [isLoading]);
 
-//   const getCountryName = () => {
-//     const collectData = {
-//       countryId: -1,
-//     };
-//     api.post(`Country/GetCountryMaster`, collectData).then((res) => {
-//       const arr = [];
-//       //console.log("result" + JSON.stringify(res.data.data));
-//       for (let index = 0; index < res.data.data.length; index++) {
-//         arr.push({
-//           label: res.data.data[index]["countryName"],
-//           value: res.data.data[index]["countryId"],
-//         });
-//       }
-//       setOption(arr);
-//     });
-//   };
+  //   const getCountryName = () => {
+  //     const collectData = {
+  //       countryId: -1,
+  //     };
+  //     api.post(`Country/GetCountryMaster`, collectData).then((res) => {
+  //       const arr = [];
+  //       //console.log("result" + JSON.stringify(res.data.data));
+  //       for (let index = 0; index < res.data.data.length; index++) {
+  //         arr.push({
+  //           label: res.data.data[index]["countryName"],
+  //           value: res.data.data[index]["countryId"],
+  //         });
+  //       }
+  //       setOption(arr);
+  //     });
+  //   };
 
   const validationSchema = Yup.object({
-   
-    path: Yup.string().test(
-      "required",
-      "Path is required",
-      function (value: any) {
-        return value && value.trim() !== "";
-      }
-    ),
+    path: Yup.string()
+      .required(t("text.reqfolderpath"))
   });
 
   const formik = useFormik({
     initialValues: {
-      sno:0,
-      id:0,
-      
-      path:"",
+      sno: 0,
+      id: 0,
+      path: "",
       createdBy: "adminvm",
       updatedBy: "adminvm",
-
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
     },
@@ -135,7 +127,7 @@ export default function FolderLocation() {
         toast.success(response.data.message);
         fetchZonesData();
         formik.resetForm();
-        
+
         setEditId(0);
       } else {
         toast.error(response.data.message);
@@ -143,10 +135,10 @@ export default function FolderLocation() {
     },
   });
 
-  
+
   const routeChangeEdit = (row: any) => {
     formik.setFieldValue("path", row.path);
-    
+
 
     setEditId(row.id);
   };
@@ -160,7 +152,7 @@ export default function FolderLocation() {
   // const accept = () => {
   //   const collectData = {
   //       itemTypeMasterId: delete_id,
-      
+
   //   };
   //   console.log("collectData " + JSON.stringify(collectData));
   //   api.delete(`ItemType/DeleteItemTypeMaster`, { data: collectData }).then((response) => {
@@ -193,7 +185,7 @@ export default function FolderLocation() {
     try {
       const collectData = {
         id: -1,
-       
+
       };
       const response = await axios.post(`http://103.12.1.132:8185/GetFolder`, collectData);
       const data = response.data.data;
@@ -234,7 +226,7 @@ export default function FolderLocation() {
                     ""
                   )} */}
                   {/* {permissionData?.isDel ? ( */}
-                 
+
                 </Stack>,
               ];
             },
@@ -252,8 +244,8 @@ export default function FolderLocation() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-         
-         
+
+
         ];
         setColumns(columns as any);
       }
@@ -326,13 +318,13 @@ export default function FolderLocation() {
 
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} container spacing={3}>
-              
 
-             
 
-              <Grid xs={12} md={12}  lg={12} item>
+
+
+              <Grid xs={12} md={12} lg={12} item>
                 <TextField
-                  label={<CustomLabel text={t("text.FolderLocation")} />}
+                  label={<CustomLabel text={t("text.FolderLocation")} required={true} />}
                   value={formik.values.path}
                   name="path"
                   id="path"
@@ -343,6 +335,9 @@ export default function FolderLocation() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                {formik.touched.path && formik.errors.path && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.path.toString()}</div>
+                )}
               </Grid>
 
               <Grid item xs={2} sx={{ m: -1 }}>

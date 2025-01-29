@@ -106,7 +106,7 @@ export default function StockBin() {
    
     binName: Yup.string().test(
       "required",
-     "Bin Name Required",
+     t("text.reqBinname"),
       function (value: any) {
         return value && value.trim() !== "";
       }

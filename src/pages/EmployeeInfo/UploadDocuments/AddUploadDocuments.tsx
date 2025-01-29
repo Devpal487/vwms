@@ -139,7 +139,7 @@ const AddUploadDocuments = (props: Props) => {
 
     validationSchema: Yup.object({
       vehicleNo: Yup.string()
-        .required(t("Vehicle number is required")),
+        .required(t("text.reqVehNum")),
     }),
 
 

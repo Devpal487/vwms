@@ -196,14 +196,14 @@ const AddVendor = (props: Props) => {
   const validationSchema = Yup.object({
     name: Yup.string().test(
       "required",
-      t("text.EmpNameRequired"),
+      t("text.VendorNameRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }
     ),
     code: Yup.string().test(
       "required",
-      t("text.EmpCodeRequired"),
+      t("text.VendorCodeRequired"),
       function (value: any) {
         return value && value.trim() !== "";
       }

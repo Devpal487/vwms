@@ -159,7 +159,7 @@ const EditServiceContract = (props: Props) => {
           srno: item.srno,
           serviceName: item.serviceName
         }));
-        setTableData([...formattedData,{
+        setTableData([...formattedData, {
           contractId: 0,
           id: 0,
           serviceId: 0,
@@ -186,7 +186,7 @@ const EditServiceContract = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "contractId": location.state?.contractId,
-      "vendorId": location.state.vendorId,
+      "vendorId": location.state?.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
       "updatedBy": location.state.updatedBy,
@@ -218,6 +218,11 @@ const EditServiceContract = (props: Props) => {
       ],
       "vendorName": location.state.vendorName
     },
+
+    validationSchema: Yup.object({
+      vendorId: Yup.string()
+        .required(t("text.reqVendorName")),
+    }),
 
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
@@ -349,7 +354,7 @@ const EditServiceContract = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
-                  value={formik.values.vendorName}
+
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -361,12 +366,15 @@ const EditServiceContract = (props: Props) => {
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.Vendor")} required={false} />}
-                      name=""
-                      id=""
+                      name="vendorId"
+                      id="vendorId"
                       placeholder={t("text.Vendor")}
                     />
                   )}
                 />
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId.toString()}</div>
+                )}
               </Grid>
 
 

@@ -444,7 +444,7 @@ const AddJobWorkChallan = (props: Props) => {
 
     validationSchema: Yup.object({
       vehicleNo: Yup.string()
-        .required("Vehicle Number is required"),
+        .required(t("text.reqVehNum")),
     }),
 
     onSubmit: async (values) => {

@@ -137,7 +137,7 @@ const AddServiceContract = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       //"contractId": 0,
-      "vendorId": 0,
+      "vendorId": null,
       "effectivedate": defaultValues,
       "createdBy": "as",
       "updatedBy": "as",
@@ -169,6 +169,11 @@ const AddServiceContract = (props: Props) => {
       ],
       "vendorName": ""
     },
+
+     validationSchema: Yup.object({
+      vendorId: Yup.string()
+            .required(t("text.reqVendorName")),
+        }),
 
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
@@ -312,12 +317,15 @@ const AddServiceContract = (props: Props) => {
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.Vendor")} required={false} />}
-                      name=""
-                      id=""
+                      name="vendorId"
+                      id="vendorId"
                       placeholder={t("text.Vendor")}
                     />
                   )}
                 />
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId.toString()}</div>
+                )}
               </Grid>
 
 

@@ -363,9 +363,9 @@ const EditJobWorkChallan = (props: Props) => {
 
     validationSchema: Yup.object({
       vehicleNo: Yup.string()
-        .required("Vehicle Number is required"),
+        .required(t("text.reqVehNum")),
     }),
-
+    
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
       if (validTableData.length === 0) {
@@ -387,52 +387,52 @@ const EditJobWorkChallan = (props: Props) => {
 
 
   const handlePanClose = () => {
-      setPanOpen(false);
+    setPanOpen(false);
+  };
+
+  const modalOpenHandle = (event: string) => {
+    setPanOpen(true);
+    const base64Prefix = "data:image/jpeg;base64,";
+
+    let imageData = '';
+    switch (event) {
+      case "challanDoc":
+        imageData = formik.values.challanDoc;
+        break;
+      default:
+        imageData = '';
+    }
+    if (imageData) {
+      const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+      console.log("imageData", imgSrc);
+      setImg(imgSrc);
+    } else {
+      setImg('');
+    }
+  };
+
+  const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+      alert("Only .jpg, .jpeg, or .png image files are allowed.");
+      event.target.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
     };
-  
-    const modalOpenHandle = (event: string) => {
-      setPanOpen(true);
-      const base64Prefix = "data:image/jpeg;base64,";
-  
-      let imageData = '';
-      switch (event) {
-        case "challanDoc":
-          imageData = formik.values.challanDoc;
-          break;
-        default:
-          imageData = '';
-      }
-      if (imageData) {
-        const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
-        console.log("imageData", imgSrc);
-        setImg(imgSrc);
-      } else {
-        setImg('');
-      }
+    reader.onerror = () => {
+      alert("Error reading file. Please try again.");
     };
-  
-    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-  
-      const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-        alert("Only .jpg, .jpeg, or .png image files are allowed.");
-        event.target.value = '';
-        return;
-      }
-  
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
-      };
-      reader.onerror = () => {
-        alert("Error reading file. Please try again.");
-      };
-      reader.readAsDataURL(file);
-    };
-  
+    reader.readAsDataURL(file);
+  };
+
 
 
 

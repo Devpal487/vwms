@@ -441,9 +441,9 @@ const AddJobCard = (props: Props) => {
 
     validationSchema: Yup.object({
       fileNo: Yup.string()
-        .required("File number is required"),
+        .required(t("text.reqFilenumber")),
       itemName: Yup.string()
-        .required("Vehicle Number is required"),
+        .required(t("text.reqVehNum")),
     }),
 
     onSubmit: async (values) => {

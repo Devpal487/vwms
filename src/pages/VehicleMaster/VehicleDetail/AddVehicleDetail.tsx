@@ -312,9 +312,9 @@ const AddVehicleDetail = (props: Props) => {
       },
       validationSchema: Yup.object({
          itemName: Yup.string()
-            .required(t("Vehicle Name is required")),
+            .required(t("text.reqVehName")),
          vehicleNo: Yup.string()
-            .required(t("Vehicle Number is required")),
+            .required(t("text.reqVehNum")),
       }),
 
       onSubmit: async (values) => {

@@ -71,7 +71,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
   const [itemValue, setItemValue] = useState();
   const [vendorValue, setVendorValue] = useState();
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo"), empId: -1, empName:"" },
+    { value: -1, label: t("text.VehicleNo"), empId: -1, empName: "" },
   ]);
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
@@ -97,8 +97,8 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
       label: Item.vehicleNo,
-      empId:Item.empId,
-      empName:""
+      empId: Item.empId,
+      empName: ""
     }));
     setVehicleOption(arr);
   };
@@ -133,8 +133,8 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
       "empId": 0,
       "effDate": defaultValues,
       "type": "",
-      "vendorId": 0,
-      "itemId": 0,
+      "vendorId": null,
+      "itemId": null,
       "fromDate": defaultValues,
       "toDate": defaultValues,
       "remark": "",
@@ -171,16 +171,29 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
 
     validationSchema: Yup.object({
       itemId: Yup.string()
-        .required(t("Vehicle Number is required")),
+        .required(t("text.reqVehNum")),
       vendorId: Yup.string()
-        .required(t("Vendor name is required")),
+        .required(t("text.reqVendorName")),
       fromDate: Yup.string()
-        .required(t("From date is required")),
-      toDate: Yup.string()
-        .required(t("To date is required")),
+        .required(t("text.reqFromDate")),
+      todate: Yup.string()
+        .required(t("text.reqToDate")),
       effDate: Yup.string()
-        .required(t("Effective date is required")),
+        .required(t("text.reqEffectiveDate")),
     }),
+
+    // validationSchema: Yup.object({
+    //   itemId: Yup.string()
+    //     .required(t("Vehicle Number is required")),
+    //   vendorId: Yup.string()
+    //     .required(t("Vendor name is required")),
+    //   fromDate: Yup.string()
+    //     .required(t("From date is required")),
+    //   toDate: Yup.string()
+    //     .required(t("To date is required")),
+    //   effDate: Yup.string()
+    //     .required(t("Effective date is required")),
+    // }),
 
     onSubmit: async (values) => {
 
@@ -329,7 +342,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("itemId", parseInt(newValue?.value));
-                    formik.setFieldValue("vehicleNo",newValue?.label);
+                    formik.setFieldValue("vehicleNo", newValue?.label);
                     formik.setFieldValue("empId", parseInt(newValue?.empId));
                     formik.setFieldValue("empName", newValue?.empName);
                     setItemValue(newValue?.label);
@@ -607,7 +620,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   </Box>
                 </Modal>
               </Grid>
-             
+
 
 
               {/* Submit Button */}

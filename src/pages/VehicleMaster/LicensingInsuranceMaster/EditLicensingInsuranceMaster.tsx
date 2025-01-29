@@ -153,6 +153,19 @@ const EditLicensingInsuranceMaster = (props: Props) => {
     //     .required(t("text.reqIndentNum")),
     // }),
 
+      validationSchema: Yup.object({
+          itemId: Yup.string()
+            .required(t("text.reqVehNum")),
+          vendorId: Yup.string()
+            .required(t("text.reqVendorName")),
+          fromDate: Yup.string()
+            .required(t("text.reqFromDate")),
+          todate: Yup.string()
+            .required(t("text.reqToDate")),
+          effectiveDate: Yup.string()
+            .required(t("text.reqEffectiveDate")),
+        }),
+
     onSubmit: async (values) => {
 
       const response = await api.post(`Master/UpsertLicensing`, values);
@@ -329,9 +342,9 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                )} */}
+                 {formik.touched.itemId && formik.errors.itemId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId.toString()}</div>
+                )}
               </Grid>
 
               {/* Vendor */}
@@ -359,9 +372,9 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                )} */}
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId.toString()}</div>
+                )}
               </Grid>
 
               {/* from Date */}
@@ -386,11 +399,12 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+               {formik.touched.fromDate && formik.errors.fromDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.fromDate.toString()}
                   </div>
-                ) : null} */}
+                ) : null}
+
 
               </Grid>
 
@@ -416,11 +430,11 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+                {formik.touched.todate && formik.errors.todate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.todate.toString()}
                   </div>
-                ) : null} */}
+                ) : null}
               </Grid>
 
               {/* effective data */}
@@ -445,11 +459,11 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {/* {formik.touched.routeDate && formik.errors.routeDate ? (
+               {formik.touched.effectiveDate && formik.errors.effectiveDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.routeDate}
+                    {formik.errors.effectiveDate.toString()}
                   </div>
-                ) : null} */}
+                ) : null}
               </Grid>
 
               {/* narration */}

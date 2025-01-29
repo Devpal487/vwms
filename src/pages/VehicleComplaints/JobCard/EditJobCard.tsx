@@ -408,6 +408,14 @@ const EditJobCard = (props: Props) => {
       "serviceDetail": location.state?.serviceDetail || [],
       "update": true
     },
+
+    validationSchema: Yup.object({
+          fileNo: Yup.string()
+            .required(t("text.reqFilenumber")),
+          itemName: Yup.string()
+            .required(t("text.reqVehNum")),
+        }),
+
     onSubmit: async (values) => {
 
       const validTableData = tableData.filter(validateRow);
@@ -812,6 +820,9 @@ const EditJobCard = (props: Props) => {
                     // setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
+                 {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
+                )}
               </Grid>
 
 
@@ -884,6 +895,9 @@ const EditJobCard = (props: Props) => {
                     />
                   )}
                 />
+                {!formik.values.itemName && formik.touched.itemName && formik.errors.itemName && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemName.toString()}</div>
+                )}
               </Grid>
 
               {/* Vehicle name */}

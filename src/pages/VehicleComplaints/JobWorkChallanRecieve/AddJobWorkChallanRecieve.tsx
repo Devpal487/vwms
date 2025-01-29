@@ -175,7 +175,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
         "challanNo": 0,
         "challanDate": defaultValues,
         "challanRcvNo": 0,
-        "challanRcvDate": defaultValues,
+        "challanRcvDate": dayjs(defaultValues).format("YYYY-MM-DD"),
         "challanStatus": "",
         "netAmount": 0,
         "qty": 0,
@@ -427,7 +427,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "challanRcvNo": 0,
-      "challanRcvDate": defaultValues,
+      "challanRcvDate": dayjs(defaultValues).format("YYYY-MM-DD"),
       "challanNo": location.state?.challanNo,
       "complainId": location.state?.complainId,
       "empId": location.state?.empId,
@@ -463,14 +463,14 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "empName": location.state?.empName,
       "jobCardNo": location.state?.jobCardNo,
       "jobCardDate": location.state?.jobCardDate,
-      "challanDate": location.state?.challanDate,
+      "challanDate": location.state?.challanDate || defaultValues,
     },
 
     validationSchema: Yup.object({
       challanRcvDate: Yup.string()
-        .required("Challan Recieve Date is required"),
+        .required(t("text.reqChallanRCVDate")),
       vehicleNo: Yup.string()
-        .required("Vehicle Number is required"),
+        .required(t("text.reqVehNum")),
     }),
 
 
@@ -523,8 +523,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
         "companyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.companyId,
         "fyId": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.fyId,
         "totalItemAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.totalItemAmount,
-        "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)].totalServiceAmount,
-        "netAmount": formik.values.netAmount,
+        "totalServiceAmount": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)]?.totalServiceAmount,
+        "netAmount": formik.values?.netAmount,
         "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName || formik.values.vehicleNo,
         "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
         "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)]?.serviceDetail || [],

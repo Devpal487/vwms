@@ -159,9 +159,9 @@ const AddUtilizationLog = (props: Props) => {
     },
     validationSchema: Yup.object({
       empId: Yup.string()
-        .required(t("Employee name is required")),
+        .required(t("text.reqEmpName")),
       itemId: Yup.string()
-        .required(t("Vehicle Number is required")),
+        .required(t("text.reqVehNum")),
     }),
 
     onSubmit: async (values) => {
