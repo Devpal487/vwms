@@ -91,7 +91,7 @@ export default function JobCard() {
       "totalItemAmount": 0,
       "totalServiceAmount": 0,
       "netAmount": 0,
-      "itemName": "",
+      "vehicleNo": "",
       "empName": "",
       "serviceDetail": [
          {
@@ -335,7 +335,7 @@ export default function JobCard() {
                   headerClassName: "MuiDataGrid-colCell",
                },
                {
-                  field: "itemName",
+                  field: "vehicleNo",
                   headerName: t("text.VehicleNo"),
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",

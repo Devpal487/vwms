@@ -177,12 +177,12 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
         .required(t("text.reqVehNum")),
       vendorId: Yup.string()
         .required(t("text.reqVendorName")),
-      fromDate: Yup.string()
-        .required(t("text.reqFromDate")),
-      todate: Yup.string()
-        .required(t("text.reqToDate")),
-      effDate: Yup.string()
-        .required(t("text.reqEffectiveDate")),
+      // fromDate: Yup.string()
+      //   .required(t("text.reqFromDate")),
+      // todate: Yup.string()
+      //   .required(t("text.reqToDate")),
+      // effDate: Yup.string()
+      //   .required(t("text.reqEffectiveDate")),
     }),
 
     onSubmit: async (values) => {
@@ -405,9 +405,9 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {formik.touched.effDate && formik.errors.effDate && (
+                {/* {formik.touched.effDate && formik.errors.effDate && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.effDate.toString()}</div>
-                )}
+                )} */}
               </Grid>
 
 
@@ -459,11 +459,11 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-                {formik.touched.fromDate && formik.errors.fromDate ? (
+                {/* {formik.touched.fromDate && formik.errors.fromDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.fromDate.toString()}
                   </div>
-                ) : null}
+                ) : null} */}
 
 
               </Grid>
@@ -488,11 +488,11 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
                   onChange={formik.handleChange}
                   InputLabelProps={{ shrink: true }}
                 />
-                {formik.touched.toDate && formik.errors.toDate ? (
+                {/* {formik.touched.toDate && formik.errors.toDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.toDate.toString()}
                   </div>
-                ) : null}
+                ) : null} */}
               </Grid>
 
 

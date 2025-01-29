@@ -124,7 +124,7 @@ const EditJobCard1 = (props: Props) => {
     "totalItemAmount": 0,
     "totalServiceAmount": 0,
     "netAmount": 0,
-    "itemName": "",
+    "vehicleNo": "",
     "empName": "",
     "serviceDetail": [
       {
@@ -545,7 +545,7 @@ console.log("location.state",(location.state));
       "totalItemAmount": location.state?.totalItemAmount || 0,
       "totalServiceAmount": location.state?.totalServiceAmount || 0,
       "netAmount": location.state?.netAmount || 0,
-      "itemName": location.state?.itemName || "",
+      "vehicleNo": location.state?.vehicleNo || "",
       "empName": location.state?.empName || "",
       "serviceDetail": location.state?.serviceDetail || [],
       itemDetail: location.state?.itemDetail || [],
@@ -1033,7 +1033,7 @@ console.log("location.state",(location.state));
                       return e;
                     }
                   })}
-                  value={formik.values.itemName}
+                  value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -1060,8 +1060,8 @@ console.log("location.state",(location.state));
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="itemName"
-                      id="itemName"
+                      name="vehicleNo"
+                      id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
@@ -1892,7 +1892,7 @@ console.log("location.state",(location.state));
                 style={{ marginTop: "10px" }}
               >
                 {/* Vendor Evaluation Button */}
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     type="button"
                     disabled={!isIndentEnabled} // Disable initially
@@ -1904,7 +1904,7 @@ console.log("location.state",(location.state));
                   >
                     {t("text.vendorevaluation")}
                   </Button>
-                </Grid>
+                </Grid> */}
 
 
                 {/* Submit Button */}

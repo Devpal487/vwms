@@ -433,7 +433,15 @@ const CreateWorkShopPurchaseOrder = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const base64String = reader.result as string;
-            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+            const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+            if (base64Content) {
+                formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+             } else {
+                alert("Error processing image data.");
+             }
+          
+            //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
         reader.onerror = () => {
             alert("Error reading file. Please try again.");
@@ -1034,7 +1042,8 @@ const CreateWorkShopPurchaseOrder = () => {
                                         {formik.values.pOrderDoc ? (
                                             <img
                                                 src={
-                                                    formik.values.pOrderDoc.startsWith("data:image")
+                                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
+                                                   // formik.values.pOrderDoc.startsWith("data:image")
                                                         ? formik.values.pOrderDoc
                                                         : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
                                                 }

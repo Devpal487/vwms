@@ -162,7 +162,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
     "totalItemAmount": 0,
     "totalServiceAmount": 0,
     "netAmount": 0,
-    "itemName": "",
+    "vehicleNo": "",
     "empName": "",
     "serviceDetail": [
       {
@@ -1009,7 +1009,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                       console.log("newValue" + JSON.stringify(newValue));
                       console.log("newValue" + JSON.stringify(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail));
                       //formik.setFieldValue("itemName", newValue?.label2);
-                      formik.setFieldValue("itemName", newValue?.vehicleNo);
+                      formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
                       formik.setFieldValue("itemId", newValue?.itemID);
                       formik.setFieldValue("empId", newValue?.empId);
                       formik.setFieldValue("empName", newValue?.empName);
@@ -1084,8 +1084,8 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <TextField
                       {...params}
                       label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
-                      name="itemName"
-                      id="itemName"
+                      name="vehicleNo"
+                      id="vehicleNo"
                       placeholder={t("text.VehicleNo")}
                     />
                   )}
@@ -1878,11 +1878,11 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <tfoot>
                     
                       <tr>
-                        <td colSpan={6}></td>
+                        <td colSpan={5}></td>
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.TotalItemAmount")}
                         </td>
-                        <td colSpan={6} style={{ textAlign: "end" }}>
+                        <td colSpan={5} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalItemAmount}
                         </td>
                       </tr>
@@ -1897,11 +1897,11 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                         </td>
                       </tr> */}
                       <tr>
-                        <td colSpan={6}></td>
+                        <td colSpan={5}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={6} style={{ textAlign: "end" }}>
+                        <td colSpan={5} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>
@@ -1963,7 +1963,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                 style={{ marginTop: "10px" }}
               >
                 {/* Vendor Evaluation Button */}
-                <Grid item>
+                {/* <Grid item>
                   <Button
                     type="button"
                     disabled={!isIndentEnabled} // Disable initially
@@ -1975,7 +1975,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                   >
                     {t("text.vendorevaluation")}
                   </Button>
-                </Grid>
+                </Grid> */}
 
 
                 {/* Submit Button */}
