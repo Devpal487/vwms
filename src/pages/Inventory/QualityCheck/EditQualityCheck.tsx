@@ -74,7 +74,9 @@ const EditQualityCheck = (props: Props) => {
   const [orderOption, setorderOption] = useState([
     { value: -1, label: t("text.id") },
   ]);
-
+const [unitOptions, setUnitOptions] = useState([
+    { value: "-1", label: t("text.SelectUnitId") },
+  ]);
   const [itemOption, setitemOption] = useState<any>([]);
   const [qcOptions, setQcOptions] = useState([]);
 
@@ -93,10 +95,25 @@ const EditQualityCheck = (props: Props) => {
     GetitemData();
     GetorderData();
     GetmrnData();
+    GetUnitData();
     //GetQcData();
 
   }, []);
-
+  const GetUnitData = async () => {
+    const collectData = {
+      unitId: -1,
+    };
+    const response = await api.post(`UnitMaster/GetUnitMaster`, collectData);
+    const data = response.data.data;
+    const arr = [];
+    for (let index = 0; index < data.length; index++) {
+      arr.push({
+        label: data[index]["unitName"],
+        value: data[index]["unitId"],
+      });
+    }
+    setUnitOptions(arr);
+  };
   const GetmrnData = async () => {
     const collectData = {
       "mrnId": -1
@@ -145,7 +162,7 @@ const EditQualityCheck = (props: Props) => {
 
   const getQcById = (id: any) => {
 
-    
+
     api.post(`QualityCheck/GetQc`, { QcId: id })
       .then((response) => {
         if (response.data && response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
@@ -952,6 +969,15 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.BatchNo")}
                         </th>
+                        {/* <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.unit")}
+                        </th> */}
                         <th
                           style={{
                             border: "1px solid black",
@@ -988,7 +1014,7 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.Rate")}
                         </th>
-                        <th
+                        {/* <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -996,7 +1022,7 @@ const EditQualityCheck = (props: Props) => {
                           }}
                         >
                           {t("text.Amount")}
-                        </th>
+                        </th> */}
                         <th
                           style={{
                             border: "1px solid black",
@@ -1055,6 +1081,7 @@ const EditQualityCheck = (props: Props) => {
                               options={orderOption}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
                               value={
                                 orderOption[orderOption.findIndex((e: any) => e.value == row.orderId)]?.label || ""
                               }
@@ -1092,6 +1119,7 @@ const EditQualityCheck = (props: Props) => {
                               options={itemOption}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
                               value={
                                 itemOption[itemOption.findIndex((e: any) => e.value == row.itemId)]?.label || ""
                               }
@@ -1128,10 +1156,34 @@ const EditQualityCheck = (props: Props) => {
                             <TextField
                               value={row.batchNo}
                               size="small"
+                              sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                               onFocus={e => e.target.select()}
                             />
                           </td>
+                          {/* <td style={{ border: "1px solid black", textAlign: "center" }}>
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={unitOptions}
+                              value={
+                                unitOptions.find((opt) => (opt.value) === row?.unitId) || null
+                              }
+                              fullWidth
+                              size="small"
+                              sx={{ width: "130px" }}
+                              onChange={(e, newValue: any) =>
+                                handleInputChange(index, "unitId", newValue?.value)
+                              }
+
+                              renderInput={(params: any) => (
+                                <TextField
+                                  {...params}
+                                //  label={<CustomLabel text={t("text.selectUnit")} />}
+                                />
+                              )}
+                            />
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1187,7 +1239,7 @@ const EditQualityCheck = (props: Props) => {
                               onFocus={e => e.target.select()}
                             />
                           </td>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1197,8 +1249,9 @@ const EditQualityCheck = (props: Props) => {
                               value={row.amount}
                               size="small"
                               inputProps={{ readOnly: true }}
+                              onFocus={e => e.target.select()}
                             />
-                          </td>
+                          </td> */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1297,7 +1350,7 @@ const EditQualityCheck = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1305,7 +1358,7 @@ const EditQualityCheck = (props: Props) => {
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totaltaxamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
@@ -1313,7 +1366,7 @@ const EditQualityCheck = (props: Props) => {
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalgrossamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>

@@ -12,6 +12,8 @@ const resources = {
       text: {
         ////
         /////
+        indentNo00:"Indent No.",
+        orderNo11:"Order No.",
         type:"Type",
         item: "Item",
         ItemConsumedReport: "Item Consumed Report",
@@ -1443,7 +1445,7 @@ const resources = {
         //staff item return
         SelectReturnIndentno: "Select Return Indent No",
         //grid
-        returnType: "Return Type",
+       // returnType: "Return Type",
         returnIndentNo: "Return Indent No",
         editStaffIndent: "Edit Staff Indent",
         approveQuantity: "Approve Quantity",
@@ -7336,7 +7338,7 @@ const resources = {
         //staff item return
         SelectReturnIndentno: "Select Return Indent No",
         //grid
-        returnType: "Return Type",
+       // returnType: "Return Type",
         returnIndentNo: "Return Indent No",
         editStaffIndent: "Edit Staff Indent",
         approveQuantity: "Approve Quantity",
@@ -8884,10 +8886,10 @@ const resources = {
         JobCardNo: "Job Card Number",
         ComplainDateFrom: "Complain Date From",
         ComplainDateTo: "Complain Date To",
-        OpeningBallence: "Opening Ballance",
+        OpeningBallence: "Opening Balance",
         InQuantuty: "In Quantity",
         OutQuantity: "Out Quantity",
-        Ballence: "Ballance",
+        Ballence: "Balance",
 
         Days: "Days",
         SelectTax: "Select Tax",
@@ -8911,6 +8913,11 @@ const resources = {
         password: "Password",
         currFinYear:"Current Financial Year",
 
+        
+RCDocument: "Attach RC Document",
+VehicleImage: "Attach Vehicle Image",
+VehicleNum: "VehicleNo",
+reqLocName: "Location name is required",
 
         RCDocument:"Attach RC Document",
         VehicleImage:"Attach Vehicle Image",
@@ -8921,18 +8928,35 @@ const resources = {
 
 
 
+reqStateName: "State name is required",
+reqCityname: "City name is required",
+reqfolderpath: "Folder path is required",
+reqFinYear: "Financial Year is required",
+reqBinname: "Bin name Required",
+
+reqCompanyName:"Company Name is required",
+reqAddress:"Address is required",
+reqComplain:"Complain is required",
+reqVehNum:"Vehicle Number is required",
 
 
+reqFilenumber:"File number is required",
+reqChallanRCVDate:"Challan Recieve Date is required",
+reqServiceName:"Service Name is required",
+reqVendorName:"Vendor Name is required",
 
+VendorNameRequired:"Vendor Name is required",
+VendorCodeRequired:"Vendor Code is required",
 
-
-
-
-
-
-
-
-
+reqFromDate:"From Date is required",
+reqToDate:"To Date is required",
+reqEffectiveDate:"Effective Date is required",
+reqVehicleType:"Vehicle type name is required",
+reqVehName:"Vehicle Name is required",
+reqPetrolName:"Petrol pump name is required",
+reqMenuName:"Menu Name is required",
+reqPageName:"Page Name is required",
+reqJuridiction:"Juridiction Name is required",
 
 
 
@@ -8973,6 +8997,10 @@ const resources = {
       error: {},
       message: {},
       text: {
+
+        //
+        returnIndentNo:"वापसी इंडेंट नंबर",
+        returnType:"वापसी प्रकार",
         groupName: "समूह का नाम दर्ज करें",
         wardId: "वार्ड का नाम  चुनें",
         zoneId: "जोन का नाम चुनें",
@@ -13109,8 +13137,50 @@ const resources = {
         binCode:"स्टॉक बिन कोड",
         binCode1:"स्टॉक बिन कोड",
 
+        RCDocument: "आरसी दस्तावेज़ संलग्न करें",
+        VehicleImage: "वाहन छवि संलग्न करें",
+
+        reqStateName: "राज्य का नाम आवश्यक है",
+        reqCityname: "शहर का नाम आवश्यक है",
+        reqfolderpath: "फोल्डर पथ आवश्यक है",
+        reqFinYear: "वित्तीय वर्ष आवश्यक है",
+        reqBinname: "बिन का नाम आवश्यक है",
+        enteritemType1:"आइटम प्रकार चुनें",
+        ItemType1:"आइटम प्रकार",
+        DrivingLicence:"ड्राइविंग लाइसेंस",
+        enterComplaint:"शिकायत दर्ज करें",
+        reqDeptName:"विभाग का नाम आवश्यक है",
+        reqDesignationName:"पदनाम आवश्यक है",
+        Website:"वेबसाइट",
+        reqCompanyName: "कंपनी का नाम आवश्यक है",
+        reqAddress: "पता आवश्यक है",
+        reqVehNum:"वाहन नंबर आवश्यक है",
+        reqComplain:"शिकायत आवश्यक है",
+        reqFilenumber:"फ़ाइल संख्या आवश्यक है",
+        reqChallanRCVDate:"चालान प्राप्ति तिथि आवश्यक है",
+        reqServiceName:"सेवा का नाम आवश्यक है",
+        reqVendorName:"विक्रेता का नाम आवश्यक है",
+        VendorNameRequired:"विक्रेता का नाम आवश्यक है",
+        VendorCodeRequired:"विक्रेता कोड आवश्यक है",
+        reqFromDate: "प्रारंभ तिथि आवश्यक है",
+        reqToDate: "समाप्ति तिथि आवश्यक है",
+        reqEffectiveDate: "प्रभावी तिथि आवश्यक है",
+        reqVehicleType:"वाहन के प्रकार का नाम आवश्यक है",
+        reqVehName:"वाहन का नाम आवश्यक है",
+        reqBrandName:"ब्रांड नाम आवश्यक है",
+        reqBrandCode:"ब्रांड कोड आवश्यक है",
+        reqFuelTypeName:"ईंधन प्रकार आवश्यक है",
+        reqLocName:"स्थान का नाम आवश्यक है",
+        reqPetrolName:"पेट्रोल पंप का नाम आवश्यक है",
+        reqMenuName:"मेनू नाम आवश्यक है",
+        reqPageName:"पेज का नाम आवश्यक है",
+        reqJuridiction:"क्षेत्राधिकार का नाम आवश्यक है",
+        ComplaintApproval:"शिकायत अनुमोदन", 
+        EditComplaintApproval:"शिकायत अनुमोदन संपादित करें",
+
         RCDocument:"आरसी दस्तावेज़ संलग्न करें",
         VehicleImage:"वाहन छवि संलग्न करें",
+
       },
 
       content: {},

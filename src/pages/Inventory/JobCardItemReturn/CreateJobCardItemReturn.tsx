@@ -1099,7 +1099,7 @@ const CreateJobCardItemReturn = (props: Props) => {
             "returnId": 0,
             // "storeId": 0,
             "returnDate": new Date().toISOString().slice(0, 10),
-            "returnType": "",
+            "returnType": "JobCard",
             "returnIndentNo": "",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
@@ -1339,16 +1339,16 @@ const CreateJobCardItemReturn = (props: Props) => {
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "30%" }}>Item Name</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Qty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>ReturnQty</th>
+                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
 
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Qty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ReturnQty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1360,7 +1360,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                         style={{
                                                             border: "1px solid black",
                                                             // textAlign: "center",
-                                                            width: "30p%"
+                                                            width: "30%"
                                                         }}
                                                     >
                                                         <Autocomplete
@@ -1383,12 +1383,12 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={
-                                                                        <CustomLabel
-                                                                            text={t("text.selectItem")}
-                                                                            required={false}
-                                                                        />
-                                                                    }
+                                                                    // label={
+                                                                    //     <CustomLabel
+                                                                    //         text={t("text.selectItem")}
+                                                                    //         required={false}
+                                                                    //     />
+                                                                    // }
                                                                 />
                                                             )}
                                                         />
@@ -1409,7 +1409,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                    // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />
@@ -1435,6 +1435,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             // type="number"
                                                             size="small"
                                                             value={row.issueQty - row.returnQty}
+                                                            onFocus={(e) => e.target.select()}
                                                         // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
                                                         />
                                                     </td>

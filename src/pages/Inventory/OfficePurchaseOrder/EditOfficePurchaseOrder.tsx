@@ -2477,23 +2477,24 @@ const EditOfficePurchaseOrder = () => {
                                                 </th>
 
                                                 <th
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                        padding: "5px",
-                                                    }}
-                                                >
-                                                    CGST
-                                                </th>
-                                                <th
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                        padding: "5px",
-                                                    }}
-                                                >
-                                                    SGST
-                                                </th >
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                         {t("text.cgst")}
+                      
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.sgst")}
+                      </th>
                                                 {/* <th
                                                     style={{
                                                         border: "1px solid black",

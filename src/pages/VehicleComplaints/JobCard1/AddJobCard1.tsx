@@ -1348,7 +1348,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
 
 
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
@@ -1368,8 +1368,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                          {/* {formik.values.serviceDetail.map((row, index) => (
-                        <tr key={index}> */}
+                          
 
                           <td
                             style={{
@@ -1388,22 +1387,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               style={{ cursor: "pointer" }}
                             />
                           </td>
-                          {/* <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <DeleteIcon
-                              onClick={() => {
-                                const newDetails = formik.values.serviceDetail.filter(
-                                  (_, i) => i !== index
-                                );
-                                formik.setFieldValue("serviceDetail", newDetails);
-                              }}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </td> */}
+                        
                           <td
                             style={{
                               border: "1px solid black"
@@ -1413,7 +1397,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               disablePortal
                               id="combo-box-demo"
                               options={serviceOption}
-                              // value={row.serviceId}
+                             
                               sx={{ width: "225px" }}
                               size="small"
                               onChange={(_, newValue: any) => {
@@ -1427,12 +1411,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.SelectServices")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1441,7 +1420,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                             
                             }}
                           >
                             <Autocomplete
@@ -1458,12 +1437,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.Status")}
-                                //     required={false}
-                                //   />
-                                // }
+                               
                                 />
                               )}
                             />
@@ -1471,14 +1445,14 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                           <td
                             style={{
                               border: "1px solid black",
-                              // textAlign: "center",
+                              
                             }}
                           >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={vendorOption}
-                              // value={row.vendorName}
+                             
                               fullWidth
                               size="small"
                               onChange={(_, newValue: any) => {
@@ -1535,7 +1509,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                           }}
                           >
                             <TextField
-                              // value={row.netAmount}
+                              
                               onChange={(e) =>
                                 handleInputChange(index, "netAmount", parseFloat(e.target.value) || 0)
                               }
@@ -1580,10 +1554,10 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     </tbody>
                   </Table>
 
-                </div> </Grid>
+                </div> </Grid> */}
 
 
-              {true && (
+              {/* {true && (
 
 
                 <Grid item lg={6} sm={6} xs={12}>
@@ -1608,7 +1582,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                   </Button>
 
                 </Grid>
-              )}
+              )} */}
 
               <Grid item xs={12}>
                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
@@ -1618,7 +1592,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.quantity")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
@@ -1634,10 +1608,10 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.indentNo")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.preReading")}</th>
                         {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gst")}</th> */}
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
+                        {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.gstRate")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Sgst")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Cgst")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Igst")}</th> */}
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.netAmount")}</th>
 
                       </tr>
@@ -1677,7 +1651,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               options={itemOption}
                               fullWidth
                               size="small"
-                              sx={{ width: "225px" }}
+                              sx={{ width: "210px" }}
                               onChange={(e: any, newValue: any) =>
                                 handleInputChange1(
                                   index,
@@ -1699,6 +1673,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                             style={{
                               border: "1px solid black",
                               // textAlign: "center",
+                              width: "10rem"
                             }}
                           >
                             <Autocomplete
@@ -1786,6 +1761,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               options={indentOptions}
                               fullWidth
                               size="small"
+                              sx={{ width: "225px" }}
                               onChange={(e: any, newValue: any) => {
                                 console.log(newValue?.value);
                                 handleInputChange1(index, 'indentId', newValue?.value);
@@ -1816,7 +1792,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                             />
                           </td>
 
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1868,8 +1844,8 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               inputProps={{ readOnly: true }}
                               disabled
                             />
-                          </td>
-                          <td
+                          </td>*/}
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1880,7 +1856,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
-                          </td>
+                          </td>  */}
                           <td
                             style={{
                               border: "1px solid black",
@@ -1902,7 +1878,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <tfoot>
                     
                       <tr>
-                        <td colSpan={9}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.TotalItemAmount")}
                         </td>
@@ -1911,17 +1887,17 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                         </td>
                       </tr>
                       
-                      <tr>
-                        <td colSpan={9}></td>
+                      {/* <tr>
+                        <td colSpan={5}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={6} style={{ textAlign: "end" }}>
+                        <td colSpan={5} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalServiceAmount}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={9}></td>
+                        <td colSpan={6}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>

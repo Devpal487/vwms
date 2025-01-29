@@ -2442,7 +2442,8 @@ const CreateQualityCheck = (props: Props) => {
                           padding: "5px",
                         }}
                       >
-                        CGST
+                         {t("text.cgst")}
+                      
                       </th>
                       <th
                         style={{
@@ -2451,7 +2452,7 @@ const CreateQualityCheck = (props: Props) => {
                           padding: "5px",
                         }}
                       >
-                        SGST
+                        {t("text.sgst")}
                       </th>
                       {/* <th
                         style={{
@@ -2566,6 +2567,7 @@ const CreateQualityCheck = (props: Props) => {
                             size="small"
                             sx={{ width: "150px" }}
                             onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
 
@@ -2608,6 +2610,7 @@ const CreateQualityCheck = (props: Props) => {
                               row.mrnQty
                             }
                             onChange={(e) => handleInputChange(index, "mrnQty", e.target.value)}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
                         <td
@@ -2621,6 +2624,7 @@ const CreateQualityCheck = (props: Props) => {
                             value={row.acceptQty}
                             onChange={(e) => handleInputChange(index, "acceptQty", e.target.value)}
                             inputProps={{ step: "any", min: "0" }}
+                            onFocus={e => e.target.select()}
                           />
                         </td>
                         <td
@@ -2636,6 +2640,7 @@ const CreateQualityCheck = (props: Props) => {
                               const newvalue = Number(row.mrnQty) - Number(row.acceptQty)
                               handleInputChange(index, "rejectQty", newvalue)
                             }}
+                            onFocus={e => e.target.select()}
                             inputProps={{ readOnly: true }}
                           />
                         </td>

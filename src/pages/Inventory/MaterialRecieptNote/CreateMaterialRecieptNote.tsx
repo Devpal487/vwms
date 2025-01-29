@@ -1077,23 +1077,24 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         </th>
 
                         <th
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            padding: "5px",
-                          }}
-                        >
-                          CGST
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                            padding: "5px",
-                          }}
-                        >
-                          SGST
-                        </th>
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                         {t("text.cgst")}
+                      
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.sgst")}
+                      </th>
                         {/* <th
                           style={{
                             border: "1px solid black",
@@ -1206,6 +1207,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                              onFocus={(e) => { e.target.select() }}
                             />
                           </td>
 

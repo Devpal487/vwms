@@ -61,7 +61,7 @@ const CreatePurchaseInvoice = () => {
   const { defaultValues } = getISTDate();
 
   const [toaster, setToaster] = useState(false);
-  const [vendorData, setVendorData] = useState([]);
+  const [vendorData, setVendorData] = useState<{ label: string; value: number; details: any }[]>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const [purchaseData,setPurchaseData]=useState<any>([]);
   // const initialRowData: any = {
@@ -209,51 +209,92 @@ const CreatePurchaseInvoice = () => {
       setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
     }
   };
-
   const GetOrderIDById = async (itemId: any) => {
     const collectData = {
       orderId: itemId,
-
       indentId: -1,
-
     };
+  
     const response = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
-    const data = response.data.data[0]['purchaseOrderDetail'];
-    setPurchaseData(data);
-
-    console.log("indent option", data)
-
-
-    const purchase = data.map((item: any, index: any) => ({
-
-      id: index + 1,
-      "invoiceId": 0,
-      gstId: item?.gstId,
-      rate: item?.rate,
-      cgst: item?.cgst,
-      sgst: item?.sgst,
-      igst: item?.igst,
-      netAmount: item?.netAmount,
-
-      itemId: item?.itemId,
-      unitId: item?.unitId,
-      quantity: item?.quantity,
-
-      amount: item?.amount,
-      unitName: "",
-      itemName: "",
-      //  indentNo: "",
-      "srn": 0,
-
-      isDelete: true,
-
-
-    }))
-
-    setTableData(purchase);
-    setIsIndentSelected(true);
-
+    
+    if (response.data.data.length > 0) {
+      const orderDetails = response.data.data[0]; // Extract order details
+      const vendorId = orderDetails.vendorId; // Get vendor ID
+  
+      setPurchaseData(orderDetails.purchaseOrderDetail); // Update purchase data
+  
+      const purchase = orderDetails.purchaseOrderDetail.map((item: any, index: any) => ({
+        id: index + 1,
+        invoiceId: 0,
+        gstId: item?.gstId,
+        rate: item?.rate,
+        cgst: item?.cgst,
+        sgst: item?.sgst,
+        igst: item?.igst,
+        netAmount: item?.netAmount,
+        itemId: item?.itemId,
+        unitId: item?.unitId,
+        quantity: item?.quantity,
+        amount: item?.amount,
+        unitName: "",
+        itemName: "",
+        srn: 0,
+        isDelete: true,
+      }));
+  
+      setTableData(purchase);
+      setIsIndentSelected(true);
+  
+      return vendorId; // Return vendor ID for immediate use
+    }
+  
+    return null;
   };
+  
+  // const GetOrderIDById = async (itemId: any) => {
+  //   const collectData = {
+  //     orderId: itemId,
+
+  //     indentId: -1,
+
+  //   };
+  //   const response = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+  //   const data = response.data.data[0]['purchaseOrderDetail'];
+  //   setPurchaseData(data);
+
+  //   console.log("indent option", data)
+
+
+  //   const purchase = data.map((item: any, index: any) => ({
+
+  //     id: index + 1,
+  //     "invoiceId": 0,
+  //     gstId: item?.gstId,
+  //     rate: item?.rate,
+  //     cgst: item?.cgst,
+  //     sgst: item?.sgst,
+  //     igst: item?.igst,
+  //     netAmount: item?.netAmount,
+
+  //     itemId: item?.itemId,
+  //     unitId: item?.unitId,
+  //     quantity: item?.quantity,
+
+  //     amount: item?.amount,
+  //     unitName: "",
+  //     itemName: "",
+  //     //  indentNo: "",
+  //     "srn": 0,
+
+  //     isDelete: true,
+
+
+  //   }))
+
+  //   setTableData(purchase);
+  //   setIsIndentSelected(true);
+
+  // };
 
   // const handleVendorSelect = (event: any, newValue: any) => {
   //   if (newValue && newValue.value !== "-1") {
@@ -591,7 +632,41 @@ const CreatePurchaseInvoice = () => {
               </Grid>
 
               <Grid item xs={12} sm={4} lg={4}>
-                <Autocomplete
+              <Autocomplete
+  disablePortal
+  id="combo-box-demo"
+  options={orderOption}
+  fullWidth
+  size="small"
+  onChange={async (event: any, newValue: any) => {
+    if (newValue) {
+      const vendorId = await GetOrderIDById(newValue?.value); // Get vendor ID from function
+
+      formik.setFieldValue("orderNo", newValue?.label);
+      formik.setFieldValue("orderId", newValue?.value);
+
+      if (vendorId) {
+        formik.setFieldValue("vendorId", vendorId);
+
+        // Find vendor name from vendorData
+        const selectedVendor = vendorData.find((vendor: any) => vendor.value === vendorId);
+        if (selectedVendor) {
+          formik.setFieldValue("name", selectedVendor.label);
+        }
+      }
+    }
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label={<CustomLabel text={t("text.orderno")} required={true} />}
+    />
+  )}
+/>
+
+
+
+                {/* <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={orderOption}
@@ -605,7 +680,7 @@ const CreatePurchaseInvoice = () => {
                       formik.setFieldValue("orderNo", newValue?.label);
                       formik.setFieldValue("orderId", newValue?.value);
                       formik.setFieldValue("vendorId", purchaseData[0]?.vendorId);
-                      //formik.setFieldValue("name", purchaseData[purchaseData.findIndex((item: any) => item.orderId === newValue?.value)]?.name);
+                     // formik.setFieldValue("name", purchaseData[purchaseData.findIndex((item: any) => item.orderId === newValue?.value)]?.name);
                     }
                   }}
                   renderInput={(params) => (
@@ -619,7 +694,7 @@ const CreatePurchaseInvoice = () => {
                       }
                     />
                   )}
-                />
+                /> */}
               </Grid>
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -646,17 +721,17 @@ const CreatePurchaseInvoice = () => {
               </Grid>
 
               <Grid item lg={4} xs={12}>
-                <Autocomplete
+                {/* <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={vendorData}
-                  value={formik.values.vendorId}
+                 value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vendorId", newValue?.value);
-                    //formik.setFieldValue("name", newValue?.label);
+                    formik.setFieldValue("name", newValue?.label);
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -666,7 +741,30 @@ const CreatePurchaseInvoice = () => {
                       }
                     />
                   )}
-                />
+                /> */}
+            <Autocomplete
+  disablePortal
+  id="vendor-autocomplete"
+  options={vendorData}
+  fullWidth
+  size="small"
+  value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
+  onChange={(event: any, newValue: any) => {
+    if (newValue) {
+      formik.setFieldValue("vendorId", newValue?.value);
+      formik.setFieldValue("name", newValue?.label);
+    }
+  }}
+  renderInput={(params) => (
+    <TextField
+      {...params}
+      label={<CustomLabel text={t("text.Vendorname")} required={false} />}
+    />
+  )}
+/>
+
+
+
               </Grid>
 
               {/* <Grid item lg={4} xs={12} md={6}>
@@ -843,23 +941,24 @@ const CreatePurchaseInvoice = () => {
                           </th>
 
                           <th
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              padding: "5px",
-                            }}
-                          >
-                            CGST
-                          </th>
-                          <th
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              padding: "5px",
-                            }}
-                          >
-                            SGST
-                          </th >
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                         {t("text.cgst")}
+                      
+                      </th>
+                      <th
+                        style={{
+                          border: "1px solid black",
+                          textAlign: "center",
+                          padding: "5px",
+                        }}
+                      >
+                        {t("text.sgst")}
+                      </th>
                           {/* <th
                             style={{
                               border: "1px solid black",
