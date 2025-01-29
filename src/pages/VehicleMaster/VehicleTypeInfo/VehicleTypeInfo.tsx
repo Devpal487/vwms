@@ -37,6 +37,7 @@ import { useFormik } from "formik";
 import { getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
+import dayjs from "dayjs";
 interface MenuPermission {
    isAdd: boolean;
    isEdit: boolean;
@@ -120,7 +121,7 @@ export default function VehicleTypeInfo() {
          "sessionD2": 0,
          "petroName": "",
          "createdOn": defaultValuestime,
-         "effectiveDate": defaultValuestime,
+         "effectiveDate": dayjs(defaultValuestime).format("YYYY-MM-DD"),
          "updateOn": defaultValuestime,
          "createdBy": "adminvm",
          "updatedBy": "adminvm"
@@ -128,9 +129,9 @@ export default function VehicleTypeInfo() {
 
       validationSchema: Yup.object({
          vehicleName: Yup.string()
-            .required(t("Vehicle Type is required")),
+            .required(t("text.reqVehName")),
          petroName: Yup.string()
-            .required(t("Petrol pump name is required")),
+            .required(t("text.reqPetrolName")),
       }),
 
       onSubmit: async (values) => {

@@ -197,7 +197,7 @@ export default function Juridiction() {
 
    const validationSchema = Yup.object({
       nodeName: Yup.string().required(
-         ("Juridiction Name is required"),
+         t("text.reqJuridiction"),
       ),
    });
 

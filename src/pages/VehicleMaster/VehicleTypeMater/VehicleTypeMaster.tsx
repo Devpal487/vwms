@@ -79,7 +79,7 @@ export default function VehicleTypeMaster() {
 
     validationSchema: Yup.object({
       vehicleTypename: Yup.string()
-        .required(t("text.reqVehicleTypeName")),
+        .required(t("text.reqVehicleType")),
     }),
 
     onSubmit: async (values) => {

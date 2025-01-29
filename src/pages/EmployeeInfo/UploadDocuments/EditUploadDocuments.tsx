@@ -84,6 +84,7 @@ const EditUploadDocuments = (props: Props) => {
   useEffect(() => {
     getVehicleDetails();
     getEmpData();
+    fetchImage(location.state?.id || formik.values.id);
   }, []);
 
   const getVehicleDetails = async () => {
@@ -118,6 +119,18 @@ const EditUploadDocuments = (props: Props) => {
     setEmpOption(arr);
   };
 
+  const fetchImage = async (id: any = location.state?.id) => {
+    const collectData = {
+      "id": id
+    };
+    const response = await api.post(
+      `UploadDoc/GetDocDefinition`,
+      collectData
+    );
+    const data = response.data.data;
+    formik.setFieldValue("doc", data[0].doc.replace(/^((data:image\/(jpeg|jpg|png|9j);base64,)|(data:DocImg\/(jpeg|jpg|png|9j|xLSPtxB61);base64,))/, ""));
+  }
+
 
   const formik = useFormik({
     initialValues: {
@@ -127,12 +140,12 @@ const EditUploadDocuments = (props: Props) => {
       "empId": location.state.empId,
       "vehicleId": location.state.vehicleId,
       "expiry": dayjs(location.state.expiry).format("YYYY-MM-DD"),
-      "doc": location.state.doc,
+      "doc": "",
       "docTypeName": location.state.docTypeName,
       "srno": location.state.srno,
       "createdBy": location.state.createdBy,
       "updatedBy": location.state.updatedBy,
-      "file": location.state.file,
+      "file": location.state?.file || "",
       "fileOldName": location.state?.fileOldName || "",
       "empName": location.state.empName,
       "vehicleNo": location.state.vehicleNo
@@ -140,7 +153,7 @@ const EditUploadDocuments = (props: Props) => {
 
     validationSchema: Yup.object({
       vehicleNo: Yup.string()
-        .required(t("Vehicle number is required")),
+        .required(t("text.reqVehNum")),
     }),
 
 
@@ -468,7 +481,7 @@ const EditUploadDocuments = (props: Props) => {
 
                         // src={"data:image/png;base64," + formik.values.doc}
                         src={
-                          /^(data:image\/(jpeg|jpg|png|9j);base64,)/.test(formik.values.doc)
+                          /^((data:image\/(jpeg|jpg|png|9j);base64,)|(data:DocImg\/(jpeg|jpg|png|9j);base64,))/.test(formik.values.doc)
                             ? formik.values.doc
                             : `data:image/jpeg;base64,${formik.values.doc}`
                         }

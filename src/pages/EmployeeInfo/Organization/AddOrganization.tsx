@@ -177,9 +177,9 @@ const AddOrganization = (props: Props) => {
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .required(t("Company Name is required")),
+        .required(t("text.reqCompanyName")),
       address: Yup.string()
-        .required(t("Address is required")),
+        .required(t("text.reqAddress")),
     }),
 
     onSubmit: async (values) => {

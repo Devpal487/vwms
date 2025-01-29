@@ -295,12 +295,12 @@ const EditComplaintApproval = (props: Props) => {
          //...location.state,
       },
       validationSchema: Yup.object({
-         vehicleNo: Yup.string()
-            .required("Vehicle Number is required"),
-         compAppdt: Yup.string()
+         itemID: Yup.string()
+            .required(t("text.reqVehNum")),
+         complaintDate: Yup.string()
             .required("Complain date is required"),
          complaint: Yup.string()
-            .required("Complaint is required"),
+            .required(t("text.reqComplain")),
       }),
       onSubmit: async (values) => {
          try {

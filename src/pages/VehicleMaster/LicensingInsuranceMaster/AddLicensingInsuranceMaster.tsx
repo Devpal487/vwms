@@ -126,9 +126,9 @@ const AddLicensingInsuranceMaster = (props: Props) => {
       "licensingId": 0,
       "itemId": null,
       "vendorId": null,
-      "effectiveDate": "",
-      "fromDate": "",
-      "todate": "",
+      "effectiveDate": defaultValues,
+      "fromDate": defaultValues,
+      "todate": defaultValues,
       "narration": "",
       "amount": 0,
       "attachment": "",
@@ -145,15 +145,15 @@ const AddLicensingInsuranceMaster = (props: Props) => {
 
     validationSchema: Yup.object({
       itemId: Yup.string()
-        .required(t("Vehicle Number is required")),
+        .required(t("text.reqVehNum")),
       vendorId: Yup.string()
-        .required(t("Vendor name is required")),
+        .required(t("text.reqVendorName")),
       fromDate: Yup.string()
-        .required(t("From date is required")),
+        .required(t("text.reqFromDate")),
       todate: Yup.string()
-        .required(t("To date is required")),
+        .required(t("text.reqToDate")),
       effectiveDate: Yup.string()
-        .required(t("Effective date is required")),
+        .required(t("text.reqEffectiveDate")),
     }),
 
     onSubmit: async (values) => {

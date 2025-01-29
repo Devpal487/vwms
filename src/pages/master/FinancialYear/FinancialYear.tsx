@@ -129,7 +129,7 @@ export default function FinancialYear() {
     },
     validationSchema: Yup.object({
       financialYear: Yup.string().required(
-        "Financial Year is required"
+        t("text.reqFinYear")
       ),
     }),
     onSubmit: async (values) => {

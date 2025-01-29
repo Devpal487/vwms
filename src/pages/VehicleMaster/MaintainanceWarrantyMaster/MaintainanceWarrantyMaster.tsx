@@ -236,7 +236,7 @@ export default function MaintainanceWarrantyMaster() {
           {
             field: "serialNo",
             headerName: t("text.SrNo"),
-            flex: .3,
+            flex: .6,
             headerClassName: "MuiDataGrid-colCell",
           },
           {

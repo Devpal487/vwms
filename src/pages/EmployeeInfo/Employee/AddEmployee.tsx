@@ -542,7 +542,7 @@ const AddEmployee = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.EmpCode")}
-                      required={false}
+                      required={true}
                     />
                   }
                   variant="outlined"

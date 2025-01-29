@@ -178,7 +178,7 @@ const EditItemContract = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "contractId": location.state?.contractId,
-      "vendorId": location.state.vendorId,
+      "vendorId": location.state?.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
       "updatedBy": location.state.updatedBy,
@@ -196,6 +196,12 @@ const EditItemContract = (props: Props) => {
       "itemDetail": [],
       "vendorName": location.state.vendorName
     },
+
+    validationSchema: Yup.object({
+          vendorId: Yup.string()
+            .required(t("text.reqVendorName")),
+        }),
+    
 
 
     onSubmit: async (values) => {
@@ -334,7 +340,7 @@ const EditItemContract = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
-                  value={formik.values.vendorName}
+
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -352,6 +358,9 @@ const EditItemContract = (props: Props) => {
                     />
                   )}
                 />
+                {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId.toString()}</div>
+                )}
               </Grid>
 
 

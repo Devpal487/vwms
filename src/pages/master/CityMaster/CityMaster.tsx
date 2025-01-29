@@ -239,7 +239,7 @@ export default function FileMaster() {
     ),
     cityName: Yup.string().test(
       "required",
-      "City Name Is Required",
+      t("text.reqCityname"),
       function (value: any) {
         return value && value.trim() !== "";
       }
@@ -385,7 +385,7 @@ export default function FileMaster() {
                   />
                   {formik.touched.stateId && formik.errors.stateId ? (
                     <div style={{ color: "red", margin: "5px" }}>
-                      {"State Name is required"}
+                      {t("text.reqStateName")}
                     </div>
                   ) : null}
                 </Grid>

@@ -139,8 +139,8 @@ const EditUtilizationLog = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       "id": location.state.id,
-      "empId": location.state.empId,
-      "itemId": location.state.itemId,
+      "empId": location.state?.empId,
+      "itemId": location.state?.itemId,
       "fromDate": dayjs(location.state.fromDate).format("YYYY-MM-DD"),
       "toDate": dayjs(location.state.toDate).format("YYYY-MM-DD"),
       "fromTime": location.state.fromTime,
@@ -156,10 +156,12 @@ const EditUtilizationLog = (props: Props) => {
       "empName": location.state.empName,
       "vehicleNo": location.state.vehicleNo
     },
-    // validationSchema: Yup.object({
-    //   indentNo: Yup.string()
-    //     .required(t("text.reqIndentNum")),
-    // }),
+    validationSchema: Yup.object({
+      empId: Yup.string()
+        .required(t("text.reqEmpName")),
+      itemId: Yup.string()
+        .required(t("text.reqVehNum")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -295,9 +297,9 @@ const EditUtilizationLog = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                {formik.touched.empId && formik.errors.empId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId.toString()}</div>
+                )}
               </Grid>
 
               {/* Vehicle Number */}
@@ -325,9 +327,9 @@ const EditUtilizationLog = (props: Props) => {
                     />
                   )}
                 />
-                {/* {formik.touched.zoneID && formik.errors.zoneID && (
-                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.zoneID}</div>
-                 )} */}
+                 {formik.touched.itemId && formik.errors.itemId && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId.toString()}</div>
+                )}
               </Grid>
 
 

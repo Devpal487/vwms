@@ -175,6 +175,14 @@ const EditOrganization = (props: Props) => {
       // "updatedOn": location.state.updatedOn,
       // "cityName": location.state.cityName
     },
+
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required(t("text.reqCompanyName")),
+      address: Yup.string()
+        .required(t("text.reqAddress")),
+    }),
+
     onSubmit: async (values) => {
 
       const response = await api.post(`CampanyMaster/UpsertCompanyMaster`, values);
@@ -349,6 +357,11 @@ const EditOrganization = (props: Props) => {
                   required={true}
                   lang={lang}
                 />
+
+                {formik.touched.name && formik.errors.name && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.name.toString()}</div>
+                )}
+
               </Grid>
 
 
@@ -361,6 +374,9 @@ const EditOrganization = (props: Props) => {
                   required={true}
                   lang={lang}
                 />
+                {formik.touched.address && formik.errors.address && (
+                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.address.toString()}</div>
+                )}
               </Grid>
 
               {/* country */}
