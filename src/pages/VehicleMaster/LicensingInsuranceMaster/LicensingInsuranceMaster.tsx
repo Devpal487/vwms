@@ -66,21 +66,22 @@ export default function LicensingInsuranceMaster() {
   ]);
 
   useEffect(() => {
-      fetchLicencingData();
+    getVehicleDetails();
+    fetchLicencingData();
   }, [isLoading]);
 
 
-  // const getVehicleDetails = async () => {
-  //   const response = await api.get(
-  //     `Master/GetVehicleDetail?ItemMasterId=-1`,
-  //   );
-  //   const data = response.data.data;
-  //   const arr = data.map((Item: any, index: any) => ({
-  //     value: Item.itemMasterId,
-  //     label: Item.vehicleNo
-  //   }));
-  //   setVehicleOption(arr);
-  // };
+  const getVehicleDetails = async () => {
+    const response = await api.get(
+      `Master/GetVehicleDetail?ItemMasterId=-1`,
+    );
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      value: Item.itemMasterId,
+      label: Item.vehicleNo
+    }));
+    setVehicleOption(arr);
+  };
 
   // const getVendorData = async () => {
   //   const collectData = {
@@ -139,7 +140,7 @@ export default function LicensingInsuranceMaster() {
   };
 
   const handledeleteClick = (del_id: any) => {
-     console.log(del_id + " del_id ");
+    console.log(del_id + " del_id ");
     delete_id = del_id;
     confirmDialog({
       message: "Do you want to delete this record ?",
@@ -182,6 +183,7 @@ export default function LicensingInsuranceMaster() {
         fromDate: formatDate(Item.fromDate),
         todate: formatDate(Item.todate),
         effectiveDate: formatDate(Item.effectiveDate),
+        //vehicleNo: vehicleOption[vehicleOption.findIndex(e => e.value == Item.itemId)].label
       }));
       setItem(IndentWithIds);
       setIsLoading(false);

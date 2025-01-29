@@ -220,7 +220,7 @@ const EditComplaint = (props: Props) => {
          collectData
       );
       const data = response.data.data;
-      formik.setFieldValue("complaintDoc", data[0].complaintDoc)
+      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
    }
 
    const getDesignationData = async () => {

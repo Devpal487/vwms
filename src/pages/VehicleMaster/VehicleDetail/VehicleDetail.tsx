@@ -174,8 +174,8 @@ export default function VehicleDetail() {
         ...Item,
         serialNo: index + 1,
         id: Item.itemMasterId,
-        empName: empOption[empOption.findIndex(i => i.value === Item.empId)]?.label,
-        itemCategoryId: categoryOption[categoryOption.findIndex(i => i.value === Item.itemCategoryId)]?.label
+        // empName: empOption[empOption.findIndex(i => i.value === Item.empId)]?.label,
+        // itemCategoryId: categoryOption[categoryOption.findIndex(i => i.value === Item.itemCategoryId)]?.label
       }));
       setItem(arr);
       setIsLoading(false);

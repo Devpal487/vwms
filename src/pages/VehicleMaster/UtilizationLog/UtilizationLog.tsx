@@ -138,8 +138,8 @@ export default function UtilizationLog() {
         ...Item,
         serialNo: index + 1,
         id: Item.id,
-        fromDate: formatDate(Item.fromDate),
-        toDate: formatDate(Item.toDate),
+        fromDate: dayjs(Item.fromDate).format("YYYY-MM-DD"),
+        toDate:  dayjs(Item.toDate).format("YYYY-MM-DD")
       }));
       setItem(arr);
       setIsLoading(false);

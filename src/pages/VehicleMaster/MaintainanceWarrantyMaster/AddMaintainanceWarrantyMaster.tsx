@@ -71,7 +71,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
   const [itemValue, setItemValue] = useState();
   const [vendorValue, setVendorValue] = useState();
   const [vehicleOption, setVehicleOption] = useState([
-    { value: -1, label: t("text.VehicleNo") },
+    { value: -1, label: t("text.VehicleNo"), empId: -1, empName:"" },
   ]);
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
@@ -96,7 +96,9 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
     const data = response.data.data;
     const arr = data.map((Item: any, index: any) => ({
       value: Item.itemMasterId,
-      label: Item.vehicleNo
+      label: Item.vehicleNo,
+      empId:Item.empId,
+      empName:""
     }));
     setVehicleOption(arr);
   };
@@ -126,13 +128,15 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
 
   const formik = useFormik({
     initialValues: {
+
       "id": 0,
-      "effDate": "",
+      "empId": 0,
+      "effDate": defaultValues,
       "type": "",
-      "vendorId": null,
-      "itemId": null,
-      "fromDate": "",
-      "toDate": "",
+      "vendorId": 0,
+      "itemId": 0,
+      "fromDate": defaultValues,
+      "toDate": defaultValues,
       "remark": "",
       "attachment": "",
       "attachmentName": "",
@@ -142,7 +146,27 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
       "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": 0,
-      "file": ""
+      "file": "",
+      "empName": "",
+      "vehicleNo": "",
+      "vendorName": ""
+      // "id": 0,
+      // "effDate": "",
+      // "type": "",
+      // "vendorId": null,
+      // "itemId": null,
+      // "fromDate": "",
+      // "toDate": "",
+      // "remark": "",
+      // "attachment": "",
+      // "attachmentName": "",
+      // "createdBy": "adminvm",
+      // "updatedBy": "adminvm",
+      // "createdOn": defaultValues,
+      // "updatedOn": defaultValues,
+      // "companyId": 0,
+      // "fyId": 0,
+      // "file": ""
     },
 
     validationSchema: Yup.object({
@@ -176,86 +200,59 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
   const handlePanClose = () => {
     setPanOpen(false);
   };
-  const modalOpenHandle = (event: any) => {
+
+  const modalOpenHandle = (event: string) => {
     setPanOpen(true);
-    if (event === "file") {
-      setModalImg(formik.values.file);
+    const base64Prefix = "data:image/jpeg;base64,";
+
+    let imageData = '';
+    switch (event) {
+      case "attachment":
+        imageData = formik.values.attachment;
+        break;
+      default:
+        imageData = '';
+    }
+    if (imageData) {
+      const imgSrc = imageData.startsWith(base64Prefix) ? imageData : base64Prefix + imageData;
+      console.log("imageData", imgSrc);
+      setImg(imgSrc);
+    } else {
+      setImg('');
     }
   };
-  const ConvertBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
-  const base64ToByteArray = (base64: string): Uint8Array => {
-    // Remove the data URL scheme if it exists
-    const base64String = base64.split(",")[1];
+  const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    // Decode the Base64 string
-    const binaryString = window.atob(base64String);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-
-    // Convert binary string to Uint8Array
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
+    // Validate file type (only allow images)
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+      alert("Only .jpg, .jpeg, or .png image files are allowed.");
+      event.target.value = ''; // Clear input field
+      return;
     }
 
-    return bytes;
-  };
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
 
-  const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
-    let binary = "";
-    const len = uint8Array.byteLength;
-    for (let i = 0; i < len; i++) {
-      binary += String.fromCharCode(uint8Array[i]);
-    }
-    return window.btoa(binary);
-  };
+      // Use regex to remove the base64 prefix dynamically
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
 
-  const otherDocChangeHandler = async (event: any, params: string) => {
-    console.log("Image file change detected");
-
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const fileNameParts = file.name.split(".");
-      const fileExtension =
-        fileNameParts[fileNameParts.length - 1].toLowerCase();
-
-      if (!fileExtension.match(/(jpg|jpeg|bmp|gif|png)$/)) {
-        alert(
-          "Only image files (.jpg, .jpeg, .bmp, .gif, .png) are allowed to be uploaded."
-        );
-        event.target.value = null;
-        return;
+      if (base64Content) {
+        formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+        alert("Error processing image data.");
       }
+    };
 
-      try {
-        const base64Data = (await ConvertBase64(file)) as string;
-        console.log("Base64 image data:", base64Data);
+    reader.onerror = () => {
+      alert("Error reading file. Please try again.");
+    };
 
-        // Convert Base64 to Uint8Array
-        const byteArray = base64ToByteArray(base64Data);
-        console.log("🚀 ~ otherDocChangeHandler ~ byteArray:", byteArray);
-
-        // Convert Uint8Array to base64 string
-        const base64String = uint8ArrayToBase64(byteArray);
-        console.log("🚀 ~ otherDocChangeHandler ~ base64String:", base64String);
-
-        // Set value in Formik
-        formik.setFieldValue(params, base64String);
-
-        let outputCheck =
-          "data:image/png;base64," + formik.values.file;
-        console.log(outputCheck);
-      } catch (error) {
-        console.error("Error converting image file to Base64:", error);
-      }
-    }
+    reader.readAsDataURL(file);
   };
 
   const back = useNavigate();
@@ -326,12 +323,15 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vehicleOption}
-                  value={itemValue}
+                  value={formik.values.vehicleNo}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("itemId", parseInt(newValue?.value));
+                    formik.setFieldValue("vehicleNo",newValue?.label);
+                    formik.setFieldValue("empId", parseInt(newValue?.empId));
+                    formik.setFieldValue("empName", newValue?.empName);
                     setItemValue(newValue?.label);
                   }}
                   renderInput={(params) => (
@@ -355,12 +355,13 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={vendorOption}
-                  value={vendorValue}
+                  value={formik.values.vendorName}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("vendorId", parseInt(newValue?.value));
+                    formik.setFieldValue("vendorName", newValue?.label);
                     setVendorValue(newValue?.label);
                   }}
                   renderInput={(params) => (
@@ -455,10 +456,10 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   InputLabelProps={{ shrink: true }}
                 />
                 {formik.touched.fromDate && formik.errors.fromDate ? (
-                   <div style={{ color: "red", margin: "5px" }}>
-                     {formik.errors.fromDate}
-                   </div>
-                 ) : null}
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.fromDate}
+                  </div>
+                ) : null}
 
               </Grid>
 
@@ -483,10 +484,10 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                   InputLabelProps={{ shrink: true }}
                 />
                 {formik.touched.toDate && formik.errors.toDate ? (
-                   <div style={{ color: "red", margin: "5px" }}>
-                     {formik.errors.toDate}
-                   </div>
-                 ) : null}
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.toDate}
+                  </div>
+                ) : null}
               </Grid>
 
 
@@ -527,174 +528,86 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
                     size="small"
                     fullWidth
                     style={{ backgroundColor: "white" }}
-                    onChange={(e) => otherDocChangeHandler(e, "file")}
+                    onChange={(e: any) => otherDocChangeHandler(e, "attachment")}
                   />
                 </Grid>
+
                 <Grid xs={12} md={4} sm={4} item></Grid>
-
-                <Grid xs={12} md={4} sm={4} item>
-                  <Grid
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                      margin: "10px",
-                    }}
-                  >
-                    {formik.values.file == "" ? (
-                      <img
-                        // src={nopdf}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                        }}
-                      />
-                    ) : (
-                      <img
-
-                        src={"data:image/png;base64," + formik.values.file}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                          padding: "2px",
-                        }}
-                      />
-                    )}
-                    <Typography
-                      onClick={() => modalOpenHandle("file")}
+                <Grid
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    margin: "10px",
+                  }}
+                >
+                  {formik.values.attachment ? (
+                    <img
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.attachment)
+                          ? formik.values.attachment
+                          : `data:image/jpeg;base64,${formik.values.attachment}`
+                      }
+                      alt="Complaint Document Preview"
                       style={{
-                        textDecorationColor: "blue",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                        fontSize: "15px",
-                        cursor: "pointer",
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                        padding: "2px",
+                        objectFit: "cover",  // Ensures proper scaling
                       }}
-                    >
-                      {t("text.Preview")}
-                    </Typography>
-                  </Grid>
+                    />
+                  ) : (
+                    <img
+                      src={nopdf}
+                      alt="No document available"
+                      style={{
+                        width: 150,
+                        height: 100,
+                        border: "1px solid grey",
+                        borderRadius: 10,
+                      }}
+                    />
+                  )}
+
+                  <Typography
+                    onClick={() => modalOpenHandle("attachment")}
+                    style={{
+                      textDecorationColor: "blue",
+                      textDecorationLine: "underline",
+                      color: "blue",
+                      fontSize: "15px",
+                      cursor: "pointer",
+                      padding: "20px",
+                    }}
+                    role="button"
+                    aria-label="Preview Document"
+                  >
+                    {t("text.Preview")}
+                  </Typography>
                 </Grid>
+
+
                 <Modal open={panOpens} onClose={handlePanClose}>
                   <Box sx={style}>
-                    {modalImg == "" ? (
+                    {Img ? (
                       <img
-                        //  src={nopdf}
-                        style={{
-                          width: "170vh",
-                          height: "75vh",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        alt="preview image"
-                        src={"data:image/png;base64," + modalImg}
+                        src={Img}
+                        alt="Preview"
                         style={{
                           width: "170vh",
                           height: "75vh",
                           borderRadius: 10,
                         }}
                       />
+                    ) : (
+                      <Typography>No Image to Preview</Typography>
                     )}
                   </Box>
                 </Modal>
               </Grid>
-              {/* <Grid container spacing={1} item>
-                <Grid
-                  xs={12}
-                  md={4}
-                  sm={4}
-                  item
-                  style={{ marginBottom: "30px", marginTop: "30px" }}
-                >
-                  <TextField
-                    type="file"
-                    inputProps={{ accept: "image/*" }}
-                    InputLabelProps={{ shrink: true }}
-                    label={<CustomLabel text={t("text.AttachedImage")} />}
-                    size="small"
-                    fullWidth
-                    value={formik.values.attachment}
-                    style={{ backgroundColor: "white" }}
-                    onChange={(e) => {
-                      otherDocChangeHandler(e, "attachment");
-                    }}
-                  />
-                </Grid>
-                <Grid xs={12} md={4} sm={4} item></Grid>
-
-                <Grid xs={12} md={4} sm={4} item>
-                  <Grid
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                      margin: "10px",
-                    }}
-                  >
-                    {formik.values.attachment == "" ? (
-                      <img
-                        src={nopdf}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={`data:image/jpg;base64,${formik.values.attachment}`}
-                        style={{
-                          width: 150,
-                          height: 100,
-                          border: "1px solid grey",
-                          borderRadius: 10,
-                          padding: "2px",
-                        }}
-                      />
-                    )}
-                    <Typography
-                      onClick={() => modalOpenHandle("attachment")}
-                      style={{
-                        textDecorationColor: "blue",
-                        textDecorationLine: "underline",
-                        color: "blue",
-                        fontSize: "15px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {t("text.Preview")}
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Modal open={panOpens} onClose={handlePanClose}>
-                  <Box sx={style}>
-                    {modalImg == "" ? (
-                      <img
-                        src={nopdf}
-                        style={{
-                          width: "170vh",
-                          height: "75vh",
-                        }}
-                      />
-                    ) : (
-                      <img
-                        alt="preview image"
-                        src={modalImg}
-                        style={{
-                          width: "170vh",
-                          height: "75vh",
-                          borderRadius: 10,
-                        }}
-                      />
-                    )}
-                  </Box>
-                </Modal>
-              </Grid> */}
+             
 
 
               {/* Submit Button */}

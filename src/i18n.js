@@ -1221,6 +1221,7 @@ const resources = {
         Comment: "Comment",
         DesignationMaster: "Designation Master",
 
+        enteritemType1:"Select Item Type",
         enteritemType: "Enter Item Type",
         enteritemTypecode: "Enter Item Type Code",
         itemType: "Item Type",
@@ -2952,7 +2953,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -6000,7 +6001,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8845,7 +8846,7 @@ const resources = {
         ReadingKM: "Current Reading(in KM)",
         ApproveEmployee: "Approve Employee",
         Jobcard: "Job Card",
-        JobCardNum: "Job Card No",
+        JobCardNum: "JobCardNo",
         JobCardNo: "Job Card Number",
         InHouse: "In House",
         OutSource: "Out Source",
@@ -8917,6 +8918,13 @@ RCDocument: "Attach RC Document",
 VehicleImage: "Attach Vehicle Image",
 VehicleNum: "VehicleNo",
 reqLocName: "Location name is required",
+
+        RCDocument:"Attach RC Document",
+        VehicleImage:"Attach Vehicle Image",
+        VehicleNum:"VehicleNo",
+        reqLocName:"Location name is required",
+       
+
 
 
 
@@ -13170,10 +13178,8 @@ reqJuridiction:"Juridiction Name is required",
         ComplaintApproval:"शिकायत अनुमोदन", 
         EditComplaintApproval:"शिकायत अनुमोदन संपादित करें",
 
-
-
-
-
+        RCDocument:"आरसी दस्तावेज़ संलग्न करें",
+        VehicleImage:"वाहन छवि संलग्न करें",
 
       },
 
