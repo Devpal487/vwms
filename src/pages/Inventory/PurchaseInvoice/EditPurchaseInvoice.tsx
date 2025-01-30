@@ -21,6 +21,7 @@ import {
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -149,45 +150,45 @@ const EditPurchaseInvoice = () => {
   }, []);
 
   const getPurchaseInvoiceById = async (id: any) => {
-   
-      const collectData = {
-        invoiceId: id,
-      };
-      try {
-        const result = await api.post(`PurchaseInv/GetPurchaseInvoice`, collectData);
-        const data = result.data.data;
 
-        console.log("🚀 ~ getPurchaseInvoiceById ~ data:", data);
+    const collectData = {
+      invoiceId: id,
+    };
+    try {
+      const result = await api.post(`PurchaseInv/GetPurchaseInvoice`, collectData);
+      const data = result.data.data;
 
-        if (data.length > 0) {
-            const formattedData = data[0]['purchaseInvoiceDetail'].map((item: any, index: number) => ({
-              invoiceId: item.invoiceId,
-              orderId: item.orderId,
-                id: index + 1,
-                itemId: item.itemId,
-                quantity: item.quantity,
-                rate: item.rate,
-                amount: item.amount,
-                gstId: item.gstId,
-                gstRate: item.gstRate,
-                cgst: item.cgst,
-                sgst: item.sgst,
-                igst: item.igst,
-                netAmount: item.netAmount,
-                itemName: item.itemName,
-                unitId: item.unitId,
-                unitName: item.unitName,
-            }));
-            setTableData(formattedData);
-        }
+      console.log("🚀 ~ getPurchaseInvoiceById ~ data:", data);
+
+      if (data.length > 0) {
+        const formattedData = data[0]['purchaseInvoiceDetail'].map((item: any, index: number) => ({
+          invoiceId: item.invoiceId,
+          orderId: item.orderId,
+          id: index + 1,
+          itemId: item.itemId,
+          quantity: item.quantity,
+          rate: item.rate,
+          amount: item.amount,
+          gstId: item.gstId,
+          gstRate: item.gstRate,
+          cgst: item.cgst,
+          sgst: item.sgst,
+          igst: item.igst,
+          netAmount: item.netAmount,
+          itemName: item.itemName,
+          unitId: item.unitId,
+          unitName: item.unitName,
+        }));
+        setTableData(formattedData);
+      }
     } catch (error) {
-        console.error("Error fetching data:", error);
+      console.error("Error fetching data:", error);
     }
-}
-      // API call
-     
-  
-  
+  }
+  // API call
+
+
+
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
       "venderId": -1,
@@ -350,7 +351,7 @@ const EditPurchaseInvoice = () => {
         item.cgst = selectedTax.value || 0;
         item.sgst = selectedTax.value || 0;
         item.igst = 0;
-       // item.gst = item.gstRate;
+        // item.gst = item.gstRate;
       }
     } else {
       item[field] = value;
@@ -667,7 +668,7 @@ const EditPurchaseInvoice = () => {
                   size="small"
                   value={
                     orderOption.find((option: any) => option.value === formik.values.orderId) || null
-                }
+                  }
                   onChange={(event: any, newValue: any) => {
                     formik.setFieldValue("orderNo", newValue?.value.toString());
                   }}
@@ -811,105 +812,105 @@ const EditPurchaseInvoice = () => {
                 </Grid>
               )} */}
 
-<Grid item xs={12} md={12} lg={12}>
-                            <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                                <Table
-                                    style={{
-                                        borderCollapse: "collapse",
-                                        width: "100%",
-                                        border: "1px solid black",
+              <Grid item xs={12} md={12} lg={12}>
+                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+                  <Table
+                    style={{
+                      borderCollapse: "collapse",
+                      width: "100%",
+                      border: "1px solid black",
 
-                                    }}
-                                >
-                                    <thead
-                                        style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
-                                    >
-                                        <tr>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.Action")}
-                                            </th>
+                    }}
+                  >
+                    <thead
+                      style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
+                    >
+                      <tr>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.Action")}
+                        </th>
 
 
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.ItemName")}
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.Unit")}
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.Quantity")}
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.Rate")}
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.Amount")}
-                                            </th>
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.GSTRate")}
-                                            </th>
-                                            <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                         {t("text.cgst")}
-                      
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.sgst")}
-                      </th>
-                                            {/* <th
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.ItemName")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.Unit")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.Quantity")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.Rate")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.Amount")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.GSTRate")}
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.cgst")}
+
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.sgst")}
+                        </th>
+                        {/* <th
                                                 style={{
                                                     border: "1px solid black",
                                                     textAlign: "center",
@@ -918,7 +919,7 @@ const EditPurchaseInvoice = () => {
                                             >
                                                 IGST
                                             </th > */}
-                                            {/* <th
+                        {/* <th
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -928,196 +929,199 @@ const EditPurchaseInvoice = () => {
                                                     {t("text.totalTax")}
                                                 </th> */}
 
-                                            <th
-                                                style={{
-                                                    border: "1px solid black",
-                                                    textAlign: "center",
-                                                    padding: "5px",
-                                                }}
-                                            >
-                                                {t("text.NetAmount")}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {tableData.map((row, index) => (
-                                            <tr key={row.id} style={{ border: "1px solid black" }}>
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <DeleteIcon
-                                                        onClick={() => deleteRow(index)}
-                                                        style={{ cursor: "pointer" }}
-                                                    />
-                                                </td>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.NetAmount")}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row, index) => (
+                        <tr key={row.id} style={{ border: "1px solid black" }}>
+                          {/* <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <DeleteIcon
+                              onClick={() => deleteRow(index)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+
+
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "170px"
+                            }}
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={itemOption}
+                              fullWidth
+                              size="small"
+                              value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
+                              onChange={(e: any, newValue: any) =>
+                                handleInputChange(
+                                  index,
+                                  "itemId",
+                                  newValue?.value
+                                )
+                              }
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                // label={
+                                //     // <CustomLabel
+                                //     //     text={t("text.selectItem")}
+                                //     //     required={false}
+                                //     // />
+                                // }
+                                />
+                              )}
+                            />
+                          </td>
+
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              width: "170px"
+                            }}
+                          >
+                            <Autocomplete
+                              disablePortal
+                              id="combo-box-demo"
+                              options={unitOptions}
+                              fullWidth
+                              size="small"
+                              value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
+                              onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                //   label={
+                                //       <CustomLabel text={t("text.selectUnit")} required={false} />
+                                //   }
+                                />
+                              )}
+                            />
+                          </td>
+                          <td style={{ textAlign: "right" }}>
+                            <TextField
+                              type="text"
+                              value={row.quantity}
+                              onChange={(event) => {
+                                const value: any = event.target.value;
+                                handleInputChange(index, "quantity", value);
+                                // if (!isNaN(value) || value === '' || value === '.') {
+                                // }
+                              }}
+                              onFocus={e => e.target.select()}
+                              inputProps={{
+                                step: "any",
+                                min: "0"
+                              }}
+                              size="small"
+                            />
+                          </td>
 
 
 
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                         textAlign: "center",
-                                                         width: "170px"
-                                                    }}
-                                                >
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        id="combo-box-demo"
-                                                        options={itemOption}
-                                                        fullWidth
-                                                        size="small"
-                                                        value={itemOption.find((opt:any) => opt.value=== row.itemId)||null}
-                                                        onChange={(e: any, newValue: any) =>
-                                                            handleInputChange(
-                                                                index,
-                                                                "itemId",
-                                                                newValue?.value
-                                                            )
-                                                        }
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                            // label={
-                                                            //     // <CustomLabel
-                                                            //     //     text={t("text.selectItem")}
-                                                            //     //     required={false}
-                                                            //     // />
-                                                            // }
-                                                            />
-                                                        )}
-                                                    />
-                                                </td>
-
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                            width: "170px"
-                                                    }}
-                                                >
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        id="combo-box-demo"
-                                                        options={unitOptions}
-                                                        fullWidth
-                                                        size="small"
-                                                        value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
-                                                        onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                {...params}
-                                                            //   label={
-                                                            //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                            //   }
-                                                            />
-                                                        )}
-                                                    />
-                                                </td>
-                                                <td style={{ textAlign: "right" }}>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              size="small"
+                              value={row.rate}
+                              onChange={(e) => handleInputChange(index, "rate", e.target.value)}
+                              inputProps={{ step: "any", min: "0" }}
+                              onFocus={e => e.target.select()}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.amount}
+                              size="small"
+                              inputProps={{ readOnly: true }}
+                            />
+                          </td>
+                        <td style={{ border: "1px solid black", textAlign: "center" }}>
                                                     <TextField
-                                                        type="text"
-                                                        value={row.quantity}
-                                                        onChange={(event) => {
-                                                            const value: any = event.target.value;
-                                                            handleInputChange(index, "quantity", value);
-                                                            // if (!isNaN(value) || value === '' || value === '.') {
-                                                            // }
-                                                        }}
-                                                        onFocus={e => e.target.select()}
-                                                        inputProps={{
-                                                            step: "any",
-                                                            min: "0"
-                                                        }}
-                                                        size="small"
+                                                      size="small"
+                                                      value={row.gstRate || 0}
+                                                      onChange={(e) => handleInputChange(index, "gstRate", e.target.value)} // ✅ Allow editing
+                                                      onBlur={(e) => handleInputChange(index, "gstRate", e.target.value)}
+                                                      inputProps={{ step: "any", min: "0" }}
                                                     />
-                                                </td>
+                                                  </td>
 
-
-
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        size="small"
-                                                         value={row.rate}
-                                                        onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                                                        inputProps={{ step: "any", min: "0" }}
-                                                        onFocus={e => e.target.select()}
-                                                   />
-                                                </td>
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        value={row.amount}
-                                                        size="small"
-                                                        inputProps={{ readOnly: true }}
-                                                    />
-                                                </td>
-                                                   <td
-                                                                             style={{
-                                                                               border: "1px solid black",
-                                                                               textAlign: "center",
-                                                                             }}
-                                                                           >
-                                                                             <Autocomplete
-                                                                               disablePortal
-                                                                               id="combo-box-demo"
-                                                                               options={taxData}
-                                                                               fullWidth
-                                                                               size="small"
-                                                                               value={taxData.find((opt: any) => opt.value === row.gstId) || null}
-                                                                               onChange={(e: any, newValue: any) =>
-                                                                                 handleInputChange(index, "gstId", newValue?.value)
-                                                                               }
-                                                                               renderInput={(params) => (
-                                                                                 <TextField
-                                                                                   {...params}
-                                                                                 // label={
-                                                                                 //     <CustomLabel
-                                                                                 //         text={t("text.tax")}
-                                                                                 //         required={false}
-                                                                                 //     />
-                                                                                 // }
-                                                                                 />
-                                                                               )}
-                                                                             />
-                                                                           </td>
-
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        value={row.cgst.toFixed(2)}
-                                                        size="small"
-                                                        inputProps={{ readOnly: true }}
-                                                    />
-                                                </td>
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        value={row.sgst.toFixed(2)}
-                                                        size="small"
-                                                        inputProps={{ readOnly: true }}
-                                                    />
-                                                </td>
-                                                {/* <td
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.cgst.toFixed(2)}
+                              size="small"
+                              inputProps={{ readOnly: true }}
+                            />
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.sgst.toFixed(2)}
+                              size="small"
+                              inputProps={{ readOnly: true }}
+                            />
+                          </td>
+                          {/* <td
                                                     style={{
                                                         border: "1px solid black",
                                                         textAlign: "center",
@@ -1129,24 +1133,24 @@ const EditPurchaseInvoice = () => {
                                                         inputProps={{ readOnly: true }}
                                                     />
                                                 </td> */}
-                                                <td
-                                                    style={{
-                                                        border: "1px solid black",
-                                                        textAlign: "center",
-                                                    }}
-                                                >
-                                                    <TextField
-                                                        value={row.netAmount}
-                                                        size="small"
-                                                        inputProps={{ readOnly: true }}
-                                                    />
-                                                </td>
-                                            </tr>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.netAmount}
+                              size="small"
+                              inputProps={{ readOnly: true }}
+                            />
+                          </td>
+                        </tr>
 
-                                        ))}
-                                    </tbody>
-                                    <tfoot>
-                                        {/* <tr>
+                      ))}
+                    </tbody>
+                    <tfoot>
+                      {/* <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.TotalAmount")}
 
@@ -1155,7 +1159,7 @@ const EditPurchaseInvoice = () => {
                                                 {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                                             </td>
                                         </tr> */}
-                                        {/* <tr>
+                      {/* <tr>
                                             <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                 {t("text.Totaltaxamount")}
 
@@ -1165,18 +1169,18 @@ const EditPurchaseInvoice = () => {
                                                 {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
                                             </td>
                                         </tr> */}
-                                        <tr>
-                                            <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                {t("text.Totalnetamount")}
+                      <tr>
+                        <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
 
-                                            </td>
-                                            <td style={{ textAlign: "center", border: "1px solid black" }}>
-                                                {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </Table>
-                         </div>   </Grid>
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </Table>
+                </div>   </Grid>
 
 
               <Grid item xs={12}>

@@ -1057,7 +1057,7 @@
 //                                             >
 //                                                 {t("text.GSTRate")}
 //                                             </th>
-                                            
+
 //                                                 <th
 //                                                 style={{
 //                                                   border: "1px solid black",
@@ -1094,7 +1094,7 @@
 //                                                 >
 //                                                     {t("text.totalTax")}
 //                                                 </th> */}
-                                            
+
 //                                             <th
 //                                                 style={{
 //                                                     border: "1px solid black",
@@ -1120,8 +1120,8 @@
 //                                                         style={{ cursor: "pointer" }}
 //                                                     />
 //                                                 </td>
-                                               
-                                               
+
+
 
 //                                                 <td
 //                                                     style={{
@@ -1155,7 +1155,7 @@
 //                                                         )}
 //                                                     />
 //                                                 </td>
-                                              
+
 //                                               <td
 //                                               style={{
 //                                                   border: "1px solid black",
@@ -1197,9 +1197,9 @@
 //                                                size="small"
 //                                            />
 //                                        </td>
-                                              
-                                              
-                                                
+
+
+
 //                                                 <td
 //                                                     style={{
 //                                                         border: "1px solid black",
@@ -1414,6 +1414,7 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
@@ -1734,7 +1735,7 @@ const CreateOfficePurchaseOrder = () => {
             itemName: "",
             indentNo: "",
             "srn": 0,
-
+            netAmount: item?.amount,
             "returnItem": true
 
 
@@ -1827,7 +1828,15 @@ const CreateOfficePurchaseOrder = () => {
         const reader = new FileReader();
         reader.onload = () => {
             const base64String = reader.result as string;
-            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+            const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+            if (base64Content) {
+                formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+            } else {
+                alert("Error processing image data.");
+            }
+
+            //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
         reader.onerror = () => {
             alert("Error reading file. Please try again.");
@@ -1928,7 +1937,7 @@ const CreateOfficePurchaseOrder = () => {
             "totalCGST": 0,
             "totalSGST": 0,
             "totalIGST": 0,
-            "netAmount": 0, 
+            "netAmount": 0,
             "status": "open",
             "orderType": "Office",
             "createdBy": "adminvm",
@@ -1952,8 +1961,8 @@ const CreateOfficePurchaseOrder = () => {
         validationSchema: Yup.object({
             // pOrderDoc: Yup.string()
             //     .required("Image required"),
-             indentId: Yup.string().required("Indnet no required"),
-              vendorId:Yup.string().required("Vendor is rquired"),
+            indentId: Yup.string().required("Indnet no required"),
+            vendorId: Yup.string().required("Vendor is rquired"),
 
 
         }),
@@ -1984,51 +1993,70 @@ const CreateOfficePurchaseOrder = () => {
     });
     console.log("formik.values", formik.values);
     //  const back = useNavigate();
-    const handleInputChange = (index: number, field: string, value: any) => {
-        const updatedItems = [...tableData];
-        let item = { ...updatedItems[index] };
-    
-        if (field === "quantity") {
-            item.quantity = value === "" ? 0 : parseFloat(value);
-        } else if (field === "rate") {
-            item.rate = value === "" ? 0 : parseFloat(value);
-        } else if (field === "gstId") {
-            const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-            if (selectedTax) {
-                item.gstRate = parseFloat(selectedTax.label) || 0;
-                item.gstId = selectedTax.value || 0;
-                item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-                item.sgst = item.gst / 2;
-                item.cgst = item.gst / 2;
-                item.igst = 0;
-            }
+    const handleInputChange = (index: any, field: any, value: any) => {
+        const newData: any = [...tableData];
+        newData[index][field] = value;
+        let rate = 0;
+        if (field === 'orderId') {
+            newData[index].orderId = newData[index].orderId;
         }
-    
-        // Update item totals
-        item.amount = (item.quantity || 0) * (item.rate || 0);
-        item.netAmount = item.amount + (item.gst || 0);
-        updatedItems[index] = item;
-    
-        // Update the table data
-        setTableData(updatedItems);
-    
-        // Calculate total and update Formik parent values
-        const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
-        const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
-    
-        formik.setFieldValue("totalAmount", totalAmount);
-        formik.setFieldValue("netAmount", totalNetAmount);
-    
-        // Add new row logic if necessary
-        if (
-            updatedItems[index].quantity > 0 &&
-            updatedItems[index].rate > 0 &&
-            index === updatedItems.length - 1
-        ) {
-            addRow();
+        if (field === 'orderNo') {
+            newData[index].orderNo = newData[index].orderNo;
         }
+        if (field === 'quantity') {
+            newData[index].quantity = newData[index].quantity;
+        }
+        if (field === 'unitId') {
+            newData[index].unitId = newData[index].unitId;
+        }
+        if (field === 'unitName') {
+            newData[index].unitName = newData[index].unitName;
+        }
+        if (field === 'amount') {
+            newData[index].amount = newData[index].amount;
+        }
+        // if (field === 'netAmount') {
+        //   newData[index].netAmount = newData[index].amount + newData[index].amount * (newData[index].gst / 100);
+        // }
+        if (field === 'gst' || field === 'gstId') {
+            newData[index].gst = newData[index].gst;
+            newData[index].cgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+            newData[index].sgst = (newData[index].amount * (newData[index].gst / 200)).toFixed(2);
+            newData[index].netAmount = parseFloat((newData[index].amount + newData[index].amount * (newData[index].gst / 100)).toFixed(2));
+        } else {
+            newData[index].netAmount = (newData[index].rate * newData[index].quantity);
+        }
+        // if (field === 'cgst') {
+        //   newData[index].cgst = newData[index].cgst;
+        // }
+        // if (field === 'sgst') {
+        //   newData[index].sgst = newData[index].sgst;
+        // }
+        // if (field === 'serviceCharge') {
+        //   newData[index].serviceCharge = newData[index].serviceCharge;
+        // }
+        newData[index].amount = newData[index].rate * newData[index].quantity;
+
+        //newData[index].jobCardId = location.state?.jobCardId || 0;
+        newData[index].challanNo = 0;
+
+        setTableData(newData);
+
+        // if (newData[index].unitId > 0 && newData[index].quantity && newData[index].amount > 0) {
+        //     if (index === tableData.length - 1) {
+        //         addRow();
+        //     }
+        // }
+        let total = 0;
+        let netAmt = 0;
+        tableData.forEach((row: any) => {
+            total += row.amount;
+            netAmt += row.amount + row.amount * (row.gst / 100);
+        })
+        formik.setFieldValue("netAmount", netAmt);
+        formik.setFieldValue("totalAmount", total);
     };
-    
+
     // const handleInputChange = (index: number, field: string, value: any) => {
     //     const updatedItems = [...tableData];
     //     let item = { ...updatedItems[index] };
@@ -2330,6 +2358,7 @@ const CreateOfficePurchaseOrder = () => {
                                 />
                             </Grid>
 
+
                             <Grid container spacing={1} item>
                                 <Grid
                                     xs={12}
@@ -2347,7 +2376,7 @@ const CreateOfficePurchaseOrder = () => {
                                         fullWidth
                                         style={{ backgroundColor: "white" }}
                                         onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-                                        // required
+                                    // required
                                     />
                                 </Grid>
                                 <Grid xs={12} md={4} sm={4} item></Grid>
@@ -2364,7 +2393,8 @@ const CreateOfficePurchaseOrder = () => {
                                         {formik.values.pOrderDoc ? (
                                             <img
                                                 src={
-                                                    formik.values.pOrderDoc.startsWith("data:image")
+                                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
+                                                        // formik.values.pOrderDoc.startsWith("data:image")
                                                         ? formik.values.pOrderDoc
                                                         : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
                                                 }
@@ -2422,7 +2452,6 @@ const CreateOfficePurchaseOrder = () => {
                                     </Box>
                                 </Modal>
                             </Grid>;
-
                             {/* <Grid container spacing={1} item>
                                 <Grid
                                     xs={12}
@@ -2616,24 +2645,24 @@ const CreateOfficePurchaseOrder = () => {
                                                     </th>
 
                                                     <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                         {t("text.cgst")}
-                      
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.sgst")}
-                      </th>
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            padding: "5px",
+                                                        }}
+                                                    >
+                                                        {t("text.cgst")}
+
+                                                    </th>
+                                                    <th
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            padding: "5px",
+                                                        }}
+                                                    >
+                                                        {t("text.sgst")}
+                                                    </th>
                                                     {/* <th
                                                         style={{
                                                             border: "1px solid black",
@@ -2667,7 +2696,31 @@ const CreateOfficePurchaseOrder = () => {
                                             <tbody>
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: "1px solid black" }}>
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                onClick={() => {
+                                                                    addRow();
+                                                                }}
+
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                            <DeleteIcon
+                                                                onClick={() => {
+                                                                    if (tableData.length > 1) {
+                                                                        deleteRow(index)
+                                                                    } else {
+                                                                        alert("Atleast one row should be there");
+                                                                    }
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        </td>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
                                                             if (tableData.length > 1) {
                                                                 deleteRow(index)
                                                             } else {
@@ -2675,7 +2728,7 @@ const CreateOfficePurchaseOrder = () => {
                                                             }
                                                         }}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
 
 
 
@@ -2785,7 +2838,8 @@ const CreateOfficePurchaseOrder = () => {
                                                             }}
                                                         >
                                                             <TextField
-                                                                value={row.amount}
+                                                                value={row.rate * row.quantity}
+                                                                onChange={(e) => handleInputChange(index, 'amount', (row.rate * row.quantity) || 0)}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             // onFocus={e => e.target.select()}
@@ -2801,12 +2855,17 @@ const CreateOfficePurchaseOrder = () => {
                                                                 disablePortal
                                                                 id="combo-box-demo"
                                                                 options={taxData}
+                                                                value={row.gst}
                                                                 fullWidth
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
-                                                                onChange={(e: any, newValue: any) =>
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return;
+                                                                    }
+                                                                    handleInputChange(index, 'gst', parseFloat(newValue.label) || 0);
                                                                     handleInputChange(index, "gstId", newValue?.value)
-                                                                }
+                                                                }}
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
@@ -2829,6 +2888,8 @@ const CreateOfficePurchaseOrder = () => {
                                                         >
                                                             <TextField
                                                                 value={row.cgst}
+                                                                onChange={(e) => handleInputChange(index, 'cgst', parseFloat(e.target.value) || 0)}
+                                                                onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
@@ -2842,6 +2903,8 @@ const CreateOfficePurchaseOrder = () => {
                                                         >
                                                             <TextField
                                                                 value={row.sgst}
+                                                                onChange={(e) => handleInputChange(index, 'sgst', parseFloat(e.target.value) || 0)}
+                                                                onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
                                                                 inputProps={{ readOnly: true }}
@@ -2867,6 +2930,7 @@ const CreateOfficePurchaseOrder = () => {
                                                         >
                                                             <TextField
                                                                 value={row.netAmount}
+                                                                // value={(row.amount + row.amount * (row.gst / 100)||0)}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
                                                             />
@@ -2904,7 +2968,7 @@ const CreateOfficePurchaseOrder = () => {
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
-                                                        <b></b>{formik.values.netAmount}
+                                                        <b></b>{(formik.values.netAmount) || 0}
                                                         {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)} */}
                                                     </td>
                                                 </tr>

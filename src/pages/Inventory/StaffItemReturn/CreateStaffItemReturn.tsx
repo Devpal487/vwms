@@ -852,6 +852,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import HOST_URL from "../../../utils/Url";
@@ -1277,20 +1278,44 @@ const CreateStaffItemReturn = (props: Props) => {
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Qty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ReturnQty")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {tableData.map((row: any, index: any) => (
                                                 <tr key={row.id} style={{ border: '1px solid black' }}>
 
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
 
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td>
                                                     <td
                                                         style={{
                                                             border: "1px solid black",
@@ -1318,12 +1343,12 @@ const CreateStaffItemReturn = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={
-                                                                    //     <CustomLabel
-                                                                    //         text={t("text.selectItem")}
-                                                                    //         required={false}
-                                                                    //     />
-                                                                    // }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.selectItem")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                                 />
                                                             )}
                                                         />
@@ -1344,7 +1369,7 @@ const CreateStaffItemReturn = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />
@@ -1394,9 +1419,9 @@ const CreateStaffItemReturn = (props: Props) => {
                                                             onFocus={(e) => e.target.select()}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                         <DeleteIcon />
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             ))}
                                         </tbody>

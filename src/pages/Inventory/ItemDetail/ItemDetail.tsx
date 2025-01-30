@@ -35,8 +35,9 @@ import Languages from "../../../Languages";
 import { Language } from "react-transliterate";
 import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
-// import CustomDataGrids from "../../../utils/CustomDataGrids";
-import CustomDataGrid from "../../../utils/CustomDatagrid";
+// // import CustomDataGrids from "../../../utils/CustomDataGrids";
+// import CustomDataGrid from "../../../utils/CustomDatagrid";
+import DataGrids from "../../../utils/Datagrids";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -49,7 +50,7 @@ export default function ItemDetail() {
   const Userid = getId();
   let navigate = useNavigate();
   const [editId, setEditId] = useState(-1);
-  const [zones, setZones] = useState([]);
+    const [item, setItem] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
@@ -128,12 +129,12 @@ export default function ItemDetail() {
         "🚀 ~ fetchZonesData ~ response.data.data:",
         response.data.data
       );
-      const zonesWithIds = data.map((zone: any, index: any) => ({
-        ...zone,
+      const zonesWithIds = data.map((Item: any, index: any) => ({
+        ...Item,
         serialNo: index + 1,
-        id: zone.itemMasterId,
+        id: Item.itemMasterId,
       }));
-      setZones(zonesWithIds);
+      setItem(zonesWithIds);
       setIsLoading(false);
 
       if (data.length > 0) {
@@ -141,6 +142,7 @@ export default function ItemDetail() {
           {
             field: "actions",
             headerName: t("text.Action"),
+            headerClassName: "MuiDataGrid-colCell",
             width: 100,
 
             renderCell: (params) => {
@@ -174,9 +176,7 @@ export default function ItemDetail() {
                       handledeleteClick(params.row.id);
                     }}
                   />
-                  {/* ) : (
-                    ""
-                  )} */}
+                 
                 </Stack>,
               ];
             },
@@ -239,24 +239,30 @@ export default function ItemDetail() {
   return (
     <>
       <Card
-        style={{
-          width: "100%",
-          backgroundColor: "lightgreen",
-          border: ".5px solid #2B4593",
-          marginTop: "3vh",
-        }}
-      >
-        <Paper
-          sx={{
-            width: "100%",
-            overflow: "hidden",
-          }}
-          style={{ padding: "10px" }}
+            style={{
+                width: "100%",
+                // height: "100%",
+                backgroundColor: "#E9FDEE",
+                border: ".5px solid #FF7722 ",
+                marginTop: "3vh"
+            }}
         >
+      <Paper
+                sx={{
+                    width: "100%",
+                    overflow: "hidden",
+                    "& .MuiDataGrid-colCell": {
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
+                        fontSize: 17,
+                        fontWeight: 900
+                    },
+                }}
+                style={{ padding: "10px", }}
+            >
           <ConfirmDialog />
 
-          <Grid item xs={12} container spacing={1}>
-            <Grid item lg={10} md={10} xs={12}>
+          
               <Typography
                 gutterBottom
                 variant="h5"
@@ -266,30 +272,35 @@ export default function ItemDetail() {
               >
                 {t("text.ItemDetail")}
               </Typography>
-            </Grid>
-          </Grid>
+           
 
           <Divider />
 
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
-              
-              <Button
-                onClick={routeChangeAdd}
-                variant="contained"
-                endIcon={<AddCircleIcon />}
-                size="large"
-                style={{backgroundColor:`var(--header-background)`}}
-              >
-                {t("text.add")}
-              </Button>
-              
 
-              
-            </Stack>
+<Button
+    onClick={routeChangeAdd}
+    variant="contained"
+    endIcon={<AddCircleIcon />}
+    size="large"
+    style={{ backgroundColor: `var(--header-background)` }}
+>
+    {t("text.add")}
+</Button>
 
-          {isLoading ? (
+</Stack>
+
+
+            <DataGrids
+                    isLoading={isLoading}
+                    rows={item}
+                    columns={adjustedColumns}
+                    pageSizeOptions={[5, 10, 25, 50, 100]}
+                    initialPageSize={5}
+                />
+          {/* {isLoading ? (
             <div
               style={{
                 display: "flex",
@@ -307,7 +318,7 @@ export default function ItemDetail() {
               pageSizeOptions={[5, 10, 25, 50, 100]}
               initialPageSize={5}
             />
-          )}
+          )} */}
         </Paper>
       </Card>
       <ToastApp />

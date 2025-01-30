@@ -40,6 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
@@ -231,27 +232,27 @@ const EditJobCard1 = (props: Props) => {
       "isDelete": false,
       "prevReading": 0
     },
-    {
-      "id": 0,
-      "jobCardId": 0,
-      unitID: 0,
-      "itemId": 0,
-      "indentId": 0,
-      "indentNo": "",
-      "qty": 0,
-      "rate": 0,
-      "batchNo": "",
-      "amount": 0,
-      "gstId": 0,
-      "gstRate": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "igst": 0,
-      "netAmount": 0,
-      "srno": 0,
-      "isDelete": false,
-      "prevReading": 0
-    },
+    // {
+    //   "id": 0,
+    //   "jobCardId": 0,
+    //   unitID: 0,
+    //   "itemId": 0,
+    //   "indentId": 0,
+    //   "indentNo": "",
+    //   "qty": 0,
+    //   "rate": 0,
+    //   "batchNo": "",
+    //   "amount": 0,
+    //   "gstId": 0,
+    //   "gstRate": 0,
+    //   "cgst": 0,
+    //   "sgst": 0,
+    //   "igst": 0,
+    //   "netAmount": 0,
+    //   "srno": 0,
+    //   "isDelete": false,
+    //   "prevReading": 0
+    // },
 
   ]);
 
@@ -275,25 +276,25 @@ const EditJobCard1 = (props: Props) => {
       gstid: 0,
 
     },
-    {
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
+    // {
+    //   id: 0,
+    //   jobCardId: 0,
+    //   serviceId: 0,
+    //   amount: 0,
+    //   jobWorkReq: true,
+    //   vendorId: 0,
+    //   challanRemark: "",
+    //   challanNo: 0,
+    //   challanDate: defaultValues,
+    //   challanRcvNo: 0,
+    //   challanRcvDate: defaultValues,
+    //   challanStatus: "",
+    //   netAmount: 0,
+    //   cgstid: 0,
+    //   sgstid: 0,
+    //   gstid: 0,
 
-    },
+    // },
 
   ]);
 
@@ -451,8 +452,8 @@ console.log("location.state",(location.state));
       setTableData1(data[0].itemDetail);
     }
 
-    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.department || location.state?.department || "");
-    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data.empId)]?.designation || location.state?.designation || "");
+    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.department || location.state?.department || "");
+    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.designation || location.state?.designation || "");
 
     // await getJobCardData().then(() => {
     //   if (location.state.status === "Complete") {
@@ -720,12 +721,12 @@ console.log("location.state",(location.state));
     newData[index].id = index;
     setTableData(newData);
 
-    if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
-      if (index === tableData.length - 1) {
-        addRow();
+    // if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
+    //   if (index === tableData.length - 1) {
+    //     addRow();
 
-      }
-    }
+    //   }
+    // }
 
     let total = 0;
     let netAmt = 0;
@@ -764,12 +765,12 @@ console.log("location.state",(location.state));
     newData[index].id = index;
     setTableData1(newData);
 
-    if (newData[index].itemId && newData[index].qty && newData[index].rate) {
-      if (index === tableData1.length - 1) {
-        handleAddItem();
+    // if (newData[index].itemId && newData[index].qty && newData[index].rate) {
+    //   if (index === tableData1.length - 1) {
+    //     handleAddItem();
 
-      }
-    }
+    //   }
+    // }
 
 
     let total = 0;
@@ -1508,7 +1509,7 @@ console.log("location.state",(location.state));
                     <tbody>
                       {tableData1.map((row: any, index: any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1518,6 +1519,30 @@ console.log("location.state",(location.state));
                               onClick={() => {
                                 if (tableData1.length > 1) {
                                   deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td> */}
+                           <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                             <AddCircleIcon
+                              onClick={() => {
+                                handleAddItem();
+                              }}
+                              
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData1.length > 1) {
+                                  deleteRow1(index)
                                 } else {
                                   alert("Atleast one row should be there");
                                 }

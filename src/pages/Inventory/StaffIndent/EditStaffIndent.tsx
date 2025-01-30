@@ -584,7 +584,7 @@
 //                                                     </td>
 
 
-       
+
 
 
 //                                                     <td style={{ border: '1px solid black', textAlign: 'center' }}>
@@ -768,6 +768,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -835,14 +836,14 @@ const EditStaffIndent = (props: Props) => {
     const [VnoOption, setVnoOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
-const [empOption, setempOption] = useState([
+    const [empOption, setempOption] = useState([
         { value: "-1", label: t("text.empid") },
     ]);
 
 
     useEffect(() => {
         GetitemData();
-      //  getVnoData();
+        //  getVnoData();
         getTransDataById(location.state.id);
         GetUnitData();
         GetempData();
@@ -866,7 +867,7 @@ const [empOption, setempOption] = useState([
         const collectData = {
             empid: -1,
             userId: "",
-    
+
         };
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
@@ -1017,11 +1018,11 @@ const [empOption, setempOption] = useState([
         setTableData(newData);
 
 
-        if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
-            if (index === tableData.length - 1) {
-                addRow();
-            }
-        }
+        // if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
+        //     if (index === tableData.length - 1) {
+        //         addRow();
+        //     }
+        // }
     };
 
 
@@ -1232,7 +1233,7 @@ const [empOption, setempOption] = useState([
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
 
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
                                                 <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
@@ -1247,17 +1248,31 @@ const [empOption, setempOption] = useState([
                                         <tbody>
                                             {tableData.map((row: any, index: any) => (
                                                 <tr key={row.id} style={{ border: '1px solid black' }}>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                                                        if (tableData.length > 1) {
-                                                            deleteRow(index)
-                                                        } else {
-                                                            alert("There should be atleast one row")
-                                                        }
-                                                    }}>
-                                                        <DeleteIcon />
-                                                    </td>
+                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td> */}
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
 
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td>
                                                     <td
                                                         style={{
                                                             border: "1px solid black",
@@ -1329,7 +1344,18 @@ const [empOption, setempOption] = useState([
                                                                 />
                                                             )}
                                                         />
-
+                                                        {/* <select
+                                                                                                                                           value={row.unitId}
+                                                                                                                                           onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                                                                                           style={{ width: '90%', height: '35px' }}
+                                                                                                                                       >
+                                                                                                                                           <option value="">{t("text.SelectUnit")}</option>
+                                                                                                                                           {unitOptions.map((option) => (
+                                                                                                                                               <option key={option.value} value={option.value}>
+                                                                                                                                                   {option.label}
+                                                                                                                                               </option>
+                                                                                                                                           ))}
+                                                                                                                                       </select> */}
                                                     </td>
 
 
@@ -1340,8 +1366,8 @@ const [empOption, setempOption] = useState([
                                                             // type="text"
                                                             value={row.quantity}
                                                             onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => {e.target.select()}}
-                                                       />
+                                                            onFocus={(e) => { e.target.select() }}
+                                                        />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
                                                         <TextField
@@ -1350,8 +1376,8 @@ const [empOption, setempOption] = useState([
                                                             // type="text"
                                                             value={row.approveQuantity}
                                                             onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => {e.target.select()}}
-                                                      />
+                                                            onFocus={(e) => { e.target.select() }}
+                                                        />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
                                                         <TextField
@@ -1360,7 +1386,7 @@ const [empOption, setempOption] = useState([
                                                             // type="text"
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => {e.target.select()}}
+                                                            onFocus={(e) => { e.target.select() }}
                                                         />
                                                     </td>
 
@@ -1370,7 +1396,7 @@ const [empOption, setempOption] = useState([
                                                             value={row.amount.toFixed(2)}
                                                             size="small"
                                                             inputProps={{ "aria-readonly": true }}
-                                                        
+
                                                         />
                                                     </td>
 
@@ -1379,7 +1405,7 @@ const [empOption, setempOption] = useState([
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                <td colSpan={6} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                     {t("text.Totalnetamount")}
 
                                                 </td>

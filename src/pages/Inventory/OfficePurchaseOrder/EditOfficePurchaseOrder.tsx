@@ -373,7 +373,7 @@
 //         console.error("Error fetching MRN data:", error);
 //       });
 //   };
-  
+
 //   useEffect(() => {
 //     if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
 //       addRow(); // Call addRow to add a new initial row
@@ -522,7 +522,7 @@
 //     setTableData((prevData) => [...prevData, { ...initialRowData }]);
 //   };
 //   console.log(location)
- 
+
 
 // //   const validateItem = (item: any) => {
 // //     return (
@@ -576,7 +576,7 @@
 //       "itemName": location.state.itemName,
 //       "unitName": location.state.unitName,
 //       purchaseOrderDetail: [],
-     
+
 //     },
 //     // validationSchema: Yup.object().shape({
 //     //   document_No: Yup.string().required(t("Document No. required")),
@@ -656,7 +656,7 @@
 //                        setToaster(true);
 //                        toast.error(response.data.message);
 //                    }
-      
+
 //     },
 //   });
 //   const back = useNavigate();
@@ -1582,6 +1582,7 @@ import nopdf from '../../../assets/images/imagepreview.jpg'
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -1878,9 +1879,9 @@ const EditOfficePurchaseOrder = () => {
         setTableData(updatedItems);
         updateTotalAmounts(updatedItems);
 
-        if (isRowFilled(item) && index === updatedItems.length - 1) {
-            addRow();
-        }
+        // if (isRowFilled(item) && index === updatedItems.length - 1) {
+        //     addRow();
+        // }
     };
 
     console.log("tableData.....", tableData);
@@ -2302,93 +2303,93 @@ const EditOfficePurchaseOrder = () => {
                                 />
                             </Grid>
                             <Grid container spacing={1} item>
-  <Grid
-    xs={12}
-    md={4}
-    sm={4}
-    item
-    style={{ marginBottom: "30px", marginTop: "30px" }}
-  >
-    <TextField
-      type="file"
-      inputProps={{ accept: "image/*" }}
-      InputLabelProps={{ shrink: true }}
-      label={<CustomLabel text={t("text.pOrderDoc")} />}
-      size="small"
-      fullWidth
-      style={{ backgroundColor: "white" }}
-      onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-    
-    />
-  </Grid>
-  <Grid xs={12} md={4} sm={4} item></Grid>
+                                <Grid
+                                    xs={12}
+                                    md={4}
+                                    sm={4}
+                                    item
+                                    style={{ marginBottom: "30px", marginTop: "30px" }}
+                                >
+                                    <TextField
+                                        type="file"
+                                        inputProps={{ accept: "image/*" }}
+                                        InputLabelProps={{ shrink: true }}
+                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
+                                        size="small"
+                                        fullWidth
+                                        style={{ backgroundColor: "white" }}
+                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
 
-  <Grid xs={12} md={4} sm={4} item>
-    <Grid
-      style={{
-        display: "flex",
-        justifyContent: "space-around",
-        alignItems: "center",
-        margin: "10px",
-      }}
-    >
-      {formik.values.pOrderDoc ? (
-        <img
-          src={formik.values.pOrderDoc}
-          alt="Preview"
-          style={{
-            width: 150,
-            height: 100,
-            border: "1px solid grey",
-            borderRadius: 10,
-            padding: "2px",
-          }}
-        />
-      ) : (
-        <img
-          src={nopdf} // Default placeholder image
-          alt="No document"
-          style={{
-            width: 150,
-            height: 100,
-            border: "1px solid grey",
-            borderRadius: 10,
-          }}
-        />
-      )}
-      <Typography
-        onClick={() => modalOpenHandle1("pOrderDoc")}
-        style={{
-          textDecorationColor: "blue",
-          textDecorationLine: "underline",
-          color: "blue",
-          fontSize: "15px",
-          cursor: "pointer",
-        }}
-      >
-        {t("text.Preview")}
-      </Typography>
-    </Grid>
-  </Grid>
+                                    />
+                                </Grid>
+                                <Grid xs={12} md={4} sm={4} item></Grid>
 
-  <Modal open={docOpen} onClose={handlePanClose1}>
-    <Box sx={style}>
-      {Img ? (
-        <img
-          src={Img}
-          alt="Preview"
-          style={{
-            width: "170vh",
-            height: "75vh",
-            borderRadius: 10,
-          }}
-        />
-      ) : (
-        <Typography>No Image to Preview</Typography>
-      )}
-    </Box>
-  </Modal>
-</Grid>
+                                <Grid xs={12} md={4} sm={4} item>
+                                    <Grid
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-around",
+                                            alignItems: "center",
+                                            margin: "10px",
+                                        }}
+                                    >
+                                        {formik.values.pOrderDoc ? (
+                                            <img
+                                                src={formik.values.pOrderDoc}
+                                                alt="Preview"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                    padding: "2px",
+                                                }}
+                                            />
+                                        ) : (
+                                            <img
+                                                src={nopdf} // Default placeholder image
+                                                alt="No document"
+                                                style={{
+                                                    width: 150,
+                                                    height: 100,
+                                                    border: "1px solid grey",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        )}
+                                        <Typography
+                                            onClick={() => modalOpenHandle1("pOrderDoc")}
+                                            style={{
+                                                textDecorationColor: "blue",
+                                                textDecorationLine: "underline",
+                                                color: "blue",
+                                                fontSize: "15px",
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            {t("text.Preview")}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+
+                                <Modal open={docOpen} onClose={handlePanClose1}>
+                                    <Box sx={style}>
+                                        {Img ? (
+                                            <img
+                                                src={Img}
+                                                alt="Preview"
+                                                style={{
+                                                    width: "170vh",
+                                                    height: "75vh",
+                                                    borderRadius: 10,
+                                                }}
+                                            />
+                                        ) : (
+                                            <Typography>No Image to Preview</Typography>
+                                        )}
+                                    </Box>
+                                </Modal>
+                            </Grid>
 
 
 
@@ -2477,24 +2478,24 @@ const EditOfficePurchaseOrder = () => {
                                                 </th>
 
                                                 <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                         {t("text.cgst")}
-                      
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.sgst")}
-                      </th>
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.cgst")}
+
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.sgst")}
+                                                </th>
                                                 {/* <th
                                                     style={{
                                                         border: "1px solid black",
@@ -2528,7 +2529,7 @@ const EditOfficePurchaseOrder = () => {
                                         <tbody>
                                             {tableData.map((row, index) => (
                                                 <tr key={row.id} style={{ border: "1px solid black" }}>
-                                                    <td
+                                                    {/* <td
                                                         style={{
                                                             border: "1px solid black",
                                                             textAlign: "center",
@@ -2536,6 +2537,30 @@ const EditOfficePurchaseOrder = () => {
                                                     >
                                                         <DeleteIcon
                                                             onClick={() => deleteRow(index)}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td> */}
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
+
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
                                                             style={{ cursor: "pointer" }}
                                                         />
                                                     </td>
@@ -2631,7 +2656,7 @@ const EditOfficePurchaseOrder = () => {
                                                     >
                                                         <TextField
                                                             size="small"
-                                                   
+
                                                             value={row.rate}
                                                             onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                                                             inputProps={{ step: "any", min: "0" }}

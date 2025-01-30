@@ -129,7 +129,7 @@ export default function ZoneMaster() {
         const columns: GridColDef[] = [
           {
             field: "actions",
-
+            headerClassName: "MuiDataGrid-colCell",
             headerName: t("text.Action"),
             width: 150,
 
@@ -162,17 +162,20 @@ export default function ZoneMaster() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
 
           },
           {
             field: "name",
             headerName: t("text.name"),
             flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
 
           },
           {
             field: "email",
             headerName: t("text.email12"),
+            headerClassName: "MuiDataGrid-colCell",
             flex: 1,
 
           },
@@ -258,23 +261,30 @@ export default function ZoneMaster() {
     await formik.handleSubmit();
   };
 
-  return (
+ 
+      return (
     <>
       <Card
         style={{
           width: "100%",
-          backgroundColor: "lightgreen",
-          border: ".5px solid #2B4593",
-          marginTop: "3vh",
+          // height: "100%",
+          backgroundColor: "#E9FDEE",
+          border: ".5px solid #FF7722 ",
+          marginTop: "3vh"
         }}
       >
         <Paper
           sx={{
             width: "100%",
             overflow: "hidden",
-
+            "& .MuiDataGrid-colCell": {
+              backgroundColor: `var(--grid-headerBackground)`,
+              color: `var(--grid-headerColor)`,
+              fontSize: 17,
+              fontWeight: 900
+            },
           }}
-          style={{ padding: "10px" }}
+          style={{ padding: "10px", }}
         >
           <ConfirmDialog />
 

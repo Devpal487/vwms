@@ -72,7 +72,7 @@
 //             "returnQty": 0,
 //             "issueQty": 0
 //         },
-    
+
 
 
 //     ]);
@@ -93,7 +93,7 @@
 //             "indentNo": "",
 //             "stockQty": 0
 //         },
-        
+
 //     ]);
 
 //     console.log("🚀 ~ EditJobCardItemReturn ~ tableData:", tableData)
@@ -147,13 +147,13 @@
 //             indentNo: "",
 //             empId: -1,
 //         };
-    
+
 //         try {
 //             const response = await api.post(`Master/GetIndent`, collectData);
 //             const data = response.data.data[0]?.indentDetail || [];
-    
+
 //             console.log("Fetched Data from API:", data);
-    
+
 //             const indentDetails = data.map((item: any, index: any) => ({
 //                 id: index + 1,
 //                 issueId: 0,
@@ -169,9 +169,9 @@
 //                 stockQty: item.stockQty || 0,
 //                 returnItem: true,
 //             }));
-    
+
 //             console.log("Transformed Data for tableDatai:", indentDetails);
-    
+
 //             setTableDatai(indentDetails); // Set transformed data to tableDatai
 //             setIsIndentSelected(indentDetails.length > 0); // Show table if data exists
 //         } catch (error) {
@@ -180,7 +180,7 @@
 //             setIsIndentSelected(false);
 //         }
 //     };
-    
+
 //     console.log("check table", tableData)
 //     const [showIndentField, setShowIndentField] = useState(false);
 //     const GetitemData = async () => {
@@ -228,7 +228,7 @@
 //             value: item?.empid
 
 //         }))
- 
+
 //         setempOption(arr);
 //     };
 
@@ -265,7 +265,7 @@
 //         //     //     .required(t("text.reqEmpName")),
 //         // }),
 
-      
+
 
 //         onSubmit: async (values) => {
 //             // Filter and format itemReturnDetail
@@ -278,19 +278,19 @@
 //                 returnQty: row.returnQty || 0,
 //                 issueQty: row.issueQty || 0,
 //             }));
-    
+
 //             // Prepare payload
 //             const payload = {
 //                 ...values,
 //                 itemReturnDetail: formattedItemReturnDetail, // Ensure proper structure
 //                 itemIssueDetail: tableDatai,                // Use as-is
 //             };
-    
+
 //             console.log("Payload to Submit:", payload);
-    
+
 //             try {
 //                 const response = await api.post(`Master/UpsertItemReturn`, payload);
-    
+
 //                 if (response.data.status === 1) {
 //                     toast.success(response.data.message);
 //                     navigate("/Inventory/JobCardItemReturn");
@@ -302,11 +302,11 @@
 //                 toast.error("Failed to submit data. Please check the console for details.");
 //             }
 //         },
-        
-        
+
+
 
 //     });
- 
+
 
 //     const handleOpenDialog = () => {
 //         setOpenDialog(true);
@@ -351,7 +351,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -384,7 +384,7 @@
 //             }
 //         }
 
-     
+
 //     };
 
 
@@ -398,7 +398,7 @@
 //     };
 
 
-  
+
 
 //     const [showTable, setShowTable] = useState(false); // State to control table visibility
 //     const handleIndentChange = async (event: any, newValue: any) => {
@@ -406,9 +406,9 @@
 //             console.log("Selected Indent:", newValue);
 //             formik.setFieldValue("returnIndentNo", newValue.label.toString());
 //             formik.setFieldValue("indentId", newValue.value);
-    
+
 //             await GetIndentIDById(newValue.value);
-    
+
 //             console.log("Updated tableDatai:", tableDatai);
 //             console.log("Is Indent Selected:", isIndentSelected);
 //         }
@@ -459,19 +459,19 @@
 //                 indentNo: formik.values.returnIndentNo, // Add the selected indent number
 //             })),
 //         ];
-    
+
 //         // Remove duplicates by ensuring unique `itemID`
 //         const uniqueData = mergedData.filter(
 //             (item, index, self) =>
 //                 index === self.findIndex((t) => t.itemID === item.itemID)
 //         );
-    
+
 //         setTableData(uniqueData); // Update tableData with merged rows
 //         setOpenDialog(false);     // Close the dialog
 //     };
-    
- 
-  
+
+
+
 
 
 //     return (
@@ -915,6 +915,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -962,7 +963,7 @@ const EditJobCardItemReturn = (props: Props) => {
 
         GetitemData();
         GetUnitData();
-       // GetempData();
+        // GetempData();
     }, []);
 
 
@@ -1044,7 +1045,7 @@ const EditJobCardItemReturn = (props: Props) => {
         setitemOption(arr);
     };
 
-    
+
     const GetUnitData = async () => {
         const collectData = {
             unitId: -1,
@@ -1314,20 +1315,44 @@ const EditJobCardItemReturn = (props: Props) => {
                                     <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
-                                            <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Qty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ReturnQty")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {tableData.map((row: any, index: any) => (
                                                 <tr key={row.id} style={{ border: '1px solid black' }}>
 
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
 
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td>
                                                     <td
                                                         style={{
                                                             border: "1px solid black",
@@ -1355,12 +1380,12 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={
-                                                                    //     <CustomLabel
-                                                                    //         text={t("text.selectItem")}
-                                                                    //         required={false}
-                                                                    //     />
-                                                                    // }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.selectItem")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                                 />
                                                             )}
                                                         />
@@ -1381,30 +1406,30 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />
                                                     </td>
-                                                   <td
-                                                                            style={{
-                                                                              border: "1px solid black",
-                                                                              textAlign: "center",
-                                                                              //width: "150px"
-                                                                            }}
-                                                                          >
-                                                                            <TextField
-                                                                              value={row.batchNo || ""} // Bind to row.batchNo
-                                                                              id="BatchNo"
-                                                                              name="BatchNo"
-                                                                              size="small"
-                                                                              sx={{ width: "150px" }}
-                                                                              onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
-                                                                            />
-                                                                          </td>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            //width: "150px"
+                                                        }}
+                                                    >
+                                                        <TextField
+                                                            value={row.batchNo || ""} // Bind to row.batchNo
+                                                            id="BatchNo"
+                                                            name="BatchNo"
+                                                            size="small"
+                                                            sx={{ width: "150px" }}
+                                                            onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                                                        />
+                                                    </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             value={row.issueQty - row.returnQty}
                                                             onFocus={(e) => e.target.select()}
@@ -1413,7 +1438,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                           // type="number"
+                                                            // type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.issueQty}
@@ -1423,7 +1448,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                         <TextField
-                                                          //  type="number"
+                                                            //  type="number"
                                                             size="small"
                                                             // type="text"
                                                             value={row.returnQty}
@@ -1431,9 +1456,9 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             onFocus={(e) => e.target.select()}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                         <DeleteIcon />
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             ))}
                                         </tbody>

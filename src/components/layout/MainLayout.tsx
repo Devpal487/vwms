@@ -585,7 +585,7 @@ const MainLayout = () => {
             },
             {
               menuId: 2,
-              menuName: "Workshop Service",
+              menuName: "Vehicle Item Con.",
               path: "/Reports/WorkshopService",
               displayNo: 0,
             },
@@ -610,7 +610,7 @@ const MainLayout = () => {
             },
             {
               menuId: 6,
-              menuName: "Vehicle Age Report",
+              menuName: "Vehicle Age ",
               path: "/Reports/VehicleAgeReport",
               displayNo: 0,
             },
@@ -628,14 +628,14 @@ const MainLayout = () => {
             },
             {
               menuId: 9,
-              menuName: "Stock Ledger Report",
+              menuName: "Stock Ledger ",
               path: "/Reports/StockLedgerReport",
               displayNo: 0,
             },
            
             {
               menuId: 10,
-              menuName: "Stock Summary Report",
+              menuName: "Stock Summary ",
               path: "/Reports/StockSummaryReport",
               displayNo: 0,
             },
@@ -653,7 +653,7 @@ const MainLayout = () => {
 
             {
               menuId: 11,
-              menuName: "Vehicle Status Report",
+              menuName: "Vehicle Status ",
               path: "/Reports/VehicleStatusReport",
               displayNo: 0,
             },

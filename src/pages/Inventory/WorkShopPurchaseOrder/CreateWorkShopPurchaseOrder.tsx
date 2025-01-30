@@ -21,6 +21,7 @@ import {
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import nopdf from '../../../assets/images/imagepreview.jpg'
@@ -437,10 +438,10 @@ const CreateWorkShopPurchaseOrder = () => {
 
             if (base64Content) {
                 formik.setFieldValue(params, base64Content); // Store the stripped base64 string
-             } else {
+            } else {
                 alert("Error processing image data.");
-             }
-          
+            }
+
             //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
         };
         reader.onerror = () => {
@@ -691,11 +692,11 @@ const CreateWorkShopPurchaseOrder = () => {
 
         setTableData(newData);
 
-        if (newData[index].unitId > 0 && newData[index].quantity && newData[index].amount > 0) {
-            if (index === tableData.length - 1) {
-                addRow();
-            }
-        }
+        // if (newData[index].unitId > 0 && newData[index].quantity && newData[index].amount > 0) {
+        //     if (index === tableData.length - 1) {
+        //         addRow();
+        //     }
+        // }
         let total = 0;
         let netAmt = 0;
         tableData.forEach((row: any) => {
@@ -1043,7 +1044,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                             <img
                                                 src={
                                                     /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
-                                                   // formik.values.pOrderDoc.startsWith("data:image")
+                                                        // formik.values.pOrderDoc.startsWith("data:image")
                                                         ? formik.values.pOrderDoc
                                                         : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
                                                 }
@@ -1346,7 +1347,31 @@ const CreateWorkShopPurchaseOrder = () => {
                                             <tbody>
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: "1px solid black" }}>
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                onClick={() => {
+                                                                    addRow();
+                                                                }}
+
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                            <DeleteIcon
+                                                                onClick={() => {
+                                                                    if (tableData.length > 1) {
+                                                                        deleteRow(index)
+                                                                    } else {
+                                                                        alert("Atleast one row should be there");
+                                                                    }
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        </td>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
                                                             if (tableData.length > 1) {
                                                                 deleteRow(index)
                                                             } else {
@@ -1354,7 +1379,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                             }
                                                         }}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
 
 
 
@@ -1594,7 +1619,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                         {/* value={formik.values.netAmount} */}
-                                                        <b></b>{formik.values.netAmount}
+                                                        <b></b>{(formik.values.netAmount) || 0}
                                                         {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.netAmount) || 0), 0)} */}
                                                     </td>
                                                 </tr>
