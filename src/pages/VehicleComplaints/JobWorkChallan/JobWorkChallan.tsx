@@ -325,7 +325,7 @@ export default function JobWorkChallan() {
 
                <Stack direction="row" spacing={2} classes="my-2 mb-2">
                   {/* {permissionData?.isAdd == true && ( */}
-                  <Button
+                  {/* <Button
                      onClick={routeChangeAdd}
                      variant="contained"
                      endIcon={<AddCircleIcon />}
@@ -333,7 +333,7 @@ export default function JobWorkChallan() {
                      style={{ backgroundColor: `var(--header-background)` }}
                   >
                      {t("text.add")}
-                  </Button>
+                  </Button> */}
                   {/* ) } */}
 
                </Stack>

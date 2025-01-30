@@ -25,6 +25,7 @@ import {
   Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
@@ -822,7 +823,7 @@ const AddJobWorkChallan = (props: Props) => {
               </Grid>
 
               {/* Challan Number */}
-              {/* <Grid item xs={12} md={4} sm={4}>
+              <Grid item xs={12} md={4} sm={4}>
                 <TextField
                   label={
                     <CustomLabel
@@ -841,7 +842,7 @@ const AddJobWorkChallan = (props: Props) => {
                     formik.setFieldValue("challanNo", parseInt(e.target.value) || 0)
                   }}
                 />
-              </Grid> */}
+              </Grid>
 
 
               {/* Challan Date */}
@@ -1130,6 +1131,12 @@ const AddJobWorkChallan = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
+                             <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData.length > 1) {
