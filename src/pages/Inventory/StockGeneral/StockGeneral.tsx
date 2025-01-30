@@ -142,7 +142,7 @@ export default function StockGeneral() {
                                     direction="row"
                                     sx={{ alignItems: "center", marginTop: "5px" }}
                                 >
-{/*                                    
+                                   
                                     <EditIcon
                                         style={{
                                             fontSize: "20px",
@@ -151,9 +151,9 @@ export default function StockGeneral() {
                                         }}
                                         className="cursor-pointer"
                                         onClick={() => routeChangeEdit(params.row)}
-                                    /> */}
+                                    /> 
                                    
-                                    {/* <DeleteIcon
+                                    <DeleteIcon
                                         style={{
                                             fontSize: "20px",
                                             color: "red",
@@ -162,7 +162,7 @@ export default function StockGeneral() {
                                         onClick={() => {
                                             handledeleteClick(params.row.id);
                                         }}
-                                    /> */}
+                                    />
                                 </Stack>,
                             ];
                         },
@@ -181,18 +181,18 @@ export default function StockGeneral() {
                         flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-                    {
-                        field: "itemName",
-                        headerName: t("text.itemName"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
-                    {
-                        field: "unitName",
-                        headerName: t("text.unitName"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
+                    // {
+                    //     field: "itemName",
+                    //     headerName: t("text.itemName"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
+                    // {
+                    //     field: "unitName",
+                    //     headerName: t("text.unitName"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
                     {
                         field: "rate",
                         headerName: t("text.rate"),
@@ -223,15 +223,15 @@ export default function StockGeneral() {
                     //     headerClassName: "MuiDataGrid-colCell",
                     // },
                    
-                    {
-                        field: "expiryDate",
-                        headerName: t("text.expiryDate"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                        renderCell(params) {
-                            return dayjs(params.row.expiryDate).format("DD-MM-YYYY")
-                        },
-                    },
+                    // {
+                    //     field: "expiryDate",
+                    //     headerName: t("text.expiryDate"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    //     renderCell(params) {
+                    //         return dayjs(params.row.expiryDate).format("DD-MM-YYYY")
+                    //     },
+                    // },
                     // {
                     //     field: "freight",
                     //     headerName: t("text.freights"),
