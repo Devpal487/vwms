@@ -97,6 +97,7 @@ const EditJobCard = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
+  const [challanNum, setChallanNum] = useState(0);
 
   const [jobCardData, setJobCardData] = useState([{
     "jobCardId": 0,
@@ -233,10 +234,19 @@ const EditJobCard = (props: Props) => {
     getVendorData();
     getUnitData();
     getComplainData();
+
     setVehicleName(location.state?.vehicleName);
     console.log("location.state", location.state);
     setDeptValue(location.state?.department);
     setDesgValue(location.state?.designation);
+
+    // const uniqueVendor: any = [];
+    // tableData.forEach((data: any) => {
+    //   if (!uniqueVendor.includes(data.vendorId)) {
+    //     uniqueVendor.push(data.vendorId)
+    //   }
+    // })
+    // console.log("@###########@#@",uniqueVendor);
     const timeoutId: any = setTimeout(() => {
       handleStateData();
     }, 300);
@@ -358,25 +368,29 @@ const EditJobCard = (props: Props) => {
     const data = response.data.data;
 
     if (data[0].serviceDetail.length > 0) {
-      setTableData(data[0].serviceDetail);
+      const arr: any = [];
+      data[0].serviceDetail.map((item: any) => {
+        arr.push({
+          ...item,
+        })
+      })
+      if (data[0].status === "Complete") {
+        arr.pop();
+        setTableData(arr);
+      } else {
+        setTableData(arr);
+      }
     }
+    formik.setFieldValue("imageFile",data[0].imageFile);
 
-    setDeptValue(empOption[empOption.findIndex(e => e.value == data.empId)]?.department || location.state?.department || "");
-    setDesgValue(empOption[empOption.findIndex(e => e.value == data.empId)]?.designation || location.state?.designation || "");
-
-    // await getJobCardData().then(() => {
-    //   if (location.state.status === "Complete") {
-    //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
-    //   } else {
-    //     setTableData([...location.state?.serviceDetail, tableData]);
-    //   }
-    // })
+    setDeptValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.department || location.state?.department || "");
+    setDesgValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.designation || location.state?.designation || "");
   }
 
 
 
   const validateRow = (row: any) => {
-    return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
+    return row.serviceId && row.vendorId;
   };
 
 
@@ -412,8 +426,8 @@ const EditJobCard = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-      fileNo: Yup.string()
-        .required(t("text.reqFilenumber")),
+      // fileNo: Yup.string()
+      //   .required(t("text.reqFilenumber")),
       itemName: Yup.string()
         .required(t("text.reqVehNum")),
     }),
@@ -511,7 +525,13 @@ const EditJobCard = (props: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+      if (base64Content) {
+        formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+        alert("Error processing image data.");
+      }
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
@@ -520,74 +540,166 @@ const EditJobCard = (props: Props) => {
   };
 
 
+  // const saveJobWorkChallanData = async () => {
+  //   const challanChildData: any = [];
+  //   tableData.map((item: any, index) => {
+  //     challanChildData.push({
+  //       "id": 0,
+  //       "challanNo": 0,
+  //       "jobCardId": formik.values.jobCardId,
+  //       "serviceId": item.serviceId,
+  //       "serviceCharge": item.unitRate,
+  //       "vendorId": item.vendorId,
+  //       "remark": item.challanRemark,
+  //       "qty": item.qty,
+  //       "unitId": item.unitId,
+  //       "amount": item.amount,
+  //       "netAmount": item.netAmount,
+  //       "gstid": 0,
+  //       "cgstid": 0,
+  //       "sgstid": 0,
+  //       "gst": 0,
+  //       "cgst": 0,
+  //       "sgst": 0,
+  //       "serviceName": item.serviceName,
+  //       "unitName": item.unitName
+  //     })
+  //   })
+  //   const values = {
+  //     "challanNo": 0,
+  //     "challanDate": defaultValues,
+  //     "complainId": formik.values.complainId,
+  //     "empId": formik.values.empId,
+  //     "itemId": formik.values.itemId,
+  //     "jobCardId": formik.values.jobCardId,
+  //     "vendorId": tableData[0].vendorId,
+  //     "createdBy": "adminvm",
+  //     "updatedBy": "adminvm",
+  //     "createdOn": defaultValues,
+  //     "updatedOn": defaultValues,
+  //     "companyId": 0,
+  //     "fyId": 0,
+  //     "serviceAmount": formik.values.totalServiceAmount,
+  //     "itemAmount": formik.values.totalItemAmount,
+  //     "netAmount": formik.values.netAmount,
+  //     "status": "JobWork",
+  //     "rcvDate": defaultValues,
+  //     "rcvNo": 0,
+  //     "cgst": 0,
+  //     "sgst": 0,
+  //     "gst": 0,
+  //     "cgstid": 0,
+  //     "sgstid": 0,
+  //     "gstid": 0,
+  //     "challanDoc": "",
+  //     "fileOldName": "",
+  //     "file": "",
+  //     "jobWorkChallanDetail": [...challanChildData],
+  //     "vehicleNo": "",
+  //     "vendorName": "",
+  //     "empName": "",
+  //     "jobCardDate": "2025-01-29T12:13:20.652Z",
+  //     "complainDate": "2025-01-29T12:13:20.653Z"
+  //   }
+
+  //   const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+  //   if (response.data.status === 1) {
+  //     toast.success(response.data.message);
+  //   } else {
+  //     setToaster(true);
+  //     toast.error(response.data.message);
+  //   }
+  // }
+
   const saveJobWorkChallanData = async () => {
-    const challanChildData: any = [];
-    tableData.map((item: any, index) => {
-      challanChildData.push({
-        "id": 0,
+    const uniqueVendor: any = [];
+    const validTableData = tableData.filter(validateRow);
+    validTableData.forEach((data: any) => {
+      if (!uniqueVendor.includes(data.vendorId)) {
+        uniqueVendor.push(data.vendorId)
+      }
+    })
+
+    for (let i = 0; i < uniqueVendor.length; i++) {
+      const challanChildData: any = [];
+      let totalAmt = 0;
+      let netAmt = 0;
+      tableData.map((item: any, index) => {
+        if (item.vendorId === uniqueVendor[i]) {
+          challanChildData.push({
+            "id": 0,
+            "challanNo": 0,
+            "jobCardId": formik.values.jobCardId,
+            "serviceId": item.serviceId,
+            "serviceCharge": item.unitRate,
+            "vendorId": item.vendorId,
+            "remark": item.challanRemark,
+            "qty": item.qty,
+            "unitId": item.unitId,
+            "amount": item.amount,
+            "netAmount": item.netAmount,
+            "gstid": 0,
+            "cgstid": 0,
+            "sgstid": 0,
+            "gst": 0,
+            "cgst": 0,
+            "sgst": 0,
+            "serviceName": item.serviceName,
+            "unitName": item.unitName
+          })
+          totalAmt += item.amount;
+          netAmt += item.netAmount;
+        }
+      })
+      const values = {
         "challanNo": 0,
+        "challanDate": defaultValues,
+        "complainId": formik.values.complainId,
+        "empId": formik.values.empId,
+        "itemId": formik.values.itemId,
         "jobCardId": formik.values.jobCardId,
-        "serviceId": item.serviceId,
-        "serviceCharge": item.unitRate,
-        "vendorId": item.vendorId,
-        "remark": item.challanRemark,
-        "qty": item.qty,
-        "unitId": item.unitId,
-        "amount": item.amount,
-        "netAmount": item.netAmount,
-        "gstid": 0,
-        "cgstid": 0,
-        "sgstid": 0,
-        "gst": 0,
+        "vendorId": uniqueVendor[i],
+        "createdBy": "adminvm",
+        "updatedBy": "adminvm",
+        "createdOn": defaultValues,
+        "updatedOn": defaultValues,
+        "companyId": 0,
+        "fyId": 0,
+        "serviceAmount": totalAmt,
+        "itemAmount": 0,
+        "netAmount": netAmt || totalAmt,
+        "status": "JobWork",
+        "rcvDate": defaultValues,
+        "rcvNo": 0,
         "cgst": 0,
         "sgst": 0,
-        "serviceName": item.serviceName,
-        "unitName": item.unitName
-      })
-    })
-    const values = {
-      "challanNo": 0,
-      "challanDate": defaultValues,
-      "complainId": formik.values.complainId,
-      "empId": formik.values.empId,
-      "itemId": formik.values.itemId,
-      "jobCardId": formik.values.jobCardId,
-      "vendorId": tableData[0].vendorId,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
-      "createdOn": defaultValues,
-      "updatedOn": defaultValues,
-      "companyId": 0,
-      "fyId": 0,
-      "serviceAmount": formik.values.totalServiceAmount,
-      "itemAmount": formik.values.totalItemAmount,
-      "netAmount": formik.values.netAmount,
-      "status": "JobWork",
-      "rcvDate": defaultValues,
-      "rcvNo": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "gst": 0,
-      "cgstid": 0,
-      "sgstid": 0,
-      "gstid": 0,
-      "challanDoc": "",
-      "fileOldName": "",
-      "file": "",
-      "jobWorkChallanDetail": [...challanChildData],
-      "vehicleNo": "",
-      "vendorName": "",
-      "empName": "",
-      "jobCardDate": "2025-01-29T12:13:20.652Z",
-      "complainDate": "2025-01-29T12:13:20.653Z"
-    }
-
-    const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
-    if (response.data.status === 1) {
-      toast.success(response.data.message);
-    } else {
-      setToaster(true);
-      toast.error(response.data.message);
+        "gst": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0,
+        "challanDoc": "",
+        "fileOldName": "",
+        "file": "",
+        "jobWorkChallanDetail": [...challanChildData],
+        "vehicleNo": "",
+        "vendorName": "",
+        "empName": "",
+        "jobCardDate": "2025-01-29T12:13:20.652Z",
+        "complainDate": "2025-01-29T12:13:20.653Z"
+      }
+      const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+      if (response.data.status === 1) {
+        toast.success(response.data.message);
+        const arr: any = [];
+        tableData.forEach((data: any) => {
+          arr.push({ ...data, challanNo: response.data.data });
+        })
+        setTableData(arr);
+        setChallanNum(response.data.data);
+      } else {
+        setToaster(true);
+        toast.error(response.data.message);
+      }
     }
   }
 
@@ -793,7 +905,7 @@ const EditJobCard = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.FileNo")}
-                      required={true}
+                      required={false}
                     />
                   }
                   variant="outlined"
@@ -809,9 +921,9 @@ const EditJobCard = (props: Props) => {
                     // setDeptValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.department || "");
                   }}
                 />
-                {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
+                {/* {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
-                )}
+                )} */}
               </Grid>
 
 
@@ -1228,7 +1340,7 @@ const EditJobCard = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={unitOption}
-                              value={unitOption[unitOption.findIndex(e => e.value == row.unitId)]?.label}
+                              value={row.unitName}
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
@@ -1437,7 +1549,7 @@ const EditJobCard = (props: Props) => {
                           {t("text.TotalServiceAmount")}
                         </td>
                         <td colSpan={1}>
-                          <b>:</b>{formik.values.totalServiceAmount}
+                          <b>:</b>{formik.values.totalServiceAmount.toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1446,7 +1558,7 @@ const EditJobCard = (props: Props) => {
                           {t("text.TotalAmount")}
                         </td>
                         <td colSpan={1}>
-                          <b>:</b>{formik.values.netAmount}
+                          <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>

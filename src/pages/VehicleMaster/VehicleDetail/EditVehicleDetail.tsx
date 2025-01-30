@@ -113,6 +113,7 @@ const EditVehicleDetail = (props: Props) => {
    const [Img, setImg] = useState("");
 
    useEffect(() => {
+      fetchImage(location.state?.itemMasterId)
       getzoneData();
       getCategoryData();
       getItemTypeData();
@@ -204,6 +205,16 @@ const EditVehicleDetail = (props: Props) => {
       setTaxOption(arr);
    };
 
+   const fetchImage = async (itemId: any = location.state?.itemMasterId || 0) => {
+      const response = await api.get(
+         `Master/GetVehicleDetail?ItemMasterId=${itemId}`,
+         //{ headers: { "brandid": -1 } }
+       );
+       const data = response.data.data;
+      formik.setFieldValue("filename", data[0].filename.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+      formik.setFieldValue("vehiclePhotoFile", data[0].vehiclePhotoFile.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+   }
+
    const getVehicletypeData = async () => {
       const response = await api.get(`Master/GetVehicleType?VehicleTypeId=-1`);
       const data = response.data.data;
@@ -285,7 +296,7 @@ const EditVehicleDetail = (props: Props) => {
          tankCapacity: location.state?.tankCapacity || 0,
          actPrice: location.state?.actPrice || 0,
          hsnCode: location.state?.hsnCode || "",
-         filename: location.state?.filename || "",
+         filename: "",
          chesisNo: location.state?.chesisNo || "",
          qcApplicable: location.state?.qcApplicable ?? true,  // Ensuring boolean default works properly
          depreciationRate: location.state?.depreciationRate || 0,
@@ -295,7 +306,7 @@ const EditVehicleDetail = (props: Props) => {
          createdOn: location.state?.createdOn || defaultValues,
          updatedOn: location.state?.updatedOn || defaultValues,
          zoneName: location.state?.zoneName || "",
-         vehiclePhotoFile: location.state?.vehiclePhotoFile || "",
+         vehiclePhotoFile: "",
          deptName: location.state?.deptName || "",
          desigName: location.state?.desigName || "",
          vehicleTypeId: location.state?.vehicleTypeId || 0,

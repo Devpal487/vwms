@@ -8998,6 +8998,8 @@ reqMenuName:"Menu Name is required",
 reqPageName:"Page Name is required",
 reqJuridiction:"Juridiction Name is required",
 
+TotalGstAmt:"Total GST Amount",
+
 
 
 
@@ -13262,6 +13264,10 @@ reqJuridiction:"Juridiction Name is required",
 
         RCDocument:"आरसी दस्तावेज़ संलग्न करें",
         VehicleImage:"वाहन छवि संलग्न करें",
+        TotalGstAmt:"कुल जीएसटी राशि",
+        HelpCreation:"सहायता निर्माण",
+        PageTitle:"पृष्ठशीर्षक",
+        Flowmaster:"फ़्लोमास्टर"
 
       },
 

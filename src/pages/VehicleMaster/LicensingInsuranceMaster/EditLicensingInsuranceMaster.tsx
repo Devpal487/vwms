@@ -85,6 +85,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
   useEffect(() => {
     getVehicleDetails();
     getVendorData();
+    fetchImage();
   }, []);
 
   const getLabelById = (option: any, id: any) => {
@@ -124,6 +125,20 @@ const EditLicensingInsuranceMaster = (props: Props) => {
     setVendorOption(arr);
   };
 
+  const fetchImage = async (id: any = location.state?.licensingId || 0) => {
+    const collectData = {
+      "licensingId": id,
+      "itemId": -1,
+      "vendorId": -1
+    };
+    const response = await api.post(
+      `Master/GetLicensing`,
+      collectData
+    );
+    const data = response.data.data;
+    formik.setFieldValue("attachment", data[0].attachment.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+  }
+
 
 
 
@@ -153,18 +168,18 @@ const EditLicensingInsuranceMaster = (props: Props) => {
     //     .required(t("text.reqIndentNum")),
     // }),
 
-      validationSchema: Yup.object({
-          itemId: Yup.string()
-            .required(t("text.reqVehNum")),
-          vendorId: Yup.string()
-            .required(t("text.reqVendorName")),
-          fromDate: Yup.string()
-            .required(t("text.reqFromDate")),
-          todate: Yup.string()
-            .required(t("text.reqToDate")),
-          effectiveDate: Yup.string()
-            .required(t("text.reqEffectiveDate")),
-        }),
+    validationSchema: Yup.object({
+      itemId: Yup.string()
+        .required(t("text.reqVehNum")),
+      vendorId: Yup.string()
+        .required(t("text.reqVendorName")),
+      fromDate: Yup.string()
+        .required(t("text.reqFromDate")),
+      todate: Yup.string()
+        .required(t("text.reqToDate")),
+      effectiveDate: Yup.string()
+        .required(t("text.reqEffectiveDate")),
+    }),
 
     onSubmit: async (values) => {
 
@@ -342,7 +357,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     />
                   )}
                 />
-                 {formik.touched.itemId && formik.errors.itemId && (
+                {formik.touched.itemId && formik.errors.itemId && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.itemId.toString()}</div>
                 )}
               </Grid>
@@ -399,7 +414,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-               {formik.touched.fromDate && formik.errors.fromDate ? (
+                {formik.touched.fromDate && formik.errors.fromDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.fromDate.toString()}
                   </div>
@@ -459,7 +474,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   }}
                   InputLabelProps={{ shrink: true }}
                 />
-               {formik.touched.effectiveDate && formik.errors.effectiveDate ? (
+                {formik.touched.effectiveDate && formik.errors.effectiveDate ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.effectiveDate.toString()}
                   </div>

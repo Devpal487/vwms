@@ -174,7 +174,14 @@ export default function ItemContract() {
         fromDate: formatDate(Item.fromDate),
         toDate: formatDate(Item.toDate),
       }));
-      setItem(arr);
+
+      const arr1:any = [];
+      arr.forEach((element:any) => {
+        if(element.type === "Itemwise") {
+          arr1.push(element);
+        }
+      });
+      setItem(arr1);
       setIsLoading(false);
 
       if (data.length > 0) {

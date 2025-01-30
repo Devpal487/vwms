@@ -366,7 +366,7 @@ const EditJobWorkChallan = (props: Props) => {
       vehicleNo: Yup.string()
         .required(t("text.reqVehNum")),
     }),
-    
+
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
       if (validTableData.length === 0) {
@@ -426,14 +426,22 @@ const EditJobWorkChallan = (props: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png|xLSPtxB61);base64,/, "");
+         
+      if (base64Content) {
+         formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+         alert("Error processing image data.");
+      }
+      //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
     };
     reader.readAsDataURL(file);
   };
-  
+
 
 
 
@@ -498,6 +506,7 @@ const EditJobWorkChallan = (props: Props) => {
       netAmt += row.amount + row.amount * (row.gst / 100);
     })
     formik.setFieldValue("netAmount", netAmt);
+    formik.setFieldValue("gst", netAmt - total);
     formik.setFieldValue("serviceAmount", total);
   };
 
@@ -592,9 +601,9 @@ const EditJobWorkChallan = (props: Props) => {
           </Grid>
           <Divider />
           <br />
-          <ToastContainer />
+          {/* <ToastContainer /> */}
           <form onSubmit={formik.handleSubmit}>
-            {/* {toaster === false ? "" : <ToastApp />} */}
+            {toaster === false ? "" : <ToastApp />}
             <Grid container spacing={2}>
 
 
@@ -958,7 +967,7 @@ const EditJobWorkChallan = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
-                             <AddCircleIcon
+                            <AddCircleIcon
                               onClick={() => {
                                 addRow();
                               }}
@@ -1176,7 +1185,16 @@ const EditJobWorkChallan = (props: Props) => {
                           {t("text.TotalServiceAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
-                          <b>:</b>{formik.values.serviceAmount}
+                          <b>:</b>{formik.values.serviceAmount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={7}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalGstAmt")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(parseFloat(formik.values.netAmount) - parseFloat(formik.values.serviceAmount)).toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1185,7 +1203,7 @@ const EditJobWorkChallan = (props: Props) => {
                           {t("text.NetAmount")}
                         </td>
                         <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
-                          <b>:</b>{formik.values.netAmount}
+                          <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>
