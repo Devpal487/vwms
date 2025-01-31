@@ -179,6 +179,7 @@ const EditJobWorkChallan = (props: Props) => {
     getUnitData();
     getTaxData();
     setTableDataValues();
+    fetchImage();
     console.log("locatiion.state==>>" + JSON.stringify(location.state))
   }, []);
 
@@ -280,6 +281,19 @@ const EditJobWorkChallan = (props: Props) => {
     }));
     setJobCardData(arr);
   };
+
+  const fetchImage = async (id: any = location.state?.challanNo || 0) => {
+    const collectData = {
+      "jobCardId": -1,
+      "challanNo": id
+    };
+    const response = await api.post(
+      `Master/GetJobWorkChallan`,
+      collectData
+    );
+    const data = response.data.data;
+    formik.setFieldValue("challanDoc", data[0].challanDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+  }
 
 
 
@@ -428,11 +442,11 @@ const EditJobWorkChallan = (props: Props) => {
       const base64String = reader.result as string;
 
       const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png|xLSPtxB61);base64,/, "");
-         
+
       if (base64Content) {
-         formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+        formik.setFieldValue(params, base64Content); // Store the stripped base64 string
       } else {
-         alert("Error processing image data.");
+        alert("Error processing image data.");
       }
       //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
     };
