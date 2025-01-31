@@ -350,10 +350,11 @@ const CreateJobCardIndent = (props: Props) => {
                 align="center"
               >
                 {t("text.CreateJobCardIndent")}
+
               </Typography>
             </Grid>
 
-            <Grid item lg={3} md={3} xs={3} marginTop={3}>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}

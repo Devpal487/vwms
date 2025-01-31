@@ -1,3 +1,4 @@
+import shadows from "@mui/material/styles/shadows";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -10,8 +11,33 @@ const resources = {
       error: {},
       message: {},
       text: {
+        
         ////
         /////
+        top10: "Top 10",
+        ScrapDate:"Scrap Date",
+        LastService:"Last Service",
+        noOfServices:"No. Of Services",
+        Expense: "Expense",
+        Age: "Age",
+        totaldays: "Total Days",
+        noOfComplaints: "No. Of Complaints",
+        ComplaintStatus: "Complaint Status",
+        DocumentType: "Document Type",
+        vehiclePhoto: "Vehicle Photo",
+        RegistrationOn: "Registration On",
+        All: "All",
+        COMPLETE: "COMPLETE",
+        PENDING: "PENDING",
+        OUTSOURCE: "OUTSOURCE",
+        INHOUSE: "INHOUSE",
+        INPROGRESS:"INPROGRESS",
+        download:"Download",
+        show:"Show",
+
+        tabular:"Tabular Excel",
+        excel:"Excel",
+        pdf:"PDF",
         indentNo00:"Indent No.",
         orderNo11:"Order No.",
         type:"Type",
@@ -128,12 +154,12 @@ const resources = {
         eScarp1: "Save Escrap Also",
         PetrolPumpName1: "PetrolPump Name",
         SelectStatus: "Select Status",
-        Emaileventname1: "Email Event Name",
-        Emaileventtype1: "Email Event Type",
+        Emaileventname1: "Event Name",
+        Emaileventtype1: "Event Type",
 
         //employee
 
-        Emailcampaigname1: "Email Campaign Name",
+        Emailcampaigname1: "Campaign Name",
         Status1: "Status",
         Emailcampaign: "Create Email Campaign",
         toTime: "To Time",
@@ -3179,6 +3205,7 @@ const resources = {
         SelectStatus: "Select Status",
         Emaileventname1: "Event Name",
         Emaileventtype1: "Event Type",
+        
 
         //employee
 
@@ -6022,12 +6049,12 @@ const resources = {
         eScarp1: "Save Escrap Also",
         PetrolPumpName1: "PetrolPump Name",
         SelectStatus: "Select Status",
-        Emaileventname1: "Email Event Name",
-        Emaileventtype1: "Email Event Type",
+        Emaileventname1: "Event Name",
+        Emaileventtype1: "Event Type",
 
         //employee
 
-        Emailcampaigname1: "Email Campaign Name",
+        Emailcampaigname1: "Campaign Name",
         Status1: "Status",
         Emailcampaign: "Create Email Campaign",
         toTime: "To Time",
@@ -8913,7 +8940,7 @@ const resources = {
         password: "Password",
         currFinYear: "Current Financial Year",
 
-        RCDocument: "Attach RC Document",
+        RCDocument1: "RC Document",
         VehicleImage: "Attach Vehicle Image",
         VehicleNum: "VehicleNo",
         reqLocName: "Location name is required",
@@ -9041,7 +9068,37 @@ TotalGstAmt:"Total GST Amount",
       text: {
 
         //
-        
+        top10: "शीर्ष 10",
+        ScrapDate: "स्क्रैप तारीख",  
+        LastService: "अंतिम सेवा",  
+        noOfServices: "सेवाओं की संख्या",  
+        Expense: "खर्च",  
+        Age: "आयु",  
+        totaldays: "कुल दिन",  
+        noOfComplaints: "शिकायतों की संख्या",  
+        ComplaintStatus: "शिकायत स्थिति",  
+        DocumentType: "दस्तावेज़ प्रकार",  
+        vehiclePhoto: "वाहन फोटो",  
+        RegistrationOn: "पंजीकरण तारीख",
+
+        VEHICLEEXPENDITURE: "वाहन व्यय",  
+Complaints: "शिकायतें",  
+INSURANCE: "बीमा",  
+REGISTRATION: "पंजीकरण",  
+SERVICES: "सेवाएँ",  
+SCRAPDETAIL: "कबाड़ विवरण",
+        ComplaintStatus: "शिकायत स्थिति",
+        All: "सभी",  
+COMPLETE: "पूर्ण",  
+PENDING: "पेंडिंग",  
+OUTSOURCE: "आउटसोर्स",  
+INHOUSE: "इनहाउस",  
+INPROGRESS: "प्रगति में",
+        download: "डाउनलोड करें",  
+        show: "दिखाएं",
+        tabular: "टैबुलर एक्सेल",  
+        excel: "एक्सेल",  
+        pdf: "पीडीएफ",
           "indentNo00": "इंडेंट नंबर",
           "orderNo11": "आर्डर नंबर",
           "type": "प्रकार",
@@ -9587,7 +9644,7 @@ TotalGstAmt:"Total GST Amount",
         Print: "प्रिंट",
         PeriodFrom: "से अवधि",
         PeriodTo: "अवधि से",
-        Search: "ढूँढ",
+        Search: "खोजें",
         Clear: "स्पष्ट",
         ViewIndexPdf: "इंडेक्स पीडीएफ देखें",
         ViewFullPdf: "पूरा पीडीएफ देखें",
@@ -11035,6 +11092,7 @@ TotalGstAmt:"Total GST Amount",
         Keywords: "कीवर्ड",
         FileName: "फ़ाइल का नाम",
         PdfFile: "पीडीएफ",
+        
         DocumentEntryEdit: "दस्तावेज़ प्रविष्टि संपादित करें",
         EnterKeyword: "कीवर्ड दर्ज करें",
         PdfName: "पीडीएफ नाम",
@@ -11079,7 +11137,7 @@ TotalGstAmt:"Total GST Amount",
         Print: "प्रिंट",
         PeriodFrom: "से अवधि",
         PeriodTo: "अवधि से",
-        Search: "ढूँढ",
+        Search: "खोजें",
         Clear: "स्पष्ट",
         ViewIndexPdf: "इंडेक्स पीडीएफ देखें",
         ViewFullPdf: "पूरा पीडीएफ देखें",
@@ -12407,7 +12465,7 @@ TotalGstAmt:"Total GST Amount",
         Print: "प्रिंट",
         PeriodFrom: "से अवधि",
         PeriodTo: "अवधि से",
-        Search: "ढूँढ",
+        Search: "खोजें",
         Clear: "स्पष्ट",
         ViewIndexPdf: "इंडेक्स पीडीएफ देखें",
         ViewFullPdf: "पूरा पीडीएफ देखें",
@@ -13258,7 +13316,7 @@ TotalGstAmt:"Total GST Amount",
         EditComplaintApproval:"शिकायत अनुमोदन संपादित करें",
 
 
-        RCDocument: "आरसी दस्तावेज़ संलग्न करें",
+        RCDocument1: "आरसी दस्तावेज़",
         VehicleImage: "वाहन छवि संलग्न करें",
 
         reqStateName: "राज्य का नाम आवश्यक है",

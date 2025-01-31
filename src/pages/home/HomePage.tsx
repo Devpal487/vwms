@@ -59,6 +59,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { toast } from "react-toastify";
 import React from "react";
 import dayjs from "dayjs";
+import CustomLabel from "../../CustomLable";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -195,12 +196,12 @@ export default function HomePage() {
               </Stack>
             ),
           },
-          { field: "serialNo", headerName: "Sr No.", flex: 1 },
-          { field: "vehicleNo", headerName: "Vehicle", flex: 1 },
-          { field: "vehicleTypename", headerName: "Vehicle Type", flex: 1 },
-          { field: "actprice", headerName: "Actual Price", flex: 1 },
-          { field: "amount", headerName: "Expense", flex: 1 },
-          { field: "age", headerName: "Age", flex: 1 },
+          { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
+          { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
+          { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
+          { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
+          { field: "amount", headerName: t("text.Expense"), flex: 1 },
+          { field: "age", headerName: t("text.Age"), flex: 1 },
         ];
         setColumns(dynamicColumns);
       }
@@ -241,11 +242,11 @@ export default function HomePage() {
               </Stack>
             ),
           },
-          { field: "serialNo", headerName: "Sr No.", flex: 1 },
-          { field: "vehicleNo", headerName: "Vehicle", flex: 1 },
-          { field: "noOfComplaints", headerName: "Complaints", flex: 1 },
-          { field: "totaldays", headerName: "total days", flex: 1 },
-          { field: "amount", headerName: "Expense", flex: 1 },
+          { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
+          { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
+          { field: "noOfComplaints", headerName: t("text.Complaints"), flex: 1 },
+          { field: "totaldays", headerName: t("text.totaldays"), flex: 1 },
+          { field: "amount", headerName: t("text.Expense"), flex: 1 },
         ];
         setColumns(dynamicColumns);
       }
@@ -286,8 +287,8 @@ export default function HomePage() {
               </Stack>
             ),
           },
-          { field: "serialNo", headerName: "Sr No.", flex: 1 },
-          { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
+          { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
+          { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
           { field: "effectiveDate", headerName: "Effective Date", flex: 1 },
           { field: "todate", headerName: "Expiry Date", flex: 1 },
           { field: "attachMentName", headerName: "Document", flex: 1 },
@@ -804,6 +805,7 @@ export default function HomePage() {
     inhouse: 0,
     Complete: 0,
   });
+  
   const [total, setTotal] = useState(0);
   useEffect(() => {
     const fetchAllStatuses = async () => {
@@ -1463,27 +1465,11 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                          VEHICLE   EXPENDITURE
+                          {t("text.VEHICLEEXPENDITURE")}
 
                           <Grid style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-
-                            {/* <TextField
-          placeholder="Search"
-          variant="outlined"
-          size="small"
-          sx={{
-            backgroundColor: "white",
-            borderRadius: "4px",
-            width: "200px",
-          }}
-          onChange={(e:any) => setSearchTerm(e.target.value)} // Update search term state
-        /> */}
-
-
-
-
                             <TextField
-                              placeholder="Search"
+                            placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1510,7 +1496,6 @@ th, td {
                                 console.log("Search Term:", e.target.value); // Debugging search term updates
                               }}
                             />
-
                             <PrintIcon
                               fontSize="large"
                               sx={{ color: "white", cursor: "pointer" }}
@@ -1527,11 +1512,9 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
-
-                          </Grid>
-                        </Typography>
+                          </Grid>    </Typography>
                       )}
                       {isShow2 && (
                         <Typography
@@ -1544,11 +1527,11 @@ th, td {
                             alignItems: "center", // Ensures vertical alignment
                           }}
                         >
-                          COMPLAINTS
+                          {t("text.Complaints")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
 
                             <TextField
-                              placeholder="Search"
+                               placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1588,7 +1571,7 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
                           </div>
                         </Typography>
@@ -1603,10 +1586,10 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                          INSURANCE
+                         {t("text.INSURANCE")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                              placeholder="Search"
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1652,7 +1635,7 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
 
                           </div>
@@ -1667,10 +1650,10 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                          REGISTRATION
+                          {t("text.REGISTRATION")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                              placeholder="Search"
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1716,7 +1699,7 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
 
                           </div>
@@ -1731,10 +1714,10 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                          SERVICES
+                          {t("text.SERVICES")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                              placeholder="Search"
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1780,7 +1763,7 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
 
                           </div>
@@ -1795,10 +1778,10 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                          SCRAP DETAIL
+                          {t("text.SCRAPDETAIL")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                              placeholder="Search"
+                             placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1844,7 +1827,7 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>Top 10</span>}
+                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
                             />
 
                           </div>
@@ -1893,9 +1876,17 @@ th, td {
                                   // rows={getTop ? RepairOption.slice(0, 10) : RepairOption}
                                   // rows={RepairOption.length > 0 ? RepairOption : []}
                                   columns={[
-                                    {
+                                    
+
+                                      // { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
+                                      // { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
+                                      // { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
+                                      // { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
+                                      // { field: "amount", headerName: t("text.Expense"), flex: 1 },
+                                      // { field: "age", headerName: t("text.Age"), flex: 1 },
+                                      {
                                       field: "vehicleNo",
-                                      headerName: "Vehicle No.",
+                                      headerName: t("text.vehicleNo12"),
                                       flex: 1.5,
                                       renderCell: (params) => (
                                         <span
@@ -1922,12 +1913,12 @@ th, td {
                                     },
                                     {
                                       field: "vehicleTypename",
-                                      headerName: "Vehicle Type",
+                                      headerName: t("text.VehicleType"),
                                       flex: 1.5,
                                     },
-                                    { field: "actprice", headerName: "Actual Price", flex: 0.7 },
-                                    { field: "amount", headerName: "Expense", flex: 0.7 },
-                                    { field: "age", headerName: "Age", flex: 0.7 },
+                                    { field: "actprice", headerName: t("text.ActualPrice"), flex: 0.7 },
+                                    { field: "amount", headerName: t("text.Expense"), flex: 0.7 },
+                                    { field: "age", headerName: t("text.Age"), flex: 0.7 },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -1998,7 +1989,7 @@ th, td {
                                   columns={[
 
                                     {
-                                      field: "vehicleNo", headerName: "Vehicle No.", flex: 1,
+                                      field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1,
                                       renderCell: (params) =>
                                       (
                                         <span
@@ -2014,9 +2005,9 @@ th, td {
                                       )
 
                                     },
-                                    { field: "noOfComplaints", headerName: "Complaints", flex: 1 },
-                                    { field: "totaldays", headerName: "Total Days", flex: 1 },
-                                    { field: "amount", headerName: "Expense", flex: 1 },
+                                    { field: "noOfComplaints", headerName: t("text.noOfComplaints"), flex: 1 },
+                                    { field: "totaldays", headerName: t("text.totaldays"), flex: 1 },
+                                    { field: "amount", headerName:t("text.Expense"), flex: 1 },
 
                                   ]}
                                   autoHeight
@@ -2085,16 +2076,16 @@ th, td {
                                   }
                                   //  rows={ReorderOption.length > 0 ? ReorderOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
+                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
                                     {
-                                      field: "effectiveDate", headerName: "Effective Date", flex: 1, renderCell(params) {
+                                      field: "effectiveDate", headerName: t("text.effectiveDate"), flex: 1, renderCell(params) {
                                         return dayjs(params.row.effectiveDate).format("DD-MMM-YYYY")
                                       },
                                     },
-                                    { field: "todate", headerName: "Expiry Date", flex: 1 ,renderCell(params) {
+                                    { field: "todate", headerName:  t("text.ExpiryDate"), flex: 1 ,renderCell(params) {
                                       return dayjs(params.row.todate).format("DD-MMM-YYYY") },},
-                                    { field: "attachMentName", headerName: "Document", flex: 1.5 ,},
-                                    { field: "licenceType", headerName: "Document Type", flex: 1 },
+                                    { field: "attachMentName", headerName: t("text.Document"), flex: 1.5 ,},
+                                    { field: "licenceType", headerName:  t("text.DocumentType"), flex: 1 },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2162,12 +2153,12 @@ th, td {
                                   }
                                   // rows={OverDueOption.length > 0 ? OverDueOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: "Vehicle No", flex: 0.9 },
-                                    { field: "vehicleRegistrationDate", headerName: "Registration On", flex: 0.9,renderCell(params) {
+                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 0.9 },
+                                    { field: "vehicleRegistrationDate", headerName: t("text.RegistrationOn"), flex: 0.9,renderCell(params) {
                                       return dayjs(params.row.vehicleRegistrationDate).format("DD-MMM-YYYY") },},
-                                    { field: "filename", headerName: "RC Document", flex: 1 },
-                                    { field: "vehiclePhotoFile", headerName: "Vehicle Photo", flex: 1.2 },
-                                    { field: "vehicleTypename", headerName: "Vehicle Type", flex: 1 },
+                                    { field: "filename", headerName:  t("text.RCDocument1"), flex: 1 },
+                                    { field: "vehiclePhotoFile", headerName: t("text.vehiclePhoto"), flex: 1.2 },
+                                    { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2235,9 +2226,9 @@ th, td {
                                   }
                                   //rows={IssuedStatusOption.length > 0 ? IssuedStatusOption : []}
                                   columns={[
-                                    { field: "vehicleno", headerName: "Vehicle No", flex: 1 },
-                                    { field: "noOfServices", headerName: "No. Of Services", flex: 1 },
-                                    { field: "jobCardDate", headerName: "Last Service", flex: 1,renderCell(params) {
+                                    { field: "vehicleno", headerName: t("text.vehicleNo12"), flex: 1 },
+                                    { field: "noOfServices", headerName: t("text.noOfServices"), flex: 1 },
+                                    { field: "jobCardDate", headerName: t("text.LastService"), flex: 1,renderCell(params) {
                                       return dayjs(params.row.jobCardDate).format("DD-MMM-YYYY") },}
                                   ]}
                                   autoHeight
@@ -2306,8 +2297,8 @@ th, td {
                                   }
                                   // rows={DocumentTypeOption.length > 0 ? DocumentTypeOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
-                                    { field: "date", headerName: "Scrap Date", flex: 1,renderCell(params) {
+                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
+                                    { field: "date", headerName:   t("text.ScrapDate"), flex: 1,renderCell(params) {
                                       return dayjs(params.row.date).format("DD-MM-YYYY") },},
                                   ]}
                                   autoHeight
@@ -2377,7 +2368,8 @@ th, td {
                           width: "100%",
                         }}
                       >
-                        Complaint Status <br />
+                          {t("text.ComplaintStatus")}
+                        <br />
                       </Typography>
                       {/* <div style={{ padding: "1%" }}>
                         {Object.keys(complaints).map((key) => (

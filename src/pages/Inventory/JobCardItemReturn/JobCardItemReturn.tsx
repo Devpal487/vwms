@@ -163,12 +163,12 @@ export default function JobCardItemReturn() {
             },
           },
 
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
           {
             field: "returnType",
             headerName: t("text.returnType"),
