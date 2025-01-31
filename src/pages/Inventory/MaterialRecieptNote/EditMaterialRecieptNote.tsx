@@ -1221,6 +1221,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               options={orderOption}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
                               value={
                                 orderOption[orderOption.findIndex((e: any) => e.value == row.orderId)]?.label || ""
                               }
@@ -1254,6 +1255,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               options={itemOption}
                               fullWidth
                               size="small"
+                              sx={{ width: "155px" }}
                               value={
                                 itemOption[itemOption.findIndex((e: any) => e.value == row.itemId)]?.label || ""
                               }
@@ -1284,6 +1286,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.batchNo}
                               size="small"
+                              sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
                               onFocus={(e) => { e.target.select() }}
                             />
@@ -1301,6 +1304,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               // }
                               fullWidth
                               size="small"
+                              sx={{ width: "130px" }}
                               onChange={(e, newValue: any) =>
                                 handleInputChange(index, "unitId", newValue?.value)
                               }
@@ -1321,6 +1325,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              sx={{ width: "70px" }}
                               value={row.quantity}
                               onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               onFocus={(e) => { e.target.select() }}
@@ -1335,6 +1340,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.quantity}
+                              sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
                               onFocus={e => e.target.select()}
@@ -1369,6 +1375,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               options={taxData}
                               fullWidth
                               size="small"
+                              sx={{ width: "80px" }}
                               value={
                                 taxData[taxData.findIndex((e: any) => e.value == row.gstId)]?.label || ""
                               }
@@ -1393,6 +1400,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               value={row.cgst}
+                              sx={{ width: "100px" }}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
@@ -1406,6 +1414,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.sgst}
                               size="small"
+                              sx={{ width: "100px" }}
                               inputProps={{ readOnly: true }}
                             />
                           </td>
@@ -1432,6 +1441,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                             <TextField
                               value={row.netAmount}
                               size="small"
+                              sx={{ width: "100px" }}
                               inputProps={{ readOnly: true }}
                             />
                           </td>

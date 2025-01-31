@@ -1887,7 +1887,7 @@ console.log("location.state",(location.state));
                     </Button>
                   </Grid>
                   {/* Indent Print Button */}
-                  <Grid item>
+                  {/* <Grid item>
                     <Button
                       type="button"
                       disabled={!isIndentPrintEnabled}
@@ -1898,7 +1898,7 @@ console.log("location.state",(location.state));
                     >
                       {t("text.indentprint")}
                     </Button>
-                  </Grid>
+                  </Grid> */}
 
 
 

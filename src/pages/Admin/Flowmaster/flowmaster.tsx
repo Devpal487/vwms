@@ -63,7 +63,8 @@ export default function Flowmaster() {
                     color: "#2B4593",
                     "&.Mui-checked": { color: "#2B4593" },
                   }} />}
-                  label={t("Outsource")}
+                  // label={t("Outsource")}
+                  label=   {t("text.Outsource")}
                 />
 
                 <FormControlLabel
@@ -72,7 +73,8 @@ export default function Flowmaster() {
                     color: "#2B4593",
                     "&.Mui-checked": { color: "#2B4593" },
                   }} />}
-                  label={t("Inhouse")}
+                  label=   {t("text.Inhouse")}
+                  // label={t("Inhouse")}
                 />
               </RadioGroup>
             </Box>
@@ -83,7 +85,8 @@ export default function Flowmaster() {
                 onClick={handleSubmit}
                 sx={{ backgroundColor: "#2B4593", color: "#fff" }}
               >
-                {t("Submit")}
+                {t("text.save")}
+                {/* {t("Submit")} */}
               </Button>
             </Box>
           </Paper>
