@@ -2406,7 +2406,7 @@ th, td {
         }}
         onClick={() => key.toLowerCase() !== "inhouse" && handleClick1(key)}
       >
-        {key.toUpperCase()}: {complaints[key as keyof typeof complaints]}
+        {t(`text.${key.toUpperCase()}`)}: {complaints[key as keyof typeof complaints]}
       </Typography>
       <ProgressBar
         completed={calculatePercentage(complaints[key as keyof typeof complaints])}

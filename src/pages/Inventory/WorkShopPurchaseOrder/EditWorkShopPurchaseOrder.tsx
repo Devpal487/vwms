@@ -128,6 +128,7 @@ const EditWorkShopPurchaseOrder = () => {
         GetitemData();
         GetUnitData();
         getVendorData();
+        fetchImage(location.state?.orderId || formik.values.orderId);
         // getPurchaseInvoiceById(location.state.id);
         GetIndentID();
     }, []);
@@ -248,7 +249,18 @@ const EditWorkShopPurchaseOrder = () => {
         }
         setitemOption(arr);
     };
-
+    const fetchImage = async (Id: any = location.state?.orderId || 0) => {
+        const collectData = {
+           "orderId": Id,
+           "indentId": -1
+        };
+        const response = await api.post(
+           `PurchaseOrder/GetPurchaseOrder`,
+           collectData
+        );
+        const data = response.data.data;
+        formik.setFieldValue("pOrderDoc", data[0].pOrderDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+     }
     const handleInputChange = (index: number, field: string, value: any) => {
         const updatedItems = [...tableData];
         let item = { ...updatedItems[index] };
@@ -1237,6 +1249,7 @@ const EditWorkShopPurchaseOrder = () => {
 
                                                 </td>
                                                 <td style={{ textAlign: "end", border: "1px solid black" }}>
+                                                    
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                                                 </td>
                                             </tr>

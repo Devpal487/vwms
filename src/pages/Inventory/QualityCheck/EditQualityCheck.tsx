@@ -1033,18 +1033,28 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.GSTRate")}
                         </th>
-                        {
+                        
 
-                          <th
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              padding: "5px",
-                            }}
-                          >
-                            {t("text.totalTax")}
-                          </th>
-                        }
+                            <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.cgst")}
+
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.sgst")}
+                        </th>
+                        
                         <th
                           style={{
                             border: "1px solid black",
@@ -1244,8 +1254,11 @@ const EditQualityCheck = (props: Props) => {
                           >
                             <TextField
                               size="small"
-                              value={row.rejectQty}
-                              onChange={(e) => handleInputChange(index, "rejectQty", e.target.value)}
+                              value={Number(row.mrnQty) - Number(row.acceptQty)}
+                              onChange={(e) => {
+                                const newvalue = Number(row.mrnQty) - Number(row.acceptQty)
+                                handleInputChange(index, "rejectQty", newvalue)
+                              }}
                               inputProps={{ step: "any", min: "0" }}
                               onFocus={e => e.target.select()}
                             />
@@ -1259,6 +1272,7 @@ const EditQualityCheck = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.rate}
+                              sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
                               onFocus={e => e.target.select()}
@@ -1309,7 +1323,7 @@ const EditQualityCheck = (props: Props) => {
                               )}
                             />
                           </td>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1320,31 +1334,33 @@ const EditQualityCheck = (props: Props) => {
                               size="small"
                               inputProps={{ readOnly: true }}
                             />
+                          </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.cgst}
+                              size="small"
+                              sx={{ width: "100px" }}
+                              inputProps={{ readOnly: true }}
+                            />
                           </td>
-                          {/* <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.cgst.toFixed(2)}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td> */}
-                          {/* <td
-                          style={{
-                            border: "1px solid black",
-                            textAlign: "center",
-                          }}
-                        >
-                          <TextField
-                            value={row.sgst.toFixed(2)}
-                            size="small"
-                            inputProps={{ readOnly: true }}
-                          />
-                        </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <TextField
+                              value={row.sgst}
+                              size="small"
+                              sx={{ width: "100px" }}
+                              inputProps={{ readOnly: true }}
+                            />
+                          </td>
                           {/* <td
                           style={{
                             border: "1px solid black",
@@ -1375,24 +1391,24 @@ const EditQualityCheck = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalnetamount")}
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalAmount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totaltaxamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst + row.cgst) || 0), 0).toFixed(2)}
                         </td>
-                      </tr>
+                      </tr> */}
                       <tr>
-                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalgrossamount")}
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}

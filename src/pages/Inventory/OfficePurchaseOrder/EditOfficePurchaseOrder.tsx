@@ -1688,6 +1688,7 @@ const EditOfficePurchaseOrder = () => {
         GetitemData();
         GetUnitData();
         getVendorData();
+        fetchImage(location.state?.orderId || formik.values.orderId);
         // getPurchaseInvoiceById(location.state.id);
         GetIndentID();
     }, []);
@@ -1808,7 +1809,18 @@ const EditOfficePurchaseOrder = () => {
         }
         setitemOption(arr);
     };
-
+    const fetchImage = async (Id: any = location.state?.orderId || 0) => {
+        const collectData = {
+           "orderId": Id,
+           "indentId": -1
+        };
+        const response = await api.post(
+           `PurchaseOrder/GetPurchaseOrder`,
+           collectData
+        );
+        const data = response.data.data;
+        formik.setFieldValue("pOrderDoc", data[0].pOrderDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+     }
     const handleInputChange = (index: number, field: string, value: any) => {
         const updatedItems = [...tableData];
         let item = { ...updatedItems[index] };
@@ -1962,28 +1974,35 @@ const EditOfficePurchaseOrder = () => {
             setImg('');
         }
     };
-
     const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-        const file = event.target.files?.[0];
-        if (!file) return;
-
-        const fileExtension = file.name.split('.').pop()?.toLowerCase();
-        if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-            alert("Only .jpg, .jpeg, or .png image files are allowed.");
-            event.target.value = '';
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            const base64String = reader.result as string;
-            formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
-        };
-        reader.onerror = () => {
-            alert("Error reading file. Please try again.");
-        };
-        reader.readAsDataURL(file);
-    };
+           const file = event.target.files?.[0];
+           if (!file) return;
+   
+           const fileExtension = file.name.split('.').pop()?.toLowerCase();
+           if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+               alert("Only .jpg, .jpeg, or .png image files are allowed.");
+               event.target.value = '';
+               return;
+           }
+   
+           const reader = new FileReader();
+           reader.onload = () => {
+               const base64String = reader.result as string;
+               const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+   
+               if (base64Content) {
+                   formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+               } else {
+                   alert("Error processing image data.");
+               }
+   
+               //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+           };
+           reader.onerror = () => {
+               alert("Error reading file. Please try again.");
+           };
+           reader.readAsDataURL(file);
+       };
     const formik = useFormik({
         initialValues: {
 
@@ -2335,7 +2354,12 @@ const EditOfficePurchaseOrder = () => {
                                     >
                                         {formik.values.pOrderDoc ? (
                                             <img
-                                                src={formik.values.pOrderDoc}
+                                                src={
+                                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
+                                                        // formik.values.pOrderDoc.startsWith("data:image")
+                                                        ? formik.values.pOrderDoc
+                                                        : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
+                                                }
                                                 alt="Preview"
                                                 style={{
                                                     width: 150,
@@ -2390,6 +2414,7 @@ const EditOfficePurchaseOrder = () => {
                                     </Box>
                                 </Modal>
                             </Grid>
+
 
 
 

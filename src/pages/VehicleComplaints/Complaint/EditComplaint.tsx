@@ -210,6 +210,7 @@ const EditComplaint = (props: Props) => {
    };
 
 
+   
    const fetchImage = async (compId: any = location.state?.compId || 0) => {
       const collectData = {
          "compId": compId,

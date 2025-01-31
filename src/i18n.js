@@ -11,6 +11,14 @@ const resources = {
       error: {},
       message: {},
       text: {
+       
+          PENDING: "Pending",
+          INPROGRESS: "In Progress",
+          OUTSOURCE: "OUTSOURCE",
+          Outsource:"OUTSOURCE",
+          INHOUSE: "INHOUSE",
+          COMPLETE : "Complete",
+       
         
         ////
         /////
@@ -31,6 +39,7 @@ const resources = {
         PENDING: "PENDING",
         OUTSOURCE: "OUTSOURCE",
         INHOUSE: "INHOUSE",
+        Inhouse: "INHOUSE",
         INPROGRESS:"INPROGRESS",
         download:"Download",
         show:"Show",
@@ -86,7 +95,7 @@ const resources = {
         Igst: "IGST",
         indentGenerate: "Indent Generate",
         indentprint: "Indent Print",
-        Outsource: "OutSource",
+       // Outsource: "OutSource",
         InhouseandOutsource: "Inhouse and OutSource",
 
         enterComplaint: "Enter Complaint",
@@ -125,7 +134,7 @@ const resources = {
         Igst: "IGST",
         indentGenerate: "Indent Generate",
         indentprint: "Indent Print",
-        Outsource: "OutSource",
+       // Outsource: "OutSource",
         InhouseandOutsource: "Inhouse and OutSource",
 
         AddComplaintApproval: "Create Complaint Approval",
@@ -9092,6 +9101,8 @@ SCRAPDETAIL: "कबाड़ विवरण",
 COMPLETE: "पूर्ण",  
 PENDING: "पेंडिंग",  
 OUTSOURCE: "आउटसोर्स",  
+Outsource: "आउटसोर्स", 
+Inhouse: "इनहाउस",  
 INHOUSE: "इनहाउस",  
 INPROGRESS: "प्रगति में",
         download: "डाउनलोड करें",  

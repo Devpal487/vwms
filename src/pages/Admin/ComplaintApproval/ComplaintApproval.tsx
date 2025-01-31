@@ -647,12 +647,12 @@ export default function ComplaintApproval() {
                   },
                },
 
-               {
-                  field: "serialNo",
-                  headerName: t("text.SrNo"),
-                  flex: .3,
-                  headerClassName: "MuiDataGrid-colCell",
-               },
+               // {
+               //    field: "serialNo",
+               //    headerName: t("text.SrNo"),
+               //    flex: .3,
+               //    headerClassName: "MuiDataGrid-colCell",
+               // },
                {
                   field: "vehicleName",
                   headerName: t("text.VehicleName"),

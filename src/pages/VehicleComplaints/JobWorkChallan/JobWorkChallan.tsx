@@ -208,12 +208,12 @@ export default function JobWorkChallan() {
                   },
                },
 
-               {
-                  field: "serialNo",
-                  headerName: t("text.SrNo"),
-                  flex: .3,
-                  headerClassName: "MuiDataGrid-colCell",
-               },
+               // {
+               //    field: "serialNo",
+               //    headerName: t("text.SrNo"),
+               //    flex: .3,
+               //    headerClassName: "MuiDataGrid-colCell",
+               // },
                {
                   field: "challanNo",
                   headerName: t("text.ChallanNo"),

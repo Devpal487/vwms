@@ -729,9 +729,9 @@ const AddJobCard1 = (props: Props) => {
     const newData: any = [...tableData1];
     newData[index][field] = value;
 
-    if (field === 'serviceId') {
-      newData[index].serviceId = newData[index].serviceId;
-      newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    if (field === 'itemId') {
+      newData[index].itemId = newData[index].itemId;
+     // newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
     }
 
     if (field === 'amount') {
@@ -1713,6 +1713,7 @@ const AddJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
+                              value={itemOption[itemOption.findIndex((e:any) => e.value === row.itemId)]?.label||""}
                               fullWidth
                               size="small"
                               sx={{ width: "210px" }}
@@ -1827,6 +1828,7 @@ const AddJobCard1 = (props: Props) => {
                               onFocus={e => e.target.select()}
                               size="small"
                               sx={{ width: "225px" }}
+                              disabled
                               inputProps={{ "aria-readonly": true }}
                             />
                             {/* <Autocomplete
@@ -2009,7 +2011,7 @@ const AddJobCard1 = (props: Props) => {
                     </Button>
                   </Grid>
 
-                  <Grid item>
+                  {/* <Grid item>
                     <Button
                       type="button"
                       disabled={!isIndentPrintEnabled}
@@ -2020,7 +2022,7 @@ const AddJobCard1 = (props: Props) => {
                     >
                       {t("text.indentprint")}
                     </Button>
-                  </Grid>
+                  </Grid> */}
 
 
 
