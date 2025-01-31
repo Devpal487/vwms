@@ -690,27 +690,27 @@ export default function StockLedgerReport() {
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-                <RadioGroup
-                  row
-                  value={selectedFormat}
-                  onChange={handleFormatChange}
-                >
-                  <FormControlLabel
-                    value="pdf"
-                    control={<Radio />}
-                    label="PDF"
-                  />
-                  <FormControlLabel
-                    value="excel"
-                    control={<Radio />}
-                    label="Excel"
-                  />
-                  <FormControlLabel
-                    value="tabular"
-                    control={<Radio />}
-                    label="Tabular Excel"
-                  />
-                </RadioGroup>
+                   <RadioGroup
+                                 row
+                                 value={selectedFormat}
+                                 onChange={handleFormatChange}
+                               >
+                                 <FormControlLabel
+                                   value="pdf"
+                                   control={<Radio />}
+                                   label={t("text.pdf")}
+                                 />
+                                 <FormControlLabel
+                                   value="excel"
+                                   control={<Radio />}
+                                   label={t("text.excel")}
+                                 />
+                                 <FormControlLabel
+                                   value="tabular"
+                                   control={<Radio />}
+                                   label={t("text.tabular")}
+                                 />
+                               </RadioGroup>
               </FormControl>
             </Grid>
 
@@ -746,7 +746,7 @@ export default function StockLedgerReport() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-                Show
+              {t("text.show")}
               </Button>
               
             </Grid>
@@ -766,7 +766,7 @@ export default function StockLedgerReport() {
                   formik.resetForm();
                 }}
               >
-                Reset
+                 {t("text.reset")}
               </Button>
             </Grid>
 
@@ -782,7 +782,7 @@ export default function StockLedgerReport() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-                Download
+              {t("text.download")}
               </Button>
             </Grid>
           </Grid>

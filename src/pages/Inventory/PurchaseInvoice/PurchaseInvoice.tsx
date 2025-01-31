@@ -182,7 +182,9 @@ export default function PurchaseInvoice() {
                     {
                         field: "serialNo",
                         headerName: t("text.SrNo"),
-                        flex: 0.4,
+                        flex: 1,
+                    //     align: "right",
+            // headerAlign: "right",
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     
@@ -205,7 +207,7 @@ export default function PurchaseInvoice() {
                     {
                         field: "orderNo",
                         headerName: t("text.orderNo11"),
-                        flex: 1.5,
+                        flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     // {

@@ -177,12 +177,12 @@ export default function IndentFormMaster() {
             },
           },
 
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          // },
           {
             field: "indentNo",
             headerName: t("text.IndentNo"),

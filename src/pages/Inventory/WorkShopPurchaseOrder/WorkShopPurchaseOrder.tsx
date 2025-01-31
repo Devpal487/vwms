@@ -174,12 +174,12 @@ export default function WorkShopPurchaseOrder() {
                 },
             },
 
-            {
-                field: "serialNo",
-                headerName: t("text.SrNo"),
-                flex: 0.4,
-                headerClassName: "MuiDataGrid-colCell",
-            },
+            // {
+            //     field: "serialNo",
+            //     headerName: t("text.SrNo"),
+            //     flex: 0.4,
+            //     headerClassName: "MuiDataGrid-colCell",
+            // },
 
             {
                 field: "orderNo",

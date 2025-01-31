@@ -566,17 +566,17 @@ export default function ComplainStatus() {
                   <FormControlLabel
                     value="pdf"
                     control={<Radio />}
-                    label="PDF"
+                    label={t("text.pdf")}
                   />
                   <FormControlLabel
                     value="excel"
                     control={<Radio />}
-                    label="Excel"
+                    label={t("text.excel")}
                   />
                   <FormControlLabel
                     value="tabular"
                     control={<Radio />}
-                    label="Tabular Excel"
+                    label={t("text.tabular")}
                   />
                 </RadioGroup>
 
@@ -594,12 +594,12 @@ export default function ComplainStatus() {
                     fetchZonesData(); // Fetch data based on selected status
                   }}
                 >
-                  <FormControlLabel value="PENDING" control={<Radio />} label="Pending" />
-                  <FormControlLabel value="INPROGRESS" control={<Radio />} label="InProgress" />
-                  <FormControlLabel value="OUTSOURCE" control={<Radio />} label="OutSource" />
-                  <FormControlLabel value="COMPLETE" control={<Radio />} label="Complete" />
+                  <FormControlLabel value="PENDING" control={<Radio />} label={t("text.PENDING")} />
+                  <FormControlLabel value="INPROGRESS" control={<Radio />} label={t("text.INPROGRESS")} />
+                  <FormControlLabel value="OUTSOURCE" control={<Radio />} label={t("text.OUTSOURCE")} />
+                  <FormControlLabel value="COMPLETE" control={<Radio />} label={t("text.COMPLETE")} />
                   {/* <FormControlLabel value="INHOUSE" control={<Radio />} label="Inhouse" /> */}
-                  <FormControlLabel value="all" control={<Radio />} label="All" />
+                  <FormControlLabel value="all" control={<Radio />} label={t("text.All")} />
                 </RadioGroup>
               </FormControl>
             </Grid>
@@ -621,7 +621,8 @@ export default function ComplainStatus() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-                Show
+                {t("text.show")}
+               
               </Button>
             </Grid>
 
@@ -639,7 +640,8 @@ export default function ComplainStatus() {
                   formik.resetForm();
                 }}
               >
-                Reset
+                    {t("text.reset")}
+               
               </Button>
             </Grid>
 
@@ -655,7 +657,8 @@ export default function ComplainStatus() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-                Download
+                 {t("text.download")}
+             
               </Button>
             </Grid>
           </Grid>

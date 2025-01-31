@@ -564,7 +564,7 @@ export default function VehicleEfileReport() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-                Show
+               {t("text.show")}
               </Button>
             </Grid>
 
@@ -582,7 +582,7 @@ export default function VehicleEfileReport() {
                   formik.resetForm();
                 }}
               >
-                Reset
+                {t("text.reset")}
               </Button>
             </Grid>
 
@@ -598,7 +598,7 @@ export default function VehicleEfileReport() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-                Download
+               {t("text.download")}
               </Button>
             </Grid>
           </Grid>

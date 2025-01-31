@@ -180,12 +180,12 @@ export default function OfficePurchaseOrder() {
                             );
                         },
                     },
-                    {
-                        field: "serialNo",
-                        headerName: t("text.SrNo"),
-                        flex: 0.4,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
+                    // {
+                    //     field: "serialNo",
+                    //     headerName: t("text.SrNo"),
+                    //     flex: 0.4,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
                     {
                         field: "orderNo",
                         headerName: t("text.OrderNo"),
