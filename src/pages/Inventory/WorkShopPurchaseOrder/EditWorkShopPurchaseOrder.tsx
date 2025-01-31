@@ -22,6 +22,7 @@ import nopdf from '../../../assets/images/imagepreview.jpg'
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -318,9 +319,9 @@ const EditWorkShopPurchaseOrder = () => {
         setTableData(updatedItems);
         updateTotalAmounts(updatedItems);
 
-        if (isRowFilled(item) && index === updatedItems.length - 1) {
-            addRow();
-        }
+        // if (isRowFilled(item) && index === updatedItems.length - 1) {
+        //     addRow();
+        // }
     };
 
     console.log("tableData.....", tableData);
@@ -402,35 +403,35 @@ const EditWorkShopPurchaseOrder = () => {
         }
     };
 
-   const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-           const file = event.target.files?.[0];
-           if (!file) return;
-   
-           const fileExtension = file.name.split('.').pop()?.toLowerCase();
-           if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-               alert("Only .jpg, .jpeg, or .png image files are allowed.");
-               event.target.value = '';
-               return;
-           }
-   
-           const reader = new FileReader();
-           reader.onload = () => {
-               const base64String = reader.result as string;
-               const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
-   
-               if (base64Content) {
-                   formik.setFieldValue(params, base64Content); // Store the stripped base64 string
-                } else {
-                   alert("Error processing image data.");
-                }
-             
-               //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
-           };
-           reader.onerror = () => {
-               alert("Error reading file. Please try again.");
-           };
-           reader.readAsDataURL(file);
-       };
+    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const fileExtension = file.name.split('.').pop()?.toLowerCase();
+        if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
+            alert("Only .jpg, .jpeg, or .png image files are allowed.");
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+
+            if (base64Content) {
+                formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+            } else {
+                alert("Error processing image data.");
+            }
+
+            //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+        };
+        reader.onerror = () => {
+            alert("Error reading file. Please try again.");
+        };
+        reader.readAsDataURL(file);
+    };
     const formik = useFormik({
         initialValues: {
 
@@ -782,12 +783,12 @@ const EditWorkShopPurchaseOrder = () => {
                                     >
                                         {formik.values.pOrderDoc ? (
                                             <img
-                                            src={
-                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
-                                               // formik.values.pOrderDoc.startsWith("data:image")
-                                                    ? formik.values.pOrderDoc
-                                                    : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
-                                            }
+                                                src={
+                                                    /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.pOrderDoc)
+                                                        // formik.values.pOrderDoc.startsWith("data:image")
+                                                        ? formik.values.pOrderDoc
+                                                        : `data:image/jpeg;base64,${formik.values.pOrderDoc}`
+                                                }
                                                 alt="Preview"
                                                 style={{
                                                     width: 150,
@@ -981,7 +982,7 @@ const EditWorkShopPurchaseOrder = () => {
                                         <tbody>
                                             {tableData.map((row, index) => (
                                                 <tr key={row.id} style={{ border: "1px solid black" }}>
-                                                    <td
+                                                    {/* <td
                                                         style={{
                                                             border: "1px solid black",
                                                             textAlign: "center",
@@ -989,6 +990,30 @@ const EditWorkShopPurchaseOrder = () => {
                                                     >
                                                         <DeleteIcon
                                                             onClick={() => deleteRow(index)}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td> */}
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
+
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
                                                             style={{ cursor: "pointer" }}
                                                         />
                                                     </td>

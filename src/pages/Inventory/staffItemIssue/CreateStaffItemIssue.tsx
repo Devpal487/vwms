@@ -38,6 +38,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -53,27 +54,27 @@ const CreateStaffItemIssue = (props: Props) => {
     const [isIndentSelected, setIsIndentSelected] = useState(false);
     const [selectedAction, setSelectedAction] = useState(null);
     const [items, setItems] = useState<any>([]);
+    const [IsbatchNO, setBatchno] = useState("");
     //const [tableData, setTableData] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([{
+
 
 
         "id": 0,
         "issueId": 0,
         "itemID": 0,
+        "unitId": 0,
         "batchNo": "",
         "indentId": 0,
-        "unitId": 0,
         "reqQty": 0,
         "issueQty": 0,
-        "stockQty": 0,
         "itemName": "",
-        "indentNo": "",
-        "srn": 0,
         "unitName": "",
-        //unit:"",
         "returnItem": true,
+        "indentNo": "",
+        "stockQty": 0,
 
-      
+
 
 
     }]);
@@ -96,9 +97,24 @@ const CreateStaffItemIssue = (props: Props) => {
         GetitemData();
         GetUnitData();
         GetempData();
+        getBATCHNo();
     }, []);
 
+    const getBATCHNo = async () => {
+        try {
+            const response = await api.get(`QualityCheck/GetMaxBatchNo`);
+            if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
 
+                setBatchno(response.data.data[0].batchNo)
+            } else {
+                toast.error(response?.data?.message || "Failed to fetch batch number");
+                return ""; // Return empty if no batch number is found
+            }
+        } catch (error) {
+            toast.error("Error fetching batch number");
+            return ""; // Return empty in case of an error
+        }
+    };
     const GetIndentID = async () => {
         const collectData = {
             indentId: -1,
@@ -142,23 +158,23 @@ const CreateStaffItemIssue = (props: Props) => {
         const indent = data.map((item: any, index: any) => ({
 
             id: index + 1,
-            "issueId": 0,
-
-
-            batchNo: item?.batchNo,
+            "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            issueQty: item?.approveQuantity,
-            reqQty: item?.quantity,
-
-           unitName: "",
-          //unit:"",
-            itemName: "",
+            // batchNo: item?.batchNo,
+            indentId: item?.indentId,
+            // stockQty: item?.approveQuantity,
+            reqQty: item?.approveQuantity,
+            //  "amount" : item?.amount,
+            itemName: item?.itemName,
+            unitName: item?.unitName,
             indentNo: "",
-            
-            stockQty:0,
-       // "unitName": "",
-            "returnItem": true
+            "srn": 0,
+            // "unitName": "",
+            "returnItem": true,
+            "stockQty": 0,
+            issueQty: 0,
+            batchNo: IsbatchNO || "",
 
 
         }))
@@ -202,17 +218,17 @@ const CreateStaffItemIssue = (props: Props) => {
     };
     const GetempData = async () => {
         const collectData = {
-          empid: -1,
-          userId: "",
-         
+            empid: -1,
+            userId: "",
+
         };
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
         console.log('data', data)
         const arr = data.map((item: any) => ({
-          label: item?.empName,
-          value: item?.empid
-    
+            label: item?.empName,
+            value: item?.empid
+
         }))
         // for (let index = 0; index < data.length; index++) {
         //   arr.push({
@@ -221,7 +237,7 @@ const CreateStaffItemIssue = (props: Props) => {
         //   });
         // }
         setempOption(arr);
-      };
+    };
 
 
 
@@ -296,9 +312,10 @@ const CreateStaffItemIssue = (props: Props) => {
 
 
 
-    const handleInputChange = (index: any, field: any, value: any) => {
+    const handleInputChange = async (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
+
         if (field === 'reqQty' || field === 'issueQty') {
             updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
 
@@ -310,8 +327,13 @@ const CreateStaffItemIssue = (props: Props) => {
         } else if (field === 'issueQty') {
             updatedData[index].issueQty = parseInt(value)
         }
-
-
+        const batchNo = await getBATCHNo();
+        if (field === 'batchNo') {
+            updatedData[index].batchNo = parseInt(value)
+        }
+        // if (batchNo) {
+        //   item.batchNo = batchNo; // Set the fetched batch number
+        // }
         setTableData(updatedData);
     };
     const deleteRow = (index: number) => {
@@ -325,26 +347,23 @@ const CreateStaffItemIssue = (props: Props) => {
     const back = useNavigate();
 
 
-
-    // const addRow = () => {
-    //     setTableData([...tableData, {
-    //         "id": 0,
-    //         "issueId": 0,
-    //         "itemID": 0,
-    //         "batchNo": "",
-    //         "indentId": 0,
-    //         "unitId": 0,
-    //         "reqQty": 0,
-    //         "issueQty": 0,
-    //         "stockQty": 0,
-    //         "itemName": "",
-    //         "indentNo": "",
-    //         "srn": 0,
-    //         "unitName": "",
-    //        // unit:"",
-    //         "returnItem": true
-    //     }]);
-    // };
+    const addRow = () => {
+        setTableData([...tableData, {
+            "id": 0,
+            "issueId": -1,
+            "itemID": 0,
+            "unitId": 0,
+            "batchNo": "",
+            "indentId": 0,
+            "reqQty": 0,
+            "issueQty": 0,
+            "itemName": "",
+            "unitName": "",
+            "returnItem": true,
+            "indentNo": "",
+            "stockQty": 0,
+        }]);
+    };
 
 
     return (
@@ -433,7 +452,7 @@ const CreateStaffItemIssue = (props: Props) => {
                                         <TextField
                                             {...params}
                                             label={
-                                                <CustomLabel text={t("text.enterIndentNo")} required={true}/>
+                                                <CustomLabel text={t("text.enterIndentNo")} required={true} />
                                             }
                                         />
                                     )}
@@ -489,132 +508,186 @@ const CreateStaffItemIssue = (props: Props) => {
                             {isIndentSelected && (
                                 <Grid item xs={12}>
                                     <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                                    <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                                        <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
-                                            <tr>
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th>
+                                        <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
+                                            <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                                                <tr>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
 
-                                                {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {tableData.map((row: any, index: any) => (
-                                                <tr key={row.id} style={{ border: '1px solid black' }}>
+                                                    {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
 
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {tableData.map((row: any, index: any) => (
+                                                    <tr key={row.id} style={{ border: '1px solid black' }}>
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                onClick={() => {
+                                                                    addRow();
+                                                                }}
 
-                                                    <td
-                                                        style={{
-                                                            border: "1px solid black",
-                                                            // textAlign: "center",
-                                                        }}
-                                                    >
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="combo-box-demo"
-                                                            options={itemOption}
-                                                            value={
-                                                                itemOption.find((opt) => (opt.value) === parseInt(row?.itemID)) || null
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                            <DeleteIcon
+                                                                onClick={() => {
+                                                                    if (tableData.length > 1) {
+                                                                        deleteRow(index)
+                                                                    } else {
+                                                                        alert("Atleast one row should be there");
+                                                                    }
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        </td>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                                                            if (tableData.length > 1) {
+                                                                deleteRow(index)
+                                                            } else {
+                                                                alert("There should be atleast one row")
                                                             }
-                                                            fullWidth
-                                                            size="small"
-                                                            onChange={(e: any, newValue: any) =>
-                                                                handleInputChange(
-                                                                    index,
-                                                                    "itemID",
-                                                                    newValue?.value
-                                                                )
-                                                            }
+                                                        }}>
+                                                            <DeleteIcon />
+                                                        </td> */}
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                // textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="combo-box-demo"
+                                                                options={itemOption}
+                                                                value={
+                                                                    itemOption.find((opt) => (opt.value) === parseInt(row?.itemID)) || null
+                                                                }
+                                                                fullWidth
+                                                                size="small"
+                                                                sx={{ width: "175px" }}
+                                                                // onChange={(e: any, newValue: any) =>
+                                                                //     handleInputChange(
+                                                                //         index,
+                                                                //         "itemID",
+                                                                //         newValue?.value
+                                                                //     )
+                                                                // }
 
-                                                            renderInput={(params) => (
-                                                                <TextField
-                                                                    {...params}
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return;
+                                                                    } else {
+                                                                        handleInputChange(
+                                                                            index,
+                                                                            "itemId",
+                                                                            newValue?.value
+                                                                        )
+                                                                    }
+                                                                }
+                                                                }
+
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        {...params}
+
+                                                                    />
+                                                                )}
+                                                            />
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center' }}>
+
+                                                            <Autocomplete
+                                                                disablePortal
+                                                                id="combo-box-demo"
+                                                                options={unitOptions}
+                                                                fullWidth
+                                                                size="small"
+                                                                sx={{ width: "135px" }}
+                                                                value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
+                                                                onChange={(e: any, newValue: any) => {
+                                                                    if (!newValue) {
+                                                                        return
+                                                                    } else {
+                                                                        handleInputChange(
+                                                                            index,
+                                                                            "unitId",
+                                                                            newValue?.value
+                                                                        )
+                                                                    }
+                                                                }}
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        {...params}
                                                                     // label={
                                                                     //     <CustomLabel
                                                                     //         text={t("text.selectItem")}
                                                                     //         required={false}
                                                                     //     />
                                                                     // }
-                                                                />
-                                                            )}
-                                                        />
-                                                    </td>
-                                                    <td style={{ border: "1px solid black", textAlign: "center" }}>
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            id="combo-box-demo"
-                                                            options={unitOptions}
-                                                            value={
-                                                                unitOptions.find((opt) => (opt.value) === row?.unitId) || null
-                                                            }
-                                                            fullWidth
-                                                            size="small"
-                                                            onChange={(e, newValue: any) =>
-                                                                handleInputChange(index, "unitId", newValue?.value)
-                                                            }
-                                                            renderInput={(params: any) => (
-                                                                <TextField
-                                                                    {...params}
-                                                                  //  label={<CustomLabel text={t("text.selectUnit")} />}
-                                                                />
-                                                            )}
-                                                        />
-                                                    </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                           //type="number"
-                                                            size="small"
-                                                            // type="text"
-                                                            value={row.batchNo}
-                                                            onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                            onFocus={e => e.target.select()}
-                                                        />
-                                                    </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                           // type="number"
-                                                            size="small"
-                                                            value={row.reqQty - row.issueQty || 0}
-                                                          //  value={row.stockQty || 0}
-                                                           // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
-                                                            onFocus={e => e.target.select()}
-                                                        />
-                                                    </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                           // type="number"
-                                                            size="small"
-                                                            // type="text"
-                                                            value={row.reqQty}
-                                                            onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
-                                                            onFocus={e => e.target.select()}
-                                                       />
-                                                    </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                         //   type="number"
-                                                            size="small"
-                                                            // type="text"
-                                                            value={row.issueQty}
-                                                            onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
-                                                            onFocus={e => e.target.select()}
-                                                       />
-                                                    </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
-                                                        <DeleteIcon />
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
+                                                                    />
+                                                                )}
+                                                            />
+                                                            {/* <select
+                                                                                                                                                                                                                       </select> */}
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                            <TextField
+                                                                value={row.batchNo || ""} // Bind to row.batchNo
+                                                                id="BatchNo"
+                                                                name="BatchNo"
+                                                                size="small"
+                                                                sx={{ width: "150px" }}
+                                                                onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                                                            />
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                            <TextField
+                                                                // type="number"
+                                                                size="small"
+                                                                value={row.reqQty - row.issueQty || 0}
+                                                                // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                                                onFocus={(e) => { e.target.select() }}
+                                                            />
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                            <TextField
+                                                                //type="number"
+                                                                size="small"
+                                                                // type="text"
+                                                                value={row.reqQty}
+                                                                onChange={(e) => handleInputChange(index, 'reqQty', e.target.value)}
+                                                                onFocus={(e) => { e.target.select() }}
+                                                            />
+                                                        </td>
+                                                        <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
+                                                            <TextField
+                                                                // type="number"
+                                                                size="small"
+                                                                // type="text"
+                                                                value={row.issueQty}
+                                                                onChange={(e) => handleInputChange(index, 'issueQty', e.target.value)}
+                                                                onFocus={(e) => { e.target.select() }}
+                                                            />
+                                                        </td>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                            <DeleteIcon />
+                                                        </td> */}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
 
-                                    </Table>
-                               </div> </Grid>
+                                        </Table>
+                                    </div> </Grid>
                             )}
 
                             <Grid item lg={6} sm={6} xs={12}>

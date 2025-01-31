@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -98,7 +99,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     GetorderData();
     GetUnitData();
     getPurchaseOrder()
-    console.log("@@@@@@@@@@@@",location.state)
+    console.log("@@@@@@@@@@@@", location.state)
     const arr: any = [];
     orderData.map((item: any) => {
       if (item.id === location.state.vendorId) {
@@ -132,9 +133,9 @@ const EditMaterialRecieptNote = (props: Props) => {
             ...item,
             mrnId: id, // Ensure mrnId is set for each row
           }));
-  
+
           setTableData(formattedData);
-  
+
           // Set mrnId in formik values
           formik.setFieldValue("mrnId", id);
         } else {
@@ -145,7 +146,7 @@ const EditMaterialRecieptNote = (props: Props) => {
         console.error("Error fetching MRN data:", error);
       });
   };
-  
+
   // const getMrnById = (id: any) => {
 
   //   api.post(`QualityCheck/GetMrn`, { MrnId: id })
@@ -204,9 +205,9 @@ const EditMaterialRecieptNote = (props: Props) => {
   // };
 
   useEffect(() => {
-    if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
-      addRow(); // Call addRow to add a new initial row
-    }
+    // if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
+    //   addRow(); // Call addRow to add a new initial row
+    // }
   }, [tableData]);
 
   const GetitemData = async () => {
@@ -315,7 +316,7 @@ const EditMaterialRecieptNote = (props: Props) => {
   const handleInputChange = (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
-  
+
     if (field === "orderNo") {
       const selectedItem = orderOption.find((opt: any) => opt.value === value);
       if (selectedItem) {
@@ -328,15 +329,15 @@ const EditMaterialRecieptNote = (props: Props) => {
     } else {
       item[field] = value;
     }
-  
+
     // Ensure mrnId is preserved
     item.mrnId = formik.values.mrnId;
-  
+
     updatedItems[index] = item;
     setTableData(updatedItems);
     updateTotalAmounts(updatedItems);
   };
-  
+
 
   // const handleInputChange = (index: number, field: string, value: any) => {
   //   const updatedItems = [...tableData];
@@ -477,7 +478,7 @@ const EditMaterialRecieptNote = (props: Props) => {
   const formik = useFormik({
     initialValues: {
       mrnId: location.state.mrnId || "", // Set mrnId from location.state
-    mrnNo: location.state.mrnNo || "",
+      mrnNo: location.state.mrnNo || "",
       mrnDate: dayjs(location.state.mrnDate).format("YYYY-MM-DD"),
       mrnType: location.state.mrnType || null,
       vendorId: location.state.vendorId,
@@ -515,12 +516,12 @@ const EditMaterialRecieptNote = (props: Props) => {
         ...row,
         mrnId: formik.values.mrnId, // Ensure mrnId is included in submission
       }));
-  
+
       const response = await api.post(`QualityCheck/UpsertMrn`, {
         ...values,
         mrnDetail: filteredTableData,
       });
-  
+
       if (response.data.status === 1) {
         toast.success(response.data.message);
         navigate("/Inventory/MRNForm");
@@ -1131,24 +1132,24 @@ const EditMaterialRecieptNote = (props: Props) => {
                         </th>
 
                         <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                         {t("text.cgst")}
-                      
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.sgst")}
-                      </th>
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.cgst")}
+
+                        </th>
+                        <th
+                          style={{
+                            border: "1px solid black",
+                            textAlign: "center",
+                            padding: "5px",
+                          }}
+                        >
+                          {t("text.sgst")}
+                        </th>
                         {/* <th
                           style={{
                             border: "1px solid black",
@@ -1173,7 +1174,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: "1px solid black" }}>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1181,6 +1182,30 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <DeleteIcon
                               onClick={() => deleteRow(index)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
                               style={{ cursor: "pointer" }}
                             />
                           </td>

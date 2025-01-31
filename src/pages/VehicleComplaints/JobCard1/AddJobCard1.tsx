@@ -49,6 +49,7 @@ import nopdf from "../../../assets/images/imagepreview.jpg";
 import { json } from "stream/consumers";
 import ReactQuill from "react-quill";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
@@ -75,8 +76,9 @@ const style = {
 
 const AddJobCard1 = (props: Props) => {
   const [isIndentGenerateEnabled, setIsIndentGenerateEnabled] = useState(false);
-const [isIndentPrintEnabled, setIsIndentPrintEnabled] = useState(false);
-const [isChallanEnabled, setIsChallanEnabled] = useState(false);
+
+  const [isIndentPrintEnabled, setIsIndentPrintEnabled] = useState(false);
+  const [isChallanEnabled, setIsChallanEnabled] = useState(false);
   const [isIndentEnabled, setIsIndentEnabled] = useState(false);
   const location = useLocation();
   let navigate = useNavigate();
@@ -233,26 +235,26 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
       "isDelete": true,
       "prevReading": 0
     },
-    {
-      "id": 0,
-      "jobCardId": 0,
-      "itemId": 0,
-      "indentId": 0,
-      "indentNo": "",
-      "qty": 0,
-      "rate": 0,
-      "batchNo": "",
-      "amount": 0,
-      "gstId": 0,
-      "gstRate": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "igst": 0,
-      "netAmount": 0,
-      "srno": 0,
-      "isDelete": true,
-      "prevReading": 0
-    },
+    // {
+    //   "id": 0,
+    //   "jobCardId": 0,
+    //   "itemId": 0,
+    //   "indentId": 0,
+    //   "indentNo": "",
+    //   "qty": 0,
+    //   "rate": 0,
+    //   "batchNo": "",
+    //   "amount": 0,
+    //   "gstId": 0,
+    //   "gstRate": 0,
+    //   "cgst": 0,
+    //   "sgst": 0,
+    //   "igst": 0,
+    //   "netAmount": 0,
+    //   "srno": 0,
+    //   "isDelete": true,
+    //   "prevReading": 0
+    // },
 
   ]);
   const [tableData, setTableData] = useState([
@@ -275,25 +277,25 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
       gstid: 0,
 
     },
-    {
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
+    // {
+    //   id: 0,
+    //   jobCardId: 0,
+    //   serviceId: 0,
+    //   amount: 0,
+    //   jobWorkReq: true,
+    //   vendorId: 0,
+    //   challanRemark: "",
+    //   challanNo: 0,
+    //   challanDate: defaultValues,
+    //   challanRcvNo: 0,
+    //   challanRcvDate: defaultValues,
+    //   challanStatus: "",
+    //   netAmount: 0,
+    //   cgstid: 0,
+    //   sgstid: 0,
+    //   gstid: 0,
 
-    },
+    // },
 
   ]);
 
@@ -320,12 +322,12 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
     setVehicleName(location.state?.vehicleName);
     setDesgValue(location.state?.designation || "");
     setDeptValue(location.state?.department || "");
- let total =0;
- tableData.forEach(row => {
-   total += row.amount;
- })
- formik.setFieldValue("totalServiceAmount", total);
- formik.setFieldValue("netAmount", total);
+    let total = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+    })
+    formik.setFieldValue("totalServiceAmount", total);
+    formik.setFieldValue("netAmount", total);
   }, []);
   const GetIndentID = async () => {
     const collectData = {
@@ -562,8 +564,8 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
         if (response.data.status === 1) {
           toast.success(response.data.message);
           formik.setFieldValue("jobCardId", response.data.data.jobCardId);
-          setIsIndentGenerateEnabled(true); 
-        //  setIsIndentEnabled(true);
+          setIsIndentGenerateEnabled(true);
+          //  setIsIndentEnabled(true);
         } else {
           toast.error(response.data.message);
         }
@@ -577,21 +579,60 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
   const handleGenerateIndent = async (values: any) => {
     const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
     const validItemDetails = tableData1.filter((row: any) => row.itemId && row.qty > 0 && row.rate > 0);
-    // if (validTableData.length === 0) {
-    //   toast.error("Please add some data in table for further process");
-    //   return;
-    // }
-    const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validServiceDetails, itemDetail: validItemDetails });
-    if (response.data.status === 1) {
-      toast.success(response.data?.message || "JOBCARD Indent Generated");
-      setIsIndentGenerateEnabled(false); // Disable "Indent Generate"
-      setIsIndentPrintEnabled(true); // Enable "Indent Print"
-      setJobCardId(response.data.data.jobCardId);
-    } else {
-      setToaster(true);
-      toast.error(response.data.message);
+  
+    try {
+      const response = await api.post(`Master/GenerateIndent`, { 
+        ...values, 
+        serviceDetail: validServiceDetails, 
+        itemDetail: validItemDetails 
+      });
+  
+      if (response.data.status === 1) {
+        toast.success(response.data?.message || "JOBCARD Indent Generated");
+        setIsIndentGenerateEnabled(false);
+        setIsIndentPrintEnabled(true);
+        setJobCardId(response.data.data.jobCardId);
+  
+        // Extract and slice indentNo from response data
+        const responseData = response.data.data; // Example: "32,20250130/I/32"
+        const indentNo = responseData.split(",")[1]; // Extract "20250130/I/32"
+  
+        // Update `indentNo` in tableData1
+        setTableData1((prevTableData:any) => 
+          prevTableData.map((row:any) => ({
+            ...row,
+            indentNo: indentNo // Set extracted value in indentNo field
+          }))
+        );
+      } else {
+        setToaster(true);
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error generating indent:", error);
+      toast.error("Failed to generate indent.");
     }
   };
+  
+
+  // const handleGenerateIndent = async (values: any) => {
+  //   const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
+  //   const validItemDetails = tableData1.filter((row: any) => row.itemId && row.qty > 0 && row.rate > 0);
+  //   // if (validTableData.length === 0) {
+  //   //   toast.error("Please add some data in table for further process");
+  //   //   return;
+  //   // }
+  //   const response = await api.post(`Master/GenerateIndent`, { ...values, serviceDetail: validServiceDetails, itemDetail: validItemDetails });
+  //   if (response.data.status === 1) {
+  //     toast.success(response.data?.message || "JOBCARD Indent Generated");
+  //     setIsIndentGenerateEnabled(false); // Disable "Indent Generate"
+  //     setIsIndentPrintEnabled(true); // Enable "Indent Print"
+  //     setJobCardId(response.data.data.jobCardId);
+  //   } else {
+  //     setToaster(true);
+  //     toast.error(response.data.message);
+  //   }
+  // };
   const handleGenerateChallan = async (values: any) => {
     const validTableData = tableData.filter(validateRow);
     if (validTableData.length === 0) {
@@ -651,12 +692,12 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
     newData[index].id = index;
     setTableData(newData);
 
-    if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
-      if (index === tableData.length - 1) {
-        addRow();
+    // if (newData[index].serviceId && newData[index].vendorId && newData[index].amount) {
+    //   if (index === tableData.length - 1) {
+    //     addRow();
 
-      }
-    }
+    //   }
+    // }
 
     let total = 0;
     let netAmt = 0;
@@ -708,12 +749,12 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
     newData[index].id = index;
     setTableData1(newData);
 
-    if (newData[index].itemId && newData[index].qty && newData[index].rate) {
-      if (index === tableData1.length - 1) {
-        handleAddItem();
+    // if (newData[index].itemId && newData[index].qty && newData[index].rate) {
+    //   if (index === tableData1.length - 1) {
+    //     handleAddItem();
 
-      }
-    }
+    //   }
+    // }
 
 
     let total = 0;
@@ -778,13 +819,13 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
       },
     ]);
   };
-  const deleteRow = (index: any) => {
-    const newData = tableData.filter((_, i) => i !== index);
-    setTableData(newData);
-  };
+  // const deleteRow = (index: any) => {
+  //   const newData = tableData.filter((_, i) => i !== index);
+  //   setTableData(newData);
+  // };
 
   const deleteRow1 = (index: any) => {
-    const newData = tableData1.filter((_:any, i:any) => i !== index);
+    const newData = tableData1.filter((_: any, i: any) => i !== index);
     setTableData1(newData);
   };
 
@@ -975,7 +1016,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                   id="combo-box-demo"
                   options={
                     complainOption.filter((e) => {
-                      if (e.status !== "pending") {
+                      if (e.status === "inprogress") {
                         return e;
                       }
                     })
@@ -1619,7 +1660,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                     <tbody>
                       {tableData1.map((row: any, index: any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1635,8 +1676,31 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               }}
                               style={{ cursor: "pointer" }}
                             />
+                          </td> */}
+ <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                             <AddCircleIcon
+                              onClick={() => {
+                                handleAddItem();
+                              }}
+                              
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData1.length > 1) {
+                                  deleteRow1(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
                           </td>
-                        
 
 
                           <td
@@ -1691,7 +1755,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                             
+
                                 />
                               )}
                             />
@@ -1755,7 +1819,17 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
 
                             }}
                           >
-                            <Autocomplete
+                             <TextField
+                              value={row.indentNo}
+                              onChange={(e) =>
+                                handleInputChange1(index, "indentNo", parseFloat(e.target.value) || 0)
+                              }
+                              onFocus={e => e.target.select()}
+                              size="small"
+                              sx={{ width: "225px" }}
+                              inputProps={{ "aria-readonly": true }}
+                            />
+                            {/* <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={indentOptions}
@@ -1771,10 +1845,10 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
-                                
+
                                 />
                               )}
-                            />
+                            /> */}
                           </td>
 
                           <td
@@ -1876,7 +1950,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                       ))}
                     </tbody>
                     <tfoot>
-                    
+
                       <tr>
                         <td colSpan={5}></td>
                         <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
@@ -1886,7 +1960,7 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
                           <b>:</b>{formik.values.totalItemAmount}
                         </td>
                       </tr>
-                      
+
                       {/* <tr>
                         <td colSpan={5}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
@@ -1923,33 +1997,33 @@ const [isChallanEnabled, setIsChallanEnabled] = useState(false);
 
 
                   <Grid item>
-  <Button
-    type="button"
-    disabled={!isIndentGenerateEnabled}
-    style={buttonStyle(isIndentGenerateEnabled)}
-    onClick={() => {
-      handleGenerateIndent(formik.values);
-    }}
-  >
-    {t("text.indentGenerate")}
-  </Button>
-</Grid>
+                    <Button
+                      type="button"
+                      disabled={!isIndentGenerateEnabled}
+                      style={buttonStyle(isIndentGenerateEnabled)}
+                      onClick={() => {
+                        handleGenerateIndent(formik.values);
+                      }}
+                    >
+                      {t("text.indentGenerate")}
+                    </Button>
+                  </Grid>
 
-<Grid item>
-  <Button
-    type="button"
-    disabled={!isIndentPrintEnabled}
-    style={buttonStyle(isIndentPrintEnabled)}
-    onClick={() => {
-   //   formik.setFieldValue("status", "indentPrint");
-    }}
-  >
-    {t("text.indentprint")}
-  </Button>
-</Grid>
+                  <Grid item>
+                    <Button
+                      type="button"
+                      disabled={!isIndentPrintEnabled}
+                      style={buttonStyle(isIndentPrintEnabled)}
+                      onClick={() => {
+                        //   formik.setFieldValue("status", "indentPrint");
+                      }}
+                    >
+                      {t("text.indentprint")}
+                    </Button>
+                  </Grid>
 
 
-  
+
                 </Grid>
 
               )}

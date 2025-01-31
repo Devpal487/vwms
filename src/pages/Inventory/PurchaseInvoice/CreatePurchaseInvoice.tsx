@@ -21,6 +21,7 @@ import {
 import React, { useState, useEffect } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -63,7 +64,7 @@ const CreatePurchaseInvoice = () => {
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState<{ label: string; value: number; details: any }[]>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
-  const [purchaseData,setPurchaseData]=useState<any>([]);
+  const [purchaseData, setPurchaseData] = useState<any>([]);
   // const initialRowData: any = {
   const [tableData, setTableData] = useState<any>([{
     id: -1,
@@ -214,15 +215,15 @@ const CreatePurchaseInvoice = () => {
       orderId: itemId,
       indentId: -1,
     };
-  
+
     const response = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
-    
+
     if (response.data.data.length > 0) {
       const orderDetails = response.data.data[0]; // Extract order details
       const vendorId = orderDetails.vendorId; // Get vendor ID
-  
+
       setPurchaseData(orderDetails.purchaseOrderDetail); // Update purchase data
-  
+
       const purchase = orderDetails.purchaseOrderDetail.map((item: any, index: any) => ({
         id: index + 1,
         invoiceId: 0,
@@ -241,16 +242,16 @@ const CreatePurchaseInvoice = () => {
         srn: 0,
         isDelete: true,
       }));
-  
+
       setTableData(purchase);
       setIsIndentSelected(true);
-  
+
       return vendorId; // Return vendor ID for immediate use
     }
-  
+
     return null;
   };
-  
+
   // const GetOrderIDById = async (itemId: any) => {
   //   const collectData = {
   //     orderId: itemId,
@@ -384,9 +385,9 @@ const CreatePurchaseInvoice = () => {
       purchaseInvoiceDetail: [],
     },
     validationSchema: Yup.object().shape({
-      invoiceNo: Yup.string().required("Invoice No. is required"),
-      orderNo: Yup.string().required(t("text.reqOrderNum")),
-      vendorId: Yup.date().required("Vendor is required"),
+       invoiceNo: Yup.string().required("Invoice No. is required"),
+      // orderNo: Yup.string().required(t("text.reqOrderNum")),
+      // vendorId: Yup.date().required("Vendor is required"),
       // p_InvoiceDate: Yup.date().required(t("text.reqInvDate")),
       // supplierName: Yup.string().required(t("text.reqSuppName")),
     }),
@@ -486,11 +487,11 @@ const CreatePurchaseInvoice = () => {
     tableData[index] = item;
     setTableData(tableData);
     updateTotalAmounts(tableData);
-    if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].approveQuantity >= 1) {
-      if (index === tableData.length - 1) {
-        addRow();
-      }
-    }
+    // if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].approveQuantity >= 1) {
+    //   if (index === tableData.length - 1) {
+    //     addRow();
+    //   }
+    // }
 
     let total = 0;
     tableData.forEach((row: any) => {
@@ -632,37 +633,37 @@ const CreatePurchaseInvoice = () => {
               </Grid>
 
               <Grid item xs={12} sm={4} lg={4}>
-              <Autocomplete
-  disablePortal
-  id="combo-box-demo"
-  options={orderOption}
-  fullWidth
-  size="small"
-  onChange={async (event: any, newValue: any) => {
-    if (newValue) {
-      const vendorId = await GetOrderIDById(newValue?.value); // Get vendor ID from function
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={orderOption}
+                  fullWidth
+                  size="small"
+                  onChange={async (event: any, newValue: any) => {
+                    if (newValue) {
+                      const vendorId = await GetOrderIDById(newValue?.value); // Get vendor ID from function
 
-      formik.setFieldValue("orderNo", newValue?.label);
-      formik.setFieldValue("orderId", newValue?.value);
+                      formik.setFieldValue("orderNo", newValue?.label);
+                      formik.setFieldValue("orderId", newValue?.value);
 
-      if (vendorId) {
-        formik.setFieldValue("vendorId", vendorId);
+                      if (vendorId) {
+                        formik.setFieldValue("vendorId", vendorId);
 
-        // Find vendor name from vendorData
-        const selectedVendor = vendorData.find((vendor: any) => vendor.value === vendorId);
-        if (selectedVendor) {
-          formik.setFieldValue("name", selectedVendor.label);
-        }
-      }
-    }
-  }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label={<CustomLabel text={t("text.orderno")} required={true} />}
-    />
-  )}
-/>
+                        // Find vendor name from vendorData
+                        const selectedVendor = vendorData.find((vendor: any) => vendor.value === vendorId);
+                        if (selectedVendor) {
+                          formik.setFieldValue("name", selectedVendor.label);
+                        }
+                      }
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.orderno")} required={true} />}
+                    />
+                  )}
+                />
 
 
 
@@ -742,26 +743,26 @@ const CreatePurchaseInvoice = () => {
                     />
                   )}
                 /> */}
-            <Autocomplete
-  disablePortal
-  id="vendor-autocomplete"
-  options={vendorData}
-  fullWidth
-  size="small"
-  value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
-  onChange={(event: any, newValue: any) => {
-    if (newValue) {
-      formik.setFieldValue("vendorId", newValue?.value);
-      formik.setFieldValue("name", newValue?.label);
-    }
-  }}
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      label={<CustomLabel text={t("text.Vendorname")} required={false} />}
-    />
-  )}
-/>
+                <Autocomplete
+                  disablePortal
+                  id="vendor-autocomplete"
+                  options={vendorData}
+                  fullWidth
+                  size="small"
+                  value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
+                  onChange={(event: any, newValue: any) => {
+                    if (newValue) {
+                      formik.setFieldValue("vendorId", newValue?.value);
+                      formik.setFieldValue("name", newValue?.label);
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.Vendorname")} required={false} />}
+                    />
+                  )}
+                />
 
 
 
@@ -941,24 +942,24 @@ const CreatePurchaseInvoice = () => {
                           </th>
 
                           <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                         {t("text.cgst")}
-                      
-                      </th>
-                      <th
-                        style={{
-                          border: "1px solid black",
-                          textAlign: "center",
-                          padding: "5px",
-                        }}
-                      >
-                        {t("text.sgst")}
-                      </th>
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              padding: "5px",
+                            }}
+                          >
+                            {t("text.cgst")}
+
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                              padding: "5px",
+                            }}
+                          >
+                            {t("text.sgst")}
+                          </th>
                           {/* <th
                             style={{
                               border: "1px solid black",
@@ -992,7 +993,8 @@ const CreatePurchaseInvoice = () => {
                       <tbody>
                         {tableData.map((row: any, index: any) => (
                           <tr key={row.id} style={{ border: "1px solid black" }}>
-                            <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+
+                            {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
                               if (tableData.length > 1) {
                                 deleteRow(index)
                               } else {
@@ -1000,6 +1002,30 @@ const CreatePurchaseInvoice = () => {
                               }
                             }}>
                               <DeleteIcon />
+                            </td> */}
+                            <td
+                              style={{
+                                border: "1px solid black",
+                                textAlign: "center",
+                              }}
+                            >
+                              <AddCircleIcon
+                                onClick={() => {
+                                  addRow();
+                                }}
+
+                                style={{ cursor: "pointer" }}
+                              />
+                              <DeleteIcon
+                                onClick={() => {
+                                  if (tableData.length > 1) {
+                                    deleteRow(index)
+                                  } else {
+                                    alert("Atleast one row should be there");
+                                  }
+                                }}
+                                style={{ cursor: "pointer" }}
+                              />
                             </td>
 
 

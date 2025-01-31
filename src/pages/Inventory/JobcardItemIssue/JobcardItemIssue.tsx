@@ -451,7 +451,7 @@ export default function JobcardItemIssue() {
             field: "actions",
             headerName: t("text.Action"),
             width: 150,
-
+            headerClassName: "MuiDataGrid-colCell",
             renderCell: (params) => {
               return [
                 <Stack
@@ -495,6 +495,7 @@ export default function JobcardItemIssue() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
           },
           {
             field: "indentNno",
@@ -533,21 +534,28 @@ export default function JobcardItemIssue() {
 
   return (
     <>
-      <Card
-        style={{
-          width: "100%",
-          backgroundColor: "lightgreen",
-          border: ".5px solid #2B4593",
-          marginTop: "3vh",
-        }}
-      >
-        <Paper
-          sx={{
-            width: "100%",
-            overflow: "hidden",
-          }}
-          style={{ padding: "10px" }}
+       <Card
+            style={{
+                width: "100%",
+                // height: "100%",
+                backgroundColor: "#E9FDEE",
+                border: ".5px solid #FF7722 ",
+                marginTop: "3vh"
+            }}
         >
+            <Paper
+                sx={{
+                    width: "100%",
+                    overflow: "hidden",
+                    "& .MuiDataGrid-colCell": {
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
+                        fontSize: 17,
+                        fontWeight: 900
+                    },
+                }}
+                style={{ padding: "10px", }}
+            >
           <ConfirmDialog />
 
           <Grid item xs={12} container spacing={1}>

@@ -55,8 +55,8 @@
 //     const location = useLocation();
 //     //const [tableData, setTableData] = useState<any>([]);
 //     const [tableData, setTableData] = useState<any>([{
-       
-    
+
+
 //        "id": 0,
 //       "issueId": 0,
 //       "itemID": 0,
@@ -138,7 +138,7 @@
 
 //             id: index +1,
 //             "issueId": 0,
-          
+
 //             batchNo:item?.batchNo,
 //             itemID:item?.itemID,
 //             unitId:item?.unitId,
@@ -153,10 +153,10 @@
 
 
 //         }))
-        
+
 //             setTableData(indent);
 //             setIsIndentSelected(true);
-        
+
 //     };
 
 //     console.log("check table", tableData)
@@ -195,7 +195,7 @@
 //         const collectData = {
 //           empid: -1,
 //           userId: "",
-         
+
 //         };
 //         const response = await api.post(`Employee/GetEmployee`, collectData);
 //         const data = response.data.data;
@@ -203,7 +203,7 @@
 //         const arr = data.map((item: any) => ({
 //           label: item?.empName,
 //           value: item?.empid
-    
+
 //         }))
 //         // for (let index = 0; index < data.length; index++) {
 //         //   arr.push({
@@ -247,7 +247,7 @@
 
 //         },
 //         onSubmit: async (values) => {
-        
+
 //             const validTableData = tableData;
 //             values.itemIssueDetail =tableData
 
@@ -261,7 +261,7 @@
 //                 `ItemIssue/UpsertItemIssue`,
 //                 values
 //             );
-          
+
 //             if (response.data.status === 1) {
 //                 setToaster(false);
 //                 toast.success(response.data.message);
@@ -280,7 +280,7 @@
 //         const updatedData = [...tableData];
 //         updatedData[index][field] = value;
 
-        
+
 
 //         setTableData(updatedData);
 //     };
@@ -374,7 +374,7 @@
 //                         {toaster === false ? "" : <ToastApp />}
 //                         <Grid item xs={12} container spacing={2}>
 
-                   
+
 
 //                             <Grid item xs={12} sm={4} lg={4}>
 //                                 <Autocomplete
@@ -386,7 +386,7 @@
 //                                                  (option) => option.value === formik.values.indentId
 //                                             ) || null
 //                                          }
-                          
+
 //                                     fullWidth
 //                                     size="small"
 //                                     //value={formik.values.indentId}
@@ -398,7 +398,7 @@
 //                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
 //                                         }
 //                                     }}
-                                   
+
 //                                     // value={
 //                                     //     indentOptions.find((opt) => (opt.value) == (formik.values.indentNo)) || null
 //                                     // }
@@ -439,7 +439,7 @@
 //                                 />
 //                             </Grid>
 
-                          
+
 //                             <Grid item lg={4} xs={12}>
 //                                 <TextField
 //                                     id="issueDate"
@@ -478,7 +478,7 @@
 //                                         <tbody>
 //                                             {tableData.map((row: any, index: any) => (
 //                                                 <tr key={row.id} style={{ border: '1px solid black' }}>
-                                                   
+
 
 //                                                     <td
 //                                                         style={{
@@ -666,6 +666,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -722,16 +723,16 @@ const EditStaffItemIssue = (props: Props) => {
     ]);
     useEffect(() => {
         GetIndentID();
-       // GetIndentIDById(location.state.issueId);
-      // getTransDataById(location.state.id);
-    //   getVehicleDetails();
+        // GetIndentIDById(location.state.issueId);
+        // getTransDataById(location.state.id);
+        //   getVehicleDetails();
         GetitemData();
         GetUnitData();
         GetempData();
         GetItemChild(location.state.issueId)
     }, []);
 
- 
+
     const GetIndentID = async () => {
         const collectData = {
             indentId: -1,
@@ -887,7 +888,7 @@ const EditStaffItemIssue = (props: Props) => {
         // }
         setempOption(arr);
     };
-   const getVehicleDetails = async () => {
+    const getVehicleDetails = async () => {
         const response = await api.get(
             `Master/GetVehicleDetail?ItemMasterId=-1`,
         );
@@ -950,7 +951,7 @@ const EditStaffItemIssue = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/JobcardItemIssue");
+                navigate("/Inventory/StaffItemIssue");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);
@@ -965,7 +966,7 @@ const EditStaffItemIssue = (props: Props) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
         if (field === 'reqQty' || field === 'issueQty') {
-            
+
             updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
 
             // console.log("stockQty",updatedData[index].stockQty, updatedData[index].reqQty,updatedData[index].issueQty)
@@ -1192,6 +1193,7 @@ const EditStaffItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Actions")}</th>
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.SelectItem")}</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.SelectUnit")}</th>
@@ -1207,6 +1209,31 @@ const EditStaffItemIssue = (props: Props) => {
                                             <tbody>
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: '1px solid black' }}>
+
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                onClick={() => {
+                                                                    addRow();
+                                                                }}
+
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                            <DeleteIcon
+                                                                onClick={() => {
+                                                                    if (tableData.length > 1) {
+                                                                        deleteRow(index)
+                                                                    } else {
+                                                                        alert("Atleast one row should be there");
+                                                                    }
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        </td>
 
 
                                                         <td
@@ -1224,7 +1251,7 @@ const EditStaffItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
-                                                                sx={{width: "175px"}}
+                                                                sx={{ width: "175px" }}
                                                                 onChange={(e: any, newValue: any) =>
                                                                     handleInputChange(
                                                                         index,
@@ -1256,7 +1283,7 @@ const EditStaffItemIssue = (props: Props) => {
                                                                 }
                                                                 fullWidth
                                                                 size="small"
-                                                                sx={{width: "175px"}}
+                                                                sx={{ width: "175px" }}
                                                                 onChange={(e, newValue: any) =>
                                                                     handleInputChange(index, "unitId", newValue?.value)
                                                                 }
@@ -1270,46 +1297,46 @@ const EditStaffItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                               // type="number"
+                                                                // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.batchNo}
                                                                 onChange={(e) => handleInputChange(index, 'batchNo', e.target.value)}
-                                                           onFocus={e => e.target.select()}
-                                                           />
+                                                                onFocus={e => e.target.select()}
+                                                            />
                                                         </td>
 
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
-                                                        <TextField
-                                                           // type="number"
-                                                            size="small"
-                                                            value={row.reqQty - row.issueQty || 0}
-                                                           // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
-                                                        />
-                                                    </td>
+                                                            <TextField
+                                                                // type="number"
+                                                                size="small"
+                                                                value={row.reqQty - row.issueQty || 0}
+                                                            // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
+                                                            />
+                                                        </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
                                                                 //type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.reqQty}
-                                                                onChange={(e) => handleInputChange(index, 'reqQty', parseFloat(e.target.value)||0)}
-                                                            onFocus={e => e.target.select()}
+                                                                onChange={(e) => handleInputChange(index, 'reqQty', parseFloat(e.target.value) || 0)}
+                                                                onFocus={e => e.target.select()}
                                                             />
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
                                                             <TextField
-                                                               // type="number"
+                                                                // type="number"
                                                                 size="small"
                                                                 // type="text"
                                                                 value={row.issueQty}
-                                                                onChange={(e) => handleInputChange(index, 'issueQty', parseFloat(e.target.value)||0)}
-                                                            onFocus={e =>e.target.focus()}
+                                                                onChange={(e) => handleInputChange(index, 'issueQty', parseFloat(e.target.value) || 0)}
+                                                                onFocus={e => e.target.focus()}
                                                             />
                                                         </td>
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
                                                 ))}
                                             </tbody>

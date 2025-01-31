@@ -36,6 +36,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -97,7 +98,7 @@ const EditJobcardItemIssue = (props: Props) => {
         getVehicleDetails();
         GetitemData();
         GetUnitData();
-      //  GetempData();
+        //  GetempData();
         GetItemChild(location.state.issueId)
     }, []);
 
@@ -178,7 +179,7 @@ const EditJobcardItemIssue = (props: Props) => {
 
         const indent = data.map((item: any, index: any) => ({
 
-       
+
             // id: index + 1,
             // "issueId": -1,
 
@@ -201,20 +202,20 @@ const EditJobcardItemIssue = (props: Props) => {
             "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
-           // batchNo: item?.batchNo,
+            // batchNo: item?.batchNo,
             indentId: item?.indentId,
-           // stockQty: item?.approveQuantity,
+            // stockQty: item?.approveQuantity,
             reqQty: item?.approveQuantity,
-          //  "amount" : item?.amount,
-            itemName:item?.itemName,
-            unitName:item?.unitName,
+            //  "amount" : item?.amount,
+            itemName: item?.itemName,
+            unitName: item?.unitName,
             indentNo: "",
             "srn": 0,
             // "unitName": "",
             "returnItem": true,
             "stockQty": 0,
-            issueQty:0,
-         //   batchNo:IsbatchNO ||"",
+            issueQty: 0,
+            //   batchNo:IsbatchNO ||"",
 
         }))
 
@@ -582,23 +583,46 @@ const EditJobcardItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
-                                                    {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.SelectItem")}</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.SelectUnit")}</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
 
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Actions")}</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: '1px solid black' }}>
 
+                                                        <td
+                                                            style={{
+                                                                border: "1px solid black",
+                                                                textAlign: "center",
+                                                            }}
+                                                        >
+                                                            <AddCircleIcon
+                                                                onClick={() => {
+                                                                    addRow();
+                                                                }}
 
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                            <DeleteIcon
+                                                                onClick={() => {
+                                                                    if (tableData.length > 1) {
+                                                                        deleteRow(index)
+                                                                    } else {
+                                                                        alert("Atleast one row should be there");
+                                                                    }
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            />
+                                                        </td>
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
@@ -698,9 +722,9 @@ const EditJobcardItemIssue = (props: Props) => {
                                                                 onFocus={e => e.target.focus()}
                                                             />
                                                         </td>
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
                                                 ))}
                                             </tbody>

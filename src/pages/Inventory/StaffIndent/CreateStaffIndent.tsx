@@ -38,7 +38,7 @@
 //   const { defaultValues } = getISTDate();
 //   const [toaster, setToaster] = useState(false);
 //   const [tableData, setTableData] = useState<any>([
-  
+
 //     // id: 0,
 //     // indentId: 0,
 //     // itemId: -1,
@@ -191,7 +191,7 @@
 
 //   const formik = useFormik({
 //     initialValues: {
-     
+
 
 
 //       "indentId": 0,
@@ -298,7 +298,7 @@
 //     setTableData([
 //       ...tableData,
 //       {
-       
+
 
 //         id: tableData.length + 1,
 //         "indentId": 0,
@@ -414,29 +414,29 @@
 //               </Grid>
 
 
-              // <Grid item xs={12} sm={4} lg={4}>
-              //   <Autocomplete
-              //     disablePortal
-              //     id="combo-box-demo"
-              //     options={empOption}
-              //     fullWidth
-              //     size="small"
-              //     onChange={(event, newValue) => {
-              //       console.log(newValue?.value);
-              //       formik.setFieldValue("empId", newValue?.value);
-              //     }}
-              //     renderInput={(params) => (
-              //       <TextField
-              //         {...params}
-              //         label={<CustomLabel text={t("text.selectemp_name")} />}
-              //       />
-              //     )}
-              //   />
+// <Grid item xs={12} sm={4} lg={4}>
+//   <Autocomplete
+//     disablePortal
+//     id="combo-box-demo"
+//     options={empOption}
+//     fullWidth
+//     size="small"
+//     onChange={(event, newValue) => {
+//       console.log(newValue?.value);
+//       formik.setFieldValue("empId", newValue?.value);
+//     }}
+//     renderInput={(params) => (
+//       <TextField
+//         {...params}
+//         label={<CustomLabel text={t("text.selectemp_name")} />}
+//       />
+//     )}
+//   />
 
-              //   {formik.touched.empId && formik.errors.empId && (
-              //     <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-              //   )}
-              // </Grid>
+//   {formik.touched.empId && formik.errors.empId && (
+//     <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
+//   )}
+// </Grid>
 
 
 //               {/* <Grid item xs={12} sm={4} lg={4}>
@@ -527,7 +527,7 @@
 //               renderInput={(params) => (
 //                 <TextField
 //                   {...params}
-               
+
 //                 />
 //               )}
 //             />
@@ -555,11 +555,11 @@
 //               renderInput={(params) => (
 //                 <TextField
 //                   {...params}
-              
+
 //                 />
 //               )}
 //             />
-         
+
 //           </td>
 
 
@@ -569,7 +569,7 @@
 //               size="small"
 //               // type="text"
 //               value={row.quantity}
-             
+
 //               onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
 //               onFocus={e => e.target.select()}
 //            />
@@ -706,6 +706,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 
 type Props = {};
@@ -735,23 +736,23 @@ const CreateStaffIndent = (props: Props) => {
       "unitName": "",
       "itemName": ""
     },
-    {
+    // {
 
 
-      "id": -1,
-      "indentId": 0,
-      "itemId": 0,
-      "unitId": 0,
-      "quantity": 0,
-      "rate": 0,
-      "amount": 0,
-      "approveQuantity": 0,
-      "fyId": 0,
-      "srn": 0,
-      "isDelete": true,
-      "unitName": "",
-      "itemName": ""
-    }
+    //   "id": -1,
+    //   "indentId": 0,
+    //   "itemId": 0,
+    //   "unitId": 0,
+    //   "quantity": 0,
+    //   "rate": 0,
+    //   "amount": 0,
+    //   "approveQuantity": 0,
+    //   "fyId": 0,
+    //   "srn": 0,
+    //   "isDelete": true,
+    //   "unitName": "",
+    //   "itemName": ""
+    // }
 
   ]);
 
@@ -762,9 +763,9 @@ const CreateStaffIndent = (props: Props) => {
   const [itemOption, setitemOption] = useState([
     { value: -1, label: t("text.itemMasterId") },
   ]);
-const [empOption, setempOption] = useState([
-        { value: "-1", label: t("text.empid") },
-    ]);
+  const [empOption, setempOption] = useState([
+    { value: "-1", label: t("text.empid") },
+  ]);
 
 
 
@@ -783,8 +784,8 @@ const [empOption, setempOption] = useState([
 
   const GetempData = async () => {
     const collectData = {
-        empid: -1,
-        userId: "",
+      empid: -1,
+      userId: "",
 
     };
     const response = await api.post(`Employee/GetEmployee`, collectData);
@@ -792,13 +793,13 @@ const [empOption, setempOption] = useState([
     // console.log('CheckEmp',data)
     const arr = [];
     for (let index = 0; index < data.length; index++) {
-        arr.push({
-            label: data[index]["empName"],
-            value: data[index]["empid"],
-        });
+      arr.push({
+        label: data[index]["empName"],
+        value: data[index]["empid"],
+      });
     }
     setempOption(arr);
-};
+  };
   const GetitemData = async () => {
 
     const collectData = {
@@ -936,11 +937,11 @@ const [empOption, setempOption] = useState([
     setTableData(newData);
 
 
-    if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
-      if (index === tableData.length - 1) {
-        addRow();
-      }
-    }
+    // if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
+    //   if (index === tableData.length - 1) {
+    //     addRow();
+    //   }
+    // }
   };
 
 
@@ -1007,7 +1008,7 @@ const [empOption, setempOption] = useState([
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.CreateStaffIndent")}
+                {t("text.createStaffIndent")}
               </Typography>
             </Grid>
 
@@ -1065,7 +1066,7 @@ const [empOption, setempOption] = useState([
 
 
 
-                
+
               <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
@@ -1092,14 +1093,13 @@ const [empOption, setempOption] = useState([
 
               <Grid item xs={12}>
 
-                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
 
+                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                     <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                       <tr>
 
-
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th>
+                        {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
@@ -1114,17 +1114,31 @@ const [empOption, setempOption] = useState([
                     <tbody>
                       {tableData.map((row: any, index: any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                          <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td>
-                          <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                            if (tableData.length > 1) {
-                              deleteRow(index)
-                            } else {
-                              alert("There should be atleast one row")
-                            }
-                          }}>
-                            <DeleteIcon />
-                          </td>
+                          {/* <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
 
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
                           <td
                             style={{
                               border: "1px solid black",
@@ -1152,17 +1166,13 @@ const [empOption, setempOption] = useState([
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.selectItem")}
-                                //     required={false}
-                                //   />
-                                // }
+
                                 />
                               )}
                             />
                           </td>
                           <td style={{ border: '1px solid black', textAlign: 'center' }}>
+
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
@@ -1184,27 +1194,11 @@ const [empOption, setempOption] = useState([
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
-                                // label={
-                                //   <CustomLabel
-                                //     text={t("text.selectItem")}
-                                //     required={false}
-                                //   />
-                                // }
+
                                 />
                               )}
                             />
-                            {/* <select
-                            value={row.unitId}
-                            onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                            style={{ width: '95%', height: '35px' }}
-                          >
-                            <option value="">{t("text.SelectUnit")}</option>
-                            {unitOptions.map((option) => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select> */}
+
                           </td>
 
 
@@ -1215,8 +1209,8 @@ const [empOption, setempOption] = useState([
                               // type="text"
                               value={row.quantity}
                               onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                              onFocus={e => e.target.select()}
-                           />
+                              onFocus={(e) => { e.target.select() }}
+                            />
                           </td>
                           <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
                             <TextField
@@ -1225,8 +1219,8 @@ const [empOption, setempOption] = useState([
                               // type="text"
                               value={row.approveQuantity}
                               onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                              onFocus={e => e.target.select()}
-                           />
+                              onFocus={(e) => { e.target.select() }}
+                            />
                           </td>
                           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
                             <TextField
@@ -1235,8 +1229,8 @@ const [empOption, setempOption] = useState([
                               // type="text"
                               value={row.rate}
                               onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                              onFocus={e => e.target.select()}
-                          />
+                              onFocus={(e) => { e.target.select() }}
+                            />
                           </td>
 
                           <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
@@ -1245,6 +1239,7 @@ const [empOption, setempOption] = useState([
                               value={row.amount.toFixed(2)}
                               size="small"
                               inputProps={{ "aria-readonly": true }}
+                              onFocus={(e) => { e.target.select() }}
                             />
                           </td>
 
@@ -1253,7 +1248,7 @@ const [empOption, setempOption] = useState([
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={6} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
 
                         </td>
@@ -1265,7 +1260,7 @@ const [empOption, setempOption] = useState([
 
                     </tfoot>
                   </Table>
-                </div> </Grid>
+                </div>   </Grid>
 
 
               <Grid item xs={12} md={12} lg={12}>

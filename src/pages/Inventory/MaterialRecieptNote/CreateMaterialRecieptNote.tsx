@@ -10,11 +10,15 @@ import {
   Typography,
   Table,
 } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import axios from "axios";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import HOST_URL from "../../../utils/Url";
@@ -36,6 +40,8 @@ type Props = {};
 
 const CreateMaterialRecieptNote = (props: Props) => {
   let navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
   const [unitOptions, setUnitOptions] = useState([
@@ -129,6 +135,24 @@ const CreateMaterialRecieptNote = (props: Props) => {
     GetUnitData();
     getBATCHNo();
   }, []);
+  const handleOrderSelect = (event: any, newValue: any) => {
+    if (newValue.length > 0) {
+      const lastSelectedOrder = newValue[newValue.length - 1];
+      setSelectedOrder(lastSelectedOrder); // Store selected order
+      setOpenDialog(true); // Open the confirmation dialog
+    }
+  };
+  const handleConfirm = () => {
+    if (selectedOrder) {
+      getPurchaseOrderById(selectedOrder.orderId);
+    }
+    setOpenDialog(false); // Close dialog
+  };
+
+  const handleCancel = () => {
+    setSelectedOrder(null); // Clear selection
+    setOpenDialog(false); // Close dialog
+  };
   const GetUnitData = async () => {
     const collectData = {
       unitId: -1,
@@ -161,8 +185,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
     try {
       const response = await api.get(`QualityCheck/GetMaxBatchNo`);
       if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
-         
-         setBatchno(response.data.data[0].batchNo)
+
+        setBatchno(response.data.data[0].batchNo)
       } else {
         toast.error(response?.data?.message || "Failed to fetch batch number");
         return ""; // Return empty if no batch number is found
@@ -252,15 +276,34 @@ const CreateMaterialRecieptNote = (props: Props) => {
   };
 
 
+  // const handleVendorSelect = (event: any, newValue: any) => {
+  //   if (newValue && newValue.value !== "-1") {
+  //     setVendorDetail(newValue.details); // Set vendor details for display
+  //     formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
+  //   } else {
+  //     setVendorDetail(null); // Clear vendor details
+  //     formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
+  //   }
+  // };
+
   const handleVendorSelect = (event: any, newValue: any) => {
     if (newValue && newValue.value !== "-1") {
-      setVendorDetail(newValue.details); // Set vendor details for display
-      formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
+      setVendorDetail(newValue.details);
+      formik.setFieldValue("vendorId", newValue.value);
+
+      // Filter orders by vendorId instead of orderId
+      const filteredOrders = orderData.filter(
+        (order: any) => order.vendorId === newValue.value
+      );
+
+      setOrderVendorData(filteredOrders);
     } else {
-      setVendorDetail(null); // Clear vendor details
-      formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
+      setVendorDetail(null);
+      formik.setFieldValue("vendorId", null);
+      setOrderVendorData([]);
     }
   };
+
 
   // const handleInputChange = async (index: number, field: string, value: any) => {
   //   const updatedItems = [...tableData];
@@ -276,11 +319,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
   //       };
 
   //       // Fetch batch number for the selected orderNo
-        // const batchNo = await getBATCHNo();
-        // if (batchNo) {
-        //   item.batchNo = batchNo; // Set the fetched batch number
-        // }
-        
+  // const batchNo = await getBATCHNo();
+  // if (batchNo) {
+  //   item.batchNo = batchNo; // Set the fetched batch number
+  // }
+
   //     }
   //   }
 
@@ -366,9 +409,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
     setTableData(updatedItems);
     updateTotalAmounts(updatedItems);
 
-    if (isRowFilled(item) && index === updatedItems.length - 1) {
-      addRow();
-    }
+    // if (isRowFilled(item) && index === updatedItems.length - 1) {
+    //   addRow();
+    // }
   };
 
   console.log("tableData.....", tableData);
@@ -491,7 +534,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
         tableData[0].itemName === 0 &&
         tableData[0].unitName === 0 &&
         tableData[0].netAmount === 0 &&
-    
+
         Object.keys(tableData[0].item).length === 0;
 
       if (isFirstRowDefault) {
@@ -528,7 +571,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
           tableData[0].totalGst === 0 &&
           tableData[0].itemName === 0 &&
           tableData[0].unitName === 0 &&
-        //  tableData[0].netAmount === 0 &&
+          //  tableData[0].netAmount === 0 &&
           Object.keys(row.item).length === 0
         );
       });
@@ -585,15 +628,15 @@ const CreateMaterialRecieptNote = (props: Props) => {
         "sgstid": transData[i]["sgstid"],
         "igstid": transData[i]["igstid"],
         netAmount: transData[i]["netAmount"],
-        batchNo:IsbatchNO ||"",
+        batchNo: IsbatchNO || "",
         orderNo: "",
-       // "batchNo": "",
+        // "batchNo": "",
         "serialNo": "",
         "qcStatus": "",
         "balQuantity": 0,
         "itemName": "",
-      "unitName": "",
-      "totalGst": 0,
+        "unitName": "",
+        "totalGst": 0,
         "qcApplicable": true
 
 
@@ -837,7 +880,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid> */}
 
 
-                <Grid item lg={4} xs={12}>
+                {/* <Grid item lg={4} xs={12}>
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
@@ -870,7 +913,38 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       />
                     )}
                   />
+                </Grid> */}
+
+                <Grid item lg={4} xs={12}>
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={vendorData}
+                    fullWidth
+                    size="small"
+                    onChange={(event: any, newValue: any) => {
+                      handleVendorSelect(event, newValue);
+                      console.log(newValue?.value);
+                      formik.setFieldValue("vendorId", newValue?.value);
+
+                      // Correctly filter orders based on selected vendor
+                      const filteredOrders = orderData.filter(
+                        (order: any) => order.vendorId === newValue?.value
+                      );
+
+                      setOrderVendorData(filteredOrders);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={
+                          <CustomLabel text={t("text.SelectVendor")} required={false} />
+                        }
+                      />
+                    )}
+                  />
                 </Grid>
+
 
 
                 {vendorDetail?.gstinNo && (
@@ -953,29 +1027,80 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
                 {vendorDetail?.mobileNo && (
                   <Grid item lg={4} xs={12} md={6}>
+
                     <Autocomplete
+                      multiple
+                      disablePortal
+                      size="small"
+                      id="combo-box-demo"
+                      options={orderVendorData} // Show all orders for selected vendor
+                      getOptionLabel={(option: any) => option.orderNo}
+                      onChange={handleOrderSelect}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={<CustomLabel text={t("text.SelectOrderNO")} required={false} />}
+                        />
+                      )}
+                    />
+
+
+                    {/* <Autocomplete
+    multiple
+    disablePortal
+    size="small"
+    id="combo-box-demo"
+    options={orderVendorData} // Ensure all orders for the selected vendor are shown
+    getOptionLabel={(option: any) => option.orderNo}
+    onChange={(e, newValue: any) => {
+      newValue.forEach((order: any) => {
+        getPurchaseOrderById(order.orderId);
+      });
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label={<CustomLabel text={t("text.SelectOrderNO")} required={false} />}
+      />
+    )}
+  /> */}
+
+                    {/* <Autocomplete
+                      multiple
                       disablePortal
                       size="small"
                       id="combo-box-demo"
                       options={orderVendorData}
                       onChange={(e, newValue: any) => {
-                        getPurchaseOrderById(newValue?.id);
+                      newValue.forEach((order: any) => {
+                        getPurchaseOrderById(order.id);
+                      });
                       }}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label={
-                            <CustomLabel
-                              text={t("text.SelectOrderNO")}
-                              required={false}
-                            />
-                          }
+                      <TextField
+                        {...params}
+                        label={
+                        <CustomLabel
+                          text={t("text.SelectOrderNO")}
+                          required={false}
                         />
+                        }
+                      />
                       )}
-                    />
+                    /> */}
                   </Grid>
                 )}
               </Grid>
+              <Dialog open={openDialog} onClose={handleCancel}>
+                <DialogTitle>Confirm Order Selection</DialogTitle>
+                <DialogContent>
+                  Are you sure you want to proceed with Order No: <b>{selectedOrder?.orderNo}</b>?
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCancel} color="secondary">Cancel</Button>
+                  <Button onClick={handleConfirm} color="primary" autoFocus>Proceed</Button>
+                </DialogActions>
+              </Dialog>
 
               <Grid item xs={12} md={12} lg={12}>
                 <div style={{ overflow: "scroll", margin: 0, padding: 0 }}>
@@ -1083,7 +1208,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             padding: "5px",
                           }}
                         >
-                          CGST
+                          {t("text.cgst")}
+
                         </th>
                         <th
                           style={{
@@ -1092,7 +1218,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             padding: "5px",
                           }}
                         >
-                          SGST
+                          {t("text.sgst")}
                         </th>
                         {/* <th
                           style={{
@@ -1119,7 +1245,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: "1px solid black" }}>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1127,6 +1253,30 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           >
                             <DeleteIcon
                               onClick={() => deleteRow(index)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
                               style={{ cursor: "pointer" }}
                             />
                           </td>

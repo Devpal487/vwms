@@ -39,6 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -78,7 +79,7 @@ const CreateJobcardItemIssue = (props: Props) => {
 
 
     }]);
-    console.log("🚀 ~ CreateStaffItemreturn ~ tableData:", tableData)
+    console.log("🚀 ~ CreateJobCardItemreturn ~ tableData:", tableData)
     const [indentOptions, setIndentOptions] = useState([
         { value: "-1", label: t("text.SelectindentNo") },
     ]);
@@ -488,14 +489,21 @@ const CreateJobcardItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
-                                                    {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
+                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
+                                                    {/* <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th> */}
 
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
 
@@ -505,7 +513,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                 {tableData.map((row: any, index: any) => (
                                                     <tr key={row.id} style={{ border: '1px solid black' }}>
 
-                                                        <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
+                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
                                                             if (tableData.length > 1) {
                                                                 deleteRow(index)
                                                             } else {
@@ -513,7 +521,31 @@ const CreateJobcardItemIssue = (props: Props) => {
                                                             }
                                                         }}>
                                                             <DeleteIcon />
-                                                        </td>
+                                                        </td> */}
+                                                         <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                             <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+                              
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",

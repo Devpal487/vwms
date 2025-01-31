@@ -927,6 +927,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
@@ -1340,14 +1341,14 @@ const CreateJobCardItemReturn = (props: Props) => {
                                         <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                             <tr>
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
-
+                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Qty")}</th>
                                                 <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.ReturnQty")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+
 
                                             </tr>
                                         </thead>
@@ -1355,7 +1356,30 @@ const CreateJobCardItemReturn = (props: Props) => {
                                             {tableData.map((row: any, index: any) => (
                                                 <tr key={row.id} style={{ border: '1px solid black' }}>
 
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <AddCircleIcon
+                                                            onClick={() => {
+                                                                addRow();
+                                                            }}
 
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                        <DeleteIcon
+                                                            onClick={() => {
+                                                                if (tableData.length > 1) {
+                                                                    deleteRow(index)
+                                                                } else {
+                                                                    alert("Atleast one row should be there");
+                                                                }
+                                                            }}
+                                                            style={{ cursor: "pointer" }}
+                                                        />
+                                                    </td>
                                                     <td
                                                         style={{
                                                             border: "1px solid black",
@@ -1383,12 +1407,12 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={
-                                                                    //     <CustomLabel
-                                                                    //         text={t("text.selectItem")}
-                                                                    //         required={false}
-                                                                    //     />
-                                                                    // }
+                                                                // label={
+                                                                //     <CustomLabel
+                                                                //         text={t("text.selectItem")}
+                                                                //         required={false}
+                                                                //     />
+                                                                // }
                                                                 />
                                                             )}
                                                         />
@@ -1409,7 +1433,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             renderInput={(params: any) => (
                                                                 <TextField
                                                                     {...params}
-                                                                    // label={<CustomLabel text={t("text.selectUnit")} />}
+                                                                // label={<CustomLabel text={t("text.selectUnit")} />}
                                                                 />
                                                             )}
                                                         />
@@ -1459,9 +1483,9 @@ const CreateJobCardItemReturn = (props: Props) => {
                                                             onFocus={(e) => e.target.select()}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
+                                                    {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
                                                         <DeleteIcon />
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             ))}
                                         </tbody>

@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -74,7 +75,7 @@ const EditQualityCheck = (props: Props) => {
   const [orderOption, setorderOption] = useState([
     { value: -1, label: t("text.id") },
   ]);
-const [unitOptions, setUnitOptions] = useState([
+  const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
   const [itemOption, setitemOption] = useState<any>([]);
@@ -213,9 +214,9 @@ const [unitOptions, setUnitOptions] = useState([
   };
 
   useEffect(() => {
-    if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
-      addRow(); // Call addRow to add a new initial row
-    }
+    // if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
+    //   addRow(); // Call addRow to add a new initial row
+    // }
   }, [tableData]);
 
 
@@ -417,9 +418,9 @@ const [unitOptions, setUnitOptions] = useState([
     setTableData(updatedItems);
     updateTotalAmounts(updatedItems);
 
-    if (isRowFilled(item) && index === updatedItems.length - 1) {
-      addRow();
-    }
+    // if (isRowFilled(item) && index === updatedItems.length - 1) {
+    //   addRow();
+    // }
   };
 
 
@@ -1058,7 +1059,7 @@ const [unitOptions, setUnitOptions] = useState([
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: "1px solid black" }}>
-                          <td
+                          {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1066,6 +1067,30 @@ const [unitOptions, setUnitOptions] = useState([
                           >
                             <DeleteIcon
                               onClick={() => deleteRow(index)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td> */}
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
+                            <AddCircleIcon
+                              onClick={() => {
+                                addRow();
+                              }}
+
+                              style={{ cursor: "pointer" }}
+                            />
+                            <DeleteIcon
+                              onClick={() => {
+                                if (tableData.length > 1) {
+                                  deleteRow(index)
+                                } else {
+                                  alert("Atleast one row should be there");
+                                }
+                              }}
                               style={{ cursor: "pointer" }}
                             />
                           </td>
