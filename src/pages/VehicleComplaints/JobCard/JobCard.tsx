@@ -61,7 +61,7 @@ export default function JobCard() {
    const { t } = useTranslation();
 
    const [vehicleOption, setVehicleOption] = useState([
-      { value: -1, label: t("text.VehicleNo"), name: "" },
+      { value: -1, label: t("text.VehicleNo"), name: "", deptName: "", desigName: "" },
    ]);
 
    const [empOption, setEmpOption] = useState([
@@ -141,7 +141,9 @@ export default function JobCard() {
       const arr = data.map((Item: any, index: any) => ({
          value: Item.itemMasterId,
          label: Item.vehicleNo,
-         name: Item.itemName
+         name: Item.itemName,
+         deptName: Item.deptName,
+         desigName: Item.desigName,
       }));
       setVehicleOption(arr);
    };
@@ -198,7 +200,9 @@ export default function JobCard() {
             //    gstid: 0,
             //    gst: 0
             // }],
-            vehicleName: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.name || "", department: empOption[empOption.findIndex(e => e.value == row.empId)]?.department || "", designation: empOption[empOption.findIndex(e => e.value == row.empId)]?.designation || ""
+            vehicleName: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.name || "", 
+            department: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.deptName || "", 
+            designation: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.desigName || ""
          },
       });
    };
@@ -272,7 +276,8 @@ export default function JobCard() {
             ...Item,
             serialNo: index + 1,
             id: Item.jobCardId,
-            jobCardDate: formatDate(Item.jobCardDate)
+            jobCardDate: formatDate(Item.jobCardDate),
+            complainNo: Item.complainId + 1
          }));
          setItem(arr);
          setJobCardData(data)
@@ -354,7 +359,7 @@ export default function JobCard() {
                   headerClassName: "MuiDataGrid-colCell",
                },
                {
-                  field: "complainId",
+                  field: "complainNo",
                   headerName: t("text.ComplaintNo"),
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",

@@ -437,9 +437,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "vendorId": location.state?.vendorId,
       "remark": location.state?.remark,
       "estAmount": location.state?.netAmount,
-      "serviceAmount": location.state?.serviceAmount,
-      "itemAmount": location.state?.itemAmount,
-      "netAmount": location.state?.netAmount,
+      "serviceAmount": location.state?.serviceAmount || 0,
+      "itemAmount": location.state?.itemAmount || 0,
+      "netAmount": location.state?.netAmount || 0,
       "createdBy": "adminvm",
       "updatedBy": "adminvm",
       "createdOn": defaultValues,
@@ -528,7 +528,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
         "netAmount": formik.values?.netAmount,
         "itemName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.itemName || formik.values.vehicleNo,
         "empName": jobCardData[jobCardData.findIndex(e => e.jobCardId === jobCardId)]?.empName,
-        "serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)]?.serviceDetail || [],
+        //"serviceDetail": jobCardData[jobCardData.findIndex(e => e.jobCardId == jobCardId)]?.serviceDetail || [],
         "update": true
       };
       api.post(`Master/UpsertJobCard`, collectData);
@@ -575,7 +575,13 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png|xLSPtxB61);base64,/, "");
+         
+      if (base64Content) {
+         formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+         alert("Error processing image data.");
+      }
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
@@ -730,6 +736,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
     formik.setFieldValue("netAmount", netAmt);
     formik.setFieldValue("serviceAmount", total);
     formik.setFieldValue("estAmount", netAmt);
+    formik.setFieldValue("gst", netAmt - total);
   };
 
   const addRow = () => {
@@ -1539,7 +1546,16 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           {t("text.TotalServiceAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
-                          <b>:</b>{formik.values.serviceAmount}
+                          <b>:</b>{formik.values.serviceAmount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={7}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalGstAmt")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(parseFloat(formik.values.netAmount) - parseFloat(formik.values.serviceAmount)).toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1548,7 +1564,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                           {t("text.NetAmount")}
                         </td>
                         <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
-                          <b>:</b>{formik.values.netAmount}
+                          <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>

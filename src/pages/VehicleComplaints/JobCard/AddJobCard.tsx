@@ -97,6 +97,9 @@ const AddJobCard = (props: Props) => {
   const [unitOption, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
+
+  // const [uniqueVendor, setUniqueVendor] = useState<any>([]);
+
   const [complainOption, setComplainOption] = useState([{
     label: "",
     value: "",
@@ -213,33 +216,9 @@ const AddJobCard = (props: Props) => {
       gstid: 0,
       gst: 0
     },
-    {
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      qty: 0,
-      unitRate: 0,
-      unitId: 0,
-      vendorName: "",
-      serviceName: "",
-      unitName: "",
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
-      gst: 0
-    }
   ]);
 
+  const [challanNum, setChallanNum] = useState(0);
   const [vehicleName, setVehicleName] = useState("");
   const [totalAmount, setTotalAmount] = useState(0);
   const [itemId, setItemId] = useState(0);
@@ -403,7 +382,7 @@ const AddJobCard = (props: Props) => {
 
 
   const validateRow = (row: any) => {
-    return row.serviceName && row.vendorId && row.qty && row.unitRate > 0;
+    return row.serviceName && row.vendorId;
   };
 
 
@@ -441,8 +420,8 @@ const AddJobCard = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-      fileNo: Yup.string()
-        .required(t("text.reqFilenumber")),
+      // fileNo: Yup.string()
+      //   .required(t("text.reqFilenumber")),
       itemName: Yup.string()
         .required(t("text.reqVehNum")),
     }),
@@ -528,7 +507,14 @@ const AddJobCard = (props: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
+         
+      if (base64Content) {
+         formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+         alert("Error processing image data.");
+      }
+      //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
@@ -539,75 +525,97 @@ const AddJobCard = (props: Props) => {
 
 
   const saveJobWorkChallanData = async () => {
-    const challanChildData: any = [];
-    tableData.map((item: any, index) => {
-      challanChildData.push({
-        "id": 0,
+    const uniqueVendor: any = [];
+    const validTableData = tableData.filter(validateRow);
+    validTableData.forEach((data: any) => {
+      if (!uniqueVendor.includes(data.vendorId)) {
+        uniqueVendor.push(data.vendorId)
+      }
+    })
+
+    for (let i = 0; i < uniqueVendor.length; i++) {
+      const challanChildData: any = [];
+      let totalAmt = 0;
+      let netAmt = 0;
+      tableData.map((item: any, index) => {
+        if (item.vendorId === uniqueVendor[i]) {
+          challanChildData.push({
+            "id": 0,
+            "challanNo": 0,
+            "jobCardId": formik.values.jobCardId,
+            "serviceId": item.serviceId,
+            "serviceCharge": item.unitRate,
+            "vendorId": item.vendorId,
+            "remark": item.challanRemark,
+            "qty": item.qty,
+            "unitId": item.unitId,
+            "amount": item.amount,
+            "netAmount": item.netAmount,
+            "gstid": 0,
+            "cgstid": 0,
+            "sgstid": 0,
+            "gst": 0,
+            "cgst": 0,
+            "sgst": 0,
+            "serviceName": item.serviceName,
+            "unitName": item.unitName
+          })
+          totalAmt += item.amount;
+          netAmt += item.netAmount;
+        }
+      })
+      const values = {
         "challanNo": 0,
+        "challanDate": defaultValues,
+        "complainId": formik.values.complainId,
+        "empId": formik.values.empId,
+        "itemId": formik.values.itemId,
         "jobCardId": formik.values.jobCardId,
-        "serviceId": item.serviceId,
-        "serviceCharge": item.unitRate,
-        "vendorId": item.vendorId,
-        "remark": item.challanRemark,
-        "qty": item.qty,
-        "unitId": item.unitId,
-        "amount": item.amount,
-        "netAmount": item.netAmount,
-        "gstid": 0,
-        "cgstid": 0,
-        "sgstid": 0,
-        "gst": 0,
+        "vendorId": uniqueVendor[i],
+        "createdBy": "adminvm",
+        "updatedBy": "adminvm",
+        "createdOn": defaultValues,
+        "updatedOn": defaultValues,
+        "companyId": 0,
+        "fyId": 0,
+        "serviceAmount": totalAmt,
+        "itemAmount": 0,
+        "netAmount": netAmt || totalAmt,
+        "status": "JobWork",
+        "rcvDate": defaultValues,
+        "rcvNo": 0,
         "cgst": 0,
         "sgst": 0,
-        "serviceName": item.serviceName,
-        "unitName": item.unitName
-      })
-    })
-    const values = {
-      "challanNo": 0,
-      "challanDate": defaultValues,
-      "complainId": formik.values.complainId,
-      "empId": formik.values.empId,
-      "itemId": formik.values.itemId,
-      "jobCardId": formik.values.jobCardId,
-      "vendorId": tableData[0].vendorId,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
-      "createdOn": defaultValues,
-      "updatedOn": defaultValues,
-      "companyId": 0,
-      "fyId": 0,
-      "serviceAmount": formik.values.totalServiceAmount,
-      "itemAmount": formik.values.totalItemAmount,
-      "netAmount": formik.values.netAmount,
-      "status": "JobWork",
-      "rcvDate": defaultValues,
-      "rcvNo": 0,
-      "cgst": 0,
-      "sgst": 0,
-      "gst": 0,
-      "cgstid": 0,
-      "sgstid": 0,
-      "gstid": 0,
-      "challanDoc": "",
-      "fileOldName": "",
-      "file": "",
-      "jobWorkChallanDetail": [...challanChildData],
-      "vehicleNo": "",
-      "vendorName": "",
-      "empName": "",
-      "jobCardDate": "2025-01-29T12:13:20.652Z",
-      "complainDate": "2025-01-29T12:13:20.653Z"
-    }
-
-    const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
-    if (response.data.status === 1) {
-      toast.success(response.data.message);
-    } else {
-      setToaster(true);
-      toast.error(response.data.message);
+        "gst": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0,
+        "challanDoc": "",
+        "fileOldName": "",
+        "file": "",
+        "jobWorkChallanDetail": [...challanChildData],
+        "vehicleNo": "",
+        "vendorName": "",
+        "empName": "",
+        "jobCardDate": "2025-01-29T12:13:20.652Z",
+        "complainDate": "2025-01-29T12:13:20.653Z"
+      }
+      const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+      if (response.data.status === 1) {
+        toast.success(response.data.message);
+        setChallanNum(response.data.data);
+        const arr: any = [];
+        tableData.forEach((data: any) => {
+          arr.push({ ...data, challanNo: response.data.data });
+        })
+        setTableData(arr);
+      } else {
+        setToaster(true);
+        toast.error(response.data.message);
+      }
     }
   }
+
 
 
   const handleInputChange = (index: any, field: any, value: any) => {
@@ -674,6 +682,13 @@ const AddJobCard = (props: Props) => {
     })
     formik.setFieldValue("netAmount", total);
     formik.setFieldValue("totalServiceAmount", total);
+    // const uniqVendor: any = [];
+    // tableData.forEach((data: any) => {
+    //   if (!uniqVendor.includes(data.vendorId)) {
+    //     uniqVendor.push(data.vendorId)
+    //   }
+    // })
+    // setUniqueVendor(uniqVendor)
   };
 
   const addRow = () => {
@@ -858,7 +873,7 @@ const AddJobCard = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.FileNo")}
-                      required={true}
+                      required={false}
                     />
                   }
                   variant="outlined"
@@ -875,9 +890,9 @@ const AddJobCard = (props: Props) => {
                   }}
                   onFocus={(e) => e.target.select()}
                 />
-                {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
+                {/* {!formik.values.fileNo && formik.touched.fileNo && formik.errors.fileNo && (
                   <div style={{ color: "red", margin: "5px" }}>{formik.errors.fileNo.toString()}</div>
-                )}
+                )} */}
               </Grid>
 
 
@@ -1507,7 +1522,7 @@ const AddJobCard = (props: Props) => {
                           {t("text.TotalServiceAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
-                          <b>:</b>{formik.values.totalServiceAmount}
+                          <b>:</b>{formik.values.totalServiceAmount.toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1516,7 +1531,7 @@ const AddJobCard = (props: Props) => {
                           {t("text.TotalAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
-                          <b>:</b>{formik.values.netAmount || formik.values.totalServiceAmount}
+                          <b>:</b>{(formik.values.netAmount || formik.values.totalServiceAmount).toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>

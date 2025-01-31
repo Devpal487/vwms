@@ -552,7 +552,13 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     const reader = new FileReader();
     reader.onload = () => {
       const base64String = reader.result as string;
-      formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+      const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png|xLSPtxB61);base64,/, "");
+
+      if (base64Content) {
+        formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+      } else {
+        alert("Error processing image data.");
+      }
     };
     reader.onerror = () => {
       alert("Error reading file. Please try again.");
@@ -560,7 +566,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     reader.readAsDataURL(file);
   };
 
-  
+
   // const handlePanClose = () => {
   //   setPanOpen(false);
   // };
@@ -708,6 +714,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     formik.setFieldValue("netAmount", netAmt);
     formik.setFieldValue("serviceAmount", total);
     formik.setFieldValue("estAmount", netAmt);
+    formik.setFieldValue("gst", netAmt - total);
   };
   const addRow = () => {
     setTableData([...tableData, {
@@ -1248,7 +1255,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                               textAlign: "center",
                             }}
                           >
-                             <AddCircleIcon
+                            <AddCircleIcon
                               onClick={() => {
                                 addRow();
                               }}
@@ -1466,7 +1473,16 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                           {t("text.TotalServiceAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
-                          <b>:</b>{formik.values.serviceAmount}
+                          <b>:</b>{formik.values.serviceAmount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={7}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.TotalGstAmt")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(parseFloat(formik.values.netAmount) - parseFloat(formik.values.serviceAmount)).toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1475,7 +1491,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                           {t("text.NetAmount")}
                         </td>
                         <td colSpan={1} style={{ borderTop: "1px solid black", textAlign: "end" }}>
-                          <b>:</b>{formik.values.netAmount}
+                          <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>
