@@ -240,6 +240,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     getUnitData();
     getTaxData();
     getChallanNo();
+    fetchImage();
     console.log("location.state", location.state);
 
 
@@ -358,6 +359,20 @@ const EditJobWorkChallanRecieve = (props: Props) => {
     }));
     setJobCardData(arr);
   };
+
+  const fetchImage = async (id: any = location.state?.challanRcvNo || 0) => {
+    const collectData = {
+      "jobCardId": -1,
+      "challanRcvNo": id
+    };
+    const response = await api.post(
+      `Master/GetJobWorkChallanRcv`,
+      collectData
+    );
+    const data = response.data.data;
+    formik.setFieldValue("challanRcvDoc", data[0].challanRcvDoc.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+  }
+
 
 
   const setTableDataValues = (values = location.state?.jobWorkChallanDetail || jobWorkChallanData[0].jobWorkChallanDetail) => {

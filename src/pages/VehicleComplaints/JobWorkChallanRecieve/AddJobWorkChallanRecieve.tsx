@@ -841,7 +841,9 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                   id="combo-box-demo"
                   options={
                     jobWorkChallanData.filter((e) => {
-                      return e;
+                      if(e.status === "JobWork"){
+                        return e;
+                      }
                     })
                     //   vehicleOption.filter(e => {
                     //   for (let i = 0; i < jobWorkChallanData.length; i++) {
