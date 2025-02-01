@@ -502,7 +502,7 @@ export default function VehicleEfileReport() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VehicleEfileReport")}
@@ -511,7 +511,7 @@ export default function VehicleEfileReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
           <Grid item xs={12} sm={6} lg={6}>
               <Autocomplete
                 //multiple

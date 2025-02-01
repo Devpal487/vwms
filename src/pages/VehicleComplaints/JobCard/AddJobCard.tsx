@@ -508,11 +508,11 @@ const AddJobCard = (props: Props) => {
     reader.onload = () => {
       const base64String = reader.result as string;
       const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
-         
+
       if (base64Content) {
-         formik.setFieldValue(params, base64Content); // Store the stripped base64 string
+        formik.setFieldValue(params, base64Content); // Store the stripped base64 string
       } else {
-         alert("Error processing image data.");
+        alert("Error processing image data.");
       }
       //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
     };
@@ -524,97 +524,210 @@ const AddJobCard = (props: Props) => {
 
 
 
+  // const saveJobWorkChallanData = async () => {
+  //   const uniqueVendor: any = [];
+  //   const validTableData = tableData.filter(validateRow);
+  //   validTableData.forEach((data: any) => {
+  //     if (!uniqueVendor.includes(data.vendorId)) {
+  //       uniqueVendor.push(data.vendorId)
+  //     }
+  //   })
+
+  //   for (let i = 0; i < uniqueVendor.length; i++) {
+  //     const challanChildData: any = [];
+  //     let totalAmt = 0;
+  //     let netAmt = 0;
+  //     tableData.map((item: any, index) => {
+  //       if (item.vendorId === uniqueVendor[i]) {
+  //         challanChildData.push({
+  //           "id": 0,
+  //           "challanNo": 0,
+  //           "jobCardId": formik.values.jobCardId,
+  //           "serviceId": item.serviceId,
+  //           "serviceCharge": item.unitRate,
+  //           "vendorId": item.vendorId,
+  //           "remark": item.challanRemark,
+  //           "qty": item.qty,
+  //           "unitId": item.unitId,
+  //           "amount": item.amount,
+  //           "netAmount": item.netAmount,
+  //           "gstid": 0,
+  //           "cgstid": 0,
+  //           "sgstid": 0,
+  //           "gst": 0,
+  //           "cgst": 0,
+  //           "sgst": 0,
+  //           "serviceName": item.serviceName,
+  //           "unitName": item.unitName
+  //         })
+  //         totalAmt += item.amount;
+  //         netAmt += item.netAmount;
+  //       }
+  //     })
+  //     const values = {
+  //       "challanNo": 0,
+  //       "challanDate": defaultValues,
+  //       "complainId": formik.values.complainId,
+  //       "empId": formik.values.empId,
+  //       "itemId": formik.values.itemId,
+  //       "jobCardId": formik.values.jobCardId,
+  //       "vendorId": uniqueVendor[i],
+  //       "createdBy": "adminvm",
+  //       "updatedBy": "adminvm",
+  //       "createdOn": defaultValues,
+  //       "updatedOn": defaultValues,
+  //       "companyId": 0,
+  //       "fyId": 0,
+  //       "serviceAmount": totalAmt,
+  //       "itemAmount": 0,
+  //       "netAmount": netAmt || totalAmt,
+  //       "status": "JobWork",
+  //       "rcvDate": defaultValues,
+  //       "rcvNo": 0,
+  //       "cgst": 0,
+  //       "sgst": 0,
+  //       "gst": 0,
+  //       "cgstid": 0,
+  //       "sgstid": 0,
+  //       "gstid": 0,
+  //       "challanDoc": "",
+  //       "fileOldName": "",
+  //       "file": "",
+  //       "jobWorkChallanDetail": [...challanChildData],
+  //       "vehicleNo": "",
+  //       "vendorName": "",
+  //       "empName": "",
+  //       "jobCardDate": "2025-01-29T12:13:20.652Z",
+  //       "complainDate": "2025-01-29T12:13:20.653Z"
+  //     }
+  //     const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+  //     if (response.data.status === 1) {
+  //       toast.success(response.data.message);
+  //       setChallanNum(response.data.data);
+  //       const arr: any = [];
+  //       tableData.forEach((data: any) => {
+  //         if (data.vendorId === uniqueVendor[i]) {
+  //           arr.push({ ...data, challanNo: response.data.data });
+  //         } else {
+  //           arr.push(data);
+  //         }
+  //       })
+  //       setTableData(arr);
+  //     } else {
+  //       setToaster(true);
+  //       toast.error(response.data.message);
+  //     }
+  //   }
+  // }
+
   const saveJobWorkChallanData = async () => {
     const uniqueVendor: any = [];
     const validTableData = tableData.filter(validateRow);
+
+    // Extract unique vendor IDs
     validTableData.forEach((data: any) => {
       if (!uniqueVendor.includes(data.vendorId)) {
-        uniqueVendor.push(data.vendorId)
+        uniqueVendor.push(data.vendorId);
       }
-    })
+    });
 
     for (let i = 0; i < uniqueVendor.length; i++) {
       const challanChildData: any = [];
       let totalAmt = 0;
       let netAmt = 0;
-      tableData.map((item: any, index) => {
+
+      tableData.forEach((item: any) => {
         if (item.vendorId === uniqueVendor[i]) {
           challanChildData.push({
-            "id": 0,
-            "challanNo": 0,
-            "jobCardId": formik.values.jobCardId,
-            "serviceId": item.serviceId,
-            "serviceCharge": item.unitRate,
-            "vendorId": item.vendorId,
-            "remark": item.challanRemark,
-            "qty": item.qty,
-            "unitId": item.unitId,
-            "amount": item.amount,
-            "netAmount": item.netAmount,
-            "gstid": 0,
-            "cgstid": 0,
-            "sgstid": 0,
-            "gst": 0,
-            "cgst": 0,
-            "sgst": 0,
-            "serviceName": item.serviceName,
-            "unitName": item.unitName
-          })
+            id: 0,
+            challanNo: 0,
+            jobCardId: formik.values.jobCardId,
+            serviceId: item.serviceId,
+            serviceCharge: item.unitRate,
+            vendorId: item.vendorId,
+            remark: item.challanRemark,
+            qty: item.qty,
+            unitId: item.unitId,
+            amount: item.amount,
+            netAmount: item.netAmount,
+            gstid: 0,
+            cgstid: 0,
+            sgstid: 0,
+            gst: 0,
+            cgst: 0,
+            sgst: 0,
+            serviceName: item.serviceName,
+            unitName: item.unitName,
+          });
           totalAmt += item.amount;
           netAmt += item.netAmount;
         }
-      })
+      });
+
       const values = {
-        "challanNo": 0,
-        "challanDate": defaultValues,
-        "complainId": formik.values.complainId,
-        "empId": formik.values.empId,
-        "itemId": formik.values.itemId,
-        "jobCardId": formik.values.jobCardId,
-        "vendorId": uniqueVendor[i],
-        "createdBy": "adminvm",
-        "updatedBy": "adminvm",
-        "createdOn": defaultValues,
-        "updatedOn": defaultValues,
-        "companyId": 0,
-        "fyId": 0,
-        "serviceAmount": totalAmt,
-        "itemAmount": 0,
-        "netAmount": netAmt || totalAmt,
-        "status": "JobWork",
-        "rcvDate": defaultValues,
-        "rcvNo": 0,
-        "cgst": 0,
-        "sgst": 0,
-        "gst": 0,
-        "cgstid": 0,
-        "sgstid": 0,
-        "gstid": 0,
-        "challanDoc": "",
-        "fileOldName": "",
-        "file": "",
-        "jobWorkChallanDetail": [...challanChildData],
-        "vehicleNo": "",
-        "vendorName": "",
-        "empName": "",
-        "jobCardDate": "2025-01-29T12:13:20.652Z",
-        "complainDate": "2025-01-29T12:13:20.653Z"
+        challanNo: 0,
+        challanDate: defaultValues,
+        complainId: formik.values.complainId,
+        empId: formik.values.empId,
+        itemId: formik.values.itemId,
+        jobCardId: formik.values.jobCardId,
+        vendorId: uniqueVendor[i],
+        createdBy: "adminvm",
+        updatedBy: "adminvm",
+        createdOn: defaultValues,
+        updatedOn: defaultValues,
+        companyId: 0,
+        fyId: 0,
+        serviceAmount: totalAmt,
+        itemAmount: 0,
+        netAmount: netAmt || totalAmt,
+        status: "JobWork",
+        rcvDate: defaultValues,
+        rcvNo: 0,
+        cgst: 0,
+        sgst: 0,
+        gst: 0,
+        cgstid: 0,
+        sgstid: 0,
+        gstid: 0,
+        challanDoc: "",
+        fileOldName: "",
+        file: "",
+        jobWorkChallanDetail: [...challanChildData],
+        vehicleNo: "",
+        vendorName: "",
+        empName: "",
+        jobCardDate: formik.values.jobCardDate,
+        complainDate: formik.values.complainDate,
+      };
+
+      try {
+        const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
+
+        if (response.data.status === 1) {
+          toast.success(response.data.message);
+          setChallanNum(response.data.data);
+
+          // Update tableData with new challanNo for the matching vendor
+          setTableData((prevData) =>
+            prevData.map((data) =>
+              data.vendorId === uniqueVendor[i] ? { ...data, challanNo: response.data.data } : data
+            )
+          );
+        } else {
+          setToaster(true);
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        console.error("API Error:", error);
+        toast.error("Failed to save job work challan.");
       }
-      const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
-      if (response.data.status === 1) {
-        toast.success(response.data.message);
-        setChallanNum(response.data.data);
-        const arr: any = [];
-        tableData.forEach((data: any) => {
-          arr.push({ ...data, challanNo: response.data.data });
-        })
-        setTableData(arr);
-      } else {
-        setToaster(true);
-        toast.error(response.data.message);
-      }
+
+      // ✅ Add 1-second delay before the next API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-  }
+  };
+
 
 
 
@@ -933,7 +1046,7 @@ const AddJobCard = (props: Props) => {
                     })
                   }
                   ref={inputRef}
-                  value={formik.values.itemName || location.state?.vehicleNo}
+                  value={formik.values.itemName || location.state?.vehicleNo || ""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -1528,6 +1641,15 @@ const AddJobCard = (props: Props) => {
                       <tr>
                         <td colSpan={9}></td>
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.gst")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(formik.values?.netAmount - formik.values?.totalServiceAmount).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
                         <td colSpan={1} style={{ textAlign: "end" }}>
@@ -1744,6 +1866,35 @@ const AddJobCard = (props: Props) => {
                   }}
                   onClick={() => {
                     formik.resetForm();
+                    setTableData([{
+                      id: 0,
+                      jobCardId: 0,
+                      serviceId: 0,
+                      amount: 0,
+                      jobWorkReq: true,
+                      vendorId: 0,
+                      challanRemark: "",
+                      challanNo: 0,
+                      challanDate: defaultValues,
+                      challanRcvNo: 0,
+                      challanRcvDate: defaultValues,
+                      challanStatus: "",
+                      netAmount: 0,
+                      qty: 0,
+                      unitRate: 0,
+                      unitId: 0,
+                      vendorName: "",
+                      serviceName: "",
+                      unitName: "",
+                      cgstid: 0,
+                      sgstid: 0,
+                      gstid: 0,
+                      gst: 0
+                    },
+                    ]);
+                    setVehicleName("");
+                    setDeptValue("");
+                    setDesgValue("");
                     console.log(totalAmount);
                   }}
                 >

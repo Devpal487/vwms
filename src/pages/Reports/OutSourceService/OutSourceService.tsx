@@ -37,6 +37,7 @@ import CustomLabel from "../../../CustomLable";
 import DownloadIcon from "@mui/icons-material/Download";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import Logo from "../../../assets/images/KanpurLogo.png";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
@@ -103,7 +104,7 @@ export default function OutSourceService() {
     //   "End Time",
     //   "Fuel Consumption",
     // ];
-    const headers = [ "Vehicle No", "jobCard No.", "Item Name", "Service Name"];
+    const headers = ["Vehicle No", "jobCard No.", "Item Name", "Service Name"];
 
     const rows = isPrint.map((item: any) => [
       // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
@@ -117,7 +118,7 @@ export default function OutSourceService() {
       // item?.startTime,
       // item?.endTime,
       // item?.fuelConsumption,
-      item?.vehicleNo|| "",
+      item?.vehicleNo || "",
       item?.jobCardNo || "", // Vehicle No
       item?.itemName || "", // Driver
       item?.serviceName || "", // Mobile No
@@ -210,16 +211,31 @@ export default function OutSourceService() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
-    doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
 
-    const headers = [ "Vehicle No", "jobCard No.", "Item Name", "Service Name"];
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Outsource Service Reports", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
+    const headers = ["Vehicle No", "jobCard No.", "Item Name", "Service Name"];
 
     const columnWidths = [50, 50, 70, 50];
 
@@ -252,11 +268,11 @@ export default function OutSourceService() {
 
     isPrint.forEach((item: any, rowIndex) => {
       const row = [
-      item?.vehicleNo|| "",
+        item?.vehicleNo || "",
         item?.jobCardNo || "", // Vehicle No
         item?.itemName || "", // Driver
         item?.serviceName || "", // Mobile No
-       // item?.running || "",
+        // item?.running || "",
       ];
 
       row.forEach((cell, colIndex) => {
@@ -321,7 +337,7 @@ export default function OutSourceService() {
       "cityId": 0
     }
 
-    api.post(`Master/GetVendorMaster`,collectData).then((res) => {
+    api.post(`Master/GetVendorMaster`, collectData).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.name,
         value: item.venderId,
@@ -337,7 +353,7 @@ export default function OutSourceService() {
         "vehicleNo": vNO,
         "jobCardNo": formik.values.JobCardNo,
         "serviceName": formik.values.Service,
-        "vendor":Vend,
+        "vendor": Vend,
         "jobCardDatefrom": formik.values.jobCardDatefrom,
         "jobCardDateTo": formik.values.jobCardDateTo
       };
@@ -380,7 +396,7 @@ export default function OutSourceService() {
             headerName: t("text.JobCardNo"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-          
+
             cellClassName: "wrap-text", // Added here
           },
           {
@@ -388,7 +404,7 @@ export default function OutSourceService() {
             headerName: t("text.ItemName"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
-           
+
             cellClassName: "wrap-text", // Added here
           },
 
@@ -418,8 +434,8 @@ export default function OutSourceService() {
           //     return moment(params.row.jobCardDate).format("DD-MM-YYYY");
           //   },
           // },
-          
-        
+
+
           // {
           //   field: "vendor",
           //   headerName: t("text.Vendor"),
@@ -427,9 +443,9 @@ export default function OutSourceService() {
           //   headerClassName: "MuiDataGrid-colCell",
           //   cellClassName: "wrap-text", // Added here
           // },
-          
-         
-          
+
+
+
         ];
         setColumns(columns as any);
       }
@@ -473,13 +489,13 @@ export default function OutSourceService() {
       JobCardNo: "",
 
     },
-     validationSchema: Yup.object({
+    validationSchema: Yup.object({
       jobCardDatefrom: Yup.string()
-            .required("JobCard from Date required"),
-            jobCardDateTo: Yup.string()
-            .required("JobCard To Date required"),
-        
-        }),
+        .required("JobCard from Date required"),
+      jobCardDateTo: Yup.string()
+        .required("JobCard To Date required"),
+
+    }),
     onSubmit: async (values) => {
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
@@ -526,7 +542,7 @@ export default function OutSourceService() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.OutSourceService")}
@@ -535,18 +551,18 @@ export default function OutSourceService() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={vNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-                  if(!newValue)
-                  {
+                  if (!newValue) {
                     return;
                   }
 
@@ -609,10 +625,11 @@ export default function OutSourceService() {
                 disablePortal
                 id="combo-box-demo"
                 options={VendorOption}
+                value={Vend}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-                  if(!newValue){
+                  if (!newValue) {
                     return;
                   }
 
@@ -649,7 +666,7 @@ export default function OutSourceService() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.jobCardDatefrom && Boolean(formik.errors.jobCardDatefrom)}
-  helperText={formik.touched.jobCardDatefrom && formik.errors.jobCardDatefrom}
+                helperText={formik.touched.jobCardDatefrom && formik.errors.jobCardDatefrom}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -668,34 +685,34 @@ export default function OutSourceService() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.jobCardDateTo && Boolean(formik.errors.jobCardDateTo)}
-  helperText={formik.touched.jobCardDateTo && formik.errors.jobCardDateTo}
+                helperText={formik.touched.jobCardDateTo && formik.errors.jobCardDateTo}
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-                 <RadioGroup
-                               row
-                               value={selectedFormat}
-                               onChange={handleFormatChange}
-                             >
-                               <FormControlLabel
-                                 value="pdf"
-                                 control={<Radio />}
-                                 label={t("text.pdf")}
-                               />
-                               <FormControlLabel
-                                 value="excel"
-                                 control={<Radio />}
-                                 label={t("text.excel")}
-                               />
-                               <FormControlLabel
-                                 value="tabular"
-                                 control={<Radio />}
-                                 label={t("text.tabular")}
-                               />
-                             </RadioGroup>
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value="pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value="excel"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  <FormControlLabel
+                    value="tabular"
+                    control={<Radio />}
+                    label={t("text.tabular")}
+                  />
+                </RadioGroup>
               </FormControl>
             </Grid>
 
@@ -704,35 +721,35 @@ export default function OutSourceService() {
             <Grid xs={12} sm={4} md={4} item>
 
 
-            <Button
-  type="submit"
-  fullWidth
-  style={{
-    backgroundColor: `var(--header-background)`,
-    color: "white",
-    marginTop: "10px",
-  }}
-  onClick={() => {
-    // Trigger validation
-    formik.validateForm().then((errors) => {
-      if (Object.keys(errors).length === 0) {
-        // No validation errors, call API
-        fetchZonesData();
-        setVisible(true);
-      } else {
-        // Show errors in the form
-        formik.setTouched({
-          jobCardDatefrom: true,
-          jobCardDateTo: true,
-        });
-        toast.error("Please fill in all required fields.");
-      }
-    });
-  }}
-  startIcon={<VisibilityIcon />}
->
-{t("text.show")}
-</Button>
+              <Button
+                type="submit"
+                fullWidth
+                style={{
+                  backgroundColor: `var(--header-background)`,
+                  color: "white",
+                  marginTop: "10px",
+                }}
+                onClick={() => {
+                  // Trigger validation
+                  formik.validateForm().then((errors) => {
+                    if (Object.keys(errors).length === 0) {
+                      // No validation errors, call API
+                      fetchZonesData();
+                      setVisible(true);
+                    } else {
+                      // Show errors in the form
+                      formik.setTouched({
+                        jobCardDatefrom: true,
+                        jobCardDateTo: true,
+                      });
+                      toast.error("Please fill in all required fields.");
+                    }
+                  });
+                }}
+                startIcon={<VisibilityIcon />}
+              >
+                {t("text.show")}
+              </Button>
               {/* <Button
                 type="submit"
                 fullWidth
@@ -772,6 +789,9 @@ export default function OutSourceService() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
+                  setVend("");
                 }}
               >
                 {t("text.reset")}
@@ -790,7 +810,7 @@ export default function OutSourceService() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-               {t("text.download")}
+                {t("text.download")}
               </Button>
             </Grid>
           </Grid>

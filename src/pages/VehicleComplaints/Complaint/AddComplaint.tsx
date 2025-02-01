@@ -1086,6 +1086,7 @@ const AddComplaint = (props: Props) => {
                            }}
                            onClick={() => {
                               formik.resetForm();
+                              getcomplaintNo();
                            }}
                         >
                            {t("text.reset")}

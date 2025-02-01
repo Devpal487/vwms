@@ -614,7 +614,7 @@ export default function VendorEvaluationReport() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VendorEvaluationReport")}
@@ -623,7 +623,7 @@ export default function VendorEvaluationReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
               <FormControlLabel
                 control={

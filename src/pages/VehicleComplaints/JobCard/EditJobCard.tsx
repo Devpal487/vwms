@@ -381,7 +381,12 @@ const EditJobCard = (props: Props) => {
         setTableData(arr);
       }
     }
-    formik.setFieldValue("imageFile",data[0].imageFile);
+    formik.setFieldValue("imageFile", data[0].imageFile);
+    if(data[0].status === "Complete") {
+      setIsVisible(false);
+      setIsVisibleJWC(20);
+      setIsEnable(20);
+    }
 
     setDeptValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.department || location.state?.department || "");
     setDesgValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.designation || location.state?.designation || "");
@@ -1548,8 +1553,17 @@ const EditJobCard = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalServiceAmount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.gst")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(formik.values?.netAmount - formik.values?.totalServiceAmount).toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1557,7 +1571,7 @@ const EditJobCard = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
@@ -1740,7 +1754,7 @@ const EditJobCard = (props: Props) => {
                       marginTop: "10px",
                     }}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 ) : (
                   <Button
@@ -1753,7 +1767,7 @@ const EditJobCard = (props: Props) => {
                       marginTop: "10px",
                     }}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 )}
 

@@ -42,6 +42,7 @@ import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import "../../../index.css";
 import { getISTDate } from "../../../utils/Constant";
+import Logo from "../../../assets/images/KanpurLogo.png";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -197,15 +198,30 @@ export default function ComplainStatus() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
-    doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
 
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15;
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Complain Status Report", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40;
     const headers = ["Date", "Vehicle No", "Complaint No", "Complaint", "Complaint Status"];
 
     const columnWidths = [50, 50, 50, 80, 50];
@@ -283,6 +299,13 @@ export default function ComplainStatus() {
   useEffect(() => {
     getVehicleNo();
     fetchZonesData();
+
+    if (location.state) {
+      formik.setFieldValue("complaintDatefrom", moment("2020-02-01T13:13:51.91").format("YYYY-MM-DD"));
+      formik.setFieldValue("complaintDateTo", defaultValues);
+      // fetchZonesData();
+      // setVisible(true);
+    }
   }, []);
 
 
@@ -310,8 +333,8 @@ export default function ComplainStatus() {
       const collectData = {
         "vehicleNo": formik.values.vehicleNo || vNO,
         "complainNo": formik.values.complainNo,
-        "complaintDatefrom": "2021-01-11T07:51:03.389Z",
-        "complaintDateTo": defaultValues,
+        "complaintDatefrom": formik.values.complaintDatefrom,
+        "complaintDateTo": formik.values.complaintDateTo,
         status: formik.values.status,
         "show": true
       };
@@ -339,7 +362,7 @@ export default function ComplainStatus() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
 
@@ -347,35 +370,35 @@ export default function ComplainStatus() {
             field: "complainNo",
             headerName: t("text.complainNo"),
             flex: 1.2,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complaint",
             headerName: t("text.complaint"),
             flex: 1.2,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo12"),
             flex: 1.2,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "jobCardNo",
             headerName: t("text.jobCardNo"),
             flex: 1.2,
-           // headerClassName: "MuiDataGrid-colCell",
+            // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complainStatus",
             headerName: t("text.complainStatus12"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
 
           },
@@ -426,8 +449,8 @@ export default function ComplainStatus() {
       genderID: -1,
       "vehicleNo": location.state?.vehicleNo || vNO,
       "complainNo": "",
-      "complaintDatefrom": "",
-      "complaintDateTo": "",
+      "complaintDatefrom": defaultValues,
+      "complaintDateTo": defaultValues,
       "status": location.state?.status || "",
       "show": true
     },
@@ -466,7 +489,7 @@ export default function ComplainStatus() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.ComplainStatus")}
@@ -475,7 +498,7 @@ export default function ComplainStatus() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2}>
             <Grid item xs={12} sm={3} lg={3}>
               <Autocomplete
                 disablePortal
@@ -622,7 +645,7 @@ export default function ComplainStatus() {
                 startIcon={<VisibilityIcon />}
               >
                 {t("text.show")}
-               
+
               </Button>
             </Grid>
 
@@ -638,10 +661,12 @@ export default function ComplainStatus() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
                 }}
               >
-                    {t("text.reset")}
-               
+                {t("text.reset")}
+
               </Button>
             </Grid>
 
@@ -657,8 +682,8 @@ export default function ComplainStatus() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-                 {t("text.download")}
-             
+                {t("text.download")}
+
               </Button>
             </Grid>
           </Grid>

@@ -1671,12 +1671,12 @@ const EditEmployee = (props: Props) => {
                     type="submit"
                     fullWidth
                     style={{
-                      backgroundColor: "#059669",
+                      backgroundColor: `var(--header-background)`,
                       color: "white",
                       marginTop: "10px",
                     }}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 </Grid>
               </Grid>

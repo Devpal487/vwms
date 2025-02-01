@@ -41,6 +41,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
+import Logo from "../../../assets/images/KanpurLogo.png";
+import { getISTDate } from "../../../utils/Constant";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -61,6 +63,7 @@ export default function JobCardStatus() {
   const [isLoading, setIsLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const {defaultValues} = getISTDate();
 
   const [option, setOption] = useState([
     { value: "-1", label: "Vehicle Type" },
@@ -192,14 +195,36 @@ export default function JobCardStatus() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15;
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("JobCard Status Report", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40;
+
+
+    // doc.setFontSize(headerFontSize);
+    // doc.setFont("helvetica", "bold");
+    // doc.text("Vehicle Data", 14, yPosition);
+    // yPosition += 10;
 
     const headers = ["Jobcard Date", "Vehicle No", "Jobcard No", "Complaint Date", "Status"];
 
@@ -413,8 +438,8 @@ export default function JobCardStatus() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      jobcarddatefrom: "",
-      jobcarddateto: "",
+      jobcarddatefrom: defaultValues,
+      jobcarddateto: defaultValues,
       days: 0,
       parentId: 0,
       startDate: "",
@@ -424,8 +449,8 @@ export default function JobCardStatus() {
       index: 0,
       JobCardNoFrom: "",
       JobCardNoTo: "",
-      complaintfrom: "",
-      complaintTo: "",
+      complaintfrom: defaultValues,
+      complaintTo: defaultValues,
     },
 
     validationSchema: Yup.object({
@@ -484,7 +509,7 @@ export default function JobCardStatus() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "10px" }}
             align="left"
           >
             {t("text.JobCardStatus")}
@@ -493,13 +518,14 @@ export default function JobCardStatus() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={vNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -530,6 +556,7 @@ export default function JobCardStatus() {
                 disablePortal
                 id="combo-box-demo"
                 options={StatusOption}
+                value={sNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -671,27 +698,27 @@ export default function JobCardStatus() {
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-                   <RadioGroup
-                                 row
-                                 value={selectedFormat}
-                                 onChange={handleFormatChange}
-                               >
-                                 <FormControlLabel
-                                   value="pdf"
-                                   control={<Radio />}
-                                   label={t("text.pdf")}
-                                 />
-                                 <FormControlLabel
-                                   value="excel"
-                                   control={<Radio />}
-                                   label={t("text.excel")}
-                                 />
-                                 <FormControlLabel
-                                   value="tabular"
-                                   control={<Radio />}
-                                   label={t("text.tabular")}
-                                 />
-                               </RadioGroup>
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value="pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value="excel"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  <FormControlLabel
+                    value="tabular"
+                    control={<Radio />}
+                    label={t("text.tabular")}
+                  />
+                </RadioGroup>
               </FormControl>
             </Grid>
 
@@ -726,7 +753,7 @@ export default function JobCardStatus() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-             {t("text.show")}
+                {t("text.show")}
               </Button>
 
               {/* <Button
@@ -767,9 +794,12 @@ export default function JobCardStatus() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setsno("");
+                  setVno("");
+                  setVisible(false);
                 }}
               >
-                 {t("text.reset")}
+                {t("text.reset")}
               </Button>
             </Grid>
 

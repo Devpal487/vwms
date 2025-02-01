@@ -1320,7 +1320,7 @@ const EditComplaintApproval = (props: Props) => {
                               marginTop: "10px",
                            }}
                         >
-                           {t("text.save")}
+                           {t("text.update")}
                         </Button>
                      </Grid>
 

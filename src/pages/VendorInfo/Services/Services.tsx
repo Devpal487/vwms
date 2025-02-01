@@ -5,6 +5,10 @@ import {
   Autocomplete,
   Box,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Stack,
   TextField,
@@ -28,6 +32,8 @@ import ToastApp from "../../../ToastApp";
 import { Language } from "react-transliterate";
 import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"; // Import Add Icon
+import IconButton from "@mui/material/IconButton";
 import {
   GridColDef,
 } from "@mui/x-data-grid";
@@ -50,6 +56,12 @@ export default function Services() {
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
+
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const [typedServiceType, setTypedServiceType] = useState("");
+
 
   const { defaultValuestime } = getISTDate();
   const [toaster, setToaster] = useState(false);
@@ -128,11 +140,11 @@ export default function Services() {
 
   const handleEdit = (row: any) => {
     console.log("row:--", row);
-    formik.setFieldValue("serviceId",row.serviceId);
-    formik.setFieldValue("serviceName",row.serviceName);
-    formik.setFieldValue("serviceCode",row.serviceCode);
-    formik.setFieldValue("serviceTypeid",row.serviceTypeid);
-    formik.setFieldValue("serviceTypeName",row.serviceTypeName);
+    formik.setFieldValue("serviceId", row.serviceId);
+    formik.setFieldValue("serviceName", row.serviceName);
+    formik.setFieldValue("serviceCode", row.serviceCode);
+    formik.setFieldValue("serviceTypeid", row.serviceTypeid);
+    formik.setFieldValue("serviceTypeName", row.serviceTypeName);
   }
 
 
@@ -304,7 +316,7 @@ export default function Services() {
             <Grid container spacing={2}>
 
               {/* Service Type */}
-              <Grid item xs={12} sm={4} lg={4}>
+              {/* <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
@@ -328,7 +340,169 @@ export default function Services() {
                     />
                   )}
                 />
+              </Grid> */}
+
+              {/* <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  options={[
+                    ...serviceTypeOption,
+                    ...(typedServiceType && !serviceTypeOption.some(opt => opt.label === typedServiceType)
+                      ? [{ value: "add-new", label: `${typedServiceType}` }]
+                      : []),
+                  ]}
+                  fullWidth
+                  size="small"
+                  onInputChange={(event, newValue) => {
+                    setTypedServiceType(newValue);
+                  }}
+                  onChange={(event, newValue) => {
+                    if (newValue?.value === "add-new") {
+                      setDialogOpen(true);
+                    } else {
+                      formik.setFieldValue("serviceTypeid", newValue?.value);
+                      formik.setFieldValue("serviceTypeName", newValue?.label);
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label={<CustomLabel text={t("text.ServiceType")} />} />
+                  )}
+                />
               </Grid>
+              <Dialog open={isDialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>{t("text.AddServiceType")}</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label={t("text.AddServiceType")}
+                    value={typedServiceType}
+                    fullWidth
+                    disabled
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const collectData = {
+                          "serviceTypeID": 0,
+                          "serviceTypeName": typedServiceType
+                        };
+                        const response = await api.post(
+                          `ServiceMaster/UpsertServiceType`,
+                          collectData
+                        );
+                        if (response.data.status === 1) {
+                          setDialogOpen(false);
+                          toast.success(response.data.message);
+                          getServiceTypeData();
+                        }
+                      } catch (error) {
+                        toast.error("Failed to add service type");
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                  <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+                </DialogActions>
+              </Dialog> */}
+
+
+              <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  options={[
+                    ...serviceTypeOption,
+                    ...(typedServiceType && !serviceTypeOption.some(opt => opt.label === typedServiceType)
+                      ? [{ value: "add-new", label: `${typedServiceType}` }]
+                      : []),
+                  ]}
+                  fullWidth
+                  size="small"
+                  popupIcon={null}
+                  onInputChange={(event, newValue) => {
+                    setTypedServiceType(newValue);
+                  }}
+                  onChange={(event, newValue) => {
+                    if (newValue?.value === "add-new") {
+                      setDialogOpen(true);
+                    } else {
+                      formik.setFieldValue("serviceTypeid", newValue?.value);
+                      formik.setFieldValue("serviceTypeName", newValue?.label);
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={<CustomLabel text={t("text.ServiceType")} />}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {params.InputProps.endAdornment}
+                            <IconButton
+                              onClick={() => setDialogOpen(true)}
+                              edge="end"
+                              sx={{
+                                color: "#1976d2",  // Primary blue color
+                                backgroundColor: "#f0f8ff", // Light blue background
+                                padding: "0",
+                                marginLeft: "2px",
+                                borderRadius: "50%", // Circular button
+                                "&:hover": {
+                                  backgroundColor: "#e3f2fd", // Lighter blue on hover
+                                },
+                              }}
+                              aria-label="add service type"
+                            >
+                              <AddCircleOutlineIcon sx={{ fontSize: 24 }} />
+                            </IconButton>
+                          </>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
+              <Dialog open={isDialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>{t("text.AddServiceType")}</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    label={t("text.AddServiceType")}
+                    value={typedServiceType}
+                    fullWidth
+                    disabled
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const collectData = {
+                          serviceTypeID: 0,
+                          serviceTypeName: typedServiceType,
+                        };
+                        const response = await api.post(
+                          `ServiceMaster/UpsertServiceType`,
+                          collectData
+                        );
+                        if (response.data.status === 1) {
+                          setDialogOpen(false);
+                          toast.success(response.data.message);
+                          getServiceTypeData();
+                        }
+                      } catch (error) {
+                        toast.error("Failed to add service type");
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
+                  <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+                </DialogActions>
+              </Dialog>
+
 
 
               {/* Service Name */}
