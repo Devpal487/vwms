@@ -12,6 +12,9 @@ const resources = {
       message: {},
       text: {
        
+        storeCode:"Enter Store Code",
+        
+        //02/01/25
           PENDING: "Pending",
           INPROGRESS: "In Progress",
           OUTSOURCE: "OUTSOURCE",

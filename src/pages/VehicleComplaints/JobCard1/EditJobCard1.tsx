@@ -1935,16 +1935,19 @@ console.log("location.state",(location.state));
                 {/* Submit Button */}
                 <Grid item >
                   <Button
+                  disabled
                     type="submit"
                     fullWidth
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      minWidth: "120px", // Set a fixed width
-                      textAlign: "center",
-                    }}
+                    // style={{
+                    //   backgroundColor: "grey",
+                    //   color: "white",
+                    //   minWidth: "120px", // Set a fixed width
+                    //   textAlign: "center",
+                    // }}
+                    style={buttonStyle(isIndentEnabled)}
                   //  onClick={() => handleSave(formik.values)}
                   >
+                    
                     {t("text.update")}
                   </Button>
                 </Grid>

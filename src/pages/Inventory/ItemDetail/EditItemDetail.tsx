@@ -327,7 +327,7 @@ const validationSchema = Yup.object().shape({
               {/* First Row */}
               {toaster && <ToastApp />}
               <Grid container item xs={12} spacing={2}>
-              <Grid item lg={12} xs={12}>
+              {/* <Grid item lg={12} xs={12}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -340,7 +340,7 @@ const validationSchema = Yup.object().shape({
                     label={t("text.QCApplicable")}
                   />
                 </FormGroup>
-              </Grid>
+              </Grid> */}
                 <Grid item xs={12} sm={4} lg={4}>
                   <TranslateTextField
                     label={t("text.enteritemName")}

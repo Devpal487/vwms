@@ -173,30 +173,30 @@ const MainLayout = () => {
               path: "/Inventory/ItemDetail",
               displayNo: 0,
             },
-            {
-              menuId: 18,
-              menuName: "Office Pur. Indent",
-              path: "/Inventory/OfficePurchaseIndent",
-              displayNo: 0,
-            },
-            {
-              menuId: 18,
-              menuName: "Office Pur. Order",
-              path: "/Inventory/OfficePurchaseOrder",
-              displayNo: 0,
-            },
+            // {
+            //   menuId: 18,
+            //   menuName: "Office Pur. Indent",
+            //   path: "/Inventory/OfficePurchaseIndent",
+            //   displayNo: 0,
+            // },
+            // {
+            //   menuId: 18,
+            //   menuName: "Office Pur. Order",
+            //   path: "/Inventory/OfficePurchaseOrder",
+            //   displayNo: 0,
+            // },
             {
               menuId: 18,
               menuName: "Work. Pur. Order",
               path: "/Inventory/WorkShopPurchaseOrder",
               displayNo: 0,
             },
-            {
-              menuId: 18,
-              menuName: "Purchase Invoice",
-              path: "/Inventory/PurchaseInvoice",
-              displayNo: 0,
-            },
+            // {
+            //   menuId: 18,
+            //   menuName: "Purchase Invoice",
+            //   path: "/Inventory/PurchaseInvoice",
+            //   displayNo: 0,
+            // },
             {
               menuId: 13,
               menuName: "Staff Item Issue",

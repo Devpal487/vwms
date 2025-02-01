@@ -54,6 +54,7 @@ const CreateStaffItemIssue = (props: Props) => {
     const [isIndentSelected, setIsIndentSelected] = useState(false);
     const [selectedAction, setSelectedAction] = useState(null);
     const [items, setItems] = useState<any>([]);
+    const [itemValue, setItemValue] = useState<any>();
     const [IsbatchNO, setBatchno] = useState("");
     //const [tableData, setTableData] = useState<any>([]);
     const [tableData, setTableData] = useState<any>([{
@@ -82,9 +83,9 @@ const CreateStaffItemIssue = (props: Props) => {
     const [indentOptions, setIndentOptions] = useState([
         { value: "-1", label: t("text.SelectindentNo") },
     ]);
-    const [itemOption, setitemOption] = useState([
-        { value: -1, label: t("text.itemMasterId") },
-    ]);
+  const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+    { value: -1, label: t("text.itemMasterId") },
+  ]);
     const [unitOptions, setUnitOptions] = useState([
         { value: "-1", label: t("text.SelectUnitId") },
     ]);
@@ -197,6 +198,7 @@ const CreateStaffItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["itemName"],
                 value: data[index]["itemMasterId"],
+                unitId:data[index]["unitId"],
             });
         };
         setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
@@ -315,7 +317,15 @@ const CreateStaffItemIssue = (props: Props) => {
     const handleInputChange = async (index: any, field: any, value: any) => {
         const updatedData = [...tableData];
         updatedData[index][field] = value;
-
+        if (field === "itemId") {
+            const selectedItem = itemOption.find((item) => item.value === value);
+            updatedData[index].itemId = selectedItem?.value || 0;
+            updatedData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
+        
+            console.log("Selected Item:", selectedItem);
+          } else {
+            updatedData[index][field] = value;
+          }
         if (field === 'reqQty' || field === 'issueQty') {
             updatedData[index].stockQty = updatedData[index].reqQty - updatedData[index].issueQty;
 
@@ -432,6 +442,7 @@ const CreateStaffItemIssue = (props: Props) => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={indentOptions}
+                                    value={indentOptions.find((opt: any) => opt.value === formik.values.indentId) || null}
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
@@ -511,13 +522,13 @@ const CreateStaffItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
 
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
 
@@ -606,37 +617,19 @@ const CreateStaffItemIssue = (props: Props) => {
                                                         </td>
                                                         <td style={{ border: '1px solid black', textAlign: 'center' }}>
 
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                options={unitOptions}
-                                                                fullWidth
-                                                                size="small"
-                                                                sx={{ width: "135px" }}
-                                                                value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
-                                                                onChange={(e: any, newValue: any) => {
-                                                                    if (!newValue) {
-                                                                        return
-                                                                    } else {
-                                                                        handleInputChange(
-                                                                            index,
-                                                                            "unitId",
-                                                                            newValue?.value
-                                                                        )
-                                                                    }
-                                                                }}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                    // label={
-                                                                    //     <CustomLabel
-                                                                    //         text={t("text.selectItem")}
-                                                                    //         required={false}
-                                                                    //     />
-                                                                    // }
-                                                                    />
-                                                                )}
-                                                            />
+
+                                                            <select
+                                                                value={row.unitId}
+                                                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                style={{ width: '95%', height: '35px' }}
+                                                            >
+                                                                <option value="">Select Unit</option>
+                                                                {unitOptions.map((option) => (
+                                                                    <option key={option.value} value={option.value}>
+                                                                        {option.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
                                                             {/* <select
                                                                                                                                                                                                                        </select> */}
                                                         </td>
@@ -708,14 +701,36 @@ const CreateStaffItemIssue = (props: Props) => {
 
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Button
-                                    type="reset"
+                                    type="button"
                                     fullWidth
                                     style={{
                                         backgroundColor: "#F43F5E",
                                         color: "white",
                                         marginTop: "10px",
                                     }}
-                                    onClick={(e: any) => formik.resetForm()}
+                                    onClick={() => {
+                                        formik.resetForm(); // Reset form values
+                                        setTableData([
+                                            {
+                                                id: 0,
+                                                issueId: 0,
+                                                itemID: 0,
+                                                unitId: 0,
+                                                batchNo: "",
+                                                indentId: 0,
+                                                reqQty: 0,
+                                                issueQty: 0,
+                                                itemName: "",
+                                                unitName: "",
+                                                returnItem: true,
+                                                indentNo: "",
+                                                stockQty: 0,
+                                            },
+                                        ]); // Reset table data
+                                        setItemValue(null); // Reset Autocomplete selection
+                                        setSelectedAction(null); // Reset selected action
+                                        setIsIndentSelected(false); // Reset indent selection
+                                    }}
                                 >
                                     {t("text.reset")}
                                 </Button>

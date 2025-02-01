@@ -136,7 +136,9 @@ const CreateWorkShopPurchaseOrder = () => {
     ]);
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
-    const [itemOption, setitemOption] = useState<any>([]);
+    const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+        { value: -1, label: t("text.itemMasterId") },
+    ]);
     const [unitOptions, setUnitOptions] = useState<any>([]);
     const [vendorOptions, setVendorOptions] = useState<any>([]);
     const [totalAmount, setTotalAmount] = useState(0);
@@ -307,6 +309,7 @@ const CreateWorkShopPurchaseOrder = () => {
             arr.push({
                 label: data[index]["itemName"],
                 value: data[index]["itemMasterId"],
+                unitId: data[index]["unitId"],
             });
         }
         setitemOption(arr);
@@ -544,7 +547,7 @@ const CreateWorkShopPurchaseOrder = () => {
             "totalSGST": 0,
             "totalIGST": 0,
             "netAmount": 0,
-            "status": "close",
+            "status": "open",
             "orderType": "Workshop",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
@@ -647,6 +650,15 @@ const CreateWorkShopPurchaseOrder = () => {
         const newData: any = [...tableData];
         newData[index][field] = value;
         let rate = 0;
+        if (field === "itemId") {
+            const selectedItem = itemOption.find((item) => item.value === value);
+            newData[index].itemId = selectedItem?.value || 0;
+            newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
+
+            console.log("Selected Item:", selectedItem);
+        } else {
+            newData[index][field] = value;
+        }
         if (field === 'orderId') {
             newData[index].orderId = newData[index].orderId;
         }
@@ -932,6 +944,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     id="combo-box-demo"
                                     options={indentOptions}
                                     fullWidth
+                                    value={indentOptions.find((opt) => opt.value === formik.values.indentId) || null}
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log("check value", newValue);
@@ -968,6 +981,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     id="combo-box-demo"
                                     options={vendorData}
                                     fullWidth
+                                    value={vendorData.find((opt) => opt.value === formik.values.vendorId) || null}
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log(newValue?.value);
@@ -993,6 +1007,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={["Open"]}
+                                    value={"open"}
                                     fullWidth
                                     size="small"
                                     disabled
@@ -1426,26 +1441,18 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 textAlign: "center",
                                                             }}
                                                         >
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                options={unitOptions}
-                                                                value={
-                                                                    unitOptions.find((opt: any) => (opt.value) === row?.unitId) || null
-                                                                }
-                                                                fullWidth
-                                                                size="small"
-                                                                sx={{ width: "145px" }}
-                                                                onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                    //   label={
-                                                                    //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                                    //   }
-                                                                    />
-                                                                )}
-                                                            />
+                                                            <select
+                                                                value={row.unitId}
+                                                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                style={{ width: '95%', height: '35px' }}
+                                                            >
+                                                                <option value=""></option>
+                                                                {unitOptions.map((option: any) => (
+                                                                    <option key={option.value} value={option.value}>
+                                                                        {option.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
                                                         </td>
                                                         <td style={{ textAlign: "right" }}>
                                                             <TextField
@@ -1627,39 +1634,66 @@ const CreateWorkShopPurchaseOrder = () => {
                                         </Table>
                                     </div> </Grid>
                             )}
-                            <Grid item xs={12}>
-                                <div style={{ justifyContent: "space-between", flex: 2 }}>
+                            
+                                <Grid item lg={6} sm={6} xs={12}>
                                     <Button
                                         type="submit"
-                                        variant="contained"
+                                        fullWidth
                                         style={{
-                                            width: "48%",
                                             backgroundColor: `var(--header-background)`,
-                                            margin: "1%",
+                                            color: "white",
+                                            marginTop: "10px",
                                         }}
                                     >
                                         {t("text.save")}
                                     </Button>
-
+                                </Grid>
+                                <Grid item lg={6} sm={6} xs={12}>
                                     <Button
-                                        type="reset"
-                                        variant="contained"
+                                        type="button"
+                                        fullWidth
                                         style={{
-                                            width: "48%",
                                             backgroundColor: "#F43F5E",
-                                            margin: "1%",
+                                            color: "white",
+                                            marginTop: "10px",
                                         }}
-                                        onClick={() => formik.resetForm()}
+                                        onClick={() => {
+                                            formik.resetForm(); // Reset form values
+                                            setTableData([
+                                                {
+                                                    "id": 0,
+                                                    "indentId": 0,
+                                                    "itemId": 0,
+                                                    "unitId": null,
+                                                    "quantity": 0,
+                                                    "rate": 0,
+                                                    "amount": 0,
+                                                    "approveQuantity": 0,
+                                                    "fyId": 0,
+                                                    "srn": 0,
+                                                    "isDelete": true,
+                                                    "unitName": "",
+                                                    "itemName": ""
+                                                },
+                                            ]); // Reset table data
+                                            // setItemValue(null); // Reset Autocomplete selection
+                                            //  setSelectedAction(null); // Reset selected action
+                                            // setIsIndentSelected(false); // Reset indent selection
+                                            getPurchaseOrderNo();
+                                            setIsIndentSelected(false);
+
+                                        }}
                                     >
                                         {t("text.reset")}
                                     </Button>
-                                </div>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </CardContent>
-            </div>
+                                </Grid>
+                            
+                        
+                    </Grid>
+                </form>
+            </CardContent>
         </div>
+        </div >
     );
 };
 

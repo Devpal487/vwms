@@ -1530,7 +1530,9 @@ const CreateOfficePurchaseOrder = () => {
     ]);
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
-    const [itemOption, setitemOption] = useState<any>([]);
+    const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+        { value: -1, label: t("text.itemMasterId") },
+    ]);
     const [unitOptions, setUnitOptions] = useState<any>([]);
     const [vendorOptions, setVendorOptions] = useState<any>([]);
     const [totalAmount, setTotalAmount] = useState(0);
@@ -1701,6 +1703,7 @@ const CreateOfficePurchaseOrder = () => {
             arr.push({
                 label: data[index]["itemName"],
                 value: data[index]["itemMasterId"],
+                unitId: data[index]["unitId"],
             });
         }
         setitemOption(arr);
@@ -1844,77 +1847,6 @@ const CreateOfficePurchaseOrder = () => {
         reader.readAsDataURL(file);
     };
 
-    // const handlePanClose1 = () => {
-    //     setDocOpen(false);
-    // };
-
-    // const modalOpenHandle1 = (event: string) => {
-    //     setDocOpen(true);
-    //     const base64Prefix = "data:image/jpg;base64,";
-
-    //     let imageData = '';
-    //     switch (event) {
-    //         case "pOrderDoc":
-    //             imageData = formik.values.pOrderDoc;
-    //             break;
-    //     }
-    //     if (imageData) {
-    //         console.log("imageData", base64Prefix + imageData);
-    //         setImg(base64Prefix + imageData);
-    //     } else {
-    //         setImg('');
-    //     }
-    // };
-
-    // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-    //     const pOrderDoc = event.target.files?.[0];
-    //     if (!pOrderDoc) return;
-
-    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
-    //     if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-    //         alert("Only .jpg, .jpeg, or .png image files are allowed.");
-    //         event.target.value = '';
-    //         return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //         const base64String = reader.result as string;
-    //         formik.setFieldValue(params, base64String); // Include the prefix statically.
-    //     };
-    //     reader.onerror = () => {
-    //         alert("Error reading file. Please try again.");
-    //     };
-    //     reader.readAsDataURL(pOrderDoc);
-    // };
-
-
-    // const otherDocChangeHandler = (event: any, params: any) => {
-    //     const pOrderDoc = event.target.files?.[0];
-    //     if (!pOrderDoc) return;
-
-    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
-    //     if (!['jpg'].includes(fileExtension || '')) {
-    //         alert("Only .jpg image file is allowed to be uploaded.");
-    //         event.target.value = '';
-    //         return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     reader.onload = (e: ProgressEvent<FileReader>) => {
-    //         const base64String = e.target?.result as string;
-    //         const base64Data = base64String.split(',')[1];
-    //         formik.setFieldValue(params, base64Data);
-
-    //         console.log(`pOrderDoc '${pOrderDoc.name}' loaded as base64 string`);
-    //         console.log("base64Data", base64Data);
-    //     };
-    //     reader.onerror = (error) => {
-    //         console.error("Error reading file:", error);
-    //         alert("Error reading file. Please try again.");
-    //     };
-    //     reader.readAsDataURL(pOrderDoc);
-    // };
 
 
 
@@ -1997,6 +1929,15 @@ const CreateOfficePurchaseOrder = () => {
         const newData: any = [...tableData];
         newData[index][field] = value;
         let rate = 0;
+        if (field === "itemId") {
+            const selectedItem = itemOption.find((item) => item.value === value);
+            newData[index].itemId = selectedItem?.value || 0;
+            newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
+
+            console.log("Selected Item:", selectedItem);
+        } else {
+            newData[index][field] = value;
+        }
         if (field === 'orderId') {
             newData[index].orderId = newData[index].orderId;
         }
@@ -2280,6 +2221,7 @@ const CreateOfficePurchaseOrder = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={indentOptions}
+                                    value={indentOptions.find((opt) => opt.value == formik.values.indentId) || null}
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
@@ -2316,6 +2258,7 @@ const CreateOfficePurchaseOrder = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={vendorData}
+                                    value={vendorData.find((opt) => opt.value == formik.values.vendorId) || null}
                                     fullWidth
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
@@ -2720,15 +2663,7 @@ const CreateOfficePurchaseOrder = () => {
                                                                 style={{ cursor: "pointer" }}
                                                             />
                                                         </td>
-                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                                                            if (tableData.length > 1) {
-                                                                deleteRow(index)
-                                                            } else {
-                                                                alert("There should be atleast one row")
-                                                            }
-                                                        }}>
-                                                            <DeleteIcon />
-                                                        </td> */}
+
 
 
 
@@ -2758,12 +2693,7 @@ const CreateOfficePurchaseOrder = () => {
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                    // label={
-                                                                    //     // <CustomLabel
-                                                                    //     //     text={t("text.selectItem")}
-                                                                    //     //     required={false}
-                                                                    //     // />
-                                                                    // }
+
                                                                     />
                                                                 )}
                                                             />
@@ -2775,26 +2705,18 @@ const CreateOfficePurchaseOrder = () => {
                                                                 textAlign: "center",
                                                             }}
                                                         >
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                options={unitOptions}
-                                                                value={
-                                                                    unitOptions.find((opt: any) => (opt.value) === row?.unitId) || null
-                                                                }
-                                                                fullWidth
-                                                                size="small"
-                                                                sx={{ width: "145px" }}
-                                                                onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                    //   label={
-                                                                    //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                                    //   }
-                                                                    />
-                                                                )}
-                                                            />
+                                                            <select
+                                                                value={row.unitId}
+                                                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                style={{ width: '95%', height: '35px' }}
+                                                            >
+                                                                <option value="">Select Unit</option>
+                                                                {unitOptions.map((option: any) => (
+                                                                    <option key={option.value} value={option.value}>
+                                                                        {option.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
                                                         </td>
                                                         <td style={{ textAlign: "right" }}>
                                                             <TextField
@@ -2976,34 +2898,60 @@ const CreateOfficePurchaseOrder = () => {
                                         </Table>
                                     </div> </Grid>
                             )}
-                            <Grid item xs={12}>
-                                <div style={{ justifyContent: "space-between", flex: 2 }}>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        style={{
-                                            width: "48%",
-                                            backgroundColor: `var(--header-background)`,
-                                            margin: "1%",
-                                        }}
-                                    >
-                                        {t("text.save")}
-                                    </Button>
-
-                                    <Button
-                                        type="reset"
-                                        variant="contained"
-                                        style={{
-                                            width: "48%",
-                                            backgroundColor: "#F43F5E",
-                                            margin: "1%",
-                                        }}
-                                        onClick={() => formik.resetForm()}
-                                    >
-                                        {t("text.reset")}
-                                    </Button>
-                                </div>
+                            <Grid item lg={6} sm={6} xs={12}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    style={{
+                                        backgroundColor: `var(--header-background)`,
+                                        color: "white",
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    {t("text.save")}
+                                </Button>
                             </Grid>
+                            <Grid item lg={6} sm={6} xs={12}>
+                                <Button
+                                    type="button"
+                                    fullWidth
+                                    style={{
+                                        backgroundColor: "#F43F5E",
+                                        color: "white",
+                                        marginTop: "10px",
+                                    }}
+                                    onClick={() => {
+                                        formik.resetForm(); // Reset form values
+                                        setTableData([
+                                            {
+                                                "id": 0,
+                                                "indentId": 0,
+                                                "itemId": 0,
+                                                "unitId": null,
+                                                "quantity": 0,
+                                                "rate": 0,
+                                                "amount": 0,
+                                                "approveQuantity": 0,
+                                                "fyId": 0,
+                                                "srn": 0,
+                                                "isDelete": true,
+                                                "unitName": "",
+                                                "itemName": ""
+                                            },
+                                        ]); // Reset table data
+                                        // setItemValue(null); // Reset Autocomplete selection
+                                        //  setSelectedAction(null); // Reset selected action
+                                        // setIsIndentSelected(false); // Reset indent selection
+                                        getPurchaseOrderNo();
+                                        setIsIndentSelected(false);
+
+                                    }}
+                                >
+                                    {t("text.reset")}
+                                </Button>
+                            </Grid>
+
+
                         </Grid>
                     </form>
                 </CardContent>
