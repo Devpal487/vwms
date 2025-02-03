@@ -1609,7 +1609,7 @@ const CreateQualityCheck = (props: Props) => {
         value: item.itemMasterId,
         details: item,
       })) || [];
-    setitemOption([{ value: -1, label: t("text.selectItem"), details: "" }, ...arr]);
+    setitemOption(arr);
   };
 
 
@@ -1628,10 +1628,7 @@ const CreateQualityCheck = (props: Props) => {
           details: item,
         })) || [];
 
-      setVendorData([
-        { value: "-1", label: t("text.SelectVendor") },
-        ...arr,
-      ] as any);
+      setVendorData(arr);
     }
   };
 
@@ -1646,7 +1643,7 @@ const CreateQualityCheck = (props: Props) => {
           value: item.taxId,
         })) || [];
 
-      setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+      setTaxData(arr);
     }
   };
 
@@ -2081,6 +2078,7 @@ const CreateQualityCheck = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={mrnNoOptions}
+                  value={mrnNoOptions.find((option: any) => option.value === formik.values.mrnId)?.label||""}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -2881,20 +2879,55 @@ const CreateQualityCheck = (props: Props) => {
                 </Button>
               </Grid>
 
-              <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e: any) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
-              </Grid>
+             <Grid item lg={6} sm={6} xs={12}>
+                             <Button
+                               type="button"
+                               fullWidth
+                               style={{
+                                 backgroundColor: "#F43F5E",
+                                 color: "white",
+                                 marginTop: "10px",
+                               }}
+                               onClick={() => {
+                                 formik.resetForm(); // Reset form values
+                                 setTableData([
+                                   {
+                                    id: 0,
+                                    qcId: 0,
+                                    mrnId: 0,
+                                    orderId: 0,
+                                    orderNo: "",
+                                    itemId: 0,
+                                    mrnQty: 0,
+                                    acceptQty: 0,
+                                    rejectQty: 0,
+                                    rate: 0,
+                                    amount: 0,
+                                    gstId: 0,
+                                    gstRate: 0,
+                                    cgst: 0,
+                                    sgst: 0,
+                                    igst: 0,
+                                    netAmount: 0,
+                                    reason: "",
+                                    batchNo: "",
+                                    "unitId": 0,
+                                    "unitName": "",
+                                    "itemName": "",
+                                    "mrnNo": ""
+                                   },
+                                 ]); // Reset table data
+                                 //   setItemValue(null); // Reset Autocomplete selection
+                                // setSelectedAction(null); // Reset selected action
+                                 //setIsIndentSelected(false); // Reset indent selection
+                              //   setmrnNoOptions([]); // Reset MRN options
+                                 setVendorDetail(null); // Reset vendor details
+                                 GetQcData();
+                                }}
+                             >
+                               {t("text.reset")}
+                             </Button>
+                           </Grid>
             </Grid>
           </form>
         </CardContent>

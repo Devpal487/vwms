@@ -107,8 +107,8 @@ const EditWorkShopPurchaseOrder = () => {
         { value: "2", label: "Challan" },
     ];
     const [indentOptions, setIndentOptions] = useState([
-        { value: "-1", label: t("text.SelectindentNo") },
-    ]);
+          { value: -1, label: t("text.SelectindentNo"), indenttype:"" },
+      ]);
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
     const [itemOption, setitemOption] = useState<any>([]);
@@ -149,6 +149,7 @@ const EditWorkShopPurchaseOrder = () => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
+                indenttype: data[index]["indenttype"]
 
             });
         };
@@ -667,7 +668,13 @@ const EditWorkShopPurchaseOrder = () => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-indent"
-                                    options={indentOptions}
+                                    options={
+                                        indentOptions.filter((e: any) => {
+                                            if (e.indenttype == "WorkShopPurchase") {
+                                                return e;
+                                            }
+                                        })
+                                    }
                                     fullWidth
                                     size="small"
                                     value={
@@ -748,6 +755,7 @@ const EditWorkShopPurchaseOrder = () => {
                                     id="combo-box-demo"
                                     options={StatusOption}
                                     fullWidth
+                                    value={StatusOption.find((opt: any) => opt.value === formik.values.status) || null}
                                     size="small"
                                     disabled
                                     onChange={(event: any, newValue: any) => {
@@ -1233,16 +1241,17 @@ const EditWorkShopPurchaseOrder = () => {
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                                                 </td>
                                             </tr>
-                                            {/* <tr>
-                                                <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                    {t("text.Totaltaxamount")}
+                                             <tr>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                        {t("text.TotalGstAmt")}
 
 
-                                                </td>
-                                                <td style={{ textAlign: "end", border: "1px solid black" }}>
-                                                    {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
-                                                </td>
-                                            </tr> */}
+                                                    </td>
+                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
+
+                                                        {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
+                                                    </td>
+                                                </tr>
                                             <tr>
                                                 <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                     {t("text.Totalnetamount")}
@@ -1251,6 +1260,7 @@ const EditWorkShopPurchaseOrder = () => {
                                                 <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                     
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                                                    
                                                 </td>
                                             </tr>
                                         </tfoot>

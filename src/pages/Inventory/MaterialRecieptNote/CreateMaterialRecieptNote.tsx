@@ -47,39 +47,14 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
+   const [isIndentSelected, setIsIndentSelected] = useState(false);
   const [toaster, setToaster] = useState(false);
-  const [vendorData, setVendorData] = useState([]);
+  const [vendorData, setVendorData] = useState<any>([]);
   const [orderData, setOrderData] = useState([]);
   const [orderVendorData, setOrderVendorData] = useState([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const [IsbatchNO, setBatchno] = useState("");
   const initialRowData: any = {
-
-    // "sno": 0,
-    // "id": 0,
-    // "mrnId": 0,
-    // "orderId": 0,
-    // "orderNo": "",
-    // "batchNo": "",
-    // "serialNo": "",
-    // "qcStatus": "",
-    // "itemId": 0,
-    // "balQuantity": 0,
-    // "quantity": 0,
-    // "rate": 0,
-    // "amount": 0,
-    // "gstId": 0,
-    // "gstRate": 0,
-    // "cgst": 0,
-    // "sgst": 0,
-    // "igst": 0,
-    // "cgstid": 0,
-    // "sgstid": 0,
-    // "igstid": 0,
-    // "netAmount": 0,
-    // "unitId": 0,
-    // "qcApplicable": true
-
     "sno": 0,
     "id": 0,
     "mrnId": 0,
@@ -102,7 +77,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     "sgstid": 0,
     "igstid": 0,
     "netAmount": 0,
-    "unitId": 0,
+    "unitId": null,
     "totalGst": 0,
     "qcApplicable": true,
     "isDelete": false,
@@ -117,10 +92,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const [orderOption, setorderOption] = useState([
     { value: -1, label: t("text.id") },
   ]);
-  const [itemOption, setitemOption] = useState<any>([]);
-
+   const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+      { value: -1, label: t("text.itemMasterId") },
+    ]);
   const mrnTypeOption = [
-    { value: "-1", label: t("text.selectMRN") },
     { value: "1", label: "Bill" },
     { value: "2", label: "Challan" },
   ];
@@ -175,12 +150,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     }
   };
 
-  // const getBATCHNo = async () => {
-  //   const result = await api.get(`QualityCheck/GetMaxBatchNo`);
-  //   if (result?.data.status === 1) {
-  //     formik.setFieldValue("batchNo", result.data.data[0]["batchNo"]);
-  //   }
-  // };
+
   const getBATCHNo = async () => {
     try {
       const response = await api.get(`QualityCheck/GetMaxBatchNo`);
@@ -213,6 +183,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
       arr.push({
         label: data[index]["itemName"],
         value: data[index]["itemMasterId"],
+        unitId: data[index]["unitId"],
       });
     }
     setitemOption(arr);
@@ -252,10 +223,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
           details: item,
         })) || [];
 
-      setVendorData([
-        { value: "-1", label: t("text.SelectVendor") },
-        ...arr,
-      ] as any);
+      setVendorData(arr);
     }
   };
 
@@ -271,7 +239,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
           value: item.taxId,
         })) || [];
 
-      setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+      setTaxData(arr);
     }
   };
 
@@ -340,7 +308,15 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const handleInputChange = async (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
+    if (field === "itemId") {
+      const selectedItem = itemOption.find((item) => item.value === value);
+      updatedItems[index].itemId = selectedItem?.value || 0;
+      updatedItems[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
 
+      console.log("Selected Item:", selectedItem);
+    } else {
+      updatedItems[index][field] = value;
+    }
     if (field === "orderNo") {
       const selectedItem = orderOption.find(
         (option: any) => option.value === value
@@ -355,20 +331,22 @@ const CreateMaterialRecieptNote = (props: Props) => {
           orderNo: selectedItem?.label,
         };
       }
-    } else if (field === "itemId") {
-      const selectedItem = itemOption.find(
-        (option: any) => option.value === value
-      );
-      console.log(selectedItem);
-      if (selectedItem) {
-        item = {
-          ...item,
-          itemId: selectedItem?.value,
-          itemName: selectedItem?.label,
-          item: selectedItem?.details,
-        };
-      }
-    } else if (field === "batchNo") {
+    }
+    //  else if (field === "itemId") {
+    //   const selectedItem = itemOption.find(
+    //     (option: any) => option.value === value
+    //   );
+    //   console.log(selectedItem);
+    //   if (selectedItem) {
+    //     item = {
+    //       ...item,
+    //       itemId: selectedItem?.value,
+    //       itemName: selectedItem?.label,
+    //       item: selectedItem?.details,
+    //     };
+    //   }
+    // }
+     else if (field === "batchNo") {
       item.batchNo = value?.toString();
     } else if (field === "balQuantity") {
       item.balQuantity = value === "" ? 0 : parseFloat(value);
@@ -645,6 +623,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
     }
     // arr.push({ ...initialRowData });
     setTableData(arr);
+    setIsIndentSelected(true);
   }
 
   const getPurchaseOrder = async () => {
@@ -760,31 +739,31 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 />
               </Grid>
 
-              <Grid item lg={4} xs={12}>
+                <Grid item lg={4} xs={12}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
                   options={mrnTypeOption}
+                  value={mrnTypeOption.find((option) => option.value === formik.values.mrnType)?.label || null}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
-                    console.log(newValue?.value);
-
-                    formik.setFieldValue("mrnType", newValue?.value.toString());
+                  console.log(newValue?.value);
+                  formik.setFieldValue("mrnType", newValue?.value.toString());
                   }}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={
-                        <CustomLabel
-                          text={t("text.mrnType")}
-                          required={false}
-                        />
-                      }
+                  <TextField
+                    {...params}
+                    label={
+                    <CustomLabel
+                      text={t("text.mrnType")}
+                      required={false}
                     />
+                    }
+                  />
                   )}
                 />
-              </Grid>
+                </Grid>
 
               <Grid item lg={4} xs={12}>
                 <TextField
@@ -920,6 +899,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     disablePortal
                     id="combo-box-demo"
                     options={vendorData}
+                    value={vendorData.find((option: any) => option.value === formik.values.vendorId)?.label||""}
                     fullWidth
                     size="small"
                     onChange={(event: any, newValue: any) => {
@@ -1101,7 +1081,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   <Button onClick={handleConfirm} color="primary" autoFocus>Proceed</Button>
                 </DialogActions>
               </Dialog>
-
+              {isIndentSelected && (
               <Grid item xs={12} md={12} lg={12}>
                 <div style={{ overflow: "scroll", margin: 0, padding: 0 }}>
 
@@ -1245,17 +1225,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: "1px solid black" }}>
-                          {/* <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <DeleteIcon
-                              onClick={() => deleteRow(index)}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </td> */}
+                         
                           <td
                             style={{
                               border: "1px solid black",
@@ -1383,6 +1353,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 />
                               )}
                             />
+                            
                           </td>
                           <td
                             style={{
@@ -1549,7 +1520,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     </tfoot>
                   </Table>
                 </div>
-              </Grid>
+              </Grid>  )}
               <Grid item xs={12} md={12} lg={12}>
                 <TextField
                   placeholder={t("text.Remark")}
@@ -1582,16 +1553,24 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Button>
               </Grid>
 
+
               <Grid item lg={6} sm={6} xs={12}>
                 <Button
-                  type="reset"
+                  type="button"
                   fullWidth
                   style={{
                     backgroundColor: "#F43F5E",
                     color: "white",
                     marginTop: "10px",
                   }}
-                  onClick={(e: any) => formik.resetForm()}
+                  onClick={() => {
+                    formik.resetForm(); // Reset form values
+                     
+                    getMRNNo();
+                    setIsIndentSelected(false); 
+                    setVendorDetail(null); // Reset vendor details
+                   
+                  }}
                 >
                   {t("text.reset")}
                 </Button>

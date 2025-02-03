@@ -75,9 +75,9 @@ const EditJobcardItemIssue = (props: Props) => {
         "returnItem": true
     }]);
     console.log("🚀 ~ CreateStaffItemIssue ~ tableData:", tableData)
-    const [indentOptions, setIndentOptions] = useState([
-        { value: "-1", label: t("text.SelectindentNo") },
-    ]);
+     const [indentOptions, setIndentOptions] = useState<any>([
+        { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
+      ]);
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
@@ -119,9 +119,11 @@ const EditJobcardItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
+                indentype: data[index]["indentype"],
+                vehicleitem: data[index]["vehicleitem"],
 
             });
-        };
+        }
         setIndentOptions(arr);
     };
 
@@ -473,10 +475,19 @@ const EditJobcardItemIssue = (props: Props) => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={indentOptions}
+                                  //  options={indentOptions}
+                                  options={
+                    
+                                    indentOptions.filter((e:any) =>
+                                    {
+                                      if(e.indenttype === "JobCard")
+                                      {
+                                        return e;
+                                      }
+                                    })}
                                     value={
                                         indentOptions.find(
-                                            (option) => option.value === formik.values.indentId
+                                            (option:any) => option.value === formik.values.indentId
                                         ) || null
                                     }
 
@@ -583,13 +594,13 @@ const EditJobcardItemIssue = (props: Props) => {
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                                             <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
                                                 <tr>
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
-                        <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Batchno")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.stockQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
+                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
 
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
 
@@ -736,11 +747,14 @@ const EditJobcardItemIssue = (props: Props) => {
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Grid>
                                     <Button
+                                    disabled
                                         type="submit"
                                         fullWidth
                                         style={{
-                                            backgroundColor: `var(--header-background)`,
-                                            color: "white",
+                                            backgroundColor: "#e0e0e0", // Faded color for disabled
+                                            color: "#9e9e9e", // Text color for disabled
+                                            //  backgroundColor: `var(--header-background)`,
+                                            //color: "white",
                                             marginTop: "10px",
                                         }}
                                     >

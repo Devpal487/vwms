@@ -11,13 +11,15 @@ const resources = {
       error: {},
       message: {},
       text: {
-        PENDING: "Pending",
-        INPROGRESS: "In Progress",
-        OUTSOURCE: "OUTSOURCE",
-        Outsource: "OUTSOURCE",
-        INHOUSE: "INHOUSE",
-        COMPLETE: "Complete",
-
+       
+          PENDING: "Pending",
+          INPROGRESS: "In Progress",
+          OUTSOURCE: "OUTSOURCE",
+          Outsource:"OUTSOURCE",
+          INHOUSE: "INHOUSE",
+          COMPLETE : "Complete",
+       
+        
         ////
         /////
         top10: "Top 10",

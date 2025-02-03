@@ -852,6 +852,7 @@ console.log("location.state",(location.state));
       item.qty > 0 &&
       item.rate > 0 
       //item.amount >= 0
+      
 
     );
   };
@@ -1935,16 +1936,19 @@ console.log("location.state",(location.state));
                 {/* Submit Button */}
                 <Grid item >
                   <Button
+                  disabled
                     type="submit"
                     fullWidth
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      minWidth: "120px", // Set a fixed width
-                      textAlign: "center",
-                    }}
+                    // style={{
+                    //   backgroundColor: "grey",
+                    //   color: "white",
+                    //   minWidth: "120px", // Set a fixed width
+                    //   textAlign: "center",
+                    // }}
+                    style={buttonStyle(isIndentEnabled)}
                   //  onClick={() => handleSave(formik.values)}
                   >
+                    
                     {t("text.update")}
                   </Button>
                 </Grid>

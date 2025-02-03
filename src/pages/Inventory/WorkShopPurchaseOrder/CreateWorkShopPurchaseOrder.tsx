@@ -63,7 +63,7 @@ const CreateWorkShopPurchaseOrder = () => {
     const { defaultValues } = getISTDate();
     const [lang, setLang] = useState<Language>("en");
     const [toaster, setToaster] = useState(false);
-    // const initialRowData: any = {
+
     const [tableData, setTableData] = useState<any>([
         {
             // "sno": 0,
@@ -118,7 +118,7 @@ const CreateWorkShopPurchaseOrder = () => {
 
     ]);
 
-    // const [tableData, setTableData] = useState([{ ...initialRowData }]);
+
     const [taxData, setTaxData] = useState<any>([]);
 
     const [orderOption, setorderOption] = useState([
@@ -132,11 +132,13 @@ const CreateWorkShopPurchaseOrder = () => {
         { value: "2", label: "Challan" },
     ];
     const [indentOptions, setIndentOptions] = useState([
-        { value: "-1", label: t("text.SelectindentNo") },
+        { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
     ]);
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
-    const [itemOption, setitemOption] = useState<any>([]);
+    const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+        { value: -1, label: t("text.itemMasterId") },
+    ]);
     const [unitOptions, setUnitOptions] = useState<any>([]);
     const [vendorOptions, setVendorOptions] = useState<any>([]);
     const [totalAmount, setTotalAmount] = useState(0);
@@ -174,7 +176,7 @@ const CreateWorkShopPurchaseOrder = () => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
-
+                indenttype: data[index]["indenttype"]
             });
         };
         setIndentOptions(arr);
@@ -199,44 +201,8 @@ const CreateWorkShopPurchaseOrder = () => {
             });
         };
         setVendorData(arr);
-        // if (result.data.isSuccess) {
-        //     const arr =
-        //         result?.data?.data?.map((item: any) => ({
-        //             label: item.name,
-        //             value: item.vendorId,
-        //             details: item,
-        //         })) || [];
 
-        //     setVendorData([
-        //         { value: "-1", label: t("text.SelectVendor")  },
-        //         ...arr,
-        //     ] as any);
-        // }
     };
-
-
-    //     const getPurchaseOrderNo = async () => {
-    //         try {
-    //             const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo
-    // `);
-
-
-    //             if (result?.data?.isSuccess && result?.data?.data?.orderNo) {
-    //                 formik.setFieldValue("orderNo", result.data.data.orderNo);
-    //             } else {
-    //                 console.warn("Order number not found in the API response:", result);
-    //                 formik.setFieldValue("orderNo", "");
-    //             }
-    //         } catch (error) {
-
-    //             if (error instanceof Error) {
-    //                 console.error("Error while fetching the order number:", error.message);
-    //             } else {
-    //                 console.error("An unexpected error occurred:", error);
-    //             }
-    //             formik.setFieldValue("orderNo", "");
-    //         }
-    //     };
     const getPurchaseOrderNo = async () => {
         try {
             const result = await api.get(`PurchaseOrder/GetMaxPurchaseOrderNo`);
@@ -307,6 +273,7 @@ const CreateWorkShopPurchaseOrder = () => {
             arr.push({
                 label: data[index]["itemName"],
                 value: data[index]["itemMasterId"],
+                unitId: data[index]["unitId"],
             });
         }
         setitemOption(arr);
@@ -345,54 +312,51 @@ const CreateWorkShopPurchaseOrder = () => {
             "returnItem": true
 
 
+
         }))
 
         setTableData(indent);
         setIsIndentSelected(true);
+
+        let total = 0;
+        let netAmt = 0;
+        indent.forEach((row: any) => {
+            total += row.amount;
+            netAmt += row.amount + (row.amount * (row.gst / 100) || 0);
+        })
+        formik.setFieldValue("netAmount", netAmt);
+        formik.setFieldValue("totalAmount", total);
 
     };
 
 
 
     console.log("tableData.....", tableData);
-
-    // const isRowFilled = (row: any) => {
-    //     console.log("isRowFilled", row);
-    //     return (
-    //         row.orderNo &&
-    //         row.itemId &&
-    //         // row.batchNo &&
-    //         // row.balQuantity > 0 &&
-    //         row.quantity > 0 &&
-    //         row.rate > 0
+    // const updateTotalAmounts = (data: any[]) => {
+    //     console.log("updateTotalAmounts", data);
+    //     const totals = data.reduce(
+    //         (acc, row) => {
+    //             //  acc.totalAmount += parseFloat(row.amount) || 0;
+    //             acc.totalCGST += parseFloat(row.cgst) || 0;
+    //             acc.totalSGST += parseFloat(row.sgst) || 0;
+    //             acc.totalIGST += parseFloat(row.igst) || 0;
+    //             acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
+    //             return acc;
+    //         },
+    //         // {
+    //         //     // totalAmount: 0,
+    //         //     totalCGST: 0,
+    //         //     totalSGST: 0,
+    //         //     totalIGST: 0,
+    //         //     totalGrossAmount: 0,
+    //         // }
     //     );
+
+    //     formik.setValues({
+    //         ...formik.values,
+    //         ...totals,
+    //     });
     // };
-
-    const updateTotalAmounts = (data: any[]) => {
-        console.log("updateTotalAmounts", data);
-        const totals = data.reduce(
-            (acc, row) => {
-                //  acc.totalAmount += parseFloat(row.amount) || 0;
-                acc.totalCGST += parseFloat(row.cgst) || 0;
-                acc.totalSGST += parseFloat(row.sgst) || 0;
-                acc.totalIGST += parseFloat(row.igst) || 0;
-                acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
-                return acc;
-            },
-            // {
-            //     // totalAmount: 0,
-            //     totalCGST: 0,
-            //     totalSGST: 0,
-            //     totalIGST: 0,
-            //     totalGrossAmount: 0,
-            // }
-        );
-
-        formik.setValues({
-            ...formik.values,
-            ...totals,
-        });
-    };
 
 
     const handlePanClose1 = () => {
@@ -442,86 +406,13 @@ const CreateWorkShopPurchaseOrder = () => {
                 alert("Error processing image data.");
             }
 
-            //formik.setFieldValue(params, base64String); // Store the complete base64 string with the prefix.
+
         };
         reader.onerror = () => {
             alert("Error reading file. Please try again.");
         };
         reader.readAsDataURL(file);
     };
-
-    // const handlePanClose1 = () => {
-    //     setDocOpen(false);
-    // };
-
-    // const modalOpenHandle1 = (event: string) => {
-    //     setDocOpen(true);
-    //     const base64Prefix = "data:image/jpg;base64,";
-
-    //     let imageData = '';
-    //     switch (event) {
-    //         case "pOrderDoc":
-    //             imageData = formik.values.pOrderDoc;
-    //             break;
-    //     }
-    //     if (imageData) {
-    //         console.log("imageData", base64Prefix + imageData);
-    //         setImg(base64Prefix + imageData);
-    //     } else {
-    //         setImg('');
-    //     }
-    // };
-
-    // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
-    //     const pOrderDoc = event.target.files?.[0];
-    //     if (!pOrderDoc) return;
-
-    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
-    //     if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
-    //         alert("Only .jpg, .jpeg, or .png image files are allowed.");
-    //         event.target.value = '';
-    //         return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //         const base64String = reader.result as string;
-    //         formik.setFieldValue(params, base64String); // Include the prefix statically.
-    //     };
-    //     reader.onerror = () => {
-    //         alert("Error reading file. Please try again.");
-    //     };
-    //     reader.readAsDataURL(pOrderDoc);
-    // };
-
-
-    // const otherDocChangeHandler = (event: any, params: any) => {
-    //     const pOrderDoc = event.target.files?.[0];
-    //     if (!pOrderDoc) return;
-
-    //     const fileExtension = pOrderDoc.name.split('.').pop()?.toLowerCase();
-    //     if (!['jpg'].includes(fileExtension || '')) {
-    //         alert("Only .jpg image file is allowed to be uploaded.");
-    //         event.target.value = '';
-    //         return;
-    //     }
-
-    //     const reader = new FileReader();
-    //     reader.onload = (e: ProgressEvent<FileReader>) => {
-    //         const base64String = e.target?.result as string;
-    //         const base64Data = base64String.split(',')[1];
-    //         formik.setFieldValue(params, base64Data);
-
-    //         console.log(`pOrderDoc '${pOrderDoc.name}' loaded as base64 string`);
-    //         console.log("base64Data", base64Data);
-    //     };
-    //     reader.onerror = (error) => {
-    //         console.error("Error reading file:", error);
-    //         alert("Error reading file. Please try again.");
-    //     };
-    //     reader.readAsDataURL(pOrderDoc);
-    // };
-
 
 
     const validateRow = (row: any) => {
@@ -544,7 +435,7 @@ const CreateWorkShopPurchaseOrder = () => {
             "totalSGST": 0,
             "totalIGST": 0,
             "netAmount": 0,
-            "status": "close",
+            "status": "open",
             "orderType": "Workshop",
             "createdBy": "adminvm",
             "updatedBy": "adminvm",
@@ -598,55 +489,20 @@ const CreateWorkShopPurchaseOrder = () => {
         },
     });
     console.log("formik.values", formik.values);
-    //  const back = useNavigate();
-    // const handleInputChange = (index: number, field: string, value: any) => {
-    //     const updatedItems = [...tableData];
-    //     let item = { ...updatedItems[index] };
 
-    //     if (field === "quantity") {
-    //         item.quantity = value === "" ? 0 : parseFloat(value);
-    //     } else if (field === "rate") {
-    //         item.rate = value === "" ? 0 : parseFloat(value);
-    //     } else if (field === "gstId") {
-    //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-    //         if (selectedTax) {
-    //             item.gstRate = parseFloat(selectedTax.label) || 0;
-    //             item.gstId = selectedTax.value || 0;
-    //             item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-    //             item.sgst = item.gst / 2;
-    //             item.cgst = item.gst / 2;
-    //             item.igst = 0;
-    //         }
-    //     }
-
-    //     // Update item totals
-    //     item.amount = (item.quantity || 0) * (item.rate || 0);
-    //     item.netAmount = item.amount + (item.gst || 0);
-    //     updatedItems[index] = item;
-
-    //     // Update the table data
-    //     setTableData(updatedItems);
-
-    //     // Calculate total and update Formik parent values
-    //     const totalAmount = updatedItems.reduce((sum, row) => sum + (row.amount || 0), 0);
-    //     const totalNetAmount = updatedItems.reduce((sum, row) => sum + (row.netAmount || 0), 0);
-
-    //     formik.setFieldValue("totalAmount", totalAmount);
-    //     formik.setFieldValue("netAmount", totalNetAmount);
-
-    //     // Add new row logic if necessary
-    //     if (
-    //         updatedItems[index].quantity > 0 &&
-    //         updatedItems[index].rate > 0 &&
-    //         index === updatedItems.length - 1
-    //     ) {
-    //         addRow();
-    //     }
-    // };
     const handleInputChange = (index: any, field: any, value: any) => {
         const newData: any = [...tableData];
         newData[index][field] = value;
         let rate = 0;
+        if (field === "itemId") {
+            const selectedItem = itemOption.find((item) => item.value === value);
+            newData[index].itemId = selectedItem?.value || 0;
+            newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
+
+            console.log("Selected Item:", selectedItem);
+        } else {
+            newData[index][field] = value;
+        }
         if (field === 'orderId') {
             newData[index].orderId = newData[index].orderId;
         }
@@ -676,18 +532,16 @@ const CreateWorkShopPurchaseOrder = () => {
         } else {
             newData[index].netAmount = (newData[index].rate * newData[index].quantity);
         }
-        // if (field === 'cgst') {
-        //   newData[index].cgst = newData[index].cgst;
-        // }
-        // if (field === 'sgst') {
-        //   newData[index].sgst = newData[index].sgst;
-        // }
-        // if (field === 'serviceCharge') {
-        //   newData[index].serviceCharge = newData[index].serviceCharge;
-        // }
+        if (field === 'cgst') {
+            newData[index].cgst = newData[index].cgst;
+        }
+        if (field === 'sgst') {
+            newData[index].sgst = newData[index].sgst;
+        }
+
         newData[index].amount = newData[index].rate * newData[index].quantity;
 
-        //newData[index].jobCardId = location.state?.jobCardId || 0;
+
         newData[index].challanNo = 0;
 
         setTableData(newData);
@@ -697,97 +551,21 @@ const CreateWorkShopPurchaseOrder = () => {
         //         addRow();
         //     }
         // }
+        let cgst1 = 0;
+        let sgst1 = 0;
         let total = 0;
         let netAmt = 0;
         tableData.forEach((row: any) => {
             total += row.amount;
-            netAmt += row.amount + row.amount * (row.gst / 100);
+            netAmt += row.amount + (row.amount * (row.gst / 100) || 0);
+            cgst1 += parseFloat(row.cgst || 0);
+            sgst1 += parseFloat(row.sgst || 0);
         })
         formik.setFieldValue("netAmount", netAmt);
         formik.setFieldValue("totalAmount", total);
+        formik.setFieldValue("totalCGST", cgst1);
+        formik.setFieldValue("totalSGST", sgst1);
     };
-    // const handleInputChange = (index: number, field: string, value: any) => {
-    //     const updatedItems = [...tableData];
-    //     let item = { ...updatedItems[index] };
-
-    //     if (field === "orderNo") {
-    //         const selectedItem = orderOption.find(
-    //             (option: any) => option.value === value
-    //         );
-    //         console.log(selectedItem);
-    //         if (selectedItem) {
-    //             item = {
-    //                 ...item,
-    //                 // mrnType: selectedItem?.value?.toString(),
-    //                 orderId: selectedItem?.value,
-    //                 orderNo: selectedItem?.label,
-    //             };
-    //         }
-    //     }  if (field === "itemId") {
-    //         const selectedItem = itemOption.find(
-    //             (option: any) => option.value === value
-    //         );
-    //         console.log(selectedItem);
-    //         if (selectedItem) {
-    //             item = {
-    //                 ...item,
-    //                 itemId: selectedItem?.value,
-    //                 itemName: selectedItem?.label,
-    //                 item: selectedItem?.details,
-    //             };
-    //         }
-    //     }
-
-    //     if (field === "quantity") {
-    //         item.quantity = value === "" ? 0 : parseFloat(value);
-    //     }  if (field === "rate") {
-    //         item.rate = value === "" ? 0 : parseFloat(value);
-    //     }  if (field === "gstId") {
-    //         const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-    //         if (selectedTax) {
-    //             item.gstRate = parseFloat(selectedTax.label) || 0;
-    //             item.gstId = selectedTax.value || 0;
-    //             item.cgstid = selectedTax.value || 0;
-    //             item.sgstid = selectedTax.value || 0;
-    //             item.igstid = 0;
-    //             item.gst = item.gstRate;
-    //         }
-    //     } else {
-    //         item[field] = value;
-    //     }
-    //     item.amount =
-    //         (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-    //     item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100);
-    //     item.netAmount = (item.amount + (parseFloat(item.gst) || 0));
-    //     item.sgst = item.gst / 2;
-    //     item.cgst = item.gst / 2;
-    //     item.igst = 0;
-
-    //     formik.setFieldValue("totalAmount", item.netAmount);
-
-    //     tableData[index] = item;
-    //     setTableData(tableData);
-    //     updateTotalAmounts(tableData);
-    //     if (updatedItems[index].quantity >= 1 && updatedItems[index].rate > 0 && updatedItems[index].itemId >= 1) {
-    //         if (index === tableData.length - 1) {
-    //             addRow();
-    //         }
-    //     }
-    //     // addRow();
-
-    //     let total = 0;
-    //     let netAmount1 = 0;
-    //     tableData.forEach((row: any) => {
-    //         total += row.amount;
-    //         netAmount1 += row.amount + row.gst ;
-    //     })
-    //     formik.setFieldValue("netAmount", netAmount1);
-    //     //formik.setFieldValue("totalServiceAmount", total);
-    //     formik.setFieldValue("totalAmount", total);
-    //     // if (isRowFilled(item) && index === updatedItems.length - 1) {
-    //     //     addRow();
-    //     // }
-    // };
 
     const addRow = () => {
         setTableData([...tableData, {
@@ -930,8 +708,16 @@ const CreateWorkShopPurchaseOrder = () => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={indentOptions}
+                                    options={
+                                        indentOptions.filter((e: any) => {
+                                            if (e.indenttype == "WorkShopPurchase") {
+                                                return e;
+                                            }
+                                        })
+                                    }
+
                                     fullWidth
+                                    value={indentOptions.find((opt) => opt.value === formik.values.indentId) || null}
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log("check value", newValue);
@@ -939,7 +725,19 @@ const CreateWorkShopPurchaseOrder = () => {
                                             GetIndentIDById(newValue?.value);
                                             formik.setFieldValue("indentId", newValue?.value);
                                             formik.setFieldValue("indentNo", newValue?.label?.toString() || "");
+                                            // formik.setFieldValue("indentType", newValue?.indenttype);
+                                            // let total = 0;
+                                            // let netAmt = 0;
+                                            // tableData.forEach((row: any) => {
+                                            //     total += row.amount;
+                                            //     netAmt += row.amount + row.amount * (row.gst / 100);
+                                            // })
+                                            // formik.setFieldValue("netAmount", netAmt);
+                                            // formik.setFieldValue("totalAmount", total);
                                         }
+
+                                        // formik.setFieldValue("netAmount", netAmt);
+                                        // formik.setFieldValue("totalAmount", total);
                                     }}
 
                                     // value={
@@ -968,6 +766,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     id="combo-box-demo"
                                     options={vendorData}
                                     fullWidth
+                                    value={vendorData.find((opt) => opt.value === formik.values.vendorId) || null}
                                     size="small"
                                     onChange={(event: any, newValue: any) => {
                                         console.log(newValue?.value);
@@ -993,6 +792,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={["Open"]}
+                                    value={"open"}
                                     fullWidth
                                     size="small"
                                     disabled
@@ -1103,112 +903,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                 </Modal>
                             </Grid>;
 
-                            {/* <Grid container spacing={1} item>
-                                <Grid
-                                    xs={12}
-                                    md={4}
-                                    sm={4}
-                                    item
-                                    style={{ marginBottom: "30px", marginTop: "30px" }}
-                                >
-                                    <TextField
-                                        type="file"
-                                        inputProps={{ accept: "image/*" }}
-                                        InputLabelProps={{ shrink: true }}
-                                        label={<CustomLabel text={t("text.pOrderDoc")} />}
-                                        size="small"
-                                        fullWidth
-                                        style={{ backgroundColor: "white" }}
-                                        onChange={(e: any) => otherDocChangeHandler(e, "pOrderDoc")}
-                                        required={true}
-                                    />
-                                </Grid>
-                                <Grid xs={12} md={4} sm={4} item></Grid>
 
-                                <Grid xs={12} md={4} sm={4} item>
-                                    <Grid
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-around",
-                                            alignItems: "center",
-                                            margin: "10px",
-                                        }}
-                                    >
-                                        {formik.values.pOrderDoc == "" ? (
-                                            <img
-                                                src={nopdf}
-                                                style={{
-                                                    width: 150,
-                                                    height: 100,
-                                                    border: "1px solid grey",
-                                                    borderRadius: 10,
-                                                }}
-                                            />
-                                        ) : (
-                                            <img
-                                                src={`data:image/jpg;base64,${formik.values.pOrderDoc}`}
-                                                style={{
-                                                    width: 150,
-                                                    height: 100,
-                                                    border: "1px solid grey",
-                                                    borderRadius: 10,
-                                                    padding: "2px",
-                                                }}
-                                            />
-                                        )}
-                                        <Typography
-                                            onClick={() => modalOpenHandle1("pOrderDoc")}
-                                            style={{
-                                                textDecorationColor: "blue",
-                                                textDecorationLine: "underline",
-                                                color: "blue",
-                                                fontSize: "15px",
-                                                cursor: "pointer",
-                                            }}
-                                        >
-                                            {t("text.Preview")}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                                <Modal open={docOpen} onClose={handlePanClose1}>
-                                    <Box sx={style}>
-                                        {Img == "" ? (
-                                            // eslint-disable-next-line jsx-a11y/alt-text
-                                            <img
-                                                // src={nopdf}
-                                                style={{
-                                                    width: "170vh",
-                                                    height: "75vh",
-                                                }}
-                                            />
-                                        ) : (
-                                            <img
-                                            src={formik.values.pOrderDoc.startsWith('data:image/jpeg;base64,') 
-                                                ? formik.values.pOrderDoc 
-                                                : `data:image/jpeg;base64,${formik.values.pOrderDoc}`}
-                                            alt="Preview"
-                                            style={{
-                                                width: 150,
-                                                height: 100,
-                                                border: "1px solid grey",
-                                                borderRadius: 10,
-                                                padding: "2px",
-                                            }}
-                                        />
-                                    //     <img
-                                    //     alt="preview image"
-                                    //     src={Img}
-                                    //     style={{
-                                    //       width: "170vh",
-                                    //       height: "75vh",
-                                    //       borderRadius: 10,
-                                    //     }}
-                                    //   />
-
-                                        )}
-                                    </Box>
-                                </Modal>
-                            </Grid> */}
                             <Grid item lg={12} md={12} xs={12} textAlign={"center"} fontSize={12} fontWeight={800}>
 
                             </Grid>
@@ -1371,18 +1066,6 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 style={{ cursor: "pointer" }}
                                                             />
                                                         </td>
-                                                        {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                                                            if (tableData.length > 1) {
-                                                                deleteRow(index)
-                                                            } else {
-                                                                alert("There should be atleast one row")
-                                                            }
-                                                        }}>
-                                                            <DeleteIcon />
-                                                        </td> */}
-
-
-
                                                         <td
                                                             style={{
                                                                 border: "1px solid black",
@@ -1409,12 +1092,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                    // label={
-                                                                    //     // <CustomLabel
-                                                                    //     //     text={t("text.selectItem")}
-                                                                    //     //     required={false}
-                                                                    //     // />
-                                                                    // }
+
                                                                     />
                                                                 )}
                                                             />
@@ -1426,26 +1104,18 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 textAlign: "center",
                                                             }}
                                                         >
-                                                            <Autocomplete
-                                                                disablePortal
-                                                                id="combo-box-demo"
-                                                                options={unitOptions}
-                                                                value={
-                                                                    unitOptions.find((opt: any) => (opt.value) === row?.unitId) || null
-                                                                }
-                                                                fullWidth
-                                                                size="small"
-                                                                sx={{ width: "145px" }}
-                                                                onChange={(e: any, newValue: any) => handleInputChange(index, "unitId", newValue?.value)}
-                                                                renderInput={(params) => (
-                                                                    <TextField
-                                                                        {...params}
-                                                                    //   label={
-                                                                    //       <CustomLabel text={t("text.selectUnit")} required={false} />
-                                                                    //   }
-                                                                    />
-                                                                )}
-                                                            />
+                                                            <select
+                                                                value={row.unitId}
+                                                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                                style={{ width: '95%', height: '35px' }}
+                                                            >
+                                                                <option value=""></option>
+                                                                {unitOptions.map((option: any) => (
+                                                                    <option key={option.value} value={option.value}>
+                                                                        {option.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
                                                         </td>
                                                         <td style={{ textAlign: "right" }}>
                                                             <TextField
@@ -1454,8 +1124,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onChange={(event) => {
                                                                     const value: any = event.target.value;
                                                                     handleInputChange(index, "quantity", value);
-                                                                    // if (!isNaN(value) || value === '' || value === '.') {
-                                                                    // }
+
                                                                 }}
                                                                 onFocus={e => e.target.select()}
                                                                 inputProps={{
@@ -1493,7 +1162,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onChange={(e) => handleInputChange(index, 'amount', (row.rate * row.quantity) || 0)}
                                                                 size="small"
                                                                 inputProps={{ readOnly: true }}
-                                                            // onFocus={e => e.target.select()}
+                                                                onFocus={e => e.target.select()}
                                                             />
                                                         </td>
                                                         <td
@@ -1520,12 +1189,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 renderInput={(params) => (
                                                                     <TextField
                                                                         {...params}
-                                                                    // label={
-                                                                    //     <CustomLabel
-                                                                    //         text={t("text.tax")}
-                                                                    //         required={false}
-                                                                    //     />
-                                                                    // }
+
                                                                     />
                                                                 )}
                                                             />
@@ -1601,17 +1265,28 @@ const CreateWorkShopPurchaseOrder = () => {
                                                         {/* {tableData.reduce((acc:any, row:any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)} */}
                                                     </td>
                                                 </tr>
-                                                {/* <tr>
-                                                    <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                        {t("text.Totaltaxamount")}
+                                                <tr>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                        {t("text.TotalCGstAmt")}
 
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>
-
-                                                        {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
+                                                        <b></b>{formik.values.totalCGST}
+                                                        {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)} */}
                                                     </td>
-                                                </tr> */}
+                                                </tr>
+                                                <tr>
+                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                        {t("text.TotalSGstAmt")}
+
+
+                                                    </td>
+                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
+                                                        <b></b>{formik.values.totalSGST}
+                                                        {/* {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)} */}
+                                                    </td>
+                                                </tr>
                                                 <tr>
                                                     <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                         {t("text.Totalnetamount")}
@@ -1627,39 +1302,64 @@ const CreateWorkShopPurchaseOrder = () => {
                                         </Table>
                                     </div> </Grid>
                             )}
-                            <Grid item xs={12}>
-                                <div style={{ justifyContent: "space-between", flex: 2 }}>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        style={{
-                                            width: "48%",
-                                            backgroundColor: `var(--header-background)`,
-                                            margin: "1%",
-                                        }}
-                                    >
-                                        {t("text.save")}
-                                    </Button>
 
-                                    <Button
-                                        type="reset"
-                                        variant="contained"
-                                        style={{
-                                            width: "48%",
-                                            backgroundColor: "#F43F5E",
-                                            margin: "1%",
-                                        }}
-                                        onClick={() => formik.resetForm()}
-                                    >
-                                        {t("text.reset")}
-                                    </Button>
-                                </div>
+                            <Grid item lg={6} sm={6} xs={12}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    style={{
+                                        backgroundColor: `var(--header-background)`,
+                                        color: "white",
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    {t("text.save")}
+                                </Button>
                             </Grid>
+                            <Grid item lg={6} sm={6} xs={12}>
+                                <Button
+                                    type="button"
+                                    fullWidth
+                                    style={{
+                                        backgroundColor: "#F43F5E",
+                                        color: "white",
+                                        marginTop: "10px",
+                                    }}
+                                    onClick={() => {
+                                        formik.resetForm();
+                                        setTableData([
+                                            {
+                                                "id": 0,
+                                                "indentId": 0,
+                                                "itemId": 0,
+                                                "unitId": null,
+                                                "quantity": 0,
+                                                "rate": 0,
+                                                "amount": 0,
+                                                "approveQuantity": 0,
+                                                "fyId": 0,
+                                                "srn": 0,
+                                                "isDelete": true,
+                                                "unitName": "",
+                                                "itemName": ""
+                                            },
+                                        ]);
+
+                                        getPurchaseOrderNo();
+                                        setIsIndentSelected(false);
+
+                                    }}
+                                >
+                                    {t("text.reset")}
+                                </Button>
+                            </Grid>
+
+
                         </Grid>
                     </form>
                 </CardContent>
             </div>
-        </div>
+        </div >
     );
 };
 

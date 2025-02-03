@@ -385,7 +385,7 @@ const CreatePurchaseInvoice = () => {
       purchaseInvoiceDetail: [],
     },
     validationSchema: Yup.object().shape({
-       invoiceNo: Yup.string().required("Invoice No. is required"),
+      invoiceNo: Yup.string().required("Invoice No. is required"),
       // orderNo: Yup.string().required(t("text.reqOrderNum")),
       // vendorId: Yup.date().required("Vendor is required"),
       // p_InvoiceDate: Yup.date().required(t("text.reqInvDate")),
@@ -637,6 +637,7 @@ const CreatePurchaseInvoice = () => {
                   disablePortal
                   id="combo-box-demo"
                   options={orderOption}
+                  value={orderOption.find((opt: any) => opt.value === formik.values.orderId)?.label || ""}
                   fullWidth
                   size="small"
                   onChange={async (event: any, newValue: any) => {
@@ -1285,7 +1286,39 @@ const CreatePurchaseInvoice = () => {
                       backgroundColor: "#F43F5E",
                       margin: "1%",
                     }}
-                    onClick={() => formik.resetForm()}
+                    onClick={() => {
+                      formik.resetForm(); // Reset form values
+                      setTableData([
+                        {
+                          id: 0,
+                          invoiceId: 0,
+                          orderId: 0,
+                          itemId: 0,
+                          quantity: 0,
+                          rate: 0,
+                          amount: 0,
+                          gstId: 0,
+                          gstRate: 0,
+                          cgst: 0,
+                          sgst: 0,
+                          igst: 0,
+                          netAmount: 0,
+                          fyId: 0,
+                          srn: 0,
+                          balQuantity: 0,
+                          isDelete: true,
+                          itemName: "",
+                          unitName: "",
+                          unitId: 0,
+                        },
+                      ]); // Reset table data
+                      //   setItemValue(null); // Reset Autocomplete selection
+                      // setSelectedAction(null); // Reset selected action
+                      setIsIndentSelected(false); // Reset indent selection
+                      //   setmrnNoOptions([]); // Reset MRN options
+                   //   setVendorDetail(null); // Reset vendor details
+                      //   GetQcData();
+                    }}
                   >
                     {t("text.reset")}
                   </Button>
