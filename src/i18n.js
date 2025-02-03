@@ -28,7 +28,7 @@ const resources = {
         Age: "Age",
         totaldays: "Total Days",
         noOfComplaints: "No. Of Complaints",
-        ComplaintStatus: "Complaint Status",
+        ComplaintStatus: "COMPLAINT STATUS",
         DocumentType: "Document Type",
         vehiclePhoto: "Vehicle Photo",
         RegistrationOn: "Registration On",

@@ -532,7 +532,7 @@ export default function MiniDrawer({ items }: any) {
   const handlePermissionClick = () => {
     if (ID) {
       console.log("id check 175", ID);
-      getNode(ID);
+      // getNode(ID);
     } else {
       toast.error("ID not found");
     }
@@ -860,7 +860,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-            // style={{  borderBottomRightRadius: "15px" }}
+          // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1041,190 +1041,190 @@ export default function MiniDrawer({ items }: any) {
         <Divider />
 
         <React.Fragment>
-      {/* Home List */}
-      <List sx={{ padding: 0 }}>
-        {["Home"].map((text, index) => (
-          <ListItem
-            key={text}
-            disablePadding
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: 0,
-              "&:hover": {
-                cursor: "pointer",
-                backgroundColor: "inherit",
-              },
-            }}
-          >
-            <ListItemButton
-              sx={{
-                justifyContent: open ? "initial" : "center",
-                px: 4.5,
-                backgroundColor: "inherit"
-              }}
-              onClick={() => {
-                routeChangeHome();
-                resetHomeColor();
-              }}
-            >
-              <ListItemIcon
+          {/* Home List */}
+          <List sx={{ padding: 0 }}>
+            {["Home"].map((text, index) => (
+              <ListItem
+                key={text}
+                disablePadding
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 1 : "auto",
-                  justifyContent: "center",
-                  color: homeColor,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: 0,
+                  "&:hover": {
+                    cursor: "pointer",
+                    backgroundColor: "inherit",
+                  },
                 }}
               >
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-
-      {/* Dynamic Items List */}
-      <List sx={{ padding: 0 }}>
-        {items.map((text:any, index:any) => (
-          <React.Fragment key={index}>
-            <Divider />
-            <ListItem
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                backgroundColor: "inherit"
-              }}
-              onClick={() => collapsehamndle(index)}
-            >
-              <ListItem sx={{
-                justifyContent: open ? "initial" : "center",
-                paddingLeft: 2,
-                paddingRight: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
-                cursor: "pointer",
-              }}>
-                {open ? (
-                  <ListItemIcon sx={{
-                    minWidth: 0,
-                    mr: open ? 1 : "auto",
-                    justifyContent: "center",
-                    color: index === collapseIndex ? "#FF0000" : "inherit",
-                    fontWeight: 600,
-                  }}>
-                    {collapseIndex === index ? <FaRegFolderOpen style={{color:"#42AEEE"}} size={20} />  : <FolderIcon style={{color:"#42AEEE"}} />}
-                  </ListItemIcon>
-                ) : (
-                  <div
-                    style={{
-                      minWidth: 24,
-                      minHeight: 24,
-                      borderRadius: "50%",
-                      backgroundColor: "lightgray",
-                      display: "flex",
+                <ListItemButton
+                  sx={{
+                    justifyContent: open ? "initial" : "center",
+                    px: 4.5,
+                    backgroundColor: "inherit"
+                  }}
+                  onClick={() => {
+                    routeChangeHome();
+                    resetHomeColor();
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 1 : "auto",
                       justifyContent: "center",
-                      alignItems: "center",
-                      marginRight: 8,
-                      color: index === collapseIndex ? "#FF0000" : "inherit",
+                      color: homeColor,
                     }}
-                    title={text.name}
                   >
-                    {text.name.charAt(0)}
-                  </div>
-                )}
-              
-                <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: "bold" }} />
+                </ListItemButton>
               </ListItem>
-              <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
-                {/* {collapseIndex === index ? (
+            ))}
+          </List>
+
+          {/* Dynamic Items List */}
+          <List sx={{ padding: 0 }}>
+            {items.map((text: any, index: any) => (
+              <React.Fragment key={index}>
+                <Divider />
+                <ListItem
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "inherit",
+                  }}
+                  onClick={() => collapsehamndle(index)}
+                >
+                  <ListItem sx={{
+                    justifyContent: open ? "initial" : "center",
+                    paddingLeft: 2,
+                    paddingRight: 0,
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    cursor: "pointer",
+                  }}>
+                    {open ? (
+                      <ListItemIcon sx={{
+                        minWidth: 0,
+                        mr: open ? 1 : "auto",
+                        justifyContent: "center",
+                        color: index === collapseIndex ? "#FF0000" : "inherit",
+                        fontWeight: 600,
+                      }}>
+                        {collapseIndex === index ? <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} /> : <FolderIcon style={{ color: "#42AEEE" }} />}
+                      </ListItemIcon>
+                    ) : (
+                      <div
+                        style={{
+                          minWidth: 24,
+                          minHeight: 24,
+                          borderRadius: "50%",
+                          backgroundColor: "lightgray",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          marginRight: 8,
+                          color: index === collapseIndex ? "#FF0000" : "inherit",
+                        }}
+                        title={text.name}
+                      >
+                        {text.name.charAt(0)}
+                      </div>
+                    )}
+
+                    <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0, }} />
+                  </ListItem>
+                  <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
+                    {/* {collapseIndex === index ? (
                   <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
                 ) : (
                   <ExpandMoreIcon className="sidebar-item-expand-arrow" />
                 )} */}
-              </ListItemIcon>
-            </ListItem>
-            <Divider />
+                  </ListItemIcon>
+                </ListItem>
+                <Divider />
 
-            {/* Submenu Items */}
-            {collapseIndex === index && (
-              <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
-                {items[index].items.map((subText:any, subIndex:any) => (
-                  <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
-                    <ListItem
-                      sx={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "center",
-                        paddingLeft: 2,
-                        paddingRight: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                        color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
-                        borderRadius: "10px",
-                        cursor: "pointer",
-                        "&:hover": {
-                          backgroundColor: "lightgray",
-                          color: "black",
-                        },
-                      }}
-                      onClick={(e) => {
-                        onClick(e, subText);
-                        handleSubMenuClick(subIndex);
-                      }}
-                    >
-                      {open && (
-                        <span
-                          style={{
-                            fontSize: "1.2rem",
-                            backgroundColor: "inherit",
-                            padding: "6px",
-                            borderRadius: "10px",
-                            color:"#426aee"
-                          }}
-                        >
-                         <FaFileLines />
-                        </span>
-                      )}
-                      {open ? (
-                        <p
-                          style={{
-                            fontWeight: 500,
-                            paddingTop: "3px",
-                            paddingBottom: "3px",
-                            opacity: open ? 1 : 0,
-                          }}
-                        >
-                          {subText.name}
-                        </p>
-                      ) : (
-                        <ListItemIcon
+                {/* Submenu Items */}
+                {collapseIndex === index && (
+                  <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit", alignItems: "center", justifyContent: "center" }}>
+                    {items[index].items.map((subText: any, subIndex: any) => (
+                      <List sx={{ pl: 2, alignItems: "center", justifyContent: "center" }} key={subIndex}>
+                        <ListItem
                           sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : "auto",
-                            justifyContent: "center",
-                            color: open ? "#FF0000" : "inherit",
+                            display: "flex",
+                            justifyContent: "start",
+                            alignItems: "center",
+                            paddingLeft: 2,
+                            paddingRight: 0,
+                            paddingTop: 0,
+                            paddingBottom: 0,
                             backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                            borderRadius: "25px",
-                            padding: "5px 10px",
+                            color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+                            borderRadius: "10px",
+                            cursor: "pointer",
+                            "&:hover": {
+                              backgroundColor: "lightgray",
+                              color: "black",
+                            },
                           }}
-                          title={subText.name}
+                          onClick={(e) => {
+                            onClick(e, subText);
+                            handleSubMenuClick(subIndex);
+                          }}
                         >
-                          <DescriptionIcon />
-                        </ListItemIcon>
-                      )}
-                    </ListItem>
+                          {open && (
+                            <span
+                              style={{
+                                fontSize: "1.2rem",
+                                backgroundColor: "inherit",
+                                padding: "6px",
+                                borderRadius: "10px",
+                                color: "#426aee"
+                              }}
+                            >
+                              <FaFileLines />
+                            </span>
+                          )}
+                          {open ? (
+                            <p
+                              style={{
+                                fontWeight: 500,
+                                paddingTop: "3px",
+                                paddingBottom: "3px",
+                                opacity: open ? 1 : 0,
+                              }}
+                            >
+                              {subText.name}
+                            </p>
+                          ) : (
+                            <ListItemIcon
+                              sx={{
+                                minWidth: 0,
+                                mr: open ? 3 : "auto",
+                                justifyContent: "center",
+                                color: open ? "#FF0000" : "inherit",
+                                backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                                borderRadius: "25px",
+                                padding: "5px 10px",
+                              }}
+                              title={subText.name}
+                            >
+                              <DescriptionIcon />
+                            </ListItemIcon>
+                          )}
+                        </ListItem>
+                      </List>
+                    ))}
                   </List>
-                ))}
-              </List>
-            )}
-          </React.Fragment>
-        ))}
-      </List>
-    </React.Fragment>
+                )}
+              </React.Fragment>
+            ))}
+          </List>
+        </React.Fragment>
       </Drawer>
       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -1271,7 +1271,7 @@ export default function MiniDrawer({ items }: any) {
         onClose={() => {
           setProfileDrawerOpen(false);
         }}
-        onOpen={() => {}}
+        onOpen={() => { }}
         style={{
           zIndex: 1300,
         }}

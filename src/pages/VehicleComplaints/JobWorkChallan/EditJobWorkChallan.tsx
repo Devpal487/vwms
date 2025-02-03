@@ -553,6 +553,15 @@ const EditJobWorkChallan = (props: Props) => {
   const deleteRow = (index: any) => {
     const newData = tableData.filter((_, i) => i !== index);
     setTableData(newData);
+    let total = 0;
+    let netAmt = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+      netAmt += row.amount + row.amount * (row.gst / 100);
+    })
+    formik.setFieldValue("netAmount", netAmt);
+    formik.setFieldValue("gst", netAmt - total);
+    formik.setFieldValue("serviceAmount", total);
   };
 
 
@@ -874,7 +883,10 @@ const EditJobWorkChallan = (props: Props) => {
                     }}
                   >
                     <thead
-                      style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
+                      style={{
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`
+                      }}
                     >
                       <tr>
                         <th
