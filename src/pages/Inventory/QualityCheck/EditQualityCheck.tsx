@@ -1033,9 +1033,9 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.GSTRate")}
                         </th>
-                        
 
-                            <th
+
+                        <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1054,7 +1054,7 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.sgst")}
                         </th>
-                        
+
                         <th
                           style={{
                             border: "1px solid black",
@@ -1440,7 +1440,7 @@ const EditQualityCheck = (props: Props) => {
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                             <Button
+                {/* <Button
                                                     disabled
                                                         type="submit"
                                                         fullWidth
@@ -1453,8 +1453,8 @@ const EditQualityCheck = (props: Props) => {
                                                         }}
                                                     >
                                                         {t("text.update")}
-                                                    </Button>
-                {/* <Button
+                                                    </Button> */}
+                <Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1464,7 +1464,7 @@ const EditQualityCheck = (props: Props) => {
                   }}
                 >
                   {t("text.update")}
-                </Button> */}
+                </Button>
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
