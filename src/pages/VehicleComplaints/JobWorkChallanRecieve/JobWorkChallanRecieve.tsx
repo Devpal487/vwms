@@ -224,7 +224,7 @@ export default function JobWorkChallanRecieve() {
                },
                {
                   field: "vehicleNo",
-                  headerName: t("text.VehicleNo"),
+                  headerName: t("text.VehicleNum"),
                   flex: .9,
                   headerClassName: "MuiDataGrid-colCell",
 

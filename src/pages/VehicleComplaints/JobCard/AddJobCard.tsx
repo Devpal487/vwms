@@ -705,15 +705,24 @@ const AddJobCard = (props: Props) => {
         const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
 
         if (response.data.status === 1) {
-          toast.success(response.data.message);
+          toast.success("JobWorkChallan generated successfully!");
+          //toast.success(response.data.message);
           setChallanNum(response.data.data);
 
           // Update tableData with new challanNo for the matching vendor
+          // setTableData((prevData) =>
+          //   prevData.map((data) =>
+          //     data.vendorId === uniqueVendor[i] ? { ...data, challanNo: response.data.data } : data
+          //   )
+          // );
           setTableData((prevData) =>
             prevData.map((data) =>
               data.vendorId === uniqueVendor[i] ? { ...data, challanNo: response.data.data } : data
             )
           );
+  
+          // ✅ Log inside useEffect after state update to verify
+          console.log(`Updated challan number for vendor ${uniqueVendor[i]}: ${response.data.data}`);
         } else {
           setToaster(true);
           toast.error(response.data.message);
@@ -723,7 +732,6 @@ const AddJobCard = (props: Props) => {
         toast.error("Failed to save job work challan.");
       }
 
-      // ✅ Add 1-second delay before the next API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   };

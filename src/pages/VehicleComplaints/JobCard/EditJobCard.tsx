@@ -694,13 +694,16 @@ const EditJobCard = (props: Props) => {
       }
       const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
       if (response.data.status === 1) {
-        toast.success(response.data.message);
-        const arr: any = [];
-        tableData.forEach((data: any) => {
-          arr.push({ ...data, challanNo: response.data.data });
-        })
-        setTableData(arr);
+        setTableData((prevData) =>
+          prevData.map((data) =>
+            data.vendorId === uniqueVendor[i] ? { ...data, challanNo: response.data.data } : data
+          )
+        );
+        toast.success("JobWorkChallan generated successfully!");
+        //toast.success(response.data.message);
         setChallanNum(response.data.data);
+
+        // Update tableData with new challanNo for the matching vendor
       } else {
         setToaster(true);
         toast.error(response.data.message);
