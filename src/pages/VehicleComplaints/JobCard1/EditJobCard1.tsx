@@ -852,6 +852,7 @@ console.log("location.state",(location.state));
       item.qty > 0 &&
       item.rate > 0 
       //item.amount >= 0
+      
 
     );
   };

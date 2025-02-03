@@ -1440,7 +1440,21 @@ const EditQualityCheck = (props: Props) => {
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                             <Button
+                                                    disabled
+                                                        type="submit"
+                                                        fullWidth
+                                                        style={{
+                                                            backgroundColor: "#e0e0e0", // Faded color for disabled
+                                                            color: "#9e9e9e", // Text color for disabled
+                                                            //  backgroundColor: `var(--header-background)`,
+                                                            //color: "white",
+                                                            marginTop: "10px",
+                                                        }}
+                                                    >
+                                                        {t("text.update")}
+                                                    </Button>
+                {/* <Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1450,7 +1464,7 @@ const EditQualityCheck = (props: Props) => {
                   }}
                 >
                   {t("text.update")}
-                </Button>
+                </Button> */}
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>

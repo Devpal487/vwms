@@ -1348,11 +1348,14 @@ const EditStaffItemIssue = (props: Props) => {
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Grid>
                                     <Button
+                                        disabled
                                         type="submit"
                                         fullWidth
                                         style={{
-                                            backgroundColor: `var(--header-background)`,
-                                            color: "white",
+                                            backgroundColor: "#e0e0e0", // Faded color for disabled
+                                            color: "#9e9e9e", // Text color for disabled
+                                            //  backgroundColor: `var(--header-background)`,
+                                            //color: "white",
                                             marginTop: "10px",
                                         }}
                                     >
