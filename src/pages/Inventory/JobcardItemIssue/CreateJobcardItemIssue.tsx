@@ -74,7 +74,7 @@ const CreateJobcardItemIssue = (props: Props) => {
   ]);
   console.log("🚀 ~ CreateJobCardItemreturn ~ tableData:", tableData);
   const [indentOptions, setIndentOptions] = useState([
-    { value: "-1", label: t("text.SelectindentNo") },
+    { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
   ]);
   const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
     { value: -1, label: t("text.itemMasterId") },
@@ -136,6 +136,7 @@ const CreateJobcardItemIssue = (props: Props) => {
         label: data[index]["indentNo"],
         value: data[index]["indentId"],
         vehicleitem: data[index]["vehicleitem"],
+        indenttype: data[index]["indenttype"],
         // empName: data[index]["empName"],
       });
     }
@@ -393,7 +394,16 @@ const CreateJobcardItemIssue = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={indentOptions}
+                 // options={indentOptions}
+                  options={
+                    
+                    indentOptions.filter((e:any) =>
+                    {
+                      if(e.indenttype === "JobCard")
+                      {
+                        return e;
+                      }
+                    })}
                   value={
                     indentOptions.find(
                       (opt: any) => opt.value === formik.values.indentId
@@ -443,7 +453,9 @@ const CreateJobcardItemIssue = (props: Props) => {
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                  options={vehicleOption}
+                  options={
+                    
+                    vehicleOption}
                   value={
                     vehicleOption.find(
                       (opt) => opt.value === formik.values.vehicleitem

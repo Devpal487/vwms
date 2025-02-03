@@ -11,7 +11,10 @@ const resources = {
       error: {},
       message: {},
       text: {
-       
+        //3/2/2025
+        TotalSGstAmt: "Total SGST Amount",
+        TotalCGstAmt: "Total CGST Amount",
+        //TotalGST:"Total GST",
         storeCode:"Enter Store Code",
         
         //02/01/25

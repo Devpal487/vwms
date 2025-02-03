@@ -706,8 +706,8 @@ const EditStaffItemIssue = (props: Props) => {
     }]);
     console.log("🚀 ~ CreateStaffItemIssue ~ tableData:", tableData)
     const [indentOptions, setIndentOptions] = useState([
-        { value: "-1", label: t("text.SelectindentNo") },
-    ]);
+        { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
+      ]);
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
@@ -749,6 +749,7 @@ const EditStaffItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
+                indenttype: data[index]["indenttype"],
 
             });
         };
@@ -1083,7 +1084,15 @@ const EditStaffItemIssue = (props: Props) => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={indentOptions}
+                                    options={
+                    
+                                        indentOptions.filter((e:any) =>
+                                        {
+                                          if(e.indenttype === "Staff")
+                                          {
+                                            return e;
+                                          }
+                                        })}
                                     value={
                                         indentOptions.find(
                                             (option) => option.value === formik.values.indentId

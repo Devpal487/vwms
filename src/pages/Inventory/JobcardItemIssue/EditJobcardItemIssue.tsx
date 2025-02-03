@@ -75,9 +75,9 @@ const EditJobcardItemIssue = (props: Props) => {
         "returnItem": true
     }]);
     console.log("🚀 ~ CreateStaffItemIssue ~ tableData:", tableData)
-    const [indentOptions, setIndentOptions] = useState([
-        { value: "-1", label: t("text.SelectindentNo") },
-    ]);
+     const [indentOptions, setIndentOptions] = useState<any>([
+        { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
+      ]);
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
@@ -119,9 +119,11 @@ const EditJobcardItemIssue = (props: Props) => {
             arr.push({
                 label: data[index]["indentNo"],
                 value: data[index]["indentId"],
+                indentype: data[index]["indentype"],
+                vehicleitem: data[index]["vehicleitem"],
 
             });
-        };
+        }
         setIndentOptions(arr);
     };
 
@@ -473,10 +475,19 @@ const EditJobcardItemIssue = (props: Props) => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={indentOptions}
+                                  //  options={indentOptions}
+                                  options={
+                    
+                                    indentOptions.filter((e:any) =>
+                                    {
+                                      if(e.indenttype === "JobCard")
+                                      {
+                                        return e;
+                                      }
+                                    })}
                                     value={
                                         indentOptions.find(
-                                            (option) => option.value === formik.values.indentId
+                                            (option:any) => option.value === formik.values.indentId
                                         ) || null
                                     }
 

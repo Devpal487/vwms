@@ -1225,17 +1225,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     <tbody>
                       {tableData.map((row, index) => (
                         <tr key={row.id} style={{ border: "1px solid black" }}>
-                          {/* <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <DeleteIcon
-                              onClick={() => deleteRow(index)}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </td> */}
+                         
                           <td
                             style={{
                               border: "1px solid black",
@@ -1575,15 +1565,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   }}
                   onClick={() => {
                     formik.resetForm(); // Reset form values
-                     // Reset table data
-                    //   setItemValue(null); // Reset Autocomplete selection
-                    // setSelectedAction(null); // Reset selected action
-                    //setIsIndentSelected(false); // Reset indent selection
-                    //   setmrnNoOptions([]); // Reset MRN options
+                     
                     getMRNNo();
                     setIsIndentSelected(false); 
                     setVendorDetail(null); // Reset vendor details
-                   // GetQcData();
+                   
                   }}
                 >
                   {t("text.reset")}
