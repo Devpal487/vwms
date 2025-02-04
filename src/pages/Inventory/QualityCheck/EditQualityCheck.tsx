@@ -75,8 +75,8 @@ const EditQualityCheck = (props: Props) => {
   const [orderOption, setorderOption] = useState([
     { value: -1, label: t("text.id") },
   ]);
-  const [unitOptions, setUnitOptions] = useState([
-    { value: "-1", label: t("text.SelectUnitId") },
+  const [unitOptions, setUnitOptions] = useState<any>([
+    { value: -1, label: t("text.SelectUnitId") },
   ]);
   const [itemOption, setitemOption] = useState<any>([]);
   const [qcOptions, setQcOptions] = useState([]);
@@ -182,6 +182,8 @@ const EditQualityCheck = (props: Props) => {
                 itemId: item.itemId,
                 itemName: item.itemName || "",
                 rejectQty: item.rejectQty,
+                unitId:item.unitId,
+                unitName:item.unitName,
                 quantity: item.quantity,
                 rate: item.rate,
                 amount: item.amount,
@@ -368,6 +370,10 @@ const EditQualityCheck = (props: Props) => {
       }
     } else if (field === "batchNo") {
       item.batchNo = value.toString();
+    }
+      else if(field ==="unitId"){
+        item.unitId = value.toString();
+      
     } else if (field === "mrnQty") {
       item.mrnQty = value === "" ? 0 : parseFloat(value);
     } else if (field === "acceptQty") {
@@ -670,10 +676,10 @@ const EditQualityCheck = (props: Props) => {
                   id="qcNo"
                   name="qcNo"
                   label={
-                    <CustomLabel text={t("text.qcNo")} required={false} />
+                    <CustomLabel text={t("text.qcNo1")} required={false} />
                   }
                   value={formik.values.qcNo}
-                  placeholder={t("text.qcNo")}
+                  placeholder={t("text.qcNo1")}
                   size="small"
                   fullWidth
                   onChange={formik.handleChange}
@@ -687,10 +693,10 @@ const EditQualityCheck = (props: Props) => {
                   id="qcDate"
                   name="qcDate"
                   label={
-                    <CustomLabel text={t("text.qcDate")} required={true} />
+                    <CustomLabel text={t("text.qcDate1")} required={true} />
                   }
                   value={formik.values.qcDate}
-                  placeholder={t("text.qcDate")}
+                  placeholder={t("text.qcDate1")}
                   size="small"
                   fullWidth
                   type="date"
@@ -716,7 +722,7 @@ const EditQualityCheck = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.mrnNo")}
+                          text={t("text.selectmrnNo")}
                           required={false}
                         />
                       }
@@ -732,12 +738,12 @@ const EditQualityCheck = (props: Props) => {
                   name="bill_ChalanNo"
                   label={
                     <CustomLabel
-                      text={t("text.bill_ChalanNo")}
+                      text={t("text.Enterbill_ChalanNo")}
                       required={true}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
-                  placeholder={t("text.bill_ChalanNo")}
+                  placeholder={t("text.Enterbill_ChalanNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -773,10 +779,10 @@ const EditQualityCheck = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.shipmentNo")} required={false} />
+                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
                   }
                   value={formik.values.shipmentNo}
-                  placeholder={t("text.shipmentNo")}
+                  placeholder={t("text.EntershipmentNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -970,7 +976,7 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.BatchNo")}
                         </th>
-                        {/* <th
+                        <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -978,7 +984,7 @@ const EditQualityCheck = (props: Props) => {
                           }}
                         >
                           {t("text.unit")}
-                        </th> */}
+                        </th>
                         <th
                           style={{
                             border: "1px solid black",
@@ -1033,9 +1039,9 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.GSTRate")}
                         </th>
-                        
 
-                            <th
+
+                        <th
                           style={{
                             border: "1px solid black",
                             textAlign: "center",
@@ -1054,7 +1060,7 @@ const EditQualityCheck = (props: Props) => {
                         >
                           {t("text.sgst")}
                         </th>
-                        
+
                         <th
                           style={{
                             border: "1px solid black",
@@ -1196,20 +1202,27 @@ const EditQualityCheck = (props: Props) => {
                               onFocus={e => e.target.select()}
                             />
                           </td>
-                          {/* <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={unitOptions}
-                              value={
-                                unitOptions.find((opt) => (opt.value) === row?.unitId) || null
-                              }
+                              
+                              value={unitOptions.find((opt:any) => (opt.value) == row?.unitId)?.label || ""}
+                              // value={
+                              //   unitOptions.find((opt) => (opt.value) == row?.unitId) || null
+                              // }
                               fullWidth
                               size="small"
                               sx={{ width: "130px" }}
-                              onChange={(e, newValue: any) =>
+                              onChange={(e, newValue: any) =>{
+                                if (!newValue) {
+                                  return;
+                                }
+                              
                                 handleInputChange(index, "unitId", newValue?.value)
                               }
+                            }
 
                               renderInput={(params: any) => (
                                 <TextField
@@ -1218,7 +1231,7 @@ const EditQualityCheck = (props: Props) => {
                                 />
                               )}
                             />
-                          </td> */}
+                          </td>
                           <td
                             style={{
                               border: "1px solid black",
@@ -1391,30 +1404,70 @@ const EditQualityCheck = (props: Props) => {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalAmount1")}
+
+                        </td>
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.totalAmount}
+                        </td> */}
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalCGstAmt")}
+
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.cgst) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalSGstAmt")}
+
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
+                        </td>
+
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.netAmount}
+                        </td> */}
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                    {/* <tfoot>
+                      <tr>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                      {/* <tr>
-                        <td colSpan={10} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totaltaxamount")}
-                        </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst + row.cgst) || 0), 0).toFixed(2)}
-                        </td>
-                      </tr> */}
+                     
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
                           {t("text.Totalnetamount")}
                         </td>
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                    </tfoot>
+                    </tfoot> */}
                   </Table>
                 </div>
               </Grid>
@@ -1440,7 +1493,7 @@ const EditQualityCheck = (props: Props) => {
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                             <Button
+                {/* <Button
                                                     disabled
                                                         type="submit"
                                                         fullWidth
@@ -1453,8 +1506,8 @@ const EditQualityCheck = (props: Props) => {
                                                         }}
                                                     >
                                                         {t("text.update")}
-                                                    </Button>
-                {/* <Button
+                                                    </Button> */}
+                <Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1464,7 +1517,7 @@ const EditQualityCheck = (props: Props) => {
                   }}
                 >
                   {t("text.update")}
-                </Button> */}
+                </Button>
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>

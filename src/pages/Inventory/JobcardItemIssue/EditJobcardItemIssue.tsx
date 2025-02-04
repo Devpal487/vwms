@@ -241,7 +241,7 @@ const EditJobcardItemIssue = (props: Props) => {
                 value: data[index]["itemMasterId"],
             });
         };
-        setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+        setitemOption(arr);
     };
     const GetUnitData = async () => {
         const collectData = {
@@ -536,10 +536,10 @@ const EditJobcardItemIssue = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                                            label={<CustomLabel text={t("text.VehicleNos1")} required={true} />}
                                             name="vehicleitem"
                                             id="vehicleitem"
-                                            placeholder={t("text.VehicleNo")}
+                                            placeholder={t("text.VehicleNos1")}
                                         />
                                     )}
                                 />

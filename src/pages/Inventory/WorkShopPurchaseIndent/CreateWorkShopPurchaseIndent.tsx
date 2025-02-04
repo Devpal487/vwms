@@ -147,9 +147,20 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
 
 
 
+  // const validateRow = (row: any) => {
+  //   return row.itemId && row.unitId && row.approveQuantity && row.rate > 0;
+  // };
   const validateRow = (row: any) => {
-    return row.itemId && row.unitId && row.approveQuantity && row.rate > 0;
-  };
+    if (row.approveQuantity <= 0) {
+        alert("Approve Quantity must be greater than 0.");
+        return false;
+    }
+    if (row.approveQuantity > row.quantity) {
+        alert("Approve Quantity cannot be greater than Quantity.");
+        return false;
+    }
+    return true;
+};
 
   const formik = useFormik({
     initialValues: {

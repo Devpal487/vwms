@@ -244,7 +244,7 @@ const CreateWorkShopPurchaseOrder = () => {
                 value: data[index]["unitId"],
             });
         }
-        setUnitOptions([{ value: -1, label: t("text.selectUnit") }, ...arr]);
+        setUnitOptions(arr);
     };
 
     const getTaxData = async () => {
@@ -259,7 +259,7 @@ const CreateWorkShopPurchaseOrder = () => {
                     value: item.taxId,
                 })) || [];
 
-            setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+            setTaxData(arr);
         }
     };
     const GetitemData = async () => {
@@ -668,7 +668,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                 <TextField
                                     id="orderNo"
                                     name="orderNo"
-                                    label={<CustomLabel text={t("text.orderNo")} required={false} />}
+                                    label={<CustomLabel text={t("text.OrderNo")} required={false} />}
                                     value={formik.values.orderNo}
                                     size="small"
                                     fullWidth
@@ -682,12 +682,12 @@ const CreateWorkShopPurchaseOrder = () => {
                                     name="orderDate"
                                     label={
                                         <CustomLabel
-                                            text={t("text.orderDate")}
+                                            text={t("text.OrderDate")}
                                             required={true}
                                         />
                                     }
                                     value={formik.values.orderDate}
-                                    placeholder={t("text.orderDate")}
+                                    placeholder={t("text.OrderDate")}
                                     size="small"
                                     type="date"
                                     fullWidth
@@ -782,7 +782,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                         />
                                     )}
                                 />
-                                {formik.touched.vendorId && formik.errors.vendorId && (
+                                {(!formik.values.name) && formik.touched.vendorId && formik.errors.vendorId && (
                                     <div style={{ color: "red", margin: "5px" }}>{formik.errors.vendorId}</div>
                                 )}
                             </Grid>
@@ -1109,7 +1109,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
                                                                 style={{ width: '95%', height: '35px' }}
                                                             >
-                                                                <option value=""></option>
+                                                               
                                                                 {unitOptions.map((option: any) => (
                                                                     <option key={option.value} value={option.value}>
                                                                         {option.label}
@@ -1257,7 +1257,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                             <tfoot>
                                                 <tr>
                                                     <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                        {t("text.TotalAmount")}
+                                                        {t("text.TotalAmount1")}
 
                                                     </td>
                                                     <td style={{ textAlign: "end", border: "1px solid black" }}>

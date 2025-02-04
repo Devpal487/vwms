@@ -88,9 +88,10 @@ const EditJobCardIndent = (props: Props) => {
         { value: "-1", label: t("text.SelectUnitId") },
     ]);
 
-    const [itemOption, setitemOption] = useState([
-        { value: -1, label: t("text.itemMasterId") },
-    ]);
+    const [itemOption, setitemOption] = useState<
+        { value: number; label: string; unitId?: number }[]
+    >([{ value: -1, label: t("text.itemMasterId") }]);
+
     const [VnoOption, setVnoOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
@@ -184,8 +185,20 @@ const EditJobCardIndent = (props: Props) => {
         setitemOption(arr);
     };
     const validateRow = (row: any) => {
-        return row.approveQuantity > 0;
-      };
+        if (row.approveQuantity <= 0) {
+            alert("Approve Quantity must be greater than 0.");
+            return false;
+        }
+        if (row.approveQuantity > row.quantity) {
+            alert("Approve Quantity cannot be greater than Quantity.");
+            return false;
+        }
+        return true;
+    };
+    
+    // const validateRow = (row: any) => {
+    //     return row.approveQuantity > 0;
+    // };
     const formik = useFormik({
         initialValues: {
             indentId: location.state.indentId,
@@ -210,15 +223,13 @@ const EditJobCardIndent = (props: Props) => {
             indentDetail: [],
             srn: location.state.srn
         },
-        
         onSubmit: async (values) => {
-
             const validTableData = tableData.filter(validateRow);
-            if (validTableData.length === 0) {
-                alert("Please add Approve quantity in table for further process");
+            if (validTableData.length !== tableData.length) {
                 return;
-              }
-              console.log('values', values)
+            }
+        
+            console.log('values', values)
             const response = await api.post(
                 `Master/UpsertIndent`,
                 { ...values, indentDetail: tableData }
@@ -231,7 +242,29 @@ const EditJobCardIndent = (props: Props) => {
                 setToaster(true);
                 toast.error(response.data.message);
             }
-        },
+        }
+        
+        // onSubmit: async (values) => {
+
+        //     const validTableData = tableData.filter(validateRow);
+        //     if (validTableData.length === 0) {
+        //         alert("Please add Approve quantity in table for further process");
+        //         return;
+        //     }
+        //     console.log('values', values)
+        //     const response = await api.post(
+        //         `Master/UpsertIndent`,
+        //         { ...values, indentDetail: tableData }
+        //     );
+        //     if (response.data.status === 1) {
+        //         setToaster(false);
+        //         toast.success(response.data.message);
+        //         navigate("/Inventory/JobCardIndent");
+        //     } else {
+        //         setToaster(true);
+        //         toast.error(response.data.message);
+        //     }
+        // },
     });
 
     const back = useNavigate();
@@ -560,18 +593,8 @@ const EditJobCardIndent = (props: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {/* <select
-                                                                                                                                                                           value={row.unitId}
-                                                                                                                                                                           onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                                                                                                                                                                           style={{ width: '90%', height: '35px' }}
-                                                                                                                                                                       >
-                                                                                                                                                                           <option value="">{t("text.SelectUnit")}</option>
-                                                                                                                                                                           {unitOptions.map((option) => (
-                                                                                                                                                                               <option key={option.value} value={option.value}>
-                                                                                                                                                                                   {option.label}
-                                                                                                                                                                               </option>
-                                                                                                                                                                           ))}
-                                                                                                                                                                       </select> */}
+
+
                                                     </td>
 
 

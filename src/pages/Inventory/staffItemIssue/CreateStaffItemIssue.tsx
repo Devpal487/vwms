@@ -186,7 +186,7 @@ const CreateStaffItemIssue = (props: Props) => {
         unitId: data[index]["unitId"],
       });
     }
-    setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+    setitemOption(arr);
   };
   const GetUnitData = async () => {
     const collectData = {
@@ -692,7 +692,7 @@ const CreateStaffItemIssue = (props: Props) => {
                                 }
                                 style={{ width: "95%", height: "35px" }}
                               >
-                                <option value="">Select Unit</option>
+                              
                                 {unitOptions.map((option) => (
                                   <option
                                     key={option.value}

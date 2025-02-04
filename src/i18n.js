@@ -12,8 +12,8 @@ const resources = {
       message: {},
       text: {
         //3/2/2025
-        TotalSGstAmt: "Total SGST Amount",
-        TotalCGstAmt: "Total CGST Amount",
+        TotalSGstAmt: "Total SGST Amount:",
+        TotalCGstAmt: "Total CGST Amount:",
         //TotalGST:"Total GST",
         storeCode: "Enter Store Code",
 
@@ -196,7 +196,7 @@ const resources = {
         AddDesignation: "Create Designation",
         email12: "Email",
         isActive12: "Currently Active",
-        Emailsettingmaster: "Email Settings",
+        Emailsettingmaster: "Email Setting",
         Type: "Select Type",
         isActive: "Status",
         AddEmaileventsetting: "Create Email Event Setting",
@@ -373,7 +373,7 @@ const resources = {
         //BinKudaghar
         BinKudaghar: "Bin/Kudaghar",
         BinSrNo: "Srno",
-        BinName: "Bin Name",
+        BinName: "Select Bin Name",
         BinCode: "Bin Code",
         BinRFID: "RFID",
         BinArea: "Area",
@@ -519,7 +519,7 @@ const resources = {
         Smsgroup: "Sms group",
         Emailgroup: "Email group",
         Statusactive: "Select Status",
-        EmailSetting: "Email Settings ",
+        EmailSetting: "Email Setting",
         Emailtype: "Type",
         //
 
@@ -2461,7 +2461,7 @@ const resources = {
         amounts: "Amt",
         ItemStatus: "Item Status",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+        EnterStoreName: "Enter Store Name",
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -2543,7 +2543,7 @@ const resources = {
         freights: "frieght",
         amounts: "Amt",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+      
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -2589,6 +2589,7 @@ const resources = {
         bill_ChalanNo: "Bill/Challan No",
         bill_ChalanDate: "Bill/Challan Date",
         shipmentNo: "Shipment Number",
+        EntershipmentNo: "Enter Shipment Number",
         VendorDetails: "Vendor Details",
         SelectVendor: "Select Vendor",
         vendorGstin: "Vendor GSTIN",
@@ -2621,6 +2622,7 @@ const resources = {
         totalSGSTReadOnly: "Total SGST Read Only can't be edited",
         totalAmountReadOnly: "Total Amount Read Only can't be edited",
         mrnNo: "MRN No",
+        selectmrnNo: "Select MRN No",
         mrnDate: "MRN Date",
         createMaterialRecieptNote: "Create Material Receipt Note",
         editMaterialRecieptNote: "Edit Material Receipt Note",
@@ -2859,11 +2861,11 @@ const resources = {
         Issue: "Issue",
         Employee: "Employee",
         IndentDate: "IndentDate",
-        ReturnDate: "ReturnDate",
+        ReturnDate: "Return Date",
         Scrabble: "Scrabble",
         Indent: "Indent",
-        PendingQty: "PendingQty",
-        ReturnQty: "ReturnQty",
+        PendingQty: "Pending Qty",
+        ReturnQty: "Return Qty",
         ComplaintTypeMaster: "Complaint Type Master",
         compTypeName: "comp Type Name",
         // compType:"Complaint Type",
@@ -3118,16 +3120,16 @@ const resources = {
         Totaltaxamount: "Total Tax Amount:",
         Totalgrossamount: "Total Gross Amount:",
         //Smssetting
-        Smssetting: "SMS Settings",
+        Smssetting: "SMS Setting",
 
         //Smscampagian
         Smscampagian: "SMS Campaign",
         EditSmscampagian: "Edit SMS Campaign",
         CreateSmscampagian: "Create SMS Campaign",
         //SmsEventSettings
-        SmsEventSettings: "SMS Event Settings",
-        EditSmsEventSettings: "Edit SMS Event Settings",
-        CreateSmsEventSettings: "Create SMS Event Settings",
+        SmsEventSettings: "SMS Event Setting",
+        EditSmsEventSettings: "Edit SMS Event Setting",
+        CreateSmsEventSettings: "Create SMS Event Setting",
 
         //JobCardIndent
         JobCardIndent: "JobCard Indent",
@@ -3148,8 +3150,7 @@ const resources = {
         StoreCode1: "Store Code",
         StoreCode: "Enter Store Code",
         BinName1: "Bin Name",
-        BinName: "Enter Bin Name",
-
+       
         //ItemDetail
         ItemDetail: "Item Detail",
         CreateItemDetail: "Create Item Detail",
@@ -3245,7 +3246,7 @@ const resources = {
         AddDesignation: "Create Designation",
         email12: "Email",
         isActive12: "Currently Active",
-        Emailsettingmaster: "Email Settings",
+        Emailsettingmaster: "Email Setting",
         Type: "Select Type",
         isActive: "Status",
         AddEmaileventsetting: "Create Email Event Setting",
@@ -3422,7 +3423,7 @@ const resources = {
         //BinKudaghar
         BinKudaghar: "Bin/Kudaghar",
         BinSrNo: "Srno",
-        BinName: "Bin Name",
+       // BinName: "Bin Name",
         BinCode: "Bin Code",
         BinRFID: "RFID",
         BinArea: "Area",
@@ -3568,7 +3569,7 @@ const resources = {
         Smsgroup: "Sms group",
         Emailgroup: "Email group",
         Statusactive: "Select Status",
-        EmailSetting: "Email Settings ",
+        EmailSetting: "Email Setting ",
         Emailtype: "Type",
         //
 
@@ -5499,6 +5500,7 @@ const resources = {
         others: "Enter Others",
         remark: "Enter Remark",
         totalAmount: "Total Amount",
+        TotalAmount1:"Total Amount:",
         supplierNames: "Supplier Name",
         document_Nos: "Doc No",
         p_InvoiceNos: "Purchase Invoice No",
@@ -5509,7 +5511,7 @@ const resources = {
         amounts: "Amount",
         ItemStatus: "Item Status",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+       
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -5591,7 +5593,7 @@ const resources = {
         freights: "frieght",
         // amounts: "Amt",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+     
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -5628,6 +5630,7 @@ const resources = {
         qc: "Quality Check",
         qcDate: "Quality Date",
         mrnType: "MRN Type",
+        selectmrnType: "Select MRN Type",
         totalAmount: "Total Amount",
         createQualityCheck: "Create Quality Check",
         qcNo: "Enter QC No",
@@ -5907,11 +5910,11 @@ const resources = {
         Issue: "Issue",
         Employee: "Employee",
         IndentDate: "IndentDate",
-        ReturnDate: "ReturnDate",
+        ReturnDate: "Return Date",
         Scrabble: "Scrabble",
         Indent: "Indent",
-        PendingQty: "PendingQty",
-        ReturnQty: "ReturnQty",
+        PendingQty: "Pending Qty",
+        ReturnQty: "Return Qty",
         ComplaintTypeMaster: "Complaint Type Master",
         compTypeName: "comp Type Name",
         // compType:"Complaint Type",
@@ -6090,7 +6093,7 @@ const resources = {
         AddDesignation: "Create Designation",
         email12: "Email",
         isActive12: "Currently Active",
-        Emailsettingmaster: "Email Settings",
+        Emailsettingmaster: "Email Setting",
         Type: "Select Type",
         isActive: "Status",
         AddEmaileventsetting: "Create Email Event Setting",
@@ -6267,7 +6270,9 @@ const resources = {
         //BinKudaghar
         BinKudaghar: "Bin/Kudaghar",
         BinSrNo: "Srno",
-        BinName: "Bin Name",
+       
+       
+      // BinName: "Bin Name",
         BinCode: "Bin Code",
         BinRFID: "RFID",
         BinArea: "Area",
@@ -6413,7 +6418,7 @@ const resources = {
         Smsgroup: "Sms group",
         Emailgroup: "Email group",
         Statusactive: "Select Status",
-        EmailSetting: "Email Settings ",
+        EmailSetting: "Email Setting ",
         Emailtype: "Type",
         //
 
@@ -8354,7 +8359,7 @@ const resources = {
         amounts: "Amt",
         ItemStatus: "Item Status",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+       
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -8436,7 +8441,7 @@ const resources = {
         freights: "frieght",
         amounts: "Amt",
         StoreMaster: "Store Master",
-        EnterStoreName: "Enter StoreName",
+       
         EnterCapacity: "Enter Capacity",
         EnterUnit: "Enter Unit",
         EnterSupervisor: "Enter Supervisor",
@@ -8480,6 +8485,7 @@ const resources = {
         selectMRN: "Select MRN",
         EditMaterialRecieptNote: "Edit Material Receipt Note",
         bill_ChalanNo: "Bill/Challan No",
+        Enterbill_ChalanNo: "Enter Bill/Challan No",
         bill_ChalanDate: "Bill/Challan Date",
         shipmentNo: "Shipment Number",
         VendorDetails: "Vendor Details",
@@ -8752,11 +8758,11 @@ const resources = {
         Issue: "Issue",
         Employee: "Employee",
         IndentDate: "IndentDate",
-        ReturnDate: "ReturnDate",
+        ReturnDate: "Return Date",
         Scrabble: "Scrabble",
         Indent: "Indent",
-        PendingQty: "PendingQty",
-        ReturnQty: "ReturnQty",
+        PendingQty: "Pending Qty",
+        ReturnQty: "Return Qty",
         ComplaintTypeMaster: "Complaint Type Master",
         compTypeName: "comp Type Name",
         // compType:"Complaint Type",
@@ -9133,6 +9139,8 @@ const resources = {
       message: {},
       text: {
         //
+        TotalSGstAmt: "कुल एस.जी.एस.टी राशि:",
+        TotalCGstAmt: "कुल सी.जी.एस.टी राशि:",
         top10: "शीर्ष 10",
         ScrapDate: "स्क्रैप तारीख",
         LastService: "अंतिम सेवा",
@@ -9616,6 +9624,7 @@ const resources = {
         reqFileSubjectName: "फ़ाइल विषय नाम की आवश्यकता है",
         reqFileTypeName: "फ़ाइल प्रकार नाम आवश्यक है",
         reqReceiptName: "रसीद नाम की आवश्यकता है",
+        pOrderDoc: "दस्तावेज़ संलग्न करें",
         EnterDocUpload: "दस्तावेज़ संलग्न करें",
         EnterDocSubType: "दस्तावेज़ विषय प्रकार",
         EnterSubDocAbbreviation: "दस्तावेज़ विषय संक्षिप्त नाम",
@@ -10015,7 +10024,7 @@ const resources = {
         enterunitShortname: "इकाईसंक्षिप्तनाम दर्ज करें",
 
         StoreMaster: "स्टोर मास्टर",
-        EnterStoreName: "स्टोरनाम दर्ज करें",
+       
         EnterCapacity: "क्षमता दर्ज करें",
         EnterUnit: "इकाई दर्ज करें",
         EnterSupervisor: "पर्यवेक्षक दर्ज करें",
@@ -10101,6 +10110,7 @@ const resources = {
         others: "अन्य दर्ज करें",
         remark: "टिप्पणी दर्ज करें",
         totalAmount: "कुल राशि",
+        TotalAmount1:"कुल राशि:",
         supplierNames: "आपूर्तिकर्ता का नाम",
         document_Nos: "दस्तावेज़ संख्या",
         p_InvoiceNos: "खरीद चालान संख्या",
@@ -10112,6 +10122,7 @@ const resources = {
         qc: "गुणवत्ता जांच",
         qcDate: "गुणवत्ता दिनांक",
         mrnType: "एमआरएन प्रकार",
+        selectmrnType: "एमआरएन प्रकार चुनें",
         totalAmount: "कुल राशि",
         createQualityCheck: "गुणवत्ता जांच बनाएं",
         qcNo1: "गुणवत्ता जांच नं",
@@ -10120,8 +10131,10 @@ const resources = {
         qcDate: "एंटर गुणवत्ता जांच दिनांक",
         selectMRN: "एमआरएन चुनें",
         bill_ChalanNo: "बिल/चालान नं",
+        Enterbill_ChalanNo: "बिल/चालान नं दर्ज करें",
         bill_ChalanDate: "बिल/चालान दिनांक",
         shipmentNo: "शिपमेंट नं",
+        EntershipmentNo: "शिपमेंट नं दर्ज करें",
         VendorDetails: "वेंडर विवरण",
         SelectVendor: "वेंडर चुनें",
         vendorGstin: "वेंडर GSTIN",
@@ -10158,9 +10171,10 @@ const resources = {
           "कुल SGST केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
         totalAmountReadOnly:
           "कुल राशि केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
-        mrnNo: "एमआरएन नंबर दर्ज करें",
+        mrnNo: "एमआरएन नंबर",
+        selectmrnNo: "एमआरएन नंबर चुनें",
         // EditMaterialRecieptNote:"Edit Material RecieptNote",
-        mrnDate: "एंटर एमआरएन दिनांक",
+        mrnDate: "एमआरएन दिनांक",
         createMaterialRecieptNote: "आइटम प्राप्ति नोट बनाएं",
         EditMaterialRecieptNote: "आइटम प्राप्ति नोट संपादित करें",
         mrn: "आइटम प्राप्ति नोट",
@@ -10574,7 +10588,7 @@ const resources = {
         NetAmount: "नेट राशि",
 
         //Smssetting
-        Smssetting: "एसएमएस सेटिंग्स",
+        Smssetting: "एसएमएस सेटिंग",
 
         //Smscampagian
         Smscampagian: "एसएमएस अभियान",
@@ -10582,9 +10596,9 @@ const resources = {
         CreateSmscampagian: "एसएमएस अभियान बनाएं",
 
         //SmsEventSettings
-        SmsEventSettings: "एसएमएस इवेंट सेटिंग्स",
-        EditSmsEventSettings: "एसएमएस इवेंट सेटिंग्स संपादित करें",
-        CreateSmsEventSettings: "एसएमएस इवेंट सेटिंग्स बनाएं",
+        SmsEventSettings: "एसएमएस इवेंट सेटिंग",
+        EditSmsEventSettings: "एसएमएस इवेंट सेटिंग संपादित करें",
+        CreateSmsEventSettings: "एसएमएस इवेंट सेटिंग बनाएं",
 
         quantity: "मात्रा",
         approveQuantity: "स्वीकृत मात्रा",
@@ -10611,12 +10625,12 @@ const resources = {
         Totaltaxamount: "कुल कर राशि:",
         Totalgrossamount: "कुल सकल राशि:",
         selectOrder: "आदेश चुनें",
-        SmsEventSettings: "एसएमएस इवेंट सेटिंग्स",
-        EditSmsEventSettings: "एसएमएस इवेंट सेटिंग्स संपादित करें",
-        CreateSmsEventSettings: "एसएमएस इवेंट सेटिंग्स बनाएं",
+        SmsEventSettings: "एसएमएस इवेंट सेटिंग",
+        EditSmsEventSettings: "एसएमएस इवेंट सेटिंग संपादित करें",
+        CreateSmsEventSettings: "एसएमएस इवेंट सेटिंग बनाएं",
 
         //Smssetting
-        Smssetting: "एसएमएस सेटिंग्स",
+        Smssetting: "एसएमएस सेटिंग",
 
         //JobCardIndent
         JobCardIndent: "जॉब कार्ड इंडेंट",
@@ -10640,7 +10654,7 @@ const resources = {
         StoreCode1: "स्टोर कोड",
         StoreCode: "स्टोर कोड दर्ज करें",
         BinName1: "बिन नाम",
-        BinName: "बिन नाम दर्ज करें",
+        BinName: "बिन नाम चुनें",
 
         //ItemDetail
         ItemDetail: "आइटम विवरण",
@@ -11419,7 +11433,7 @@ const resources = {
         enterunitShortname: "इकाईसंक्षिप्तनाम दर्ज करें",
         selectUnit: "इकाई चुनें",
         StoreMaster: "स्टोर मास्टर",
-        EnterStoreName: "स्टोरनाम दर्ज करें",
+       
         EnterCapacity: "क्षमता दर्ज करें",
         EnterUnit: "इकाई दर्ज करें",
         EnterSupervisor: "पर्यवेक्षक दर्ज करें",
@@ -11508,7 +11522,7 @@ const resources = {
         enterunitShortname: "इकाईसंक्षिप्तनाम दर्ज करें",
 
         StoreMaster: "स्टोर मास्टर",
-        EnterStoreName: "स्टोरनाम दर्ज करें",
+      
         EnterCapacity: "क्षमता दर्ज करें",
         EnterUnit: "इकाई दर्ज करें",
         EnterSupervisor: "पर्यवेक्षक दर्ज करें",
@@ -11649,9 +11663,9 @@ const resources = {
           "कुल SGST केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
         totalAmountReadOnly:
           "कुल राशि केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
-        mrnNo: "एमआरएन नंबर दर्ज करें",
+        mrnNo: "एमआरएन नंबर",
         // EditMaterialRecieptNote:"Edit Material RecieptNote",
-        mrnDate: "एंटर एमआरएन दिनांक",
+        mrnDate: "एमआरएन दिनांक",
         createMaterialRecieptNote: "आइटम प्राप्ति नोट बनाएं",
         EditMaterialRecieptNote: "आइटम प्राप्ति नोट संपादित करें",
         mrn: "आइटम प्राप्ति नोट",
@@ -11969,7 +11983,7 @@ const resources = {
         SMSGroup: "एसएमएस समूह",
         EMAILGroup: "ईमेल समूह",
         Statusactive: "स्थिति चुनें",
-        EmailSetting: "ईमेल सेटिंग्स",
+        EmailSetting: "ईमेल सेटिंग",
         Emailtype: "प्रकार",
 
         Emailcampaigname: "अभियान का नाम दर्ज करें",
@@ -11988,7 +12002,7 @@ const resources = {
         isActive: "स्थिति",
         email12: "ईमेल",
         isActive12: "वर्तमान में सक्रिय",
-        Emailsettingmaster: "ईमेल सेटिंग्स",
+        Emailsettingmaster: "ईमेल सेटिंग",
         Type: "प्रकार चुनें",
         isActive: "स्थिति",
         AddEmaileventsetting: "ईमेल इवेंट सेटिंग बनाएं",
@@ -12747,7 +12761,7 @@ const resources = {
         enterunitShortname: "इकाईसंक्षिप्तनाम दर्ज करें",
         selectUnit: "इकाई चुनें",
         StoreMaster: "स्टोर मास्टर",
-        EnterStoreName: "स्टोरनाम दर्ज करें",
+        
         EnterCapacity: "क्षमता दर्ज करें",
         EnterUnit: "इकाई दर्ज करें",
         EnterSupervisor: "पर्यवेक्षक दर्ज करें",
@@ -12836,7 +12850,7 @@ const resources = {
         enterunitShortname: "इकाईसंक्षिप्तनाम दर्ज करें",
 
         StoreMaster: "स्टोर मास्टर",
-        EnterStoreName: "स्टोरनाम दर्ज करें",
+      
         EnterCapacity: "क्षमता दर्ज करें",
         EnterUnit: "इकाई दर्ज करें",
         EnterSupervisor: "पर्यवेक्षक दर्ज करें",
@@ -12977,9 +12991,9 @@ const resources = {
           "कुल SGST केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
         totalAmountReadOnly:
           "कुल राशि केवल पढ़ने के लिए है, इसे संपादित नहीं किया जा सकता",
-        mrnNo: "एमआरएन नंबर दर्ज करें",
+        mrnNo: "एमआरएन नंबर",
         // EditMaterialRecieptNote:"Edit Material RecieptNote",
-        mrnDate: "एंटर एमआरएन दिनांक",
+        mrnDate: "एमआरएन दिनांक",
         createMaterialRecieptNote: "आइटम प्राप्ति नोट बनाएं",
         EditMaterialRecieptNote: "आइटम प्राप्ति नोट संपादित करें",
         mrn: "आइटम प्राप्ति नोट",

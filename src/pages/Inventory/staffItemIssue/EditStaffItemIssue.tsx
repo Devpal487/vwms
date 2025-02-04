@@ -850,7 +850,7 @@ const EditStaffItemIssue = (props: Props) => {
                 value: data[index]["itemMasterId"],
             });
         };
-        setitemOption([{ value: -1, label: t("text.selectItem") }, ...arr]);
+        setitemOption(arr);
     };
     const GetUnitData = async () => {
         const collectData = {
@@ -1211,8 +1211,7 @@ const EditStaffItemIssue = (props: Props) => {
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.reqQty")}</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.issueQty")}</th>
 
-                                                    {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
-                                                    <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Actions")}</th>
+                                                  
                                                 </tr>
                                             </thead>
                                             <tbody>
