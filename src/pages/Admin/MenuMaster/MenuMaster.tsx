@@ -46,7 +46,8 @@ export default function MenuMaster() {
   const { i18n, t } = useTranslation();
   const { defaultValues, defaultValuestime } = getISTDate();
 
-  const [parentName,setParentName] = useState("");  
+  const [parentName, setParentName] = useState("");
+  const [parentOption, setParentOption] = useState<any>([]);
   const [columns, setColumns] = useState<any>([]);
   const [rows, setRows] = useState<any>([]);
   const [editId, setEditId] = useState(0);
@@ -61,9 +62,26 @@ export default function MenuMaster() {
   const [lang, setLang] = useState<Language>("en");
 
   useEffect(() => {
-
     getList();
+    getParentMenuMaster();
   }, [isLoading]);
+
+
+
+  const getParentMenuMaster = () => {
+    api.post(`Menu/GetParentMenuMaster`).then((res) => {
+      console.log("result" + JSON.stringify(res.data.data));
+      const data = res.data.data;
+      const arr = data.map((item: any, index: any) => ({
+        ...item,
+        serialNo: index + 1,
+        id: item.menuId,
+        value: item.menuId,
+        label: item.menuName
+      }));
+      setParentOption(arr);
+    })
+  }
 
   let delete_id = "";
   const accept = () => {
@@ -231,7 +249,7 @@ export default function MenuMaster() {
         setToaster(false);
         toast.success(response.data.mesg);
         formik.resetForm();
-        formik.setFieldValue("parentName","")
+        formik.setFieldValue("parentName", "")
         getList();
         setEditId(0);
       } else {
@@ -371,7 +389,7 @@ export default function MenuMaster() {
                   <Autocomplete
                     disablePortal
                     id="combo-box-demo"
-                    options={parentMenuOption}
+                    options={parentOption}
                     value={formik.values?.parentName || parentName}
                     fullWidth
                     size="small"

@@ -999,7 +999,7 @@ const AddJobCard = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.FileNo")}
+                      text={t("text.EnterFileNo")}
                       required={false}
                     />
                   }
@@ -1009,7 +1009,7 @@ const AddJobCard = (props: Props) => {
                   name="fileNo"
                   id="fileNo"
                   value={formik.values.fileNo}
-                  placeholder={t("text.FileNo")}
+                  placeholder={t("text.EnterFileNo")}
                   onChange={(e) => {
                     formik.setFieldValue("fileNo", e.target.value.toString());
                     // setDesgValue(empOption[empOption.findIndex(e => e.value === location.state?.empId)]?.designation || "");
@@ -1088,10 +1088,10 @@ const AddJobCard = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="itemName"
                       id="itemName"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />

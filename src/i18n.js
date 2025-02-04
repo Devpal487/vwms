@@ -15,17 +15,16 @@ const resources = {
         TotalSGstAmt: "Total SGST Amount",
         TotalCGstAmt: "Total CGST Amount",
         //TotalGST:"Total GST",
-        storeCode:"Enter Store Code",
-        
+        storeCode: "Enter Store Code",
+
         //02/01/25
-          PENDING: "Pending",
-          INPROGRESS: "In Progress",
-          OUTSOURCE: "OUTSOURCE",
-          Outsource:"OUTSOURCE",
-          INHOUSE: "INHOUSE",
-          COMPLETE : "Complete",
-       
-        
+        PENDING: "Pending",
+        INPROGRESS: "In Progress",
+        OUTSOURCE: "OUTSOURCE",
+        Outsource: "OUTSOURCE",
+        INHOUSE: "INHOUSE",
+        COMPLETE: "Complete",
+
         ////
         /////
         top10: "Top 10",
@@ -9026,6 +9025,62 @@ const resources = {
 
         AddServiceType: "Add Service Type",
 
+        EnterEmpName: "Enter Employee Name",
+        EnterEmpCode: "Enter Employee Code",
+        EnterFatherName: "Enter Father Name",
+        EnterMotherName: "Enter Mother Name",
+        SelectGender: "Select Gender",
+        EnterMobileNum: "Enter Mobile Number",
+        EnterEmailId: "Enter Email Id",
+        EnterStatus: "Enter Status",
+        EnterDrivingLicence: "Enter Driving Licence Number",
+        SelectDepartment: "Select Department",
+        SelectDesignation: "Select Designation",
+        EnterPermanentAddress: "Enter Permanent Address",
+        EnterLocalAddress: "Enter Local Address",
+        SelectZone: "Select Zone",
+
+
+        EnterDepartmentName:"Enter Department Name",
+        EnterShortName:"Enter Short Name",
+        EnterDesigName:"Enter Designation Name",
+        EnterDesignationCode:"Enter Designation Code",
+        EnterCompanyName:"Enter Company Name",
+        EnterAddress:"Enter Address",
+        EnterPincode:"Enter Pincode",
+        EnterOfficeNo:"Enter Office No",
+        EnterEstablishYear:"Enter Establishment Year",
+        EnterWebSite:"Enter Website Name",
+        EnterDirector:"Enter Director Name",
+        EnterGSTIN:"Enter GSTIN Number",
+        SelectVehicleNum:"Select Vehicle Number",
+        SelectDocType:"Select Document Type",
+        EnterReadingKM:"Enter Current Reading(in KM)",
+        EnterFileNo:"Enter File Number",
+        SelectVendor:"Select Vendor",
+
+
+        EnterVehType:"Enter Vehicle Type",
+        EnterVehCode:"Enter Vehicle Code",
+        EnterVehName:"Enter Vehicle Name",
+        EnterCode:"Enter Code",
+        EnterHSNCode:"Enter HSN Code",
+        SelectCategory:"Select Category",
+        SelectType:"Select Type",
+        SelectUnit:"Select Unit",
+        SelectTax:"Select Tax",
+        EnterModelNo:"Enter Model Number",
+        EnterVehicleNum:"Enter Vehicle Number",
+        EnterSerialNum:"Enter Serial Number",
+        EnterChesisNo:"Enter Chesis Number",
+        EnterPurYear:"Enter Purchase Year",
+        SelectVehicleType:"Select Vehicle Type",
+        SelectBrand:"Select Brand",
+        EnterVehicleWeight:"Enter Vehicle Weight(KG)",
+        EnterVehMileage:"Enter Vehicle Mileage(KM/L)",
+        EnterVehicleDeviceId:"Enter Vehicle Device Id",
+        EnterActualPrice:"Enter Actual Price",
+        EnterTankCapacity:"Enter Tank Capacity",
 
 
 
@@ -9043,7 +9098,29 @@ const resources = {
 
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       },
 
       content: {},
@@ -13355,6 +13432,63 @@ const resources = {
         TotalGstAmt: "कुल जीएसटी राशि",
 
         AddServiceType: "सेवा प्रकार जोड़ें",
+
+        EnterEmpName: "कर्मचारी का नाम दर्ज करें",
+        EnterEmpCode: "कर्मचारी कोड दर्ज करें",
+        EnterFatherName: "पिता का नाम दर्ज करें",
+        EnterMotherName: "माता का नाम दर्ज करें",
+        SelectGender: "लिंग चुनें",
+        EnterMobileNum: "मोबाइल नंबर दर्ज करें",
+        EnterEmailId: "ईमेल आईडी दर्ज करें",
+        EnterStatus: "स्थिति दर्ज करें",
+        EnterDrivingLicence: "ड्राइविंग लाइसेंस नंबर दर्ज करें",
+        SelectDepartment: "विभाग चुनें",
+        SelectDesignation: "पदनाम चुनें",
+        EnterPermanentAddress: "स्थायी पता दर्ज करें",
+        EnterLocalAddress: "स्थानीय पता दर्ज करें",
+        SelectZone: "क्षेत्र चुनें",
+
+
+        EnterDepartmentName: "विभाग का नाम दर्ज करें",
+        EnterShortName: "संक्षिप्त नाम दर्ज करें",
+        EnterDesigName: "पदनाम का नाम दर्ज करें",
+        EnterDesignationCode: "पदनाम कोड दर्ज करें",
+        EnterCompanyName: "कंपनी का नाम दर्ज करें",
+        EnterAddress: "पता दर्ज करें",
+        EnterPincode: "पिनकोड दर्ज करें",
+        EnterOfficeNo: "कार्यालय नंबर दर्ज करें",
+        EnterEstablishYear: "स्थापना वर्ष दर्ज करें",
+        EnterWebSite: "वेबसाइट का नाम दर्ज करें",
+        EnterDirector: "निदेशक का नाम दर्ज करें",
+        EnterGSTIN: "जीएसटीआईएन नंबर दर्ज करें",
+        SelectVehicleNum: "वाहन नंबर चुनें",
+        SelectDocType: "दस्तावेज़ प्रकार चुनें",
+        EnterReadingKM: "वर्तमान रीडिंग दर्ज करें (किलोमीटर में)",
+        EnterFileNo: "फाइल नंबर दर्ज करें",
+        SelectVendor:"विक्रेता का चयन करें",
+
+        EnterVehType: "वाहन प्रकार दर्ज करें",
+        EnterVehCode: "वाहन कोड दर्ज करें",
+        EnterVehName: "वाहन का नाम दर्ज करें",
+        EnterCode: "कोड दर्ज करें",
+        EnterHSNCode: "एचएसएन कोड दर्ज करें",
+        SelectCategory: "श्रेणी चुनें",
+        SelectType: "प्रकार चुनें",
+        SelectUnit: "यूनिट चुनें",
+        SelectTax: "कर चुनें",
+        EnterModelNo: "मॉडल नंबर दर्ज करें",
+        EnterVehicleNum: "वाहन नंबर दर्ज करें",
+        EnterSerialNum: "सीरियल नंबर दर्ज करें",
+        nterChesisNo: "चेसिस नंबर दर्ज करें",
+        EnterPurYear: "खरीद वर्ष दर्ज करें",
+        SelectVehicleType: "वाहन प्रकार चुनें",
+        SelectBrand: "ब्रांड चुनें",
+        EnterVehicleWeight: "वाहन का वजन दर्ज करें (किलोग्राम में)",
+        EnterVehMileage: "वाहन माइलेज दर्ज करें (किमी/लीटर में)",
+        EnterVehicleDeviceId: "वाहन डिवाइस आईडी दर्ज करें",
+        EnterActualPrice: "वास्तविक मूल्य दर्ज करें",
+        EnterTankCapacity: "टैंक की क्षमता दर्ज करें"
+
       },
 
       content: {},

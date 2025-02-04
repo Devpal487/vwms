@@ -474,10 +474,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Zone")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectZone")} required={false} />}
                                  name="vZoneID"
                                  id="vZoneID"
-                                 placeholder={t("text.Zone")}
+                                 placeholder={t("text.SelectZone")}
                               />
                            )}
                         />
@@ -486,7 +486,7 @@ const AddVehicleDetail = (props: Props) => {
                      {/* Vehicle name */}
                      <Grid item lg={4} sm={4} xs={12}>
                         <TranslateTextField
-                           label={t("text.VehicleName")}
+                           label={t("text.EnterVehName")}
                            value={formik.values.itemName}
                            onChangeText={(text: string) => formik.setFieldValue("itemName", text)}
                            required={true}
@@ -504,7 +504,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.Code")}
+                                 text={t("text.EnterVehCode")}
                                  required={false}
                               />
                            }
@@ -514,7 +514,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="itemCode"
                            id="itemCode"
                            value={formik.values.itemCode}
-                           placeholder={t("text.Code")}
+                           placeholder={t("text.EnterVehCode")}
                            onChange={(e) => {
                               formik.setFieldValue("itemCode", e.target.value.toString());
                            }}
@@ -526,7 +526,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.HSNCode")}
+                                 text={t("text.EnterHSNCode")}
                                  required={false}
                               />
                            }
@@ -536,7 +536,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="hsnCode"
                            id="hsnCode"
                            value={formik.values.hsnCode}
-                           placeholder={t("text.HSNCode")}
+                           placeholder={t("text.EnterHSNCode")}
                            onChange={(e) => {
                               formik.setFieldValue("hsnCode", e.target.value.toString());
                            }}
@@ -562,10 +562,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Category")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectCategory")} required={false} />}
                                  name="itemCategoryId"
                                  id="itemCategoryId"
-                                 placeholder={t("text.Category")}
+                                 placeholder={t("text.SelectCategory")}
                               />
                            )}
                         />
@@ -591,10 +591,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Type")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectType")} required={false} />}
                                  name="itemTypeId"
                                  id="itemTypeId"
-                                 placeholder={t("text.Type")}
+                                 placeholder={t("text.SelectType")}
                               />
                            )}
                         />
@@ -619,10 +619,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Unit")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectUnit")} required={false} />}
                                  name="unitId"
                                  id="unitId"
-                                 placeholder={t("text.Unit")}
+                                 placeholder={t("text.SelectUnit")}
                               />
                            )}
                         />
@@ -647,10 +647,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Tax")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectTax")} required={false} />}
                                  name="taxId"
                                  id="taxId"
-                                 placeholder={t("text.Tax")}
+                                 placeholder={t("text.SelectTax")}
                               />
                            )}
                         />
@@ -661,7 +661,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ModelNo")}
+                                 text={t("text.EnterModelNo")}
                                  required={false}
                               />
                            }
@@ -671,7 +671,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="modelNo"
                            id="modelNo"
                            value={formik.values.modelNo}
-                           placeholder={t("text.ModelNo")}
+                           placeholder={t("text.EnterModelNo")}
                            onChange={(e) => {
                               formik.setFieldValue("modelNo", e.target.value.toString());
                            }}
@@ -683,7 +683,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.VehicleNo")}
+                                 text={t("text.EnterVehicleNum")}
                                  required={true}
                               />
                            }
@@ -693,7 +693,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="vehicleNo"
                            id="vehicleNo"
                            value={formik.values.vehicleNo}
-                           placeholder={t("text.VehicleNo")}
+                           placeholder={t("text.EnterVehicleNum")}
                            onChange={(e) => {
                               formik.setFieldValue("vehicleNo", e.target.value.toString());
                            }}
@@ -708,7 +708,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.serialNo")}
+                                 text={t("text.EnterSerialNum")}
                                  required={false}
                               />
                            }
@@ -718,7 +718,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="serialNo"
                            id="serialNo"
                            value={formik.values.serialNo}
-                           placeholder={t("text.serialNo")}
+                           placeholder={t("text.EnterSerialNum")}
                            onChange={(e) => {
                               formik.setFieldValue("serialNo", e.target.value.toString());
                            }}
@@ -730,7 +730,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ChesisNo")}
+                                 text={t("text.EnterChesisNo")}
                                  required={false}
                               />
                            }
@@ -740,7 +740,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="chesisNo"
                            id="chesisNo"
                            value={formik.values.chesisNo}
-                           placeholder={t("text.ChesisNo")}
+                           placeholder={t("text.EnterChesisNo")}
                            onChange={(e) => {
                               formik.setFieldValue("chesisNo", e.target.value.toString());
                            }}
@@ -752,7 +752,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.PurchaseYear")}
+                                 text={t("text.EnterPurYear")}
                                  required={false}
                               />
                            }
@@ -762,7 +762,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="purchaseYear"
                            id="purchaseYear"
                            value={formik.values.purchaseYear || 0}
-                           placeholder={t("text.PurchaseYear")}
+                           placeholder={t("text.EnterPurYear")}
                            onChange={(e) => {
                               formik.setFieldValue("purchaseYear", parseInt(e.target.value));
                            }}
@@ -859,10 +859,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleType")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectVehicleType")} required={false} />}
                                  name="vehicleTypeId"
                                  id="vehicleTypeId"
-                                 placeholder={t("text.VehicleType")}
+                                 placeholder={t("text.SelectVehicleType")}
                               />
                            )}
                         />
@@ -887,10 +887,10 @@ const AddVehicleDetail = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.Brand")} required={false} />}
+                                 label={<CustomLabel text={t("text.SelectBrand")} required={false} />}
                                  name="brandTypeId"
                                  id="brandTypeId"
-                                 placeholder={t("text.Brand")}
+                                 placeholder={t("text.SelectBrand")}
                               />
                            )}
                         />
@@ -930,7 +930,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.VehicleWeightKG")}
+                                 text={t("text.EnterVehicleWeight")}
                                  required={false}
                               />
                            }
@@ -940,7 +940,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="vehicleWeight"
                            id="vehicleWeight"
                            value={formik.values.vehicleWeight || 0}
-                           placeholder={t("text.VehicleWeightKG")}
+                           placeholder={t("text.EnterVehicleWeight")}
                            onChange={(e) => {
                               formik.setFieldValue("vehicleWeight", parseInt(e.target.value));
                            }}
@@ -952,7 +952,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.VehicleMileageKMPL")}
+                                 text={t("text.EnterVehMileage")}
                                  required={false}
                               />
                            }
@@ -963,7 +963,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="mileage"
                            id="mileage"
                            value={formik.values.mileage || 0}
-                           placeholder={t("text.VehicleMileageKMPL")}
+                           placeholder={t("text.EnterVehMileage")}
                            onChange={(e) => {
                               formik.setFieldValue("mileage", parseInt(e.target.value));
                            }}
@@ -975,7 +975,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.VehicleDeviceId")}
+                                 text={t("text.EnterVehicleDeviceId")}
                                  required={false}
                               />
                            }
@@ -985,7 +985,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="devid"
                            id="devid"
                            value={formik.values.devid}
-                           placeholder={t("text.VehicleDeviceId")}
+                           placeholder={t("text.EnterVehicleDeviceId")}
                            onChange={(e) => {
                               formik.setFieldValue("devid", e.target.value.toString());
                            }}
@@ -997,7 +997,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ActualPrice")}
+                                 text={t("text.EnterActualPrice")}
                                  required={false}
                               />
                            }
@@ -1008,7 +1008,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="actPrice"
                            id="actPrice"
                            value={formik.values.actPrice || 0}
-                           placeholder={t("text.ActualPrice")}
+                           placeholder={t("text.EnterActualPrice")}
                            onChange={(e) => {
                               formik.setFieldValue("actPrice", parseInt(e.target.value));
                            }}
@@ -1020,7 +1020,7 @@ const AddVehicleDetail = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.TankCapacity")}
+                                 text={t("text.EnterTankCapacity")}
                                  required={false}
                               />
                            }
@@ -1031,7 +1031,7 @@ const AddVehicleDetail = (props: Props) => {
                            name="tankCapacity"
                            id="tankCapacity"
                            value={formik.values.tankCapacity || ""}
-                           placeholder={t("text.TankCapacity")}
+                           placeholder={t("text.EnterTankCapacity")}
                            onChange={(e) => {
                               formik.setFieldValue("tankCapacity", parseInt(e.target.value));
                            }}

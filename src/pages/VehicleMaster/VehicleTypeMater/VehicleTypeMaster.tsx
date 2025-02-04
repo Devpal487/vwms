@@ -290,7 +290,7 @@ export default function VehicleTypeMaster() {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.VehicleTypeName")}
+                      text={t("text.EnterVehType")}
                       required={true}
                     />
                   }
@@ -300,7 +300,7 @@ export default function VehicleTypeMaster() {
                   name="vehicleTypename"
                   id="vehicleTypename"
                   value={formik.values.vehicleTypename}
-                  placeholder={t("text.VehicleTypeName")}
+                  placeholder={t("text.EnterVehType")}
                   onChange={(e) => {
                     formik.setFieldValue("vehicleTypename", e.target.value);
                   }}
@@ -316,7 +316,7 @@ export default function VehicleTypeMaster() {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.Vehiclecode")}
+                      text={t("text.EnterVehCode")}
                       required={false}
                     />
                   }
@@ -326,7 +326,7 @@ export default function VehicleTypeMaster() {
                   name="vehicleCode"
                   id="vehicleCode"
                   value={formik.values.vehicleCode}
-                  placeholder={t("text.Vehiclecode")}
+                  placeholder={t("text.EnterVehCode")}
                   onChange={(e) => {
                     formik.setFieldValue("vehicleCode", e.target.value);
                   }}
@@ -338,7 +338,7 @@ export default function VehicleTypeMaster() {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.ShortName")}
+                      text={t("text.EnterShortName")}
                       required={false}
                     />
                   }
@@ -348,7 +348,7 @@ export default function VehicleTypeMaster() {
                   name="shortName"
                   id="shortName"
                   value={formik.values.shortName}
-                  placeholder={t("text.ShortName")}
+                  placeholder={t("text.EnterShortName")}
                   onChange={(e) => {
                     formik.setFieldValue("shortName", e.target.value);
                   }}

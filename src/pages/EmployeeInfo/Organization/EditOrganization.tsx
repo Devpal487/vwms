@@ -351,7 +351,7 @@ const EditOrganization = (props: Props) => {
               {/* CompanyName  */}
               <Grid item xs={12} sm={4} lg={4}>
                 <TranslateTextField
-                  label={t("text.CompanyName")}
+                  label={t("text.EnterCompanyName")}
                   value={formik.values.name}
                   onChangeText={(text: string) => formik.setFieldValue("name", text)}
                   required={true}
@@ -368,7 +368,7 @@ const EditOrganization = (props: Props) => {
               {/* Address */}
               <Grid item xs={12} sm={4} lg={4}>
                 <TranslateTextField
-                  label={t("text.Address")}
+                  label={t("text.EnterAddress")}
                   value={formik.values.address}
                   onChangeText={(text: string) => formik.setFieldValue("address", text)}
                   required={true}
@@ -465,7 +465,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.EstablishYear")}
+                      text={t("text.EnterEstablishYear")}
                       required={false}
                     />
                   }
@@ -475,7 +475,7 @@ const EditOrganization = (props: Props) => {
                   name="establishYear"
                   id="establishYear"
                   value={formik.values.establishYear}
-                  placeholder={t("text.EstablishYear")}
+                  placeholder={t("text.EnterEstablishYear")}
                   onChange={(e) => {
                     formik.setFieldValue("establishYear", e.target.value.toString());
                   }}
@@ -488,7 +488,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.Pincode")}
+                      text={t("text.EnterPincode")}
                       required={false}
                     />
                   }
@@ -498,7 +498,7 @@ const EditOrganization = (props: Props) => {
                   name="pincode"
                   id="pincode"
                   value={formik.values.pincode}
-                  placeholder={t("text.Pincode")}
+                  placeholder={t("text.EnterPincode")}
                   onChange={(e) => {
                     formik.setFieldValue("pincode", parseInt(e.target.value) || "");
                   }}
@@ -511,7 +511,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.OfficeNo")}
+                      text={t("text.EnterOfficeNo")}
                       required={false}
                     />
                   }
@@ -521,7 +521,7 @@ const EditOrganization = (props: Props) => {
                   name="officeNo"
                   id="officeNo"
                   value={formik.values.officeNo}
-                  placeholder={t("text.OfficeNo")}
+                  placeholder={t("text.EnterOfficeNo")}
                   onChange={(e) => {
                     formik.setFieldValue("officeNo", e.target.value.toString());
                   }}
@@ -534,7 +534,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.MobileNo")}
+                      text={t("text.EnterMobileNum")}
                       required={false}
                     />
                   }
@@ -544,7 +544,7 @@ const EditOrganization = (props: Props) => {
                   name="mobileNo"
                   id="mobileNo"
                   value={formik.values.mobileNo}
-                  placeholder={t("text.MobileNo")}
+                  placeholder={t("text.EnterMobileNum")}
                   onChange={(e) => {
                     formik.setFieldValue("mobileNo", e.target.value.toString());
                   }}
@@ -557,7 +557,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.EmailId")}
+                      text={t("text.EnterEmailId")}
                       required={false}
                     />
                   }
@@ -568,7 +568,7 @@ const EditOrganization = (props: Props) => {
                   name="emailId"
                   id="emailId"
                   value={formik.values.emailId}
-                  placeholder={t("text.EmailId")}
+                  placeholder={t("text.EnterEmailId")}
                   onChange={(e) => {
                     formik.setFieldValue("emailId", e.target.value.toString());
                   }}
@@ -581,7 +581,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.WebsiteName")}
+                      text={t("text.EnterWebSite")}
                       required={false}
                     />
                   }
@@ -591,7 +591,7 @@ const EditOrganization = (props: Props) => {
                   name="websiteName"
                   id="websiteName"
                   value={formik.values.websiteName}
-                  placeholder={t("text.WebsiteName")}
+                  placeholder={t("text.EnterWebSite")}
                   onChange={(e) => {
                     formik.setFieldValue("websiteName", e.target.value.toString());
                   }}
@@ -604,7 +604,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.Director")}
+                      text={t("text.EnterDirector")}
                       required={false}
                     />
                   }
@@ -614,7 +614,7 @@ const EditOrganization = (props: Props) => {
                   name="director"
                   id="director"
                   value={formik.values.director}
-                  placeholder={t("text.Director")}
+                  placeholder={t("text.EnterDirector")}
                   onChange={(e) => {
                     formik.setFieldValue("director", e.target.value.toString());
                   }}
@@ -627,7 +627,7 @@ const EditOrganization = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.GSTIN")}
+                      text={t("text.EnterGSTIN")}
                       required={false}
                     />
                   }
@@ -637,7 +637,7 @@ const EditOrganization = (props: Props) => {
                   name="gstnNo"
                   id="gstnNo"
                   value={formik.values.gstnNo}
-                  placeholder={t("text.GSTIN")}
+                  placeholder={t("text.EnterGSTIN")}
                   onChange={(e) => {
                     formik.setFieldValue("gstnNo", e.target.value.toString());
                   }}

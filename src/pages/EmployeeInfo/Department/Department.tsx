@@ -272,7 +272,7 @@ export default function Department() {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.DepartmentName")}
+                                 text={t("text.EnterDepartmentName")}
                                  required={true}
                               />
                            }
@@ -282,7 +282,7 @@ export default function Department() {
                            name="departmentName"
                            id="departmentName"
                            value={formik.values.departmentName}
-                           placeholder={t("text.DepartmentName")}
+                           placeholder={t("text.EnterDepartmentName")}
                            onChange={(e) => {
                               formik.setFieldValue("departmentName", e.target.value.toString());
                            }}
@@ -298,7 +298,7 @@ export default function Department() {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ShortName")}
+                                 text={t("text.EnterShortName")}
                                  required={false}
                               />
                            }
@@ -308,7 +308,7 @@ export default function Department() {
                            name="departmentShortname"
                            id="departmentShortname"
                            value={formik.values.departmentShortname}
-                           placeholder={t("text.ShortName")}
+                           placeholder={t("text.EnterShortName")}
                            onChange={(e) => {
                               formik.setFieldValue("departmentShortname", e.target.value.toString());
                            }}
