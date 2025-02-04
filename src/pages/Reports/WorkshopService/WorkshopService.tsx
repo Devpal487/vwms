@@ -44,6 +44,7 @@ import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
 import Logo from "../../../assets/images/KanpurLogo.png";
+import { getISTDate } from "../../../utils/Constant";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -59,7 +60,8 @@ export default function VehicleItemConsumed() {
   const [isLoading, setIsLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
+  const { defaultValues } = getISTDate();
+  
   const [option, setOption] = useState([
     { value: "-1", label: "Vehicle Type" },
   ]);
@@ -427,6 +429,7 @@ export default function VehicleItemConsumed() {
             headerName: t("text.Vehicle"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
 
           },
           {
@@ -511,8 +514,8 @@ export default function VehicleItemConsumed() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      dateFrom: "",
-      dateTo: "",
+      dateFrom: defaultValues,
+      dateTo: defaultValues,
       days: 0,
       parentId: 0,
       startDate: "",
@@ -785,7 +788,7 @@ export default function VehicleItemConsumed() {
                     sx={{
                       border: 0,
                       "& .MuiDataGrid-columnHeaders": {
-                        backgroundColor: "#42b6f5", // Header background color
+                        backgroundColor: `"#42b6f5"`, // Header background color
                         color: "white", // Header text color
                       },
                       "& .MuiDataGrid-columnHeaderTitle": {

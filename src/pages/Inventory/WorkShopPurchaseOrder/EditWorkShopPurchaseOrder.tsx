@@ -1296,7 +1296,7 @@ const EditWorkShopPurchaseOrder = () => {
                                         <tfoot>
                                             <tr>
                                                 <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                    {t("text.TotalAmount")}
+                                                    {t("text.TotalAmount1")}
 
                                                 </td>
                                                 <td style={{ textAlign: "end", border: "1px solid black" }}>
