@@ -1060,7 +1060,7 @@ export default function JobCardStatus() {
 
 
 //   //   const pageWidth = doc.internal.pageSize.getWidth();
-//   //   let yPosition = 15; 
+//   //   let yPosition = 15;
 
 
 //   //   const logoWidth = 30;
@@ -1078,7 +1078,7 @@ export default function JobCardStatus() {
 //   //   doc.setFontSize(14);
 //   //   doc.text("Item Consumed Reports", pageWidth / 2, yPosition + 20, { align: "center" });
 
-//   //   yPosition += 40; 
+//   //   yPosition += 40;
 
 //   //   const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
 
