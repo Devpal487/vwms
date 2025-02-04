@@ -85,7 +85,7 @@ const EditMaterialRecieptNote = (props: Props) => {
   const [itemOption, setitemOption] = useState<any>([]);
 
   const mrnTypeOption = [
-    { value: "-1", label: t("text.selectMRN") },
+    
     { value: "1", label: "Bill" },
     { value: "2", label: "Challan" },
   ];
@@ -261,10 +261,7 @@ const EditMaterialRecieptNote = (props: Props) => {
           details: item,
         })) || [];
 
-      setVendorData([
-        { value: "-1", label: t("text.SelectVendor") },
-        ...arr,
-      ] as any);
+      setVendorData(arr);
     }
   };
 
@@ -296,7 +293,7 @@ const EditMaterialRecieptNote = (props: Props) => {
           value: item.taxId,
         })) || [];
 
-      setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+      setTaxData(arr);
     }
   };
 
@@ -800,7 +797,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.mrnType")}
+                          text={t("text.selectmrnType")}
                           required={false}
                         />
                       }
@@ -815,12 +812,12 @@ const EditMaterialRecieptNote = (props: Props) => {
                   name="bill_ChalanNo"
                   label={
                     <CustomLabel
-                      text={t("text.bill_ChalanNo")}
+                      text={t("text.Enterbill_ChalanNo")}
                       required={true}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
-                  placeholder={t("text.bill_ChalanNo")}
+                  placeholder={t("text.Enterbill_ChalanNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -856,10 +853,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.shipmentNo")} required={false} />
+                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
                   }
                   value={formik.values.shipmentNo}
-                  placeholder={t("text.shipmentNo")}
+                  placeholder={t("text.EntershipmentNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -1371,6 +1368,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              sx={{ width: "90px" }}
                               value={row.rate}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
@@ -1469,7 +1467,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                     <tfoot>
                       <tr>
                         <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.TotalAmount")}
+                          {t("text.TotalAmount1")}
 
                         </td>
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>

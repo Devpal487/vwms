@@ -474,13 +474,13 @@ const CreateJobcardItemIssue = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.VehicleNo")}
+                          text={t("text.VehicleNos1")}
                           required={true}
                         />
                       }
                       // name="vehicleitem"
                       //  id="vehicleitem"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.VehicleNos1")}
                     />
                   )}
                 />
@@ -676,7 +676,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
                                 style={{ width: '95%', height: '35px' }}
                               >
-                                <option value="">Select Unit</option>
+                              
                                 {unitOptions.map((option) => (
                                   <option key={option.value} value={option.value}>
                                     {option.label}

@@ -746,10 +746,10 @@ const CreateQualityCheck = (props: Props) => {
                   id="qcNo"
                   name="qcNo"
                   label={
-                    <CustomLabel text={t("text.qcNo")} required={false} />
+                    <CustomLabel text={t("text.qcNo1")} required={false} />
                   }
                   value={formik.values.qcNo}
-                  placeholder={t("text.qcNo")}
+                  placeholder={t("text.qcNo1")}
                   size="small"
                   fullWidth
                   onChange={formik.handleChange}
@@ -762,10 +762,10 @@ const CreateQualityCheck = (props: Props) => {
                   id="qcDate"
                   name="qcDate"
                   label={
-                    <CustomLabel text={t("text.qcDate")} required={true} />
+                    <CustomLabel text={t("text.qcDate1")} required={true} />
                   }
                   value={formik.values.qcDate}
-                  placeholder={t("text.qcDate")}
+                  placeholder={t("text.qcDate1")}
                   size="small"
                   fullWidth
                   type="date"
@@ -829,7 +829,7 @@ const CreateQualityCheck = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.mrnNo")}
+                          text={t("text.selectmrnNo")}
                           required={false}
                         />
                       }
@@ -844,12 +844,12 @@ const CreateQualityCheck = (props: Props) => {
                   name="bill_ChalanNo"
                   label={
                     <CustomLabel
-                      text={t("text.bill_ChalanNo")}
+                      text={t("text.Enterbill_ChalanNo")}
                       required={true}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
-                  placeholder={t("text.bill_ChalanNo")}
+                  placeholder={t("text.Enterbill_ChalanNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -893,10 +893,10 @@ const CreateQualityCheck = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.shipmentNo")} required={false} />
+                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
                   }
                   value={formik.values.shipmentNo}
-                  placeholder={t("text.shipmentNo")}
+                  placeholder={t("text.EntershipmentNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -1493,7 +1493,7 @@ const CreateQualityCheck = (props: Props) => {
                     <tfoot>
                       <tr>
                         <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.TotalAmount")}
+                          {t("text.TotalAmount1")}
 
                         </td>
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>

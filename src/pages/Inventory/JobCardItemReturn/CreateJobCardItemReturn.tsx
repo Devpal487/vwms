@@ -1205,12 +1205,12 @@ const CreateJobCardItemReturn = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={indentOptions}
-                  value={
-                    indentOptions.find(
-                      (opt: any) =>
-                        opt.value === parseInt(formik.values.returnIndentNo)
-                    ) || null
-                  }
+                  // value={
+                  //   indentOptions.find(
+                  //     (opt: any) =>
+                  //       opt.value == parseInt(formik.values.returnIndentNo)
+                  //   ) || null
+                  // }
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {

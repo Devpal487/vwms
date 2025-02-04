@@ -107,8 +107,8 @@ const EditWorkShopPurchaseOrder = () => {
         { value: "2", label: "Challan" },
     ];
     const [indentOptions, setIndentOptions] = useState([
-          { value: -1, label: t("text.SelectindentNo"), indenttype:"" },
-      ]);
+        { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
+    ]);
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
     const [itemOption, setitemOption] = useState<any>([]);
@@ -171,10 +171,8 @@ const EditWorkShopPurchaseOrder = () => {
                     details: item,
                 })) || [];
 
-            setVendorData([
-                { value: "-1", label: t("text.SelectVendor") },
-                ...arr,
-            ] as any);
+            setVendorData(arr);
+
         }
 
     };
@@ -217,7 +215,7 @@ const EditWorkShopPurchaseOrder = () => {
                 value: data[index]["unitId"],
             });
         }
-        setUnitOptions([{ value: -1, label: t("text.selectUnit") }, ...arr]);
+        setUnitOptions(arr);
     };
 
     const getTaxData = async () => {
@@ -232,7 +230,7 @@ const EditWorkShopPurchaseOrder = () => {
                     value: item.taxId,
                 })) || [];
 
-            setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+            setTaxData(arr);
         }
     };
     const GetitemData = async () => {
@@ -252,16 +250,16 @@ const EditWorkShopPurchaseOrder = () => {
     };
     const fetchImage = async (Id: any = location.state?.orderId || 0) => {
         const collectData = {
-           "orderId": Id,
-           "indentId": -1
+            "orderId": Id,
+            "indentId": -1
         };
         const response = await api.post(
-           `PurchaseOrder/GetPurchaseOrder`,
-           collectData
+            `PurchaseOrder/GetPurchaseOrder`,
+            collectData
         );
         const data = response.data.data;
         formik.setFieldValue("pOrderDoc", data[0].pOrderDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
-     }
+    }
     const handleInputChange = (index: number, field: string, value: any) => {
         const updatedItems = [...tableData];
         let item = { ...updatedItems[index] };
@@ -586,7 +584,7 @@ const EditWorkShopPurchaseOrder = () => {
                                 <TextField
                                     id="orderNo"
                                     name="orderNo"
-                                    label={<CustomLabel text={t("text.orderNo")} required={false} />}
+                                    label={<CustomLabel text={t("text.OrderNo")} required={false} />}
                                     value={formik.values.orderNo}
                                     size="small"
                                     fullWidth
@@ -598,7 +596,7 @@ const EditWorkShopPurchaseOrder = () => {
                                 <TextField
                                     id="orderDate"
                                     name="orderDate"
-                                    label={<CustomLabel text={t("text.orderDate")} required={true} />}
+                                    label={<CustomLabel text={t("text.OrderDate")} required={true} />}
                                     value={formik.values.orderDate}
                                     size="small"
                                     type="date"
@@ -742,7 +740,7 @@ const EditWorkShopPurchaseOrder = () => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.vendorName")} required={true} />}
+                                            label={<CustomLabel text={t("text.Vendorname")} required={true} />}
                                         />
                                     )}
                                 />
@@ -1234,33 +1232,33 @@ const EditWorkShopPurchaseOrder = () => {
                                         <tfoot>
                                             <tr>
                                                 <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                    {t("text.TotalAmount")}
+                                                    {t("text.TotalAmount1")}
 
                                                 </td>
                                                 <td style={{ textAlign: "end", border: "1px solid black" }}>
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                                                 </td>
                                             </tr>
-                                             <tr>
-                                                    <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
-                                                        {t("text.TotalGstAmt")}
+                                            <tr>
+                                                <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                    {t("text.TotalGstAmt")}
 
 
-                                                    </td>
-                                                    <td style={{ textAlign: "end", border: "1px solid black" }}>
+                                                </td>
+                                                <td style={{ textAlign: "end", border: "1px solid black" }}>
 
-                                                        {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
-                                                    </td>
-                                                </tr>
+                                                    {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.gst) || 0), 0)}
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td colSpan={9} style={{ textAlign: "right", fontWeight: "bold" }}>
                                                     {t("text.Totalnetamount")}
 
                                                 </td>
                                                 <td style={{ textAlign: "end", border: "1px solid black" }}>
-                                                    
+
                                                     {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
-                                                    
+
                                                 </td>
                                             </tr>
                                         </tfoot>
