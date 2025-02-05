@@ -41,6 +41,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
+import Logo from "../../../assets/images/KanpurLogo.png";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -185,14 +186,30 @@ export default function JobCardStatus() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Item Consumed Reports", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
 
@@ -476,7 +493,7 @@ export default function JobCardStatus() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.ItemConsumedReport")}
@@ -485,7 +502,7 @@ export default function JobCardStatus() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid xs={12} sm={4} md={4} item>
               <TextField
                 type="date"
@@ -531,6 +548,7 @@ export default function JobCardStatus() {
                 disablePortal
                 id="combo-box-demo"
                 options={itemOption}
+                value={itmNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -563,6 +581,7 @@ export default function JobCardStatus() {
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={vNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -693,6 +712,9 @@ export default function JobCardStatus() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
+                  setitmno("");
                 }}
               >
                   {t("text.reset")}

@@ -85,7 +85,7 @@ const EditMaterialRecieptNote = (props: Props) => {
   const [itemOption, setitemOption] = useState<any>([]);
 
   const mrnTypeOption = [
-    { value: "-1", label: t("text.selectMRN") },
+    
     { value: "1", label: "Bill" },
     { value: "2", label: "Challan" },
   ];
@@ -261,10 +261,7 @@ const EditMaterialRecieptNote = (props: Props) => {
           details: item,
         })) || [];
 
-      setVendorData([
-        { value: "-1", label: t("text.SelectVendor") },
-        ...arr,
-      ] as any);
+      setVendorData(arr);
     }
   };
 
@@ -296,7 +293,7 @@ const EditMaterialRecieptNote = (props: Props) => {
           value: item.taxId,
         })) || [];
 
-      setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+      setTaxData(arr);
     }
   };
 
@@ -313,104 +310,119 @@ const EditMaterialRecieptNote = (props: Props) => {
     }
   };
 
-  const handleInputChange = (index: number, field: string, value: any) => {
-    const updatedItems = [...tableData];
-    let item = { ...updatedItems[index] };
-
-    if (field === "orderNo") {
-      const selectedItem = orderOption.find((opt: any) => opt.value === value);
-      if (selectedItem) {
-        item = {
-          ...item,
-          orderId: selectedItem.value,
-          orderNo: selectedItem.label,
-        };
-      }
-    } else {
-      item[field] = value;
-    }
-
-    // Ensure mrnId is preserved
-    item.mrnId = formik.values.mrnId;
-
-    updatedItems[index] = item;
-    setTableData(updatedItems);
-    updateTotalAmounts(updatedItems);
-  };
-
-
   // const handleInputChange = (index: number, field: string, value: any) => {
   //   const updatedItems = [...tableData];
   //   let item = { ...updatedItems[index] };
 
   //   if (field === "orderNo") {
-  //     const selectedItem = mrnTypeOption.find(
-  //       (option: any) => option.value === value
-  //     );
-  //     console.log(selectedItem);
+  //     const selectedItem = orderOption.find((opt: any) => opt.value === value);
   //     if (selectedItem) {
   //       item = {
   //         ...item,
-  //         mrnType: selectedItem?.value?.toString(),
-  //         orderId: selectedItem?.value,
-  //         orderNo: selectedItem?.label,
+  //         orderId: selectedItem.value,
+  //         orderNo: selectedItem.label,
   //       };
-  //     }
-  //   } else if (field === "itemId") {
-  //     const selectedItem = itemOption.find(
-  //       (option: any) => option.value === value
-  //     );
-  //     console.log(selectedItem);
-  //     if (selectedItem) {
-  //       item = {
-  //         ...item,
-  //         itemId: selectedItem?.value,
-  //         itemName: selectedItem?.label,
-  //         item: selectedItem?.details,
-  //       };
-  //     }
-  //   } else if (field === "batchNo") {
-  //     item.batchNo = value?.toString();
-  //   } else if (field === "balQuantity") {
-  //     item.balQuantity = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "quantity") {
-  //     item.quantity = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "rate") {
-  //     item.rate = value === "" ? 0 : parseFloat(value);
-  //   } else if (field === "gstId") {
-  //     const selectedTax: any = taxData.find((tax: any) => tax.value === value);
-  //     if (selectedTax) {
-  //       item.gstRate = parseFloat(selectedTax.label) || 0;
-  //       item.gstId = selectedTax.value || 0;
-  //       item.cgstid = selectedTax.value || 0;
-  //       item.sgstid = selectedTax.value || 0;
-  //       item.igstid = 0;
-  //       item.gst = item.gstRate;
   //     }
   //   } else {
   //     item[field] = value;
   //   }
-  //   item.amount =
-  //     (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
-  //   item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
-  //     2
-  //   );
-  //   item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
-  //   item.sgst = item.gst / 2;
-  //   item.cgst = item.gst / 2;
-  //   item.igst = 0;
 
-  //   formik.setFieldValue("totalAmount", item.netAmount);
+  //   // Ensure mrnId is preserved
+  //   item.mrnId = formik.values.mrnId;
 
   //   updatedItems[index] = item;
   //   setTableData(updatedItems);
   //   updateTotalAmounts(updatedItems);
-
-  //   if (isRowFilled(item) && index === updatedItems.length - 1) {
-  //     addRow();
-  //   }
   // };
+  const handleInputChange = async (index: number, field: string, value: any) => {
+    const updatedItems = [...tableData];
+    let item = { ...updatedItems[index] };
+    if (field === "itemId") {
+      const selectedItem = itemOption.find((item:any) => item.value === value);
+      updatedItems[index].itemId = selectedItem?.value || 0;
+      updatedItems[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
 
+      console.log("Selected Item:", selectedItem);
+    } else {
+      updatedItems[index][field] = value;
+    }
+    if (field === "orderNo") {
+      const selectedItem = orderOption.find(
+        (option: any) => option.value === value
+      );
+      console.log(selectedItem);
+      if (selectedItem) {
+        item = {
+          ...item,
+          mrnType: selectedItem?.value?.toString(),
+
+          orderId: selectedItem?.value,
+          orderNo: selectedItem?.label,
+        };
+      }
+    }
+    //  else if (field === "itemId") {
+    //   const selectedItem = itemOption.find(
+    //     (option: any) => option.value === value
+    //   );
+    //   console.log(selectedItem);
+    //   if (selectedItem) {
+    //     item = {
+    //       ...item,
+    //       itemId: selectedItem?.value,
+    //       itemName: selectedItem?.label,
+    //       item: selectedItem?.details,
+    //     };
+    //   }
+    // }
+     else if (field === "batchNo") {
+      item.batchNo = value?.toString();
+    } else if (field === "balQuantity") {
+      item.balQuantity = value === "" ? 0 : parseFloat(value);
+    } else if (field === "quantity") {
+      item.quantity = value === "" ? 0 : parseFloat(value);
+    } else if (field === "rate") {
+      item.rate = value === "" ? 0 : parseFloat(value);
+    } else if (field === "gstId") {
+      const selectedTax: any = taxData.find((tax: any) => tax.value === value);
+      if (selectedTax) {
+        item.gstRate = parseFloat(selectedTax.label) || 0;
+        item.gstId = selectedTax.value || 0;
+        item.cgstid = selectedTax.value || 0;
+        item.sgstid = selectedTax.value || 0;
+        item.igstid = 0;
+        item.gst = item.gstRate;
+      }
+    } else {
+      item[field] = value;
+    }
+    item.amount =
+      (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+    item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
+      2
+    );
+    // const batchNo = await getBATCHNo();
+    // if (batchNo) {
+    //   item.batchNo = batchNo; // Set the fetched batch number
+    // }
+    item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
+    item.sgst = item.gst / 2;
+    item.cgst = item.gst / 2;
+    item.igst = 0;
+
+    formik.setFieldValue("totalAmount", item.netAmount);
+
+    updatedItems[index] = item;
+    setTableData(updatedItems);
+    updateTotalAmounts(updatedItems);
+
+    // if (isRowFilled(item) && index === updatedItems.length - 1) {
+    //   addRow();
+    // }
+  };
+
+
+  
   console.log("tableData.....", tableData);
 
   const isRowFilled = (row: any) => {
@@ -433,7 +445,7 @@ const EditMaterialRecieptNote = (props: Props) => {
         acc.totalCGST += parseFloat(row.cgst) || 0;
         acc.totalSGST += parseFloat(row.sgst) || 0;
         acc.totalIGST += parseFloat(row.igst) || 0;
-        acc.totalGrossAmount += parseFloat(row.netAmount) || 0;
+        acc.netAmount += parseFloat(row.netAmount) || 0;
         return acc;
       },
       {
@@ -441,7 +453,8 @@ const EditMaterialRecieptNote = (props: Props) => {
         totalCGST: 0,
         totalSGST: 0,
         totalIGST: 0,
-        totalGrossAmount: 0,
+        netAmount: 0,
+       // totalGrossAmount:0
       }
     );
 
@@ -451,7 +464,8 @@ const EditMaterialRecieptNote = (props: Props) => {
       totalCGST: totals.totalCGST,
       totalSGST: totals.totalSGST,
       totalIGST: totals.totalIGST,
-      totalGrossAmount: totals.totalGrossAmount,
+      netAmount: totals.netAmount,
+      totalGrossAmount:totals.netAmount
     });
   };
 
@@ -783,7 +797,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.mrnType")}
+                          text={t("text.selectmrnType")}
                           required={false}
                         />
                       }
@@ -798,12 +812,12 @@ const EditMaterialRecieptNote = (props: Props) => {
                   name="bill_ChalanNo"
                   label={
                     <CustomLabel
-                      text={t("text.bill_ChalanNo")}
+                      text={t("text.Enterbill_ChalanNo")}
                       required={true}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
-                  placeholder={t("text.bill_ChalanNo")}
+                  placeholder={t("text.Enterbill_ChalanNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -839,10 +853,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.shipmentNo")} required={false} />
+                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
                   }
                   value={formik.values.shipmentNo}
-                  placeholder={t("text.shipmentNo")}
+                  placeholder={t("text.EntershipmentNo")}
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -1354,6 +1368,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              sx={{ width: "90px" }}
                               value={row.rate}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{ step: "any", min: "0" }}
@@ -1452,24 +1467,45 @@ const EditMaterialRecieptNote = (props: Props) => {
                     <tfoot>
                       <tr>
                         <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalnetamount")}
+                          {t("text.TotalAmount1")}
+
                         </td>
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.totalAmount}
+                        </td> */}
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
-                      {/* <tr>
-                        <td colSpan={12} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totaltaxamount")}
-                        </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.gst) || 0), 0).toFixed(2)}
-                        </td>
-                      </tr> */}
                       <tr>
                         <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
-                          {t("text.Totalgrossamount")}
+                          {t("text.TotalCGstAmt")}
+
+
                         </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.cgst) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.TotalSGstAmt")}
+
+
+                        </td>
+                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst) || 0), 0).toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                          {t("text.Totalnetamount")}
+
+                        </td>
+
+                        {/* <td colSpan={6} style={{ textAlign: "end" }}>
+                          <b>:</b>{formik.values.netAmount}
+                        </td> */}
                         <td style={{ textAlign: "center", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                         </td>
@@ -1498,6 +1534,20 @@ const EditMaterialRecieptNote = (props: Props) => {
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
+                {/* <Button
+                  disabled
+                  type="submit"
+                  fullWidth
+                  style={{
+                    backgroundColor: "#e0e0e0", // Faded color for disabled
+                    color: "#9e9e9e", // Text color for disabled
+                    //  backgroundColor: `var(--header-background)`,
+                    //color: "white",
+                    marginTop: "10px",
+                  }}
+                >
+                  {t("text.update")}
+                </Button> */}
                 <Button
                   type="submit"
                   fullWidth

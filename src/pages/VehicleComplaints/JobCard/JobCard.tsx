@@ -175,34 +175,9 @@ export default function JobCard() {
       navigate(path, {
          state: {
             ...row,
-            // serviceDetail: jobCardData[jobCardData.findIndex(e => e.jobCardId == row.jobCardId)]?.serviceDetail || [{
-            //    id: 0,
-            //    jobCardId: 0,
-            //    serviceId: 0,
-            //    amount: 0,
-            //    jobWorkReq: true,
-            //    vendorId: 0,
-            //    challanRemark: "",
-            //    challanNo: 0,
-            //    challanDate: defaultValues,
-            //    challanRcvNo: 0,
-            //    challanRcvDate: defaultValues,
-            //    challanStatus: "",
-            //    netAmount: 0,
-            //    qty: 0,
-            //    unitRate: 0,
-            //    unitId: 0,
-            //    vendorName: "",
-            //    serviceName: "",
-            //    unitName: "",
-            //    cgstid: 0,
-            //    sgstid: 0,
-            //    gstid: 0,
-            //    gst: 0
-            // }],
-            vehicleName: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.name || "", 
-            department: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.deptName || "", 
-            designation: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.desigName || ""
+            vehicleName: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.name || "",
+            department: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.deptName || empOption[empOption.findIndex(e => e.value == row.itemId)]?.department || "",
+            designation: vehicleOption[vehicleOption.findIndex(e => e.value == row.itemId)]?.desigName || empOption[empOption.findIndex(e => e.value == row.itemId)]?.designation || ""
          },
       });
    };

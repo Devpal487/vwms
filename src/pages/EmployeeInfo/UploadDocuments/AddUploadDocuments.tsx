@@ -326,10 +326,10 @@ const AddUploadDocuments = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="vehicleNo"
                       id="vehicleNo"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />
@@ -348,6 +348,7 @@ const AddUploadDocuments = (props: Props) => {
                   value={formik.values.empName}
                   fullWidth
                   size="small"
+                  disabled={true}
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
                     // formik.setFieldValue("empName", newValue?.label);
@@ -356,10 +357,10 @@ const AddUploadDocuments = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Employee")} required={false} />}
+                      label={<CustomLabel text={t("text.empName")} required={false} />}
                       name="empName"
                       id="empName"
-                      placeholder={t("text.Employee")}
+                      placeholder={t("text.empName")}
                     />
                   )}
                 />
@@ -382,10 +383,10 @@ const AddUploadDocuments = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.DocType")} required={false} />}
+                      label={<CustomLabel text={t("text.SelectDocType")} required={false} />}
                       name="docTypeName"
                       id="docTypeName"
-                      placeholder={t("text.DocType")}
+                      placeholder={t("text.SelectDocType")}
                     />
                   )}
                 />

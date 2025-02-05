@@ -174,7 +174,17 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         setitemOption(arr);
     };
 
-
+  const validateRow = (row: any) => {
+    if (row.approveQuantity <= 0) {
+        alert("Approve Quantity must be greater than 0.");
+        return false;
+    }
+    if (row.approveQuantity > row.quantity) {
+        alert("Approve Quantity cannot be greater than Quantity.");
+        return false;
+    }
+    return true;
+};
     const formik = useFormik({
         initialValues: {
             indentId: location.state.indentId,
@@ -200,9 +210,12 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
             srn: location.state.srn
         },
         onSubmit: async (values) => {
-
-
-
+            const validTableData = tableData.filter(validateRow);
+            if (validTableData.length !== tableData.length) {
+                return;
+            }
+        
+            console.log('values', values)
             const response = await api.post(
                 `Master/UpsertIndent`,
                 { ...values, indentDetail: tableData }
@@ -215,7 +228,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                 setToaster(true);
                 toast.error(response.data.message);
             }
-        },
+        }
     });
 
     const back = useNavigate();

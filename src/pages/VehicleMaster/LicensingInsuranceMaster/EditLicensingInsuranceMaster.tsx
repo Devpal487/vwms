@@ -350,10 +350,10 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="itemId"
                       id="itemId"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />
@@ -380,10 +380,10 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Vendor")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVendor")} required={true} />}
                       name="vendorId"
                       id="vendorId"
-                      placeholder={t("text.Vendor")}
+                      placeholder={t("text.SelectVendor")}
                     />
                   )}
                 />
@@ -637,7 +637,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                     marginTop: "10px",
                   }}
                 >
-                  {t("text.save")}
+                  {t("text.update")}
                 </Button>
               </Grid>
 

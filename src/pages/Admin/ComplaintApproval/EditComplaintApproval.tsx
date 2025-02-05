@@ -743,13 +743,13 @@ const EditComplaintApproval = (props: Props) => {
                                  {...params}
                                  label={
                                     <CustomLabel
-                                       text={t("text.VehicleNo")}
+                                       text={t("text.SelectVehicleNum")}
                                        required={true}
                                     />
                                  }
                                  name="vehicleNo"
                                  id="vehicleNo"
-                                 placeholder={t("text.VehicleNo")}
+                                 placeholder={t("text.SelectVehicleNum")}
                               />
                            )}
                         />
@@ -859,14 +859,14 @@ const EditComplaintApproval = (props: Props) => {
                      {/* CurrentReadingKM */}
                      <Grid item xs={12} md={4} sm={4}>
                         <TextField
-                           label={<CustomLabel text={t("text.ReadingKM")} />}
+                           label={<CustomLabel text={t("text.EnterReadingKM")} />}
                            variant="outlined"
                            fullWidth
                            size="small"
                            name="currentReading"
                            id="currentReading"
                            value={formik.values.currentReading}
-                           placeholder={t("text.ReadingKM")}
+                           placeholder={t("text.EnterReadingKM")}
                            onChange={(e) => {
                               formik.setFieldValue("currentReading", e.target.value);
                            }}
@@ -902,7 +902,7 @@ const EditComplaintApproval = (props: Props) => {
                                  }
                                  name="approveEmp1"
                                  id="approveEmp1"
-                                 placeholder={t("text.ApproveEmployee" + " 1")}
+                                 placeholder={t("text.ApproveEmployee") + " 1"}
                               />
                            )}
                         />
@@ -975,7 +975,7 @@ const EditComplaintApproval = (props: Props) => {
                                  }
                                  name="approveEmp2"
                                  id="approveEmp2"
-                                 placeholder={t("text.ApproveEmployee" + " 2")}
+                                 placeholder={t("text.ApproveEmployee") + " 2"}
                               />
                            )}
                         />
@@ -1048,7 +1048,7 @@ const EditComplaintApproval = (props: Props) => {
                                  }
                                  name="approveEmp3"
                                  id="approveEmp3"
-                                 placeholder={t("text.ApproveEmployee" + " 3")}
+                                 placeholder={t("text.ApproveEmployee") + " 3"}
                               />
                            )}
                         />
@@ -1121,7 +1121,7 @@ const EditComplaintApproval = (props: Props) => {
                                  }
                                  name="approveEmp4"
                                  id="approveEmp4"
-                                 placeholder={t("text.ApproveEmployee" + " 4")}
+                                 placeholder={t("text.ApproveEmployee") + " 4"}
                               />
                            )}
                         />
@@ -1320,7 +1320,7 @@ const EditComplaintApproval = (props: Props) => {
                               marginTop: "10px",
                            }}
                         >
-                           {t("text.save")}
+                           {t("text.update")}
                         </Button>
                      </Grid>
 

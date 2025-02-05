@@ -274,7 +274,7 @@ export default function Designation() {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.Designation")}
+                                 text={t("text.EnterDesigName")}
                                  required={true}
                               />
                            }
@@ -284,7 +284,7 @@ export default function Designation() {
                            name="designationName"
                            id="designationName"
                            value={formik.values.designationName}
-                           placeholder={t("text.Designation")}
+                           placeholder={t("text.EnterDesigName")}
                            onChange={(e) => {
                               formik.setFieldValue("designationName", e.target.value.toString());
                            }}
@@ -300,7 +300,7 @@ export default function Designation() {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.DesignationCode")}
+                                 text={t("text.EnterDesignationCode")}
                                  required={false}
                               />
                            }
@@ -310,7 +310,7 @@ export default function Designation() {
                            name="designationCode"
                            id="designationCode"
                            value={formik.values.designationCode}
-                           placeholder={t("text.DesignationCode")}
+                           placeholder={t("text.EnterDesignationCode")}
                            onChange={(e) => {
                               formik.setFieldValue("designationCode", e.target.value.toString());
                            }}

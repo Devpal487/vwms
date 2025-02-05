@@ -321,10 +321,10 @@ const AddUtilizationLog = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="vehicleNo"
                       id="vehicleNo"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />

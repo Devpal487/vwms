@@ -122,10 +122,10 @@ const TranslateTextField: React.FC<ReusableTextFieldProps> = ({
   const [suggestions, setSuggestions] = useState<{ text: string }[]>([]);
 
   const handleBlur = () => {
-    if (!value && suggestions.length > 0) {
-      // Set the first suggestion as the value if no input was selected
-      onChangeText(suggestions[0].text);
-    }
+      // if (!value && suggestions.length > 0) {
+      //   // Set the first suggestion as the value if no input was selected
+      //   onChangeText(suggestions[0].text);
+      // } 
   };
 
   return (

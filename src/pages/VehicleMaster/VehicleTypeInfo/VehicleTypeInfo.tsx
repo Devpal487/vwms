@@ -409,10 +409,10 @@ export default function VehicleTypeInfo() {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleType")} required={true} />}
+                                 label={<CustomLabel text={t("text.SelectVehicleType")} required={true} />}
                                  name="vehicleName"
                                  id="vehicleName"
-                                 placeholder={t("text.VehicleType")}
+                                 placeholder={t("text.SelectVehicleType")}
                               />
                            )}
                         />

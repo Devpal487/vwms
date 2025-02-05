@@ -320,10 +320,10 @@ const EditUtilizationLog = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="vehicleNo"
                       id="vehicleNo"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />
@@ -571,7 +571,7 @@ const EditUtilizationLog = (props: Props) => {
                     marginTop: "10px",
                   }}
                 >
-                  {t("text.save")}
+                  {t("text.update")}
                 </Button>
               </Grid>
 

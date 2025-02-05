@@ -88,12 +88,14 @@ const AddJobCard1 = (props: Props) => {
   const [toaster, setToaster] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [taxData, setTaxData] = useState<any>([]);
-  const [unitOptions, setUnitOptions] = useState<any>([]);
+  // const [unitOptions, setUnitOptions] = useState<any>([]);
   const [indentOptions, setIndentOptions] = useState([
     { value: "-1", label: t("text.SelectindentNo") },
   ]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [itemOption, setitemOption] = useState<any>([]);
+     const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+         { value: -1, label: t("text.itemMasterId") },
+     ]);
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
   ]);
@@ -106,7 +108,7 @@ const AddJobCard1 = (props: Props) => {
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
   ]);
-  const [unitOption, setUnitOption] = useState([
+  const [unitOptions, setUnitOption] = useState([
     { value: -1, label: t("text.Unit") },
   ]);
   const [complainOption, setComplainOption] = useState([{
@@ -194,6 +196,7 @@ const AddJobCard1 = (props: Props) => {
         "id": 0,
         "jobCardId": 0,
         "itemId": 0,
+        "unitID": 0,
         "indentId": 0,
         "indentNo": "",
         "qty": 0,
@@ -208,7 +211,8 @@ const AddJobCard1 = (props: Props) => {
         "netAmount": 0,
         "srno": 0,
         "isDelete": true,
-        "prevReading": 0
+        "prevReading": 0,
+        "unitName": ""
       }
     ],
     "update": true
@@ -218,7 +222,8 @@ const AddJobCard1 = (props: Props) => {
     {
       "id": 0,
       "jobCardId": 0,
-      "itemId": 0,
+      "itemId": null,
+      "unitID": 0,
       "indentId": 0,
       "indentNo": "",
       "qty": 0,
@@ -233,7 +238,8 @@ const AddJobCard1 = (props: Props) => {
       "netAmount": 0,
       "srno": 0,
       "isDelete": true,
-      "prevReading": 0
+      "prevReading": 0,
+      "unitName": ""
     },
     // {
     //   "id": 0,
@@ -319,7 +325,7 @@ const AddJobCard1 = (props: Props) => {
     GetitemData();
     getTaxData();
     GetIndentID();
-    setVehicleName(location.state?.vehicleName);
+    setVehicleName(location.state?.vehicleName || "");
     setDesgValue(location.state?.designation || "");
     setDeptValue(location.state?.department || "");
     let total = 0;
@@ -362,7 +368,7 @@ const AddJobCard1 = (props: Props) => {
           value: item.taxId,
         })) || [];
 
-      setTaxData([{ value: "-1", label: t("text.tax") }, ...arr]);
+      setTaxData(arr);
     }
   };
   const GetitemData = async () => {
@@ -376,6 +382,8 @@ const AddJobCard1 = (props: Props) => {
       arr.push({
         label: data[index]["itemName"],
         value: data[index]["itemMasterId"],
+        unitId: data[index]["unitId"],
+
       });
     }
     setitemOption(arr);
@@ -579,27 +587,27 @@ const AddJobCard1 = (props: Props) => {
   const handleGenerateIndent = async (values: any) => {
     const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
     const validItemDetails = tableData1.filter((row: any) => row.itemId && row.qty > 0 && row.rate > 0);
-  
+
     try {
-      const response = await api.post(`Master/GenerateIndent`, { 
-        ...values, 
-        serviceDetail: validServiceDetails, 
-        itemDetail: validItemDetails 
+      const response = await api.post(`Master/GenerateIndent`, {
+        ...values,
+        serviceDetail: validServiceDetails,
+        itemDetail: validItemDetails
       });
-  
+
       if (response.data.status === 1) {
         toast.success(response.data?.message || "JOBCARD Indent Generated");
         setIsIndentGenerateEnabled(false);
         setIsIndentPrintEnabled(true);
         setJobCardId(response.data.data.jobCardId);
-  
+
         // Extract and slice indentNo from response data
         const responseData = response.data.data; // Example: "32,20250130/I/32"
         const indentNo = responseData.split(",")[1]; // Extract "20250130/I/32"
-  
+
         // Update `indentNo` in tableData1
-        setTableData1((prevTableData:any) => 
-          prevTableData.map((row:any) => ({
+        setTableData1((prevTableData: any) =>
+          prevTableData.map((row: any) => ({
             ...row,
             indentNo: indentNo // Set extracted value in indentNo field
           }))
@@ -613,7 +621,7 @@ const AddJobCard1 = (props: Props) => {
       toast.error("Failed to generate indent.");
     }
   };
-  
+
 
   // const handleGenerateIndent = async (values: any) => {
   //   const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
@@ -728,11 +736,19 @@ const AddJobCard1 = (props: Props) => {
   const handleInputChange1 = (index: any, field: any, value: any) => {
     const newData: any = [...tableData1];
     newData[index][field] = value;
+    if (field === "itemId") {
+      const selectedItem = itemOption.find((item) => item.value === value);
+      newData[index].itemId = selectedItem?.value || 0;
+      newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
 
-    if (field === 'itemId') {
-      newData[index].itemId = newData[index].itemId;
-     // newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
-    }
+      console.log("Selected Item:", selectedItem);
+  } else {
+      newData[index][field] = value;
+  }
+    // if (field === 'itemId') {
+    //   newData[index].itemId = newData[index].itemId;
+    //   // newData[index].serviceName = serviceOption[serviceOption.findIndex(e => e.value == newData[index].serviceId)].label;
+    // }
 
     if (field === 'amount') {
       newData[index].amount = newData[index].amount;
@@ -1039,7 +1055,7 @@ const AddJobCard1 = (props: Props) => {
                     // })
                   }
                   ref={inputRef}
-                  value={formik.values.vehicleNo || location.state?.vehicleNo}
+                  value={formik.values.vehicleNo || location.state?.vehicleNo || ""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -1677,17 +1693,17 @@ const AddJobCard1 = (props: Props) => {
                               style={{ cursor: "pointer" }}
                             />
                           </td> */}
- <td
+                          <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
                             }}
                           >
-                             <AddCircleIcon
+                            <AddCircleIcon
                               onClick={() => {
                                 handleAddItem();
                               }}
-                              
+
                               style={{ cursor: "pointer" }}
                             />
                             <DeleteIcon
@@ -1713,7 +1729,7 @@ const AddJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
-                              value={itemOption[itemOption.findIndex((e:any) => e.value === row.itemId)]?.label||""}
+                              value={itemOption[itemOption.findIndex((e: any) => e.value === row.itemId)]?.label || ""}
                               fullWidth
                               size="small"
                               sx={{ width: "210px" }}
@@ -1741,64 +1757,56 @@ const AddJobCard1 = (props: Props) => {
                               width: "10rem"
                             }}
                           >
-                            <Autocomplete
-                              disablePortal
-                              id="combo-box-demo"
-                              options={unitOption}
-                              //value={row.unitName}
-                              fullWidth
-                              size="small"
-                              onChange={(e: any, newValue: any) => {
-                                console.log(newValue?.value);
-                                handleInputChange1(index, 'unitId', newValue?.value);
-                                handleInputChange1(index, 'unitName', newValue?.label);
+                            <select
+                              value={row.unitId}
+                              onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                              style={{ width: '95%', height: '35px' }}
+                            >
+                              <option value=""></option>
+                              {unitOptions.map((option: any) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                            </td>
+
+                            <td
+                              style={{
+                                border: "1px solid black",
+                                textAlign: "center",
+                                width: "10rem"
                               }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
+                            >
+                              <TextField
+                                value={row.qty}
+                                size="small"
+                                inputProps={{ "aria-readonly": true }}
+                                onChange={(e) =>
+                                  handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
+                                }
+                                onFocus={e => e.target.select()}
+                              />
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid black",
+                                textAlign: "center",
+                                width: "10rem"
+                              }}
+                            >
+                              <TextField
+                                value={row.rate}
+                                onChange={(e) =>
+                                  handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
+                                }
+                                onFocus={e => e.target.select()}
+                                size="small"
+                                inputProps={{ "aria-readonly": true }}
+                              />
+                            </td>
 
-                                />
-                              )}
-                            />
-                          </td>
-
-
-                          <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
-                            }}
-                          >
-                            <TextField
-                              value={row.qty}
-                              size="small"
-                              inputProps={{ "aria-readonly": true }}
-                              onChange={(e) =>
-                                handleInputChange1(index, "qty", parseFloat(e.target.value) || 0)
-                              }
-                              onFocus={e => e.target.select()}
-                            />
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                              width: "10rem"
-                            }}
-                          >
-                            <TextField
-                              value={row.rate}
-                              onChange={(e) =>
-                                handleInputChange1(index, "rate", parseFloat(e.target.value) || 0)
-                              }
-                              onFocus={e => e.target.select()}
-                              size="small"
-                              inputProps={{ "aria-readonly": true }}
-                            />
-                          </td>
-
-                          {/* <td
+                            {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1814,61 +1822,42 @@ const AddJobCard1 = (props: Props) => {
                               inputProps={{ readOnly: true }}
                             />
                           </td> */}
-                          <td
-                            style={{
-                              border: "1px solid black",
+                            <td
+                              style={{
+                                border: "1px solid black",
 
-                            }}
-                          >
-                             <TextField
-                              value={row.indentNo}
-                              onChange={(e) =>
-                                handleInputChange1(index, "indentNo", parseFloat(e.target.value) || 0)
-                              }
-                              onFocus={e => e.target.select()}
-                              size="small"
-                              sx={{ width: "225px" }}
-                              disabled
-                              inputProps={{ "aria-readonly": true }}
-                            />
-                            {/* <Autocomplete
-                              disablePortal
-                              id="combo-box-demo"
-                              options={indentOptions}
-                              fullWidth
-                              size="small"
-                              sx={{ width: "225px" }}
-                              onChange={(e: any, newValue: any) => {
-                                console.log(newValue?.value);
-                                handleInputChange1(index, 'indentId', newValue?.value);
-                                handleInputChange1(index, 'indentNo', newValue?.label);
                               }}
+                            >
+                              <TextField
+                                value={row.indentNo}
+                                onChange={(e) =>
+                                  handleInputChange1(index, "indentNo", parseFloat(e.target.value) || 0)
+                                }
+                                onFocus={e => e.target.select()}
+                                size="small"
+                                sx={{ width: "225px" }}
+                                disabled
+                                inputProps={{ "aria-readonly": true }}
+                              />
 
-                              renderInput={(params: any) => (
-                                <TextField
-                                  {...params}
+                            </td>
 
-                                />
-                              )}
-                            /> */}
-                          </td>
+                            <td
+                              style={{
+                                border: "1px solid black",
 
-                          <td
-                            style={{
-                              border: "1px solid black",
+                              }}
+                            >
+                              <TextField
+                                value={row.prevReading}
+                                onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
+                                size="small"
+                                inputProps={{ "aria-readonly": true }}
+                                onFocus={e => e.target.select()}
+                              />
+                            </td>
 
-                            }}
-                          >
-                            <TextField
-                              value={row.prevReading}
-                              onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
-                              size="small"
-                              inputProps={{ "aria-readonly": true }}
-                              onFocus={e => e.target.select()}
-                            />
-                          </td>
-
-                          {/* <td
+                            {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1921,7 +1910,7 @@ const AddJobCard1 = (props: Props) => {
                               disabled
                             />
                           </td>*/}
-                          {/* <td
+                            {/* <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1933,19 +1922,19 @@ const AddJobCard1 = (props: Props) => {
                               inputProps={{ readOnly: true }}
                             />
                           </td>  */}
-                          <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <TextField
-                              // value={row.qty * row.rate}
-                              value={row.amount + row.gstRate}
-                              size="small"
-                              inputProps={{ readOnly: true }}
-                            />
-                          </td>
+                            <td
+                              style={{
+                                border: "1px solid black",
+                                textAlign: "center",
+                              }}
+                            >
+                              <TextField
+                                // value={row.qty * row.rate}
+                                value={row.amount + row.gstRate}
+                                size="small"
+                                inputProps={{ readOnly: true }}
+                              />
+                            </td>
 
 
                         </tr>
@@ -2084,6 +2073,34 @@ const AddJobCard1 = (props: Props) => {
                     }}
                     onClick={() => {
                       formik.resetForm();
+                      setTableData1([
+                        {
+                          "id": 0,
+                          "jobCardId": 0,
+                          "itemId": 0,
+                          "unitID": null,
+                          "indentId": 0,
+                          "indentNo": "",
+                          "qty": 0,
+                          "rate": 0,
+                          "batchNo": "",
+                          "amount": 0,
+                          "gstId": 0,
+                          "gstRate": 0,
+                          "cgst": 0,
+                          "sgst": 0,
+                          "igst": 0,
+                          "netAmount": 0,
+                          "srno": 0,
+                          "isDelete": true,
+                          "prevReading": 0,
+                          "unitName": ""
+                        },
+                      ]);
+                      setDeptValue("");
+                      setDesgValue("");
+                      setVehicleName("");
+                      //  setIsIndentSelected(false);
                       console.log(totalAmount);
                     }}
                   >
@@ -2092,7 +2109,7 @@ const AddJobCard1 = (props: Props) => {
                 </Grid>
               </Grid>
 
-              {isVisible && (
+              {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -2121,14 +2138,14 @@ const AddJobCard1 = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
 
             </Grid>
 
           </form>
         </CardContent>
       </div>
-    </div>
+    </div >
   );
 };
 const modules = {

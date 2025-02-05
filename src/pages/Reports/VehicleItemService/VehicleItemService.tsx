@@ -826,6 +826,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import { getISTDate } from "../../../utils/Constant";
+import Logo from "../../../assets/images/KanpurLogo.png";
 // import { useLocation } from 'react-router-dom';
 
 interface MenuPermission {
@@ -993,14 +994,30 @@ export default function VehicleItemService() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Vehicle Item Service Report", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = [ "Vehicle No", "JobCard No", "Item", "Item Name","Complaint Date",];
 
@@ -1306,7 +1323,7 @@ export default function VehicleItemService() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VehicleItemService")}
@@ -1315,7 +1332,7 @@ export default function VehicleItemService() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
             <Autocomplete
                 disablePortal
@@ -1508,6 +1525,8 @@ export default function VehicleItemService() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
                 }}
               >
                  {t("text.reset")}

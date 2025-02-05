@@ -534,10 +534,10 @@ const AddComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                                 label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                                  name="itemID"
                                  id="itemID"
-                                 placeholder={t("text.VehicleNo")}
+                                 placeholder={t("text.SelectVehicleNum")}
                               />
                            )}
                         />
@@ -625,7 +625,7 @@ const AddComplaint = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ReadingKM")}
+                                 text={t("text.EnterReadingKM")}
                               />
                            }
                            variant="outlined"
@@ -634,7 +634,7 @@ const AddComplaint = (props: Props) => {
                            name="currentReading"
                            id="currentReading"
                            value={formik.values.currentReading}
-                           placeholder={t("text.ReadingKM")}
+                           placeholder={t("text.EnterReadingKM")}
                            onChange={(e) => {
                               formik.setFieldValue("currentReading", parseInt(e.target.value) || 0);
                            }}
@@ -1086,6 +1086,7 @@ const AddComplaint = (props: Props) => {
                            }}
                            onClick={() => {
                               formik.resetForm();
+                              getcomplaintNo();
                            }}
                         >
                            {t("text.reset")}

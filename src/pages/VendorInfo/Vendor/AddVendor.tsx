@@ -1319,7 +1319,7 @@ const AddVendor = (props: Props) => {
                     type="submit"
                     fullWidth
                     style={{
-                      backgroundColor: "#059669",
+                      backgroundColor: `var(--header-background)`,
                       color: "white",
                       marginTop: "10px",
                     }}

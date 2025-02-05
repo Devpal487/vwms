@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
+import Logo from "../../../assets/images/KanpurLogo.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import Chip from "@mui/material/Chip";
 import { useTranslation } from "react-i18next";
@@ -182,14 +183,30 @@ export default function VehicleStatusReport() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Vehicle Status Report", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = ["Date", "Vehicle No", "Complain Status", "JobCard No", "Jobcard Status"];
 
@@ -468,7 +485,7 @@ export default function VehicleStatusReport() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VehicleStatusReport")}
@@ -477,7 +494,7 @@ export default function VehicleStatusReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
 
 
             <Grid xs={12} sm={6} md={6} item>
@@ -592,6 +609,7 @@ export default function VehicleStatusReport() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
                 }}
               >
                  {t("text.reset")}

@@ -381,7 +381,12 @@ const EditJobCard = (props: Props) => {
         setTableData(arr);
       }
     }
-    formik.setFieldValue("imageFile",data[0].imageFile);
+    formik.setFieldValue("imageFile", data[0].imageFile);
+    if (data[0].status === "Complete") {
+      setIsVisible(false);
+      setIsVisibleJWC(20);
+      setIsEnable(20);
+    }
 
     setDeptValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.department || location.state?.department || "");
     setDesgValue(empOption[empOption.findIndex(e => e.value == data[0].empId)]?.designation || location.state?.designation || "");
@@ -689,13 +694,16 @@ const EditJobCard = (props: Props) => {
       }
       const response = await api.post(`Master/UpsertJobWorkChallan`, { ...values, jobWorkChallanDetail: [...challanChildData] });
       if (response.data.status === 1) {
-        toast.success(response.data.message);
-        const arr: any = [];
-        tableData.forEach((data: any) => {
-          arr.push({ ...data, challanNo: response.data.data });
-        })
-        setTableData(arr);
+        setTableData((prevData) =>
+          prevData.map((data) =>
+            data.vendorId === uniqueVendor[i] ? { ...data, challanNo: response.data.data } : data
+          )
+        );
+        toast.success("JobWorkChallan generated successfully!");
+        //toast.success(response.data.message);
         setChallanNum(response.data.data);
+
+        // Update tableData with new challanNo for the matching vendor
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -801,6 +809,12 @@ const EditJobCard = (props: Props) => {
   const deleteRow = (index: any) => {
     const newData = tableData.filter((_, i) => i !== index);
     setTableData(newData);
+    let total = 0;
+    tableData.forEach(row => {
+      total += row.amount;
+    })
+    formik.setFieldValue("netAmount", total);
+    formik.setFieldValue("totalServiceAmount", total);
   };
 
 
@@ -989,10 +1003,10 @@ const EditJobCard = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                      label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                       name="itemName"
                       id="itemName"
-                      placeholder={t("text.VehicleNo")}
+                      placeholder={t("text.SelectVehicleNum")}
                     />
                   )}
                 />
@@ -1185,7 +1199,10 @@ const EditJobCard = (props: Props) => {
               <Grid item xs={12}>
                 <div style={{ overflowX: 'scroll', margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                    <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                    <thead style={{
+                      backgroundColor: `var(--grid-headerBackground)`,
+                      color: `var(--grid-headerColor)`
+                    }}>
                       <tr>
                         <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                         <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: "20rem" }}>{t("text.Services")}</th>
@@ -1548,8 +1565,17 @@ const EditJobCard = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalServiceAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalServiceAmount.toFixed(2)}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={9}></td>
+                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                          {t("text.gst")}
+                        </td>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
+                          <b>:</b>{(formik.values?.netAmount - formik.values?.totalServiceAmount - formik.values?.totalItemAmount).toFixed(2)}
                         </td>
                       </tr>
                       <tr>
@@ -1557,7 +1583,7 @@ const EditJobCard = (props: Props) => {
                         <td colSpan={2} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={1}>
+                        <td colSpan={1} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount.toFixed(2)}
                         </td>
                       </tr>
@@ -1740,7 +1766,7 @@ const EditJobCard = (props: Props) => {
                       marginTop: "10px",
                     }}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 ) : (
                   <Button
@@ -1753,7 +1779,7 @@ const EditJobCard = (props: Props) => {
                       marginTop: "10px",
                     }}
                   >
-                    {t("text.save")}
+                    {t("text.update")}
                   </Button>
                 )}
 

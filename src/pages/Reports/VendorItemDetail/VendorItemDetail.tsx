@@ -41,6 +41,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
+import Logo from "../../../assets/images/KanpurLogo.png";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -219,14 +220,30 @@ export default function VendorItemDetail() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Vendor Item Detail", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = ["Mrn No.", "Item Name", "Net Amount", "Vendor", "Mrn Date"];
 
@@ -525,7 +542,7 @@ export default function VendorItemDetail() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VendorItemDetail")}
@@ -534,13 +551,14 @@ export default function VendorItemDetail() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={3} lg={3}>
               <Autocomplete
                // multiple
                 disablePortal
                 id="combo-box-demo"
                 options={ItemOption}
+                value={isItem}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -572,6 +590,7 @@ export default function VendorItemDetail() {
                 disablePortal
                 id="combo-box-demo"
                 options={VendorOption}
+                value={vend}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -706,6 +725,9 @@ export default function VendorItemDetail() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setItem("");
+                  setVendor("");
                 }}
               >
                  {t("text.reset")}

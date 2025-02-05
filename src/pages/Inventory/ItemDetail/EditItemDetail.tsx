@@ -123,10 +123,8 @@ import Languages from "../../../utils/Languages";
         value: data[index]["itemTypeMasterId"],
       });
     }
-    setOption([{ value: "-1", label: t("text.selectitemTypeId") }, ...arr]);
+    setOption(arr);
   };
-
-
   const GetitemCategoryData = async () => {
     const collectData = {
       itemCategoryId: -1,
@@ -140,7 +138,7 @@ import Languages from "../../../utils/Languages";
         value: data[index]["itemCategoryId"],
       });
     }
-    setitemCategoryOptions([{ value: "-1", label: t("text.selectItemCategory") }, ...arr]);
+    setitemCategoryOptions(arr);
   };
 
   const handleConversionChange = (params: any, text: string) => {
@@ -161,11 +159,8 @@ import Languages from "../../../utils/Languages";
         value: data[index]["taxId"],
       });
     }
-    setTaxOptions([{ value: "-1", label: t("text.tax") }, ...arr]);
+    setTaxOptions(arr);
   };
-
-
-
   const GetUnitData = async () => {
     const collectData = {
       unitId: -1,
@@ -179,7 +174,7 @@ import Languages from "../../../utils/Languages";
         value: data[index]["unitId"],
       });
     }
-    setUnitOptions([{ value: "-1", label: t("text.selectUnit") }, ...arr]);
+    setUnitOptions(arr);
   };
 
 
@@ -327,7 +322,7 @@ const validationSchema = Yup.object().shape({
               {/* First Row */}
               {toaster && <ToastApp />}
               <Grid container item xs={12} spacing={2}>
-              <Grid item lg={12} xs={12}>
+              {/* <Grid item lg={12} xs={12}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -340,7 +335,7 @@ const validationSchema = Yup.object().shape({
                     label={t("text.QCApplicable")}
                   />
                 </FormGroup>
-              </Grid>
+              </Grid> */}
                 <Grid item xs={12} sm={4} lg={4}>
                   <TranslateTextField
                     label={t("text.enteritemName")}

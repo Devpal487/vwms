@@ -219,13 +219,13 @@ export default function JobWorkChallanRecieve() {
                {
                   field: "challanRcvNo",
                   headerName: t("text.ChallanRcvNo"),
-                  flex: 1,
+                  flex: .9,
                   headerClassName: "MuiDataGrid-colCell",
                },
                {
                   field: "vehicleNo",
-                  headerName: t("text.VehicleNo"),
-                  flex: .8,
+                  headerName: t("text.VehicleNum"),
+                  flex: .9,
                   headerClassName: "MuiDataGrid-colCell",
 
                },
@@ -239,7 +239,7 @@ export default function JobWorkChallanRecieve() {
                {
                   field: "jobCardId",
                   headerName: t("text.JobCardNum"),
-                  flex: .8,
+                  flex: .7,
                   headerClassName: "MuiDataGrid-colCell",
                },
                {
@@ -251,13 +251,13 @@ export default function JobWorkChallanRecieve() {
                {
                   field: "challanNo",
                   headerName: t("text.ChallanNo"),
-                  flex: .8,
+                  flex: .7,
                   headerClassName: "MuiDataGrid-colCell",
                },
                {
                   field: "challanDate",
                   headerName: t("text.ChallanDate"),
-                  flex: 1,
+                  flex: .8,
                   headerClassName: "MuiDataGrid-colCell",
                },
                {

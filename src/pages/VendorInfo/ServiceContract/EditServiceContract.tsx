@@ -483,7 +483,10 @@ const EditServiceContract = (props: Props) => {
                   }}
                 >
                   <thead
-                    style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
+                    style={{
+                      backgroundColor: `var(--grid-headerBackground)`,
+                      color: `var(--grid-headerColor)`
+                    }}
                   >
                     <tr>
                       <th
@@ -596,7 +599,7 @@ const EditServiceContract = (props: Props) => {
                     marginTop: "10px",
                   }}
                 >
-                  {t("text.save")}
+                  {t("text.update")}
                 </Button>
               </Grid>
 

@@ -687,7 +687,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
   const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
-  const [itemOption, setitemOption] = useState([
+  const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
     { value: -1, label: t("text.itemMasterId") },
   ]);
 
@@ -720,6 +720,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
       arr.push({
         label: data[index]["itemName"],
         value: data[index]["itemMasterId"],
+        unitId: data[index]["unitId"]
       });
     }
     setitemOption(arr);
@@ -820,7 +821,15 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
   const handleInputChange = (index: number, field: string, value: number) => {
     const newData: any = [...tableData];
+    if (field === "itemId") {
+      const selectedItem = itemOption.find((item) => item.value === value);
+      newData[index].itemId = selectedItem?.value || 0;
+      newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
 
+      console.log("Selected Item:", selectedItem);
+    } else {
+      newData[index][field] = value;
+    }
 
     const numericValue = parseFloat(value.toString());
 
@@ -974,30 +983,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
 
 
-              {/*   
-                <Grid item xs={12} sm={4} lg={4}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={empOption}
-                    fullWidth
-                    size="small"
-                    onChange={(event, newValue) => {
-                      console.log(newValue?.value);
-                      formik.setFieldValue("empId", newValue?.value);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={<CustomLabel text={t("text.selectemp_name")} />}
-                      />
-                    )}
-                  />
-  
-                  {formik.touched.empId && formik.errors.empId && (
-                    <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-                  )}
-                </Grid> */}
+
 
               <Grid item xs={12}>
 
@@ -1057,6 +1043,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
+                              value={itemOption.find((option) => option.value === row.itemId)?.label || ""}
                               fullWidth
                               size="small"
                               onChange={(e: any, newValue: any) => {
@@ -1081,31 +1068,18 @@ const CreateOfficePurchaseIndent = (props: Props) => {
                           </td>
                           <td style={{ border: '1px solid black', textAlign: 'center' }}>
 
-                            <Autocomplete
-                              disablePortal
-                              id="combo-box-demo"
-                              options={unitOptions}
-                              fullWidth
-                              size="small"
-                              onChange={(e: any, newValue: any) => {
-                                if (!newValue) {
-                                  return;
-                                } else {
-                                  handleInputChange(
-                                    index,
-                                    "unitId",
-                                    newValue?.value
-                                  )
-                                }
-                              }
-                              }
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-
-                                />
-                              )}
-                            />
+                            <select
+                              value={unitOptions.find((option) => option.value === row.unitId)?.value || ""}
+                              onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                              style={{ width: '95%', height: '35px' }}
+                            >
+                              <option value=""></option>
+                              {unitOptions.map((option: any) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
 
                           </td>
 
@@ -1175,6 +1149,7 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
                 <TextField
                   placeholder={t("text.Remark")}
+                  value={formik.values.remark}
                   onChange={(e) => formik.setFieldValue('remark', e.target.value)}
                   style={{
                     width: '100%',
@@ -1204,14 +1179,38 @@ const CreateOfficePurchaseIndent = (props: Props) => {
 
               <Grid item lg={6} sm={6} xs={12}>
                 <Button
-                  type="reset"
+                  type="button"
                   fullWidth
                   style={{
                     backgroundColor: "#F43F5E",
                     color: "white",
                     marginTop: "10px",
                   }}
-                  onClick={(e: any) => formik.resetForm()}
+                  onClick={() => {
+                    formik.resetForm(); // Reset form values
+                    setTableData([
+                      {
+                        "id": 0,
+                        "indentId": 0,
+                        "itemId": 0,
+                        "unitId": null,
+                        "quantity": 0,
+                        "rate": 0,
+                        "amount": 0,
+                        "approveQuantity": 0,
+                        "fyId": 0,
+                        "srn": 0,
+                        "isDelete": true,
+                        "unitName": "",
+                        "itemName": ""
+                      },
+                    ]); // Reset table data
+                    // setItemValue(null); // Reset Autocomplete selection
+                    //  setSelectedAction(null); // Reset selected action
+                    // setIsIndentSelected(false); // Reset indent selection
+                    GetmaxindentData();
+
+                  }}
                 >
                   {t("text.reset")}
                 </Button>

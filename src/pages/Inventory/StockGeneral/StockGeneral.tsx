@@ -181,18 +181,18 @@ export default function StockGeneral() {
                         flex: 1,
                         headerClassName: "MuiDataGrid-colCell",
                     },
-                    // {
-                    //     field: "itemName",
-                    //     headerName: t("text.itemName"),
-                    //     flex: 1,
-                    //     headerClassName: "MuiDataGrid-colCell",
-                    // },
-                    // {
-                    //     field: "unitName",
-                    //     headerName: t("text.unitName"),
-                    //     flex: 1,
-                    //     headerClassName: "MuiDataGrid-colCell",
-                    // },
+                    {
+                        field: "itemName",
+                        headerName: t("text.itemName"),
+                        flex: 1,
+                        headerClassName: "MuiDataGrid-colCell",
+                    },
+                    {
+                        field: "unitName",
+                        headerName: t("text.unitName"),
+                        flex: 1,
+                        headerClassName: "MuiDataGrid-colCell",
+                    },
                     {
                         field: "rate",
                         headerName: t("text.rate"),

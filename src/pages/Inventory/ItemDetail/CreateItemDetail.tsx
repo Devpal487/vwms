@@ -68,6 +68,9 @@ export default function CreateItemDetail() {
   const [taxOptions, setTaxOptions] = useState<any>([]);
   const [itemCategoryOptions, setitemCategoryOptions] = useState<any>([]);
   const [unitOptions, setUnitOptions] = useState<any>([]);
+  //  const [unitOptions, setUnitOptions] = useState<any>([
+  //     { value: -1, label: t("text.SelectUnitId") },
+  //   ]);
   let navigate = useNavigate();
   useEffect(() => {
     GetitemCategoryData();
@@ -88,7 +91,7 @@ export default function CreateItemDetail() {
         value: data[index]["itemTypeMasterId"],
       });
     }
-    setOption([{ value: "-1", label: t("text.selectitemTypeId") }, ...arr]);
+    setOption(arr);
   };
   const GetitemCategoryData = async () => {
     const collectData = {
@@ -103,7 +106,7 @@ export default function CreateItemDetail() {
         value: data[index]["itemCategoryId"],
       });
     }
-    setitemCategoryOptions([{ value: "-1", label: t("text.selectItemCategory") }, ...arr]);
+    setitemCategoryOptions(arr);
   };
   const handleConversionChange = (params: any, text: string) => {
     formik.setFieldValue(params, text);
@@ -121,7 +124,7 @@ export default function CreateItemDetail() {
         value: data[index]["taxId"],
       });
     }
-    setTaxOptions([{ value: "-1", label: t("text.tax") }, ...arr]);
+    setTaxOptions(arr);
   };
   const GetUnitData = async () => {
     const collectData = {
@@ -136,7 +139,7 @@ export default function CreateItemDetail() {
         value: data[index]["unitId"],
       });
     }
-    setUnitOptions([{ value: "-1", label: t("text.selectUnit") }, ...arr]);
+    setUnitOptions(arr);
   };
   const validationSchema = Yup.object().shape({
     itemName: Yup.string()
@@ -152,7 +155,7 @@ export default function CreateItemDetail() {
       "itemTypeId": 0,
       "itemFlag": "I",
       "itemCategoryId": 0,
-      "unitId": 0,
+      "unitId": null,
       "empId": 0,
       "vZoneID": 0,
       "taxId": 0,
@@ -256,7 +259,7 @@ export default function CreateItemDetail() {
           <form onSubmit={formik.handleSubmit}>
           {toaster && <ToastApp />}
             <Grid container item xs={12} spacing={2}>
-              <Grid item lg={12} xs={12}>
+              {/* <Grid item lg={12} xs={12}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -269,7 +272,7 @@ export default function CreateItemDetail() {
                     label={t("text.QCApplicable")}
                   />
                 </FormGroup>
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={4} lg={4}>
                 <TranslateTextField
                   label={t("text.enteritemName")}
@@ -325,6 +328,7 @@ export default function CreateItemDetail() {
                   disablePortal
                   id="combo-box-demo"
                   options={itemCategoryOptions}
+                  value={itemCategoryOptions.find((option:any) => option.value === formik.values.itemCategoryId)?.label||""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -348,6 +352,7 @@ export default function CreateItemDetail() {
                   disablePortal
                   id="combo-box-demo"
                   options={option}
+                  value={option.find((option:any) => option.value === formik.values.itemTypeId)?.label||""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -371,6 +376,7 @@ export default function CreateItemDetail() {
                   disablePortal
                   id="combo-box-demo"
                   options={unitOptions}
+                  value={unitOptions.find((option:any) => option.value === formik.values.unitId)?.label||""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -394,6 +400,7 @@ export default function CreateItemDetail() {
                   disablePortal
                   id="combo-box-demo"
                   options={taxOptions}
+                  value={taxOptions.find((option:any) => option.value === formik.values.taxId)?.label||""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {

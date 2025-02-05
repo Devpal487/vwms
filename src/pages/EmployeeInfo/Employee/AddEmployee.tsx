@@ -521,7 +521,7 @@ const AddEmployee = (props: Props) => {
               {/* emp name */}
               <Grid item lg={4} xs={12}>
                 <TranslateTextField
-                  label={t("text.EmpName")}
+                  label={t("text.EnterEmpName")}
                   value={formik.values.empName}
                   onChangeText={(text: string) =>
                     handleConversionChange("empName", text)
@@ -541,7 +541,7 @@ const AddEmployee = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.EmpCode")}
+                      text={t("text.EnterEmpCode")}
                       required={true}
                     />
                   }
@@ -551,7 +551,7 @@ const AddEmployee = (props: Props) => {
                   name="empCode"
                   id="empCode"
                   value={formik.values.empCode}
-                  placeholder={t("text.EmpCode")}
+                  placeholder={t("text.EnterEmpCode")}
                   onChange={(e) => {
                     formik.setFieldValue("empCode", e.target.value);
                   }}
@@ -564,7 +564,7 @@ const AddEmployee = (props: Props) => {
               {/* father name */}
               <Grid item lg={4} xs={12}>
                 <TranslateTextField
-                  label={t("text.FatherName")}
+                  label={t("text.EnterFatherName")}
                   value={formik.values.empFatherName}
                   onChangeText={(text: string) =>
                     handleConversionChange("empFatherName", text)
@@ -577,7 +577,7 @@ const AddEmployee = (props: Props) => {
               {/* Mother name */}
               <Grid item lg={4} xs={12}>
                 <TranslateTextField
-                  label={t("text.MotherName")}
+                  label={t("text.EnterMotherName")}
                   value={formik.values.empMotherName}
                   onChangeText={(text: string) =>
                     handleConversionChange("empMotherName", text)
@@ -605,7 +605,7 @@ const AddEmployee = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Gender")} required={false} />}
+                      label={<CustomLabel text={t("text.SelectGender")} required={false} />}
                       name="gender"
                       id="gender"
                       placeholder={t("text.Gender")}
@@ -647,12 +647,12 @@ const AddEmployee = (props: Props) => {
                   inputProps={{ maxLength: 10, minLength: 10 }}
                   label={
                     <CustomLabel
-                      text={t("text.MobileNo")}
+                      text={t("text.EnterMobileNum")}
                       required={true}
                     />
                   }
                   value={formik.values.empMobileNo}
-                  placeholder={t("text.MobileNo")}
+                  placeholder={t("text.EnterMobileNum")}
                   size="small"
                   fullWidth
                   onChange={(e) => {
@@ -672,11 +672,11 @@ const AddEmployee = (props: Props) => {
                   name="email"
                   label={
                     <CustomLabel
-                      text={t("text.EmailId")}
+                      text={t("text.EnterEmailId")}
                     />
                   }
                   value={formik.values.email}
-                  placeholder={t("text.EmailId")}
+                  placeholder={t("text.EnterEmailId")}
                   //type="email"
                   size="small"
                   fullWidth
@@ -794,7 +794,7 @@ const AddEmployee = (props: Props) => {
                 <TextField
                   label={
                     <CustomLabel
-                      text={t("text.Status")}
+                      text={t("text.EnterStatus")}
                       required={false}
                     />
                   }
@@ -804,7 +804,7 @@ const AddEmployee = (props: Props) => {
                   name="empStatus"
                   id="empStatus"
                   value={formik.values.empStatus}
-                  placeholder={t("text.Status")}
+                  placeholder={t("text.EnterStatus")}
                   onChange={(e) => {
                     formik.setFieldValue("empStatus", e.target.value);
                   }}
@@ -818,11 +818,11 @@ const AddEmployee = (props: Props) => {
                   name="dlno"
                   label={
                     <CustomLabel
-                      text={t("text.DrivingLicence")}
+                      text={t("text.EnterDrivingLicence")}
                     />
                   }
                   value={formik.values.dlno}
-                  placeholder={t("text.DrivingLicence")}
+                  placeholder={t("text.EnterDrivingLicence")}
                   size="small"
                   fullWidth
                   onChange={(e) => {
@@ -853,10 +853,10 @@ const AddEmployee = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Department")} required={false} />}
+                      label={<CustomLabel text={t("text.SelectDepartment")} required={false} />}
                       name=""
                       id=""
-                      placeholder={t("text.Department")}
+                      placeholder={t("text.SelectDepartment")}
                     />
                   )}
                 />
@@ -882,10 +882,10 @@ const AddEmployee = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.Designation")} required={false} />}
+                      label={<CustomLabel text={t("text.SelectDesignation")} required={false} />}
                       name=""
                       id=""
-                      placeholder={t("text.Designation")}
+                      placeholder={t("text.SelectDesignation")}
                     />
                   )}
                 />
@@ -896,7 +896,7 @@ const AddEmployee = (props: Props) => {
               {/* Permanent address */}
               <Grid item lg={4} xs={12}>
                 <TranslateTextField
-                  label={t("text.PermanentAddress")}
+                  label={t("text.EnterPermanentAddress")}
                   onChangeText={(text: string) => formik.setFieldValue("empPerAddress", text)}
                   required={false}
                   lang={lang}
@@ -908,7 +908,7 @@ const AddEmployee = (props: Props) => {
               {/* Local address */}
               <Grid item lg={4} xs={12}>
                 <TranslateTextField
-                  label={t("text.LocalAddress")}
+                  label={t("text.EnterLocalAddress")}
                   onChangeText={(text: string) => formik.setFieldValue("empLocalAddress", text)}
                   required={false}
                   lang={lang}
@@ -1035,9 +1035,10 @@ const AddEmployee = (props: Props) => {
                       {...params}
                       label={
                         <CustomLabel
-                          text={t("text.Zone")}
+                          text={t("text.SelectZone")}
                         />
                       }
+                      placeholder={t("text.SelectZone")}
                     />
                   )}
                 />
@@ -1636,7 +1637,7 @@ const AddEmployee = (props: Props) => {
                     type="submit"
                     fullWidth
                     style={{
-                      backgroundColor: "#059669",
+                      backgroundColor: `var(--header-background)`,
                       color: "white",
                       marginTop: "10px",
                     }}

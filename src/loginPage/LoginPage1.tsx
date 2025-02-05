@@ -11,6 +11,8 @@ import {
    FormControlLabel,
    RadioGroup,
    Radio,
+   InputAdornment,
+   IconButton,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -24,11 +26,13 @@ import LoginBg from "./tools.jpg";
 import LoginImg from "./vehicleService.png";
 import { motion } from "framer-motion";
 import { t } from "i18next";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginPage1 = () => {
    const [loading, setLoading] = useState(false);
    const [isSignUpMode, setIsSignUpMode] = useState(false);
    const navigate = useNavigate();
+   const [showPassword, setShowPassword] = React.useState(false);
 
    // Handle switching between Sign In and Sign Up modes
    const handleSignUpClick = () => setIsSignUpMode(true);
@@ -39,6 +43,16 @@ const LoginPage1 = () => {
       username: Yup.string().required("Username Required"),
       password: Yup.string().required("Password Required"),
    });
+
+   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+   };
+
+   const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+   };
 
    // const inhouse_outsource =[
    //    {
@@ -80,11 +94,11 @@ const LoginPage1 = () => {
                );
                navigate("/home");
             } else {
-                toast.error(response.data.message);
+               toast.error(response.data.message);
             }
          } catch (error) {
-             toast.error("Login Failed");
-            
+            toast.error("Login Failed");
+
          } finally {
             setLoading(false);
          }
@@ -124,16 +138,33 @@ const LoginPage1 = () => {
                   )}
                   <InputLabel sx={{ color: "#fff", textAlign: "start", fontWeight: "1.2rem", marginLeft: "1rem" }}>Password</InputLabel>
                   <TextField
+                     type={showPassword ? 'text' : 'password'}
                      fullWidth
                      id="password"
                      name="password"
                      placeholder="Password"
-                     type="password"
+                     //type="password"
                      value={formik.values.password}
                      onChange={formik.handleChange}
                      onBlur={formik.handleBlur}
                      sx={{ marginBottom: 2, backgroundColor: "#fff", borderRadius: "3rem", color: "#000" }}
                      size="small"
+                     InputProps={{  // ✅ Move endAdornment inside InputProps
+                        endAdornment: (
+                           <InputAdornment position="end">
+                              <IconButton
+                                 aria-label={showPassword ? 'hide the password' : 'display the password'}
+                                 onClick={handleClickShowPassword}
+                                 onMouseDown={handleMouseDownPassword}
+                                 onMouseUp={handleMouseUpPassword}
+                                 edge="end"
+                              >
+                                 {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                           </InputAdornment>
+                        )
+                     }}
+
                   />
                   {formik.touched.password && formik.errors.password && (
                      <div style={{ color: "#e7d215", marginTop: "-10px", marginBottom: "15px" }}>Password is required</div>

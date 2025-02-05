@@ -19,6 +19,7 @@ import {
   Autocomplete,
   ListItemText,
 } from "@mui/material";
+import Logo from "../../../assets/images/KanpurLogo.png";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -101,7 +102,7 @@ export default function VehicleAgeReport() {
     //   "Fuel Consumption",
     // ];
 
-    
+
     const headers = ["Item Code", "Vehicle No.", "Purchase Year", "Employee Name", "Age"];
     const rows = isPrint.map((item: any) => [
       // moment(item?.trackDate).format("DD-MM-YYYY") || "", // Vehicle No (formatted date)
@@ -210,14 +211,30 @@ export default function VehicleAgeReport() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Vehicle Age Reports", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = ["Item Code", "Vehicle No.", "Purchase Year", "Employee Name", "Age"];
 
@@ -330,7 +347,7 @@ export default function VehicleAgeReport() {
   const getCategory = () => {
     const collectData = {
       "itemCategoryId": -1,
-     
+
     }
 
     api.post(`ItemCategory/GetItemCategory`, collectData).then((res) => {
@@ -343,13 +360,13 @@ export default function VehicleAgeReport() {
   };
 
 
-  
+
   const fetchZonesData = async () => {
     try {
       const collectData = {
         "vehicleNo": vNO,
         "empName": IsEmp,
-        "itemCategory":itemCat,
+        "itemCategory": itemCat,
         "purchaseYearfrom": parseInt(formik.values.PurchaseYearFrom),
         "purchaseYearTo": parseInt(formik.values.PurchaseYearTo)
       };
@@ -393,28 +410,28 @@ export default function VehicleAgeReport() {
             field: "itemName",
             headerName: t("text.itemName"),
             flex: 1.2,
-           // headerClassName: "MuiDataGrid-colCell",
+            // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo"),
             flex: 1,
-           // headerClassName: "MuiDataGrid-colCell",
+            // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "purchaseYear",
             headerName: t("text.purchaseYear"),
             flex: 1.3,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemType",
             headerName: t("text.itemType"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            //  headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {
@@ -430,7 +447,7 @@ export default function VehicleAgeReport() {
             field: "empName",
             headerName: t("text.empName"),
             flex: 1.5,
-           // headerClassName: "MuiDataGrid-colCell",
+            // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {
@@ -444,10 +461,10 @@ export default function VehicleAgeReport() {
             field: "age",
             headerName: t("text.age"),
             flex: 1.5,
-           // headerClassName: "MuiDataGrid-colCell",
+            // headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-    
+
         ];
         setColumns(columns as any);
       }
@@ -536,7 +553,7 @@ export default function VehicleAgeReport() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.VehicleAgeReport")}
@@ -545,13 +562,14 @@ export default function VehicleAgeReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={vNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -612,6 +630,7 @@ export default function VehicleAgeReport() {
                 disablePortal
                 id="combo-box-demo"
                 options={EmpOption}
+                value={IsEmp}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -641,6 +660,7 @@ export default function VehicleAgeReport() {
                 disablePortal
                 id="combo-box-demo"
                 options={CatOption}
+                value={itemCat}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -659,32 +679,32 @@ export default function VehicleAgeReport() {
                     }
                   />
                 )}
-                //popupIcon={null}
+              //popupIcon={null}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
-                    <RadioGroup
-                                  row
-                                  value={selectedFormat}
-                                  onChange={handleFormatChange}
-                                >
-                                  <FormControlLabel
-                                    value="pdf"
-                                    control={<Radio />}
-                                    label={t("text.pdf")}
-                                  />
-                                  <FormControlLabel
-                                    value="excel"
-                                    control={<Radio />}
-                                    label={t("text.excel")}
-                                  />
-                                  <FormControlLabel
-                                    value="tabular"
-                                    control={<Radio />}
-                                    label={t("text.tabular")}
-                                  />
-                                </RadioGroup>
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value="pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value="excel"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  <FormControlLabel
+                    value="tabular"
+                    control={<Radio />}
+                    label={t("text.tabular")}
+                  />
+                </RadioGroup>
               </FormControl>
             </Grid>
 
@@ -713,7 +733,7 @@ export default function VehicleAgeReport() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-              {t("text.show")}
+                {t("text.show")}
               </Button>
             </Grid>
 
@@ -730,6 +750,10 @@ export default function VehicleAgeReport() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
+                  setEmployee("");
+                  setItemCat("");
                 }}
               >
                 {t("text.reset")}
@@ -748,7 +772,7 @@ export default function VehicleAgeReport() {
                 startIcon={<DownloadIcon />}
                 onClick={handleDownload}
               >
-               {t("text.download")}
+                {t("text.download")}
               </Button>
             </Grid>
           </Grid>

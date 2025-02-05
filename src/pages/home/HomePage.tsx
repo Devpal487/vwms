@@ -1,5 +1,3 @@
-
-
 import {
   JSXElementConstructor,
   Key,
@@ -102,10 +100,10 @@ export default function HomePage() {
     }
     navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
   };
-  
+
   // <Button onClick={() => handleClick1("pending")}>Pending Complaints</Button>
 
-  
+
   const handleClickVno = (key: any) => {
     navigate(`/Reports/VehicleItemService`, { state: {} })
   }
@@ -154,14 +152,14 @@ export default function HomePage() {
     // GetScrapDetail();
   }, []);
   useEffect(() => {
- 
-  setIsShow(true);
-  setIsShow2(false);
-  setIsShow3(false);
-  setIsShow4(false);
-  setIsShow5(false);
-  setIsShow6(false);
-}, []); // Run only on initial render
+
+    setIsShow(true);
+    setIsShow2(false);
+    setIsShow3(false);
+    setIsShow4(false);
+    setIsShow5(false);
+    setIsShow6(false);
+  }, []); // Run only on initial render
 
   const GetTopVehicleActprice = async () => {
     try {
@@ -199,7 +197,7 @@ export default function HomePage() {
           { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
           { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
           { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
-          { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
+          { field: "actprice", headerName: t("text.ActualPrice"), flex: 1 },
           { field: "amount", headerName: t("text.Expense"), flex: 1 },
           { field: "age", headerName: t("text.Age"), flex: 1 },
         ];
@@ -673,7 +671,7 @@ export default function HomePage() {
     }, 2000);
   }, []);
 
-  
+
   const [isPrint, setPrint] = useState([]);
   const [isPrint1, setPrint1] = useState([]);
   const [isLabel, setlabel] = useState("");
@@ -805,7 +803,7 @@ export default function HomePage() {
     inhouse: 0,
     Complete: 0,
   });
-  
+
   const [total, setTotal] = useState(0);
   useEffect(() => {
     const fetchAllStatuses = async () => {
@@ -1359,7 +1357,7 @@ th, td {
   return (
     <div>
       <Box sx={{ marginTop: "1%" }}>
-         <Grid container spacing={2}>
+        <Grid container spacing={2}>
           {items.map((item) => (
             <Grid item xs={6} sm={4} md={2} key={item.id}>
               <Card
@@ -1413,7 +1411,7 @@ th, td {
               </Card>
             </Grid>
           ))}
-        </Grid> 
+        </Grid>
 
 
       </Box>
@@ -1433,7 +1431,7 @@ th, td {
         <div>
           <Grid container spacing={2}>
             <Grid container spacing={2}>
-              <Grid item xs={12} lg={8} sm={6}>
+              <Grid item xs={12} md={8} lg={8} sm={6} >
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Accordion expanded={true}>
                     <AccordionSummary
@@ -1441,15 +1439,15 @@ th, td {
                       aria-controls="panel2-content"
                       id="panel2-header"
                       sx={{
-                        backgroundColor: "#42b6f5",
-                        color: "#fff",
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
                         width: "100%",
                         marginTop: "-5%",
                         "&:hover": {
-                          backgroundColor: "#42b6f5", // Retain the same background on hover
+                          backgroundColor: `var(--grid-headerBackground)` // Retain the same background on hover
                         },
                         "&.Mui-focusVisible": {
-                          backgroundColor: "#42b6f5", // Prevent focus styles from changing background
+                          backgroundColor: `var(--grid-headerBackground)` // Prevent focus styles from changing background
                         },
                         "&:focus-within": {
                           backgroundColor: "#42b6f5", // Prevent focus from child elements (e.g., TextField) from changing background
@@ -1458,8 +1456,8 @@ th, td {
                     >
                       {isShow && (
                         <Typography sx={{
-                          fontWeight: 600,
-                          fontSize: "1rem",
+                          fontWeight: "bold",
+                          fontSize: "1.2rem",
                           flex: 1,
                           display: "flex",
                           justifyContent: "space-between",
@@ -1469,7 +1467,7 @@ th, td {
 
                           <Grid style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                            placeholder={t("text.Search")}
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1519,8 +1517,8 @@ th, td {
                       {isShow2 && (
                         <Typography
                           sx={{
-                            fontWeight: 600,
-                            fontSize: "1rem",
+                            fontWeight: "bold",
+                            fontSize: "1.2rem",
                             flex: 1,
                             display: "flex",
                             justifyContent: "space-between",
@@ -1531,7 +1529,7 @@ th, td {
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
 
                             <TextField
-                               placeholder={t("text.Search")}
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1586,7 +1584,7 @@ th, td {
                           justifyContent: "space-between",
                           alignItems: "center", // Ensures vertical alignment
                         }}>
-                         {t("text.INSURANCE")}
+                          {t("text.INSURANCE")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
                               placeholder={t("text.Search")}
@@ -1781,7 +1779,7 @@ th, td {
                           {t("text.SCRAPDETAIL")}
                           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                             <TextField
-                             placeholder={t("text.Search")}
+                              placeholder={t("text.Search")}
                               variant="outlined"
                               size="small"
                               InputProps={{
@@ -1876,15 +1874,15 @@ th, td {
                                   // rows={getTop ? RepairOption.slice(0, 10) : RepairOption}
                                   // rows={RepairOption.length > 0 ? RepairOption : []}
                                   columns={[
-                                    
 
-                                      // { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
-                                      // { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
-                                      // { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
-                                      // { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
-                                      // { field: "amount", headerName: t("text.Expense"), flex: 1 },
-                                      // { field: "age", headerName: t("text.Age"), flex: 1 },
-                                      {
+
+                                    // { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
+                                    // { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
+                                    // { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
+                                    // { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
+                                    // { field: "amount", headerName: t("text.Expense"), flex: 1 },
+                                    // { field: "age", headerName: t("text.Age"), flex: 1 },
+                                    {
                                       field: "vehicleNo",
                                       headerName: t("text.vehicleNo12"),
                                       flex: 1.5,
@@ -1934,8 +1932,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2007,7 +2005,7 @@ th, td {
                                     },
                                     { field: "noOfComplaints", headerName: t("text.noOfComplaints"), flex: 1 },
                                     { field: "totaldays", headerName: t("text.totaldays"), flex: 1 },
-                                    { field: "amount", headerName:t("text.Expense"), flex: 1 },
+                                    { field: "amount", headerName: t("text.Expense"), flex: 1 },
 
                                   ]}
                                   autoHeight
@@ -2024,8 +2022,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2082,10 +2080,13 @@ th, td {
                                         return dayjs(params.row.effectiveDate).format("DD-MMM-YYYY")
                                       },
                                     },
-                                    { field: "todate", headerName:  t("text.ExpiryDate"), flex: 1 ,renderCell(params) {
-                                      return dayjs(params.row.todate).format("DD-MMM-YYYY") },},
-                                    { field: "attachMentName", headerName: t("text.Document"), flex: 1.5 ,},
-                                    { field: "licenceType", headerName:  t("text.DocumentType"), flex: 1 },
+                                    {
+                                      field: "todate", headerName: t("text.ExpiryDate"), flex: 1, renderCell(params) {
+                                        return dayjs(params.row.todate).format("DD-MMM-YYYY")
+                                      },
+                                    },
+                                    { field: "attachMentName", headerName: t("text.Document"), flex: 1.5, },
+                                    { field: "licenceType", headerName: t("text.DocumentType"), flex: 1 },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2101,8 +2102,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2154,9 +2155,12 @@ th, td {
                                   // rows={OverDueOption.length > 0 ? OverDueOption : []}
                                   columns={[
                                     { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 0.9 },
-                                    { field: "vehicleRegistrationDate", headerName: t("text.RegistrationOn"), flex: 0.9,renderCell(params) {
-                                      return dayjs(params.row.vehicleRegistrationDate).format("DD-MMM-YYYY") },},
-                                    { field: "filename", headerName:  t("text.RCDocument1"), flex: 1 },
+                                    {
+                                      field: "vehicleRegistrationDate", headerName: t("text.RegistrationOn"), flex: 0.9, renderCell(params) {
+                                        return dayjs(params.row.vehicleRegistrationDate).format("DD-MMM-YYYY")
+                                      },
+                                    },
+                                    { field: "filename", headerName: t("text.RCDocument1"), flex: 1 },
                                     { field: "vehiclePhotoFile", headerName: t("text.vehiclePhoto"), flex: 1.2 },
                                     { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
                                   ]}
@@ -2174,8 +2178,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2228,8 +2232,11 @@ th, td {
                                   columns={[
                                     { field: "vehicleno", headerName: t("text.vehicleNo12"), flex: 1 },
                                     { field: "noOfServices", headerName: t("text.noOfServices"), flex: 1 },
-                                    { field: "jobCardDate", headerName: t("text.LastService"), flex: 1,renderCell(params) {
-                                      return dayjs(params.row.jobCardDate).format("DD-MMM-YYYY") },}
+                                    {
+                                      field: "jobCardDate", headerName: t("text.LastService"), flex: 1, renderCell(params) {
+                                        return dayjs(params.row.jobCardDate).format("DD-MMM-YYYY")
+                                      },
+                                    }
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2245,8 +2252,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2298,8 +2305,11 @@ th, td {
                                   // rows={DocumentTypeOption.length > 0 ? DocumentTypeOption : []}
                                   columns={[
                                     { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
-                                    { field: "date", headerName:   t("text.ScrapDate"), flex: 1,renderCell(params) {
-                                      return dayjs(params.row.date).format("DD-MM-YYYY") },},
+                                    {
+                                      field: "date", headerName: t("text.ScrapDate"), flex: 1, renderCell(params) {
+                                        return dayjs(params.row.date).format("DD-MM-YYYY")
+                                      },
+                                    },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
@@ -2315,8 +2325,8 @@ th, td {
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
-                                      backgroundColor: "#42b6f5",
-                                      color: "white",
+                                      backgroundColor: `var(--grid-headerBackground)`,
+                                      color: `var(--grid-headerColor)`,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
@@ -2333,21 +2343,21 @@ th, td {
                 </motion.div>
               </Grid>
 
-              <Grid item xs={12} lg={4} sm={6}>
+              <Grid item xs={12} md={4} lg={4} sm={6}>
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Card
                     elevation={2}
                     style={{
                       marginLeft: "1%",
                       marginTop: "-10%",
-                   //   border: "0.03% solid transparent",
+                      //   border: "0.03% solid transparent",
                       border: "2px solid #e0e0e0",
-                    //  borderRadius: "4%",
+                      //  borderRadius: "4%",
                       height: "62.5vh",
                       overflow: "auto",
                     }}
 
-                  
+
                   >
                     <Grid
                       style={{
@@ -2362,13 +2372,13 @@ th, td {
                         component="div"
                         sx={{
                           padding: "4%",
-                          background: "#42b6f5",
+                          backgroundColor: `var(--grid-headerBackground)`,
+                          color: `var(--grid-headerColor)`,
                           fontWeight: "bold",
-                          color: "#fff",
                           width: "100%",
                         }}
                       >
-                          {t("text.ComplaintStatus")}
+                        {t("text.ComplaintStatus")}
                         <br />
                       </Typography>
                       {/* <div style={{ padding: "1%" }}>
@@ -2393,28 +2403,28 @@ th, td {
                           </div>
                         ))}
                       </div> */}
-                      <div style={{ padding: "1%" }}>
-  {Object.keys(complaints).map((key) => (
-    <div key={key}>
-      <Typography
-        variant="h6"
-        style={{
-          color: key.toLowerCase() === "inhouse" ? "grey" : getColor(key),
-          cursor: key.toLowerCase() === "inhouse" ? "default" : "pointer",
-          fontSize: "100%",
-          margin: "2.5%",
-        }}
-        onClick={() => key.toLowerCase() !== "inhouse" && handleClick1(key)}
-      >
-        {t(`text.${key.toUpperCase()}`)}: {complaints[key as keyof typeof complaints]}
-      </Typography>
-      <ProgressBar
-        completed={calculatePercentage(complaints[key as keyof typeof complaints])}
-        bgColor={getColor(key)}
-      />
-    </div>
-  ))}
-</div>
+                      <div style={{ padding: "2%" }}>
+                        {Object.keys(complaints).map((key) => (
+                          <div key={key}>
+                            <Typography
+                              variant="h6"
+                              style={{
+                                color: key.toLowerCase() === "inhouse" ? "grey" : getColor(key),
+                                cursor: key.toLowerCase() === "inhouse" ? "default" : "pointer",
+                                fontSize: "100%",
+                                margin: "2.5%",
+                              }}
+                              onClick={() => key.toLowerCase() !== "inhouse" && handleClick1(key)}
+                            >
+                              {t(`text.${key.toUpperCase()}`)}: {complaints[key as keyof typeof complaints]}
+                            </Typography>
+                            <ProgressBar
+                              completed={calculatePercentage(complaints[key as keyof typeof complaints])}
+                              bgColor={getColor(key)}
+                            />
+                          </div>
+                        ))}
+                      </div>
 
                     </Grid>
                   </Card>

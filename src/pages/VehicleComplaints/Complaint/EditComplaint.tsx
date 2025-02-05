@@ -576,10 +576,10 @@ const EditComplaint = (props: Props) => {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label={<CustomLabel text={t("text.VehicleNo")} required={true} />}
+                                 label={<CustomLabel text={t("text.SelectVehicleNum")} required={true} />}
                                  name="vehicleNo"
                                  id="vehicleNo"
-                                 placeholder={t("text.VehicleNo")}
+                                 placeholder={t("text.SelectVehicleNum")}
                               />
                            )}
                         />
@@ -664,7 +664,7 @@ const EditComplaint = (props: Props) => {
                         <TextField
                            label={
                               <CustomLabel
-                                 text={t("text.ReadingKM")}
+                                 text={t("text.EnterReadingKM")}
                               />
                            }
                            variant="outlined"
@@ -673,7 +673,7 @@ const EditComplaint = (props: Props) => {
                            name="currentReading"
                            id="currentReading"
                            value={formik.values.currentReading}
-                           placeholder={t("text.ReadingKM")}
+                           placeholder={t("text.EnterReadingKM")}
                            onChange={(e) => {
                               formik.setFieldValue("currentReading", parseInt(e.target.value) || 0);
                            }}
@@ -1102,7 +1102,7 @@ const EditComplaint = (props: Props) => {
                               marginTop: "10px",
                            }}
                         >
-                           {t("text.save")}
+                           {t("text.update")}
                         </Button>
                      </Grid>
 

@@ -19,6 +19,7 @@ import {
   Autocomplete,
   ListItemText,
 } from "@mui/material";
+import Logo from "../../../assets/images/KanpurLogo.png";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -212,14 +213,30 @@ export default function StockLedgerReport() {
 
     // Initialize jsPDF with 'landscape' orientation
     const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    let yPosition = 10;
     const headerFontSize = 14;
     const bodyFontSize = 12;
 
-    doc.setFontSize(headerFontSize);
+
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let yPosition = 15; 
+
+
+    const logoWidth = 30;
+    const logoHeight = 30;
+    const logoX = 15;
+    const logoY = yPosition;
+    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
+
+
     doc.setFont("helvetica", "bold");
-    doc.text("Vehicle Data", 14, yPosition);
-    yPosition += 10;
+    doc.setFontSize(22);
+    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
+
+
+    doc.setFontSize(14);
+    doc.text("Stock Ledger Report", pageWidth / 2, yPosition + 20, { align: "center" });
+
+    yPosition += 40; 
 
     const headers = ["Date", "Item Name", "Unit Name", "Particular", "Document No."];
 
@@ -555,7 +572,7 @@ export default function StockLedgerReport() {
             gutterBottom
             variant="h5"
             component="div"
-            sx={{ padding: "20px" }}
+            sx={{ padding: "15px" }}
             align="left"
           >
             {t("text.StockLedgerReport")}
@@ -564,13 +581,14 @@ export default function StockLedgerReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} sx={{ marginTop: "3vh" }}>
+          <Grid item xs={12} container spacing={2} >
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                //multiple
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
+                value={vNO}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -603,6 +621,7 @@ export default function StockLedgerReport() {
                 disablePortal
                 id="combo-box-demo"
                 options={option}
+                value={isItem}
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
@@ -764,6 +783,9 @@ export default function StockLedgerReport() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setVisible(false);
+                  setVno("");
+                  setItem("");
                 }}
               >
                  {t("text.reset")}

@@ -158,7 +158,7 @@ export default function JobWorkChallan() {
          const arr = data.map((Item: any, index: any) => ({
             ...Item,
             serialNo: index + 1,
-            id: Item.jobCardId,
+            id: Item.challanNo,
             challanDate: formatDate(Item.challanDate)
          }));
          setItem(arr);
