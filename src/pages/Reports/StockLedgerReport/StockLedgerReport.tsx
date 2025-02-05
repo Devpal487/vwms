@@ -42,7 +42,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
-
+import { getISTDate } from "../../../utils/Constant";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -51,6 +51,7 @@ interface MenuPermission {
 }
 
 export default function StockLedgerReport() {
+     const { defaultValues } = getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -395,6 +396,7 @@ export default function StockLedgerReport() {
             headerName: t("text.docNo"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
             // renderCell: (params) => {
             //   return moment(params.row.trackDate).format("DD-MM-YYYY");
             // },
@@ -403,21 +405,21 @@ export default function StockLedgerReport() {
             field: "particular",
             headerName: t("text.particular"),
             flex: 1.9,
-           // headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemName",
             headerName: t("text.itemName"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "unitName",
             headerName: t("text.unitName"),
             flex: 1,
-           // headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             
           },
@@ -425,7 +427,7 @@ export default function StockLedgerReport() {
             field: "docDate",
             headerName: t("text.docDate"),
             flex: 1.3,
-            //headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
               return moment(params.row.docDate).format("DD-MM-YYYY");
@@ -435,7 +437,7 @@ export default function StockLedgerReport() {
             field: "opening",
             headerName: t("text.opening"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             //align: 'right',
            // headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
@@ -444,28 +446,28 @@ export default function StockLedgerReport() {
             field: "inQty",
             headerName: t("text.inQty"),
             flex: 1,
-           // headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "outQty",
             headerName: t("text.outQty"),
             flex: 1,
-           // headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vendor",
             headerName: t("text.vendor"),
             flex: 1.5,
-          //  headerClassName: "MuiDataGrid-colCell",
+           headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "balance",
             headerName: t("text.balance"),
             flex: 1,
-          //  headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           // {
@@ -506,8 +508,8 @@ export default function StockLedgerReport() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      docdatefrom: "",
-      docdateto: "",
+      docdatefrom: defaultValues,
+      docdateto: defaultValues,
       days: 0,
       parentId: 0,
       startDate: "",
@@ -560,8 +562,8 @@ export default function StockLedgerReport() {
             "& .MuiDataGrid-colCell": {
               backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
-              fontSize: 17,
-              fontWeight: 900,
+              fontSize: 12,
+              fontWeight: 700,
             },
           }}
           style={{ padding: "10px" }}
@@ -637,7 +639,7 @@ export default function StockLedgerReport() {
                     {...params}
                     label={
                       <CustomLabel
-                        text={t("text.ItemName")}
+                        text={t("text.selectItem")}
                         required={false}
                       />
                     }

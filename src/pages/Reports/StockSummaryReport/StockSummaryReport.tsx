@@ -42,6 +42,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
+import { getISTDate } from "../../../utils/Constant";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -50,6 +51,7 @@ interface MenuPermission {
 }
 
 export default function StockSummaryReport() {
+  const { defaultValues} =getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -426,8 +428,8 @@ export default function StockSummaryReport() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      voucherdatefrom: "",
-      voucherdateto: "",
+      voucherdatefrom: defaultValues,
+      voucherdateto: defaultValues,
       days: 0,
       parentId: 0,
       startDate: "",
@@ -536,10 +538,10 @@ export default function StockSummaryReport() {
                 id="voucherdatefrom"
                 name="voucherdatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={true} />
+                  <CustomLabel text={t("text.jobcarddatefrom")} required={true} />
                 }
                 value={formik.values.voucherdatefrom}
-                placeholder={t("text.FromDate")}
+                placeholder={t("text.jobcarddatefrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -556,9 +558,9 @@ export default function StockSummaryReport() {
                 type="date"
                 id="voucherdateto"
                 name="voucherdateto"
-                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                label={<CustomLabel text={t("text.jobcarddateto")} required={true} />}
                 value={formik.values.voucherdateto}
-                placeholder={t("text.ToDate")}
+                placeholder={t("text.jobcarddateto")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}

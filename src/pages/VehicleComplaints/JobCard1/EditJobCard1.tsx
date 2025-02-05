@@ -155,6 +155,7 @@ const EditJobCard1 = (props: Props) => {
         "id": 0,
         "jobCardId": 0,
         "itemId": 0,
+        unitID: 0,
         "indentId": 0,
         "indentNo": "",
         "qty": 0,
@@ -169,7 +170,8 @@ const EditJobCard1 = (props: Props) => {
         "netAmount": 0,
         "srno": 0,
         "isDelete": false,
-        "prevReading": 0
+        "prevReading": 0,
+        "unitName": ""
       }
     ],
     "update": true
@@ -212,10 +214,10 @@ const EditJobCard1 = (props: Props) => {
 
   const [tableData1, setTableData1] = useState<any>([
     {
-      "id": 0,
+    "id": 0,
       "jobCardId": 0,
-      unitID: 0,
-      "itemId": 0,
+      "itemId": null,
+      "unitID": 0,
       "indentId": 0,
       "indentNo": "",
       "qty": 0,
@@ -230,7 +232,8 @@ const EditJobCard1 = (props: Props) => {
       "netAmount": 0,
       "srno": 0,
       "isDelete": false,
-      "prevReading": 0
+      "prevReading": 0,
+      "unitName": ""
     },
     // {
     //   "id": 0,
@@ -258,22 +261,22 @@ const EditJobCard1 = (props: Props) => {
 
   const [tableData, setTableData] = useState<any>([
     {
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
+   "id": 0,
+        "jobCardId": 0,
+        "serviceId": 0,
+        "amount": 0,
+        "jobWorkReq": true,
+        "vendorId": 0,
+        "challanRemark": "",
+        "challanNo": 0,
+        "challanDate": defaultValues,
+        "challanRcvNo": 0,
+        "challanRcvDate": defaultValues,
+        "challanStatus": "",
+        "netAmount": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0
 
     },
     // {
@@ -325,16 +328,7 @@ const EditJobCard1 = (props: Props) => {
     const timeoutId: any = setTimeout(() => {
       handleStateData();
     }, 300);
-    // if (location.state.status === "Complete") {
-    //   setTableData([...location.state?.serviceDetail]);
-    //   setTableData1([...location.state?.itemDetail]);
-    // } else {
-    //   setTableData([...location.state?.serviceDetail, tableData]);
-    //   setTableData1([...location.state?.itemDetail, tableData1]);
-    // }
-    // const timeoutId: any = setTimeout(() => {
-    //   handleStateData();
-    // }, 300);
+   
 console.log("location.state",(location.state));
     GetitemData();
     getTaxData();
@@ -439,30 +433,51 @@ console.log("location.state",(location.state));
     }
     setServiceOption(arr);
   };
-
   const handleStateData = async () => {
     const collectData = {
-      "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
-      "status": ""
+      jobCardId: location.state?.jobCardId || formik.values?.jobCardId || -1,
+      status: "",
     };
+  
     const response = await api.post(`Master/GetJobCardInhouse`, collectData);
     const data = response.data.data;
-
-    if (data[0].itemDetail.length > 0) {
-      setTableData1(data[0].itemDetail);
+  
+    if (data[0]?.itemDetail?.length > 0) {
+      // Remove duplicates by itemId
+      const uniqueItems = data[0].itemDetail.reduce((acc:any, current:any) => {
+        if (!acc.some((item: any) => item.itemId === current.itemId)) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
+  
+      setTableData1(uniqueItems);
     }
+  };
+  
+  // const handleStateData = async () => {
+  //   const collectData = {
+  //     "jobCardId": location.state?.jobCardId || formik.values?.jobCardId || -1,
+  //     "status": ""
+  //   };
+  //   const response = await api.post(`Master/GetJobCardInhouse`, collectData);
+  //   const data = response.data.data;
 
-    setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.department || location.state?.department || "");
-    setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.designation || location.state?.designation || "");
+  //   if (data[0].itemDetail.length > 0) {
+  //     setTableData1(data[0].itemDetail);
+  //   }
 
-    // await getJobCardData().then(() => {
-    //   if (location.state.status === "Complete") {
-    //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
-    //   } else {
-    //     setTableData([...location.state?.serviceDetail, tableData]);
-    //   }
-    // })
-  }
+  //   setDeptValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.department || location.state?.department || "");
+  //   setDesgValue(empOption[empOption.findIndex((e:any) => e.value == data[0].empId)]?.designation || location.state?.designation || "");
+
+  //   // await getJobCardData().then(() => {
+  //   //   if (location.state.status === "Complete") {
+  //   //     setTableData(jobCardData[jobCardData.findIndex(e => e.jobCardId == location.state.jobCardId)]?.serviceDetail || [...location.state?.serviceDetail, tableData]);
+  //   //   } else {
+  //   //     setTableData([...location.state?.serviceDetail, tableData]);
+  //   //   }
+  //   // })
+  // }
 
   const GetIndentID = async () => {
     const collectData = {
@@ -515,10 +530,10 @@ console.log("location.state",(location.state));
     }
     setitemOption(arr);
   };
-  const validateRow = (row: any) => {
-    return row.serviceName > 0;
-    //  return row.serviceName && row.serviceId && row.vendorId && row.challanNo > 0;
-  };
+  // const validateRow = (row: any) => {
+  //   return row.serviceName > 0;
+  //   //  return row.serviceName && row.serviceId && row.vendorId && row.challanNo > 0;
+  // };
 
 
 
@@ -555,8 +570,8 @@ console.log("location.state",(location.state));
 
     onSubmit: async (values) => {
 
-      const validServiceDetails = tableData.filter(validateRow);
-      const validItemDetails = tableData1.filter(validateItem);
+      const validServiceDetails = tableData;
+      const validItemDetails = tableData1;
 
       if (validServiceDetails.length === 0) {
         toast.error("Add valid service details.");
@@ -605,8 +620,10 @@ console.log("location.state",(location.state));
     setJobCardData(arr);
   };
   const handleGenerateIndent = async (values: any) => {
-    const validServiceDetails = (tableData || []).filter(validateRow);
-    const validItemDetails = (tableData1 || []).filter(validateItem);
+    const validServiceDetails = (tableData || [])
+    ;
+    const validItemDetails = (tableData1 || [])
+    ;
   
     if (validServiceDetails.length === 0) {
       toast.error("Add valid service details.");
@@ -671,7 +688,10 @@ console.log("location.state",(location.state));
   // };
 
   const handleGenerateChallan = async (values: any) => {
-    const validTableData = tableData.filter(validateRow);
+    const validTableData = tableData
+
+    
+    ;
     if (validTableData.length === 0) {
       toast.error("Please add some data in table for further process");
       return;
@@ -844,18 +864,18 @@ console.log("location.state",(location.state));
     setTableData1(newData);
   }
 
-  const validateItem = (item: any) => {
-    console.log("item validateItem", item);
-    return (
-      item.itemId &&
-      item.unit &&
-      item.qty > 0 &&
-      item.rate > 0 
-      //item.amount >= 0
+  // const validateItem = (item: any) => {
+  //   console.log("item validateItem", item);
+  //   return (
+  //     item.itemId &&
+  //     item.unit &&
+  //     item.qty > 0 &&
+  //     item.rate > 0 
+  //     //item.amount >= 0
       
 
-    );
-  };
+  //   );
+  // };
   const buttonStyle = (enabled: any) => ({
     backgroundColor: enabled ? `var(--header-background)` : "#e0e0e0", // Faded color for disabled
     color: enabled ? "white" : "#9e9e9e", // Text color for disabled
@@ -869,7 +889,7 @@ console.log("location.state",(location.state));
 
 
   const handleSave = async (values: any) => {
-    const validTableData = tableData.filter(validateRow);
+    const validTableData = tableData;
 
     // if (validTableData.length === 0) {
     //   alert("Please add some data in the table for further processing");
@@ -1987,7 +2007,7 @@ console.log("location.state",(location.state));
                       width: "100px",
                     }}
                     onClick={() => {
-                      const validTableData = tableData1.filter(validateRow);
+                      const validTableData = tableData1;
                       if (validTableData.length === 0) {
                         toast.error("Please add some data in table for further process");
                         return;

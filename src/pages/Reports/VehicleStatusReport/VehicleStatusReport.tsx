@@ -42,6 +42,7 @@ import moment from "moment";
 import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
+import { getISTDate } from "../../../utils/Constant";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -50,6 +51,7 @@ interface MenuPermission {
 }
 
 export default function VehicleStatusReport() {
+  const {defaultValues} = getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -427,8 +429,8 @@ export default function VehicleStatusReport() {
   const formik = useFormik({
     initialValues: {
       genderID: -1,
-      complaintDateFrom: "",
-      complaintDateTo: "",
+      complaintDateFrom: defaultValues,
+      complaintDateTo: defaultValues,
 
     },
     validationSchema: Yup.object({
@@ -503,10 +505,10 @@ export default function VehicleStatusReport() {
                 id="complaintDateFrom"
                 name="complaintDateFrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={true} />
+                  <CustomLabel text={t("text.complaintDateFrom")} required={true} />
                 }
                 value={formik.values.complaintDateFrom}
-                placeholder={t("text.FromDate")}
+                placeholder={t("text.complaintDateFrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -523,9 +525,9 @@ export default function VehicleStatusReport() {
                 type="date"
                 id="complaintDateTo"
                 name="complaintDateTo"
-                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                label={<CustomLabel text={t("text.complaintDateTo")} required={true} />}
                 value={formik.values.complaintDateTo}
-                placeholder={t("text.ToDate")}
+                placeholder={t("text.complaintDateTo")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}

@@ -542,9 +542,10 @@ const EditStaffIndent = (props: Props) => {
                       border: "1px solid black",
                     }}
                   >
-                    <thead
-                      style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
-                    >
+                    <thead style={{
+                      backgroundColor: `var(--grid-headerBackground)`,
+                      color: `var(--grid-headerColor)`
+                    }}>
                       <tr>
                         {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
                         <th
