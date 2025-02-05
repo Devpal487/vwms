@@ -156,7 +156,7 @@ const EditJobcardItemIssue = (props: Props) => {
             "srn": item?.srn,
             //"unitName": "",
             "returnItem": item?.returnItem,
-            //stockQty: item?.stockQty
+            stockQty: item?.stockQty
 
 
         }))
@@ -204,19 +204,19 @@ const EditJobcardItemIssue = (props: Props) => {
             "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
-            // batchNo: item?.batchNo,
+             batchNo: item?.batchNo,
             indentId: item?.indentId,
-            // stockQty: item?.approveQuantity,
+             stockQty: item?.stockQty,
             reqQty: item?.approveQuantity,
-            //  "amount" : item?.amount,
+            "issueQty" : item?.issueQty,
             itemName: item?.itemName,
             unitName: item?.unitName,
             indentNo: "",
             "srn": 0,
             // "unitName": "",
             "returnItem": true,
-            "stockQty": 0,
-            issueQty: 0,
+            
+           // issueQty: 0,
             //   batchNo:IsbatchNO ||"",
 
         }))
@@ -708,7 +708,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                                             <TextField
                                                                 //type="number"
                                                                 size="small"
-                                                                value={row.reqQty - row.issueQty || 0}
+                                                                value={row.stockQty}
                                                                 onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value) || 0)}
                                                                 onFocus={e => e.target.select()}
                                                             />
