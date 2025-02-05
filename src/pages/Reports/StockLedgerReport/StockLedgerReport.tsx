@@ -395,9 +395,9 @@ export default function StockLedgerReport() {
             headerName: t("text.docNo"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.trackDate).format("DD-MM-YYYY");
-            },
+            // renderCell: (params) => {
+            //   return moment(params.row.trackDate).format("DD-MM-YYYY");
+            // },
           },
           {
             field: "particular",
