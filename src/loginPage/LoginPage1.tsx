@@ -73,36 +73,75 @@ const LoginPage1 = () => {
       validationSchema,
       onSubmit: async (values) => {
          try {
-            setLoading(true);
-            const response = await api.post("Auth/login", values);
-
-            console.log("values", values);
-            // Check if login is successful
-            if (response.data.status === 1) {
-               localStorage.setItem(
+             setLoading(true);
+             const response = await api.post("Auth/login", values);
+             console.log("Login Response:", response.data);
+     
+             if (response.data.status === 1) {
+               const menuItems = [
+                  { menuId: 39, menuName: "Maintenance/Warranty", path: "/maintenance", childMenu: [] },
+                  { menuId: 12, menuName: "Category", path: "/category", childMenu: [] }
+                ];
+                
+                localStorage.setItem(
                   "userdata",
-                  JSON.stringify([response.data.data])
-               );
-               localStorage.setItem(
-                  "username",
-                  JSON.stringify(response.data.data.userDetails.userName)
-               );
-               localStorage.setItem("ApplicationFlow", "outsource");
-               sessionStorage.setItem(
-                  "token",
-                  JSON.stringify(response.data.data.token)
-               );
-               navigate("/home");
-            } else {
-               toast.error(response.data.message);
-            }
+                  JSON.stringify([{ ...response.data.data, menuItems }])
+                );
+            //    const menuItems = [
+            //       { menuId: 39, menuName: "Maintenance/Warranty", path: "/maintenance", childMenu: [] },
+            //       { menuId: 12, menuName: "Category", path: "/category", childMenu: [] }
+            //   ];
+            //    // Add your menu structure
+     
+            //      localStorage.setItem(
+            //          "userdata",
+            //          JSON.stringify([{ ...response.data.data, menuItems }]) // Store with menuItems
+            //      );
+                 localStorage.setItem("permissions", JSON.stringify(response.data.data.permissions));
+                 sessionStorage.setItem("token", response.data.data.token);
+                 navigate("/home");
+             } else {
+                 toast.error(response.data.message);
+             }
          } catch (error) {
-            toast.error("Login Failed");
-
+             toast.error("Login Failed");
          } finally {
-            setLoading(false);
+             setLoading(false);
          }
-      },
+     },
+     
+      // onSubmit: async (values) => {
+      //    try {
+      //       setLoading(true);
+      //       const response = await api.post("Auth/login", values);
+
+      //       console.log("values", values);
+      //       // Check if login is successful
+      //       if (response.data.status === 1) {
+      //          localStorage.setItem(
+      //             "userdata",
+      //             JSON.stringify([response.data.data])
+      //          );
+      //          localStorage.setItem(
+      //             "username",
+      //             JSON.stringify(response.data.data.userDetails.userName)
+      //          );
+      //          localStorage.setItem("ApplicationFlow", "outsource");
+      //          sessionStorage.setItem(
+      //             "token",
+      //             JSON.stringify(response.data.data.token)
+      //          );
+      //          navigate("/home");
+      //       } else {
+      //          toast.error(response.data.message);
+      //       }
+      //    } catch (error) {
+      //       toast.error("Login Failed");
+
+      //    } finally {
+      //       setLoading(false);
+      //    }
+      // },
    });
 
    return (

@@ -405,6 +405,18 @@ export default function MiniDrawer({ items }: any) {
     }
   }
 
+  // write a code
+
+  // var data = JSON.parse(localStorage.getItem("userdata") || "[]");
+  // var menudata = data.length > 0 ? data[0]["userdetail"] : [];
+  // var username =
+  //   menudata.length > 0
+  //     ? menudata[0]["firsT_NAME"] +
+  //       " " +
+  //       menudata[0]["middlE_NAME"] +
+  //       " " +
+  //       menudata[0]["suR_NAME"]
+  //     : "Guest";
   
   const { i18n } = useTranslation();
 
@@ -519,13 +531,14 @@ export default function MiniDrawer({ items }: any) {
 
   const headerColor1 = `var(--header-background)`;
   const drawerStyles = `var(--drawer-background)`;
-
-  let ID: any = localStorage.getItem("username");
+  //add a code
+  //let ID: any = localStorage.getItem("useR_ID");
+   let ID: any = localStorage.getItem("username");
   ID = ID.replace(/^"(.*)"$/, "$1");
   const handlePermissionClick = () => {
     if (ID) {
       console.log("id check 175", ID);
-      
+      getNode(ID);
     } else {
       toast.error("ID not found");
     }
@@ -712,6 +725,7 @@ export default function MiniDrawer({ items }: any) {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 40, height: 40 }}>
+              {/* //add a code */}
               {/* {username[0].toUpperCase()} */}
             </Avatar>
           </IconButton>
@@ -759,6 +773,8 @@ export default function MiniDrawer({ items }: any) {
               <ListItemIcon>
                 <img src={logged} width={40} height={40} />
               </ListItemIcon>{" "}
+
+              {/* add a code */}
               {/* {username} */}
             </MenuItem>
             {/* <MenuItem > */}
@@ -1163,6 +1179,8 @@ export default function MiniDrawer({ items }: any) {
                             onClick(e, subText);
                             handleSubMenuClick(subIndex);
                           }}
+                          //  add a code
+                          onContextMenu={handleRightClick(text.path)}
                         >
                           {open && (
                             <span
@@ -1196,6 +1214,9 @@ export default function MiniDrawer({ items }: any) {
                                 justifyContent: "center",
                                 color: open ? "#FF0000" : "inherit",
                                 backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                               // add a code
+                                Color:
+                                selectedSubMenu == subIndex ? "white" : "black",
                                 borderRadius: "25px",
                                 padding: "5px 10px",
                               }}

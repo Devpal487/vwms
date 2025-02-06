@@ -293,6 +293,7 @@ const AddVehicleDetail = (props: Props) => {
          "mileage": 0,
          "createdOn": defaultValues,
          "updatedOn": defaultValues,
+         vehicleRegistrationDate:defaultValues,
          "zoneName": "",
          "vehiclePhotoFile": "",
          "deptName": "",

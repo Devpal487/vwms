@@ -12,6 +12,7 @@ const resources = {
       message: {},
       text: {
         //3/2/2025
+        downloadSummary:"Download Summary",
         complaintDateTo:"Complaint Date To",
         complaintDateFrom:"Complaint Date From",
         
@@ -9147,6 +9148,7 @@ const resources = {
       message: {},
       text: {
         //
+        downloadSummary:"सारांश डाउनलोड करें",
         complainStatus12: "स्थिति",
         complaintDateTo: "शिकायत दिनांक तक",
         complaintDateFrom: "शिकायत दिनांक से",

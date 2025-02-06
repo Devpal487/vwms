@@ -124,15 +124,6 @@ const MainLayout = () => {
               path: "/master/StockBin",
               displayNo: 0,
             },
-
-
-
-
-
-
-
-
-
           ],
         },
         {
@@ -216,26 +207,18 @@ const MainLayout = () => {
               path: "/Inventory/StockGeneral",
               displayNo: 0,
             },
-
-
-
             {
               menuId: 3,
               menuName: "Material Recpt. Note",
               path: "/Inventory/MRNForm",
               displayNo: 0,
             },
-
-
             {
               menuId: 5,
               menuName: "Quality Check",
               path: "/Inventory/QualityCheck",
               displayNo: 0,
             },
-
-
-
             {
               menuId: 14,
               menuName: "Staff Item Return",
@@ -248,8 +231,6 @@ const MainLayout = () => {
               path: "/Inventory/JobCardItemReturn",
               displayNo: 0,
             },
-
-
           ],
         },
 
@@ -277,14 +258,12 @@ const MainLayout = () => {
               path: "/emailsystem/campagianmaster",
               displayNo: 0,
             },
-
             {
               menuId: 4,
               menuName: "Email Event Setting",
               path: "/emailsystem/eventmaster",
               displayNo: 0,
             },
-
             {
               menuId: 5,
               menuName: "Campaign Template",
@@ -311,8 +290,6 @@ const MainLayout = () => {
             },
           ],
         },
-
-
         {
           menuName: "Employee Info",
           path: "employeeInfo",
@@ -427,8 +404,6 @@ const MainLayout = () => {
                 displayNo: 0,
               }
             ),
-
-
             {
               menuId: 3,
               menuName: "Job Work Challan",
@@ -443,7 +418,6 @@ const MainLayout = () => {
             },
           ]
         },
-
         {
           menuName: "Vendor Info",
           path: "/vendorinfo",
@@ -476,8 +450,6 @@ const MainLayout = () => {
             },
           ]
         },
-
-
         {
           menuName: "Vehicle Master",
           path: "/vehiclemaster",
@@ -540,36 +512,6 @@ const MainLayout = () => {
             },
           ]
         },
-
-
-        // {
-        //   menuName: "Installation",
-        //   path: "",
-        //   menuId: 8,
-        //   displayNo: 1,
-        //   childMenu: [
-        //     {
-        //       menuId: 1,
-        //       menuName: "Pole Installation",
-        //       path: "/installation/PoleInstallation",
-        //       displayNo: 0,
-        //     },
-
-        //     {
-        //       menuId: 2,
-        //       menuName: "Light Installation",
-        //       path: "/installation/LightInstallation",
-        //       displayNo: 0,
-        //     },
-        //     // {menuId: 3, menuName: 'User Type', path:"/UserManagement/UserType",displayNo:0},
-        //     // {menuId: 4, menuName: 'User Permission Master', path:"/UserManagement/UserPermissionMaster",displayNo:0},
-        //   ],
-        // },
-
-
-
-
-
         {
           menuName: "Reports",
           path: "",
@@ -640,9 +582,6 @@ const MainLayout = () => {
               displayNo: 0,
             },
            
-           
-           
-
             // {
             //   menuId: 4,
             //   menuName: "Vendor Evaluation Report",
