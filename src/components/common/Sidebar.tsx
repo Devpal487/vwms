@@ -405,23 +405,18 @@ export default function MiniDrawer({ items }: any) {
     }
   }
 
-  // write a code
-
-  // var data = JSON.parse(localStorage.getItem("userdata") || "[]");
-  // var menudata = data.length > 0 ? data[0]["userdetail"] : [];
+  // var data = JSON.parse(localStorage.getItem("userdata")!);
+  // var menudata = data[0]["userdetail"];
   // var username =
-  //   menudata.length > 0
-  //     ? menudata[0]["firsT_NAME"] +
-  //       " " +
-  //       menudata[0]["middlE_NAME"] +
-  //       " " +
-  //       menudata[0]["suR_NAME"]
-  //     : "Guest";
-  
+  //   menudata[0]["firsT_NAME"] +
+  //   " " +
+  //   menudata[0]["middlE_NAME"] +
+  //   " " +
+  //   menudata[0]["suR_NAME"];
   const { i18n } = useTranslation();
 
   const changeLanguage = (language: any) => {
-    
+    // console.log("check", language);
 
     i18n.changeLanguage(language);
     localStorage.setItem("preferredLanguage", language);
@@ -431,7 +426,7 @@ export default function MiniDrawer({ items }: any) {
 
   const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
   const userDetail = userData[0]?.userdetail || [];
-
+  // console.log(userDetail);
 
   const collapsehamndle = (index: any) => {
     // console.log(index);
@@ -441,7 +436,7 @@ export default function MiniDrawer({ items }: any) {
       setCollapseIndex(index);
     }
   };
-  
+  // console.log("items", items);
 
   const getImageForFirstName = (
     firsT_NAME: any,
@@ -468,7 +463,7 @@ export default function MiniDrawer({ items }: any) {
   };
 
   const handleMyProfileClick = () => {
-   
+    // console.log("My Profile clicked" + profileDrawerOpen);
     setProfileDrawerOpen(!profileDrawerOpen);
   };
 
@@ -478,7 +473,7 @@ export default function MiniDrawer({ items }: any) {
 
   function handleClicked(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
-   
+    // console.info("You clicked a breadcrumb.");
   }
 
   const handleClickhome = () => {
@@ -491,10 +486,10 @@ export default function MiniDrawer({ items }: any) {
 
     const words = text.split(" ");
 
- 
+    // Extract the first letter from each word
     const firstLetters = words.map((word: any) => word.charAt(0));
 
-   
+    // Join the first letters back into a string
     const result = firstLetters.join("");
 
     return <div>{result}</div>;
@@ -531,9 +526,8 @@ export default function MiniDrawer({ items }: any) {
 
   const headerColor1 = `var(--header-background)`;
   const drawerStyles = `var(--drawer-background)`;
-  //add a code
-  //let ID: any = localStorage.getItem("useR_ID");
-   let ID: any = localStorage.getItem("username");
+
+  let ID: any = localStorage.getItem("username");
   ID = ID.replace(/^"(.*)"$/, "$1");
   const handlePermissionClick = () => {
     if (ID) {
@@ -618,13 +612,18 @@ export default function MiniDrawer({ items }: any) {
 
     setCheck(newChecked);
 
-  
+    // setExpandedItems((prevExpanded) =>
+    //   prevExpanded.includes(id.toString())
+    //     ? prevExpanded.filter((item) => item !== id.toString())
+    //     : [...prevExpanded, id.toString()]
+    // );
+
     console.log("Checked data:", name);
     console.log("Checked data:", id);
 
     setNodeNames(name);
     setnodeId(id);
-   
+    // handleSave(id, name);
   };
 
   const handleSave = () => {
@@ -725,7 +724,6 @@ export default function MiniDrawer({ items }: any) {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 40, height: 40 }}>
-              {/* //add a code */}
               {/* {username[0].toUpperCase()} */}
             </Avatar>
           </IconButton>
@@ -773,8 +771,6 @@ export default function MiniDrawer({ items }: any) {
               <ListItemIcon>
                 <img src={logged} width={40} height={40} />
               </ListItemIcon>{" "}
-
-              {/* add a code */}
               {/* {username} */}
             </MenuItem>
             {/* <MenuItem > */}
@@ -864,7 +860,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-          // style={{  borderBottomRightRadius: "15px" }}
+            // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1045,195 +1041,190 @@ export default function MiniDrawer({ items }: any) {
         <Divider />
 
         <React.Fragment>
-          {/* Home List */}
-          <List sx={{ padding: 0 }}>
-            {["Home"].map((text, index) => (
-              <ListItem
-                key={text}
-                disablePadding
+      {/* Home List */}
+      <List sx={{ padding: 0 }}>
+        {["Home"].map((text, index) => (
+          <ListItem
+            key={text}
+            disablePadding
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: 0,
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "inherit",
+              },
+            }}
+          >
+            <ListItemButton
+              sx={{
+                justifyContent: open ? "initial" : "center",
+                px: 4.5,
+                backgroundColor: "inherit"
+              }}
+              onClick={() => {
+                routeChangeHome();
+                resetHomeColor();
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: 0,
-                  "&:hover": {
-                    cursor: "pointer",
-                    backgroundColor: "inherit",
-                  },
+                  minWidth: 0,
+                  mr: open ? 1 : "auto",
+                  justifyContent: "center",
+                  color: homeColor,
                 }}
               >
-                <ListItemButton
-                  sx={{
-                    justifyContent: open ? "initial" : "center",
-                    px: 4.5,
-                    backgroundColor: "inherit"
-                  }}
-                  onClick={() => {
-                    routeChangeHome();
-                    resetHomeColor();
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 1 : "auto",
-                      justifyContent: "center",
-                      color: homeColor,
-                    }}
-                  >
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: "bold" }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
 
-          {/* Dynamic Items List */}
-          <List sx={{ padding: 0 }}>
-            {items.map((text: any, index: any) => (
-              <React.Fragment key={index}>
-                <Divider />
-                <ListItem
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: "inherit",
-                  }}
-                  onClick={() => collapsehamndle(index)}
-                >
-                  <ListItem sx={{
-                    justifyContent: open ? "initial" : "center",
-                    paddingLeft: 2,
-                    paddingRight: 0,
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                    cursor: "pointer",
+      {/* Dynamic Items List */}
+      <List sx={{ padding: 0 }}>
+        {items.map((text:any, index:any) => (
+          <React.Fragment key={index}>
+            <Divider />
+            <ListItem
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: "inherit"
+              }}
+              onClick={() => collapsehamndle(index)}
+            >
+              <ListItem sx={{
+                justifyContent: open ? "initial" : "center",
+                paddingLeft: 2,
+                paddingRight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                cursor: "pointer",
+              }}>
+                {open ? (
+                  <ListItemIcon sx={{
+                    minWidth: 0,
+                    mr: open ? 1 : "auto",
+                    justifyContent: "center",
+                    color: index === collapseIndex ? "#FF0000" : "inherit",
+                    fontWeight: 600,
                   }}>
-                    {open ? (
-                      <ListItemIcon sx={{
-                        minWidth: 0,
-                        mr: open ? 1 : "auto",
-                        justifyContent: "center",
-                        color: index === collapseIndex ? "#FF0000" : "inherit",
-                        fontWeight: 600,
-                      }}>
-                        {collapseIndex === index ? <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} /> : <FolderIcon style={{ color: "#42AEEE" }} />}
-                      </ListItemIcon>
-                    ) : (
-                      <div
-                        style={{
-                          minWidth: 24,
-                          minHeight: 24,
-                          borderRadius: "50%",
-                          backgroundColor: "lightgray",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginRight: 8,
-                          color: index === collapseIndex ? "#FF0000" : "inherit",
-                        }}
-                        title={text.name}
-                      >
-                        {text.name.charAt(0)}
-                      </div>
-                    )}
-
-                    <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0, }} />
-                  </ListItem>
-                  <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
-                    {/* {collapseIndex === index ? (
+                    {collapseIndex === index ? <FaRegFolderOpen style={{color:"#42AEEE"}} size={20} />  : <FolderIcon style={{color:"#42AEEE"}} />}
+                  </ListItemIcon>
+                ) : (
+                  <div
+                    style={{
+                      minWidth: 24,
+                      minHeight: 24,
+                      borderRadius: "50%",
+                      backgroundColor: "lightgray",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                      color: index === collapseIndex ? "#FF0000" : "inherit",
+                    }}
+                    title={text.name}
+                  >
+                    {text.name.charAt(0)}
+                  </div>
+                )}
+              
+                <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItem>
+              <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
+                {/* {collapseIndex === index ? (
                   <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
                 ) : (
                   <ExpandMoreIcon className="sidebar-item-expand-arrow" />
                 )} */}
-                  </ListItemIcon>
-                </ListItem>
-                <Divider />
+              </ListItemIcon>
+            </ListItem>
+            <Divider />
 
-                {/* Submenu Items */}
-                {collapseIndex === index && (
-                  <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit", alignItems: "center", justifyContent: "center" }}>
-                    {items[index].items.map((subText: any, subIndex: any) => (
-                      <List sx={{ pl: 2, alignItems: "center", justifyContent: "center" }} key={subIndex}>
-                        <ListItem
-                          sx={{
-                            display: "flex",
-                            justifyContent: "start",
-                            alignItems: "center",
-                            paddingLeft: 2,
-                            paddingRight: 0,
-                            paddingTop: 0,
-                            paddingBottom: 0,
-                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                            color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+            {/* Submenu Items */}
+            {collapseIndex === index && (
+              <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
+                {items[index].items.map((subText:any, subIndex:any) => (
+                  <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
+                    <ListItem
+                      sx={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                        paddingLeft: 2,
+                        paddingRight: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                        color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+                        borderRadius: "10px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "lightgray",
+                          color: "black",
+                        },
+                      }}
+                      onClick={(e) => {
+                        onClick(e, subText);
+                        handleSubMenuClick(subIndex);
+                      }}
+                    >
+                      {open && (
+                        <span
+                          style={{
+                            fontSize: "1.2rem",
+                            backgroundColor: "inherit",
+                            padding: "6px",
                             borderRadius: "10px",
-                            cursor: "pointer",
-                            "&:hover": {
-                              backgroundColor: "lightgray",
-                              color: "black",
-                            },
+                            color:"#426aee"
                           }}
-                          onClick={(e) => {
-                            onClick(e, subText);
-                            handleSubMenuClick(subIndex);
-                          }}
-                          //  add a code
-                          onContextMenu={handleRightClick(text.path)}
                         >
-                          {open && (
-                            <span
-                              style={{
-                                fontSize: "1.2rem",
-                                backgroundColor: "inherit",
-                                padding: "6px",
-                                borderRadius: "10px",
-                                color: "#426aee"
-                              }}
-                            >
-                              <FaFileLines />
-                            </span>
-                          )}
-                          {open ? (
-                            <p
-                              style={{
-                                fontWeight: 500,
-                                paddingTop: "3px",
-                                paddingBottom: "3px",
-                                opacity: open ? 1 : 0,
-                              }}
-                            >
-                              {subText.name}
-                            </p>
-                          ) : (
-                            <ListItemIcon
-                              sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : "auto",
-                                justifyContent: "center",
-                                color: open ? "#FF0000" : "inherit",
-                                backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                               // add a code
-                                Color:
-                                selectedSubMenu == subIndex ? "white" : "black",
-                                borderRadius: "25px",
-                                padding: "5px 10px",
-                              }}
-                              title={subText.name}
-                            >
-                              <DescriptionIcon />
-                            </ListItemIcon>
-                          )}
-                        </ListItem>
-                      </List>
-                    ))}
+                         <FaFileLines />
+                        </span>
+                      )}
+                      {open ? (
+                        <p
+                          style={{
+                            fontWeight: 500,
+                            paddingTop: "3px",
+                            paddingBottom: "3px",
+                            opacity: open ? 1 : 0,
+                          }}
+                        >
+                          {subText.name}
+                        </p>
+                      ) : (
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : "auto",
+                            justifyContent: "center",
+                            color: open ? "#FF0000" : "inherit",
+                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                            borderRadius: "25px",
+                            padding: "5px 10px",
+                          }}
+                          title={subText.name}
+                        >
+                          <DescriptionIcon />
+                        </ListItemIcon>
+                      )}
+                    </ListItem>
                   </List>
-                )}
-              </React.Fragment>
-            ))}
-          </List>
-        </React.Fragment>
+                ))}
+              </List>
+            )}
+          </React.Fragment>
+        ))}
+      </List>
+    </React.Fragment>
       </Drawer>
       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -1280,7 +1271,7 @@ export default function MiniDrawer({ items }: any) {
         onClose={() => {
           setProfileDrawerOpen(false);
         }}
-        onOpen={() => { }}
+        onOpen={() => {}}
         style={{
           zIndex: 1300,
         }}
@@ -1468,690 +1459,275 @@ export default function MiniDrawer({ items }: any) {
   );
 }
 
-// import * as React from "react";
-// import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import MuiDrawer from "@mui/material/Drawer";
-// import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
-// import List from "@mui/material/List";
-// import Typography from "@mui/material/Typography";
-// import Divider from "@mui/material/Divider";
-// import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+////////////
+
+// import React from "react";
+// import { useState, useEffect } from "react";
 // import ListItem from "@mui/material/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import { useNavigate, Navigate, useLocation } from "react-router-dom";
-// import { useTranslation } from "react-i18next";
+// import Divider from "@mui/material/Divider";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+// import Collapse from "@mui/material/Collapse";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import LogoutIcon from "@mui/icons-material/Logout";
+// import "./Sidebar.css";
 // import {
+//   AppBar,
 //   Avatar,
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   FormControlLabel,
-//   Grid,
-//   Modal,
-//   Radio,
+//   Box,
+//   Container,
+//   CssBaseline,
+//   Drawer,
+//   IconButton,
+//   List,
 //   Stack,
+//   Toolbar,
+//   Typography,
 // } from "@mui/material";
+// import assets from "../../assets";
+// import colorConfigs from "../../configs/colorConfigs";
+// import sizeConfigs from "../../configs/sizeConfigs";
+// import { useNavigate } from "react-router-dom";
+// import { Home } from "@mui/icons-material";
+// import PersonPinIcon from '@mui/icons-material/PersonPin';
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import Settings from "@mui/icons-material/Settings";
+// import TranslateIcon from '@mui/icons-material/Translate';
+// import { useTranslation } from 'react-i18next';
+// import call from "../../assets/images/phone-call.png";
+// import roles from "../../assets/images/role-model.png";
+// import tick from "../../assets/images/check-mark.png";
+// import crs from "../../assets/images/cross.png";
+// import log from "../../assets/images/profile.png";
+// import emails from "../../assets/images/gmail.png";
+// import genders from "../../assets/images/symbol.png";
+// import dobs from "../../assets/images/timetable.png";
 // import id from "../../assets/images/profile1.png";
 // import settings from "../../assets/images/settings.png";
 // import trans from "../../assets/images/translation.png";
 // import logout from "../../assets/images/logout.png";
-// import logged from "../../assets/images/institute.png";
-// import logo from "../../assets/images/adlogo1.png";
-// import loged from "../../assets/images/adlogo1.png";
-// import CloseIcon from "@mui/icons-material/Close";
-// import dayjs from "dayjs";
-// import { Home } from "@mui/icons-material";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-// import Collapse from "@mui/material/Collapse";
-// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-// import "./Shine.css";
-// import Breadcrumbs from "@mui/material/Breadcrumbs";
-// import Link from "@mui/material/Link";
-// import HomeIcon from "@mui/icons-material/Home";
-// import names from "../../assets/images/id-card (2).png";
-// import SearchIcon from "@mui/icons-material/Search";
-// import Paper from "@mui/material/Paper";
-// import Autocomplete from "@mui/material/Autocomplete";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import { TextField } from "@mui/material";
-// import useMediaQuery from "@mui/material/useMediaQuery";
-// import { Checkbox } from "@mui/material";
-// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-// import { toast, ToastContainer } from "react-toastify";
-// import api from "../../utils/Url";
-// import help from "../../assets/images/help.png";
-// import dark from "../../assets/images/darkTheme.png";
-// import Light from "../../assets/images/lightTheme.png";
-// import institutionIcon from "../../assets/images/institute.png";
-// import cityIcon from "../../assets/images/city.png";
-// import libraryIcon from "../../assets/images/library.png";
-// import addressIcon from "../../assets/images/address.png";
-// import instituteIcon from "../../assets/images/institution.png";
-// import ThemeIcon from "../../assets/images/themes.png";
-// import ChatBotIcon from "../../assets/images/ChatBotIcon.png";
-// import "./ThemeStyle.css";
+// import logged from "../../assets/images/permission.png";
 
-// //import { Brightness5, Brightness4, Waves, WbSunny, Forest, Flag } from '@mui/icons-material';
+// import CloseIcon from '@mui/icons-material/Close';
+// import dayjs from 'dayjs';
 
-// import "./Sidebar.css";
-// import {
-//   Brightness5,
-//   Brightness4,
-//   Waves,
-//   WbSunny,
-//   Forest,
-//   Flag,
-// } from "@mui/icons-material";
-
-// const drawerWidth = 225;
-
-// const openedMixin = (theme: Theme): CSSObject => ({
-//   width: drawerWidth,
-//   transition: theme.transitions.create("width", {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.enteringScreen,
-//   }),
-//   overflowX: "hidden",
-// });
-
-// const closedMixin = (theme: Theme): CSSObject => ({
-//   transition: theme.transitions.create("width", {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   overflowX: "hidden",
-//   width: `calc(${theme.spacing(7)} + 1px)`,
-//   [theme.breakpoints.up("sm")]: {
-//     width: `calc(${theme.spacing(12)} + 1px)`,
-//   },
-// });
-
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: "95%",
-//   height: "85%",
-//   bgcolor: "#f5f5f5",
-//   border: "1px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-//   borderRadius: 10,
-// };
-
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
-//   ...theme.mixins.toolbar,
-// }));
-
-// interface AppBarProps extends MuiAppBarProps {
-//   open?: boolean;
-// }
-
-// const AppBar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })<AppBarProps>(({ theme, open }) => ({
-//   zIndex: theme.zIndex.drawer + 1,
-//   transition: theme.transitions.create(["width", "margin"], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(open && {
-//     marginLeft: drawerWidth,
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     transition: theme.transitions.create(["width", "margin"], {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
-
-// const Drawer = styled(MuiDrawer, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })(({ theme, open }) => ({
-//   width: drawerWidth,
-//   flexShrink: 0,
-//   whiteSpace: "nowrap",
-//   boxSizing: "border-box",
-//   ...(open && {
-//     ...openedMixin(theme),
-//     "& .MuiDrawer-paper": openedMixin(theme),
-//   }),
-//   ...(!open && {
-//     ...closedMixin(theme),
-//     "& .MuiDrawer-paper": closedMixin(theme),
-//   }),
-// }));
-
-// interface MenuItem {
-//   Icon: any;
-//   displayNo: number;
-//   id: number;
-//   items: MenuItem[];
-//   label: string;
-//   name: string;
-//   path: string;
-// }
-
-// function getGreeting() {
-//   const hour = new Date().getHours();
-
-//   let greeting;
-//   if (hour < 12) {
-//     greeting = {
-//       text: "Good Morning",
-//       color: "#FFFFE0",
-//       icon: "🌅", // Sunrise emoji
-//     };
-//   } else if (hour < 17) {
-//     greeting = {
-//       text: "Good Afternoon",
-//       color: "#FFE4B5",
-//       icon: "🌞", // Sun emoji
-//     };
-//   } else {
-//     greeting = {
-//       text: "Good Evening",
-//       color: "#FFDAB9",
-//       icon: "🌜", // Crescent moon emoji
-//     };
-//   }
-
-//   return greeting;
-// }
-
-// export default function MiniDrawer({ items }: any) {
-//   const theme = useTheme();
-//   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-//   const [open, setOpen] = React.useState(!isMobile);
-//   const [menuOpen, setMenuOpen] = React.useState(false);
-//   const [profileDrawerOpen, setProfileDrawerOpen] = React.useState(false);
-//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-//   // const [collapseIndex, setCollapseIndex] = React.useState<any>(-1);
-//   // const [collapseIndex2, setCollapseIndex2] = React.useState<any>(-1);
-//   const [openlogo, setOpenlogo] = React.useState(!isMobile);
-//   const [homeColor, setHomeColor] = React.useState("inherit");
-//   const [selectedSubMenu, setSelectedSubMenu] = React.useState(null);
-//   const [searchValue, setSearchValue] = React.useState("");
-//   const [filteredItems, setFilteredItems] = React.useState<MenuItem[]>([]);
-
-//   const greeting = getGreeting();
-
+// const drawerWidth = 250;
+// function SidebarItem({
+//   depthStep = 10,
+//   depth = 0,
+//   expanded,
+//   item,
+//   ...rest
+// }: any) {
+//   const [collapsed, setCollapsed] = React.useState(true);
+//   const { label, items, Icon, onClick: onClickProp } = item;
 //   let navigate = useNavigate();
 
-//   const searchMenuItems = (items: any[], searchValue: string): any[] => {
-//     const lowerCaseSearchValue = searchValue.toLowerCase();
-  
-//     // Recursive function focusing only on the `name` field
-//     const searchRecursive = (menuItems: any[]): any[] => {
-//       return menuItems.reduce((acc: any[], item: any) => {
-//         // Check if the current item's name matches the search value
-//         if (item.name && item.name.toLowerCase().includes(lowerCaseSearchValue)) {
-//           acc.push(item); // Push matching item
-//         }
-  
-//         // Search recursively in child items
-//         if (item.items && item.items.length > 0) {
-//           acc.push(...searchRecursive(item.items));
-//         }
-  
-//         return acc;
-//       }, []);
-//     };
-  
-//     return searchRecursive(items);
+//   const Logout = () => {
+//     localStorage.removeItem("userdata");
+//     navigate("/");
 //   };
-  
-
-//   const handleNavigation = (path: any) => {
-//     navigate(path);
-//   };
-
-//   const handleAutocompleteChange = (event: any, value: any) => {
-//     const findItemByName = (items: any[], name: string): any | null => {
-//       for (const item of items) {
-//         if (item.name === name) return item;
-//         if (item.items && item.items.length > 0) {
-//           const found = findItemByName(item.items, name);
-//           if (found) return found;
-//         }
-//       }
-//       return null;
-//     };
-  
-//     const selectedSubItem = findItemByName(items, value);
-  
-//     if (selectedSubItem) {
-//       // console.log("Selected Item:", selectedSubItem);
-  
-//       if (selectedSubItem.path && selectedSubItem.path.trim() !== "") {
-//         handleNavigation(selectedSubItem.path);
-//       } else {
-//         // console.warn("Path not found for the selected item. No action taken.");
-//         // Optionally, provide feedback or navigation to a default page.
-//       }
-//     } else {
-//       // console.warn("Item not found for value:", value);
+//   function toggleCollapse() {
+//     setCollapsed((prevValue) => !prevValue);
+//   }
+//   function onClick(e: any) {
+//     if (Array.isArray(items)) {
+//       toggleCollapse();
 //     }
-//   };
-
-  
-  
-
-//   const themes = [
-//     { name: "light-theme", icon: <Brightness5 /> },
-//     { name: "dark-theme", icon: <Brightness4 /> },
-//     { name: "ocean-theme", icon: <Waves /> },
-//     { name: "sunset-theme", icon: <WbSunny /> },
-//     { name: "forest-theme", icon: <Forest /> },
-//     { name: "bhagwa-theme", icon: <Flag /> },
-//   ];
-
-//   // console.log("items", items);
-
-//   const handleSearchInputChange = (e: any) => {
-//     const value = e.target.value;
-//     console.log("handleSearchInputChange", value);  
-//     setSearchValue(value);
-  
-//     const filtered = searchMenuItems(items, value); 
-//     setFilteredItems(filtered);
-//   };
-
-//   var [date, setDate] = React.useState(new Date());
-
-//   const options: Intl.DateTimeFormatOptions = {
-//     day: "2-digit",
-//     month: "short",
-//     year: "numeric",
-//   };
-
-//   const formattedDate = date
-//     .toLocaleDateString("en-US", options)
-//     .split(" ")
-//     .map((part, index) =>
-//       index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
-//     )
-//     .join(" ");
-
-//   const location = useLocation();
-
-//   const [menuData, setMenuData] = React.useState<any>("");
-
-//   React.useEffect(() => {
-//     const dataString = localStorage.getItem("userdata");
-//     if (dataString) {
-//       const data = JSON.parse(dataString);
-//       if (data && data.length > 0) {
-//         const userPermissionData = data[0]?.userPermission;
-//         if (userPermissionData && userPermissionData.length > 0) {
-//           const menudata = userPermissionData[0]?.parentMenu;
-//           for (let index = 0; index < menudata.length; index++) {
-//             const childMenudata = menudata[index]?.childMenu;
-//             const pathrow = childMenudata.find(
-//               (x: any) => x.path === location.pathname
-//             );
-
-//             if (pathrow) {
-//               setMenuData(pathrow.menuId);
-//               break;
-//             }
-//           }
-//         }
-//       }
+//     if (onClickProp) {
+//       onClickProp(e, item);
 //     }
-//   }, [location.pathname]);
+//   }
+//   let expandIcon;
 
-//   React.useEffect(() => {
-//     var timer = setInterval(() => setDate(new Date()), 1000);
-//     return function cleanup() {
-//       clearInterval(timer);
-//     };
-//   });
+//   if (Array.isArray(items) && items.length) {
+//     expandIcon = !collapsed ? (
+//       <ExpandLessIcon
+//         className={
+//           "sidebar-item-expand-arrow" + " sidebar-item-expand-arrow-expanded"
+//         }
+//       />
+//     ) : (
+//       <ExpandMoreIcon className="sidebar-item-expand-arrow" />
+//     );
+//   }
 
+//   return (
+//     <>
+//       <ListItem
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//         }}
+//         // className="sidebar-item"
+//         onClick={onClick}
+//         button
+//         dense
+//         {...rest}
+//       >
+//         <div
+//           style={{
+//             paddingLeft: depth * depthStep,
+//             whiteSpace: "nowrap",
+//             //textOverflow:'ellipsis',
+//             //overflow:'hidden',
+//             display: "flex",
+//             alignItems: "center",
+//             width: "100%",
+//             fontSize: "16px",
+//             paddingBottom: "3px",
+//             fontFamily: "unset",
+//             overflowY: "revert-layer",
+//           }}
+//           className="sidebar-item-content"
+//         >
+//           {Icon && <Icon className="sidebar-item-icon" fontSize="small" />}
+//           <div className="sidebar-item-text">{label}</div>
+//         </div>
+//         {expandIcon}
+//       </ListItem>
+//       <Collapse in={!collapsed} timeout="auto" unmountOnExit>
+//         {Array.isArray(items) ? (
+//           <List disablePadding dense>
+//             {items.map((subItem, index) => (
+//               <React.Fragment key={`${subItem.name}${index}`}>
+//                 {subItem === "divider" ? (
+//                   <Divider style={{ margin: "6px 0" }} />
+//                 ) : (
+//                   <SidebarItem
+//                     depth={depth + 1}
+//                     depthStep={depthStep}
+//                     item={subItem}
+//                     expanded={undefined}
+//                   />
+//                 )}
+//               </React.Fragment>
+//             ))}
+//           </List>
+//         ) : null}
+//       </Collapse>
+//     </>
+//   );
+// }
 
+// const Sidebar = ({ items, depthStep, depth, expanded }: any) => {
+//   const [mobileOpen, setMobileOpen] = useState(false);
+//   const [userdrawerOpen, setUserdrawerOpen] = useState(false);
 
-//   const resetHomeColor = () => {
-//     setHomeColor("#FF0000");
+//   const temporaryDrawerRef = React.useRef<HTMLDivElement>(null);
+
+//   const handleDrawerToggle = () => {
+//     setMobileOpen(!mobileOpen);
 //   };
+//   const Logout = () => {
+//     localStorage.removeItem("userdata");
+//     navigate("/");
+//   };
+//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+//   const open = Boolean(anchorEl);
 
 //   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 //     setAnchorEl(event.currentTarget);
-//     setMenuOpen(true);
-//     setHomeColor("inherit");
 //   };
-
 //   const handleClose = () => {
 //     setAnchorEl(null);
-//     setMenuOpen(false);
 //   };
 
+//   function onClick(e: any) {
+//     if (Array.isArray(items)) {
+//     }
+//   }
+//   let navigate = useNavigate();
 //   const routeChangeHome = () => {
 //     let path = `/home`;
 //     navigate(path);
 //   };
-
-//   React.useEffect(() => {
-//     setOpen(!isMobile);
-//     setOpenlogo(!isMobile);
-//   }, [isMobile]);
-
-//   const handleDrawerOpen = () => {
-//     setOpen(true);
-//     setOpenlogo(true);
-//   };
-
-//   const handleDrawerClose = () => {
-//     setOpen(false);
-//     setOpenlogo(false);
-//   };
-
-//   const Logout = () => {
-//     const collectData = {
-//       userId: userName,
-//       ipAddress: "",
-//       uniqueId: uniqueId,
-//       logInOut: true,
-//     };
-//     api.post(`api/Login/UsrLogOut`, collectData).then((res) => {
-//       if (res.data.isSuccess) {
-//         toast.success(res.data.mesg);
-//         setTimeout(() => {
-//           navigate("/");
-//         }, 1000);
-//       } else {
-//         toast.error(res.data.mesg);
-//       }
-//     });
-//   };
-
-//   function onClick(item: any) {
-//     console.log("🚀 ~ onClick ~ item:", item);
-
-//     var menuId = item.id;
-//     var menu_name = item.path;
-//     const path2 =
-//       item.path + "?appId=" + menuId + "&Appname=" + menu_name + ".aspx";
-//     const path = item.path;
-//     console.log(path)
-
-//     if (path == "" || path == null || path == "undefind") {
-//     } else {
-//       sessionStorage.setItem("menuId", menuId);
-//       sessionStorage.setItem("menuName", menu_name);
-//       sessionStorage.setItem("path", path2);
-//       navigate(path);
-//     }
-//   }
-
-//   let nodeName = sessionStorage.getItem("institutename");
-//   let userName: any = sessionStorage.getItem("userid");
-
-//   if (userName) {
-//     userName = userName.replace(/"/g, "");
-//   }
-
-//   const defaultSelectedNodeId = parseInt(sessionStorage.getItem("instId") + "");
-
-//   React.useEffect(() => {
-//     // setuserName(userName);
-//     if (defaultSelectedNodeId) {
-//       setnodeId(defaultSelectedNodeId);
-//     }
-//   }, [defaultSelectedNodeId]);
-
-//   const removeDynamicId = (id: any) => {
-//     return id.replace(/ /g, "");
-//   };
-
-//   var key = removeDynamicId("uniqueId");
-//   var uniqueId = sessionStorage.getItem(key);
-
-//   if (uniqueId) {
-//     uniqueId = uniqueId.replace(/"/g, "");
-//   }
-
-
-//   const [nodeData, setNodeData] = React.useState<any>([]);
-
-//   const getNode = () => {
-//     api.get(`api/Login/GetMemberLibs?uniqueid=${uniqueId}`).then((res) => {
-//       const arr: any = [];
-//       for (let index = 0; index < res.data.data.length; index++) {
-//         arr.push({
-//           id: res.data.data[index]["id"],
-//           institutename: res.data.data[index]["institutename"],
-//         });
-//       }
-//       setNodeData(arr);
-//     });
-//   };
-
-//   const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-//   const handlePermissionClick = () => {
-//     getNode();
-//     setIsModalOpen(true);
-//   };
-
-//   const handleCloseModal = () => {
-//     setIsModalOpen(false);
-//   };
-
-//   const handleCheckboxChange = (id: any, name: any) => {
-//     setnodeId(id);
-//     setnodeNames(name);
-//   };
-
-//   const [nodeNames, setnodeNames] = React.useState<any>("");
-
-//   const [nodeId, setnodeId] = React.useState<any>();
-
-//   const handleSave = () => {
-//     if (nodeId && nodeNames) {
-//       sessionStorage.setItem("instId", nodeId);
-
-//       sessionStorage.setItem("institutename", nodeNames);
-//     } else {
-//     }
-//     handleCloseModal();
-//   };
+//   var data = JSON.parse(localStorage.getItem("userdata")!);
+//   var menudata = data[0]["userdetail"];
+//   var username =
+//     menudata[0]["firsT_NAME"] +
+//     " " +
+//     menudata[0]["middlE_NAME"] +
+//     " " +
+//     menudata[0]["suR_NAME"];
 
 //   const { i18n } = useTranslation();
 
-//   const changeLanguage = (language: any) => {
+//   const changeLanguage = (language:any) => {
 //     // console.log("check", language);
 
 //     i18n.changeLanguage(language);
-//     localStorage.setItem("preferredLanguage", language);
+//     localStorage.setItem('preferredLanguage', language);
 //   };
-//   var currentLanguage = localStorage.getItem("preferredLanguage");
-//   var newLanguage = currentLanguage === "hi" ? "English" : "हिंदी";
+//   var currentLanguage = localStorage.getItem('preferredLanguage');
+//   var newLanguage = currentLanguage === 'hi' ? 'English' : 'हिंदी';
 
-//   const handleMyProfileClick = () => {
+//   const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
+//   const userDetail = userData[0]?.userdetail || [];
+//   // console.log(userDetail);
 
-//     //setShowThemeMenu((prevState) => !prevState);
-
-//     setProfileDrawerOpen(!profileDrawerOpen);
-//   };
-
-//   const currentPathname = window.location.pathname;
-//   const segments = currentPathname.split("/").filter(Boolean);
-//   const isHomePage = segments.length === 0;
-
-//   function handleClicked(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-//     event.preventDefault();
-//   }
-
-//   const handleClickhome = () => {
-//     let path = `/home`;
-//     navigate(path);
+//   const getImageForFirstName = (
+//     firsT_NAME: any,
+//     middlE_NAME: any,
+//     suR_NAME: any
+//   ) => {
+//     const firstLetter = firsT_NAME ? firsT_NAME.charAt(0).toUpperCase() : "";
+//     const secondLetter = middlE_NAME ? middlE_NAME.charAt(0).toUpperCase() : "";
+//     const thirdLetter = suR_NAME ? suR_NAME.charAt(0).toUpperCase() : "";
+//     // console.log("fisrtlett", firstLetter);
+//     return `${firstLetter}${secondLetter}${thirdLetter}`;
 //   };
 
-//   const [showThemeMenu, setShowThemeMenu] = React.useState(false);
-
-//   const [selectedTheme, setSelectedTheme] = React.useState(() => {
-//     const storedTheme = localStorage.getItem("theme");
-
-//     return storedTheme ? storedTheme : themes[0]["name"];
-//   });
-
-//   React.useEffect(() => {
-//     //console.log(selectedTheme);
-//     document.body.className = selectedTheme;
-
-//     localStorage.setItem("theme", selectedTheme);
-//   }, [selectedTheme]);
-
-//   const handleThemeChange = (theme: any) => {
-//     setSelectedTheme(theme);
-//     setShowThemeMenu(false);
+//   const getGenderText = (gendeR_ID: any) => {
+//     switch (gendeR_ID) {
+//       case 1:
+//         return "Male";
+//       case 2:
+//         return "Female";
+//       case 3:
+//         return "Other";
+//       default:
+//         return "Unknown";
+//     }
 //   };
 
-//   const handleCloseSelect = () => {
-//     setShowThemeMenu(false);
-//   };
-
-//   const headerColor1 = `var(--header-background)`;
-//   const drawerStyles = `var(--drawer-background)`;
-
-//   const renderItem = (icon: any, label: any, value: any) => (
-//     <div
-//       style={{
-//         display: "flex",
-//         alignItems: "center",
-//         gap: 10,
-//         marginBottom: "10px",
-//       }}
-//     >
-//       <img src={icon} alt={label} width={25} />
-//       <strong>{label}:</strong> {value}
-//     </div>
-//   );
-
-//   const data: any = JSON.parse(sessionStorage.getItem("0th") || "{}");
-
-//   const { institutename, libraryname, address, city, institute } = data;
-
-//     const [selectedMenu, setSelectedMenu] = React.useState<any | null>(null);
-//     const [collapseIndexs, setCollapseIndexs] = React.useState<number | null>(null);
-//     const [collapseIndexs2, setCollapseIndexs2] = React.useState<number | null>(null);
-    
-//     React.useEffect(() => {
-//       const savedMenu = localStorage.getItem("selectedMenu");
-//       if (savedMenu) {
-//         const parsedMenu = JSON.parse(savedMenu);
-//         setSelectedMenu(parsedMenu);
-    
-//         // Automatically expand the saved menu hierarchy
-//         setCollapseIndexs(parsedMenu.parentIndex ?? null);
-//         setCollapseIndexs2(parsedMenu.childIndex ?? null);
-//       }
-//     }, []);
-    
-//     const handleMenuClick = (menu: any) => {
-//       if (!menu) return;
-    
-//       const { parentIndex, childIndex, subchildIndex, child, subchild } = menu;
-    
-//       // Check if we're opening a new page or staying within the same structure
-//       const isNewPage =
-//         selectedMenu?.parentIndex !== parentIndex ||
-//         selectedMenu?.childIndex !== childIndex ||
-//         selectedMenu?.subchildIndex !== subchildIndex;
-    
-//       // Update selected menu only for new page
-//       const newSelectedMenu = {
-//         parentIndex: parentIndex ?? null,
-//         childIndex: childIndex ?? null,
-//         subchildIndex: subchildIndex ?? null,
-//         ...(subchild ? { subchild } : child ? { child } : {}),
-//       };
-    
-//       // Navigate to new page if a path exists
-//       if (subchild?.path) {
-//         onClick(subchild);
-//       } else if (child?.path && (!child.items || !child.items.length)) {
-//         onClick(child);
-//       }
-    
-//       // Reset state only if navigating to a new page
-//       if (isNewPage) {
-//         setSelectedMenu(newSelectedMenu);
-//         localStorage.setItem("selectedMenu", JSON.stringify(newSelectedMenu));
-    
-//         // Reset menu expansion based on the new page
-//         setCollapseIndexs(parentIndex);
-//         // setCollapseIndexs2(childIndex ?? null);
-//       }
-//     };
-    
-    
-//     const collapseHandle = (index: number) => {
-//       setCollapseIndexs(collapseIndexs === index ? null : index);
-//       // setCollapseIndexs2(null); 
-//     };
-    
-    
-//   const collapseHandle2 = (index: number) => {
-//     // console.log(index)
-//     setCollapseIndexs2(collapseIndexs2 === index ? null : index);
-//   };
-  
 //   return (
 //     <Box sx={{ display: "flex" }}>
-//       <ToastContainer />
-//       <AppBar position="fixed" open={open} style={{}}>
-//         <Toolbar
-//           style={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             alignItems: "center",
-//             background: `var(--header-background1)`,
-//             color: "var(--header-color1)",
-//           }}
-//         >
-//           <div
-//             style={{
-//               display: "flex",
-//               justifyContent: "flex-start",
-//               alignItems: "center",
-//             }}
+//       <AppBar
+//         style={{ background: "#FF7722", height: "12vh" }}
+//         position="fixed"
+//         sx={{
+//           width: { sm: `calc(100% - ${drawerWidth}px)` },
+//           ml: { sm: `${drawerWidth}px` },
+//         }}
+//       >
+//         <Toolbar style={{ justifyContent: "space-between" }}>
+//           <IconButton
+//             color="inherit"
+//             aria-label="open drawer"
+//             edge="start"
+//             onClick={handleDrawerToggle}
+//             sx={{ mr: 2, display: { sm: "none" } }}
 //           >
-//             <IconButton
-//               color="inherit"
-//               aria-label="open drawer"
-//               onClick={handleDrawerOpen}
-//               edge="start"
-//               sx={{
-//                 // marginRight: 5,
-//                 ...(open && { display: "none" }),
-//               }}
-//             >
-//               <MenuIcon fontSize="large" />
-//             </IconButton>
-
-//             {!openlogo && <img src={logo} width={80} height={60} />}
-//           </div>
-
-//           <div style={{ fontSize: "3vw" }}>Spritual Library </div>
+//             <MenuIcon />
+//           </IconButton>
+//           <IconButton
+//             color="inherit"
+//             aria-label="open drawer"
+//             edge="start"
+//             onClick={handleDrawerToggle}
+//             sx={{ mr: 2, display: { sm: "none" } }}
+//           >
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography variant="h5" noWrap component="div">
+//             Advertisement Management System
+//           </Typography>
 
 //           <IconButton
 //             onClick={handleClick}
@@ -2161,26 +1737,24 @@ export default function MiniDrawer({ items }: any) {
 //             aria-haspopup="true"
 //             aria-expanded={open ? "true" : undefined}
 //           >
-//             <Avatar sx={{ width: 40, height: 40 }}>
-//               {/* {displayInitial} */}
+//             <Avatar sx={{ width: 32, height: 32 }}>
+//               {username[0].toUpperCase()}
 //             </Avatar>
 //           </IconButton>
 
 //           <Menu
 //             anchorEl={anchorEl}
 //             id="account-menu"
-//             open={menuOpen}
+//             open={open}
 //             // onClose={handleClose}
 //             onClick={handleClose}
 //             PaperProps={{
 //               elevation: 0,
 //               sx: {
-//                 backgroundColor: "var(--menu-background)",
-//                 color: "var(--menu-color)",
-//                 overflow: "auto",
+//                 overflow: "visible",
 //                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-//                 paddingRight: "10px",
-//                 paddingLeft: "10px",
+//                 paddingRight:"10px",
+//                 paddingLeft:"10px",
 //                 mt: 1.5,
 //                 "& .MuiAvatar-root": {
 //                   width: 32,
@@ -2206,704 +1780,304 @@ export default function MiniDrawer({ items }: any) {
 //             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 //           >
 //             <MenuItem onClick={handleClose}>
-//               {/* <ListItemIcon>
-//                 <img src={logged} width={40} height={40} />
-//               </ListItemIcon>{" "} */}
-//               {/* {displayInitial} */}
+//             <ListItemIcon><img src={logged} width={30} height={30} /></ListItemIcon> {username}
 //             </MenuItem>
-//             {/* <MenuItem > */}
-//             <MenuItem onClick={handleMyProfileClick}>
-//               <ListItemIcon>
-//                 <img src={id} width={30} height={30} />
-//               </ListItemIcon>
-//               {userName}
+//             <MenuItem onClick={()=>setUserdrawerOpen(!userdrawerOpen)}>
+//             <ListItemIcon><img src={id} width={30} height={30} /></ListItemIcon>
+//               My Profile
 //             </MenuItem>
 
 //             <Divider />
 
-//             <MenuItem
-//               onClick={() => {
-//                 localStorage.getItem("preferredLanguage") == "hi"
-//                   ? changeLanguage("en")
-//                   : changeLanguage("hi");
-//               }}
-//             >
+//             <MenuItem onClick={()=>{localStorage.getItem('preferredLanguage')=="hi"?changeLanguage("en"):changeLanguage("hi")}}>
 //               <ListItemIcon>
-//                 <img src={trans} width={30} height={30} />
+//               <img src={trans} width={30} height={30} />
 //               </ListItemIcon>
 //               Translate -- {newLanguage}
 //             </MenuItem>
-
-//             <MenuItem onClick={(e) => setShowThemeMenu(!showThemeMenu)}>
-//               <ListItemIcon>
-//                 <img src={ThemeIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               Select Theme
-//             </MenuItem>
-
-//             {/* <MenuItem
-//               onClick={() => {
-//                 navigate("/ChatBot");
-//               }}
-//             >
-//               <ListItemIcon>
-//                 <img src={ChatBotIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               ChatBot
-//             </MenuItem> */}
-
-//             {/* <MenuItem onClick={() => {}}>
-//               <ListItemIcon>
-//                 <img src={FontIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               Select Font
-//             </MenuItem> */}
-
-//             <MenuItem
-//               onClick={() => {
-//                 let path = "/HelpDesk";
-//                // localStorage.setItem("menuData", menuData.toString());
-//                 window.open(path, "_blank");
-//               }}
-//             >
-//               <ListItemIcon>
-//                 <img src={help} width={30} height={30} alt="Help Desk" />
-//               </ListItemIcon>
-//               Help Desk
-//             </MenuItem>
-
 //             <MenuItem onClick={handleClose}>
 //               <ListItemIcon>
-//                 <img src={settings} width={30} height={30} />
+//               <img src={settings} width={30} height={30} />
 //               </ListItemIcon>
 //               Settings
 //             </MenuItem>
-
-//             <MenuItem onClick={handlePermissionClick}>
-//               <ListItemIcon>
-//                 <img src={logged} width={40} height={40} alt="Permission" />
-//               </ListItemIcon>
-//               Institute
-//             </MenuItem>
-
-            
-//             <Divider />
+//             <Divider/>
 //             <MenuItem onClick={Logout}>
 //               <ListItemIcon>
-//                 <img src={logout} width={30} height={30} />
+//               <img src={logout} width={30} height={30} />
 //               </ListItemIcon>
 //               Logout
 //             </MenuItem>
 //           </Menu>
 //         </Toolbar>
 
-//         <Dialog open={showThemeMenu} onClose={handleCloseSelect}>
-//           <DialogTitle>Select a Theme</DialogTitle>
-//           <DialogContent>
-//             <List>
-//               {themes.map((theme) => (
-//                 <ListItem
-//                   button
-//                   key={theme.name}
-//                   onClick={() => handleThemeChange(theme.name)}
-//                   selected={selectedTheme === theme.name}
-//                 >
-//                   {theme.icon}
-//                   <span style={{ marginLeft: "10px" }}>{theme.name}</span>
-//                 </ListItem>
-//               ))}
-//             </List>
-//           </DialogContent>
-//           <DialogActions>
-//             <Button onClick={handleCloseSelect}>Cancel</Button>
-//           </DialogActions>
-//         </Dialog>
+//       </AppBar>
+//       <Drawer
+//         variant="temporary"
+//         open={mobileOpen}
+//         onClose={handleDrawerToggle}
+//         ModalProps={{
+//           keepMounted: true,
+//         }}
 
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             alignItems: "center",
-//             backgroundColor: headerColor1 || "#42AEEE",
-//             borderBottomRightRadius: "15px",
-//           }}
-//         >
-//           <div
-//             role="presentation"
-//             onClick={handleClicked}
-//             // style={{  borderBottomRightRadius: "15px" }}
-//           >
-//             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
-//               {/* <Link
-//                 underline="hover"
-//                 sx={{ display: "flex", alignItems: "center" }}
-//                 color="inherit"
-//                 href="/"
-//               >
-//                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-//                 Home
-//               </Link> */}
-//               <Typography
-//                 sx={{
-//                   display: "flex",
-//                   color: "#fff",
-//                   alignItems: "center",
-//                 }}
-//               >
-//                 <Link
-//                   underline="hover"
-//                   sx={{
-//                     display: "flex",
-//                     color: "#fff",
-//                     alignItems: "center",
-//                     cursor: "pointer",
-//                   }}
-//                   color="inherit"
-//                   onClick={handleClickhome}
-//                 >
-//                   <HomeIcon sx={{ ml: 1, mr: 1 }} fontSize="inherit" />
-//                   Home
-//                 </Link>
-//               </Typography>
+//         sx={{
+//           display: { xs: "block", sm: "none" },
+//           width: sizeConfigs.sidebar.width,
+//           flexShrink: 0,
+//           "& .MuiDrawer-paper": {
+//             width: sizeConfigs.sidebar.width,
+//             boxSizing: "border-box",
+//             borderRight: "0px",
+//             backgroundColor: colorConfigs.sidebar.bg,
+//             color: colorConfigs.sidebar.color,
+//           },
+//         }}
+//       >
+//         <List disablePadding>
+//           <List disablePadding dense style={{ marginTop: "2vh" }}>
+//             {items.map((sidebarItem: any, index: any) => (
+//               <React.Fragment key={`${sidebarItem.name}${index}`}>
+//                 {sidebarItem === "divider" ? (
+//                   <Divider style={{ margin: "6px 0" }} />
+//                 ) : (
+//                   <SidebarItem
+//                     depthStep={depthStep}
+//                     depth={depth}
+//                     expanded={expanded}
+//                     item={sidebarItem}
+//                   />
+//                 )}
+//               </React.Fragment>
+//             ))}
+//           </List>
+//         </List>
+//       </Drawer>
+//       <Drawer
+//         variant="permanent"
+//         open
 
-//               {/* Render the rest of the breadcrumb path */}
-//               {segments.slice(1).map((segment, index) => (
-//                 <Typography
-//                   key={index}
-//                   sx={{
-//                     display: "flex",
-//                     color: "#fff",
-//                     alignItems: "center",
-//                   }}
-//                 >
-//                   {/* {" / "} */}
-//                   {index > 0 && " / "}
-//                   {index === segments.length - 2 ? (
-//                     <span>
-//                       {" "}
-//                       {/* <GrainIcon sx={{ mr: 0.5 }} fontSize="inherit" /> */}
-//                       {segment}
-//                     </span>
-//                   ) : (
-//                     <Link
-//                       underline="hover"
-//                       sx={{
-//                         display: "flex",
-//                         color: "#fff",
-//                         alignItems: "center",
-//                       }}
-//                       color="inherit"
-//                       href={`/${segments.slice(0, index + 1).join("/")}`}
-//                     >
-//                       {/* <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" /> */}
-//                       {segment}
-//                     </Link>
-//                   )}
-//                 </Typography>
-//               ))}
-//             </Breadcrumbs>
-//           </div>
-
-//           <div
+//         sx={{
+//           display: { xs: "none", sm: "block" },
+//           width: sizeConfigs.sidebar.width,
+//           flexShrink: 0,
+//           "& .MuiDrawer-paper": {
+//             width: sizeConfigs.sidebar.width,
+//             boxSizing: "border-box",
+//             borderRight: "0px",
+//             backgroundColor: "#331a00",
+//             color: colorConfigs.sidebar.color,
+//           },
+//         }}
+//       >
+//         <Toolbar >
+//           <Stack sx={{ width: "100%" }} direction="row" justifyContent="center">
+//             <Avatar
+//               src={assets.images.logo}
+//               style={{ height: 80, width: 80, marginTop: "25px", marginBottom: "25px" }}
+//             />
+//           </Stack>
+//         </Toolbar>
+//         {/* <br/> */}
+//               <Divider style={{backgroundColor:"white"}}/>
+//               {/* <br/> */}
+//         <List disablePadding dense style={{ marginTop: "1vh" }}>
+//           <ListItem
 //             style={{
 //               display: "flex",
 //               justifyContent: "space-between",
 //               alignItems: "center",
-//               gap: 15,
-//               paddingRight: "15px",
 //             }}
+//             // className="sidebar-item"
+//             onClick={onClick}
+//             button
+//             dense
 //           >
-//             <p style={{ fontSize: "1.2vw", color: greeting.color }}>
-//               {greeting.icon} {greeting.text}
-//             </p>
-
-//             <p>Institute : {nodeName}</p>
-//             <p> Time : {date.toLocaleTimeString()}</p>
-//             <p> Date : {formattedDate}</p>
-//           </div>
-//         </div>
-//       </AppBar>
-
-//       <Drawer
-//         variant="permanent"
-//         open={open}
-//         PaperProps={{
-//           sx: {
-//             backgroundColor: drawerStyles,
-//             color: `var(--drawer-color)`,
-//           },
-//         }}
-//       >
-//         <DrawerHeader>
-//           <>
-//             <Stack
-//               sx={{ width: "100%", height: "16vh" }}
-//               direction="row"
-//               justifyContent="center"
+//             <div
+//               style={{
+//                 paddingLeft: depth * depthStep,
+//                 // whiteSpace:'nowrap',
+//                 // textOverflow:'ellipsis',
+//                 // overflow:'hidden',
+//                 // display:'flex',
+//                 // alignItems:'center',
+//                 // width:'100%'
+//               }}
+//               className="sidebar-item-content"
 //             >
-//               {openlogo ? (
-//                 <div
-//                   style={{
-//                     paddingTop: "25px",
-//                     paddingBottom: "25px",
-//                   }}
-//                 >
-//                   <img src={loged} width={110} height={90} />
-//                 </div>
-//               ) : (
-//                 <div style={{ padding: 0 }}></div>
-//               )}
-//             </Stack>
 
-//             <IconButton onClick={handleDrawerClose}>
-//               {theme.direction === "rtl" ? (
-//                 <ChevronRightIcon />
+//               {<Home style={{ marginRight: "3px" }} />}
+//               {/* // <Icon className="sidebar-item-icon" fontSize="small" /> */}
+//               <div
+//                 className="sidebar-item-text"
+//                 style={{ fontSize: "16px", fontFamily: "unset" }}
+//                 onClick={routeChangeHome}
+//               >
+//                 Home
+//               </div>
+//             </div>
+//           </ListItem>
+//           {items.map((sidebarItem: any, index: any) => (
+//             <React.Fragment key={`${sidebarItem.name}${index}`}>
+//               {sidebarItem === "divider" ? (
+//                 <Divider style={{ margin: "6px 0", color: "white" }} />
 //               ) : (
-//                 <ChevronLeftIcon />
-//               )}
-//             </IconButton>
-//             <br />
-//             <br />
-//           </>
-//         </DrawerHeader>
-
-//         <br />
-//         <br />
-//         <Divider />
-//         {openlogo && (
-//           <Paper
-//             component="form"
-//             sx={{
-//               m: "5px 5px",
-//               p: "0px 2px",
-//               display: "flex",
-//               alignItems: "center",
-//             }}
-//           >
-//             <Autocomplete
-//               freeSolo
-//               fullWidth
-//               size="small"
-//              options={filteredItems.map((item) => item.name)}
-//               onChange={handleAutocompleteChange}
-//               renderInput={(params) => (
-//                 <TextField
-//                   {...params}
-//                   //label="Search Menu"
-//                   placeholder="Search Menu"
-//                   variant="outlined"
-//                   InputProps={{
-//                     ...params.InputProps,
-//                     startAdornment: (
-//                       <InputAdornment position="start">
-//                         <SearchIcon />
-//                       </InputAdornment>
-//                     ),
-//                   }}
-//                   onChange={handleSearchInputChange}
+//                 <SidebarItem
+//                   depthStep={depthStep}
+//                   depth={depth}
+//                   expanded={expanded}
+//                   item={sidebarItem}
 //                 />
 //               )}
-//             />
-//           </Paper>
-//         )}
-//         <Divider />
-
-//         <React.Fragment>
-//           <List sx={{ padding: 0 }}>
-//             {["Home"].map((text, index) => (
-//               <ListItem
-//                 key={text}
-//                 disablePadding
-//                 sx={{
-//                   display: "flex",
-//                   justifyContent: "space-between",
-//                   alignItems: "center",
-//                   padding: 0,
-//                   "&:hover": {
-//                     cursor: "pointer",
-//                     backgroundColor: "lightgray",
-//                   },
-//                 }}
-//               >
-//                 <ListItemButton
-//                   sx={{
-//                     // minHeight: 30,
-//                     justifyContent: open ? "initial" : "center",
-//                     px: 4.5,
-//                   }}
-//                   // onClick={routeChangeHome}
-//                   onClick={() => {
-//                     routeChangeHome();
-//                     resetHomeColor();
-
-//                     setCollapseIndexs(null); // Close all parent menus
-//                     setCollapseIndexs2(null); // Close all child menus
-//                     setSelectedMenu({ // Reset selected menu to no highlight
-//                       parentIndex: null,
-//                       childIndex: null,
-//                       subchildIndex: null,
-//                       subchild: null,
-//                       child: null,
-//                     });
-//                   }}
-//                 >
-//                   <ListItemIcon
-//                     sx={{
-//                       minWidth: 0,
-//                       mr: open ? 1 : "auto",
-//                       justifyContent: "center",
-//                       color: homeColor,
-//                     }}
-//                   >
-//                     <Home />
-//                   </ListItemIcon>
-//                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-//                 </ListItemButton>
-//               </ListItem>
-//             ))}
-//           </List>
-//           <List sx={{ padding: 0 }}>
-//   {items.map((parent: any, parentIndex: number) => (
-//     <React.Fragment key={parentIndex}>
-//       <Divider />
-//       {/* Parent Item */}
-//       <ListItem
-//         onClick={() => collapseHandle(parentIndex)}
-//         sx={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           alignItems: "center",
-//           padding: "10px 16px",
-//           backgroundColor:
-//             selectedMenu?.parentIndex === parentIndex &&
-//             selectedMenu?.childIndex === null &&
-//             selectedMenu?.subchildIndex === null
-//               ? "#FF9933" // Saffron color for active parent menu
-//               : "#f5f5f5",
-//           fontWeight:
-//             selectedMenu?.parentIndex === parentIndex ? 600 : "normal", // Bold active menu
-//           color:
-//             selectedMenu?.parentIndex === parentIndex ? "#2B4593" : "inherit", // Contrast text
-//           borderRadius: "6px", // Optional rounded corners
-//           margin: "5px", // Maintain consistent spacing
-//           cursor: "pointer",
-//           paddingRight: open ? "16px" : "32px", // Add more padding on the right when open is false
-//         }}
-//         title={parent.name} 
-//       >
-//         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//           {/* Conditionally show folder icon */}
-//           {open && (
-//             <span
-//               style={{
-//                 fontSize: "1.2rem",
-//                 backgroundColor: "#f0f0f0", // Background color when closed
-//                 padding: "6px",
-//                 borderRadius: "10px", // Round corners when closed
-//               }}
-//             >
-//               📁
-//             </span>
-//           )}
-//           <ListItemText
-//             primary={
-//               open
-//                 ? parent.name // Show full name if open is true
-//                 : parent.name
-//                     .split(" ") // Split name by space
-//                     .map((word:any) => word.charAt(0).toUpperCase()) // Take the first char of each word
-//                     .join("") // Join them into a single string
-//             }
-//             primaryTypographyProps={{ fontWeight: "500", fontSize: "1rem" }}
-//           />
-//         </div>
-//         <ListItemIcon>
-//           {parent.items && parent.items.length > 0 ? (
-//             collapseIndexs === parentIndex ? (
-//               <ExpandLessIcon />
-//             ) : (
-//               <ExpandMoreIcon />
-//             )
-//           ) : null}
-//         </ListItemIcon>
-//       </ListItem>
-
-//       <Divider />
-
-//       {/* Child Items */}
-//       <Collapse
-//         in={collapseIndexs === parentIndex}
-//         timeout="auto"
-//         unmountOnExit
-//         sx={{ paddingLeft: "16px" }}
-//       >
-//         <List>
-//           {parent.items.map((child: any, childIndex: number) => (
-//             <React.Fragment key={childIndex}>
-//               <ListItem
-//                 onClick={() => {
-//                   // If child has subitems, toggle collapse; if not, prevent it
-//                   if (child.items && child.items.length > 0) {
-//                     collapseHandle2(childIndex);
-//                   }
-//                   handleMenuClick({
-//                     child,
-//                     parentIndex,
-//                     childIndex,
-//                   });
-//                 }}
-//                 sx={{
-//                   display: "flex",
-//                   justifyContent: "space-between",
-//                   alignItems: "center",
-//                   padding: "8px 16px",
-//                   borderRadius: "6px",
-//                   backgroundColor:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex &&
-//                     selectedMenu?.subchildIndex === null
-//                       ? ""
-//                       : child.items && child.items.length > 0
-//                       ? "#e9f7ff" // Light blue for menus with sub-items
-//                       : "#fff3e0", // Light orange for regular items
-//                   fontWeight:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex
-//                       ? 600
-//                       : "normal", // Bold active child menu
-//                   color:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex
-//                       ? "#2B4593"
-//                       : "inherit",
-//                   margin: "5px",
-//                   cursor: "pointer",
-//                   paddingRight: open ? "16px" : "32px", // Add more padding on the right when open is false
-//                 }}
-//                 title={child.name} 
-//               >
-//                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//                   {/* Conditionally show folder icon for child */}
-//                   {open && (
-//                     <span
-//                       style={{
-//                         fontSize: "1.2rem",
-//                         backgroundColor: "#f0f0f0", // Background color when closed
-//                         padding: "6px",
-//                         borderRadius: "10px", // Round corners when closed
-//                       }}
-//                     >
-//                       {child.items && child.items.length > 0 ? "📂" : "📄"}
-//                     </span>
-//                   )}
-//                   <ListItemText
-//                     primary={
-//                       open
-//                         ? child.name // Show full name if open is true
-//                         : child.name
-//                             .split(" ") // Split name by space
-//                             .map((word:any) => word.charAt(0).toUpperCase()) // Take the first char of each word
-//                             .join("") // Join them into a single string
-//                     }
-//                     primaryTypographyProps={{ fontSize: "0.95rem" }}
-//                   />
-//                 </div>
-//                 {child.items && child.items.length > 0 && (
-//                   <ListItemIcon>
-//                     {collapseIndexs2 === childIndex ? (
-//                       <ExpandLessIcon />
-//                     ) : (
-//                       <ExpandMoreIcon />
-//                     )}
-//                   </ListItemIcon>
-//                 )}
-//               </ListItem>
-
-//               <Collapse
-//                 in={collapseIndexs2 === childIndex}
-//                 timeout="auto"
-//                 unmountOnExit
-//                 sx={{ paddingLeft: "16px" }}
-//               >
-//                 <List>
-//                   {child.items.map((subchild: any, subchildIndex: number) => (
-//                     <ListItem
-//                       key={subchildIndex}
-//                       onClick={() =>
-//                         handleMenuClick({
-//                           subchild,
-//                           parentIndex,
-//                           childIndex,
-//                           subchildIndex,
-//                         })
-//                       }
-//                       sx={{
-//                         display: "flex",
-//                         alignItems: "center",
-//                         padding: "6px 16px",
-//                         borderRadius: "6px",
-//                         backgroundColor:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? "#FF9933" 
-//                             : "#fff3e0",
-//                         fontWeight:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? 600
-//                             : "normal", 
-//                         color:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? "#2B4593"
-//                             : "inherit",
-//                         margin: "5px",
-//                         cursor: "pointer",
-//                       }}
-//                       title={subchild.name} 
-//                     >
-//                       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//                   {open && (
-//                     <span
-//                       style={{
-//                         fontSize: "1.2rem",
-//                         backgroundColor: "#f0f0f0", 
-//                         padding: "6px",
-//                         borderRadius: "10px",
-//                       }}
-//                     >
-//                       📄
-//                     </span>
-//                   )}
-//                       <ListItemText
-//                         primary={
-//                           open
-//                             ? subchild.name
-//                             : subchild.name
-//                                 .split(" ") 
-//                                 .map((word:any) => word.charAt(0).toUpperCase()) 
-//                                 .join("")
-//                         }
-//                         primaryTypographyProps={{ fontSize: "0.9rem" }}
-//                       />
-//                       </div>
-//                     </ListItem>
-                    
-//                   ))}
-//                 </List>
-//               </Collapse>
 //             </React.Fragment>
 //           ))}
 //         </List>
-//       </Collapse>
-//     </React.Fragment>
-//   ))}
-// </List>
-
-
-
-
-//         </React.Fragment>
 //       </Drawer>
-
-//       <SwipeableDrawer
+//       <Drawer
 //         anchor="left"
-//         open={profileDrawerOpen}
-//         onClose={() => setProfileDrawerOpen(false)}
-//         onOpen={() => {}}
-//         style={{
-//           zIndex: 1300,
+//         open={userdrawerOpen}
+//         onClose={() => {
+//            setUserdrawerOpen(false);
+//           // handleDrawerClose();
 //         }}
+//         // sx={{
+//         //   '& .MuiDrawer-paper': {
+//         //     background: 'linear-gradient(to bottom, #ff7e5f, #feb47b)',
+//         //   },
+//         // }}
 //       >
-//         <Box sx={{ width: 250 }} role="presentation">
+//         <Box
+//           sx={{ width: drawerWidth,}}
+//           role="presentation"
+//         >
 //           <IconButton
 //             edge="end"
-//             onClick={() => setProfileDrawerOpen(false)}
+//             onClick={()=> setUserdrawerOpen(false)}
 //             aria-label="close"
-//             sx={{ color: "white", position: "absolute", right: 15, top: 2 }}
+//             sx={{ color:"white", position: 'absolute', right: 15, top: 2 }}
 //           >
 //             <CloseIcon />
 //           </IconButton>
-//           <p
+//        <p
 //             style={{
 //               paddingTop: "5vh",
 //               paddingBottom: "5vh",
 //               textAlign: "center",
+//               // textDecoration: "underline",
 //               backgroundImage:
 //                 "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
 //               color: "whitesmoke",
 //               borderBottomLeftRadius: "10px",
 //               borderBottomRightRadius: "10px",
-//               fontSize: "20px",
+//               fontSize:"20px"
 //             }}
 //           >
-//             Institution Details
+//            User Details
 //           </p>
-//           <div style={{ margin: "15px" }}>
-//             {renderItem(id, "User Name", userName)}
-//             {renderItem(instituteIcon, "Institute", institute)}
-//             {renderItem(libraryIcon, "Library Name", libraryname)}
-//             {renderItem(addressIcon, "Address", address)}
-//             {renderItem(cityIcon, "City", city)}
-//           </div>
-//         </Box>
-//       </SwipeableDrawer>
-
-//       <Modal
-//         open={isModalOpen}
-//         onClose={handleCloseModal}
-//         style={{ overflow: "hidden" }}
-//       >
-//         <Box
-//           sx={{
-//             ...style,
-
-//             overflow: "auto",
-//           }}
-//         >
-//           <Typography fontWeight={500} fontSize={20} noWrap align="center">
-//             Institutes
-//           </Typography>
-
-//           {nodeData?.map((item: any) => (
-//             <div>
-//               <Grid container spacing={1}>
-//                 <Grid item xs={3} key={item.id}>
-//                   <FormControlLabel
-//                     control={
-//                       <Checkbox
-//                         checked={nodeId === item.id}
-//                         onChange={() =>
-//                           handleCheckboxChange(item.id, item.institutename)
-//                         }
-//                       />
-//                     }
-//                     label={item.institutename}
-//                   />
-//                 </Grid>
-//               </Grid>
+//           {userDetail.map((user: any, index: any) => (
+//             <div key={index}>
+//               <div
+//                 style={{
+//                   display: "flex",
+//                   alignItems: "center",
+//                   justifyContent: "center",
+//                   marginTop: "10px",
+//                   marginBottom: "10px",
+//                 }}
+//               >
+//                 <div
+//                   style={{
+//                     textAlign: "center",
+//                     borderRadius: "50%",
+//                     height: "90px",
+//                     width: "90px",
+//                     borderColor:
+//                       "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
+//                     backgroundColor: "red",
+//                     padding: "13px",
+//                     paddingTop: "30px",
+//                     paddingLeft: "13px",
+//                     color: "whitesmoke",
+//                     fontSize: "20px",
+//                   }}
+//                 >
+//                   {getImageForFirstName(
+//                     user.firsT_NAME,
+//                     user.middlE_NAME,
+//                     user.suR_NAME
+//                   )}
+//                 </div>
+//               </div>
+//               <div style={{ marginLeft: "15px" }}>
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   <img src={log} width={25} />{" "}
+//                   {user.logiN_NAME == "" ? "N/A" : `${user.logiN_NAME}`}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={roles} width={25} />{" "}
+//                   {user.rolename == "" ? "N/A" : `${user.rolename}`}
+//                 </div>
+//                 {/* <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   <img src={id} width={25} />{" "}
+//                   {user.useR_ID == "" ? "N/A" : `${user.useR_ID}`}
+//                 </div>*/}
+//                 <br />
+//                 <div>First Name : {user.firsT_NAME}</div>
+//                 <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+//                   Middle Name :{" "}
+//                   {user.middlE_NAME == "" ? "N/A" : `${user.middlE_NAME}`}
+//                 </div>
+//                 <div>Last Name : {user.suR_NAME}</div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={dobs} width={22} />{" "}
+//                   {dayjs(user.dob).format("YYYY-MM-DD")}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={genders} width={22} />{" "}
+//                   {getGenderText(user.gendeR_ID)}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={call} width={22} />{" "}
+//                   {user.cuR_MOBILE == "" ? " N/A" : `${user.cuR_MOBILE}`}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={emails} width={22} />{" "}
+//                   {user.email == "" ? " N/A" : `${user.email}`}
+//                 </div>
+//                 <br />
+//                 {/* <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={roles} width={25} />{" "}
+//                   {user.rolename == "" ? "N/A" : `${user.rolename}`}
+//                 </div>
+//                 <br /> */}
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   Account Status :{" "}
+//                   {user.iS_ACTIVE === true ? (
+//                     <img src={tick} width={25} />
+//                   ) : (
+//                     <img src={crs} width={25} />
+//                   )}
+//                 </div>
+//               </div>
 //             </div>
 //           ))}
-
-//           <Grid xs={3} item alignItems="center" justifyContent="center">
-//             <Button
-//               type="submit"
-//               fullWidth
-//               style={{
-//                 backgroundColor: "#059669",
-//                 color: "white",
-//                 marginTop: "10px",
-//               }}
-//               onClick={handleSave}
-//             >
-//               save
-//             </Button>
-//           </Grid>
 //         </Box>
-//       </Modal>
+
+//       </Drawer>
+//       {/* <TemporaryDrawer isopen={userdrawerOpen} /> */}
+//       {/* </div> */}
 //     </Box>
 //   );
-// }
+// };
+
+// export default Sidebar;
