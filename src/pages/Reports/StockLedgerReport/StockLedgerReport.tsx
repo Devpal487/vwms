@@ -556,11 +556,11 @@ export default function StockLedgerReport() {
                     control={<Radio />}
                     label={t("text.excel")}
                   />
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     value="TabularExc"
                     control={<Radio />}
                     label={t("text.tabular")}
-                  />
+                  /> */}
                 </RadioGroup>
               </FormControl>
             </Grid>
