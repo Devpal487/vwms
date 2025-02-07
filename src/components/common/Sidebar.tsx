@@ -405,11 +405,18 @@ export default function MiniDrawer({ items }: any) {
     }
   }
 
-  
+  // var data = JSON.parse(localStorage.getItem("userdata")!);
+  // var menudata = data[0]["userdetail"];
+  // var username =
+  //   menudata[0]["firsT_NAME"] +
+  //   " " +
+  //   menudata[0]["middlE_NAME"] +
+  //   " " +
+  //   menudata[0]["suR_NAME"];
   const { i18n } = useTranslation();
 
   const changeLanguage = (language: any) => {
-    
+    // console.log("check", language);
 
     i18n.changeLanguage(language);
     localStorage.setItem("preferredLanguage", language);
@@ -419,7 +426,7 @@ export default function MiniDrawer({ items }: any) {
 
   const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
   const userDetail = userData[0]?.userdetail || [];
-
+  // console.log(userDetail);
 
   const collapsehamndle = (index: any) => {
     // console.log(index);
@@ -429,7 +436,7 @@ export default function MiniDrawer({ items }: any) {
       setCollapseIndex(index);
     }
   };
-  
+  // console.log("items", items);
 
   const getImageForFirstName = (
     firsT_NAME: any,
@@ -456,7 +463,7 @@ export default function MiniDrawer({ items }: any) {
   };
 
   const handleMyProfileClick = () => {
-   
+    // console.log("My Profile clicked" + profileDrawerOpen);
     setProfileDrawerOpen(!profileDrawerOpen);
   };
 
@@ -466,7 +473,7 @@ export default function MiniDrawer({ items }: any) {
 
   function handleClicked(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
-   
+    // console.info("You clicked a breadcrumb.");
   }
 
   const handleClickhome = () => {
@@ -479,10 +486,10 @@ export default function MiniDrawer({ items }: any) {
 
     const words = text.split(" ");
 
- 
+    // Extract the first letter from each word
     const firstLetters = words.map((word: any) => word.charAt(0));
 
-   
+    // Join the first letters back into a string
     const result = firstLetters.join("");
 
     return <div>{result}</div>;
@@ -525,7 +532,7 @@ export default function MiniDrawer({ items }: any) {
   const handlePermissionClick = () => {
     if (ID) {
       console.log("id check 175", ID);
-      
+      getNode(ID);
     } else {
       toast.error("ID not found");
     }
@@ -605,13 +612,18 @@ export default function MiniDrawer({ items }: any) {
 
     setCheck(newChecked);
 
-  
+    // setExpandedItems((prevExpanded) =>
+    //   prevExpanded.includes(id.toString())
+    //     ? prevExpanded.filter((item) => item !== id.toString())
+    //     : [...prevExpanded, id.toString()]
+    // );
+
     console.log("Checked data:", name);
     console.log("Checked data:", id);
 
     setNodeNames(name);
     setnodeId(id);
-   
+    // handleSave(id, name);
   };
 
   const handleSave = () => {
@@ -848,7 +860,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-          // style={{  borderBottomRightRadius: "15px" }}
+            // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1029,190 +1041,190 @@ export default function MiniDrawer({ items }: any) {
         <Divider />
 
         <React.Fragment>
-          {/* Home List */}
-          <List sx={{ padding: 0 }}>
-            {["Home"].map((text, index) => (
-              <ListItem
-                key={text}
-                disablePadding
+      {/* Home List */}
+      <List sx={{ padding: 0 }}>
+        {["Home"].map((text, index) => (
+          <ListItem
+            key={text}
+            disablePadding
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: 0,
+              "&:hover": {
+                cursor: "pointer",
+                backgroundColor: "inherit",
+              },
+            }}
+          >
+            <ListItemButton
+              sx={{
+                justifyContent: open ? "initial" : "center",
+                px: 4.5,
+                backgroundColor: "inherit"
+              }}
+              onClick={() => {
+                routeChangeHome();
+                resetHomeColor();
+              }}
+            >
+              <ListItemIcon
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: 0,
-                  "&:hover": {
-                    cursor: "pointer",
-                    backgroundColor: "inherit",
-                  },
+                  minWidth: 0,
+                  mr: open ? 1 : "auto",
+                  justifyContent: "center",
+                  color: homeColor,
                 }}
               >
-                <ListItemButton
-                  sx={{
-                    justifyContent: open ? "initial" : "center",
-                    px: 4.5,
-                    backgroundColor: "inherit"
-                  }}
-                  onClick={() => {
-                    routeChangeHome();
-                    resetHomeColor();
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 1 : "auto",
-                      justifyContent: "center",
-                      color: homeColor,
-                    }}
-                  >
-                    <HomeIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: "bold" }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
 
-          {/* Dynamic Items List */}
-          <List sx={{ padding: 0 }}>
-            {items.map((text: any, index: any) => (
-              <React.Fragment key={index}>
-                <Divider />
-                <ListItem
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    backgroundColor: "inherit",
-                  }}
-                  onClick={() => collapsehamndle(index)}
-                >
-                  <ListItem sx={{
-                    justifyContent: open ? "initial" : "center",
-                    paddingLeft: 2,
-                    paddingRight: 0,
-                    paddingTop: 0,
-                    paddingBottom: 0,
-                    cursor: "pointer",
+      {/* Dynamic Items List */}
+      <List sx={{ padding: 0 }}>
+        {items.map((text:any, index:any) => (
+          <React.Fragment key={index}>
+            <Divider />
+            <ListItem
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                backgroundColor: "inherit"
+              }}
+              onClick={() => collapsehamndle(index)}
+            >
+              <ListItem sx={{
+                justifyContent: open ? "initial" : "center",
+                paddingLeft: 2,
+                paddingRight: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                cursor: "pointer",
+              }}>
+                {open ? (
+                  <ListItemIcon sx={{
+                    minWidth: 0,
+                    mr: open ? 1 : "auto",
+                    justifyContent: "center",
+                    color: index === collapseIndex ? "#FF0000" : "inherit",
+                    fontWeight: 600,
                   }}>
-                    {open ? (
-                      <ListItemIcon sx={{
-                        minWidth: 0,
-                        mr: open ? 1 : "auto",
-                        justifyContent: "center",
-                        color: index === collapseIndex ? "#FF0000" : "inherit",
-                        fontWeight: 600,
-                      }}>
-                        {collapseIndex === index ? <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} /> : <FolderIcon style={{ color: "#42AEEE" }} />}
-                      </ListItemIcon>
-                    ) : (
-                      <div
-                        style={{
-                          minWidth: 24,
-                          minHeight: 24,
-                          borderRadius: "50%",
-                          backgroundColor: "lightgray",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          marginRight: 8,
-                          color: index === collapseIndex ? "#FF0000" : "inherit",
-                        }}
-                        title={text.name}
-                      >
-                        {text.name.charAt(0)}
-                      </div>
-                    )}
-
-                    <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0, }} />
-                  </ListItem>
-                  <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
-                    {/* {collapseIndex === index ? (
+                    {collapseIndex === index ? <FaRegFolderOpen style={{color:"#42AEEE"}} size={20} />  : <FolderIcon style={{color:"#42AEEE"}} />}
+                  </ListItemIcon>
+                ) : (
+                  <div
+                    style={{
+                      minWidth: 24,
+                      minHeight: 24,
+                      borderRadius: "50%",
+                      backgroundColor: "lightgray",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 8,
+                      color: index === collapseIndex ? "#FF0000" : "inherit",
+                    }}
+                    title={text.name}
+                  >
+                    {text.name.charAt(0)}
+                  </div>
+                )}
+              
+                <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItem>
+              <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
+                {/* {collapseIndex === index ? (
                   <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
                 ) : (
                   <ExpandMoreIcon className="sidebar-item-expand-arrow" />
                 )} */}
-                  </ListItemIcon>
-                </ListItem>
-                <Divider />
+              </ListItemIcon>
+            </ListItem>
+            <Divider />
 
-                {/* Submenu Items */}
-                {collapseIndex === index && (
-                  <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit", alignItems: "center", justifyContent: "center" }}>
-                    {items[index].items.map((subText: any, subIndex: any) => (
-                      <List sx={{ pl: 2, alignItems: "center", justifyContent: "center" }} key={subIndex}>
-                        <ListItem
-                          sx={{
-                            display: "flex",
-                            justifyContent: "start",
-                            alignItems: "center",
-                            paddingLeft: 2,
-                            paddingRight: 0,
-                            paddingTop: 0,
-                            paddingBottom: 0,
-                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                            color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+            {/* Submenu Items */}
+            {collapseIndex === index && (
+              <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
+                {items[index].items.map((subText:any, subIndex:any) => (
+                  <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
+                    <ListItem
+                      sx={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "center",
+                        paddingLeft: 2,
+                        paddingRight: 0,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                        color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+                        borderRadius: "10px",
+                        cursor: "pointer",
+                        "&:hover": {
+                          backgroundColor: "lightgray",
+                          color: "black",
+                        },
+                      }}
+                      onClick={(e) => {
+                        onClick(e, subText);
+                        handleSubMenuClick(subIndex);
+                      }}
+                    >
+                      {open && (
+                        <span
+                          style={{
+                            fontSize: "1.2rem",
+                            backgroundColor: "inherit",
+                            padding: "6px",
                             borderRadius: "10px",
-                            cursor: "pointer",
-                            "&:hover": {
-                              backgroundColor: "lightgray",
-                              color: "black",
-                            },
-                          }}
-                          onClick={(e) => {
-                            onClick(e, subText);
-                            handleSubMenuClick(subIndex);
+                            color:"#426aee"
                           }}
                         >
-                          {open && (
-                            <span
-                              style={{
-                                fontSize: "1.2rem",
-                                backgroundColor: "inherit",
-                                padding: "6px",
-                                borderRadius: "10px",
-                                color: "#426aee"
-                              }}
-                            >
-                              <FaFileLines />
-                            </span>
-                          )}
-                          {open ? (
-                            <p
-                              style={{
-                                fontWeight: 500,
-                                paddingTop: "3px",
-                                paddingBottom: "3px",
-                                opacity: open ? 1 : 0,
-                              }}
-                            >
-                              {subText.name}
-                            </p>
-                          ) : (
-                            <ListItemIcon
-                              sx={{
-                                minWidth: 0,
-                                mr: open ? 3 : "auto",
-                                justifyContent: "center",
-                                color: open ? "#FF0000" : "inherit",
-                                backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                                borderRadius: "25px",
-                                padding: "5px 10px",
-                              }}
-                              title={subText.name}
-                            >
-                              <DescriptionIcon />
-                            </ListItemIcon>
-                          )}
-                        </ListItem>
-                      </List>
-                    ))}
+                         <FaFileLines />
+                        </span>
+                      )}
+                      {open ? (
+                        <p
+                          style={{
+                            fontWeight: 500,
+                            paddingTop: "3px",
+                            paddingBottom: "3px",
+                            opacity: open ? 1 : 0,
+                          }}
+                        >
+                          {subText.name}
+                        </p>
+                      ) : (
+                        <ListItemIcon
+                          sx={{
+                            minWidth: 0,
+                            mr: open ? 3 : "auto",
+                            justifyContent: "center",
+                            color: open ? "#FF0000" : "inherit",
+                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+                            borderRadius: "25px",
+                            padding: "5px 10px",
+                          }}
+                          title={subText.name}
+                        >
+                          <DescriptionIcon />
+                        </ListItemIcon>
+                      )}
+                    </ListItem>
                   </List>
-                )}
-              </React.Fragment>
-            ))}
-          </List>
-        </React.Fragment>
+                ))}
+              </List>
+            )}
+          </React.Fragment>
+        ))}
+      </List>
+    </React.Fragment>
       </Drawer>
       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -1259,7 +1271,7 @@ export default function MiniDrawer({ items }: any) {
         onClose={() => {
           setProfileDrawerOpen(false);
         }}
-        onOpen={() => { }}
+        onOpen={() => {}}
         style={{
           zIndex: 1300,
         }}
@@ -1447,13 +1459,20 @@ export default function MiniDrawer({ items }: any) {
   );
 }
 
+
+
+
+
 // import * as React from "react";
+
+// import { ExpandLess, ExpandMore } from "@mui/icons-material";
 // import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 // import Box from "@mui/material/Box";
 // import MuiDrawer from "@mui/material/Drawer";
 // import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 // import Toolbar from "@mui/material/Toolbar";
 // import List from "@mui/material/List";
+// import CssBaseline from "@mui/material/CssBaseline";
 // import Typography from "@mui/material/Typography";
 // import Divider from "@mui/material/Divider";
 // import IconButton from "@mui/material/IconButton";
@@ -1464,68 +1483,68 @@ export default function MiniDrawer({ items }: any) {
 // import ListItemButton from "@mui/material/ListItemButton";
 // import ListItemIcon from "@mui/material/ListItemIcon";
 // import ListItemText from "@mui/material/ListItemText";
-// import { useNavigate, Navigate, useLocation } from "react-router-dom";
+// import { useNavigate, Navigate } from "react-router-dom";
 // import { useTranslation } from "react-i18next";
 // import {
 //   Avatar,
-//   Button,
+//   Checkbox,
 //   Dialog,
 //   DialogActions,
 //   DialogContent,
 //   DialogTitle,
-//   FormControlLabel,
-//   Grid,
 //   Modal,
-//   Radio,
 //   Stack,
 // } from "@mui/material";
 // import Menu from "@mui/material/Menu";
 // import MenuItem from "@mui/material/MenuItem";
+// import call from "../../assets/images/phone-call.png";
+// import roles from "../../assets/images/role-model.png";
+// import tick from "../../assets/images/check-mark.png";
+// import crs from "../../assets/images/cross.png";
+// import log from "../../assets/images/profile.png";
+// import emails from "../../assets/images/gmail.png";
+// import genders from "../../assets/images/symbol.png";
+// import dobs from "../../assets/images/timetable.png";
 // import id from "../../assets/images/profile1.png";
 // import settings from "../../assets/images/settings.png";
 // import trans from "../../assets/images/translation.png";
 // import logout from "../../assets/images/logout.png";
-// import logged from "../../assets/images/institute.png";
-// import logo from "../../assets/images/adlogo1.png";
-// import loged from "../../assets/images/adlogo1.png";
+// import logged from "../../assets/images/permission.png";
+// import logo from "../../assets/images/recyclebinLogo.png";
+// import loged from "../../assets/images/DrawerLogo.png";
 // import CloseIcon from "@mui/icons-material/Close";
 // import dayjs from "dayjs";
 // import { Home } from "@mui/icons-material";
 // import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 // import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 // import Collapse from "@mui/material/Collapse";
+// import Typewriter from "./TypeWriter";
 // import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+// import FolderIcon from "@mui/icons-material/Folder";
+// import TouchAppIcon from "@mui/icons-material/TouchApp";
 // import "./Shine.css";
 // import Breadcrumbs from "@mui/material/Breadcrumbs";
 // import Link from "@mui/material/Link";
 // import HomeIcon from "@mui/icons-material/Home";
+// import WhatshotIcon from "@mui/icons-material/Whatshot";
+// import GrainIcon from "@mui/icons-material/Grain";
 // import names from "../../assets/images/id-card (2).png";
+// import backgrd from "../../assets/images/backgroundimage.jpg";
 // import SearchIcon from "@mui/icons-material/Search";
 // import Paper from "@mui/material/Paper";
+// import InputBase from "@mui/material/InputBase";
 // import Autocomplete from "@mui/material/Autocomplete";
 // import InputAdornment from "@mui/material/InputAdornment";
-// import { TextField } from "@mui/material";
-// import useMediaQuery from "@mui/material/useMediaQuery";
-// import { Checkbox } from "@mui/material";
-// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-// import { toast, ToastContainer } from "react-toastify";
-// import api from "../../utils/Url";
-// import help from "../../assets/images/help.png";
-// import dark from "../../assets/images/darkTheme.png";
-// import Light from "../../assets/images/lightTheme.png";
-// import institutionIcon from "../../assets/images/institute.png";
-// import cityIcon from "../../assets/images/city.png";
-// import libraryIcon from "../../assets/images/library.png";
-// import addressIcon from "../../assets/images/address.png";
-// import instituteIcon from "../../assets/images/institution.png";
-// import ThemeIcon from "../../assets/images/themes.png";
-// import ChatBotIcon from "../../assets/images/ChatBotIcon.png";
+// import {
+//   Button,
+//   Card,
+//   CardContent,
+//   Grid,
+//   TextField,
+//   // Typography,
+// } from "@mui/material";
 // import "./ThemeStyle.css";
-
-// //import { Brightness5, Brightness4, Waves, WbSunny, Forest, Flag } from '@mui/icons-material';
-
-// import "./Sidebar.css";
+// import ThemeIcon from "../../assets/images/themes.png";
 // import {
 //   Brightness5,
 //   Brightness4,
@@ -1534,8 +1553,34 @@ export default function MiniDrawer({ items }: any) {
 //   Forest,
 //   Flag,
 // } from "@mui/icons-material";
+// import api from "../../utils/Url";
+// import { toast } from "react-toastify";
+// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
+// import TreeView from "@mui/x-tree-view/TreeView";
+// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+
+
+// import { FaRegFolderOpen } from "react-icons/fa6";
+// import DescriptionIcon from '@mui/icons-material/Description';
+
+// import { FaFileLines } from "react-icons/fa6";
+
 
 // const drawerWidth = 225;
+
+// const style = {
+//   position: "absolute" as "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: "95%",
+//   height: "85%",
+//   bgcolor: "#f5f5f5",
+//   border: "1px solid #000",
+//   boxShadow: 24,
+//   p: 4,
+//   borderRadius: 10,
+// };
 
 // const openedMixin = (theme: Theme): CSSObject => ({
 //   width: drawerWidth,
@@ -1557,20 +1602,6 @@ export default function MiniDrawer({ items }: any) {
 //     width: `calc(${theme.spacing(12)} + 1px)`,
 //   },
 // });
-
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: "95%",
-//   height: "85%",
-//   bgcolor: "#f5f5f5",
-//   border: "1px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-//   borderRadius: 10,
-// };
 
 // const DrawerHeader = styled("div")(({ theme }) => ({
 //   display: "flex",
@@ -1619,16 +1650,6 @@ export default function MiniDrawer({ items }: any) {
 //   }),
 // }));
 
-// interface MenuItem {
-//   Icon: any;
-//   displayNo: number;
-//   id: number;
-//   items: MenuItem[];
-//   label: string;
-//   name: string;
-//   path: string;
-// }
-
 // function getGreeting() {
 //   const hour = new Date().getHours();
 
@@ -1658,81 +1679,27 @@ export default function MiniDrawer({ items }: any) {
 
 // export default function MiniDrawer({ items }: any) {
 //   const theme = useTheme();
-//   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-//   const [open, setOpen] = React.useState(!isMobile);
+//   const [open, setOpen] = React.useState(true);
 //   const [menuOpen, setMenuOpen] = React.useState(false);
 //   const [profileDrawerOpen, setProfileDrawerOpen] = React.useState(false);
 //   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-//   // const [collapseIndex, setCollapseIndex] = React.useState<any>(-1);
-//   // const [collapseIndex2, setCollapseIndex2] = React.useState<any>(-1);
-//   const [openlogo, setOpenlogo] = React.useState(!isMobile);
+//   const [collapseIndex, setCollapseIndex] = React.useState<any>(-1);
+//   const [openlogo, setOpenlogo] = React.useState(true);
 //   const [homeColor, setHomeColor] = React.useState("inherit");
+//   const { t } = useTranslation();
+
 //   const [selectedSubMenu, setSelectedSubMenu] = React.useState(null);
+
+//   const [expandedItems, setExpandedItems] = React.useState<any[]>([]);
+//   const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+//   const [treedata, setTreedata] = React.useState<any>([]);
+//   // console.log("data", treedata)
+//   const [check, setCheck] = React.useState<any>([]);
+
 //   const [searchValue, setSearchValue] = React.useState("");
+//   // const [filteredItems, setFilteredItems] = React.useState([]);
 //   const [filteredItems, setFilteredItems] = React.useState<MenuItem[]>([]);
-
-//   const greeting = getGreeting();
-
-//   let navigate = useNavigate();
-
-//   const searchMenuItems = (items: any[], searchValue: string): any[] => {
-//     const lowerCaseSearchValue = searchValue.toLowerCase();
-  
-//     // Recursive function focusing only on the `name` field
-//     const searchRecursive = (menuItems: any[]): any[] => {
-//       return menuItems.reduce((acc: any[], item: any) => {
-//         // Check if the current item's name matches the search value
-//         if (item.name && item.name.toLowerCase().includes(lowerCaseSearchValue)) {
-//           acc.push(item); // Push matching item
-//         }
-  
-//         // Search recursively in child items
-//         if (item.items && item.items.length > 0) {
-//           acc.push(...searchRecursive(item.items));
-//         }
-  
-//         return acc;
-//       }, []);
-//     };
-  
-//     return searchRecursive(items);
-//   };
-  
-
-//   const handleNavigation = (path: any) => {
-//     navigate(path);
-//   };
-
-//   const handleAutocompleteChange = (event: any, value: any) => {
-//     const findItemByName = (items: any[], name: string): any | null => {
-//       for (const item of items) {
-//         if (item.name === name) return item;
-//         if (item.items && item.items.length > 0) {
-//           const found = findItemByName(item.items, name);
-//           if (found) return found;
-//         }
-//       }
-//       return null;
-//     };
-  
-//     const selectedSubItem = findItemByName(items, value);
-  
-//     if (selectedSubItem) {
-//       // console.log("Selected Item:", selectedSubItem);
-  
-//       if (selectedSubItem.path && selectedSubItem.path.trim() !== "") {
-//         handleNavigation(selectedSubItem.path);
-//       } else {
-//         // console.warn("Path not found for the selected item. No action taken.");
-//         // Optionally, provide feedback or navigation to a default page.
-//       }
-//     } else {
-//       // console.warn("Item not found for value:", value);
-//     }
-//   };
-
-  
-  
 
 //   const themes = [
 //     { name: "light-theme", icon: <Brightness5 /> },
@@ -1743,14 +1710,85 @@ export default function MiniDrawer({ items }: any) {
 //     { name: "bhagwa-theme", icon: <Flag /> },
 //   ];
 
-//   // console.log("items", items);
+//   const greeting = getGreeting();
+
+//   let navigate = useNavigate();
+
+//   function searchMenuItems(items: any, query: string) {
+//     const results = [];
+
+//     for (const menuItem of items) {
+//       if (menuItem.name.toLowerCase().includes(query.toLowerCase())) {
+//         results.push(menuItem);
+//       } else if (menuItem.items && menuItem.items.length > 0) {
+//         const matchingSubItems = menuItem.items.filter(
+//           (subItem: { name: string }) =>
+//             subItem.name.toLowerCase().includes(query.toLowerCase())
+//         );
+//         if (matchingSubItems.length > 0) {
+//           results.push({ ...menuItem, items: matchingSubItems });
+//         }
+//       }
+//     }
+//     return results;
+//   }
+
+//   interface MenuItem {
+//     Icon: any;
+//     displayNo: number;
+//     id: number;
+//     items: MenuItem[];
+//     label: string;
+//     name: string;
+//     path: string;
+//   }
+
+//   const handleSearchIconClick = () => {
+//     console.log("value", searchValue);
+//     const filtered = searchMenuItems(items, searchValue);
+//     setFilteredItems(filtered);
+//     console.log("filtered", filtered);
+//   };
+
+//   const handleNavigation = (path: any) => {
+//     console.log("Navigating to:", path);
+//     navigate(path);
+//   };
+
+//   const handleAutocompleteChange = (event: any, value: any) => {
+//     const selectedItem = items.find((item: any) =>
+//       item.items.some((subItem: any) => subItem.name === value)
+//     );
+//     if (selectedItem) {
+//       const selectedSubItem = selectedItem.items.find(
+//         (subItem: any) => subItem.name === value
+//       );
+//       if (selectedSubItem) {
+//         handleNavigation(selectedSubItem.path);
+//       }
+//     }
+//   };
+
+//   const allMenuNames = items.reduce((acc: any, item: { items: any[] }) => {
+//     if (item.items) {
+//       return [
+//         ...acc,
+//         ...item.items.map((subItem: { name: any }) => subItem.name),
+//       ];
+//     }
+//     return acc;
+//   }, []);
+
+//   const filteredItemed = allMenuNames.filter((item: string) =>
+//     item.toLowerCase().includes(searchValue.toLowerCase())
+//   );
 
 //   const handleSearchInputChange = (e: any) => {
+//     console.log("first 1", e.target.value);
 //     const value = e.target.value;
-//     console.log("handleSearchInputChange", value);  
 //     setSearchValue(value);
-  
-//     const filtered = searchMenuItems(items, value); 
+
+//     const filtered = searchMenuItems(items, value);
 //     setFilteredItems(filtered);
 //   };
 
@@ -1770,34 +1808,6 @@ export default function MiniDrawer({ items }: any) {
 //     )
 //     .join(" ");
 
-//   const location = useLocation();
-
-//   const [menuData, setMenuData] = React.useState<any>("");
-
-//   React.useEffect(() => {
-//     const dataString = localStorage.getItem("userdata");
-//     if (dataString) {
-//       const data = JSON.parse(dataString);
-//       if (data && data.length > 0) {
-//         const userPermissionData = data[0]?.userPermission;
-//         if (userPermissionData && userPermissionData.length > 0) {
-//           const menudata = userPermissionData[0]?.parentMenu;
-//           for (let index = 0; index < menudata.length; index++) {
-//             const childMenudata = menudata[index]?.childMenu;
-//             const pathrow = childMenudata.find(
-//               (x: any) => x.path === location.pathname
-//             );
-
-//             if (pathrow) {
-//               setMenuData(pathrow.menuId);
-//               break;
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }, [location.pathname]);
-
 //   React.useEffect(() => {
 //     var timer = setInterval(() => setDate(new Date()), 1000);
 //     return function cleanup() {
@@ -1805,13 +1815,22 @@ export default function MiniDrawer({ items }: any) {
 //     };
 //   });
 
-
-
+//   const handleSubMenuClick = (index: any) => {
+//     console.log(index);
+//     setSelectedSubMenu(index);
+//   };
 //   const resetHomeColor = () => {
+//     // setHomeColor("inherit");
 //     setHomeColor("#FF0000");
+//     // setHomeColor("");
 //   };
 
-//   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+//   const backgroundStyle = {
+//     background: "linear-gradient(45deg, #fff, #f0f)",
+//     backgroundSize: "400% 400%",
+//   };
+
+//   const handleClick = (event: any) => {
 //     setAnchorEl(event.currentTarget);
 //     setMenuOpen(true);
 //     setHomeColor("inherit");
@@ -1827,11 +1846,6 @@ export default function MiniDrawer({ items }: any) {
 //     navigate(path);
 //   };
 
-//   React.useEffect(() => {
-//     setOpen(!isMobile);
-//     setOpenlogo(!isMobile);
-//   }, [isMobile]);
-
 //   const handleDrawerOpen = () => {
 //     setOpen(true);
 //     setOpenlogo(true);
@@ -1843,116 +1857,29 @@ export default function MiniDrawer({ items }: any) {
 //   };
 
 //   const Logout = () => {
-//     const collectData = {
-//       userId: userName,
-//       ipAddress: "",
-//       uniqueId: uniqueId,
-//       logInOut: true,
-//     };
-//     api.post(`api/Login/UsrLogOut`, collectData).then((res) => {
-//       if (res.data.isSuccess) {
-//         toast.success(res.data.mesg);
-//         setTimeout(() => {
-//           navigate("/");
-//         }, 1000);
-//       } else {
-//         toast.error(res.data.mesg);
-//       }
-//     });
+//     localStorage.removeItem("userdata");
+//     navigate("/");
 //   };
 
-//   function onClick(item: any) {
-//     console.log("🚀 ~ onClick ~ item:", item);
+//   function onClick(e: any, item: any) {
+//     // console.log("Main " + item);
 
-//     var menuId = item.id;
-//     var menu_name = item.path;
-//     const path2 =
-//       item.path + "?appId=" + menuId + "&Appname=" + menu_name + ".aspx";
-//     const path = item.path;
-//     console.log(path)
-
+//     let path = item.path;
 //     if (path == "" || path == null || path == "undefind") {
+//       window.alert("Path Not Found ????");
 //     } else {
-//       sessionStorage.setItem("menuId", menuId);
-//       sessionStorage.setItem("menuName", menu_name);
-//       sessionStorage.setItem("path", path2);
 //       navigate(path);
 //     }
 //   }
 
-//   let nodeName = sessionStorage.getItem("institutename");
-//   let userName: any = sessionStorage.getItem("userid");
-
-//   if (userName) {
-//     userName = userName.replace(/"/g, "");
-//   }
-
-//   const defaultSelectedNodeId = parseInt(sessionStorage.getItem("instId") + "");
-
-//   React.useEffect(() => {
-//     // setuserName(userName);
-//     if (defaultSelectedNodeId) {
-//       setnodeId(defaultSelectedNodeId);
-//     }
-//   }, [defaultSelectedNodeId]);
-
-//   const removeDynamicId = (id: any) => {
-//     return id.replace(/ /g, "");
-//   };
-
-//   var key = removeDynamicId("uniqueId");
-//   var uniqueId = sessionStorage.getItem(key);
-
-//   if (uniqueId) {
-//     uniqueId = uniqueId.replace(/"/g, "");
-//   }
-
-
-//   const [nodeData, setNodeData] = React.useState<any>([]);
-
-//   const getNode = () => {
-//     api.get(`api/Login/GetMemberLibs?uniqueid=${uniqueId}`).then((res) => {
-//       const arr: any = [];
-//       for (let index = 0; index < res.data.data.length; index++) {
-//         arr.push({
-//           id: res.data.data[index]["id"],
-//           institutename: res.data.data[index]["institutename"],
-//         });
-//       }
-//       setNodeData(arr);
-//     });
-//   };
-
-//   const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-//   const handlePermissionClick = () => {
-//     getNode();
-//     setIsModalOpen(true);
-//   };
-
-//   const handleCloseModal = () => {
-//     setIsModalOpen(false);
-//   };
-
-//   const handleCheckboxChange = (id: any, name: any) => {
-//     setnodeId(id);
-//     setnodeNames(name);
-//   };
-
-//   const [nodeNames, setnodeNames] = React.useState<any>("");
-
-//   const [nodeId, setnodeId] = React.useState<any>();
-
-//   const handleSave = () => {
-//     if (nodeId && nodeNames) {
-//       sessionStorage.setItem("instId", nodeId);
-
-//       sessionStorage.setItem("institutename", nodeNames);
-//     } else {
-//     }
-//     handleCloseModal();
-//   };
-
+//   // var data = JSON.parse(localStorage.getItem("userdata")!);
+//   // var menudata = data[0]["userdetail"];
+//   // var username =
+//   //   menudata[0]["firsT_NAME"] +
+//   //   " " +
+//   //   menudata[0]["middlE_NAME"] +
+//   //   " " +
+//   //   menudata[0]["suR_NAME"];
 //   const { i18n } = useTranslation();
 
 //   const changeLanguage = (language: any) => {
@@ -1964,10 +1891,46 @@ export default function MiniDrawer({ items }: any) {
 //   var currentLanguage = localStorage.getItem("preferredLanguage");
 //   var newLanguage = currentLanguage === "hi" ? "English" : "हिंदी";
 
+//   const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
+//   const userDetail = userData[0]?.userdetail || [];
+//   // console.log(userDetail);
+
+//   const collapsehamndle = (index: any) => {
+//     // console.log(index);
+//     if (index == collapseIndex) {
+//       setCollapseIndex(-1);
+//     } else {
+//       setCollapseIndex(index);
+//     }
+//   };
+//   // console.log("items", items);
+
+//   const getImageForFirstName = (
+//     firsT_NAME: any,
+//     middlE_NAME: any,
+//     suR_NAME: any
+//   ) => {
+//     const firstLetter = firsT_NAME ? firsT_NAME.charAt(0).toUpperCase() : "";
+//     const secondLetter = middlE_NAME ? middlE_NAME.charAt(0).toUpperCase() : "";
+//     const thirdLetter = suR_NAME ? suR_NAME.charAt(0).toUpperCase() : "";
+//     return `${firstLetter}${secondLetter}${thirdLetter}`;
+//   };
+
+//   const getGenderText = (gendeR_ID: any) => {
+//     switch (gendeR_ID) {
+//       case 1:
+//         return "Male";
+//       case 2:
+//         return "Female";
+//       case 3:
+//         return "Other";
+//       default:
+//         return "Unknown";
+//     }
+//   };
+
 //   const handleMyProfileClick = () => {
-
-//     //setShowThemeMenu((prevState) => !prevState);
-
+//     // console.log("My Profile clicked" + profileDrawerOpen);
 //     setProfileDrawerOpen(!profileDrawerOpen);
 //   };
 
@@ -1977,11 +1940,31 @@ export default function MiniDrawer({ items }: any) {
 
 //   function handleClicked(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 //     event.preventDefault();
+//     // console.info("You clicked a breadcrumb.");
 //   }
 
 //   const handleClickhome = () => {
 //     let path = `/home`;
 //     navigate(path);
+//   };
+
+//   function FirstLetters(props: any) {
+//     const { text } = props;
+
+//     const words = text.split(" ");
+
+//     // Extract the first letter from each word
+//     const firstLetters = words.map((word: any) => word.charAt(0));
+
+//     // Join the first letters back into a string
+//     const result = firstLetters.join("");
+
+//     return <div>{result}</div>;
+//   }
+
+//   const handleRightClick = (path: any) => (e: any) => {
+//     e.preventDefault();
+//     window.open(path, "_blank");
 //   };
 
 //   const [showThemeMenu, setShowThemeMenu] = React.useState(false);
@@ -1993,7 +1976,7 @@ export default function MiniDrawer({ items }: any) {
 //   });
 
 //   React.useEffect(() => {
-//     //console.log(selectedTheme);
+//     console.log(selectedTheme);
 //     document.body.className = selectedTheme;
 
 //     localStorage.setItem("theme", selectedTheme);
@@ -2011,92 +1994,155 @@ export default function MiniDrawer({ items }: any) {
 //   const headerColor1 = `var(--header-background)`;
 //   const drawerStyles = `var(--drawer-background)`;
 
-//   const renderItem = (icon: any, label: any, value: any) => (
-//     <div
-//       style={{
-//         display: "flex",
-//         alignItems: "center",
-//         gap: 10,
-//         marginBottom: "10px",
-//       }}
+//   let ID: any = localStorage.getItem("username");
+//   ID = ID.replace(/^"(.*)"$/, "$1");
+//   const handlePermissionClick = () => {
+//     if (ID) {
+//       console.log("id check 175", ID);
+//       getNode(ID);
+//     } else {
+//       toast.error("ID not found");
+//     }
+//     setIsModalOpen(true);
+//     console.log("first");
+//   };
+
+//   const handleCloseModal = () => {
+//     setIsModalOpen(false);
+//   };
+
+//   const getNode = (id: any) => {
+//     const collectData = {
+//       id: -1,
+//       nodeID: -1,
+//       titleID: -1,
+//       user_Id: id,
+//     };
+//     api
+//       .post(`NewNodeMaster/GetNewNodeMasterHeirarical`, collectData)
+//       .then((res: any) => {
+//         if (res.data && res.data.data && res.data.data.length > 0) {
+//           setTreedata(res.data.data);
+//           const allNodeIds = getAllNodeIds(res.data.data);
+//           setExpandedItems(allNodeIds);
+//         } else {
+//           toast.error("Data is null or empty");
+//         }
+//       });
+//   };
+
+//   const getAllNodeIds = (nodes: any[]): string[] => {
+//     let ids: string[] = [];
+
+//     const collectIds = (nodes: any[]) => {
+//       nodes.forEach((node) => {
+//         ids.push(node.id.toString());
+//         if (node.childnode) {
+//           collectIds(node.childnode);
+//         }
+//       });
+//     };
+
+//     collectIds(nodes);
+
+//     return ids;
+//   };
+
+//   const defaultSelectedNodeId = parseInt(localStorage.getItem("id") + "");
+
+//   React.useEffect(() => {
+//     // Set default selected node here
+//     if (defaultSelectedNodeId) {
+//       setCheck([defaultSelectedNodeId]);
+//     }
+
+//     const initialExpanded = getAllNodeIds(treedata);
+//     setExpandedItems(initialExpanded);
+//   }, [defaultSelectedNodeId, treedata]);
+
+//   const [nodeId, setnodeId] = React.useState<any>(0);
+//   const [nodeNames, setNodeNames] = React.useState<string>("");
+
+//   // Effect to apply the theme from local storage
+
+//   const handleToggle = (id: number, name: string) => () => {
+//     const currentIndex = check.indexOf(id);
+//     //const newChecked = [...check];
+//     const newChecked = currentIndex === -1 ? [id] : [];
+//     //const updatedChecked = currentIndex === -1 ? [id] : [];
+
+//     if (currentIndex === -1) {
+//       newChecked.push(id);
+//     } else {
+//       newChecked.splice(currentIndex, 1);
+//     }
+
+//     setCheck(newChecked);
+
+//     // setExpandedItems((prevExpanded) =>
+//     //   prevExpanded.includes(id.toString())
+//     //     ? prevExpanded.filter((item) => item !== id.toString())
+//     //     : [...prevExpanded, id.toString()]
+//     // );
+
+//     console.log("Checked data:", name);
+//     console.log("Checked data:", id);
+
+//     setNodeNames(name);
+//     setnodeId(id);
+//     // handleSave(id, name);
+//   };
+
+//   const handleSave = () => {
+//     console.log("handleSave function called");
+
+//     if (nodeId != 0 || nodeNames != "") {
+//       localStorage.setItem("id", nodeId);
+//       localStorage.setItem("nodeName", nodeNames);
+//       console.log("Checked Save:", { nodeId, nodeNames });
+
+//       handleCloseModal();
+//     } else {
+//       toast.error("Please Retry... Network Issues");
+//     }
+//   };
+
+//   const renderTree = (nodes: any) => (
+//     <TreeItem
+//       key={nodes.id}
+//       itemId={String(nodes.id)}
+//       label={
+//         <div style={{ display: "flex", alignItems: "center" }}>
+//           <Checkbox
+//             checked={check.indexOf(nodes.id) !== -1}
+//             // onChange={handleToggle(nodes.id)}
+
+//             onChange={handleToggle(nodes.id, nodes.name)}
+//             onClick={(event: any) => event.stopPropagation()}
+//           />
+
+//           <div style={{ marginLeft: 8 }}>{nodes.name}</div>
+//         </div>
+//       }
+//       onClick={() => toggleExpansion(nodes.id.toString())}
 //     >
-//       <img src={icon} alt={label} width={25} />
-//       <strong>{label}:</strong> {value}
-//     </div>
+//       {Array.isArray(nodes.childnode)
+//         ? nodes.childnode.map((node: any) => renderTree(node))
+//         : null}
+//     </TreeItem>
 //   );
 
-//   const data: any = JSON.parse(sessionStorage.getItem("0th") || "{}");
-
-//   const { institutename, libraryname, address, city, institute } = data;
-
-//     const [selectedMenu, setSelectedMenu] = React.useState<any | null>(null);
-//     const [collapseIndexs, setCollapseIndexs] = React.useState<number | null>(null);
-//     const [collapseIndexs2, setCollapseIndexs2] = React.useState<number | null>(null);
-    
-//     React.useEffect(() => {
-//       const savedMenu = localStorage.getItem("selectedMenu");
-//       if (savedMenu) {
-//         const parsedMenu = JSON.parse(savedMenu);
-//         setSelectedMenu(parsedMenu);
-    
-//         // Automatically expand the saved menu hierarchy
-//         setCollapseIndexs(parsedMenu.parentIndex ?? null);
-//         setCollapseIndexs2(parsedMenu.childIndex ?? null);
-//       }
-//     }, []);
-    
-//     const handleMenuClick = (menu: any) => {
-//       if (!menu) return;
-    
-//       const { parentIndex, childIndex, subchildIndex, child, subchild } = menu;
-    
-//       // Check if we're opening a new page or staying within the same structure
-//       const isNewPage =
-//         selectedMenu?.parentIndex !== parentIndex ||
-//         selectedMenu?.childIndex !== childIndex ||
-//         selectedMenu?.subchildIndex !== subchildIndex;
-    
-//       // Update selected menu only for new page
-//       const newSelectedMenu = {
-//         parentIndex: parentIndex ?? null,
-//         childIndex: childIndex ?? null,
-//         subchildIndex: subchildIndex ?? null,
-//         ...(subchild ? { subchild } : child ? { child } : {}),
-//       };
-    
-//       // Navigate to new page if a path exists
-//       if (subchild?.path) {
-//         onClick(subchild);
-//       } else if (child?.path && (!child.items || !child.items.length)) {
-//         onClick(child);
-//       }
-    
-//       // Reset state only if navigating to a new page
-//       if (isNewPage) {
-//         setSelectedMenu(newSelectedMenu);
-//         localStorage.setItem("selectedMenu", JSON.stringify(newSelectedMenu));
-    
-//         // Reset menu expansion based on the new page
-//         setCollapseIndexs(parentIndex);
-//         // setCollapseIndexs2(childIndex ?? null);
-//       }
-//     };
-    
-    
-//     const collapseHandle = (index: number) => {
-//       setCollapseIndexs(collapseIndexs === index ? null : index);
-//       // setCollapseIndexs2(null); 
-//     };
-    
-    
-//   const collapseHandle2 = (index: number) => {
-//     // console.log(index)
-//     setCollapseIndexs2(collapseIndexs2 === index ? null : index);
+//   const toggleExpansion = (nodeId: string) => {
+//     if (expandedItems.includes(nodeId)) {
+//       setExpandedItems(expandedItems.filter((item) => item !== nodeId));
+//     } else {
+//       setExpandedItems([...expandedItems, nodeId]);
+//     }
 //   };
-  
+
 //   return (
 //     <Box sx={{ display: "flex" }}>
-//       <ToastContainer />
+//       {/* <CssBaseline /> */}
 //       <AppBar position="fixed" open={open} style={{}}>
 //         <Toolbar
 //           style={{
@@ -2104,7 +2150,7 @@ export default function MiniDrawer({ items }: any) {
 //             justifyContent: "space-between",
 //             alignItems: "center",
 //             background: `var(--header-background1)`,
-//             color: "var(--header-color1)",
+//             color: `var(--header-color1)`,
 //           }}
 //         >
 //           <div
@@ -2112,6 +2158,8 @@ export default function MiniDrawer({ items }: any) {
 //               display: "flex",
 //               justifyContent: "flex-start",
 //               alignItems: "center",
+//               // paddingTop: "10px",
+//               // paddingBottom: "10px",
 //             }}
 //           >
 //             <IconButton
@@ -2127,10 +2175,12 @@ export default function MiniDrawer({ items }: any) {
 //               <MenuIcon fontSize="large" />
 //             </IconButton>
 
-//             {!openlogo && <img src={logo} width={80} height={60} />}
+//             {!openlogo && <img src={logo} width={60} height={60} />}
 //           </div>
 
-//           <div style={{ fontSize: "3vw" }}>Spritual Library </div>
+//           <div style={{ fontSize: "2.5vw" }}>
+//             Vehicle Workshop Management System
+//           </div>
 
 //           <IconButton
 //             onClick={handleClick}
@@ -2141,7 +2191,7 @@ export default function MiniDrawer({ items }: any) {
 //             aria-expanded={open ? "true" : undefined}
 //           >
 //             <Avatar sx={{ width: 40, height: 40 }}>
-//               {/* {displayInitial} */}
+//               {/* {username[0].toUpperCase()} */}
 //             </Avatar>
 //           </IconButton>
 
@@ -2154,8 +2204,8 @@ export default function MiniDrawer({ items }: any) {
 //             PaperProps={{
 //               elevation: 0,
 //               sx: {
-//                 backgroundColor: "var(--menu-background)",
-//                 color: "var(--menu-color)",
+//                 backgroundColor: `var(--menu-background)`,
+//                 color: `var(--menu-color)`,
 //                 overflow: "auto",
 //                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
 //                 paddingRight: "10px",
@@ -2185,17 +2235,17 @@ export default function MiniDrawer({ items }: any) {
 //             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
 //           >
 //             <MenuItem onClick={handleClose}>
-//               {/* <ListItemIcon>
+//               <ListItemIcon>
 //                 <img src={logged} width={40} height={40} />
-//               </ListItemIcon>{" "} */}
-//               {/* {displayInitial} */}
+//               </ListItemIcon>{" "}
+//               {/* {username} */}
 //             </MenuItem>
 //             {/* <MenuItem > */}
 //             <MenuItem onClick={handleMyProfileClick}>
 //               <ListItemIcon>
 //                 <img src={id} width={30} height={30} />
 //               </ListItemIcon>
-//               {userName}
+//               My Profile
 //             </MenuItem>
 
 //             <Divider />
@@ -2212,45 +2262,6 @@ export default function MiniDrawer({ items }: any) {
 //               </ListItemIcon>
 //               Translate -- {newLanguage}
 //             </MenuItem>
-
-//             <MenuItem onClick={(e) => setShowThemeMenu(!showThemeMenu)}>
-//               <ListItemIcon>
-//                 <img src={ThemeIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               Select Theme
-//             </MenuItem>
-
-//             {/* <MenuItem
-//               onClick={() => {
-//                 navigate("/ChatBot");
-//               }}
-//             >
-//               <ListItemIcon>
-//                 <img src={ChatBotIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               ChatBot
-//             </MenuItem> */}
-
-//             {/* <MenuItem onClick={() => {}}>
-//               <ListItemIcon>
-//                 <img src={FontIcon} width={30} height={30} />
-//               </ListItemIcon>
-//               Select Font
-//             </MenuItem> */}
-
-//             <MenuItem
-//               onClick={() => {
-//                 let path = "/HelpDesk";
-//                // localStorage.setItem("menuData", menuData.toString());
-//                 window.open(path, "_blank");
-//               }}
-//             >
-//               <ListItemIcon>
-//                 <img src={help} width={30} height={30} alt="Help Desk" />
-//               </ListItemIcon>
-//               Help Desk
-//             </MenuItem>
-
 //             <MenuItem onClick={handleClose}>
 //               <ListItemIcon>
 //                 <img src={settings} width={30} height={30} />
@@ -2262,10 +2273,16 @@ export default function MiniDrawer({ items }: any) {
 //               <ListItemIcon>
 //                 <img src={logged} width={40} height={40} alt="Permission" />
 //               </ListItemIcon>
-//               Institute
+//               Permission
 //             </MenuItem>
 
-            
+//             <MenuItem onClick={() => setShowThemeMenu(!showThemeMenu)}>
+//               <ListItemIcon>
+//                 <img src={ThemeIcon} width={30} height={30} />
+//               </ListItemIcon>
+//               Select Theme
+//             </MenuItem>
+
 //             <Divider />
 //             <MenuItem onClick={Logout}>
 //               <ListItemIcon>
@@ -2303,7 +2320,7 @@ export default function MiniDrawer({ items }: any) {
 //             display: "flex",
 //             justifyContent: "space-between",
 //             alignItems: "center",
-//             backgroundColor: headerColor1 || "#42AEEE",
+//             backgroundColor: headerColor1,
 //             borderBottomRightRadius: "15px",
 //           }}
 //         >
@@ -2395,8 +2412,6 @@ export default function MiniDrawer({ items }: any) {
 //             <p style={{ fontSize: "1.2vw", color: greeting.color }}>
 //               {greeting.icon} {greeting.text}
 //             </p>
-
-//             <p>Institute : {nodeName}</p>
 //             <p> Time : {date.toLocaleTimeString()}</p>
 //             <p> Date : {formattedDate}</p>
 //           </div>
@@ -2427,7 +2442,7 @@ export default function MiniDrawer({ items }: any) {
 //                     paddingBottom: "25px",
 //                   }}
 //                 >
-//                   <img src={loged} width={110} height={90} />
+//                   <img src={loged} width={100} height={100} />
 //                 </div>
 //               ) : (
 //                 <div style={{ padding: 0 }}></div>
@@ -2463,7 +2478,12 @@ export default function MiniDrawer({ items }: any) {
 //               freeSolo
 //               fullWidth
 //               size="small"
-//              options={filteredItems.map((item) => item.name)}
+//               options={items.reduce((acc: any, item: any) => {
+//                 if (item.items) {
+//                   acc.push(...item.items.map((subItem: any) => subItem.name));
+//                 }
+//                 return acc;
+//               }, [])}
 //               onChange={handleAutocompleteChange}
 //               renderInput={(params) => (
 //                 <TextField
@@ -2488,316 +2508,242 @@ export default function MiniDrawer({ items }: any) {
 //         <Divider />
 
 //         <React.Fragment>
-//           <List sx={{ padding: 0 }}>
-//             {["Home"].map((text, index) => (
-//               <ListItem
-//                 key={text}
-//                 disablePadding
-//                 sx={{
-//                   display: "flex",
-//                   justifyContent: "space-between",
-//                   alignItems: "center",
-//                   padding: 0,
-//                   "&:hover": {
-//                     cursor: "pointer",
-//                     backgroundColor: "lightgray",
-//                   },
-//                 }}
-//               >
-//                 <ListItemButton
-//                   sx={{
-//                     // minHeight: 30,
-//                     justifyContent: open ? "initial" : "center",
-//                     px: 4.5,
-//                   }}
-//                   // onClick={routeChangeHome}
-//                   onClick={() => {
-//                     routeChangeHome();
-//                     resetHomeColor();
-
-//                     setCollapseIndexs(null); // Close all parent menus
-//                     setCollapseIndexs2(null); // Close all child menus
-//                     setSelectedMenu({ // Reset selected menu to no highlight
-//                       parentIndex: null,
-//                       childIndex: null,
-//                       subchildIndex: null,
-//                       subchild: null,
-//                       child: null,
-//                     });
-//                   }}
-//                 >
-//                   <ListItemIcon
-//                     sx={{
-//                       minWidth: 0,
-//                       mr: open ? 1 : "auto",
-//                       justifyContent: "center",
-//                       color: homeColor,
-//                     }}
-//                   >
-//                     <Home />
-//                   </ListItemIcon>
-//                   <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-//                 </ListItemButton>
-//               </ListItem>
-//             ))}
-//           </List>
-//           <List sx={{ padding: 0 }}>
-//   {items.map((parent: any, parentIndex: number) => (
-//     <React.Fragment key={parentIndex}>
-//       <Divider />
-//       {/* Parent Item */}
-//       <ListItem
-//         onClick={() => collapseHandle(parentIndex)}
-//         sx={{
-//           display: "flex",
-//           justifyContent: "space-between",
-//           alignItems: "center",
-//           padding: "10px 16px",
-//           backgroundColor:
-//             selectedMenu?.parentIndex === parentIndex &&
-//             selectedMenu?.childIndex === null &&
-//             selectedMenu?.subchildIndex === null
-//               ? "#FF9933" // Saffron color for active parent menu
-//               : "#f5f5f5",
-//           fontWeight:
-//             selectedMenu?.parentIndex === parentIndex ? 600 : "normal", // Bold active menu
-//           color:
-//             selectedMenu?.parentIndex === parentIndex ? "#2B4593" : "inherit", // Contrast text
-//           borderRadius: "6px", // Optional rounded corners
-//           margin: "5px", // Maintain consistent spacing
-//           cursor: "pointer",
-//           paddingRight: open ? "16px" : "32px", // Add more padding on the right when open is false
-//         }}
-//         title={parent.name} 
-//       >
-//         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//           {/* Conditionally show folder icon */}
-//           {open && (
-//             <span
-//               style={{
-//                 fontSize: "1.2rem",
-//                 backgroundColor: "#f0f0f0", // Background color when closed
-//                 padding: "6px",
-//                 borderRadius: "10px", // Round corners when closed
+//       {/* Home List */}
+//       <List sx={{ padding: 0 }}>
+//         {["Home"].map((text, index) => (
+//           <ListItem
+//             key={text}
+//             disablePadding
+//             sx={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//               padding: 0,
+//               "&:hover": {
+//                 cursor: "pointer",
+//                 backgroundColor: "inherit",
+//               },
+//             }}
+//           >
+//             <ListItemButton
+//               sx={{
+//                 justifyContent: open ? "initial" : "center",
+//                 px: 4.5,
+//                 backgroundColor: "inherit"
+//               }}
+//               onClick={() => {
+//                 routeChangeHome();
+//                 resetHomeColor();
 //               }}
 //             >
-//               📁
-//             </span>
-//           )}
-//           <ListItemText
-//             primary={
-//               open
-//                 ? parent.name // Show full name if open is true
-//                 : parent.name
-//                     .split(" ") // Split name by space
-//                     .map((word:any) => word.charAt(0).toUpperCase()) // Take the first char of each word
-//                     .join("") // Join them into a single string
-//             }
-//             primaryTypographyProps={{ fontWeight: "500", fontSize: "1rem" }}
-//           />
-//         </div>
-//         <ListItemIcon>
-//           {parent.items && parent.items.length > 0 ? (
-//             collapseIndexs === parentIndex ? (
-//               <ExpandLessIcon />
-//             ) : (
-//               <ExpandMoreIcon />
-//             )
-//           ) : null}
-//         </ListItemIcon>
-//       </ListItem>
-
-//       <Divider />
-
-//       {/* Child Items */}
-//       <Collapse
-//         in={collapseIndexs === parentIndex}
-//         timeout="auto"
-//         unmountOnExit
-//         sx={{ paddingLeft: "16px" }}
-//       >
-//         <List>
-//           {parent.items.map((child: any, childIndex: number) => (
-//             <React.Fragment key={childIndex}>
-//               <ListItem
-//                 onClick={() => {
-//                   // If child has subitems, toggle collapse; if not, prevent it
-//                   if (child.items && child.items.length > 0) {
-//                     collapseHandle2(childIndex);
-//                   }
-//                   handleMenuClick({
-//                     child,
-//                     parentIndex,
-//                     childIndex,
-//                   });
-//                 }}
+//               <ListItemIcon
 //                 sx={{
-//                   display: "flex",
-//                   justifyContent: "space-between",
-//                   alignItems: "center",
-//                   padding: "8px 16px",
-//                   borderRadius: "6px",
-//                   backgroundColor:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex &&
-//                     selectedMenu?.subchildIndex === null
-//                       ? ""
-//                       : child.items && child.items.length > 0
-//                       ? "#e9f7ff" // Light blue for menus with sub-items
-//                       : "#fff3e0", // Light orange for regular items
-//                   fontWeight:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex
-//                       ? 600
-//                       : "normal", // Bold active child menu
-//                   color:
-//                     selectedMenu?.parentIndex === parentIndex &&
-//                     selectedMenu?.childIndex === childIndex
-//                       ? "#2B4593"
-//                       : "inherit",
-//                   margin: "5px",
-//                   cursor: "pointer",
-//                   paddingRight: open ? "16px" : "32px", // Add more padding on the right when open is false
+//                   minWidth: 0,
+//                   mr: open ? 1 : "auto",
+//                   justifyContent: "center",
+//                   color: homeColor,
 //                 }}
-//                 title={child.name} 
 //               >
-//                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//                   {/* Conditionally show folder icon for child */}
-//                   {open && (
-//                     <span
-//                       style={{
-//                         fontSize: "1.2rem",
-//                         backgroundColor: "#f0f0f0", // Background color when closed
-//                         padding: "6px",
-//                         borderRadius: "10px", // Round corners when closed
-//                       }}
-//                     >
-//                       {child.items && child.items.length > 0 ? "📂" : "📄"}
-//                     </span>
-//                   )}
-//                   <ListItemText
-//                     primary={
-//                       open
-//                         ? child.name // Show full name if open is true
-//                         : child.name
-//                             .split(" ") // Split name by space
-//                             .map((word:any) => word.charAt(0).toUpperCase()) // Take the first char of each word
-//                             .join("") // Join them into a single string
-//                     }
-//                     primaryTypographyProps={{ fontSize: "0.95rem" }}
-//                   />
-//                 </div>
-//                 {child.items && child.items.length > 0 && (
-//                   <ListItemIcon>
-//                     {collapseIndexs2 === childIndex ? (
-//                       <ExpandLessIcon />
-//                     ) : (
-//                       <ExpandMoreIcon />
-//                     )}
-//                   </ListItemIcon>
-//                 )}
-//               </ListItem>
+//                 <HomeIcon />
+//               </ListItemIcon>
+//               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+//             </ListItemButton>
+//           </ListItem>
+//         ))}
+//       </List>
 
-//               <Collapse
-//                 in={collapseIndexs2 === childIndex}
-//                 timeout="auto"
-//                 unmountOnExit
-//                 sx={{ paddingLeft: "16px" }}
-//               >
-//                 <List>
-//                   {child.items.map((subchild: any, subchildIndex: number) => (
+//       {/* Dynamic Items List */}
+//       <List sx={{ padding: 0 }}>
+//         {items.map((text:any, index:any) => (
+//           <React.Fragment key={index}>
+//             <Divider />
+//             <ListItem
+//               sx={{
+//                 display: "flex",
+//                 justifyContent: "space-between",
+//                 alignItems: "center",
+//                 backgroundColor: "inherit"
+//               }}
+//               onClick={() => collapsehamndle(index)}
+//             >
+//               <ListItem sx={{
+//                 justifyContent: open ? "initial" : "center",
+//                 paddingLeft: 2,
+//                 paddingRight: 0,
+//                 paddingTop: 0,
+//                 paddingBottom: 0,
+//                 cursor: "pointer",
+//               }}>
+//                 {open ? (
+//                   <ListItemIcon sx={{
+//                     minWidth: 0,
+//                     mr: open ? 1 : "auto",
+//                     justifyContent: "center",
+//                     color: index === collapseIndex ? "#FF0000" : "inherit",
+//                     fontWeight: 600,
+//                   }}>
+//                     {collapseIndex === index ? <FaRegFolderOpen style={{color:"#42AEEE"}} size={20} />  : <FolderIcon style={{color:"#42AEEE"}} />}
+//                   </ListItemIcon>
+//                 ) : (
+//                   <div
+//                     style={{
+//                       minWidth: 24,
+//                       minHeight: 24,
+//                       borderRadius: "50%",
+//                       backgroundColor: "lightgray",
+//                       display: "flex",
+//                       justifyContent: "center",
+//                       alignItems: "center",
+//                       marginRight: 8,
+//                       color: index === collapseIndex ? "#FF0000" : "inherit",
+//                     }}
+//                     title={text.name}
+//                   >
+//                     {text.name.charAt(0)}
+//                   </div>
+//                 )}
+              
+//                 <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
+//               </ListItem>
+//               <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
+//                 {/* {collapseIndex === index ? (
+//                   <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
+//                 ) : (
+//                   <ExpandMoreIcon className="sidebar-item-expand-arrow" />
+//                 )} */}
+//               </ListItemIcon>
+//             </ListItem>
+//             <Divider />
+
+//             {/* Submenu Items */}
+//             {collapseIndex === index && (
+//               <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
+//                 {items[index].items.map((subText:any, subIndex:any) => (
+//                   <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
 //                     <ListItem
-//                       key={subchildIndex}
-//                       onClick={() =>
-//                         handleMenuClick({
-//                           subchild,
-//                           parentIndex,
-//                           childIndex,
-//                           subchildIndex,
-//                         })
-//                       }
 //                       sx={{
 //                         display: "flex",
+//                         justifyContent: "start",
 //                         alignItems: "center",
-//                         padding: "6px 16px",
-//                         borderRadius: "6px",
-//                         backgroundColor:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? "#FF9933" 
-//                             : "#fff3e0",
-//                         fontWeight:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? 600
-//                             : "normal", 
-//                         color:
-//                           selectedMenu?.parentIndex === parentIndex &&
-//                           selectedMenu?.childIndex === childIndex &&
-//                           selectedMenu?.subchildIndex === subchildIndex
-//                             ? "#2B4593"
-//                             : "inherit",
-//                         margin: "5px",
-//                         cursor: "pointer",
-//                       }}
-//                       title={subchild.name} 
-//                     >
-//                       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-//                   {open && (
-//                     <span
-//                       style={{
-//                         fontSize: "1.2rem",
-//                         backgroundColor: "#f0f0f0", 
-//                         padding: "6px",
+//                         paddingLeft: 2,
+//                         paddingRight: 0,
+//                         paddingTop: 0,
+//                         paddingBottom: 0,
+//                         backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+//                         color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
 //                         borderRadius: "10px",
+//                         cursor: "pointer",
+//                         "&:hover": {
+//                           backgroundColor: "lightgray",
+//                           color: "black",
+//                         },
+//                       }}
+//                       onClick={(e) => {
+//                         onClick(e, subText);
+//                         handleSubMenuClick(subIndex);
 //                       }}
 //                     >
-//                       📄
-//                     </span>
-//                   )}
-//                       <ListItemText
-//                         primary={
-//                           open
-//                             ? subchild.name
-//                             : subchild.name
-//                                 .split(" ") 
-//                                 .map((word:any) => word.charAt(0).toUpperCase()) 
-//                                 .join("")
-//                         }
-//                         primaryTypographyProps={{ fontSize: "0.9rem" }}
-//                       />
-//                       </div>
+//                       {open && (
+//                         <span
+//                           style={{
+//                             fontSize: "1.2rem",
+//                             backgroundColor: "inherit",
+//                             padding: "6px",
+//                             borderRadius: "10px",
+//                             color:"#426aee"
+//                           }}
+//                         >
+//                          <FaFileLines />
+//                         </span>
+//                       )}
+//                       {open ? (
+//                         <p
+//                           style={{
+//                             fontWeight: 500,
+//                             paddingTop: "3px",
+//                             paddingBottom: "3px",
+//                             opacity: open ? 1 : 0,
+//                           }}
+//                         >
+//                           {subText.name}
+//                         </p>
+//                       ) : (
+//                         <ListItemIcon
+//                           sx={{
+//                             minWidth: 0,
+//                             mr: open ? 3 : "auto",
+//                             justifyContent: "center",
+//                             color: open ? "#FF0000" : "inherit",
+//                             backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+//                             borderRadius: "25px",
+//                             padding: "5px 10px",
+//                           }}
+//                           title={subText.name}
+//                         >
+//                           <DescriptionIcon />
+//                         </ListItemIcon>
+//                       )}
 //                     </ListItem>
-                    
-//                   ))}
-//                 </List>
-//               </Collapse>
-//             </React.Fragment>
-//           ))}
-//         </List>
-//       </Collapse>
+//                   </List>
+//                 ))}
+//               </List>
+//             )}
+//           </React.Fragment>
+//         ))}
+//       </List>
 //     </React.Fragment>
-//   ))}
-// </List>
-
-
-
-
-//         </React.Fragment>
 //       </Drawer>
+//       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
+//         <DrawerHeader />
+//       </Box> */}
+
+//       <Modal open={isModalOpen} onClose={handleCloseModal}>
+//         <Box sx={style}>
+//           <Typography fontWeight={500} fontSize={20} noWrap align="center">
+//             Node Permission
+//           </Typography>
+//           <div>
+//             <Grid xs={12} item>
+//               <Box>
+//                 <div style={{ height: "400px", overflow: "auto" }}>
+//                   <SimpleTreeView expandedItems={expandedItems}>
+//                     {Array.isArray(treedata)
+//                       ? treedata.map((node: any) => renderTree(node))
+//                       : null}
+//                   </SimpleTreeView>
+//                 </div>
+//               </Box>
+//             </Grid>
+//             <Grid xs={3} item alignItems="center" justifyContent="center">
+//               <Button
+//                 type="submit"
+//                 fullWidth
+//                 style={{
+//                   backgroundColor: "#059669",
+//                   color: "white",
+//                   marginTop: "10px",
+//                 }}
+//                 onClick={(e: any) => handleSave()}
+//               >
+//                 {t("text.save")}
+//               </Button>
+//             </Grid>
+//           </div>
+//         </Box>
+//       </Modal>
 
 //       <SwipeableDrawer
 //         anchor="left"
 //         open={profileDrawerOpen}
-//         onClose={() => setProfileDrawerOpen(false)}
+//         onClose={() => {
+//           setProfileDrawerOpen(false);
+//         }}
 //         onOpen={() => {}}
 //         style={{
 //           zIndex: 1300,
 //         }}
 //       >
-//         <Box sx={{ width: 250 }} role="presentation">
+//         <Box sx={{ width: drawerWidth }} role="presentation">
 //           <IconButton
 //             edge="end"
 //             onClick={() => setProfileDrawerOpen(false)}
@@ -2819,70 +2765,808 @@ export default function MiniDrawer({ items }: any) {
 //               fontSize: "20px",
 //             }}
 //           >
-//             Institution Details
+//             User Details
 //           </p>
-//           <div style={{ margin: "15px" }}>
-//             {renderItem(id, "User Name", userName)}
-//             {renderItem(instituteIcon, "Institute", institute)}
-//             {renderItem(libraryIcon, "Library Name", libraryname)}
-//             {renderItem(addressIcon, "Address", address)}
-//             {renderItem(cityIcon, "City", city)}
-//           </div>
-//         </Box>
-//       </SwipeableDrawer>
+//           {userDetail.map((user: any, index: any) => (
+//             <div key={index}>
+//               <div
+//                 style={{
+//                   display: "flex",
+//                   alignItems: "center",
+//                   justifyContent: "center",
+//                   marginTop: "10px",
+//                   marginBottom: "10px",
+//                 }}
+//               >
+//                 <div
+//                   style={{
+//                     textAlign: "center",
+//                     borderRadius: "50%",
+//                     height: "90px",
+//                     width: "90px",
+//                     borderColor:
+//                       "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
+//                     backgroundColor: "red",
+//                     padding: "13px",
+//                     paddingTop: "30px",
+//                     paddingLeft: "13px",
+//                     color: "whitesmoke",
+//                     fontSize: "20px",
+//                   }}
+//                 >
+//                   {getImageForFirstName(
+//                     user.firsT_NAME,
+//                     user.middlE_NAME,
+//                     user.suR_NAME
+//                   )}
+//                 </div>
+//               </div>
+//               <div style={{ marginLeft: "15px" }}>
+//                 {user.logiN_NAME && user.logiN_NAME.trim() !== "" && (
+//                   <div
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: 20,
+//                     }}
+//                   >
+//                     <img src={log} width={25} />
+//                     {user.logiN_NAME}
+//                   </div>
+//                 )}
+//                 <br />
+//                 {user.rolename && user.rolename.trim() !== "" ? (
+//                   <div
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: 10,
+//                     }}
+//                   >
+//                     <img src={roles} width={25} />
+//                     {user.rolename}
+//                   </div>
+//                 ) : (
+//                   ""
+//                 )}
+//                 <br />
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     gap: 20,
+//                   }}
+//                 >
+//                   <img src={names} width={25} />
+//                   {user.firsT_NAME} {user.middlE_NAME} {user.suR_NAME}
+//                 </div>
+//                 <br />
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     gap: 10,
+//                   }}
+//                 >
+//                   {" "}
+//                   <img src={dobs} width={22} />{" "}
+//                   {dayjs(user.dob).format("YYYY-MM-DD")}
+//                 </div>
+//                 <br />
+//                 {user.gendeR_ID !== 0 ? (
+//                   <>
+//                     {user.gendeR_ID && getGenderText(user.gendeR_ID) && (
+//                       <div
+//                         style={{
+//                           display: "flex",
+//                           alignItems: "center",
+//                           gap: 10,
+//                         }}
+//                       >
+//                         {" "}
+//                         <img src={genders} width={22} />{" "}
+//                         {getGenderText(user.gendeR_ID)}
+//                       </div>
+//                     )}
+//                   </>
+//                 ) : (
+//                   " "
+//                 )}
 
-//       <Modal
-//         open={isModalOpen}
-//         onClose={handleCloseModal}
-//         style={{ overflow: "hidden" }}
-//       >
-//         <Box
-//           sx={{
-//             ...style,
+//                 <br />
 
-//             overflow: "auto",
-//           }}
-//         >
-//           <Typography fontWeight={500} fontSize={20} noWrap align="center">
-//             Institutes
-//           </Typography>
+//                 {user.cuR_MOBILE && user.cuR_MOBILE.trim() !== "" && (
+//                   <div
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: 20,
+//                     }}
+//                   >
+//                     <img src={call} width={25} />
+//                     {user.cuR_MOBILE}
+//                   </div>
+//                 )}
+//                 <br />
 
-//           {nodeData?.map((item: any) => (
-//             <div>
-//               <Grid container spacing={1}>
-//                 <Grid item xs={3} key={item.id}>
-//                   <FormControlLabel
-//                     control={
-//                       <Checkbox
-//                         checked={nodeId === item.id}
-//                         onChange={() =>
-//                           handleCheckboxChange(item.id, item.institutename)
-//                         }
-//                       />
-//                     }
-//                     label={item.institutename}
-//                   />
-//                 </Grid>
-//               </Grid>
+//                 {user.email && user.email.trim() !== "" && (
+//                   <div
+//                     style={{
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: 20,
+//                     }}
+//                   >
+//                     <img src={emails} width={25} />
+//                     {user.email}
+//                   </div>
+//                 )}
+//                 <br />
+
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     alignItems: "center",
+//                     gap: 10,
+//                   }}
+//                 >
+//                   Account Status :{" "}
+//                   {user.iS_ACTIVE === true ? (
+//                     <img src={tick} width={25} />
+//                   ) : (
+//                     <img src={crs} width={25} />
+//                   )}
+//                 </div>
+//               </div>
 //             </div>
 //           ))}
-
-//           <Grid xs={3} item alignItems="center" justifyContent="center">
-//             <Button
-//               type="submit"
-//               fullWidth
-//               style={{
-//                 backgroundColor: "#059669",
-//                 color: "white",
-//                 marginTop: "10px",
-//               }}
-//               onClick={handleSave}
-//             >
-//               save
-//             </Button>
-//           </Grid>
 //         </Box>
-//       </Modal>
+//       </SwipeableDrawer>
 //     </Box>
 //   );
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////
+
+// import React from "react";
+// import { useState, useEffect } from "react";
+// import ListItem from "@mui/material/ListItem";
+// import Divider from "@mui/material/Divider";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+// import Collapse from "@mui/material/Collapse";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import LogoutIcon from "@mui/icons-material/Logout";
+// import "./Sidebar.css";
+// import {
+//   AppBar,
+//   Avatar,
+//   Box,
+//   Container,
+//   CssBaseline,
+//   Drawer,
+//   IconButton,
+//   List,
+//   Stack,
+//   Toolbar,
+//   Typography,
+// } from "@mui/material";
+// import assets from "../../assets";
+// import colorConfigs from "../../configs/colorConfigs";
+// import sizeConfigs from "../../configs/sizeConfigs";
+// import { useNavigate } from "react-router-dom";
+// import { Home } from "@mui/icons-material";
+// import PersonPinIcon from '@mui/icons-material/PersonPin';
+// import Menu from "@mui/material/Menu";
+// import MenuItem from "@mui/material/MenuItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import Settings from "@mui/icons-material/Settings";
+// import TranslateIcon from '@mui/icons-material/Translate';
+// import { useTranslation } from 'react-i18next';
+// import call from "../../assets/images/phone-call.png";
+// import roles from "../../assets/images/role-model.png";
+// import tick from "../../assets/images/check-mark.png";
+// import crs from "../../assets/images/cross.png";
+// import log from "../../assets/images/profile.png";
+// import emails from "../../assets/images/gmail.png";
+// import genders from "../../assets/images/symbol.png";
+// import dobs from "../../assets/images/timetable.png";
+// import id from "../../assets/images/profile1.png";
+// import settings from "../../assets/images/settings.png";
+// import trans from "../../assets/images/translation.png";
+// import logout from "../../assets/images/logout.png";
+// import logged from "../../assets/images/permission.png";
+
+// import CloseIcon from '@mui/icons-material/Close';
+// import dayjs from 'dayjs';
+
+// const drawerWidth = 250;
+// function SidebarItem({
+//   depthStep = 10,
+//   depth = 0,
+//   expanded,
+//   item,
+//   ...rest
+// }: any) {
+//   const [collapsed, setCollapsed] = React.useState(true);
+//   const { label, items, Icon, onClick: onClickProp } = item;
+//   let navigate = useNavigate();
+
+//   const Logout = () => {
+//     localStorage.removeItem("userdata");
+//     navigate("/");
+//   };
+//   function toggleCollapse() {
+//     setCollapsed((prevValue) => !prevValue);
+//   }
+//   function onClick(e: any) {
+//     if (Array.isArray(items)) {
+//       toggleCollapse();
+//     }
+//     if (onClickProp) {
+//       onClickProp(e, item);
+//     }
+//   }
+//   let expandIcon;
+
+//   if (Array.isArray(items) && items.length) {
+//     expandIcon = !collapsed ? (
+//       <ExpandLessIcon
+//         className={
+//           "sidebar-item-expand-arrow" + " sidebar-item-expand-arrow-expanded"
+//         }
+//       />
+//     ) : (
+//       <ExpandMoreIcon className="sidebar-item-expand-arrow" />
+//     );
+//   }
+
+//   return (
+//     <>
+//       <ListItem
+//         style={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//         }}
+//         // className="sidebar-item"
+//         onClick={onClick}
+//         button
+//         dense
+//         {...rest}
+//       >
+//         <div
+//           style={{
+//             paddingLeft: depth * depthStep,
+//             whiteSpace: "nowrap",
+//             //textOverflow:'ellipsis',
+//             //overflow:'hidden',
+//             display: "flex",
+//             alignItems: "center",
+//             width: "100%",
+//             fontSize: "16px",
+//             paddingBottom: "3px",
+//             fontFamily: "unset",
+//             overflowY: "revert-layer",
+//           }}
+//           className="sidebar-item-content"
+//         >
+//           {Icon && <Icon className="sidebar-item-icon" fontSize="small" />}
+//           <div className="sidebar-item-text">{label}</div>
+//         </div>
+//         {expandIcon}
+//       </ListItem>
+//       <Collapse in={!collapsed} timeout="auto" unmountOnExit>
+//         {Array.isArray(items) ? (
+//           <List disablePadding dense>
+//             {items.map((subItem, index) => (
+//               <React.Fragment key={`${subItem.name}${index}`}>
+//                 {subItem === "divider" ? (
+//                   <Divider style={{ margin: "6px 0" }} />
+//                 ) : (
+//                   <SidebarItem
+//                     depth={depth + 1}
+//                     depthStep={depthStep}
+//                     item={subItem}
+//                     expanded={undefined}
+//                   />
+//                 )}
+//               </React.Fragment>
+//             ))}
+//           </List>
+//         ) : null}
+//       </Collapse>
+//     </>
+//   );
+// }
+
+// const Sidebar = ({ items, depthStep, depth, expanded }: any) => {
+//   const [mobileOpen, setMobileOpen] = useState(false);
+//   const [userdrawerOpen, setUserdrawerOpen] = useState(false);
+
+//   const temporaryDrawerRef = React.useRef<HTMLDivElement>(null);
+
+//   const handleDrawerToggle = () => {
+//     setMobileOpen(!mobileOpen);
+//   };
+//   const Logout = () => {
+//     localStorage.removeItem("userdata");
+//     navigate("/");
+//   };
+//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+//   const open = Boolean(anchorEl);
+
+//   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+//   const handleClose = () => {
+//     setAnchorEl(null);
+//   };
+
+//   function onClick(e: any) {
+//     if (Array.isArray(items)) {
+//     }
+//   }
+//   let navigate = useNavigate();
+//   const routeChangeHome = () => {
+//     let path = `/home`;
+//     navigate(path);
+//   };
+//   var data = JSON.parse(localStorage.getItem("userdata")!);
+//   var menudata = data[0]["userdetail"];
+//   var username =
+//     menudata[0]["firsT_NAME"] +
+//     " " +
+//     menudata[0]["middlE_NAME"] +
+//     " " +
+//     menudata[0]["suR_NAME"];
+
+//   const { i18n } = useTranslation();
+
+//   const changeLanguage = (language:any) => {
+//     // console.log("check", language);
+
+//     i18n.changeLanguage(language);
+//     localStorage.setItem('preferredLanguage', language);
+//   };
+//   var currentLanguage = localStorage.getItem('preferredLanguage');
+//   var newLanguage = currentLanguage === 'hi' ? 'English' : 'हिंदी';
+
+//   const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
+//   const userDetail = userData[0]?.userdetail || [];
+//   // console.log(userDetail);
+
+//   const getImageForFirstName = (
+//     firsT_NAME: any,
+//     middlE_NAME: any,
+//     suR_NAME: any
+//   ) => {
+//     const firstLetter = firsT_NAME ? firsT_NAME.charAt(0).toUpperCase() : "";
+//     const secondLetter = middlE_NAME ? middlE_NAME.charAt(0).toUpperCase() : "";
+//     const thirdLetter = suR_NAME ? suR_NAME.charAt(0).toUpperCase() : "";
+//     // console.log("fisrtlett", firstLetter);
+//     return `${firstLetter}${secondLetter}${thirdLetter}`;
+//   };
+
+//   const getGenderText = (gendeR_ID: any) => {
+//     switch (gendeR_ID) {
+//       case 1:
+//         return "Male";
+//       case 2:
+//         return "Female";
+//       case 3:
+//         return "Other";
+//       default:
+//         return "Unknown";
+//     }
+//   };
+
+//   return (
+//     <Box sx={{ display: "flex" }}>
+//       <AppBar
+//         style={{ background: "#FF7722", height: "12vh" }}
+//         position="fixed"
+//         sx={{
+//           width: { sm: `calc(100% - ${drawerWidth}px)` },
+//           ml: { sm: `${drawerWidth}px` },
+//         }}
+//       >
+//         <Toolbar style={{ justifyContent: "space-between" }}>
+//           <IconButton
+//             color="inherit"
+//             aria-label="open drawer"
+//             edge="start"
+//             onClick={handleDrawerToggle}
+//             sx={{ mr: 2, display: { sm: "none" } }}
+//           >
+//             <MenuIcon />
+//           </IconButton>
+//           <IconButton
+//             color="inherit"
+//             aria-label="open drawer"
+//             edge="start"
+//             onClick={handleDrawerToggle}
+//             sx={{ mr: 2, display: { sm: "none" } }}
+//           >
+//             <MenuIcon />
+//           </IconButton>
+//           <Typography variant="h5" noWrap component="div">
+//             Advertisement Management System
+//           </Typography>
+
+//           <IconButton
+//             onClick={handleClick}
+//             size="small"
+//             sx={{ ml: 2 }}
+//             aria-controls={open ? "account-menu" : undefined}
+//             aria-haspopup="true"
+//             aria-expanded={open ? "true" : undefined}
+//           >
+//             <Avatar sx={{ width: 32, height: 32 }}>
+//               {username[0].toUpperCase()}
+//             </Avatar>
+//           </IconButton>
+
+//           <Menu
+//             anchorEl={anchorEl}
+//             id="account-menu"
+//             open={open}
+//             // onClose={handleClose}
+//             onClick={handleClose}
+//             PaperProps={{
+//               elevation: 0,
+//               sx: {
+//                 overflow: "visible",
+//                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+//                 paddingRight:"10px",
+//                 paddingLeft:"10px",
+//                 mt: 1.5,
+//                 "& .MuiAvatar-root": {
+//                   width: 32,
+//                   height: 32,
+//                   ml: -0.5,
+//                   mr: 1,
+//                 },
+//                 "&::before": {
+//                   content: '""',
+//                   display: "block",
+//                   position: "absolute",
+//                   top: 0,
+//                   right: 14,
+//                   width: 10,
+//                   height: 10,
+//                   bgcolor: "background.paper",
+//                   transform: "translateY(-50%) rotate(45deg)",
+//                   zIndex: 0,
+//                 },
+//               },
+//             }}
+//             transformOrigin={{ horizontal: "right", vertical: "top" }}
+//             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+//           >
+//             <MenuItem onClick={handleClose}>
+//             <ListItemIcon><img src={logged} width={30} height={30} /></ListItemIcon> {username}
+//             </MenuItem>
+//             <MenuItem onClick={()=>setUserdrawerOpen(!userdrawerOpen)}>
+//             <ListItemIcon><img src={id} width={30} height={30} /></ListItemIcon>
+//               My Profile
+//             </MenuItem>
+
+//             <Divider />
+
+//             <MenuItem onClick={()=>{localStorage.getItem('preferredLanguage')=="hi"?changeLanguage("en"):changeLanguage("hi")}}>
+//               <ListItemIcon>
+//               <img src={trans} width={30} height={30} />
+//               </ListItemIcon>
+//               Translate -- {newLanguage}
+//             </MenuItem>
+//             <MenuItem onClick={handleClose}>
+//               <ListItemIcon>
+//               <img src={settings} width={30} height={30} />
+//               </ListItemIcon>
+//               Settings
+//             </MenuItem>
+//             <Divider/>
+//             <MenuItem onClick={Logout}>
+//               <ListItemIcon>
+//               <img src={logout} width={30} height={30} />
+//               </ListItemIcon>
+//               Logout
+//             </MenuItem>
+//           </Menu>
+//         </Toolbar>
+
+//       </AppBar>
+//       <Drawer
+//         variant="temporary"
+//         open={mobileOpen}
+//         onClose={handleDrawerToggle}
+//         ModalProps={{
+//           keepMounted: true,
+//         }}
+
+//         sx={{
+//           display: { xs: "block", sm: "none" },
+//           width: sizeConfigs.sidebar.width,
+//           flexShrink: 0,
+//           "& .MuiDrawer-paper": {
+//             width: sizeConfigs.sidebar.width,
+//             boxSizing: "border-box",
+//             borderRight: "0px",
+//             backgroundColor: colorConfigs.sidebar.bg,
+//             color: colorConfigs.sidebar.color,
+//           },
+//         }}
+//       >
+//         <List disablePadding>
+//           <List disablePadding dense style={{ marginTop: "2vh" }}>
+//             {items.map((sidebarItem: any, index: any) => (
+//               <React.Fragment key={`${sidebarItem.name}${index}`}>
+//                 {sidebarItem === "divider" ? (
+//                   <Divider style={{ margin: "6px 0" }} />
+//                 ) : (
+//                   <SidebarItem
+//                     depthStep={depthStep}
+//                     depth={depth}
+//                     expanded={expanded}
+//                     item={sidebarItem}
+//                   />
+//                 )}
+//               </React.Fragment>
+//             ))}
+//           </List>
+//         </List>
+//       </Drawer>
+//       <Drawer
+//         variant="permanent"
+//         open
+
+//         sx={{
+//           display: { xs: "none", sm: "block" },
+//           width: sizeConfigs.sidebar.width,
+//           flexShrink: 0,
+//           "& .MuiDrawer-paper": {
+//             width: sizeConfigs.sidebar.width,
+//             boxSizing: "border-box",
+//             borderRight: "0px",
+//             backgroundColor: "#331a00",
+//             color: colorConfigs.sidebar.color,
+//           },
+//         }}
+//       >
+//         <Toolbar >
+//           <Stack sx={{ width: "100%" }} direction="row" justifyContent="center">
+//             <Avatar
+//               src={assets.images.logo}
+//               style={{ height: 80, width: 80, marginTop: "25px", marginBottom: "25px" }}
+//             />
+//           </Stack>
+//         </Toolbar>
+//         {/* <br/> */}
+//               <Divider style={{backgroundColor:"white"}}/>
+//               {/* <br/> */}
+//         <List disablePadding dense style={{ marginTop: "1vh" }}>
+//           <ListItem
+//             style={{
+//               display: "flex",
+//               justifyContent: "space-between",
+//               alignItems: "center",
+//             }}
+//             // className="sidebar-item"
+//             onClick={onClick}
+//             button
+//             dense
+//           >
+//             <div
+//               style={{
+//                 paddingLeft: depth * depthStep,
+//                 // whiteSpace:'nowrap',
+//                 // textOverflow:'ellipsis',
+//                 // overflow:'hidden',
+//                 // display:'flex',
+//                 // alignItems:'center',
+//                 // width:'100%'
+//               }}
+//               className="sidebar-item-content"
+//             >
+
+//               {<Home style={{ marginRight: "3px" }} />}
+//               {/* // <Icon className="sidebar-item-icon" fontSize="small" /> */}
+//               <div
+//                 className="sidebar-item-text"
+//                 style={{ fontSize: "16px", fontFamily: "unset" }}
+//                 onClick={routeChangeHome}
+//               >
+//                 Home
+//               </div>
+//             </div>
+//           </ListItem>
+//           {items.map((sidebarItem: any, index: any) => (
+//             <React.Fragment key={`${sidebarItem.name}${index}`}>
+//               {sidebarItem === "divider" ? (
+//                 <Divider style={{ margin: "6px 0", color: "white" }} />
+//               ) : (
+//                 <SidebarItem
+//                   depthStep={depthStep}
+//                   depth={depth}
+//                   expanded={expanded}
+//                   item={sidebarItem}
+//                 />
+//               )}
+//             </React.Fragment>
+//           ))}
+//         </List>
+//       </Drawer>
+//       <Drawer
+//         anchor="left"
+//         open={userdrawerOpen}
+//         onClose={() => {
+//            setUserdrawerOpen(false);
+//           // handleDrawerClose();
+//         }}
+//         // sx={{
+//         //   '& .MuiDrawer-paper': {
+//         //     background: 'linear-gradient(to bottom, #ff7e5f, #feb47b)',
+//         //   },
+//         // }}
+//       >
+//         <Box
+//           sx={{ width: drawerWidth,}}
+//           role="presentation"
+//         >
+//           <IconButton
+//             edge="end"
+//             onClick={()=> setUserdrawerOpen(false)}
+//             aria-label="close"
+//             sx={{ color:"white", position: 'absolute', right: 15, top: 2 }}
+//           >
+//             <CloseIcon />
+//           </IconButton>
+//        <p
+//             style={{
+//               paddingTop: "5vh",
+//               paddingBottom: "5vh",
+//               textAlign: "center",
+//               // textDecoration: "underline",
+//               backgroundImage:
+//                 "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
+//               color: "whitesmoke",
+//               borderBottomLeftRadius: "10px",
+//               borderBottomRightRadius: "10px",
+//               fontSize:"20px"
+//             }}
+//           >
+//            User Details
+//           </p>
+//           {userDetail.map((user: any, index: any) => (
+//             <div key={index}>
+//               <div
+//                 style={{
+//                   display: "flex",
+//                   alignItems: "center",
+//                   justifyContent: "center",
+//                   marginTop: "10px",
+//                   marginBottom: "10px",
+//                 }}
+//               >
+//                 <div
+//                   style={{
+//                     textAlign: "center",
+//                     borderRadius: "50%",
+//                     height: "90px",
+//                     width: "90px",
+//                     borderColor:
+//                       "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
+//                     backgroundColor: "red",
+//                     padding: "13px",
+//                     paddingTop: "30px",
+//                     paddingLeft: "13px",
+//                     color: "whitesmoke",
+//                     fontSize: "20px",
+//                   }}
+//                 >
+//                   {getImageForFirstName(
+//                     user.firsT_NAME,
+//                     user.middlE_NAME,
+//                     user.suR_NAME
+//                   )}
+//                 </div>
+//               </div>
+//               <div style={{ marginLeft: "15px" }}>
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   <img src={log} width={25} />{" "}
+//                   {user.logiN_NAME == "" ? "N/A" : `${user.logiN_NAME}`}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={roles} width={25} />{" "}
+//                   {user.rolename == "" ? "N/A" : `${user.rolename}`}
+//                 </div>
+//                 {/* <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   <img src={id} width={25} />{" "}
+//                   {user.useR_ID == "" ? "N/A" : `${user.useR_ID}`}
+//                 </div>*/}
+//                 <br />
+//                 <div>First Name : {user.firsT_NAME}</div>
+//                 <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+//                   Middle Name :{" "}
+//                   {user.middlE_NAME == "" ? "N/A" : `${user.middlE_NAME}`}
+//                 </div>
+//                 <div>Last Name : {user.suR_NAME}</div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={dobs} width={22} />{" "}
+//                   {dayjs(user.dob).format("YYYY-MM-DD")}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={genders} width={22} />{" "}
+//                   {getGenderText(user.gendeR_ID)}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={call} width={22} />{" "}
+//                   {user.cuR_MOBILE == "" ? " N/A" : `${user.cuR_MOBILE}`}
+//                 </div>
+//                 <br />
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={emails} width={22} />{" "}
+//                   {user.email == "" ? " N/A" : `${user.email}`}
+//                 </div>
+//                 <br />
+//                 {/* <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   {" "}
+//                   <img src={roles} width={25} />{" "}
+//                   {user.rolename == "" ? "N/A" : `${user.rolename}`}
+//                 </div>
+//                 <br /> */}
+//                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+//                   Account Status :{" "}
+//                   {user.iS_ACTIVE === true ? (
+//                     <img src={tick} width={25} />
+//                   ) : (
+//                     <img src={crs} width={25} />
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </Box>
+
+//       </Drawer>
+//       {/* <TemporaryDrawer isopen={userdrawerOpen} /> */}
+//       {/* </div> */}
+//     </Box>
+//   );
+// };
+
+// export default Sidebar;

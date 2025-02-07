@@ -305,6 +305,7 @@ const EditVehicleDetail = (props: Props) => {
          mileage: location.state?.mileage || 0,
          createdOn: location.state?.createdOn || defaultValues,
          updatedOn: location.state?.updatedOn || defaultValues,
+         "vehicleRegistrationDate": location.state?.vehicleRegistrationDate || defaultValues,
          zoneName: location.state?.zoneName || "",
          vehiclePhotoFile: "",
          deptName: location.state?.deptName || "",

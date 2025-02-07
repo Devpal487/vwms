@@ -64,7 +64,7 @@ export default function VehicleStatusReport() {
 
   const [isPrint, setPrint] = useState([]);
 
-  const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
+  const [selectedFormat, setSelectedFormat] = useState<any>(".pdf");
 
   const [VnoOption, setVnoOption] = useState([
     { value: -1, label: "Select Vehicle No " },
@@ -81,205 +81,119 @@ export default function VehicleStatusReport() {
     setSelectedFormat((event.target as HTMLInputElement).value);
   };
 
-  const downloadTabularExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Tabular HTML.");
-      return;
-    }
+  const formik = useFormik({
+    initialValues: {
+      genderID: -1,
+      complaintDateFrom: defaultValues,
+      complaintDateTo: defaultValues,
 
-    // Prepare headers and rows for HTML table
-    const headers = ["Date", "Vehicle No", "Complain Status", "JobCard No", "Jobcard Status"];
+    },
+    validationSchema: Yup.object({
+      complaintDateTo
+        : Yup.string()
+          .required("Complaint To date required"),
+      complaintDateFrom: Yup.string()
+        .required("Complaint from date required"),
 
-    const rows = isPrint.map((item: any) => [
-      moment(item?.complaintDate).format("DD-MM-YYYY") || "",
-      item?.vehicleNo || "", // Vehicle No
-      item?.complainStatus || "", // Driver
-      item?.jobCardNo || "", // Mobile No
-      item?.jobcardStatus || "",
-    ]);
+    }),
+    onSubmit: async (values) => {
+    
+    },
+  });
 
-    // Create HTML table
-    let html = `
-      <html>
-      <head>
-        <style>
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-          }
-          th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          tr:nth-child(even) {
-            background-color: #f9f9f9;
-          }
-          tr:hover {
-            background-color: #f1f1f1;
-          }
-        </style>
-      </head>
-      <body>
-        <table>
-          <thead>
-            <tr>
-              ${headers.map((header) => `<th>${header}</th>`).join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${rows
-        .map(
-          (row) =>
-            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-        )
-        .join("")}
-          </tbody>
-        </table>
-      </body>
-      </html>
-    `;
+  // const handleDownload = async () => {
+  //   const collectData = {
+  //   "complaintDateFrom": formik.values.complaintDateFrom,
+  //       "complaintDateTo": formik.values.complaintDateTo,
+  //       "status": "detail",
+  //     show: false,
+  //     exportOption: selectedFormat, // .pdf, .xls, or TabularExc
+  //   };
+  
+  //   try {
+  //     const response = await api.post(`Report/GetVehicleStatusApi`, collectData);
+  
+  //     if (response.data.status === "Success" && response.data.base64) {
+  //       const base64String = response.data.base64;
+  //       const byteCharacters = atob(base64String);
+  //       const byteNumbers = new Array(byteCharacters.length)
+  //         .fill(0)
+  //         .map((_, i) => byteCharacters.charCodeAt(i));
+  //       const byteArray = new Uint8Array(byteNumbers);
+  
+  //       let fileType = "";
+  //       let fileName = response.data.fileName || "Report";
+  
+  //       if (selectedFormat === ".pdf") {
+  //         fileType = "application/pdf";
+  //         fileName += ".pdf";
+  //       } else if (selectedFormat === ".xls") {
+  //         fileType = "application/vnd.ms-excel";
+  //         fileName += ".xls";
+  //       } else if (selectedFormat === "TabularExc") {
+  //         fileType = "application/vnd.ms-excel";
+  //         fileName += ".xls";
+  //       }
+  
+  //       const blob = new Blob([byteArray], { type: fileType });
+  //       const link = document.createElement("a");
+  //       link.href = URL.createObjectURL(blob);
+  //       link.download = fileName;
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       URL.revokeObjectURL(link.href);
+  //     } else {
+  //       console.error("Error: No valid data received.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error downloading file:", error);
+  //   }
+  // };
 
-    // Create a Blob from the HTML string and trigger the download
-    const blob = new Blob([html], { type: "text/html" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Vehicle_data_tabular.html";
-    link.click();
-  };
+  const handleDownload = async (status: "detail" | "summary") => {
+    const collectData = {
+      complaintDateFrom: formik.values.complaintDateFrom,
+      complaintDateTo: formik.values.complaintDateTo,
+      show: false,
+      status: status,
+      exportOption: selectedFormat,
+    };
 
-  const downloadExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Excel.");
-      return;
-    }
+    try {
+      const response = await api.post(`Report/GetVehicleStatusApi`, collectData);
+      if (response.data.status === "Success" && response.data.base64) {
+        const base64String = response.data.base64;
+        const byteCharacters = atob(base64String);
+        const byteNumbers = Array.from(byteCharacters, (char) => char.charCodeAt(0));
+        const byteArray = new Uint8Array(byteNumbers);
 
-    const ws = XLSX.utils.json_to_sheet(isPrint);
+        let fileType = "";
+        let fileName = response.data.fileName || "Report";
 
-    const headers = Object.keys(isPrint[0]);
-
-    headers.forEach((header, index) => {
-      const cellAddress = `${String.fromCharCode(65 + index)}1`;
-    });
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "vehicles");
-
-    XLSX.writeFile(wb, "Vehicle_data.xlsx");
-  };
-
-  // Function to download PDF
-  const downloadPDF = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to PDF.");
-      return;
-    }
-
-    // Initialize jsPDF with 'landscape' orientation
-    const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-    const headerFontSize = 14;
-    const bodyFontSize = 12;
-
-
-    const pageWidth = doc.internal.pageSize.getWidth();
-    let yPosition = 15; 
-
-
-    const logoWidth = 30;
-    const logoHeight = 30;
-    const logoX = 15;
-    const logoY = yPosition;
-    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
-
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
-
-
-    doc.setFontSize(14);
-    doc.text("Vehicle Status Report", pageWidth / 2, yPosition + 20, { align: "center" });
-
-    yPosition += 40; 
-
-    const headers = ["Date", "Vehicle No", "Complain Status", "JobCard No", "Jobcard Status"];
-
-    const columnWidths = [50, 50, 70, 50, 50];
-
-    const headerHeight = 8;
-    const headerY = yPosition;
-    doc.setFillColor(200, 220, 255);
-    doc.rect(
-      14,
-      headerY,
-      columnWidths.reduce((a, b) => a + b, 0),
-      headerHeight,
-      "F"
-    );
-
-    doc.setFont("helvetica", "bold");
-    headers.forEach((header, index) => {
-      doc.text(
-        header,
-        14 + columnWidths.slice(0, index).reduce((a, b) => a + b, 0),
-        yPosition + headerHeight - 2
-      );
-    });
-
-    const headerBottomMargin = 6;
-    yPosition += headerHeight + headerBottomMargin;
-
-    // Add table rows
-    doc.setFontSize(bodyFontSize);
-    doc.setFont("helvetica", "normal");
-
-    isPrint.forEach((item: any, rowIndex) => {
-      const row = [
-        moment(item?.complaintDate).format("DD-MM-YYYY") || "",
-        item?.vehicleNo || "", // Vehicle No
-        item?.complainStatus || "", // Driver
-        item?.jobCardNo || "", // Mobile No
-        item?.jobcardStatus || "",
-      ];
-
-      row.forEach((cell, colIndex) => {
-        const xOffset =
-          14 + columnWidths.slice(0, colIndex).reduce((a, b) => a + b, 0);
-        if (cell) {
-          doc.text(cell.toString(), xOffset, yPosition);
+        if (selectedFormat === ".pdf") {
+          fileType = "application/pdf";
+          fileName += ".pdf";
+        } else if (selectedFormat === ".xls") {
+          fileType = "application/vnd.ms-excel";
+          fileName += ".xls";
         }
-      });
-      yPosition += 10;
 
-      if (yPosition > 180) {
-        // Adjust this to your content size for landscape
-        doc.addPage();
-        yPosition = 10; // Reset position on new page
+        const blob = new Blob([byteArray], { type: fileType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      } else {
+        console.error("Error: No valid data received.");
       }
-    });
-
-    // Save the generated PDF with a filename
-    doc.save("VehicleTrack_data.pdf");
-  };
-  // Handle Download Button Click
-  const handleDownload = () => {
-    if (selectedFormat === "excel") {
-      downloadExcel();
-    } else if (selectedFormat === "pdf") {
-      downloadPDF();
-    } else if (selectedFormat === "tabular") {
-      downloadTabularExcel();
+    } catch (error) {
+      console.error("Error downloading file:", error);
     }
   };
-
   let navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -292,7 +206,10 @@ export default function VehicleStatusReport() {
     try {
       const collectData = {
         "complaintDateFrom": formik.values.complaintDateFrom,
-        "complaintDateTo": formik.values.complaintDateTo
+        "complaintDateTo": formik.values.complaintDateTo,
+        show: true, 
+        "status": "detail",
+        exportOption: "selectedFormat", 
       };
       const response = await api.post(
         `Report/GetVehicleStatusApi`,
@@ -327,9 +244,7 @@ export default function VehicleStatusReport() {
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
             headerClassName: "MuiDataGrid-colCell",
-            // renderCell: (params) => {
-            //   return moment(params.row.trackDate).format("DD-MM-YYYY");
-            // },
+           
           },
           {
             field: "complaintDate",
@@ -355,45 +270,7 @@ export default function VehicleStatusReport() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          // {
-          //   field: "jobCardDate",
-          //   headerName: t("text.jobCardDate"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   renderCell: (params) => {
-          //     return moment(params.row.jobCardDate).format("DD-MM-YYYY");
-          //   },
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "challanDate",
-          //   headerName: t("text.challanDate"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   // align: 'right',
-          //   // headerAlign: 'right',
-          //   renderCell: (params) => {
-          //     return moment(params.row.challanDate).format("DD-MM-YYYY");
-          //   },
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "challanRcvDate",
-          //   headerName: t("text.challanRcvDate"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   renderCell: (params) => {
-          //     return moment(params.row.challanRcvDate).format("DD-MM-YYYY");
-          //   },
-          //   cellClassName: "wrap-text", // Added here
-          // },
-          // {
-          //   field: "complainStatus",
-          //   headerName: t("text.complainStatus"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
+        
           {
             field: "jobcardStatus",
             headerName: t("text.jobcardStatus"),
@@ -426,36 +303,7 @@ export default function VehicleStatusReport() {
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
 
-  const formik = useFormik({
-    initialValues: {
-      genderID: -1,
-      complaintDateFrom: defaultValues,
-      complaintDateTo: defaultValues,
-
-    },
-    validationSchema: Yup.object({
-      complaintDateTo
-        : Yup.string()
-          .required("Complaint To date required"),
-      complaintDateFrom: Yup.string()
-        .required("Complaint from date required"),
-
-    }),
-    onSubmit: async (values) => {
-      //   const response = await api.post(
-      //     `Gender/AddUpdateGenderMaster`,
-      //     values
-      //   );
-      //   try {
-      //     setToaster(false);
-      //     toast.success(response.data.mesg);
-      //     navigate("/master/GenderMaster");
-      //   } catch (error) {
-      //     setToaster(true);
-      //     toast.error(response.data.mesg);
-      //   }
-    },
-  });
+  
 
   return (
     <>
@@ -538,35 +386,36 @@ export default function VehicleStatusReport() {
               />
             </Grid>
 
-            <Grid item xs={12} sm={12} lg={12}>
-              <FormControl component="fieldset">
-                   <RadioGroup
-                                 row
-                                 value={selectedFormat}
-                                 onChange={handleFormatChange}
-                               >
-                                 <FormControlLabel
-                                   value="pdf"
-                                   control={<Radio />}
-                                   label={t("text.pdf")}
-                                 />
-                                 <FormControlLabel
-                                   value="excel"
-                                   control={<Radio />}
-                                   label={t("text.excel")}
-                                 />
-                                 <FormControlLabel
-                                   value="tabular"
-                                   control={<Radio />}
-                                   label={t("text.tabular")}
-                                 />
-                               </RadioGroup>
-              </FormControl>
-            </Grid>
+             <Grid item xs={12} sm={12} lg={12}>
+                                  <FormControl component="fieldset">
+                                    <RadioGroup
+                                      row
+                                      value={selectedFormat}
+                                      onChange={handleFormatChange}
+                                    >
+                                      <FormControlLabel
+                                        value=".pdf"
+                                        control={<Radio />}
+                                        label={t("text.pdf")}
+                                      />
+                                      <FormControlLabel
+                                        value=".xls"
+                                        control={<Radio />}
+                                        label={t("text.excel")}
+                                      />
+                                      {/* <FormControlLabel
+                                        value="TabularExc"
+                                        control={<Radio />}
+                                        label={t("text.tabular")}
+                                      /> */}
+                                    </RadioGroup>
+                                  </FormControl>
+                                </Grid>
+          
 
 
 
-            <Grid xs={12} sm={4} md={4} item>
+            <Grid xs={12} sm={3} md={3} item>
               <Button
                 type="submit"
                 fullWidth
@@ -599,7 +448,7 @@ export default function VehicleStatusReport() {
               </Button>
 
             </Grid>
-            <Grid xs={12} sm={4} md={4} item>
+            <Grid xs={12} sm={3} md={3} item>
               <Button
                 type="button"
                 fullWidth
@@ -618,21 +467,32 @@ export default function VehicleStatusReport() {
               </Button>
             </Grid>
 
-            <Grid item xs={12} sm={4} md={4}>
-              <Button
-                type="button"
-                fullWidth
-                style={{
-                  backgroundColor: "#4caf50",
-                  color: "white",
-                  marginTop: "10px",
-                }}
-                startIcon={<DownloadIcon />}
-                onClick={handleDownload}
-              >
-               {t("text.download")}
-              </Button>
-            </Grid>
+            <Grid item xs={12} sm={3} md={3}>
+          
+        <Button
+          fullWidth
+          style={{ backgroundColor: "#4caf50", color: "white", marginTop: "10px" }}
+          startIcon={<DownloadIcon />}
+          onClick={() => handleDownload("detail")}
+        >
+            {t("text.download")}
+          
+        </Button>
+      </Grid>
+
+      <Grid item xs={12} sm={3} md={3}>
+        <Button
+          fullWidth
+          style={{ backgroundColor: "#2196f3", color: "white", marginTop: "10px" }}
+          startIcon={<DownloadIcon />}
+          onClick={() => handleDownload("summary")}
+        > 
+        {t("text.downloadSummary")}
+          
+        </Button>
+      </Grid>
+             
+            
           </Grid>
 
           <Grid
