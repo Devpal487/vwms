@@ -9,7 +9,24 @@ import {
   useState,
 } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Box, InputAdornment, List, ListItem, ListItemIcon, ListItemText, Paper, Stack, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import {
+  Box,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Paper,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+} from "@mui/material";
 import {
   Card,
   Grid,
@@ -98,32 +115,42 @@ export default function HomePage() {
     if (key.toLowerCase() === "inhouse") {
       return; // Do nothing for inhouse status
     }
-    navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
+    navigate(`/Reports/ComplainStatus`, {
+      state: { status: key.toUpperCase() },
+    });
   };
 
   // <Button onClick={() => handleClick1("pending")}>Pending Complaints</Button>
 
-
   const handleClickVno = (key: any) => {
-    navigate(`/Reports/VehicleItemService`, { state: {} })
-  }
+    navigate(`/Reports/VehicleItemService`, { state: {} });
+  };
   const [ispending, setpending] = useState(0);
   const [isprogress, setprogress] = useState(0);
   const [isoutsource, setoutsource] = useState(0);
   const [isinhouse, setinhouse] = useState(0);
   const [isclosed, setclosed] = useState(0);
-  const fetchComplaintStatus = async (status: string, setter: React.Dispatch<any>) => {
+  const fetchComplaintStatus = async (
+    status: string,
+    setter: React.Dispatch<any>
+  ) => {
     try {
-      const response = await api.get(`Dashboard/GetComplaintsStatus?Status=${status}`);
+      const response = await api.get(
+        `Dashboard/GetComplaintsStatus?Status=${status}`
+      );
       const data = response.data.data || [];
-      const count = data.reduce((acc: any, item: any) => acc + (item.Status || 0), 0);
+      const count = data.reduce(
+        (acc: any, item: any) => acc + (item.Status || 0),
+        0
+      );
       setter(count);
     } catch (error) {
       console.error(`Error fetching ${status} data:`, error);
     }
   };
   const handlePending = () => fetchComplaintStatus("pending", setpending);
-  const handleInProgress = () => fetchComplaintStatus("inprogress", setprogress);
+  const handleInProgress = () =>
+    fetchComplaintStatus("inprogress", setprogress);
   const handleOutsource = () => fetchComplaintStatus("JobWork", setoutsource);
   const handleInHouse = () => fetchComplaintStatus("inprogress", setinhouse); // Adjust the status as needed
   const handleClosed = () => fetchComplaintStatus("Complete", setclosed);
@@ -152,7 +179,6 @@ export default function HomePage() {
     // GetScrapDetail();
   }, []);
   useEffect(() => {
-
     setIsShow(true);
     setIsShow2(false);
     setIsShow3(false);
@@ -178,7 +204,7 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
-      setIsShow(true)
+      setIsShow(true);
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -190,13 +216,16 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
           { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
-          { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
+          {
+            field: "vehicleTypename",
+            headerName: t("text.VehicleType"),
+            flex: 1,
+          },
           { field: "actprice", headerName: t("text.ActualPrice"), flex: 1 },
           { field: "amount", headerName: t("text.Expense"), flex: 1 },
           { field: "age", headerName: t("text.Age"), flex: 1 },
@@ -209,7 +238,9 @@ export default function HomePage() {
   };
   const GetTopVehicleMaxNoOfComplaints = async () => {
     try {
-      const response = await api.get(`Dashboard/GetTopVehicleMaxNoOfComplaints`);
+      const response = await api.get(
+        `Dashboard/GetTopVehicleMaxNoOfComplaints`
+      );
       const data = response.data.data;
       console.log("Fetched Data:", data);
       const processedData1 = data.map((item: any, index: number) => ({
@@ -236,13 +267,16 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
           { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
-          { field: "noOfComplaints", headerName: t("text.Complaints"), flex: 1 },
+          {
+            field: "noOfComplaints",
+            headerName: t("text.Complaints"),
+            flex: 1,
+          },
           { field: "totaldays", headerName: t("text.totaldays"), flex: 1 },
           { field: "amount", headerName: t("text.Expense"), flex: 1 },
         ];
@@ -281,8 +315,7 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
@@ -328,13 +361,16 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: "Sr No.", flex: 1 },
           { field: "vehicleNo", headerName: "Vehicle No", flex: 1 },
-          { field: "vehicleRegistrationDate", headerName: "Registration Date", flex: 1 },
+          {
+            field: "vehicleRegistrationDate",
+            headerName: "Registration Date",
+            flex: 1,
+          },
           { field: "filename", headerName: "RC Document", flex: 1 },
           { field: "vehiclePhotoFile", headerName: "Vehicle Photo", flex: 1 },
           { field: "vehicleTypename", headerName: "Vehicle Type", flex: 1 },
@@ -374,8 +410,7 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: "Sr No.", flex: 1 },
@@ -385,13 +420,11 @@ export default function HomePage() {
         ];
 
         setColumns(dynamicColumns);
-
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
 
   const GetScrapDetail = async () => {
     try {
@@ -427,8 +460,7 @@ export default function HomePage() {
                 spacing={1}
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "1%" }}
-              >
-              </Stack>
+              ></Stack>
             ),
           },
           { field: "serialNo", headerName: "Sr No.", flex: 1 },
@@ -665,12 +697,10 @@ export default function HomePage() {
   );
   useEffect(() => {
     setTimeout(() => {
-      setZones1([
-      ]);
+      setZones1([]);
       setIsLoading1(false);
     }, 2000);
   }, []);
-
 
   const [isPrint, setPrint] = useState([]);
   const [isPrint1, setPrint1] = useState([]);
@@ -771,11 +801,26 @@ export default function HomePage() {
     try {
       const response = await api.get(`Dashboard/GetComplaintsVehicleStatus`);
       const data = response.data.data;
-      const vehicleInWorkshop = data.reduce((acc: any, item: any) => acc + (item.complaintOnVehicle || 0), 0);
-      const inhouse = data.reduce((acc: any, item: any) => acc + (item.inSideVehicle || 0), 0);
-      const outsource = data.reduce((acc: any, item: any) => acc + (item.outSideVehicle || 0), 0);
-      const completed = data.reduce((acc: any, item: any) => acc + (item.completeVehicle || 0), 0);
-      const totalVehicles = data.reduce((acc: any, item: any) => acc + (item.totWVehicle || 0), 0);
+      const vehicleInWorkshop = data.reduce(
+        (acc: any, item: any) => acc + (item.complaintOnVehicle || 0),
+        0
+      );
+      const inhouse = data.reduce(
+        (acc: any, item: any) => acc + (item.inSideVehicle || 0),
+        0
+      );
+      const outsource = data.reduce(
+        (acc: any, item: any) => acc + (item.outSideVehicle || 0),
+        0
+      );
+      const completed = data.reduce(
+        (acc: any, item: any) => acc + (item.completeVehicle || 0),
+        0
+      );
+      const totalVehicles = data.reduce(
+        (acc: any, item: any) => acc + (item.totWVehicle || 0),
+        0
+      );
       setRunn(vehicleInWorkshop);
       setIdle(inhouse);
       setStop(outsource);
@@ -784,7 +829,11 @@ export default function HomePage() {
       if (data.length > 0) {
         const columns2 = [
           { field: "serialNo", headerName: "Sr. No", flex: 0.5 },
-          { field: "complaintOnVehicle", headerName: "Vehicle In Workshop", flex: 1 },
+          {
+            field: "complaintOnVehicle",
+            headerName: "Vehicle In Workshop",
+            flex: 1,
+          },
           { field: "inSideVehicle", headerName: "Inhouse", flex: 1 },
           { field: "outSideVehicle", headerName: "Outsource", flex: 1 },
           { field: "completeVehicle", headerName: "Completed", flex: 1 },
@@ -824,14 +873,14 @@ export default function HomePage() {
         };
         setComplaints(data);
         setTotal(Object.values(data).reduce((sum, count) => sum + count, 0));
-
       } catch (error) {
         console.error("Error fetching complaint statuses:", error);
       }
     };
     fetchAllStatuses();
   }, []);
-  const calculatePercentage = (count: number) => (total ? Math.round((count / total) * 100) : 0);
+  const calculatePercentage = (count: number) =>
+    total ? Math.round((count / total) * 100) : 0;
   const adjustedColumns4 = columns4.map((column: any) => ({
     ...column,
   }));
@@ -848,10 +897,8 @@ export default function HomePage() {
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
   }));
-  useEffect(() => {
-  }, [getTop]);
-  useEffect(() => {
-  }, [getTop1]);
+  useEffect(() => {}, [getTop]);
+  useEffect(() => {}, [getTop1]);
   const adjustedColumns1 = columns1.map((column: any) => ({
     ...column,
   }));
@@ -887,8 +934,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row) => `
+            .map(
+              (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleTypename}</td>
@@ -896,8 +943,8 @@ export default function HomePage() {
               <td>${row.amount}</td>
               <td>${row.age}</td>
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
@@ -975,10 +1022,10 @@ export default function HomePage() {
   //                 border-collapse: collapse;
   //               }
   //              table, th, td {
-  //   border: 0.1em solid black; 
+  //   border: 0.1em solid black;
   // }
   // th, td {
-  //   padding: 0.5%; 
+  //   padding: 0.5%;
   //   text-align: left;
   // }
   //             </style>
@@ -1021,8 +1068,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row) => `
+            .map(
+              (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.noOfComplaints}</td>
@@ -1030,12 +1077,11 @@ export default function HomePage() {
               <td>${row.amount}</td>
              
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
-
 
     const printWindow = window.open("", "_blank");
 
@@ -1079,7 +1125,6 @@ th, td {
       return;
     }
 
-
     const printContent = `
       <table>
         <thead>
@@ -1093,8 +1138,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row: any) => `
+            .map(
+              (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.effectiveDate}</td>
@@ -1102,12 +1147,11 @@ th, td {
               <td>${row.attachMentName}</td>
               <td>${row.licenceType}</td>
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
-
 
     const printWindow = window.open("", "_blank");
 
@@ -1151,7 +1195,6 @@ th, td {
       return;
     }
 
-
     const printContent = `
       <table>
         <thead>
@@ -1165,8 +1208,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row: any) => `
+            .map(
+              (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleRegistrationDate}</td>
@@ -1174,12 +1217,11 @@ th, td {
               <td>${row.vehiclePhotoFile}</td>
               <td>${row.vehicleTypename}</td>
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
-
 
     const printWindow = window.open("", "_blank");
 
@@ -1223,7 +1265,6 @@ th, td {
       return;
     }
 
-
     const printContent = `
       <table>
         <thead>
@@ -1235,19 +1276,18 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row: any) => `
+            .map(
+              (row: any) => `
             <tr>
               <td>${row.vehicleno}</td>
               <td>${row.noOfServices}</td>
             <td>${row.jobCardDate}</td>
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
-
 
     const printWindow = window.open("", "_blank");
 
@@ -1291,7 +1331,6 @@ th, td {
       return;
     }
 
-
     const printContent = `
       <table>
         <thead>
@@ -1303,19 +1342,18 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-        .map(
-          (row: any) => `
+            .map(
+              (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.date}</td>
             
             </tr>`
-        )
-        .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     `;
-
 
     const printWindow = window.open("", "_blank");
 
@@ -1369,23 +1407,26 @@ th, td {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: '1%,',
+                  padding: "1%,",
                   backgroundColor: "#fff",
-                  border: `2px solid ${selectedCardId === item.id ? "#3498db" : "#e0e0e0"}`,
+                  border: `2px solid ${
+                    selectedCardId === item.id ? "#3498db" : "#e0e0e0"
+                  }`,
                   borderRadius: "8px",
                   boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                  borderLeft: `4px solid ${item.id === 0
-                    ? "blue"
-                    : item.id === 1
+                  borderLeft: `4px solid ${
+                    item.id === 0
+                      ? "blue"
+                      : item.id === 1
                       ? "red"
                       : item.id === 2
-                        ? "green"
-                        : item.id === 3
-                          ? "orange"
-                          : item.id === 4
-                            ? "purple"
-                            : "teal"
-                    }`,
+                      ? "green"
+                      : item.id === 3
+                      ? "orange"
+                      : item.id === 4
+                      ? "purple"
+                      : "teal"
+                  }`,
                   transition: "transform 0.3s, box-shadow 0.3s",
                   cursor: "pointer",
                   "&:hover": {
@@ -1412,26 +1453,20 @@ th, td {
             </Grid>
           ))}
         </Grid>
-
-
       </Box>
       <div>
-        <div
-        >
-          <CardContent>
-          </CardContent>
+        <div>
+          <CardContent></CardContent>
         </div>
       </div>
-      <div
-      >
-        <CardContent>
-        </CardContent>
+      <div>
+        <CardContent></CardContent>
       </div>
       {value === 0 && (
         <div>
           <Grid container spacing={2}>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={8} lg={8} sm={6} >
+              <Grid item xs={12} md={8} lg={8} sm={6}>
                 <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
                   <Accordion expanded={true}>
                     <AccordionSummary
@@ -1444,28 +1479,35 @@ th, td {
                         width: "100%",
                         marginTop: "-5%",
                         "&:hover": {
-                          backgroundColor: `var(--grid-headerBackground)` // Retain the same background on hover
+                          backgroundColor: `var(--grid-headerBackground)`, // Retain the same background on hover
                         },
                         "&.Mui-focusVisible": {
-                          backgroundColor: `var(--grid-headerBackground)` // Prevent focus styles from changing background
+                          backgroundColor: `var(--grid-headerBackground)`, // Prevent focus styles from changing background
                         },
                         "&:focus-within": {
-                          backgroundColor: "#42b6f5", // Prevent focus from child elements (e.g., TextField) from changing background
+                          backgroundColor: `var(--grid-headerBackground)`, // Prevent focus from child elements (e.g., TextField) from changing background
                         },
                       }}
                     >
                       {isShow && (
-                        <Typography sx={{
-                          fontWeight: "bold",
-                          fontSize: "1.2rem",
-                          flex: 1,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center", // Ensures vertical alignment
-                        }}>
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            fontSize: "1.2rem",
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center", // Ensures vertical alignment
+                          }}
+                        >
                           {t("text.VEHICLEEXPENDITURE")}
-
-                          <Grid style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <Grid
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1473,7 +1515,11 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} />
+                                    <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />
                                   </InputAdornment>
                                 ),
                               }}
@@ -1484,9 +1530,15 @@ th, td {
                                 "& .MuiOutlinedInput-root": {
                                   fontSize: "0.8rem",
                                   padding: "4px 8px",
-                                  "& fieldset": { borderColor: "#42b6f5" },
-                                  "&:hover fieldset": { borderColor: "#3498db" },
-                                  "&.Mui-focused fieldset": { borderColor: "#1d78c1" },
+                                  "& fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
                                 },
                               }}
                               onChange={(e) => {
@@ -1510,9 +1562,14 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
-                          </Grid>    </Typography>
+                          </Grid>{" "}
+                        </Typography>
                       )}
                       {isShow2 && (
                         <Typography
@@ -1526,8 +1583,13 @@ th, td {
                           }}
                         >
                           {t("text.Complaints")}
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1535,7 +1597,11 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} />
+                                    <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />
                                   </InputAdornment>
                                 ),
                               }}
@@ -1546,9 +1612,15 @@ th, td {
                                 "& .MuiOutlinedInput-root": {
                                   fontSize: "0.8rem",
                                   padding: "4px 8px",
-                                  "& fieldset": { borderColor: "#42b6f5" },
-                                  "&:hover fieldset": { borderColor: "#3498db" },
-                                  "&.Mui-focused fieldset": { borderColor: "#1d78c1" },
+                                  "& fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: `var(--grid-headerBackground)`,
+                                  },
                                 },
                               }}
                               onChange={(e) => setSearchTerm1(e.target.value)}
@@ -1569,23 +1641,35 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
                           </div>
                         </Typography>
                       )}
 
                       {isShow3 && (
-                        <Typography sx={{
-                          fontWeight: 600,
-                          fontSize: "1rem",
-                          flex: 1,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center", // Ensures vertical alignment
-                        }}>
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "1rem",
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center", // Ensures vertical alignment
+                          }}
+                        >
                           {t("text.INSURANCE")}
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1593,25 +1677,29 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} /> {/* Add the search icon */}
+                                    <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />
                                   </InputAdornment>
                                 ),
                               }}
                               sx={{
-                                backgroundColor: "#f1f1f1", // Light grey background for better contrast
-                                borderRadius: "20px",       // Rounded edges for modern appearance
-                                width: "150px",             // Adjust width for a smaller size
+                                backgroundColor: "#f1f1f1",
+                                borderRadius: "20px",
+                                width: "150px",
                                 "& .MuiOutlinedInput-root": {
-                                  fontSize: "0.8rem",        // Smaller text size
-                                  padding: "4px 8px",        // Compact padding
+                                  fontSize: "0.8rem",
+                                  padding: "4px 8px",
                                   "& fieldset": {
-                                    borderColor: "#42b6f5",  // Light blue border
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&:hover fieldset": {
-                                    borderColor: "#3498db",  // Darker blue on hover
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&.Mui-focused fieldset": {
-                                    borderColor: "#1d78c1",  // Even darker blue when focused
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                 },
                               }}
@@ -1633,23 +1721,34 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
-
                           </div>
                         </Typography>
                       )}
                       {isShow4 && (
-                        <Typography sx={{
-                          fontWeight: 600,
-                          fontSize: "1rem",
-                          flex: 1,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center", // Ensures vertical alignment
-                        }}>
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "1rem",
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center", // Ensures vertical alignment
+                          }}
+                        >
                           {t("text.REGISTRATION")}
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1657,25 +1756,30 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} /> {/* Add the search icon */}
+                                    <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />{" "}
+                                    {/* Add the search icon */}
                                   </InputAdornment>
                                 ),
                               }}
                               sx={{
-                                backgroundColor: "#f1f1f1", // Light grey background for better contrast
-                                borderRadius: "20px",       // Rounded edges for modern appearance
-                                width: "150px",             // Adjust width for a smaller size
+                                backgroundColor: "#f1f1f1",
+                                borderRadius: "20px",
+                                width: "150px",
                                 "& .MuiOutlinedInput-root": {
-                                  fontSize: "0.8rem",        // Smaller text size
-                                  padding: "4px 8px",        // Compact padding
+                                  fontSize: "0.8rem",
+                                  padding: "4px 8px",
                                   "& fieldset": {
-                                    borderColor: "#42b6f5",  // Light blue border
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&:hover fieldset": {
-                                    borderColor: "#3498db",  // Darker blue on hover
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&.Mui-focused fieldset": {
-                                    borderColor: "#1d78c1",  // Even darker blue when focused
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                 },
                               }}
@@ -1697,23 +1801,34 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
-
                           </div>
                         </Typography>
                       )}
                       {isShow5 && (
-                        <Typography sx={{
-                          fontWeight: 600,
-                          fontSize: "1rem",
-                          flex: 1,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center", // Ensures vertical alignment
-                        }}>
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "1rem",
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center", // Ensures vertical alignment
+                          }}
+                        >
                           {t("text.SERVICES")}
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1721,25 +1836,30 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} /> {/* Add the search icon */}
+                                     <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />{" "}
+                                    {/* Add the search icon */}
                                   </InputAdornment>
                                 ),
                               }}
                               sx={{
-                                backgroundColor: "#f1f1f1", // Light grey background for better contrast
-                                borderRadius: "20px",       // Rounded edges for modern appearance
-                                width: "150px",             // Adjust width for a smaller size
+                                backgroundColor: "#f1f1f1",
+                                borderRadius: "20px",
+                                width: "150px",
                                 "& .MuiOutlinedInput-root": {
-                                  fontSize: "0.8rem",        // Smaller text size
-                                  padding: "4px 8px",        // Compact padding
+                                  fontSize: "0.8rem",
+                                  padding: "4px 8px",
                                   "& fieldset": {
-                                    borderColor: "#42b6f5",  // Light blue border
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&:hover fieldset": {
-                                    borderColor: "#3498db",  // Darker blue on hover
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&.Mui-focused fieldset": {
-                                    borderColor: "#1d78c1",  // Even darker blue when focused
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                 },
                               }}
@@ -1761,23 +1881,34 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
-
                           </div>
                         </Typography>
                       )}
                       {isShow6 && (
-                        <Typography sx={{
-                          fontWeight: 600,
-                          fontSize: "1rem",
-                          flex: 1,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center", // Ensures vertical alignment
-                        }}>
+                        <Typography
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: "1rem",
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center", // Ensures vertical alignment
+                          }}
+                        >
                           {t("text.SCRAPDETAIL")}
-                          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1rem",
+                            }}
+                          >
                             <TextField
                               placeholder={t("text.Search")}
                               variant="outlined"
@@ -1785,25 +1916,30 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <SearchIcon sx={{ color: "#42b6f5" }} /> {/* Add the search icon */}
+                                     <SearchIcon
+                                      sx={{
+                                        color: `var(--grid-headerBackground)`,
+                                      }}
+                                    />{" "}
+                                    {/* Add the search icon */}
                                   </InputAdornment>
                                 ),
                               }}
                               sx={{
-                                backgroundColor: "#f1f1f1", // Light grey background for better contrast
-                                borderRadius: "20px",       // Rounded edges for modern appearance
-                                width: "150px",             // Adjust width for a smaller size
+                                backgroundColor: "#f1f1f1",
+                                borderRadius: "20px",
+                                width: "150px",
                                 "& .MuiOutlinedInput-root": {
-                                  fontSize: "0.8rem",        // Smaller text size
-                                  padding: "4px 8px",        // Compact padding
+                                  fontSize: "0.8rem",
+                                  padding: "4px 8px",
                                   "& fieldset": {
-                                    borderColor: "#42b6f5",  // Light blue border
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&:hover fieldset": {
-                                    borderColor: "#3498db",  // Darker blue on hover
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                   "&.Mui-focused fieldset": {
-                                    borderColor: "#1d78c1",  // Even darker blue when focused
+                                    borderColor: `var(--grid-headerBackground)`,
                                   },
                                 },
                               }}
@@ -1825,14 +1961,23 @@ th, td {
                                   }}
                                 />
                               }
-                              label={<span style={{ color: "white" }}>{t("text.top10")}</span>}
+                              label={
+                                <span style={{ color: "white" }}>
+                                  {t("text.top10")}
+                                </span>
+                              }
                             />
-
                           </div>
                         </Typography>
                       )}
                     </AccordionSummary>
-                    <AccordionDetails style={{ background: "white", height: "50vh", overflow: "auto", }}>
+                    <AccordionDetails
+                      style={{
+                        background: "white",
+                        height: "50vh",
+                        overflow: "auto",
+                      }}
+                    >
                       {isShow && (
                         <Grid container spacing={2}>
                           <Grid item xs={12} sm={12} lg={12}>
@@ -1874,8 +2019,6 @@ th, td {
                                   // rows={getTop ? RepairOption.slice(0, 10) : RepairOption}
                                   // rows={RepairOption.length > 0 ? RepairOption : []}
                                   columns={[
-
-
                                     // { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
                                     // { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
                                     // { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
@@ -1888,21 +2031,29 @@ th, td {
                                       flex: 1.5,
                                       renderCell: (params) => (
                                         <span
-                                          style={{ cursor: 'pointer', color: '#007bff' }}
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "#007bff",
+                                          }}
                                           onClick={() => {
-                                            navigate(`/Reports/VehicleItemService`, {
-                                              state: { vehicleNo: params.row.vehicleNo },
-                                              // for report page
-                                              //    import { useLocation } from 'react-router-dom';
+                                            navigate(
+                                              `/Reports/VehicleItemService`,
+                                              {
+                                                state: {
+                                                  vehicleNo:
+                                                    params.row.vehicleNo,
+                                                },
+                                                // for report page
+                                                //    import { useLocation } from 'react-router-dom';
 
-                                              // const VehicleItemServicePage = () => {
-                                              //   const location = useLocation();
-                                              //   const { vehicleNo } = location.state || {};
+                                                // const VehicleItemServicePage = () => {
+                                                //   const location = useLocation();
+                                                //   const { vehicleNo } = location.state || {};
 
-                                              //   return <div>Vehicle No: {vehicleNo}</div>;
-                                              // };
-
-                                            });
+                                                //   return <div>Vehicle No: {vehicleNo}</div>;
+                                                // };
+                                              }
+                                            );
                                           }}
                                         >
                                           {params.row.vehicleNo}
@@ -1914,17 +2065,33 @@ th, td {
                                       headerName: t("text.VehicleType"),
                                       flex: 1.5,
                                     },
-                                    { field: "actprice", headerName: t("text.ActualPrice"), flex: 0.7 },
-                                    { field: "amount", headerName: t("text.Expense"), flex: 0.7 },
-                                    { field: "age", headerName: t("text.Age"), flex: 0.7 },
+                                    {
+                                      field: "actprice",
+                                      headerName: t("text.ActualPrice"),
+                                      flex: 0.7,
+                                    },
+                                    {
+                                      field: "amount",
+                                      headerName: t("text.Expense"),
+                                      flex: 0.7,
+                                    },
+                                    {
+                                      field: "age",
+                                      headerName: t("text.Age"),
+                                      flex: 0.7,
+                                    },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -1939,7 +2106,6 @@ th, td {
                                       color: "white",
                                     },
                                   }}
-
                                 />
                               </div>
                             )}
@@ -1985,36 +2151,59 @@ th, td {
                                   }
                                   //   rows={ComplaintsOption.length > 0 ? ComplaintsOption : []}
                                   columns={[
-
                                     {
-                                      field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1,
-                                      renderCell: (params) =>
-                                      (
+                                      field: "vehicleNo",
+                                      headerName: t("text.vehicleNo12"),
+                                      flex: 1,
+                                      renderCell: (params) => (
                                         <span
-                                          style={{ cursor: 'pointer', color: '#007bff' }}
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "#007bff",
+                                          }}
                                           onClick={() => {
-                                            navigate(`/Reports/ComplainStatus`, {
-                                              state: { vehicleNo: params.row.vehicleNo },
-                                            });
+                                            navigate(
+                                              `/Reports/ComplainStatus`,
+                                              {
+                                                state: {
+                                                  vehicleNo:
+                                                    params.row.vehicleNo,
+                                                },
+                                              }
+                                            );
                                           }}
                                         >
                                           {params.row.vehicleNo}
                                         </span>
-                                      )
-
+                                      ),
                                     },
-                                    { field: "noOfComplaints", headerName: t("text.noOfComplaints"), flex: 1 },
-                                    { field: "totaldays", headerName: t("text.totaldays"), flex: 1 },
-                                    { field: "amount", headerName: t("text.Expense"), flex: 1 },
-
+                                    {
+                                      field: "noOfComplaints",
+                                      headerName: t("text.noOfComplaints"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "totaldays",
+                                      headerName: t("text.totaldays"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "amount",
+                                      headerName: t("text.Expense"),
+                                      flex: 1,
+                                    },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -2074,27 +2263,53 @@ th, td {
                                   }
                                   //  rows={ReorderOption.length > 0 ? ReorderOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
                                     {
-                                      field: "effectiveDate", headerName: t("text.effectiveDate"), flex: 1, renderCell(params) {
-                                        return dayjs(params.row.effectiveDate).format("DD-MMM-YYYY")
+                                      field: "vehicleNo",
+                                      headerName: t("text.vehicleNo12"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "effectiveDate",
+                                      headerName: t("text.effectiveDate"),
+                                      flex: 1,
+                                      renderCell(params) {
+                                        return dayjs(
+                                          params.row.effectiveDate
+                                        ).format("DD-MMM-YYYY");
                                       },
                                     },
                                     {
-                                      field: "todate", headerName: t("text.ExpiryDate"), flex: 1, renderCell(params) {
-                                        return dayjs(params.row.todate).format("DD-MMM-YYYY")
+                                      field: "todate",
+                                      headerName: t("text.ExpiryDate"),
+                                      flex: 1,
+                                      renderCell(params) {
+                                        return dayjs(params.row.todate).format(
+                                          "DD-MMM-YYYY"
+                                        );
                                       },
                                     },
-                                    { field: "attachMentName", headerName: t("text.Document"), flex: 1.5, },
-                                    { field: "licenceType", headerName: t("text.DocumentType"), flex: 1 },
+                                    {
+                                      field: "attachMentName",
+                                      headerName: t("text.Document"),
+                                      flex: 1.5,
+                                    },
+                                    {
+                                      field: "licenceType",
+                                      headerName: t("text.DocumentType"),
+                                      flex: 1,
+                                    },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -2154,23 +2369,48 @@ th, td {
                                   }
                                   // rows={OverDueOption.length > 0 ? OverDueOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 0.9 },
                                     {
-                                      field: "vehicleRegistrationDate", headerName: t("text.RegistrationOn"), flex: 0.9, renderCell(params) {
-                                        return dayjs(params.row.vehicleRegistrationDate).format("DD-MMM-YYYY")
+                                      field: "vehicleNo",
+                                      headerName: t("text.vehicleNo12"),
+                                      flex: 0.9,
+                                    },
+                                    {
+                                      field: "vehicleRegistrationDate",
+                                      headerName: t("text.RegistrationOn"),
+                                      flex: 0.9,
+                                      renderCell(params) {
+                                        return dayjs(
+                                          params.row.vehicleRegistrationDate
+                                        ).format("DD-MMM-YYYY");
                                       },
                                     },
-                                    { field: "filename", headerName: t("text.RCDocument1"), flex: 1 },
-                                    { field: "vehiclePhotoFile", headerName: t("text.vehiclePhoto"), flex: 1.2 },
-                                    { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
+                                    {
+                                      field: "filename",
+                                      headerName: t("text.RCDocument1"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "vehiclePhotoFile",
+                                      headerName: t("text.vehiclePhoto"),
+                                      flex: 1.2,
+                                    },
+                                    {
+                                      field: "vehicleTypename",
+                                      headerName: t("text.VehicleType"),
+                                      flex: 1,
+                                    },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -2230,21 +2470,38 @@ th, td {
                                   }
                                   //rows={IssuedStatusOption.length > 0 ? IssuedStatusOption : []}
                                   columns={[
-                                    { field: "vehicleno", headerName: t("text.vehicleNo12"), flex: 1 },
-                                    { field: "noOfServices", headerName: t("text.noOfServices"), flex: 1 },
                                     {
-                                      field: "jobCardDate", headerName: t("text.LastService"), flex: 1, renderCell(params) {
-                                        return dayjs(params.row.jobCardDate).format("DD-MMM-YYYY")
+                                      field: "vehicleno",
+                                      headerName: t("text.vehicleNo12"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "noOfServices",
+                                      headerName: t("text.noOfServices"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "jobCardDate",
+                                      headerName: t("text.LastService"),
+                                      flex: 1,
+                                      renderCell(params) {
+                                        return dayjs(
+                                          params.row.jobCardDate
+                                        ).format("DD-MMM-YYYY");
                                       },
-                                    }
+                                    },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -2304,20 +2561,33 @@ th, td {
                                   }
                                   // rows={DocumentTypeOption.length > 0 ? DocumentTypeOption : []}
                                   columns={[
-                                    { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
                                     {
-                                      field: "date", headerName: t("text.ScrapDate"), flex: 1, renderCell(params) {
-                                        return dayjs(params.row.date).format("DD-MM-YYYY")
+                                      field: "vehicleNo",
+                                      headerName: t("text.vehicleNo12"),
+                                      flex: 1,
+                                    },
+                                    {
+                                      field: "date",
+                                      headerName: t("text.ScrapDate"),
+                                      flex: 1,
+                                      renderCell(params) {
+                                        return dayjs(params.row.date).format(
+                                          "DD-MM-YYYY"
+                                        );
                                       },
                                     },
                                   ]}
                                   autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map((size) => ({
-                                    value: size,
-                                    label: `${size}`,
-                                  }))}
+                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                    (size) => ({
+                                      value: size,
+                                      label: `${size}`,
+                                    })
+                                  )}
                                   initialState={{
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: {
+                                      paginationModel: { pageSize: 5 },
+                                    },
                                   }}
                                   slotProps={{
                                     toolbar: { showQuickFilter: false },
@@ -2356,8 +2626,6 @@ th, td {
                       height: "62.5vh",
                       overflow: "auto",
                     }}
-
-
                   >
                     <Grid
                       style={{
@@ -2409,28 +2677,38 @@ th, td {
                             <Typography
                               variant="h6"
                               style={{
-                                color: key.toLowerCase() === "inhouse" ? "grey" : getColor(key),
-                                cursor: key.toLowerCase() === "inhouse" ? "default" : "pointer",
+                                color:
+                                  key.toLowerCase() === "inhouse"
+                                    ? "grey"
+                                    : getColor(key),
+                                cursor:
+                                  key.toLowerCase() === "inhouse"
+                                    ? "default"
+                                    : "pointer",
                                 fontSize: "100%",
                                 margin: "2.5%",
                               }}
-                              onClick={() => key.toLowerCase() !== "inhouse" && handleClick1(key)}
+                              onClick={() =>
+                                key.toLowerCase() !== "inhouse" &&
+                                handleClick1(key)
+                              }
                             >
-                              {t(`text.${key.toUpperCase()}`)}: {complaints[key as keyof typeof complaints]}
+                              {t(`text.${key.toUpperCase()}`)}:{" "}
+                              {complaints[key as keyof typeof complaints]}
                             </Typography>
                             <ProgressBar
-                              completed={calculatePercentage(complaints[key as keyof typeof complaints])}
+                              completed={calculatePercentage(
+                                complaints[key as keyof typeof complaints]
+                              )}
                               bgColor={getColor(key)}
                             />
                           </div>
                         ))}
                       </div>
-
                     </Grid>
                   </Card>
                 </motion.div>
               </Grid>
-
             </Grid>
             <Grid
               xs={12}
@@ -2474,12 +2752,3 @@ const getColor = (status: string) => {
       return "white";
   }
 };
-
-
-
-
-
-
-
-
-

@@ -12,6 +12,14 @@ const resources = {
       message: {},
       text: {
         //3/2/2025
+        complaintDateTo:"Complaint Date To",
+        complaintDateFrom:"Complaint Date From",
+        
+        mrnDateTo:"MRN Date To",
+        mrnDatefrom:"MRN Date From",
+        jobcarddateto:"Jobcard Date To",
+        jobcarddatefrom:"Jobcard Date From",
+
         TotalSGstAmt: "Total SGST Amount:",
         TotalCGstAmt: "Total CGST Amount:",
         //TotalGST:"Total GST",
@@ -2409,7 +2417,7 @@ const resources = {
         complaint: "Complaint",
         complaintDates: "Enter complaint Date",
         complaintNos: "Complaint Number",
-        itemIDs: " Select Item Name",
+        itemIDs: "Select Item Name",
         complaintTypes: "Enter complaint Type",
         complaintDocs: "Enter complaintDoc",
         empIds: "Select employee name",
@@ -9139,6 +9147,13 @@ const resources = {
       message: {},
       text: {
         //
+        complainStatus12: "स्थिति",
+        complaintDateTo: "शिकायत दिनांक तक",
+        complaintDateFrom: "शिकायत दिनांक से",
+        mrnDateTo: "एमआरएन दिनांक तक",
+        mrnDatefrom: "एमआरएन दिनांक से",
+        jobcarddateto: "जॉब कार्ड दिनांक तक",
+        jobcarddatefrom: "जॉब कार्ड दिनांक से",
         TotalSGstAmt: "कुल एस.जी.एस.टी राशि:",
         TotalCGstAmt: "कुल सी.जी.एस.टी राशि:",
         top10: "शीर्ष 10",

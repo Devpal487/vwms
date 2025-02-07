@@ -362,7 +362,7 @@ export default function ComplainStatus() {
             field: "serialNo",
             headerName: t("text.SrNo"),
             flex: 1,
-            //  headerClassName: "MuiDataGrid-colCell",
+              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
 
@@ -370,35 +370,35 @@ export default function ComplainStatus() {
             field: "complainNo",
             headerName: t("text.complainNo"),
             flex: 1.2,
-            //  headerClassName: "MuiDataGrid-colCell",
+              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complaint",
             headerName: t("text.complaint"),
             flex: 1.2,
-            //  headerClassName: "MuiDataGrid-colCell",
+              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo12"),
             flex: 1.2,
-            //  headerClassName: "MuiDataGrid-colCell",
+              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "jobCardNo",
             headerName: t("text.jobCardNo"),
             flex: 1.2,
-            // headerClassName: "MuiDataGrid-colCell",
+             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "complainStatus",
             headerName: t("text.complainStatus12"),
             flex: 1,
-            //  headerClassName: "MuiDataGrid-colCell",
+              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
 
           },
@@ -408,6 +408,7 @@ export default function ComplainStatus() {
             headerName: t("text.complaintDate"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
             renderCell: (params) => {
               return moment(params.row.complaintDate).format("DD-MM-YYYY");
             },
@@ -418,6 +419,7 @@ export default function ComplainStatus() {
             headerName: t("text.closingdate"),
             flex: 1.3,
             cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
             renderCell: (params) => {
               return moment(params.row.updatedOn).format("DD-MM-YYYY");
             },
@@ -477,8 +479,8 @@ export default function ComplainStatus() {
             "& .MuiDataGrid-colCell": {
               backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
-              fontSize: 17,
-              fontWeight: 900,
+              fontSize: 12,
+              fontWeight: 700,
             },
           }}
           style={{ padding: "10px" }}
@@ -550,10 +552,10 @@ export default function ComplainStatus() {
                 id="complaintDatefrom"
                 name="complaintDatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={false} />
+                  <CustomLabel text={t("text.complaintDateFrom")} required={false} />
                 }
                 value={formik.values.complaintDatefrom}
-                placeholder={t("text.FromDate")}
+                placeholder={t("text.complaintDateFrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -568,9 +570,9 @@ export default function ComplainStatus() {
                 type="date"
                 id="complaintDateTo"
                 name="complaintDateTo"
-                label={<CustomLabel text={t("text.ToDate")} required={false} />}
+                label={<CustomLabel text={t("text.complaintDateTo")} required={false} />}
                 value={formik.values.complaintDateTo}
-                placeholder={t("text.ToDate")}
+                placeholder={t("text.complaintDateTo")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}

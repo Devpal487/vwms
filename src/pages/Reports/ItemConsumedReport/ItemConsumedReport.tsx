@@ -43,6 +43,7 @@ import { jsPDF } from "jspdf";
 import * as XLSX from "xlsx";
 import * as Yup from "yup";
 import Logo from "../../../assets/images/KanpurLogo.png";
+import { getISTDate } from "../../../utils/Constant";
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -51,6 +52,7 @@ interface MenuPermission {
 }
 
 export default function JobCardStatus() {
+    const { defaultValues } = getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -63,7 +65,7 @@ export default function JobCardStatus() {
 
   const [isPrint, setPrint] = useState([]);
 
-  const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
+  const [selectedFormat, setSelectedFormat] = useState<any>(".pdf");
 
   const [VnoOption, setVnoOption] = useState([
     { value: -1, label: "Select Vehicle No " },
@@ -83,100 +85,100 @@ export default function JobCardStatus() {
     setSelectedFormat((event.target as HTMLInputElement).value);
   };
 
-  const downloadTabularExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Tabular HTML.");
-      return;
-    }
+  // const downloadTabularExcel = () => {
+  //   if (!isPrint || isPrint.length === 0) {
+  //     console.error("No data to export to Tabular HTML.");
+  //     return;
+  //   }
 
-    // Prepare headers and rows for HTML table
-    const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
-    const rows = isPrint.map((item: any) => [
+  //   // Prepare headers and rows for HTML table
+  //   const headers = ["Item", "Vehicle No", "Jobcard No.", "Indent No.", "Jobcard Date"];
+  //   const rows = isPrint.map((item: any) => [
 
-      item?.item || "", // Vehicle No
-      item?.vehicleNo || "", // Driver
-      item?.jobCardNo || "", // Mobile No
-      item?.indentNo || "",
-      moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
-    ]);
+  //     item?.item || "", // Vehicle No
+  //     item?.vehicleNo || "", // Driver
+  //     item?.jobCardNo || "", // Mobile No
+  //     item?.indentNo || "",
+  //     moment(item?.jobcardDate).format("DD-MM-YYYY") || "",
+  //   ]);
 
-    // Create HTML table
-    let html = `
-      <html>
-      <head>
-        <style>
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-          }
-          th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          tr:nth-child(even) {
-            background-color: #f9f9f9;
-          }
-          tr:hover {
-            background-color: #f1f1f1;
-          }
-        </style>
-      </head>
-      <body>
-        <table>
-          <thead>
-            <tr>
-              ${headers.map((header) => `<th>${header}</th>`).join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${rows
-        .map(
-          (row) =>
-            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-        )
-        .join("")}
-          </tbody>
-        </table>
-      </body>
-      </html>
-    `;
+  //   // Create HTML table
+  //   let html = `
+  //     <html>
+  //     <head>
+  //       <style>
+  //         table {
+  //           width: 100%;
+  //           border-collapse: collapse;
+  //           margin: 20px 0;
+  //         }
+  //         th {
+  //           background-color: #f2f2f2;
+  //           font-weight: bold;
+  //           padding: 8px;
+  //           text-align: left;
+  //           border: 1px solid #ddd;
+  //         }
+  //         td {
+  //           padding: 8px;
+  //           text-align: left;
+  //           border: 1px solid #ddd;
+  //         }
+  //         tr:nth-child(even) {
+  //           background-color: #f9f9f9;
+  //         }
+  //         tr:hover {
+  //           background-color: #f1f1f1;
+  //         }
+  //       </style>
+  //     </head>
+  //     <body>
+  //       <table>
+  //         <thead>
+  //           <tr>
+  //             ${headers.map((header) => `<th>${header}</th>`).join("")}
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           ${rows
+  //       .map(
+  //         (row) =>
+  //           `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
+  //       )
+  //       .join("")}
+  //         </tbody>
+  //       </table>
+  //     </body>
+  //     </html>
+  //   `;
 
-    // Create a Blob from the HTML string and trigger the download
-    const blob = new Blob([html], { type: "text/html" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Vehicle_data_tabular.html";
-    link.click();
-  };
+  //   // Create a Blob from the HTML string and trigger the download
+  //   const blob = new Blob([html], { type: "text/html" });
+  //   const link = document.createElement("a");
+  //   link.href = URL.createObjectURL(blob);
+  //   link.download = "Vehicle_data_tabular.html";
+  //   link.click();
+  // };
 
-  const downloadExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Excel.");
-      return;
-    }
+  // const downloadExcel = () => {
+  //   if (!isPrint || isPrint.length === 0) {
+  //     console.error("No data to export to Excel.");
+  //     return;
+  //   }
 
-    const ws = XLSX.utils.json_to_sheet(isPrint);
+  //   const ws = XLSX.utils.json_to_sheet(isPrint);
 
-    const headers = Object.keys(isPrint[0]);
+  //   const headers = Object.keys(isPrint[0]);
 
-    headers.forEach((header, index) => {
-      const cellAddress = `${String.fromCharCode(65 + index)}1`;
-    });
+  //   headers.forEach((header, index) => {
+  //     const cellAddress = `${String.fromCharCode(65 + index)}1`;
+  //   });
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "vehicles");
+  //   const wb = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, ws, "vehicles");
 
-    XLSX.writeFile(wb, "Vehicle_data.xlsx");
-  };
+  //   XLSX.writeFile(wb, "Vehicle_data.xlsx");
+  // };
 
   // Function to download PDF
   // const downloadPDF = () => {
@@ -278,8 +280,8 @@ export default function JobCardStatus() {
       genderID: -1,
       genderName: "",
       genderCode: "",
-      jobCardDatefrom: "",
-      jobCardDateTo: "",
+      jobCardDatefrom: defaultValues,
+      jobCardDateTo: defaultValues,
       days: 0,
       parentId: 0,
       startDate: "",
@@ -316,7 +318,46 @@ export default function JobCardStatus() {
   });
 
 
-  const downloadPDF = async () => {
+  // const downloadPDF = async () => {
+  //   const collectData = {
+  //     jobCardNofrom: formik.values.jobCardNofrom,
+  //     jobCardNoTo: formik.values.jobCardNoTo,
+  //     vehicleNo: vNO,
+  //     item: itmNO,
+  //     jobCardDatefrom: formik.values.jobCardDatefrom,
+  //     jobCardDateTo: formik.values.jobCardDateTo,
+  //     show: false, // Use the show value from formik
+  //     exportOption: ".pdf", // Use the selected format for export
+  //   };
+  //   const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
+
+  //   if (response.data.status === "Success" && response.data.base64) {
+  //     const base64String = response.data.base64;
+
+  //     // Decode Base64 string
+  //     const byteCharacters = atob(base64String);
+  //     const byteNumbers = new Array(byteCharacters.length)
+  //       .fill(0)
+  //       .map((_, i) => byteCharacters.charCodeAt(i));
+  //     const byteArray = new Uint8Array(byteNumbers);
+
+  //     // Convert to Blob
+  //     const blob = new Blob([byteArray], { type: "application/pdf" });
+
+  //     // Create Download Link
+  //     const link = document.createElement("a");
+  //     link.href = URL.createObjectURL(blob);
+  //     link.download = response.data.fileName || "Report.pdf";
+  //     document.body.appendChild(link);
+  //     link.click();
+
+  //     // Cleanup
+  //     document.body.removeChild(link);
+  //     URL.revokeObjectURL(link.href);
+  //   }
+  // }
+  // Handle Download Button Click
+  const handleDownload = async () => {
     const collectData = {
       jobCardNofrom: formik.values.jobCardNofrom,
       jobCardNoTo: formik.values.jobCardNoTo,
@@ -324,46 +365,61 @@ export default function JobCardStatus() {
       item: itmNO,
       jobCardDatefrom: formik.values.jobCardDatefrom,
       jobCardDateTo: formik.values.jobCardDateTo,
-      show: false, // Use the show value from formik
-      exportOption: ".pdf", // Use the selected format for export
+      show: false,
+      exportOption: selectedFormat, // .pdf, .xls, or TabularExc
     };
-    const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
-
-    if (response.data.status === "Success" && response.data.base64) {
-      const base64String = response.data.base64;
-
-      // Decode Base64 string
-      const byteCharacters = atob(base64String);
-      const byteNumbers = new Array(byteCharacters.length)
-        .fill(0)
-        .map((_, i) => byteCharacters.charCodeAt(i));
-      const byteArray = new Uint8Array(byteNumbers);
-
-      // Convert to Blob
-      const blob = new Blob([byteArray], { type: "application/pdf" });
-
-      // Create Download Link
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = response.data.fileName || "Report.pdf";
-      document.body.appendChild(link);
-      link.click();
-
-      // Cleanup
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-    }
-  }
-  // Handle Download Button Click
-  const handleDownload = () => {
-    if (selectedFormat === ".excel") {
-      downloadExcel();
-    } else if (selectedFormat === ".pdf") {
-      downloadPDF();
-    } else if (selectedFormat === ".tabular") {
-      downloadTabularExcel();
+  
+    try {
+      const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
+  
+      if (response.data.status === "Success" && response.data.base64) {
+        const base64String = response.data.base64;
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length)
+          .fill(0)
+          .map((_, i) => byteCharacters.charCodeAt(i));
+        const byteArray = new Uint8Array(byteNumbers);
+  
+        let fileType = "";
+        let fileName = response.data.fileName || "Report";
+  
+        if (selectedFormat === ".pdf") {
+          fileType = "application/pdf";
+          fileName += ".pdf";
+        } else if (selectedFormat === ".xls") {
+          fileType = "application/vnd.ms-excel";
+          fileName += ".xls";
+        } else if (selectedFormat === "TabularExc") {
+          fileType = "application/vnd.ms-excel";
+          fileName += ".xls";
+        }
+  
+        const blob = new Blob([byteArray], { type: fileType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      } else {
+        console.error("Error: No valid data received.");
+      }
+    } catch (error) {
+      console.error("Error downloading file:", error);
     }
   };
+  
+  
+  // const handleDownload = () => {
+  //   if (selectedFormat === ".xls") {
+  //  //   downloadExcel();
+  //   } else if (selectedFormat === ".pdf") {
+  //     downloadPDF();
+  //   } else if (selectedFormat === "TabularExc") {
+  //     //downloadTabularExcel();
+  //   }
+  // };
 
   let navigate = useNavigate();
   const { t } = useTranslation();
@@ -411,8 +467,9 @@ export default function JobCardStatus() {
         item: itmNO,
         jobCardDatefrom: formik.values.jobCardDatefrom,
         jobCardDateTo: formik.values.jobCardDateTo,
-        show: true, // Use the show value from formik
-        exportOption: ".pdf", // Use the selected format for export
+        show: true, 
+        exportOption: "selectedFormat", 
+        
       };
 
       const response = await api.post(`Report/GetvItemConsumedApi`, collectData);
@@ -554,10 +611,10 @@ export default function JobCardStatus() {
                 id="jobCardDatefrom"
                 name="jobCardDatefrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={true} />
+                  <CustomLabel text={t("text.jobcarddatefrom")} required={true} />
                 }
                 value={formik.values.jobCardDatefrom}
-                placeholder={t("text.FromDate")}
+                placeholder={t("text.jobcarddatefrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -574,9 +631,9 @@ export default function JobCardStatus() {
                 type="date"
                 id="jobCardDateTo"
                 name="jobCardDateTo"
-                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                label={<CustomLabel text={t("text.jobcarddateto")} required={true} />}
                 value={formik.values.jobCardDateTo}
-                placeholder={t("text.ToDate")}
+                placeholder={t("text.jobcarddateto")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -699,12 +756,12 @@ export default function JobCardStatus() {
                     label={t("text.pdf")}
                   />
                   <FormControlLabel
-                    value=".excel"
+                    value=".xls"
                     control={<Radio />}
                     label={t("text.excel")}
                   />
                   <FormControlLabel
-                    value=".tabular"
+                    value="TabularExc"
                     control={<Radio />}
                     label={t("text.tabular")}
                   />

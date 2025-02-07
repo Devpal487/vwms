@@ -525,9 +525,10 @@ const CreateStaffItemIssue = (props: Props) => {
                         border: "1px solid black",
                       }}
                     >
-                      <thead
-                        style={{ backgroundColor: "#2196f3", color: "#f5f5f5" }}
-                      >
+                     <thead style={{
+                      backgroundColor: `var(--grid-headerBackground)`,
+                      color: `var(--grid-headerColor)`
+                    }}>
                         <tr>
                           <th
                             style={{

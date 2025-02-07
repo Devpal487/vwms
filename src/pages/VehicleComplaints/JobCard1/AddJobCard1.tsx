@@ -170,7 +170,6 @@ const AddJobCard1 = (props: Props) => {
     "empName": "",
     "serviceDetail": [
       {
-
         "id": 0,
         "jobCardId": 0,
         "serviceId": 0,
@@ -187,16 +186,17 @@ const AddJobCard1 = (props: Props) => {
         "cgstid": 0,
         "sgstid": 0,
         "gstid": 0
-
-
       }
     ],
     "itemDetail": [
       {
-        "id": 0,
+
+
+
+       "id": 0,
         "jobCardId": 0,
         "itemId": 0,
-        "unitID": 0,
+        unitID: 0,
         "indentId": 0,
         "indentNo": "",
         "qty": 0,
@@ -210,7 +210,7 @@ const AddJobCard1 = (props: Props) => {
         "igst": 0,
         "netAmount": 0,
         "srno": 0,
-        "isDelete": true,
+        "isDelete": false,
         "prevReading": 0,
         "unitName": ""
       }
@@ -237,7 +237,7 @@ const AddJobCard1 = (props: Props) => {
       "igst": 0,
       "netAmount": 0,
       "srno": 0,
-      "isDelete": true,
+      "isDelete": false,
       "prevReading": 0,
       "unitName": ""
     },
@@ -265,22 +265,22 @@ const AddJobCard1 = (props: Props) => {
   ]);
   const [tableData, setTableData] = useState([
     {
-      id: 0,
-      jobCardId: 0,
-      serviceId: 0,
-      amount: 0,
-      jobWorkReq: true,
-      vendorId: 0,
-      challanRemark: "",
-      challanNo: 0,
-      challanDate: defaultValues,
-      challanRcvNo: 0,
-      challanRcvDate: defaultValues,
-      challanStatus: "",
-      netAmount: 0,
-      cgstid: 0,
-      sgstid: 0,
-      gstid: 0,
+      "id": 0,
+        "jobCardId": 0,
+        "serviceId": 0,
+        "amount": 0,
+        "jobWorkReq": true,
+        "vendorId": 0,
+        "challanRemark": "",
+        "challanNo": 0,
+        "challanDate": defaultValues,
+        "challanRcvNo": 0,
+        "challanRcvDate": defaultValues,
+        "challanStatus": "",
+        "netAmount": 0,
+        "cgstid": 0,
+        "sgstid": 0,
+        "gstid": 0
 
     },
     // {
@@ -1852,6 +1852,7 @@ const AddJobCard1 = (props: Props) => {
                                 value={row.prevReading}
                                 onChange={(e) => handleInputChange1(index, 'prevReading', (e.target.value))}
                                 size="small"
+                                sx={{ width: "155px" }}
                                 inputProps={{ "aria-readonly": true }}
                                 onFocus={e => e.target.select()}
                               />
@@ -1943,11 +1944,11 @@ const AddJobCard1 = (props: Props) => {
                     <tfoot>
 
                       <tr>
-                        <td colSpan={5}></td>
-                        <td colSpan={2} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
+                        <td colSpan={6}></td>
+                        <td colSpan={1} style={{ fontWeight: "bold", borderTop: "1px solid black" }}>
                           {t("text.TotalItemAmount")}
                         </td>
-                        <td colSpan={5} style={{ textAlign: "end" }}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalItemAmount}
                         </td>
                       </tr>
@@ -1962,11 +1963,11 @@ const AddJobCard1 = (props: Props) => {
                         </td>
                       </tr> */}
                       <tr>
-                        <td colSpan={5}></td>
-                        <td colSpan={2} style={{ fontWeight: "bold" }}>
+                        <td colSpan={6}></td>
+                        <td colSpan={1} style={{ fontWeight: "bold" }}>
                           {t("text.TotalAmount")}
                         </td>
-                        <td colSpan={5} style={{ textAlign: "end" }}>
+                        <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td>
                       </tr>

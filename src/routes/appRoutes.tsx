@@ -1,9 +1,8 @@
-
+import { RouteType } from "./config";
 import RoleMaster from "../pages/UserManagementMaster/RoleMaster/RoleMaster";
 import UserPermissionMaster from "../pages/UserManagementMaster/UserPermissionMaster/UserPermissionMaster";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../loginPage/LoginPage";
-import { RouteType } from "./config";
 import HomeIcon from "@mui/icons-material/Home";
 import DashboardPageLayout from "../pages/master/MasterPageLayout";
 import DashboardIndex from "../pages/master/MasterPageIndex";

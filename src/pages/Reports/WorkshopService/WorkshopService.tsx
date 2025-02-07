@@ -68,7 +68,7 @@ export default function VehicleItemConsumed() {
 
   const [isPrint, setPrint] = useState([]);
 
-  const [selectedFormat, setSelectedFormat] = useState<any>("pdf");
+  const [selectedFormat, setSelectedFormat] = useState<any>(".pdf");
 
   const [VendorOption, setVendorOption] = useState([
     { value: -1, label: "Select Vendor " },
@@ -97,270 +97,84 @@ export default function VehicleItemConsumed() {
     setSelectedFormat((event.target as HTMLInputElement).value);
   };
 
-  const downloadTabularExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Tabular HTML.");
-      return;
-    }
-    const headers = ["vehicle No.", "Vehicle", "JobCard No.", "Items Consumed", "JobCard Date"];
+  const formik = useFormik({
+    initialValues: {
+      genderID: -1,
+      genderName: "",
+      genderCode: "",
+      dateFrom: defaultValues,
+      dateTo: defaultValues,
+      days: 0,
+      parentId: 0,
+      startDate: "",
+      endDate: "",
+      daysOnly: false,
+      displayLabel: "",
+      index: 0,
+    },
+    validationSchema: Yup.object({
+      dateTo: Yup.string()
+        .required("To date required"),
+      dateFrom: Yup.string()
+        .required("From date required"),
 
-    const rows = isPrint.map((item: any) => [
+    }),
+    onSubmit: async (values) => {
 
-      item?.vehicleNo || "",
-      item?.vehicle || "",
-      item?.jobCardNo || "",
-      item?.itemsConsumed || "",
-      moment(item?.jobCardDate).format("DD-MM-YYYY")
+    },
+  });
 
-    ]);
-
-
-    // Create HTML table
-    let html = `
-      <html>
-      <head>
-        <style>
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-          }
-          th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ddd;
-          }
-          tr:nth-child(even) {
-            background-color: #f9f9f9;
-          }
-          tr:hover {
-            background-color: #f1f1f1;
-          }
-        </style>
-      </head>
-      <body>
-        <table>
-          <thead>
-            <tr>
-              ${headers.map((header) => `<th>${header}</th>`).join("")}
-            </tr>
-          </thead>
-          <tbody>
-            ${rows
-        .map(
-          (row) =>
-            `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`
-        )
-        .join("")}
-          </tbody>
-        </table>
-      </body>
-      </html>
-    `;
-
-    // Create a Blob from the HTML string and trigger the download
-    const blob = new Blob([html], { type: "text/html" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Vehicle_data_tabular.html";
-    link.click();
-  };
-
-  const downloadExcel = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to Excel.");
-      return;
-    }
-
-    const ws = XLSX.utils.json_to_sheet(isPrint);
-
-    const headers = Object.keys(isPrint[0]);
-
-    headers.forEach((header, index) => {
-      const cellAddress = `${String.fromCharCode(65 + index)}1`;
-    });
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "vehicles");
-
-    XLSX.writeFile(wb, "Vehicle_data.xlsx");
-  };
-
-  // Function to download PDF
-  // const downloadPDF = () => {
-  //   if (!isPrint || isPrint.length === 0) {
-  //     console.error("No data to export to PDF.");
-  //     return;
-  //   }
-
-  //   // Initialize jsPDF with 'landscape' orientation
-  //   const doc = new jsPDF("landscape"); // This sets the page orientation to landscape
-  //   let yPosition = 10;
-  //   const headerFontSize = 14;
-  //   const bodyFontSize = 12;
-
-  //   doc.setFontSize(headerFontSize);
-  //   doc.setFont("helvetica", "bold");
-  //   doc.text("Vehicle Data", 14, yPosition);
-  //   yPosition += 10;
-
-  //   const headers = ["Vehicle No.", "Vehicle", "JobCard No.", "Items Consumed", "JobCard Date"];
-
-  //   const columnWidths = [50, 50, 50, 50, 50];
-
-  //   const headerHeight = 8;
-  //   const headerY = yPosition;
-  //   doc.setFillColor(200, 220, 255);
-  //   doc.rect(
-  //     14,
-  //     headerY,
-  //     columnWidths.reduce((a, b) => a + b, 0),
-  //     headerHeight,
-  //     "F"
-  //   );
-
-  //   doc.setFont("helvetica", "bold");
-  //   headers.forEach((header, index) => {
-  //     doc.text(
-  //       header,
-  //       14 + columnWidths.slice(0, index).reduce((a, b) => a + b, 0),
-  //       yPosition + headerHeight - 2
-  //     );
-  //   });
-
-  //   const headerBottomMargin = 6;
-  //   yPosition += headerHeight + headerBottomMargin;
-
-  //   // Add table rows
-  //   doc.setFontSize(bodyFontSize);
-  //   doc.setFont("helvetica", "normal");
-
-  //   isPrint.forEach((item: any, rowIndex) => {
-  //     const row = [
-  //       item?.vehicleNo || "",
-  //       item?.vehicle || "",
-  //       item?.jobCardNo || "",
-  //       item?.itemsConsumed || "",
-  //       moment(item?.jobCardDate).format("DD-MM-YYYY")
-  //     ];
-
-  //     row.forEach((cell, colIndex) => {
-  //       const xOffset =
-  //         14 + columnWidths.slice(0, colIndex).reduce((a, b) => a + b, 0);
-  //       if (cell) {
-  //         doc.text(cell.toString(), xOffset, yPosition);
-  //       }
-  //     });
-  //     yPosition += 10;
-
-  //     if (yPosition > 180) {
-  //       doc.addPage();
-  //       yPosition = 10;
-  //     }
-  //   });
-  //   doc.save("VehicleTrack_data.pdf");
-  // };
-
-  const downloadPDF = () => {
-    if (!isPrint || isPrint.length === 0) {
-      console.error("No data to export to PDF.");
-      return;
-    }
-
-    const doc = new jsPDF("landscape");
-    const pageWidth = doc.internal.pageSize.getWidth();
-    let yPosition = 15;
-
-
-    const logoWidth = 30;
-    const logoHeight = 30;
-    const logoX = 15;
-    const logoY = yPosition;
-    doc.addImage(Logo, "PNG", logoX, logoY, logoWidth, logoHeight);
-
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text("KANPUR NAGAR NIGAM", pageWidth / 2, yPosition + 10, { align: "center" });
-
-
-    doc.setFontSize(14);
-    doc.text("Vehicle Item Consumed Reports", pageWidth / 2, yPosition + 20, { align: "center" });
-
-    yPosition += 40;
-
-    const headers = ["Vehicle No.", "Vehicle", "JobCard No.", "Items Consumed", "JobCard Date"];
-    const columnWidths = [50, 50, 50, 60, 50];
-    const startX = 10;
-    const headerHeight = 10;
-    const rowHeight = 8;
-
-
-    doc.setFillColor(200, 220, 255);
-    doc.rect(
-      startX,
-      yPosition,
-      columnWidths.reduce((a, b) => a + b, 0),
-      headerHeight,
-      "F"
-    );
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 0, 0); // Black text
-    headers.forEach((header, index) => {
-      const xOffset = startX + columnWidths.slice(0, index).reduce((a, b) => a + b, 0);
-      doc.text(header, xOffset + 5, yPosition + headerHeight - 3);
-    });
-
-    yPosition += headerHeight + 4; // Move down for table rows
-
-
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-
-    isPrint.forEach((item: any, rowIndex) => {
-      const row = [
-        item?.vehicleNo || "",
-        item?.vehicle || "",
-        item?.jobCardNo || "",
-        item?.itemsConsumed || "",
-        moment(item?.jobCardDate).format("DD-MM-YYYY")
-      ];
-
-      row.forEach((cell, colIndex) => {
-        const xOffset = startX + columnWidths.slice(0, colIndex).reduce((a, b) => a + b, 0);
-        doc.text(cell.toString(), xOffset + 5, yPosition);
-      });
-
-      yPosition += rowHeight;
-
-
-      if (yPosition > 180) {
-        doc.addPage();
-        yPosition = 20;
+  const handleDownload = async () => {
+    const collectData = {
+      vehicleNo: vend,
+      jobCardDate: formik.values.dateFrom,
+      dateFrom: formik.values.dateFrom,
+      dateTo: formik.values.dateTo,
+      show: false, 
+       exportOption: selectedFormat,
+    };
+  
+    try {
+      const response = await api.post(`Master/GetvVehicleItemConsumed`, collectData);
+  
+      if (response.data.status === "Success" && response.data.base64) {
+        const base64String = response.data.base64;
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length)
+          .fill(0)
+          .map((_, i) => byteCharacters.charCodeAt(i));
+        const byteArray = new Uint8Array(byteNumbers);
+  
+        let fileType = "";
+        let fileName = response.data.fileName || "Report";
+  
+        if (selectedFormat === ".pdf") {
+          fileType = "application/pdf";
+          fileName += ".pdf";
+        } else if (selectedFormat === ".xls") {
+          fileType = "application/vnd.ms-excel";
+          fileName += ".xls";
+        } else if (selectedFormat === "TabularExc") {
+          fileType = "application/vnd.ms-excel";
+          fileName += ".xls";
+        }
+  
+        const blob = new Blob([byteArray], { type: fileType });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      } else {
+        console.error("Error: No valid data received.");
       }
-    });
-
-
-    doc.save("VehicleTrack_data.pdf");
-  };
-
-  const handleDownload = () => {
-    if (selectedFormat === "excel") {
-      downloadExcel();
-    } else if (selectedFormat === "pdf") {
-      downloadPDF();
-    } else if (selectedFormat === "tabular") {
-      downloadTabularExcel();
+    } catch (error) {
+      console.error("Error downloading file:", error);
     }
   };
+  
 
   let navigate = useNavigate();
   const { t } = useTranslation();
@@ -399,6 +213,8 @@ export default function VehicleItemConsumed() {
         jobCardDate: formik.values.dateFrom,
         dateFrom: formik.values.dateFrom,
         dateTo: formik.values.dateTo,
+        show: true, 
+         exportOption: "selectedFormat", 
       };
       const response = await api.post(`Master/GetvVehicleItemConsumed`, collectData);
       const data = response?.data;
@@ -509,32 +325,7 @@ export default function VehicleItemConsumed() {
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
 
-  const formik = useFormik({
-    initialValues: {
-      genderID: -1,
-      genderName: "",
-      genderCode: "",
-      dateFrom: defaultValues,
-      dateTo: defaultValues,
-      days: 0,
-      parentId: 0,
-      startDate: "",
-      endDate: "",
-      daysOnly: false,
-      displayLabel: "",
-      index: 0,
-    },
-    validationSchema: Yup.object({
-      dateTo: Yup.string()
-        .required("To date required"),
-      dateFrom: Yup.string()
-        .required("From date required"),
-
-    }),
-    onSubmit: async (values) => {
-
-    },
-  });
+  
 
   return (
     <>
@@ -615,10 +406,10 @@ export default function VehicleItemConsumed() {
                 id="dateFrom"
                 name="dateFrom"
                 label={
-                  <CustomLabel text={t("text.FromDate")} required={true} />
+                  <CustomLabel text={t("text.jobcarddatefrom")} required={true} />
                 }
                 value={formik.values.dateFrom}
-                placeholder={t("text.FromDate")}
+                placeholder={t("text.jobcarddatefrom")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -635,9 +426,9 @@ export default function VehicleItemConsumed() {
                 type="date"
                 id="dateTo"
                 name="dateTo"
-                label={<CustomLabel text={t("text.ToDate")} required={true} />}
+                label={<CustomLabel text={t("text.jobcarddateto")} required={true} />}
                 value={formik.values.dateTo}
-                placeholder={t("text.ToDate")}
+                placeholder={t("text.jobcarddateto")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
@@ -649,30 +440,30 @@ export default function VehicleItemConsumed() {
             </Grid>
 
             <Grid item xs={12} sm={12} lg={12}>
-              <FormControl component="fieldset">
-                <RadioGroup
-                  row
-                  value={selectedFormat}
-                  onChange={handleFormatChange}
-                >
-                  <FormControlLabel
-                    value="pdf"
-                    control={<Radio />}
-                    label={t("text.pdf")}
-                  />
-                  <FormControlLabel
-                    value="excel"
-                    control={<Radio />}
-                    label={t("text.excel")}
-                  />
-                  <FormControlLabel
-                    value="tabular"
-                    control={<Radio />}
-                    label={t("text.tabular")}
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Grid>
+                        <FormControl component="fieldset">
+                          <RadioGroup
+                            row
+                            value={selectedFormat}
+                            onChange={handleFormatChange}
+                          >
+                            <FormControlLabel
+                              value=".pdf"
+                              control={<Radio />}
+                              label={t("text.pdf")}
+                            />
+                            <FormControlLabel
+                              value=".xls"
+                              control={<Radio />}
+                              label={t("text.excel")}
+                            />
+                            <FormControlLabel
+                              value="TabularExc"
+                              control={<Radio />}
+                              label={t("text.tabular")}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
 

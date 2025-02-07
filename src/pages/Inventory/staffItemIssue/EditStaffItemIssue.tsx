@@ -1200,7 +1200,10 @@ const EditStaffItemIssue = (props: Props) => {
                                 <Grid item xs={12}>
                                     <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                                            <thead style={{ backgroundColor: '#2196f3', color: '#f5f5f5' }}>
+                                        <thead style={{
+                      backgroundColor: `var(--grid-headerBackground)`,
+                      color: `var(--grid-headerColor)`
+                    }}>
                                                 <tr>
                                                     <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Actions")}</th>
                                                     {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th> */}
