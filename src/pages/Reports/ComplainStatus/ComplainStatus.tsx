@@ -505,6 +505,7 @@ export default function ComplainStatus() {
                 onClick={() => {
                   formik.resetForm();
                   setVisible(false);
+                  setSelectedFormat(".pdf");
                   setVno("");
                 }}
               >

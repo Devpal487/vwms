@@ -314,13 +314,13 @@ export default function OutSourceService() {
           // },
 
 
-          // {
-          //   field: "vendor",
-          //   headerName: t("text.Vendor"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
+          {
+            field: "vendor",
+            headerName: t("text.Vendor"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
 
 
 
@@ -628,6 +628,7 @@ export default function OutSourceService() {
                 onClick={() => {
                   formik.resetForm();
                   setVisible(false);
+                  setSelectedFormat(".pdf");
                   setVno("");
                   setVend("");
                 }}

@@ -949,6 +949,7 @@ export default function VendorEvaluationReport() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                 }}
               >
                  {t("text.reset")}

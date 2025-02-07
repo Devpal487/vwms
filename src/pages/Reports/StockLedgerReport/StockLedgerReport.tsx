@@ -293,15 +293,22 @@ export default function StockLedgerReport() {
 
           },
           {
-            field: "docDate",
-            headerName: t("text.docDate"),
-            flex: 1.3,
+            field: "vehicleNo",
+            headerName: t("text.VehicleNo"),
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
-            renderCell: (params) => {
-              return moment(params.row.docDate).format("DD-MM-YYYY");
-            },
           },
+          // {
+          //   field: "docDate",
+          //   headerName: t("text.docDate"),
+          //   flex: 1.3,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          //   renderCell: (params) => {
+          //     return moment(params.row.docDate).format("DD-MM-YYYY");
+          //   },
+          // },
           {
             field: "opening",
             headerName: t("text.opening"),
@@ -615,6 +622,7 @@ export default function StockLedgerReport() {
                 onClick={() => {
                   formik.resetForm();
                   setVisible(false);
+                  setSelectedFormat(".pdf");
                   setVno("");
                   setItem("");
                 }}

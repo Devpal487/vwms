@@ -654,6 +654,7 @@ export default function JobCardStatus() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                   setsno("");
                   setVno("");
                   setVisible(false);

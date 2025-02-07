@@ -75,9 +75,9 @@ const EditJobcardItemIssue = (props: Props) => {
         "returnItem": true
     }]);
     console.log("🚀 ~ CreateStaffItemIssue ~ tableData:", tableData)
-     const [indentOptions, setIndentOptions] = useState<any>([
+    const [indentOptions, setIndentOptions] = useState<any>([
         { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
-      ]);
+    ]);
     const [itemOption, setitemOption] = useState([
         { value: -1, label: t("text.itemMasterId") },
     ]);
@@ -204,19 +204,19 @@ const EditJobcardItemIssue = (props: Props) => {
             "issueId": -1,
             itemID: item?.itemId,
             unitId: item?.unitId,
-             batchNo: item?.batchNo,
+            batchNo: item?.batchNo,
             indentId: item?.indentId,
-             stockQty: item?.stockQty,
+            stockQty: item?.stockQty,
             reqQty: item?.approveQuantity,
-            "issueQty" : item?.issueQty,
+            "issueQty": item?.issueQty,
             itemName: item?.itemName,
             unitName: item?.unitName,
             indentNo: "",
             "srn": 0,
             // "unitName": "",
             "returnItem": true,
-            
-           // issueQty: 0,
+
+            // issueQty: 0,
             //   batchNo:IsbatchNO ||"",
 
         }))
@@ -324,6 +324,13 @@ const EditJobcardItemIssue = (props: Props) => {
             itemIssueDetail: location.state.itemIssueDetail || []
 
         },
+
+          validationSchema: Yup.object({
+              indentId: Yup.string()
+               .required(t("text.reqIndentNum")),
+              // empId: Yup.string()
+              //     .required(t("text.reqEmpName")),
+            }),
         onSubmit: async (values) => {
 
             const validTableData = tableData;
@@ -475,19 +482,17 @@ const EditJobcardItemIssue = (props: Props) => {
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                  //  options={indentOptions}
-                                  options={
-                    
-                                    indentOptions.filter((e:any) =>
-                                    {
-                                      if(e.indenttype === "JobCard")
-                                      {
-                                        return e;
-                                      }
-                                    })}
+                                    //  options={indentOptions}
+                                    options={
+
+                                        indentOptions.filter((e: any) => {
+                                            if (e.indenttype === "JobCard") {
+                                                return e;
+                                            }
+                                        })}
                                     value={
                                         indentOptions.find(
-                                            (option:any) => option.value === formik.values.indentId
+                                            (option: any) => option.value === formik.values.indentId
                                         ) || null
                                     }
 
@@ -510,11 +515,12 @@ const EditJobcardItemIssue = (props: Props) => {
                                         <TextField
                                             {...params}
                                             label={
-                                                <CustomLabel text={t("text.enterIndentNo")} />
+                                                <CustomLabel text={t("text.enterIndentNo")} required={true} />
                                             }
                                         />
                                     )}
                                 />
+                                
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -522,6 +528,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={vehicleOption}
+                                    disabled
                                     value={
                                         vehicleOption.find((option: any) => option.value === formik.values.vehicleitem) || null
                                     }
@@ -536,7 +543,7 @@ const EditJobcardItemIssue = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.VehicleNos1")} required={true} />}
+                                            label={<CustomLabel text={t("text.VehicleNos1")} required={false} />}
                                             name="vehicleitem"
                                             id="vehicleitem"
                                             placeholder={t("text.VehicleNos1")}
@@ -592,10 +599,10 @@ const EditJobcardItemIssue = (props: Props) => {
                                 <Grid item xs={12}>
                                     <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                                         <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                                        <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                                            <thead style={{
+                                                backgroundColor: `var(--grid-headerBackground)`,
+                                                color: `var(--grid-headerColor)`
+                                            }}>
                                                 <tr>
                                                     <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
                                                     <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
@@ -750,7 +757,7 @@ const EditJobcardItemIssue = (props: Props) => {
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Grid>
                                     <Button
-                                    disabled
+                                        disabled
                                         type="submit"
                                         fullWidth
                                         style={{

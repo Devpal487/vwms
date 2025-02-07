@@ -579,7 +579,9 @@ export default function VehicleEfileReport() {
                 }}
                 startIcon={<RefreshIcon />}
                 onClick={() => {
-                  formik.resetForm();
+                  formik.resetForm(); 
+                  setSelectedFormat(".pdf");
+
                 }}
               >
                 {t("text.reset")}

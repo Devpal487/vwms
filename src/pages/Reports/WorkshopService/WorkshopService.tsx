@@ -511,6 +511,7 @@ export default function VehicleItemConsumed() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                   setVisible(false);
                   setVendor("");
                 }}
