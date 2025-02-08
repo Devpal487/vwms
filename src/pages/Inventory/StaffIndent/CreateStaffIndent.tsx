@@ -201,7 +201,7 @@ const CreateStaffIndent = (props: Props) => {
       "fyId": 0,
       "jobID": 0,
       "vehicleitem": null,
-      "empId": 0,
+      "empId": null,
       "status": "",
       "releasedBy": "",
       "indenttype": "Staff",
@@ -211,10 +211,10 @@ const CreateStaffIndent = (props: Props) => {
       indentDetail: [],
       srn: 0
     },
-    // validationSchema: Yup.object({
-    //   empId: Yup.string()
-    //     .required(t("text.reqEmpName")),
-    // }),
+    validationSchema: Yup.object({
+      empId: Yup.string()
+        .required(t("text.reqEmpName")),
+    }),
 
     onSubmit: async (values) => {
       // values.indentDetail = tableData
@@ -454,11 +454,9 @@ const CreateStaffIndent = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={empOption}
-                  
                   fullWidth
                   size="small"
-                  value={empOption.find((option:any) => option.value === formik.values.empId)?.label||""}
-             
+                  value={empOption.find((option: any) => option.value === formik.values.empId)?.label || ""}
                   onChange={(event, newValue) => {
                     console.log(newValue?.value);
                     formik.setFieldValue("empId", newValue?.value);
@@ -466,20 +464,15 @@ const CreateStaffIndent = (props: Props) => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label={<CustomLabel text={t("text.selectemp_name")} />}
+                      label={<CustomLabel text={t("text.selectemp_name")} required={true} />}
+                      error={formik.touched.empId && Boolean(formik.errors.empId)}
+                      helperText={formik.touched.empId && formik.errors.empId}
                     />
                   )}
                 />
-
-                {formik.touched.empId && formik.errors.empId && (
-                  <div style={{ color: "red", margin: "5px" }}>{formik.errors.empId}</div>
-                )}
               </Grid>
 
-              <Grid item xs={12}>
-
-
-                <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
+              <Grid item xs={12}>    <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
                   <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
                   <thead style={{
                       backgroundColor: `var(--grid-headerBackground)`,

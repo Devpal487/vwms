@@ -459,8 +459,8 @@ export default function VehicleItemService() {
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoFrom")} />}
                 value={formik.values.jobCardNoFrom}
-                name="jobCardNofrom"
-                id="jobCardNofrom"
+                name="jobCardNoFrom"
+                id="jobCardNoFrom"
                 placeholder={t("text.JobCardNoFrom")}
                 size="small"
                 fullWidth
@@ -589,6 +589,7 @@ export default function VehicleItemService() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                   setVisible(false);
                   setVno("");
                 }}

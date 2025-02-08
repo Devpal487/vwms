@@ -483,6 +483,18 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
 
     },
+
+    validationSchema: Yup.object({
+      // bill_ChalanNo: Yup.string()
+      //  .required(t("text.reqBillNum")),
+      bill_ChalanNo: Yup.string()
+       .required(t("text.reqBillNum")),
+       vendorId: Yup.string()
+       .required(t("text.reqvendor")),
+       shipmentNo: Yup.string()
+       .required(t("text.reqshipmentNo")),
+    }),
+
     onSubmit: async (values) => {
       updateTotalAmounts(tableData);
 
@@ -790,6 +802,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                 {formik.touched.bill_ChalanNo && formik.errors.bill_ChalanNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.bill_ChalanNo)}</div>
+                )}
               </Grid>
 
               <Grid item lg={4} xs={12}>
@@ -819,7 +834,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
+                    <CustomLabel text={t("text.EntershipmentNo")} required={true} />
                   }
                   value={formik.values.shipmentNo}
                   placeholder={t("text.EntershipmentNo")}
@@ -829,6 +844,9 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                 {formik.touched.shipmentNo && formik.errors.shipmentNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.shipmentNo)}</div>
+                )}
               </Grid>
 
               <Grid container item spacing={2} xs={12} md={12} lg={12}>
@@ -925,11 +943,14 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       <TextField
                         {...params}
                         label={
-                          <CustomLabel text={t("text.SelectVendor")} required={false} />
+                          <CustomLabel text={t("text.SelectVendor")} required={true} />
                         }
                       />
                     )}
                   />
+                  {formik.touched.vendorId && formik.errors.vendorId && (
+                  <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.vendorId)}</div>
+                )}
                 </Grid>
 
 
@@ -1014,7 +1035,6 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
                 {vendorDetail?.mobileNo && (
                   <Grid item lg={4} xs={12} md={6}>
-
                     <Autocomplete
                       multiple
                       disablePortal
@@ -1022,59 +1042,21 @@ const CreateMaterialRecieptNote = (props: Props) => {
                       id="combo-box-demo"
                       options={orderVendorData} // Show all orders for selected vendor
                       getOptionLabel={(option: any) => option.orderNo}
-                      onChange={handleOrderSelect}
+                      onChange={(event, newValue: any) => {
+                        if (newValue.length === 0) {
+                          alert("Please select at least one order number.");
+                        } else {
+                          handleOrderSelect(event, newValue);
+                        }
+                      }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          label={<CustomLabel text={t("text.SelectOrderNO")} required={false} />}
+                          label={<CustomLabel text={t("text.SelectOrderNO")} required={true} />}
                         />
                       )}
                     />
-
-
-                    {/* <Autocomplete
-    multiple
-    disablePortal
-    size="small"
-    id="combo-box-demo"
-    options={orderVendorData} // Ensure all orders for the selected vendor are shown
-    getOptionLabel={(option: any) => option.orderNo}
-    onChange={(e, newValue: any) => {
-      newValue.forEach((order: any) => {
-        getPurchaseOrderById(order.orderId);
-      });
-    }}
-    renderInput={(params) => (
-      <TextField
-        {...params}
-        label={<CustomLabel text={t("text.SelectOrderNO")} required={false} />}
-      />
-    )}
-  /> */}
-
-                    {/* <Autocomplete
-                      multiple
-                      disablePortal
-                      size="small"
-                      id="combo-box-demo"
-                      options={orderVendorData}
-                      onChange={(e, newValue: any) => {
-                      newValue.forEach((order: any) => {
-                        getPurchaseOrderById(order.id);
-                      });
-                      }}
-                      renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={
-                        <CustomLabel
-                          text={t("text.SelectOrderNO")}
-                          required={false}
-                        />
-                        }
-                      />
-                      )}
-                    /> */}
+                
                   </Grid>
                 )}
               </Grid>

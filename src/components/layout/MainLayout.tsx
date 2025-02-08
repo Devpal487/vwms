@@ -859,6 +859,8 @@ const MainLayout = () => {
 
 export default MainLayout;
 
+// ===================
+// digital library
 
 
 // import { Outlet } from "react-router-dom";
@@ -916,8 +918,8 @@ export default MainLayout;
 //           const children = item.children ? parseMenuItems(item.children) : [];
 
 //           return {
-//             id: item.menu_id,
-//             name: item.menu_name,
+//             menuId: item.menuId,
+//             menuName: item.menuName,
 //             label: item.label,
 //             path: item.href ? item.href.replace(".aspx", "") : "",
 //             displayNo: item.ordNo,
@@ -941,6 +943,194 @@ export default MainLayout;
 //       navigate("/");
 //     }
 //   }, [navigate]);
+
+//   const handleMenuClick = (
+//     e: any,
+//     item: { menuId: any; path: any; menuName: any }
+//   ) => {
+//     var menuId = item.menuId;
+//     var menuName = item.menuName;
+//     const path =
+//       item.path + "?appId=" + menuId + "&Appname=" + menuName + ".aspx";
+
+//     if (!path) {
+//       window.alert("Path Not Found");
+//     } else {
+//       sessionStorage.setItem("menuId", menuId);
+//       sessionStorage.setItem("menuName", menuName);
+//       navigate(path);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {location.pathname === "/" ? (
+//         <Outlet />
+//       ) : (
+//         <div>
+          
+//             <Box sx={{ display: "flex" }}>
+//               <Sidebar items={menuItems} onClick={handleMenuClick} />
+
+//               <Box
+//                 sx={{
+//                   flexGrow: 1,
+//                   px: 5,
+//                   py: 3,
+//                   width: `calc(100% - ${sizeConfigs.sidebar.width})`,
+//                   minHeight: "100vh",
+//                   backgroundColor: `var(--main-background)`,
+//                   backgroundImage: `var(--background-image)`,
+//                   backgroundSize: "cover",
+//                   backgroundPosition: "center",
+//                   backgroundRepeat: "no-repeat",
+//                 }}
+//               >
+//                 <Toolbar />
+//                 <Outlet />
+
+//                 {/* Chatbot Icon with Image */}
+//                 <Draggable>
+//                 <Box
+//                   sx={{
+//                     position: "fixed",
+//                     bottom: 20,
+//                     right: 20,
+//                     display: "flex",
+//                     alignItems: "center",
+                    
+//                   }}
+//                 >
+//                   {isHovered && (
+//                     <Typography
+//                       variant="body2"
+//                       sx={{
+//                         marginRight: 1,
+//                         background: "rgba(0, 0, 0, 0.7)",
+//                         color: "white",
+//                         padding: "5px 10px",
+//                         borderRadius: "5px",
+//                         position: "absolute",
+//                         bottom: "70px", // Adjust as needed
+//                         right: "50px", // Adjust as needed
+//                       }}
+//                     >
+//                       Ask Me...
+//                     </Typography>
+//                   )}
+//                   <Box
+//                     component="img"
+//                     src={ChatBotIcon}
+//                     alt="Chatbot"
+//                     sx={{
+//                       width: 60,
+//                       height: 60,
+//                       cursor: "pointer",
+//                       "&:hover": {
+//                         opacity: 0.8,
+//                       },
+//                     }}
+//                     onMouseEnter={() => setIsHovered(true)}
+//                     onMouseLeave={() => setIsHovered(false)}
+//                     onClick={() => setIsChatBotOpen(true)} // Open chatbot modal
+//                   />
+//                 </Box>
+//                 </Draggable>
+//               </Box>
+//             </Box>
+            
+
+//             {/* ChatBot Modal */}
+//             <ChatBot
+//               open={isChatBotOpen}
+//               onClose={() => setIsChatBotOpen(false)}
+//             />
+        
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default MainLayout;
+
+
+// =================mycode 7/2/25
+
+// import { Outlet } from "react-router-dom";
+// import { Box, IconButton, Toolbar, Typography } from "@mui/material";
+// import sizeConfigs from "../../configs/sizeConfigs";
+// import Sidebar from "../common/Sidebar";
+// import { useLocation, useNavigate } from "react-router-dom";
+// import FolderIcon from "@mui/icons-material/Folder";
+// import TouchAppIcon from "@mui/icons-material/TouchApp";
+// import backgroundimage from "../../assets/images/backgroundimage.jpg";
+// import { useEffect, useState } from "react";
+// import "../common/ThemeStyle.css";
+// import ChatIcon from "@mui/icons-material/Chat";
+// import ChatBotIcon from "../../assets/images/chatBot1.png";
+// import ChatBot from "../../pages/ChatBot/ChatBot";
+// import Draggable from "react-draggable";
+
+// const themes = [
+//   "light-theme",
+//   "dark-theme",
+//   "ocean-theme",
+//   "sunset-theme",
+//   "forest-theme",
+// ];
+
+// const MainLayout = () => {
+//   const location = useLocation();
+//   let navigate = useNavigate();
+//   const [menuItems, setMenuItems] = useState([]);
+//   const [isHovered, setIsHovered] = useState(false);
+//   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
+  
+
+//   // const selectedTheme:any = () => {
+//   //   const storedTheme = localStorage.getItem("theme");
+//   //   return storedTheme ? storedTheme : themes[0];
+//   // };
+
+//   // useEffect(() => {
+//   //   document.body.className = selectedTheme;
+//   //   localStorage.setItem("theme", selectedTheme);
+//   // }, [selectedTheme]);
+
+//   useEffect(() => {
+//     const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+ 
+//     // Convert flat permissions list into hierarchical menu structure
+//     const menuMap = new Map();
+ 
+//     storedPermissions.forEach((perm:any) => {
+//         const menu = { 
+//             menuId: perm.menuId,
+//             parentId: perm.parentId,
+//             menuName: perm.menuName,
+//             path: `/path-to/${perm.menuName.replace(/\s+/g, "-").toLowerCase()}`,
+//             children: []
+//         };
+ 
+//         menuMap.set(menu.menuId, menu);
+//     });
+ 
+//     // Assign children to their respective parents
+//     const rootMenus:any = [];
+//     menuMap.forEach((menu) => {
+//         if (menu.parentId === 0) {
+//             rootMenus.push(menu);
+//         } else {
+//             const parentMenu = menuMap.get(menu.parentId);
+//             if (parentMenu) {
+//                 parentMenu.children.push(menu);
+//             }
+//         }
+//     });
+ 
+//     setMenuItems(rootMenus);
+//  }, []);
 
 //   const handleMenuClick = (
 //     e: any,

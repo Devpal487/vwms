@@ -815,6 +815,7 @@ export default function JobCardStatus() {
                 onClick={() => {
                   formik.resetForm();
                   setVisible(false);
+                  setSelectedFormat(".pdf");
                   setVno("");
                   setitmno("");
                 }}

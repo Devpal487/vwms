@@ -460,6 +460,7 @@ export default function VehicleStatusReport() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                   setVisible(false);
                 }}
               >
@@ -483,7 +484,7 @@ export default function VehicleStatusReport() {
       <Grid item xs={12} sm={3} md={3}>
         <Button
           fullWidth
-          style={{ backgroundColor: "#2196f3", color: "white", marginTop: "10px" }}
+          style={{ backgroundColor: "#4caf50", color: "white", marginTop: "10px" }}
           startIcon={<DownloadIcon />}
           onClick={() => handleDownload("summary")}
         > 

@@ -556,6 +556,7 @@ export default function VendorItemDetail() {
                 startIcon={<RefreshIcon />}
                 onClick={() => {
                   formik.resetForm();
+                  setSelectedFormat(".pdf");
                   setVisible(false);
                   setItem("");
                   setVendor("");

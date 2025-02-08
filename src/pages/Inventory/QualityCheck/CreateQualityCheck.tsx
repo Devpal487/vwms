@@ -527,12 +527,8 @@ const CreateQualityCheck = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-      qcDate: Yup.string()
-        .required(t("text.reqQcDate")),
-      bill_ChalanNo: Yup.string()
-        .required(t("text.reqBillNum")),
-      bill_ChalanDate: Yup.string()
-        .required(t("text.reqBillDate")),
+      mrnNo: Yup.string()
+       .required(t("text.reqmrnNo")),
     }),
 
 
@@ -830,12 +826,15 @@ const CreateQualityCheck = (props: Props) => {
                       label={
                         <CustomLabel
                           text={t("text.selectmrnNo")}
-                          required={false}
+                          required={true}
                         />
                       }
                     />
                   )}
                 />
+                 {formik.touched.mrnNo && formik.errors.mrnNo && (
+                  <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.mrnNo)}</div>
+                )}
               </Grid>
               {/* Challan No Field */}
               <Grid item lg={4} xs={12}>
@@ -845,11 +844,12 @@ const CreateQualityCheck = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.Enterbill_ChalanNo")}
-                      required={true}
+                      required={false}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
                   placeholder={t("text.Enterbill_ChalanNo")}
+                  disabled
                   size="small"
                   fullWidth
                   style={{ backgroundColor: "white" }}
@@ -899,6 +899,7 @@ const CreateQualityCheck = (props: Props) => {
                   placeholder={t("text.EntershipmentNo")}
                   size="small"
                   fullWidth
+                  disabled
                   style={{ backgroundColor: "white" }}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -923,6 +924,7 @@ const CreateQualityCheck = (props: Props) => {
                     disablePortal
                     size="small"
                     id="combo-box-demo"
+                    disabled
                     options={vendorData}
                     value={vendorData.find((opt: any) => opt.value === formik.values.vendorId) || null}
                     onChange={handleVendorSelect}
@@ -953,6 +955,7 @@ const CreateQualityCheck = (props: Props) => {
                       placeholder={t("text.vendorGstin")}
                       size="small"
                       fullWidth
+                      disabled
                       style={{ backgroundColor: "white" }}
                       onBlur={formik.handleBlur}
                       InputLabelProps={{ shrink: true }}
@@ -973,6 +976,7 @@ const CreateQualityCheck = (props: Props) => {
                       placeholder={t("text.vendorContactPerson")}
                       size="small"
                       fullWidth
+                      disabled
                       style={{ backgroundColor: "white" }}
                       onBlur={formik.handleBlur}
                       InputLabelProps={{ shrink: true }}
@@ -992,6 +996,7 @@ const CreateQualityCheck = (props: Props) => {
                       value={vendorDetail?.permanentAddress}
                       size="small"
                       fullWidth
+                      disabled
                       style={{ backgroundColor: "white" }}
                       onBlur={formik.handleBlur}
                       InputLabelProps={{ shrink: true }}
@@ -1011,6 +1016,7 @@ const CreateQualityCheck = (props: Props) => {
                       value={vendorDetail?.mobileNo}
                       size="small"
                       fullWidth
+                      disabled
                       style={{ backgroundColor: "white" }}
                       onBlur={formik.handleBlur}
                       InputLabelProps={{ shrink: true }}

@@ -693,7 +693,7 @@ const EditQualityCheck = (props: Props) => {
                   id="qcDate"
                   name="qcDate"
                   label={
-                    <CustomLabel text={t("text.qcDate1")} required={true} />
+                    <CustomLabel text={t("text.qcDate1")} required={false} />
                   }
                   value={formik.values.qcDate}
                   placeholder={t("text.qcDate1")}
@@ -739,7 +739,7 @@ const EditQualityCheck = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.Enterbill_ChalanNo")}
-                      required={true}
+                      required={false}
                     />
                   }
                   value={formik.values.bill_ChalanNo}
@@ -759,7 +759,7 @@ const EditQualityCheck = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.bill_ChalanDate")}
-                      required={true}
+                      required={false}
                     />
                   }
                   type="date"

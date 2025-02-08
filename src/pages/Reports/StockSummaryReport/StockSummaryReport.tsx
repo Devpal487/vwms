@@ -478,6 +478,7 @@ export default function StockSummaryReport() {
                 onClick={() => {
                   formik.resetForm();
                   setVisible(false);
+                  setSelectedFormat(".pdf");
                   setItem("");
                 }}
               >

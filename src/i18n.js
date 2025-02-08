@@ -11,6 +11,9 @@ const resources = {
       error: {},
       message: {},
       text: {
+        reqshipmentNo:"Shipment No. is required.",
+        reqvendor:"Vendor is required.",
+        reqmrnNo:"MRN No. is required.",
         //3/2/2025
         downloadSummary:"Download Summary",
         complaintDateTo:"Complaint Date To",
@@ -9148,6 +9151,7 @@ const resources = {
       message: {},
       text: {
         //
+        reqmrnNo:"एमआरएन नंबर आवश्यक है।",
         downloadSummary:"सारांश डाउनलोड करें",
         complainStatus12: "स्थिति",
         complaintDateTo: "शिकायत दिनांक तक",

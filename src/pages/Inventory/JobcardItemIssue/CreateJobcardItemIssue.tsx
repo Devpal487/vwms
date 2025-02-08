@@ -292,10 +292,10 @@ const CreateJobcardItemIssue = (props: Props) => {
       sno: 0,
       issueId: 0,
       issueDate: defaultValues,
-      indentId: 0,
+      indentId: null,
       issueLocation: "",
       issueType: "JobCard",
-      vehicleitem: 0,
+      vehicleitem: null,
       empId: -1,
       createdBy: "adminvm",
       updatedBy: "adminvm",
@@ -308,8 +308,8 @@ const CreateJobcardItemIssue = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-      //  indentno: Yup.string()
-      //  .required(t("text.reqIndentNum")),
+      indentId: Yup.string()
+       .required(t("text.reqIndentNum")),
       // empId: Yup.string()
       //     .required(t("text.reqEmpName")),
     }),
@@ -480,6 +480,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                         "indentNo",
                         newValue?.label?.toString() || ""
                       );
+                      
                       formik.setFieldValue(
                         "vehicleitem",
                         newValue?.vehicleitem
@@ -502,9 +503,9 @@ const CreateJobcardItemIssue = (props: Props) => {
                     />
                   )}
                 />
-                {formik.touched.indentNno && formik.errors.indentNno && (
+                {(!formik.values.indentId) &&  formik.touched.indentId && formik.errors.indentId && (
                   <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.indentNno}
+                    {formik.errors.indentId}
                   </div>
                 )}
               </Grid>
@@ -522,6 +523,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                     ) || null
                   }
                   // value={itemValue}
+                  disabled
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -535,7 +537,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                       label={
                         <CustomLabel
                           text={t("text.VehicleNos1")}
-                          required={true}
+                          required={false}
                         />
                       }
                       // name="vehicleitem"

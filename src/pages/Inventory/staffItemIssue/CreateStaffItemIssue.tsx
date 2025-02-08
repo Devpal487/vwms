@@ -256,7 +256,7 @@ const CreateStaffItemIssue = (props: Props) => {
 
     validationSchema: Yup.object({
       indentNo: Yup.string().required(t("text.reqIndentNum")),
-      empId: Yup.string().required(t("text.reqEmpName")),
+      //empId: Yup.string().required(t("text.reqEmpName")),
     }),
 
     onSubmit: async (values) => {
@@ -455,7 +455,7 @@ const CreateStaffItemIssue = (props: Props) => {
                     />
                   )}
                 />
-                {formik.touched.indentNo && formik.errors.indentNo && (
+                {(!formik.values.indentId) && formik.touched.indentNo && formik.errors.indentNo && (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.indentNo}
                   </div>
@@ -467,6 +467,7 @@ const CreateStaffItemIssue = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={empOption}
+                  disabled
                   value={
                     empOption.find(
                       (opt: any) => opt.value === formik.values.empId
@@ -484,17 +485,17 @@ const CreateStaffItemIssue = (props: Props) => {
                       label={
                         <CustomLabel
                           text={t("text.selectemp_name")}
-                          required={true}
+                          required={false}
                         />
                       }
                     />
                   )}
                 />
-                {formik.touched.empId && formik.errors.empId && (
+                {/* {formik.touched.empId && formik.errors.empId && (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.empId}
                   </div>
-                )}
+                )} */}
               </Grid>
 
               <Grid item lg={4} xs={12}>
