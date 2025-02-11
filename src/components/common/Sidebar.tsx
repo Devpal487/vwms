@@ -220,7 +220,7 @@ export default function MiniDrawer({ items }: any) {
   const [openlogo, setOpenlogo] = React.useState(true);
   const [homeColor, setHomeColor] = React.useState("inherit");
   const { t } = useTranslation();
-
+  const [menuData, setMenuData] = React.useState([]);
   const [selectedSubMenu, setSelectedSubMenu] = React.useState(null);
 
   const [expandedItems, setExpandedItems] = React.useState<any[]>([]);
@@ -247,38 +247,90 @@ export default function MiniDrawer({ items }: any) {
 
   let navigate = useNavigate();
 
-  function searchMenuItems(items: any, query: string) {
-    const results = [];
+  // function searchMenuItems(items: any, query: string) {
+  //   const results = [];
 
-    for (const menuItem of items) {
-      if (menuItem.name.toLowerCase().includes(query.toLowerCase())) {
-        results.push(menuItem);
-      } else if (menuItem.items && menuItem.items.length > 0) {
-        const matchingSubItems = menuItem.items.filter(
-          (subItem: { name: string }) =>
-            subItem.name.toLowerCase().includes(query.toLowerCase())
-        );
-        if (matchingSubItems.length > 0) {
-          results.push({ ...menuItem, items: matchingSubItems });
+  //   for (const menuItem of items) {
+  //     if (menuItem.menuName.toLowerCase().includes(query.toLowerCase())) {
+  //       results.push(menuItem);
+  //     } else if (menuItem.items && menuItem.items.length > 0) {
+  //       const matchingSubItems = menuItem.items.filter(
+  //         (subItem: { menuName: string }) =>
+  //           subItem.menuName.toLowerCase().includes(query.toLowerCase())
+  //       );
+  //       if (matchingSubItems.length > 0) {
+  //         results.push({ ...menuItem, items: matchingSubItems });
+  //       }
+  //     }
+  //   }
+  //   return results;
+  // }
+   const buildMenuHierarchy = (permissions:any) => {
+      const menuMap = new Map();
+
+      // Map permissions by menuId
+      permissions.forEach((perm:any) => {
+        const menu = {
+          menuId: perm.menuId,
+          parentId: perm.parentId,
+          menuName: perm.menuName,
+          path: `/path-to/${perm.menuName.replace(/\s+/g, "-").toLowerCase()}`,
+          children: []
+        };
+        menuMap.set(menu.menuId, menu);
+      });
+
+      // Assign children to their parents
+      const rootMenus:any = [];
+      menuMap.forEach((menu) => {
+        if (menu.parentId === null) {
+          rootMenus.push(menu);
+        } else {
+          const parentMenu = menuMap.get(menu.parentId);
+          if (parentMenu) {
+            parentMenu.children.push(menu);
+          }
         }
-      }
-    }
-    return results;
-  }
+      });
 
+      return rootMenus;
+    };
+  React.useEffect(() => {
+    const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+    setMenuData(buildMenuHierarchy(permissions));
+  }, []);
+  const renderMenu = (menus:any) =>
+    menus.map((menu:any) => (
+      <ListItem key={menu.menuId}>
+        <ListItemButton onClick={() => navigate(menu.path)}>
+          <ListItemText primary={menu.menuName} />
+        </ListItemButton>
+        {menu.children && menu.children.length > 0 && (
+          <List sx={{ paddingLeft: 2 }}>
+            {renderMenu(menu.children)}
+          </List>
+        )}
+      </ListItem>
+    ));
+  
+  // return (
+  //   <List>
+  //     {renderMenu(menuData)}
+  //   </List>
+  // );
   interface MenuItem {
     Icon: any;
     displayNo: number;
-    id: number;
+    menuId: number;
     items: MenuItem[];
     label: string;
-    name: string;
+    menuName: string;
     path: string;
   }
 
   const handleSearchIconClick = () => {
     console.log("value", searchValue);
-    const filtered = searchMenuItems(items, searchValue);
+    const filtered = renderMenu(items);
     setFilteredItems(filtered);
     console.log("filtered", filtered);
   };
@@ -306,7 +358,7 @@ export default function MiniDrawer({ items }: any) {
     if (item.items) {
       return [
         ...acc,
-        ...item.items.map((subItem: { name: any }) => subItem.name),
+        ...item.items.map((subItem: { menuName: any }) => subItem.menuName),
       ];
     }
     return acc;
@@ -321,7 +373,7 @@ export default function MiniDrawer({ items }: any) {
     const value = e.target.value;
     setSearchValue(value);
 
-    const filtered = searchMenuItems(items, value);
+    const filtered = renderMenu(items);
     setFilteredItems(filtered);
   };
 
@@ -598,7 +650,7 @@ export default function MiniDrawer({ items }: any) {
 
   // Effect to apply the theme from local storage
 
-  const handleToggle = (id: number, name: string) => () => {
+  const handleToggle = (id: number, menuName: string) => () => {
     const currentIndex = check.indexOf(id);
     //const newChecked = [...check];
     const newChecked = currentIndex === -1 ? [id] : [];
@@ -618,14 +670,14 @@ export default function MiniDrawer({ items }: any) {
     //     : [...prevExpanded, id.toString()]
     // );
 
-    console.log("Checked data:", name);
+    console.log("Checked data:", menuName);
     console.log("Checked data:", id);
 
-    setNodeNames(name);
+    setNodeNames(menuName);
     setnodeId(id);
     // handleSave(id, name);
   };
-
+  
   const handleSave = () => {
     console.log("handleSave function called");
 
@@ -650,11 +702,11 @@ export default function MiniDrawer({ items }: any) {
             checked={check.indexOf(nodes.id) !== -1}
             // onChange={handleToggle(nodes.id)}
 
-            onChange={handleToggle(nodes.id, nodes.name)}
+            onChange={handleToggle(nodes.id, nodes.menuName)}
             onClick={(event: any) => event.stopPropagation()}
           />
 
-          <div style={{ marginLeft: 8 }}>{nodes.name}</div>
+          <div style={{ marginLeft: 8 }}>{nodes.menuName}</div>
         </div>
       }
       onClick={() => toggleExpansion(nodes.id.toString())}
@@ -1013,7 +1065,7 @@ export default function MiniDrawer({ items }: any) {
               size="small"
               options={items.reduce((acc: any, item: any) => {
                 if (item.items) {
-                  acc.push(...item.items.map((subItem: any) => subItem.name));
+                  acc.push(...item.items.map((subItem: any) => subItem.menuName));
                 }
                 return acc;
               }, [])}
@@ -1132,11 +1184,11 @@ export default function MiniDrawer({ items }: any) {
                     }}
                     title={text.name}
                   >
-                    {text.name.charAt(0)}
+                    {text.menuName.charAt(0)}
                   </div>
                 )}
               
-                <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text.menuName} sx={{ opacity: open ? 1 : 0 }} />
               </ListItem>
               <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>
                 {/* {collapseIndex === index ? (
@@ -1150,76 +1202,79 @@ export default function MiniDrawer({ items }: any) {
 
             {/* Submenu Items */}
             {collapseIndex === index && (
-              <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
-                {items[index].items.map((subText:any, subIndex:any) => (
-                  <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
-                    <ListItem
-                      sx={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "center",
-                        paddingLeft: 2,
-                        paddingRight: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                        color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
-                        borderRadius: "10px",
-                        cursor: "pointer",
-                        "&:hover": {
-                          backgroundColor: "lightgray",
-                          color: "black",
-                        },
-                      }}
-                      onClick={(e) => {
-                        onClick(e, subText);
-                        handleSubMenuClick(subIndex);
-                      }}
-                    >
-                      {open && (
-                        <span
-                          style={{
-                            fontSize: "1.2rem",
-                            backgroundColor: "inherit",
-                            padding: "6px",
-                            borderRadius: "10px",
-                            color:"#426aee"
-                          }}
-                        >
-                         <FaFileLines />
-                        </span>
-                      )}
-                      {open ? (
-                        <p
-                          style={{
-                            fontWeight: 500,
-                            paddingTop: "3px",
-                            paddingBottom: "3px",
-                            opacity: open ? 1 : 0,
-                          }}
-                        >
-                          {subText.name}
-                        </p>
-                      ) : (
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : "auto",
-                            justifyContent: "center",
-                            color: open ? "#FF0000" : "inherit",
-                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                            borderRadius: "25px",
-                            padding: "5px 10px",
-                          }}
-                          title={subText.name}
-                        >
-                          <DescriptionIcon />
-                        </ListItemIcon>
-                      )}
-                    </ListItem>
-                  </List>
-                ))}
-              </List>
+                 <List>
+      {renderMenu(items)}
+    </List>
+              // <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
+              //   {items[index].items.map((subText:any, subIndex:any) => (
+              //     <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
+              //       <ListItem
+              //         sx={{
+              //           display: "flex",
+              //           justifyContent: "start",
+              //           alignItems: "center",
+              //           paddingLeft: 2,
+              //           paddingRight: 0,
+              //           paddingTop: 0,
+              //           paddingBottom: 0,
+              //           backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+              //           color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+              //           borderRadius: "10px",
+              //           cursor: "pointer",
+              //           "&:hover": {
+              //             backgroundColor: "lightgray",
+              //             color: "black",
+              //           },
+              //         }}
+              //         onClick={(e) => {
+              //           onClick(e, subText);
+              //           handleSubMenuClick(subIndex);
+              //         }}
+              //       >
+              //         {open && (
+              //           <span
+              //             style={{
+              //               fontSize: "1.2rem",
+              //               backgroundColor: "inherit",
+              //               padding: "6px",
+              //               borderRadius: "10px",
+              //               color:"#426aee"
+              //             }}
+              //           >
+              //            <FaFileLines />
+              //           </span>
+              //         )}
+              //         {open ? (
+              //           <p
+              //             style={{
+              //               fontWeight: 500,
+              //               paddingTop: "3px",
+              //               paddingBottom: "3px",
+              //               opacity: open ? 1 : 0,
+              //             }}
+              //           >
+              //             {subText.menuName}
+              //           </p>
+              //         ) : (
+              //           <ListItemIcon
+              //             sx={{
+              //               minWidth: 0,
+              //               mr: open ? 3 : "auto",
+              //               justifyContent: "center",
+              //               color: open ? "#FF0000" : "inherit",
+              //               backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+              //               borderRadius: "25px",
+              //               padding: "5px 10px",
+              //             }}
+              //             title={subText.menuName}
+              //           >
+              //             <DescriptionIcon />
+              //           </ListItemIcon>
+              //         )}
+              //       </ListItem>
+              //     </List>
+              //   ))}
+              // </List>
             )}
           </React.Fragment>
         ))}
@@ -3168,7 +3223,7 @@ export default function MiniDrawer({ items }: any) {
 //   const navigate = useNavigate();
 //  // const [open, setOpen] = React.useState(true);
 //   const [expandedMenus, setExpandedMenus] = React.useState<number[]>([]);
-//   const [themeMode, setThemeMode] = React.useState("light");
+  // const [themeMode, setThemeMode] = React.useState("light");
 //   // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
 //   // Get logged-in user from localStorage
@@ -3219,13 +3274,13 @@ export default function MiniDrawer({ items }: any) {
 //     document.body.className = themeMode === "light" ? "dark-theme" : "light-theme";
 //   };
 
-//   const handleProfileMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-//     setAnchorEl(event.currentTarget);
-//   };
+  // const handleProfileMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-//   const handleProfileMenuClose = () => {
-//     setAnchorEl(null);
-//   };
+  // const handleProfileMenuClose = () => {
+  //   setAnchorEl(null);
+  // };
 
 //   return (
 //     <Drawer variant="permanent" open={open}>
@@ -3283,5 +3338,242 @@ export default function MiniDrawer({ items }: any) {
 //         </ListItem>
 //       </List>
 //     </Drawer>
+//   );
+// }
+
+
+// ===============================
+// 11/02/25
+// import * as React from "react";
+// import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
+// import Box from "@mui/material/Box";
+// import MuiDrawer from "@mui/material/Drawer";
+// import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+// import Toolbar from "@mui/material/Toolbar";
+// import List from "@mui/material/List";
+// import CssBaseline from "@mui/material/CssBaseline";
+// import Typography from "@mui/material/Typography";
+// import Divider from "@mui/material/Divider";
+// import IconButton from "@mui/material/IconButton";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+// import ListItem from "@mui/material/ListItem";
+// import ListItemButton from "@mui/material/ListItemButton";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import ListItemText from "@mui/material/ListItemText";
+// import { useNavigate, Navigate } from "react-router-dom";
+// import { useTranslation } from "react-i18next";
+// import {
+//   Avatar,
+//   Checkbox,
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogTitle,
+//   Modal,
+//   Stack,
+// } from "@mui/material";
+// import Menu from "@mui/material/Menu";
+// import MenuItem from "@mui/material/MenuItem";
+// import call from "../../assets/images/phone-call.png";
+// import roles from "../../assets/images/role-model.png";
+// import tick from "../../assets/images/check-mark.png";
+// import crs from "../../assets/images/cross.png";
+// import log from "../../assets/images/profile.png";
+// import emails from "../../assets/images/gmail.png";
+// import genders from "../../assets/images/symbol.png";
+// import dobs from "../../assets/images/timetable.png";
+// import id from "../../assets/images/profile1.png";
+// import settings from "../../assets/images/settings.png";
+// import trans from "../../assets/images/translation.png";
+// import logout from "../../assets/images/logout.png";
+// import logged from "../../assets/images/permission.png";
+// import logo from "../../assets/images/recyclebinLogo.png";
+// import loged from "../../assets/images/DrawerLogo.png";
+// import CloseIcon from "@mui/icons-material/Close";
+// import dayjs from "dayjs";
+// import { Home } from "@mui/icons-material";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+// import Collapse from "@mui/material/Collapse";
+// import Typewriter from "./TypeWriter";
+// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+// import FolderIcon from "@mui/icons-material/Folder";
+// import TouchAppIcon from "@mui/icons-material/TouchApp";
+// import "./Shine.css";
+// import Breadcrumbs from "@mui/material/Breadcrumbs";
+// import Link from "@mui/material/Link";
+// import HomeIcon from "@mui/icons-material/Home";
+// import WhatshotIcon from "@mui/icons-material/Whatshot";
+// import GrainIcon from "@mui/icons-material/Grain";
+// import names from "../../assets/images/id-card (2).png";
+// import backgrd from "../../assets/images/backgroundimage.jpg";
+// import SearchIcon from "@mui/icons-material/Search";
+// import Paper from "@mui/material/Paper";
+// import InputBase from "@mui/material/InputBase";
+// import Autocomplete from "@mui/material/Autocomplete";
+// import InputAdornment from "@mui/material/InputAdornment";
+// import {
+//   Button,
+//   Card,
+//   CardContent,
+//   Grid,
+//   TextField,
+//   // Typography,
+// } from "@mui/material";
+// import "./ThemeStyle.css";
+// import ThemeIcon from "../../assets/images/themes.png";
+// import {
+//   Brightness5,
+//   Brightness4,
+//   Waves,
+//   WbSunny,
+//   Forest,
+//   Flag,
+// } from "@mui/icons-material";
+// import api from "../../utils/Url";
+// import { toast } from "react-toastify";
+// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
+// import TreeView from "@mui/x-tree-view/TreeView";
+// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
+
+
+// import { FaRegFolderOpen } from "react-icons/fa6";
+// import DescriptionIcon from '@mui/icons-material/Description';
+
+// import { FaFileLines } from "react-icons/fa6";
+// import ExpandLess from "@mui/icons-material/ExpandLess";
+// import ExpandMore from "@mui/icons-material/ExpandMore";
+// import LogoutIcon from "@mui/icons-material/Logout";
+// import Brightness4Icon from "@mui/icons-material/Brightness4";
+// import Brightness5Icon from "@mui/icons-material/Brightness5";
+// const themes = [
+//   { name: "light-theme", icon: <Brightness5 /> },
+//   { name: "dark-theme", icon: <Brightness4 /> },
+//   { name: "ocean-theme", icon: <Waves /> },
+//   { name: "sunset-theme", icon: <WbSunny /> },
+//   { name: "forest-theme", icon: <Forest /> },
+//   { name: "bhagwa-theme", icon: <Flag /> },
+// ];
+// interface MenuItem {
+//   menuId: number;
+//   menuName: string;
+//   path: string;
+//   children: MenuItem[];
+// }
+
+// export default function Sidebar({ menuItems }: { menuItems: MenuItem[] }) {
+//   const navigate = useNavigate();
+//   const [expandedMenus, setExpandedMenus] = React.useState<number[]>([]);
+//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+//   const handleToggle = (menuId: number) => {
+//     setExpandedMenus(prev =>
+//       prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
+//     );
+//   };
+//   const handleProfileMenuClose = () => {
+//     setAnchorEl(null);
+//   };
+//   const handleLogout = () => {
+//     localStorage.removeItem("userdata");
+//     localStorage.removeItem("permissions");
+//     localStorage.removeItem("token");
+//     navigate("/"); // ✅ Redirect to login
+// };
+//   const handleProfileMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+//   const handleThemeChange = (theme: any) => {
+//     setSelectedTheme(theme);
+//     setShowThemeMenu(false);
+//   };
+//   const [showThemeMenu, setShowThemeMenu] = React.useState(false);
+
+//   const [selectedTheme, setSelectedTheme] = React.useState(() => {
+//     const storedTheme = localStorage.getItem("theme");
+
+//     return storedTheme ? storedTheme : themes[0]["name"];
+//   });
+//   const [themeMode, setThemeMode] = React.useState("light");
+//   const renderMenu = (items: MenuItem[]) => {
+//     return items.map((item) => (
+//       <React.Fragment key={item.menuId}>
+//         <ListItem disablePadding>
+          
+//           <ListItemButton onClick={() => item.children.length ? handleToggle(item.menuId) : navigate(item.path)}>
+//             <ListItemIcon>
+//               <FolderIcon />
+//             </ListItemIcon>
+//             <ListItemText primary={item.menuName} />
+//             {item.children.length > 0 ? (expandedMenus.includes(item.menuId) ? <ExpandLess /> : <ExpandMore />) : null}
+//           </ListItemButton>
+//         </ListItem>
+//         {item.children.length > 0 && (
+//           <Collapse in={expandedMenus.includes(item.menuId)} timeout="auto" unmountOnExit>
+//             <List component="div" disablePadding sx={{ pl: 4 }}>
+//               {renderMenu(item.children)}
+//             </List>
+//           </Collapse>
+//         )}
+//       </React.Fragment>
+//     ));
+//   };
+
+//   return (
+//     <List>
+//     {/* Home */}
+//     <ListItem disablePadding>
+//       <ListItemButton onClick={() => navigate("/home")}>
+//         <ListItemIcon>
+//           <HomeIcon />
+//         </ListItemIcon>
+//         <ListItemText primary="Home" />
+//       </ListItemButton>
+//     </ListItem>
+  
+//     {/* Dynamic Menu */}
+//     {renderMenu(menuItems)}
+  
+//     <Divider />
+  
+//     {/* Profile */}
+//     <ListItem disablePadding>
+//       <ListItemButton onClick={handleProfileMenuClick}>
+//         {/* <ListItemIcon>
+//           <Avatar>{userName.charAt(0).toUpperCase()}</Avatar>
+//         </ListItemIcon> */}
+//         {/* <ListItemText primary={userName} /> */}
+//       </ListItemButton>
+//     </ListItem>
+  
+//     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleProfileMenuClose}>
+//       <MenuItem onClick={handleProfileMenuClose}>My Profile</MenuItem>
+//       <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
+//     </Menu>
+  
+//     <Divider />
+  
+//     {/* Theme Toggle */}
+//     <ListItem disablePadding>
+//       <ListItemButton onClick={handleThemeChange}>
+//         <ListItemIcon>
+//           {themeMode === "light" ? <Brightness5Icon /> : <Brightness4Icon />}
+//         </ListItemIcon>
+//         <ListItemText primary="Toggle Theme" />
+//       </ListItemButton>
+//     </ListItem>
+  
+//     {/* Logout */}
+//     <ListItem disablePadding>
+//       <ListItemButton onClick={handleLogout}>
+//         <ListItemIcon>
+//           <LogoutIcon />
+//         </ListItemIcon>
+//         <ListItemText primary="Logout" />
+//       </ListItemButton>
+//     </ListItem>
+//   </List>
+  
 //   );
 // }
