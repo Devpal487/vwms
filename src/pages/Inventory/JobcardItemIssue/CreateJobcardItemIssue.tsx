@@ -30,7 +30,7 @@ import HOST_URL from "../../../utils/Url";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
@@ -53,8 +53,6 @@ const CreateJobcardItemIssue = (props: Props) => {
   const [isIndentSelected, setIsIndentSelected] = useState(false);
   const [selectedAction, setSelectedAction] = useState(null);
   const [items, setItems] = useState<any>([]);
-  // const [IsbatchNO, setBatchno] = useState("");
-  //const [tableData, setTableData] = useState<any>([]);
   const [tableData, setTableData] = useState<any>([
     {
       id: 0,
@@ -86,40 +84,16 @@ const CreateJobcardItemIssue = (props: Props) => {
     { value: -1, label: t("text.VehicleNo") },
   ]);
 
-  // const [empOption, setempOption] = useState([
-  //     { value: "-1", label: t("text.empid") },
-  // ]);
+
   useEffect(() => {
     GetIndentID();
     GetitemData();
     GetUnitData();
-    // getBATCHNo();
-    //  GetempData();
+  
     getVehicleDetails();
   }, []);
-  // const getBATCHNo = async () => {
-  //   try {
-  //     const response = await api.get(`QualityCheck/GetMaxBatchNo`);
-  //     if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
-  //       setBatchno(response.data.data[0].batchNo);
-  //     } else {
-  //       toast.error(response?.data?.message || "Failed to fetch batch number");
-  //       return ""; // Return empty if no batch number is found
-  //     }
-  //   } catch (error) {
-  //     toast.error("Error fetching batch number");
-  //     return ""; // Return empty in case of an error
-  //   }
-  // };
-  // const getVehicleDetails = async () => {
-  //   const response = await api.get(`Master/GetVehicleDetail?ItemMasterId=-1`);
-  //   const data = response.data.data;
-  //   const arr = data.map((Item: any, index: any) => ({
-  //     value: Item.itemMasterId,
-  //     label: Item.vehicleNo,
-  //   }));
-  //   setVehicleOption(arr);
-  // };
+
+  
   const getVehicleDetails = async () => {
     try {
       const response = await api.get(`Master/GetVehicleDetail?ItemMasterId=-1`);
@@ -169,11 +143,17 @@ const CreateJobcardItemIssue = (props: Props) => {
     try {
       const collectData = { indentId: itemID, issueType: "JobCard" };
       const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
-      
+  
+      if (!response.data || response.data.data === null) {
+        toast.error("Please add item");
+        setTableData([]); // Clear table data if response is null
+        return;
+      }
+  
       const data = response?.data?.data?.itemIssueDetail;
       if (!Array.isArray(data)) {
         console.warn("Invalid indent data received:", data);
-        setTableData([]); // Prevent error
+        setTableData([]);
         return;
       }
   
@@ -190,60 +170,56 @@ const CreateJobcardItemIssue = (props: Props) => {
         stockQty: item?.stockQty || 0,
         issueQty: item?.issueQty || 0,
         batchNo: item?.batchNo || "",
-      
-      "indentNo": "",
-
+        indentNo: "",
       }));
   
       setTableData(indent);
       setIsIndentSelected(true);
     } catch (error) {
       console.error("Error fetching indent data:", error);
-      setTableData([]); // Ensure safe empty state
+      setTableData([]);
+      toast.error("Failed to fetch item data");
     }
   };
   
-//   const GetIndentIDById = async (itemID: any) => {
-//     const collectData = {
-//       indentId: itemID,
-// "issueType": "JobCard"
-//       //indentId: -1,
-//       // indentNo: "",
-//       // empId: -1,
-//     };
-//     const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
-//     const data =  response?.data?.data?.itemIssueDetail
+  // const GetIndentIDById = async (itemID: any) => {
+  //   try {
+  //     const collectData = { indentId: itemID, issueType: "JobCard" };
+  //     const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
+      
+  //     const data = response?.data?.data?.itemIssueDetail;
+  //     if (!Array.isArray(data)) {
+  //       console.warn("Invalid indent data received:", data);
+  //       setTableData([]); // Prevent error
+  //       return;
+  //     }
+  
+  //     const indent = data.map((item: any, index: any) => ({
+  //       id: index,
+  //       issueId: -1,
+  //       itemID: item?.itemID || 0,
+  //       unitId: item?.unitId || 0,
+  //       indentId: item?.indentId || 0,
+  //       reqQty: item?.reqQty || 0,
+  //       itemName: item?.itemName || "",
+  //       unitName: item?.unitName || "",
+  //       returnItem: true,
+  //       stockQty: item?.stockQty || 0,
+  //       issueQty: item?.issueQty || 0,
+  //       batchNo: item?.batchNo || "",
+      
+  //     "indentNo": "",
 
-//     console.log("indent optionpppppppppppp",  response.data.data?.itemIssueDetail);
-//     // let arr: any = [];
-
-//     const indent = data && data?.map((item: any, index: any) => {
-//       return{
-//       id: index,
-//       issueId: -1,
-//       itemID: item?.itemId,
-//       unitId: item?.unitId,
-//       // batchNo: item?.batchNo,
-//       indentId: item?.indentId,
-//       // stockQty: item?.approveQuantity,
-//       reqQty: item?.approveQuantity,
-//       //  "amount" : item?.amount,
-//       itemName: item?.itemName,
-//       unitName: item?.unitName,
-//       indentNo: "",
-//       srn: 0,
-//       // "unitName": "",
-//       returnItem: true,
-//       stockQty: 0,
-//       issueQty: 0,
-//       batchNo: item?.batchNo,
-//     }});
-//     console.log("indenttttt",indent);
-    
-
-//     setTableData(indent);
-//     setIsIndentSelected(true);
-//   };
+  //     }));
+  
+  //     setTableData(indent);
+  //     setIsIndentSelected(true);
+  //   } catch (error) {
+  //     console.error("Error fetching indent data:", error);
+  //     setTableData([]); // Ensure safe empty state
+  //   }
+  // };
+  
 
   console.log("check table", tableData);
 
@@ -310,24 +286,47 @@ const CreateJobcardItemIssue = (props: Props) => {
     validationSchema: Yup.object({
       indentId: Yup.string()
        .required(t("text.reqIndentNum")),
-      // empId: Yup.string()
-      //     .required(t("text.reqEmpName")),
+     
     }),
     onSubmit: async (values) => {
-      const validTableData = tableData;
-      values.itemIssueDetail = tableData;
-   
-      const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
+  if (!tableData || tableData.length === 0) {
+    toast.error("Please add item");
+    return; // Stop form submission
+  }
 
-      if (response.data.status === 1) {
-        setToaster(false);
-        toast.success(response.data.message);
-        navigate("/Inventory/JobcardItemIssue");
-      } else {
-        setToaster(true);
-        toast.error(response.data.message);
-      }
-    },
+  values.itemIssueDetail = tableData;
+  const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
+
+  if (response.data.mesg === null) {
+    toast.error("Please add item");
+    return; // Stop further execution
+  }
+
+  if (response.data.status === 1) {
+    setToaster(false);
+    toast.success(response.data.message);
+    navigate("/Inventory/JobcardItemIssue");
+  } else {
+    setToaster(true);
+    toast.error(response.data.message);
+  }
+}
+
+    // onSubmit: async (values) => {
+    //   const validTableData = tableData;
+    //   values.itemIssueDetail = tableData;
+   
+    //   const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
+
+    //   if (response.data.status === 1) {
+    //     setToaster(false);
+    //     toast.success(response.data.message);
+    //     navigate("/Inventory/JobcardItemIssue");
+    //   } else {
+    //     setToaster(true);
+    //     toast.error(response.data.message);
+    //   }
+    // },
   });
   const handleInputChange = async (index: any, field: any, value: any) => {
     const updatedData = [...tableData];
@@ -447,8 +446,9 @@ const CreateJobcardItemIssue = (props: Props) => {
           </Grid>
           <Divider />
           <br />
+          <ToastContainer/>
           <form onSubmit={formik.handleSubmit}>
-            {toaster === false ? "" : <ToastApp />}
+            {/* {toaster === false ? "" : <ToastApp />} */}
             <Grid item xs={12} container spacing={2}>
               <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
@@ -643,16 +643,8 @@ const CreateJobcardItemIssue = (props: Props) => {
                           >
                             {t("text.issueQty")}
                           </th>
-                          {/* <th style={{ border: '1px solid black', textAlign: 'center' }}>Actions</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}></th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Item Name</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Unit</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Batchno</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>stockQty</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>reqQty</th>
-                                                    <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>issueQty</th> */}
-
-                          {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
+                        
+  
                         </tr>
                       </thead>
                       <tbody>
@@ -661,15 +653,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                             key={row.id}
                             style={{ border: "1px solid black" }}
                           >
-                            {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                                                            if (tableData.length > 1) {
-                                                                deleteRow(index)
-                                                            } else {
-                                                                alert("There should be atleast one row")
-                                                            }
-                                                        }}>
-                                                            <DeleteIcon />
-                                                        </td> */}
+                          
                             <td
                               style={{
                                 border: "1px solid black",
@@ -745,8 +729,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                   </option>
                                 ))}
                               </select>
-                              {/* <select
-                                                                                                                                                                                                                       </select> */}
+                      
                             </td>
                             <td
                               style={{
@@ -781,7 +764,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 // type="number"
                                 size="small"
                                 value={row.stockQty}
-                                // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
                                 onFocus={(e) => {
                                   e.target.select();
                                 }}
@@ -835,9 +818,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 }}
                               />
                             </td>
-                            {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
-                                                            <DeleteIcon />
-                                                        </td> */}
+                         
                           </tr>
                         ))}
                       </tbody>

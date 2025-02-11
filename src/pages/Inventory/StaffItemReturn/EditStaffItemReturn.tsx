@@ -1471,8 +1471,9 @@ const EditStaffItemReturn = (props: Props) => {
                                     <Button
                                         type="submit"
                                         fullWidth
+                                        disabled
                                         style={{
-                                            backgroundColor: `var(--header-background)`,
+                                            backgroundColor:"grey",
                                             color: "white",
                                             marginTop: "10px",
                                         }}

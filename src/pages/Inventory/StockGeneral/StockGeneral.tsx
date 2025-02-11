@@ -168,12 +168,12 @@ export default function StockGeneral() {
                         },
                     },
 
-                    {
-                        field: "serialNo",
-                        headerName: t("text.SrNo"),
-                        flex: 1,
-                        headerClassName: "MuiDataGrid-colCell",
-                    },
+                    // {
+                    //     field: "serialNo",
+                    //     headerName: t("text.SrNo"),
+                    //     flex: 1,
+                    //     headerClassName: "MuiDataGrid-colCell",
+                    // },
                     
                     {
                         field: "batchNo",
@@ -184,32 +184,32 @@ export default function StockGeneral() {
                     {
                         field: "itemName",
                         headerName: t("text.itemName"),
-                        flex: 1,
+                        flex: 1.2,
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     {
                         field: "unitName",
                         headerName: t("text.unitName"),
-                        flex: 1,
+                        flex: 1.2,
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     {
                         field: "rate",
                         headerName: t("text.rate"),
-                        flex: 1,
+                        flex: 0.8,
                         headerClassName: "MuiDataGrid-colCell",
                     },
                     {
                         field: "voucherType",
                         headerName: t("text.voucherType"),
-                        flex: 1,
+                        flex: 1.4,
                         headerClassName: "MuiDataGrid-colCell",
                     },
 
                     {
                         field: "voucherDate",
                         headerName: t("text.voucherDate"),
-                        flex: 1,
+                        flex: 1.3,
                         headerClassName: "MuiDataGrid-colCell",
                         renderCell(params) {
                             return dayjs(params.row.voucherDate).format("DD-MM-YYYY")
@@ -273,8 +273,8 @@ export default function StockGeneral() {
                         "& .MuiDataGrid-colCell": {
                             backgroundColor: `var(--grid-headerBackground)`,
                             color: `var(--grid-headerColor)`,
-                            fontSize: 17,
-                            fontWeight: 900
+                            fontSize: 12,
+                            fontWeight: 600
                         },
                     }}
                     style={{ padding: "10px", }}

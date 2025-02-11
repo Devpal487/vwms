@@ -189,7 +189,7 @@ export default function QualityCheckMaster() {
           {
             field: "qcDate",
             headerName: t("text.qcDate1"),
-            flex: 1,
+            flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             renderCell(params) {
               return dayjs(params.row.qcDate).format("DD-MMM-YYYY")
@@ -198,13 +198,13 @@ export default function QualityCheckMaster() {
           {
             field: "mrnNo",
             headerName: t("text.mrnNo"),
-            flex: 1,
+            flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
           },
           {
             field: "mrnDate",
             headerName: t("text.mrnDate"),
-            flex: 1,
+            flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             renderCell(params) {
                 return dayjs(params.row.bill_ChalanDate).format("DD-MMM-YYYY")
@@ -221,7 +221,7 @@ export default function QualityCheckMaster() {
           {
             field: "remark",
             headerName: t("text.Remark1"),
-            flex: 1,
+            flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
           },
         ];

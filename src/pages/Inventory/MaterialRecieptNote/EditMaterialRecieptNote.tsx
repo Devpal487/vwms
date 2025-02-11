@@ -147,67 +147,9 @@ const EditMaterialRecieptNote = (props: Props) => {
       });
   };
 
-  // const getMrnById = (id: any) => {
-
-  //   api.post(`QualityCheck/GetMrn`, { MrnId: id })
-  //     .then((response) => {
-  //       if (response.data.data.length > 0) {
-  //         //  if (response.data && response.data.data && Array.isArray(response.data.data) && response.data.data.length > 0) {
-  //         const data = response.data.data[0]['mrnDetail'];
-  //         if (data != null) {
-  //           const arr = data?.map((item: any) => {
-  //             return {
-  //               id: item.id,
-  //               mrnId: item.mrnId,
-  //             //  mrnId: item.mrnId,
-  //               // mrnType: item.mrnId,
-  //               orderId: item.orderId,
-  //               orderNo: item.orderNo,
-  //               batchNo: item.batchNo,
-  //               serialNo: item.serialNo,
-  //               qcStatus: item.qcStatus,
-  //               itemId: item.itemId,
-  //               balQuantity: item.balQuantity,
-  //               quantity: item.quantity,
-  //               rate: item.rate,
-  //               amount: item.amount,
-  //               gstId: item.gstId,
-  //               gstRate: item.gstRate,
-  //               cgst: item.cgst,
-  //               sgst: item.sgst,
-  //               igst: item.igst,
-  //               cgstid: item.cgstid,
-  //               sgstid: item.sgstid,
-  //               igstid: item.igstid,
-  //               totalGst: item.gst,
-  //               netAmount: item.netAmount,
-  //               unitId: item.unitId,
-  //               itemName: item.itemName,
-  //               unitName: item.unitName,
-
-  //               //item: {},
-  //             }
-  //           })
-  //           setTableData(arr);
-  //           updateTotalAmounts(arr);
-  //           // if (arr.length > 0 ) {
-  //           //   addRow();
-  //           // }
-  //         }
-  //       } else {
-
-  //         console.error("No MRN data found or the data structure is incorrect.");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching MRN data:", error);
-  //     });
-  // };
-
+  
   useEffect(() => {
-    // if (tableData.length > 0 && isRowFilled(tableData[tableData.length - 1]) && tableData[tableData.length - 1].id !== -1) {
-    //   addRow(); // Call addRow to add a new initial row
-    // }
+  
   }, [tableData]);
 
   const GetitemData = async () => {
@@ -310,30 +252,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     }
   };
 
-  // const handleInputChange = (index: number, field: string, value: any) => {
-  //   const updatedItems = [...tableData];
-  //   let item = { ...updatedItems[index] };
-
-  //   if (field === "orderNo") {
-  //     const selectedItem = orderOption.find((opt: any) => opt.value === value);
-  //     if (selectedItem) {
-  //       item = {
-  //         ...item,
-  //         orderId: selectedItem.value,
-  //         orderNo: selectedItem.label,
-  //       };
-  //     }
-  //   } else {
-  //     item[field] = value;
-  //   }
-
-  //   // Ensure mrnId is preserved
-  //   item.mrnId = formik.values.mrnId;
-
-  //   updatedItems[index] = item;
-  //   setTableData(updatedItems);
-  //   updateTotalAmounts(updatedItems);
-  // };
+ 
   const handleInputChange = async (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
@@ -361,20 +280,7 @@ const EditMaterialRecieptNote = (props: Props) => {
         };
       }
     }
-    //  else if (field === "itemId") {
-    //   const selectedItem = itemOption.find(
-    //     (option: any) => option.value === value
-    //   );
-    //   console.log(selectedItem);
-    //   if (selectedItem) {
-    //     item = {
-    //       ...item,
-    //       itemId: selectedItem?.value,
-    //       itemName: selectedItem?.label,
-    //       item: selectedItem?.details,
-    //     };
-    //   }
-    // }
+   
      else if (field === "batchNo") {
       item.batchNo = value?.toString();
     } else if (field === "balQuantity") {
@@ -401,10 +307,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
       2
     );
-    // const batchNo = await getBATCHNo();
-    // if (batchNo) {
-    //   item.batchNo = batchNo; // Set the fetched batch number
-    // }
+    
     item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
     item.sgst = item.gst / 2;
     item.cgst = item.gst / 2;
@@ -416,9 +319,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     setTableData(updatedItems);
     updateTotalAmounts(updatedItems);
 
-    // if (isRowFilled(item) && index === updatedItems.length - 1) {
-    //   addRow();
-    // }
+   
   };
 
 
@@ -473,7 +374,7 @@ const EditMaterialRecieptNote = (props: Props) => {
 
   const deleteRow = (index: number) => {
     if (tableData.length === 1) {
-      // If there's only one row, reset it to initial values
+    
       setTableData([{ ...initialRowData }]);
     } else {
       const newData = tableData.filter((_, i) => i !== index);
@@ -543,83 +444,7 @@ const EditMaterialRecieptNote = (props: Props) => {
         toast.error(response.data.message);
       }
     },
-    // onSubmit: async (values) => {
-    //   const isFirstRowDefault = tableData[0] &&
-    //     tableData[0].id === -1 &&
-    //     tableData[0].mrnId === 0 &&
-    //     tableData[0].mrnType === "" &&
-    //     tableData[0].orderId === "" &&
-    //     tableData[0].orderNo === "" &&
-    //     tableData[0].batchNo === "" &&
-    //     tableData[0].serialNo === "" &&
-    //     tableData[0].qcStatus === "" &&
-    //     tableData[0].itemId === "" &&
-    //     tableData[0].balQuantity === "" &&
-    //     tableData[0].quantity === "" &&
-    //     tableData[0].rate === "" &&
-    //     tableData[0].amount === "" &&
-    //     tableData[0].gstId === "" &&
-    //     tableData[0].gstRate === "" &&
-    //     tableData[0].cgst === "" &&
-    //     tableData[0].sgst === "" &&
-    //     tableData[0].igst === "" &&
-    //     tableData[0].cgstid === "" &&
-    //     tableData[0].sgstid === "" &&
-    //     tableData[0].igstid === "" &&
-    //     tableData[0].gst === "" &&
-    //     tableData[0].netAmount === "" &&
-    //     Object.keys(tableData[0].item).length === 0;
-
-    //   if (isFirstRowDefault) {
-    //     alert("Please add values in the table before submitting.");
-    //     return;
-    //   }
-
-    //   const filteredTableData = tableData.filter(row => {
-    //     return !(
-    //       row.id === -1 &&
-    //       row.mrnId === 0 &&
-    //       row.mrnType === "" &&
-    //       row.orderId === "" &&
-    //       row.orderNo === "" &&
-    //       row.batchNo === "" &&
-    //       row.serialNo === "" &&
-    //       row.qcStatus === "" &&
-    //       row.itemId === "" &&
-    //       row.balQuantity === "" &&
-    //       row.quantity === "" &&
-    //       row.rate === "" &&
-    //       row.amount === "" &&
-    //       row.gstId === "" &&
-    //       row.gstRate === "" &&
-    //       row.cgst === "" &&
-    //       row.sgst === "" &&
-    //       row.igst === "" &&
-    //       row.cgstid === "" &&
-    //       row.sgstid === "" &&
-    //       row.igstid === "" &&
-    //       row.gst === "" &&
-    //       row.netAmount === "" &&
-    //       Object.keys(row.item).length === 0
-    //     );
-    //   });
-    //   values = vendorDetail;
-
-    //   const response = await api.post(`QualityCheck/UpsertMrn`, {
-    //     ...values,
-    //     // mrnDetail: filteredTableData,
-    //     mrnDetail: filteredTableData,
-
-    //   });
-    //   if (response.data.status === 1) {
-    //     setToaster(false);
-    //     toast.success(response.data.message);
-    //     navigate("/Inventory/MRNForm");
-    //   } else {
-    //     setToaster(true);
-    //     toast.error(response.data.message);
-    //   }
-    // },
+   
   });
 
   const back = useNavigate();
@@ -917,26 +742,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                     )}
                   />
                 </Grid>
-                {/* <Grid item lg={4} xs={12} md={6}>
-                  <Autocomplete
-                    disablePortal
-                    size="small"
-                    id="combo-box-demo"
-                    options={vendorData}
-                    onChange={handleVendorSelect}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={
-                          <CustomLabel
-                            text={t("text.SelectVendor")}
-                            required={false}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                </Grid> */}
+              
 
                 {vendorDetail?.gstinNo && (
                   <Grid item lg={4} xs={12} md={6}>

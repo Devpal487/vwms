@@ -136,8 +136,7 @@ export default function MaterialRecieptNoteMaster() {
             field: "actions",
             headerClassName: "MuiDataGrid-colCell",
             headerName: t("text.Action"),
-            width: 150,
-
+           flex:1 ,
             renderCell: (params) => {
               return [
                 <Stack
@@ -170,12 +169,13 @@ export default function MaterialRecieptNoteMaster() {
               ];
             },
           },
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-          },
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text",
+          // },
           
           // {
           //   field: "mrnNo",
@@ -195,8 +195,9 @@ export default function MaterialRecieptNoteMaster() {
           {
             field: "mrnType",
             headerName: t("text.mrnType"),
-            flex: 1,
+            flex: 1.2,
             headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text",
             renderCell(params) {
               return params.row.mrnType === '1' ? 'Bill': 'Challan';
             },
@@ -204,8 +205,9 @@ export default function MaterialRecieptNoteMaster() {
           {
             field: "bill_ChalanNo",
             headerName: t("text.bill_ChalanNo"),
-            flex: 1,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text",
           },
           // {
           //   field: "bill_ChalanDate",
@@ -219,20 +221,23 @@ export default function MaterialRecieptNoteMaster() {
           {
             field: "shipmentNo",
             headerName: t("text.shipmentNo"),
-            flex: 1,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text",
           },
           {
             field: "totalAmount",
             headerName: t("text.totalAmount"),
-            flex: 1,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text",
           }, 
           {
             field: "netAmount",
             headerName: t("text.NetAmount"),
-            flex: 1,
+            flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text",
             renderCell(params) {
               // console.log("values", params.row);
               return (parseFloat(params.row.totalAmount )+ parseFloat(params.row.totalSGST) + parseFloat(params.row.totalCGST) + parseFloat(params.row.totalIGST)).toFixed(2);
@@ -277,8 +282,8 @@ export default function MaterialRecieptNoteMaster() {
             "& .MuiDataGrid-colCell": {
               backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
-              fontSize: 17,
-              fontWeight: 900
+              fontSize: 13,
+              fontWeight: 700
             },
           }}
           style={{ padding: "10px", }}
