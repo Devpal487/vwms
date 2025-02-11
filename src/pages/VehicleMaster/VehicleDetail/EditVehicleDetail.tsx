@@ -208,11 +208,10 @@ const EditVehicleDetail = (props: Props) => {
    const fetchImage = async (itemId: any = location.state?.itemMasterId || 0) => {
       const response = await api.get(
          `Master/GetVehicleDetail?ItemMasterId=${itemId}`,
-         //{ headers: { "brandid": -1 } }
-       );
-       const data = response.data.data;
-      formik.setFieldValue("filename", data[0].filename.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
-      formik.setFieldValue("vehiclePhotoFile", data[0].vehiclePhotoFile.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+      );
+      const data = response.data.data;
+      formik.setFieldValue("filename", data[0].filename.replace(/^data:image\/\w+;base64,/, ""));
+      formik.setFieldValue("vehiclePhotoFile", data[0].vehiclePhotoFile.replace(/^data:image\/\w+;base64,/, ""));
    }
 
    const getVehicletypeData = async () => {
@@ -332,12 +331,12 @@ const EditVehicleDetail = (props: Props) => {
 
       onSubmit: async (values) => {
          const response = await api.post(`Master/UpsertVehicleDetail`, values);
-         if (response.data.status === 1) {
-            toast.success(response.data.message);
+         if (response.data.isSuccess) {
+            toast.success(response.data.mesg);
             navigate("/vehiclemaster/VehicleDetail")
          } else {
             setToaster(true);
-            toast.error(response.data.message);
+            toast.error(response.data.mesg);
          }
       },
    });

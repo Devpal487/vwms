@@ -320,12 +320,12 @@ const AddVehicleDetail = (props: Props) => {
 
       onSubmit: async (values) => {
          const response = await api.post(`Master/UpsertVehicleDetail`, values);
-         if (response.data.status === 1) {
-            toast.success(response.data.message);
+         if (response.data.isSuccess) {
+            toast.success(response.data.mesg);
             navigate("/vehiclemaster/VehicleDetail")
          } else {
             setToaster(true);
-            toast.error(response.data.message);
+            toast.error(response.data.mesg);
          }
       },
    });
