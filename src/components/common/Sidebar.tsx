@@ -1202,76 +1202,79 @@ export default function MiniDrawer({ items }: any) {
 
             {/* Submenu Items */}
             {collapseIndex === index && (
-              <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
-                {items[index].items.map((subText:any, subIndex:any) => (
-                  <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
-                    <ListItem
-                      sx={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "center",
-                        paddingLeft: 2,
-                        paddingRight: 0,
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                        color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
-                        borderRadius: "10px",
-                        cursor: "pointer",
-                        "&:hover": {
-                          backgroundColor: "lightgray",
-                          color: "black",
-                        },
-                      }}
-                      onClick={(e) => {
-                        onClick(e, subText);
-                        handleSubMenuClick(subIndex);
-                      }}
-                    >
-                      {open && (
-                        <span
-                          style={{
-                            fontSize: "1.2rem",
-                            backgroundColor: "inherit",
-                            padding: "6px",
-                            borderRadius: "10px",
-                            color:"#426aee"
-                          }}
-                        >
-                         <FaFileLines />
-                        </span>
-                      )}
-                      {open ? (
-                        <p
-                          style={{
-                            fontWeight: 500,
-                            paddingTop: "3px",
-                            paddingBottom: "3px",
-                            opacity: open ? 1 : 0,
-                          }}
-                        >
-                          {subText.menuName}
-                        </p>
-                      ) : (
-                        <ListItemIcon
-                          sx={{
-                            minWidth: 0,
-                            mr: open ? 3 : "auto",
-                            justifyContent: "center",
-                            color: open ? "#FF0000" : "inherit",
-                            backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
-                            borderRadius: "25px",
-                            padding: "5px 10px",
-                          }}
-                          title={subText.menuName}
-                        >
-                          <DescriptionIcon />
-                        </ListItemIcon>
-                      )}
-                    </ListItem>
-                  </List>
-                ))}
-              </List>
+                 <List>
+      {renderMenu(items)}
+    </List>
+              // <List sx={{ paddingLeft: open ? 2 : 0, backgroundColor: "inherit",alignItems:"center",justifyContent:"center" }}>
+              //   {items[index].items.map((subText:any, subIndex:any) => (
+              //     <List sx={{ pl: 2 ,alignItems:"center",justifyContent:"center" }} key={subIndex}>
+              //       <ListItem
+              //         sx={{
+              //           display: "flex",
+              //           justifyContent: "start",
+              //           alignItems: "center",
+              //           paddingLeft: 2,
+              //           paddingRight: 0,
+              //           paddingTop: 0,
+              //           paddingBottom: 0,
+              //           backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+              //           color: selectedSubMenu === subIndex ? "white" : "var(--drawer-color)",
+              //           borderRadius: "10px",
+              //           cursor: "pointer",
+              //           "&:hover": {
+              //             backgroundColor: "lightgray",
+              //             color: "black",
+              //           },
+              //         }}
+              //         onClick={(e) => {
+              //           onClick(e, subText);
+              //           handleSubMenuClick(subIndex);
+              //         }}
+              //       >
+              //         {open && (
+              //           <span
+              //             style={{
+              //               fontSize: "1.2rem",
+              //               backgroundColor: "inherit",
+              //               padding: "6px",
+              //               borderRadius: "10px",
+              //               color:"#426aee"
+              //             }}
+              //           >
+              //            <FaFileLines />
+              //           </span>
+              //         )}
+              //         {open ? (
+              //           <p
+              //             style={{
+              //               fontWeight: 500,
+              //               paddingTop: "3px",
+              //               paddingBottom: "3px",
+              //               opacity: open ? 1 : 0,
+              //             }}
+              //           >
+              //             {subText.menuName}
+              //           </p>
+              //         ) : (
+              //           <ListItemIcon
+              //             sx={{
+              //               minWidth: 0,
+              //               mr: open ? 3 : "auto",
+              //               justifyContent: "center",
+              //               color: open ? "#FF0000" : "inherit",
+              //               backgroundColor: selectedSubMenu === subIndex ? "#FF7722" : "inherit",
+              //               borderRadius: "25px",
+              //               padding: "5px 10px",
+              //             }}
+              //             title={subText.menuName}
+              //           >
+              //             <DescriptionIcon />
+              //           </ListItemIcon>
+              //         )}
+              //       </ListItem>
+              //     </List>
+              //   ))}
+              // </List>
             )}
           </React.Fragment>
         ))}

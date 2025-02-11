@@ -1713,12 +1713,12 @@ const appRoutes: RouteType[] = [
       {
         index: true,
         element: <DashboardIndex />,
-        state: "index",
+        state: "Admin.index",
       },
       {
         path: "/Admin/ComplaintApproval",
         element: <ComplaintApproval />,
-        state: "ComplaintApproval",
+        state: "Admin.ComplaintApproval",
         sidebarProps: {
           displayText: "Complaint Approval",
         },
@@ -1726,18 +1726,18 @@ const appRoutes: RouteType[] = [
       {
         path: "/Admin/AddComplaintApproval",
         element: <AddComplaintApproval />,
-        state: "AddComplaintApproval",
+        state: "Admin.AddComplaintApproval",
       },
       {
         path: "/Admin/EditComplaintApproval",
         element: <EditComplaintApproval />,
-        state: "EditComplaintApproval",
+        state: "Admin.EditComplaintApproval",
       },
 
       {
         path: "/Admin/Flowmaster",
         element: <Flowmaster/>,
-        state: "Flowmaster",
+        state: "Admin.Flowmaster",
         sidebarProps: {
           displayText: "Flow Master",
         },
@@ -1745,7 +1745,7 @@ const appRoutes: RouteType[] = [
       {
         path: "/Admin/MenuCreate",
         element: <MenuMaster/>,
-        state: "MenuCreate",
+        state: "Admin.MenuCreate",
         sidebarProps: {
           displayText: "Menu Create",
         },
@@ -1753,7 +1753,7 @@ const appRoutes: RouteType[] = [
       {
         path: "/Admin/HelpCreation",
         element: <HelpCreation/>,
-        state: "HelpCreation",
+        state: "Admin.HelpCreation",
         sidebarProps: {
           displayText: "Help Creation",
         },
