@@ -1474,6 +1474,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                     <Button
                                         type="submit"
                                         fullWidth
+                                        disabled
                                         style={{
                                             backgroundColor: `var(--header-background)`,
                                             color: "white",

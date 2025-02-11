@@ -1533,23 +1533,7 @@ console.log("location.state",(location.state));
                     <tbody>
                       {tableData1.map((row: any, index: any) => (
                         <tr key={row.id} style={{ border: '1px solid black' }}>
-                          {/* <td
-                            style={{
-                              border: "1px solid black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <DeleteIcon
-                              onClick={() => {
-                                if (tableData1.length > 1) {
-                                  deleteRow(index)
-                                } else {
-                                  alert("Atleast one row should be there");
-                                }
-                              }}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </td> */}
+                        
                            <td
                             style={{
                               border: "1px solid black",
@@ -1799,7 +1783,7 @@ console.log("location.state",(location.state));
                           >
                             <TextField
                               // value={row.qty * row.rate}
-                              value={row.amount + row.gstRate}
+                              value={row.amount}
                               size="small"
                               inputProps={{ readOnly: true }}
                             />

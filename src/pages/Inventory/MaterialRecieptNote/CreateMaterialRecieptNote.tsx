@@ -110,19 +110,42 @@ const CreateMaterialRecieptNote = (props: Props) => {
     GetUnitData();
     getBATCHNo();
   }, []);
+  // const handleOrderSelect = (event: any, newValue: any) => {
+  //   if (newValue.length > 0) {
+  //     const lastSelectedOrder = newValue[newValue.length - 1];
+  //     setSelectedOrder(lastSelectedOrder); // Store selected order
+  //     setOpenDialog(true); // Open the confirmation dialog
+  //   }
+  // };
   const handleOrderSelect = (event: any, newValue: any) => {
     if (newValue.length > 0) {
-      const lastSelectedOrder = newValue[newValue.length - 1];
-      setSelectedOrder(lastSelectedOrder); // Store selected order
+      setSelectedOrder(newValue); // Store selected orders
       setOpenDialog(true); // Open the confirmation dialog
     }
   };
-  const handleConfirm = () => {
-    if (selectedOrder) {
-      getPurchaseOrderById(selectedOrder.orderId);
+  
+  const handleConfirm = async () => {
+    if (selectedOrder && selectedOrder.length > 0) {
+      let mergedTableData: any[] = [];
+  
+      for (const order of selectedOrder) {
+        const items = await getPurchaseOrderById(order.orderId); // ✅ Fetch items
+        mergedTableData = [...mergedTableData, ...items]; // ✅ Merge data
+      }
+  
+      setTableData(mergedTableData); // ✅ Update table with all selected orders
+      setIsIndentSelected(true);
     }
     setOpenDialog(false); // Close dialog
   };
+  
+  
+  // const handleConfirm = () => {
+  //   if (selectedOrder) {
+  //     getPurchaseOrderById(selectedOrder.orderId);
+  //   }
+  //   setOpenDialog(false); // Close dialog
+  // };
 
   const handleCancel = () => {
     setSelectedOrder(null); // Clear selection
@@ -242,18 +265,6 @@ const CreateMaterialRecieptNote = (props: Props) => {
       setTaxData(arr);
     }
   };
-
-
-  // const handleVendorSelect = (event: any, newValue: any) => {
-  //   if (newValue && newValue.value !== "-1") {
-  //     setVendorDetail(newValue.details); // Set vendor details for display
-  //     formik.setFieldValue("vendorId", newValue.value); // Set vendorId in formik
-  //   } else {
-  //     setVendorDetail(null); // Clear vendor details
-  //     formik.setFieldValue("vendorId", null); // Explicitly set vendorId to null
-  //   }
-  // };
-
   const handleVendorSelect = (event: any, newValue: any) => {
     if (newValue && newValue.value !== "-1") {
       setVendorDetail(newValue.details);
@@ -271,40 +282,6 @@ const CreateMaterialRecieptNote = (props: Props) => {
       setOrderVendorData([]);
     }
   };
-
-
-  // const handleInputChange = async (index: number, field: string, value: any) => {
-  //   const updatedItems = [...tableData];
-  //   let item = { ...updatedItems[index] };
-
-  //   if (field === "orderNo") {
-  //     const selectedItem = orderOption.find((option: any) => option.value === value);
-  //     if (selectedItem) {
-  //       item = {
-  //         ...item,
-  //         orderId: selectedItem.value,
-  //         orderNo: selectedItem.label,
-  //       };
-
-  //       // Fetch batch number for the selected orderNo
-  // const batchNo = await getBATCHNo();
-  // if (batchNo) {
-  //   item.batchNo = batchNo; // Set the fetched batch number
-  // }
-
-  //     }
-  //   }
-
-  //   updatedItems[index] = item;
-  //   setTableData([...updatedItems]);
-
-  //   console.log("Updated tableData:", updatedItems); // Debugging
-  // };
-
-
-
-
-
   const handleInputChange = async (index: number, field: string, value: any) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
@@ -588,62 +565,113 @@ const CreateMaterialRecieptNote = (props: Props) => {
   });
 
   const back = useNavigate();
-
   const getPurchaseOrderById = async (id: any) => {
-
     const collectData = {
-      "orderId": id,
-      "indentId": -1
+      orderId: id,
+      indentId: -1,
     };
-
+  
     const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
-    const transData = result?.data?.data[0]["purchaseOrderDetail"];
-    let arr: any = [];
-    for (let i = 0; i < transData.length; i++) {
-      arr.push({
+    const transData = result?.data?.data[0]?.purchaseOrderDetail || [];
+    const orderData = result?.data?.data[0]; // Get overall order details
+  
+    let arr = transData.map((item: any, i: number) => ({
+      id: i + 1,
+      // id: i + 1,
+            mrnId: 0,
+            orderId: transData[i]["orderId"],
+            itemId: transData[i]["itemId"],
+            unitId: transData[i]["unitId"],
+            quantity: transData[i]["quantity"],
+            rate: transData[i]["rate"],
+            amount: transData[i]["amount"],
+            gstId: transData[i]["gstId"],
+            gstRate: transData[i]["gstRate"],
+            "cgst": transData[i]["cgst"],
+            "sgst": transData[i]["sgst"],
+            "igst": transData[i]["igst"],
+            "cgstid": transData[i]["cgstid"],
+            "sgstid": transData[i]["sgstid"],
+            "igstid": transData[i]["igstid"],
+            netAmount: transData[i]["netAmount"],
+            batchNo: IsbatchNO || "",
+            orderNo: "",
+            // "batchNo": "",
+            "serialNo": "",
+            "qcStatus": "",
+            "balQuantity": 0,
+            "itemName": "",
+            "unitName": "",
+            "totalGst": 0,
+            "qcApplicable": true
+    }));
+  
+    // ✅ Set Formik values
+    formik.setFieldValue("totalAmount", orderData?.totalAmount || 0);
+    formik.setFieldValue("totalCGST", orderData?.totalCGST || 0);
+    formik.setFieldValue("totalSGST", orderData?.totalSGST || 0);
+    formik.setFieldValue("netAmount", orderData?.netAmount || 0);
+    formik.setFieldValue("totalGrossAmount", orderData?.netAmount || 0);
+  
+    return arr; // ✅ Return items to be used in `handleConfirm`
+  };
+  
+  
+  // const getPurchaseOrderById = async (id: any) => {
 
-        id: i + 1,
-        mrnId: 0,
-        orderId: transData[i]["orderId"],
-        itemId: transData[i]["itemId"],
-        unitId: transData[i]["unitId"],
-        quantity: transData[i]["quantity"],
-        rate: transData[i]["rate"],
-        amount: transData[i]["amount"],
-        gstId: transData[i]["gstId"],
-        gstRate: transData[i]["gstRate"],
-        "cgst": transData[i]["cgst"],
-        "sgst": transData[i]["sgst"],
-        "igst": transData[i]["igst"],
-        "cgstid": transData[i]["cgstid"],
-        "sgstid": transData[i]["sgstid"],
-        "igstid": transData[i]["igstid"],
-        netAmount: transData[i]["netAmount"],
-        batchNo: IsbatchNO || "",
-        orderNo: "",
-        // "batchNo": "",
-        "serialNo": "",
-        "qcStatus": "",
-        "balQuantity": 0,
-        "itemName": "",
-        "unitName": "",
-        "totalGst": 0,
-        "qcApplicable": true
+  //   const collectData = {
+  //     "orderId": id,
+  //     "indentId": -1
+  //   };
+
+  //   const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+  //   const transData = result?.data?.data[0]["purchaseOrderDetail"];
+  //   let arr: any = [];
+  //   for (let i = 0; i < transData.length; i++) {
+  //     arr.push({
+
+  //       id: i + 1,
+  //       mrnId: 0,
+  //       orderId: transData[i]["orderId"],
+  //       itemId: transData[i]["itemId"],
+  //       unitId: transData[i]["unitId"],
+  //       quantity: transData[i]["quantity"],
+  //       rate: transData[i]["rate"],
+  //       amount: transData[i]["amount"],
+  //       gstId: transData[i]["gstId"],
+  //       gstRate: transData[i]["gstRate"],
+  //       "cgst": transData[i]["cgst"],
+  //       "sgst": transData[i]["sgst"],
+  //       "igst": transData[i]["igst"],
+  //       "cgstid": transData[i]["cgstid"],
+  //       "sgstid": transData[i]["sgstid"],
+  //       "igstid": transData[i]["igstid"],
+  //       netAmount: transData[i]["netAmount"],
+  //       batchNo: IsbatchNO || "",
+  //       orderNo: "",
+  //       // "batchNo": "",
+  //       "serialNo": "",
+  //       "qcStatus": "",
+  //       "balQuantity": 0,
+  //       "itemName": "",
+  //       "unitName": "",
+  //       "totalGst": 0,
+  //       "qcApplicable": true
 
 
 
-      });
-    }
-    // arr.push({ ...initialRowData });
-    setTableData(arr);
-    setIsIndentSelected(true);
-    formik.setFieldValue("totalAmount", result?.data?.data[0]["totalAmount"]);
-    formik.setFieldValue("totalCGST", result?.data?.data[0]["totalCGST"]);
-    formik.setFieldValue("totalSGST", result?.data?.data[0]["totalSGST"]);
-    formik.setFieldValue("netAmount", result?.data?.data[0]["netAmount"]);
-    formik.setFieldValue("totalGrossAmount", result?.data?.data[0]["netAmount"]);
+  //     });
+  //   }
+  //   // arr.push({ ...initialRowData });
+  //   setTableData(arr);
+  //   setIsIndentSelected(true);
+  //   formik.setFieldValue("totalAmount", result?.data?.data[0]["totalAmount"]);
+  //   formik.setFieldValue("totalCGST", result?.data?.data[0]["totalCGST"]);
+  //   formik.setFieldValue("totalSGST", result?.data?.data[0]["totalSGST"]);
+  //   formik.setFieldValue("netAmount", result?.data?.data[0]["netAmount"]);
+  //   formik.setFieldValue("totalGrossAmount", result?.data?.data[0]["netAmount"]);
 
-  }
+  // }
 
   const getPurchaseOrder = async () => {
 
@@ -862,62 +890,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid>
                 <Divider />
 
-                {/* <Grid item lg={4} xs={12} md={6}>
-                  <Autocomplete
-                    disablePortal
-                    size="small"
-                    id="combo-box-demo"
-                    options={vendorData}
-                    onChange={handleVendorSelect}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={
-                          <CustomLabel
-                            text={t("text.SelectVendor")}
-                            required={false}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                </Grid> */}
-
-
-                {/* <Grid item lg={4} xs={12}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={vendorData}
-                    fullWidth
-                    size="small"
-
-                    onChange={(event: any, newValue: any) => {
-                      handleVendorSelect(event, newValue);
-                      console.log(newValue?.value);
-                      //getPurchaseOrderById(newValue?.value);
-                      formik.setFieldValue('vendorId', newValue?.value);
-                      const arr: any = [];
-                      orderData.map((item: any) => {
-                        if (item.id === newValue?.value) {
-                          arr.push(item);
-                        }
-                      });
-                      setOrderVendorData(arr);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={
-                          <CustomLabel
-                            text={t("text.SelectVendor")}
-                            required={false}
-                          />
-                        }
-                      />
-                    )}
-                  />
-                </Grid> */}
+              
 
                 <Grid item lg={4} xs={12}>
                   <Autocomplete

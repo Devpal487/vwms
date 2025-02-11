@@ -93,7 +93,7 @@ const AddJobCard1 = (props: Props) => {
     { value: "-1", label: t("text.SelectindentNo") },
   ]);
   const inputRef = useRef<HTMLInputElement>(null);
-     const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
+     const [itemOption, setitemOption] = useState<{ value: number; label: string; unitID?: number }[]>([
          { value: -1, label: t("text.itemMasterId") },
      ]);
   const [vehicleOption, setVehicleOption] = useState([
@@ -382,7 +382,7 @@ const AddJobCard1 = (props: Props) => {
       arr.push({
         label: data[index]["itemName"],
         value: data[index]["itemMasterId"],
-        unitId: data[index]["unitId"],
+        unitID: data[index]["unitId"],
 
       });
     }
@@ -546,6 +546,12 @@ const AddJobCard1 = (props: Props) => {
       serviceDetail: [],
       itemDetail: [],
     },
+      validationSchema: Yup.object({
+          // fileNo: Yup.string()
+          //   .required(t("text.reqFilenumber")),
+          vehicleNo: Yup.string()
+            .required(t("text.reqVehNum")),
+        }),
 
     onSubmit: async (values) => {
       const validServiceDetails = tableData.filter(row => row.serviceId && row.vendorId && row.amount > 0);
@@ -739,7 +745,7 @@ const AddJobCard1 = (props: Props) => {
     if (field === "itemId") {
       const selectedItem = itemOption.find((item) => item.value === value);
       newData[index].itemId = selectedItem?.value || 0;
-      newData[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
+      newData[index].unitID = selectedItem?.unitID || 0; // Automatically set unitId
 
       console.log("Selected Item:", selectedItem);
   } else {
@@ -1064,7 +1070,7 @@ const AddJobCard1 = (props: Props) => {
                     } else {
                       setItemId(newValue?.value);
                       console.log("newValue" + JSON.stringify(newValue));
-                      console.log("newValue" + JSON.stringify(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.serviceDetail));
+                      console.log("newValue" + JSON.stringify(jobCardData[jobCardData.findIndex(e => (e.itemId == newValue?.itemID && e.complainId == newValue?.compId))]?.itemDetail));
                       //formik.setFieldValue("itemName", newValue?.label2);
                       formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
                       formik.setFieldValue("itemId", newValue?.itemID);
@@ -1761,8 +1767,8 @@ const AddJobCard1 = (props: Props) => {
                             }}
                           >
                             <select
-                              value={row.unitId}
-                              onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                              value={row.unitID}
+                              onChange={(e: any) => handleInputChange(index, 'unitID', e.target.value)}
                               style={{ width: '95%', height: '35px' }}
                             >
                               <option value=""></option>

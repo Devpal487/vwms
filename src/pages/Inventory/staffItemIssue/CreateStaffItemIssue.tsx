@@ -53,7 +53,7 @@ const CreateStaffItemIssue = (props: Props) => {
   const [selectedAction, setSelectedAction] = useState(null);
   const [items, setItems] = useState<any>([]);
   const [itemValue, setItemValue] = useState<any>();
-  const [IsbatchNO, setBatchno] = useState("");
+ // const [IsbatchNO, setBatchno] = useState("");
   //const [tableData, setTableData] = useState<any>([]);
   const [tableData, setTableData] = useState<any>([
     {
@@ -91,23 +91,23 @@ const CreateStaffItemIssue = (props: Props) => {
     GetitemData();
     GetUnitData();
     GetempData();
-    getBATCHNo();
+    // getBATCHNo();
   }, []);
 
-  const getBATCHNo = async () => {
-    try {
-      const response = await api.get(`QualityCheck/GetMaxBatchNo`);
-      if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
-        setBatchno(response.data.data[0].batchNo);
-      } else {
-        toast.error(response?.data?.message || "Failed to fetch batch number");
-        return ""; // Return empty if no batch number is found
-      }
-    } catch (error) {
-      toast.error("Error fetching batch number");
-      return ""; // Return empty in case of an error
-    }
-  };
+  // const getBATCHNo = async () => {
+  //   try {
+  //     const response = await api.get(`QualityCheck/GetMaxBatchNo`);
+  //     if (response?.data?.status === 1 && response?.data?.data?.length > 0) {
+  //       setBatchno(response.data.data[0].batchNo);
+  //     } else {
+  //       toast.error(response?.data?.message || "Failed to fetch batch number");
+  //       return ""; // Return empty if no batch number is found
+  //     }
+  //   } catch (error) {
+  //     toast.error("Error fetching batch number");
+  //     return ""; // Return empty in case of an error
+  //   }
+  // };
   const GetIndentID = async () => {
     const collectData = {
       indentId: -1,
@@ -131,44 +131,87 @@ const CreateStaffItemIssue = (props: Props) => {
     setIndentOptions(arr);
   };
 
+
   const GetIndentIDById = async (itemID: any) => {
-    const collectData = {
-      indentId: itemID,
-
-      //indentId: -1,
-      indentNo: "",
-      empId: -1,
-    };
-    const response = await api.post(`Master/GetIndent`, collectData);
-    const data = response.data.data[0]["indentDetail"];
-
-    console.log("indent option", data);
-    // let arr: any = [];
-
-    const indent = data.map((item: any, index: any) => ({
-      id: index + 1,
-      issueId: -1,
-      itemID: item?.itemId,
-      unitId: item?.unitId,
-      // batchNo: item?.batchNo,
-      indentId: item?.indentId,
-      // stockQty: item?.approveQuantity,
-      reqQty: item?.approveQuantity,
-      //  "amount" : item?.amount,
-      itemName: item?.itemName,
-      unitName: item?.unitName,
-      indentNo: "",
-      srn: 0,
-      // "unitName": "",
-      returnItem: true,
-      stockQty: 0,
-      issueQty: 0,
-      batchNo: IsbatchNO || "",
-    }));
-
-    setTableData(indent);
-    setIsIndentSelected(true);
+    try {
+      const collectData = { indentId: itemID, issueType: "JobCard" };
+      const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
+  
+      if (!response.data || response.data.data === null) {
+        toast.error("Please add item");
+        setTableData([]); // Clear table data if response is null
+        return;
+      }
+  
+      const data = response?.data?.data?.itemIssueDetail;
+      if (!Array.isArray(data)) {
+        console.warn("Invalid indent data received:", data);
+        setTableData([]);
+        return;
+      }
+  
+      const indent = data.map((item: any, index: any) => ({
+        id: index,
+        issueId: -1,
+        itemID: item?.itemID || 0,
+        unitId: item?.unitId || 0,
+        indentId: item?.indentId || 0,
+        reqQty: item?.reqQty || 0,
+        itemName: item?.itemName || "",
+        unitName: item?.unitName || "",
+        returnItem: true,
+        stockQty: item?.stockQty || 0,
+        issueQty: item?.issueQty || 0,
+        batchNo: item?.batchNo || "",
+        indentNo: "",
+      }));
+  
+      setTableData(indent);
+      setIsIndentSelected(true);
+    } catch (error) {
+      console.error("Error fetching indent data:", error);
+      setTableData([]);
+      toast.error("Failed to fetch item data");
+    }
   };
+  // const GetIndentIDById = async (itemID: any) => {
+  //   const collectData = {
+  //     indentId: itemID,
+
+  //     //indentId: -1,
+  //     indentNo: "",
+  //     empId: -1,
+  //   };
+  //   const response = await api.post(`Master/GetIndent`, collectData);
+  //   const data = response.data.data[0]["indentDetail"];
+
+  //   console.log("indent option", data);
+  //   // let arr: any = [];
+
+  //   const indent = data.map((item: any, index: any) => ({
+  //     id: index + 1,
+  //     issueId: -1,
+  //     itemID: item?.itemId,
+  //     unitId: item?.unitId,
+  //     // batchNo: item?.batchNo,
+  //     indentId: item?.indentId,
+  //     // stockQty: item?.approveQuantity,
+  //     reqQty: item?.approveQuantity,
+  //     //  "amount" : item?.amount,
+  //     itemName: item?.itemName,
+  //     unitName: item?.unitName,
+  //     indentNo: "",
+  //     srn: 0,
+  //     // "unitName": "",
+  //     returnItem: true,
+  //     stockQty: 0,
+  //     issueQty: 0,
+  //     batchNo: IsbatchNO || "",
+  //   }));
+
+  //   setTableData(indent);
+  //   setIsIndentSelected(true);
+  // };
 
   console.log("check table", tableData);
 
@@ -258,27 +301,49 @@ const CreateStaffItemIssue = (props: Props) => {
       indentNo: Yup.string().required(t("text.reqIndentNum")),
       //empId: Yup.string().required(t("text.reqEmpName")),
     }),
-
     onSubmit: async (values) => {
-      const validTableData = tableData;
+      if (!tableData || tableData.length === 0) {
+        toast.error("Please add item");
+        return; // Stop form submission
+      }
+    
       values.itemIssueDetail = tableData;
-
-      // if (validTableData.length === 0) {
-      //     toast.error("Please add some data in table for further process");
-      //     return;
-      // }
-
       const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
-
+    
+      if (response.data.mesg === null) {
+        toast.error("Please add item");
+        return; // Stop further execution
+      }
+    
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/StaffItemIssue");
+        navigate("/Inventory/JobcardItemIssue");
       } else {
         setToaster(true);
         toast.error(response.data.message);
       }
-    },
+    }
+    // onSubmit: async (values) => {
+    //   const validTableData = tableData;
+    //   values.itemIssueDetail = tableData;
+
+    //   // if (validTableData.length === 0) {
+    //   //     toast.error("Please add some data in table for further process");
+    //   //     return;
+    //   // }
+
+    //   const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
+
+    //   if (response.data.status === 1) {
+    //     setToaster(false);
+    //     toast.success(response.data.message);
+    //     navigate("/Inventory/StaffItemIssue");
+    //   } else {
+    //     setToaster(true);
+    //     toast.error(response.data.message);
+    //   }
+    // },
   });
 
   const handleInputChange = async (index: any, field: any, value: any) => {
@@ -303,7 +368,7 @@ const CreateStaffItemIssue = (props: Props) => {
     } else if (field === "issueQty") {
       updatedData[index].issueQty = parseInt(value);
     }
-    const batchNo = await getBATCHNo();
+ //   const batchNo = await getBATCHNo();
     if (field === "batchNo") {
       updatedData[index].batchNo = parseInt(value);
     }
@@ -526,7 +591,7 @@ const CreateStaffItemIssue = (props: Props) => {
                         border: "1px solid black",
                       }}
                     >
-                     <thead style={{
+                      <thead style={{
                       backgroundColor: `var(--grid-headerBackground)`,
                       color: `var(--grid-headerColor)`
                     }}>
@@ -593,8 +658,8 @@ const CreateStaffItemIssue = (props: Props) => {
                           >
                             {t("text.issueQty")}
                           </th>
-
-                          {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>Total Amount</th> */}
+                        
+  
                         </tr>
                       </thead>
                       <tbody>
@@ -603,6 +668,7 @@ const CreateStaffItemIssue = (props: Props) => {
                             key={row.id}
                             style={{ border: "1px solid black" }}
                           >
+                          
                             <td
                               style={{
                                 border: "1px solid black",
@@ -626,15 +692,6 @@ const CreateStaffItemIssue = (props: Props) => {
                                 style={{ cursor: "pointer" }}
                               />
                             </td>
-                            {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => {
-                                                            if (tableData.length > 1) {
-                                                                deleteRow(index)
-                                                            } else {
-                                                                alert("There should be atleast one row")
-                                                            }
-                                                        }}>
-                                                            <DeleteIcon />
-                                                        </td> */}
                             <td
                               style={{
                                 border: "1px solid black",
@@ -646,28 +703,20 @@ const CreateStaffItemIssue = (props: Props) => {
                                 id="combo-box-demo"
                                 options={itemOption}
                                 value={
-                                  itemOption.find(
-                                    (opt) => opt.value === parseInt(row?.itemID)
-                                  ) || null
+                                 
+                                   row.itemName
                                 }
                                 fullWidth
                                 size="small"
                                 sx={{ width: "175px" }}
-                                // onChange={(e: any, newValue: any) =>
-                                //     handleInputChange(
-                                //         index,
-                                //         "itemID",
-                                //         newValue?.value
-                                //     )
-                                // }
-
+                              
                                 onChange={(e: any, newValue: any) => {
                                   if (!newValue) {
                                     return;
                                   } else {
                                     handleInputChange(
                                       index,
-                                      "itemId",
+                                      "itemID",
                                       newValue?.value
                                     );
                                   }
@@ -685,27 +734,17 @@ const CreateStaffItemIssue = (props: Props) => {
                             >
                               <select
                                 value={row.unitId}
-                                onChange={(e: any) =>
-                                  handleInputChange(
-                                    index,
-                                    "unitId",
-                                    e.target.value
-                                  )
-                                }
-                                style={{ width: "95%", height: "35px" }}
+                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                style={{ width: '95%', height: '35px' }}
                               >
                               
                                 {unitOptions.map((option) => (
-                                  <option
-                                    key={option.value}
-                                    value={option.value}
-                                  >
+                                  <option key={option.value} value={option.value}>
                                     {option.label}
                                   </option>
                                 ))}
                               </select>
-                              {/* <select
-                                                                                                                                                                                                                       </select> */}
+                      
                             </td>
                             <td
                               style={{
@@ -739,8 +778,8 @@ const CreateStaffItemIssue = (props: Props) => {
                               <TextField
                                 // type="number"
                                 size="small"
-                                value={row.reqQty - row.issueQty || 0}
-                                // onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                value={row.stockQty}
+                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
                                 onFocus={(e) => {
                                   e.target.select();
                                 }}
@@ -794,9 +833,7 @@ const CreateStaffItemIssue = (props: Props) => {
                                 }}
                               />
                             </td>
-                            {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
-                                                            <DeleteIcon />
-                                                        </td> */}
+                         
                           </tr>
                         ))}
                       </tbody>
