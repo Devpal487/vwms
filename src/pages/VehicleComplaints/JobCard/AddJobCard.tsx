@@ -1073,9 +1073,9 @@ const AddJobCard = (props: Props) => {
                       formik.setFieldValue("itemId", newValue?.itemID);
                       formik.setFieldValue("empId", newValue?.empId);
                       formik.setFieldValue("empName", newValue?.empName);
-                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.designation);
-                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.department);
-                      setVehicleName(newValue?.vehicleName);
+                      setDesgValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.designation || "");
+                      setDeptValue(empOption[empOption.findIndex(e => e.value == newValue?.empId)]?.department || "");
+                      setVehicleName(newValue?.vehicleName || "");
 
                       formik.setFieldValue("complainId", newValue?.compId);
                       formik.setFieldValue("complain", newValue?.complaint);
@@ -1932,7 +1932,7 @@ const AddJobCard = (props: Props) => {
               >
               </Button> */}
 
-              {isVisible && (isVisibleJWC > 2 && isEnable > 1) && (
+              {/* {isVisible && (isVisibleJWC > 2 && isEnable > 1) && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1961,7 +1961,7 @@ const AddJobCard = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
 
             </Grid>
 

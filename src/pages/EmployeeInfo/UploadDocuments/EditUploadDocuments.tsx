@@ -128,7 +128,7 @@ const EditUploadDocuments = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("doc", data[0].doc.replace(/^((data:image\/(jpeg|jpg|png|9j);base64,)|(data:DocImg\/(jpeg|jpg|png|9j|xLSPtxB61);base64,))/, ""));
+    formik.setFieldValue("doc", data[0].doc.replace(/^((data:image\/\w+;base64,)|(data:DocImg\/\w+;base64,))/, ""));
   }
 
 
