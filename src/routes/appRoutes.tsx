@@ -183,123 +183,7 @@ const appRoutes: RouteType[] = [
     },
   },
 
-  {
-    path: "/master",
-    element: <DashboardPageLayout />,
-    state: "master",
-    sidebarProps: {
-      displayText: "Master",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "master.index",
-      },
-     
-      {
-        path: "/master/ZoneMaster",
-        element: <ZoneMaster />,
-        state: "master.ZoneMaster",
-        sidebarProps: {
-          displayText: "Zone Master",
-        },
-      },
-     
-      {
-        path: "/master/CityMaster",
-        element: <CityMaster />,
-        state: "master.CityMaster",
-        sidebarProps: {
-          displayText: "District",
-        },
-      },
-      {
-        path: "/master/StateMaster",
-        element: <StateMaster />,
-        state: "master.StateMaster",
-        sidebarProps: {
-          displayText: "State",
-        },
-      },
-     
-      {
-        path: "/master/CountryMaster",
-        element: <CountryMaster />,
-        state: "master.CountryMaster",
-        sidebarProps: {
-          displayText: "Country",
-        },
-      },
-     
-      
-      {
-        path: "/master/ItemType",
-        element: <ItemType />,
-        state: "master.ItemType",
-      },
-     
-      {
-        path: "/master/ItemCategory",
-        element: <ItemCategory />,
-        state: "master.ItemCategory",
-        sidebarProps: {
-          displayText: "ItemCategory",
-        },
-      },
-
-      
-      {
-        path: "/master/Taxmaster",
-        element: <Taxmaster />,
-        state: "master.Taxmaster",
-        sidebarProps: {
-          displayText: "Tax master",
-        },
-      },
-      {
-        path: "/master/Unitmaster",
-        element: <Unitmaster />,
-        state: "master.Unitmaster",
-        sidebarProps: {
-          displayText: "Unit master",
-        },
-      },
-      
-      {
-        path: "/master/FolderLocation",
-        element: <FolderLocation />,
-        state: "master.FolderLocation",
-        sidebarProps: {
-          displayText: "Folder Location",
-        },
-      },
-
-
-      {
-        path: "/master/FinancialYear",
-        element: <FinancialYear />,
-        state: "master.FinancialYear",
-        sidebarProps: {
-          displayText: "Financial Year",
-        },
-      },
-
-
-      {
-        path: "/master/StockBin",
-        element: <StockBin />,
-        state: "master.StockBin",
-        sidebarProps: {
-          displayText: "Stock Bin",
-        },
-      },
-
-    ],
-
-  },
-
+ 
 
 
 
@@ -663,16 +547,16 @@ const appRoutes: RouteType[] = [
 
   //=================Aniket sahu Emailroute start ===================
   {
-    path: "/emailsystem",
+    path: "/communication",
     element: <DashboardPageLayout />,
-    state: "emailsystem",
+    state: "communication",
     sidebarProps: {
       displayText: "emailsystem",
       icon: <DashboardOutlinedIcon />,
     },
     child: [
       {
-        path: "/emailsystem/Groupmaster",
+        path: "/communication/Group",
         element: <Groupmaster />,
         state: "emailsystem.Groupmaster",
         sidebarProps: {
@@ -681,199 +565,124 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/emailsystem/Creategroupmaster",
+        path: "/communication/Creategroupmaster",
         element: <Creategroupmaster />,
-        state: "emailsystem.Creategroupmaster",
+        state: "communication.Creategroupmaster",
       },
       {
-        path: "/emailsystem/Editgroupmaster",
+        path: "/communication/Editgroupmaster",
         element: <Editgroupmaster />,
-        state: "emailsystem.Editgroupmaster",
+        state: "communication.Editgroupmaster",
 
       },
 
-      {
-        path: "/emailsystem/emailsetting",
-        element: <Emailsettingmaster />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/campagianmaster",
-        element: <EmailcampgianMaster />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/addcampagianmaster",
-        element: <CreatemailcampgiontForm />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/editcampagianmaster",
-        element: <Editcampgianmailmaster />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/eventmaster",
-        element: <EmaileventMaster />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/addeventmaster",
-        element: <CreatemaileventForm />,
-        state: "email.emailMaster",
-      },
-      {
-        path: "/emailsystem/editeventnmaster",
-        element: <Editeventemail />,
-        state: "email.emailMaster",
-      },
+      // {
+      //   path: "/emailsystem/emailsetting",
+      //   element: <Emailsettingmaster />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/campagianmaster",
+      //   element: <EmailcampgianMaster />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/addcampagianmaster",
+      //   element: <CreatemailcampgiontForm />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/editcampagianmaster",
+      //   element: <Editcampgianmailmaster />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/eventmaster",
+      //   element: <EmaileventMaster />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/addeventmaster",
+      //   element: <CreatemaileventForm />,
+      //   state: "email.emailMaster",
+      // },
+      // {
+      //   path: "/emailsystem/editeventnmaster",
+      //   element: <Editeventemail />,
+      //   state: "email.emailMaster",
+      // },
 
-      {
-        path: "/emailsystem/CampaignTemplate",
-        element: <CampaignTemplate />,
-        state: "emailsystem.CampaignTemplate",
-        sidebarProps: {
-          displayText: "CampaignTemplate",
-        },
-      },
-      {
+      // {
+      //   path: "/emailsystem/CampaignTemplate",
+      //   element: <CampaignTemplate />,
+      //   state: "emailsystem.CampaignTemplate",
+      //   sidebarProps: {
+      //     displayText: "CampaignTemplate",
+      //   },
+      // },
+      // {
 
-        path: "/emailsystem/AddCampaignTemplate",
-        element: <AddCampaignTemplate />,
-        state: "emailsystem.AddCampaignTemplate",
-      },
-      {
-        path: "/emailsystem/EditCampaignTemplate",
-        element: <EditCampaignTemplate />,
-        state: "emailsystem.EditCampaignTemplate",
+      //   path: "/emailsystem/AddCampaignTemplate",
+      //   element: <AddCampaignTemplate />,
+      //   state: "emailsystem.AddCampaignTemplate",
+      // },
+      // {
+      //   path: "/emailsystem/EditCampaignTemplate",
+      //   element: <EditCampaignTemplate />,
+      //   state: "emailsystem.EditCampaignTemplate",
 
-      },
+      // },
 
-      {
-        path: "/emailsystem/SmsEventSettings",
-        element: <SmsEventSettings />,
-        state: "emailsystem.SmsEventSettings",
-        sidebarProps: {
-          displayText: "SmsEventSettings",
-        },
-      },
-      {
+      // {
+      //   path: "/emailsystem/SmsEventSettings",
+      //   element: <SmsEventSettings />,
+      //   state: "emailsystem.SmsEventSettings",
+      //   sidebarProps: {
+      //     displayText: "SmsEventSettings",
+      //   },
+      // },
+      // {
 
-        path: "/emailsystem/CreateSmsEventSettings",
-        element: <CreateSmsEventSettings />,
-        state: "emailsystem.CreateSmsEventSettings",
-      },
-      {
-        path: "/emailsystem/EditSmsEventSettings",
-        element: <EditSmsEventSettings />,
-        state: "emailsystem.EditSmsEventSettings",
+      //   path: "/emailsystem/CreateSmsEventSettings",
+      //   element: <CreateSmsEventSettings />,
+      //   state: "emailsystem.CreateSmsEventSettings",
+      // },
+      // {
+      //   path: "/emailsystem/EditSmsEventSettings",
+      //   element: <EditSmsEventSettings />,
+      //   state: "emailsystem.EditSmsEventSettings",
 
-      },
+      // },
 
-      {
-        path: "/emailsystem/Smscampagian",
-        element: <Smscampagian />,
-        state: "emailsystem.Smscampagian",
-        sidebarProps: {
-          displayText: "Smscampagian",
-        },
-      },
-      {
+      // {
+      //   path: "/emailsystem/Smscampagian",
+      //   element: <Smscampagian />,
+      //   state: "emailsystem.Smscampagian",
+      //   sidebarProps: {
+      //     displayText: "Smscampagian",
+      //   },
+      // },
+      // {
 
-        path: "/emailsystem/CreateSmscampagian",
-        element: <CreateSmscampagian />,
-        state: "emailsystem.CreateSmscampagian",
-      },
-      {
-        path: "/emailsystem/EditSmscampagian",
-        element: <EditSmscampagian />,
-        state: "emailsystem.EditSmscampagian",
+      //   path: "/emailsystem/CreateSmscampagian",
+      //   element: <CreateSmscampagian />,
+      //   state: "emailsystem.CreateSmscampagian",
+      // },
+      // {
+      //   path: "/emailsystem/EditSmscampagian",
+      //   element: <EditSmscampagian />,
+      //   state: "emailsystem.EditSmscampagian",
 
-      },
+      // },
 
-      {
-        path: "/emailsystem/Smssetting",
-        element: <Smssetting />,
-        state: "email.Smssetting",
-      },
+      // {
+      //   path: "/emailsystem/Smssetting",
+      //   element: <Smssetting />,
+      //   state: "email.Smssetting",
+      // },
     ],
   },
-  //==================end========UserManagement==========
-
-
-  //==================Start DocManagement====================
  
-  //===================End Library===================
-
-  // {
-  //   path: "/Inventory/IndentApproval",
-  //   element: <IndentApproval />,
-  //   state: "Inventory.IndentApproval",
-  //   sidebarProps: {
-  //     displayText: "Indent Approval",
-  //   }
-  // },
-  // {
-  //   path: "/Inventory/CreateIndentApproval",
-  //   element: <CreateIndentApproval/>,
-  //   state: "Inventory.CreateIndentApproval",
-  // },
-  // {
-  //   path: "/Inventory/EditIndentApproval",
-  //   element: <EditIndentApproval/>,
-  //   state: "Inventory.EditIndentApproval",
-  // },
-
-
-  // {
-  //   path: "/Inventory/ForwardLevel",
-  //   element: <ForwardLevel />,
-  //   state: "Inventory.ForwardLevel",
-  //   sidebarProps: {
-  //     displayText: "Forward Level",
-  //   }
-  // },
-  // {
-  //   path: "/Inventory/CreateForwardLevel",
-  //   element: <CreateForwardLevel/>,
-  //   state: "Inventory.CreateForwardLevel",
-  // },
-  // {
-  //   path: "/Inventory/EditForwardLevel",
-  //   element: <EditForwardLevel/>,
-  //   state: "Inventory.EditForwardLevel",
-  // },
-  // {
-  //   path: "/Inventory/IndentStore",
-  //   element: <IndentStore />,
-  //   state: "Inventory.IndentStore",
-  //   sidebarProps: {
-  //     displayText: "Indent Store",
-  //   }
-  // },
-  // {
-  //   path: "/Inventory/CreateIndentStore",
-  //   element: <CreateIndentStore/>,
-  //   state: "Inventory.CreateIndentStore",
-  // },
-  // {
-  //   path: "/Inventory/EditIndentStore",
-  //   element: <EditIndentStore/>,
-  //   state: "Inventory.EditIndentStore",
-  // },
-
-
-
-  //==================end========UserManagement==========
-
-
-  /////-------------------start ------UserManagement-----------------------
-
-
-
-  //==================end========UserManagement==========
-
-  //==================== Start Employee Information====================
   {
     path: "/Employee",
     element: <DashboardPageLayout />,
@@ -910,73 +719,9 @@ const appRoutes: RouteType[] = [
 
     ],
   },
-  //==================User Management=========
 
 
-  {
-    path: "/UserManagement",
-    element: <DashboardPageLayout />,
-    state: "UserManagement",
-    sidebarProps: {
-      displayText: "User Management",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "UserManagement.index",
-      },
-      {
-        path: "/UserManagement/UserPermissionMaster",
-        element: <UserPermissionMaster />,
-        state: "UserManagement.UserPermissionMaster",
-        sidebarProps: {
-          displayText: "User Permission",
-        }
-      },
-
-
-
-
-
-    ],
-  },
-
-
-  {
-    path: "/security",
-    element: <DashboardPageLayout />,
-    state: "security",
-    sidebarProps: {
-      displayText: "Security",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "security.index",
-      },
-
-      {
-        path: "/security/RoleMaster",
-        element: <RoleMaster />,
-        state: "security.RoleMaster",
-        sidebarProps: {
-          displayText: "Role Master",
-        }
-      },
-      {
-        path: "/security/Jurisdiction",
-        element: <Juridiction />,
-        state: "security.Jurisdiction",
-        sidebarProps: {
-          displayText: "Jurisdiction",
-        }
-      },
-    ],
-  },
+ 
 
   //====================================vehicleMaster-start================================//
 
@@ -1758,6 +1503,164 @@ const appRoutes: RouteType[] = [
           displayText: "Help Creation",
         },
       },
+      {
+        path: "/Admin/masters",
+        element: <DashboardPageLayout />,
+        state: "masters",
+        sidebarProps: {
+          displayText: "Master",
+          icon: <DashboardOutlinedIcon />,
+        },
+        child: [
+          {
+            index: true,
+            element: <DashboardIndex />,
+            state: "master.index",
+          },
+         
+          {
+            path: "/Admin/masters/ZoneM",
+            element: <ZoneMaster />,
+            state: "masters.ZoneMaster",
+            sidebarProps: {
+              displayText: "Zone Master",
+            },
+          },
+         
+          {
+            path: "/Admin/masters/city",
+            element: <CityMaster />,
+            state: "masters.CityMaster",
+            sidebarProps: {
+              displayText: "District",
+            },
+          },
+          {
+            path: "/Admin/masters/State",
+            element: <StateMaster />,
+            state: "masters.StateMaster",
+            sidebarProps: {
+              displayText: "State",
+            },
+          },
+         
+          {
+            path: "/Admin/masters/Country",
+            element: <CountryMaster />,
+            state: "masters.CountryMaster",
+            sidebarProps: {
+              displayText: "Country",
+            },
+          },
+         
+          
+          {
+            path: "/Admin/masters/Type",
+            element: <ItemType />,
+            state: "masters.ItemType",
+          },
+         
+          {
+            path: "/Admin/masters/category",
+            element: <ItemCategory />,
+            state: "masters.ItemCategory",
+            sidebarProps: {
+              displayText: "ItemCategory",
+            },
+          },
+    
+          
+          {
+            path: "/Admin/masters/Tax",
+            element: <Taxmaster />,
+            state: "masters.Taxmaster",
+            sidebarProps: {
+              displayText: "Tax master",
+            },
+          },
+          {
+            path: "/Admin/masters/Unit",
+            element: <Unitmaster />,
+            state: "masters.Unitmaster",
+            sidebarProps: {
+              displayText: "Unit master",
+            },
+          },
+          
+          {
+            path: "/Admin/masters/FolderLocation",
+            element: <FolderLocation />,
+            state: "masters.FolderLocation",
+            sidebarProps: {
+              displayText: "Folder Location",
+            },
+          },
+    
+    
+          {
+            path: "/Admin/masters/FinancialYear",
+            element: <FinancialYear />,
+            state: "masters.FinancialYear",
+            sidebarProps: {
+              displayText: "Financial Year",
+            },
+          },
+    
+    
+          {
+            path: "/Admin/masters/StockBin",
+            element: <StockBin />,
+            state: "masters.StockBin",
+            sidebarProps: {
+              displayText: "Stock Bin",
+            },
+          },
+    
+        ],
+    
+      },
+      {
+        path: "/Admin/security",
+        element: <DashboardPageLayout />,
+        state: "security",
+        sidebarProps: {
+          displayText: "Security",
+          icon: <DashboardOutlinedIcon />,
+        },
+        child: [
+          {
+            index: true,
+            element: <DashboardIndex />,
+            state: "security.index",
+          },
+    
+          {
+            path: "/Admin/security/Roles",
+            element: <RoleMaster />,
+            state: "security.RoleMaster",
+            sidebarProps: {
+              displayText: "Role Master",
+            }
+          },
+          {
+            path: "/Admin/security/juridictionwisefolder",
+            element: <Juridiction />,
+            state: "security.Jurisdiction",
+            sidebarProps: {
+              displayText: "Jurisdiction",
+            }
+          },
+        ],
+      },
+      {
+        path: "/Admin/userpremission",
+        element: <UserPermissionMaster />,
+        state: "UserManagement.UserPermissionMaster",
+        sidebarProps: {
+          displayText: "User Permission",
+        }
+      },
+    
 
     ]
   }

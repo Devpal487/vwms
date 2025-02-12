@@ -576,7 +576,7 @@
 //           menuId: 9,
 //           displayNo: 1,
 //           childMenu: [
-            
+
 //             {
 //               menuId: 1,
 //               menuName: "Job Card Status",
@@ -595,7 +595,7 @@
 //               path: "/Reports/ItemConsumedReport",
 //               displayNo: 0,
 //             },
-            
+
 //             {
 //               menuId: 4,
 //               menuName: "Out Source Service",
@@ -632,16 +632,16 @@
 //               path: "/Reports/StockLedgerReport",
 //               displayNo: 0,
 //             },
-           
+
 //             {
 //               menuId: 10,
 //               menuName: "Stock Summary ",
 //               path: "/Reports/StockSummaryReport",
 //               displayNo: 0,
 //             },
-           
-           
-           
+
+
+
 
 //             // {
 //             //   menuId: 4,
@@ -666,18 +666,18 @@
 //             // },
 
 
-          
 
 
 
 
 
-          
 
 
 
 
-           
+
+
+
 
 
 
@@ -892,7 +892,7 @@
 //   const [menuItems, setMenuItems] = useState([]);
 //   const [isHovered, setIsHovered] = useState(false);
 //   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
-  
+
 
 //   // const selectedTheme:any = () => {
 //   //   const storedTheme = localStorage.getItem("theme");
@@ -968,7 +968,7 @@
 //         <Outlet />
 //       ) : (
 //         <div>
-          
+
 //             <Box sx={{ display: "flex" }}>
 //               <Sidebar items={menuItems} onClick={handleMenuClick} />
 
@@ -998,7 +998,7 @@
 //                     right: 20,
 //                     display: "flex",
 //                     alignItems: "center",
-                    
+
 //                   }}
 //                 >
 //                   {isHovered && (
@@ -1038,14 +1038,14 @@
 //                 </Draggable>
 //               </Box>
 //             </Box>
-            
+
 
 //             {/* ChatBot Modal */}
 //             <ChatBot
 //               open={isChatBotOpen}
 //               onClose={() => setIsChatBotOpen(false)}
 //             />
-        
+
 //         </div>
 //       )}
 //     </div>
@@ -1086,7 +1086,7 @@
 //   const [menuItems, setMenuItems] = useState([]);
 //   const [isHovered, setIsHovered] = useState(false);
 //   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
-  
+
 
 //   // const selectedTheme:any = () => {
 //   //   const storedTheme = localStorage.getItem("theme");
@@ -1100,10 +1100,10 @@
 
 //   useEffect(() => {
 //     const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
- 
+
 //     // Convert flat permissions list into hierarchical menu structure
 //     const menuMap = new Map();
- 
+
 //     storedPermissions.forEach((perm:any) => {
 //         const menu = { 
 //             menuId: perm.menuId,
@@ -1112,10 +1112,10 @@
 //             path: `/path-to/${perm.menuName.replace(/\s+/g, "-").toLowerCase()}`,
 //             children: []
 //         };
- 
+
 //         menuMap.set(menu.menuId, menu);
 //     });
- 
+
 //     // Assign children to their respective parents
 //     const rootMenus:any = [];
 //     menuMap.forEach((menu) => {
@@ -1128,7 +1128,7 @@
 //             }
 //         }
 //     });
- 
+
 //     setMenuItems(rootMenus);
 //  }, []);
 
@@ -1156,7 +1156,7 @@
 //         <Outlet />
 //       ) : (
 //         <div>
-          
+
 //             <Box sx={{ display: "flex" }}>
 //               <Sidebar items={menuItems} onClick={handleMenuClick} />
 
@@ -1186,7 +1186,7 @@
 //                     right: 20,
 //                     display: "flex",
 //                     alignItems: "center",
-                    
+
 //                   }}
 //                 >
 //                   {isHovered && (
@@ -1226,14 +1226,14 @@
 //                 </Draggable>
 //               </Box>
 //             </Box>
-            
+
 
 //             {/* ChatBot Modal */}
 //             <ChatBot
 //               open={isChatBotOpen}
 //               onClose={() => setIsChatBotOpen(false)}
 //             />
-        
+
 //         </div>
 //       )}
 //     </div>
@@ -1276,7 +1276,7 @@ const MainLayout = () => {
     // Build a menu hierarchy using parentId relationships
     // const buildMenuHierarchy = (permissions: any[]) => {
     //   const menuMap = new Map<number, any>();
-    
+
     //   // Step 1: Create a map with menuId as key
     //   permissions.forEach((perm) => {
     //     menuMap.set(perm.menuId, {
@@ -1298,9 +1298,9 @@ const MainLayout = () => {
     //       children: [], // Placeholder for child items
     //     });
     //   });
-    
+
     //   const rootMenus: any[] = [];
-    
+
     //   // Step 2: Assign child items to their respective parents
     //   permissions.forEach((perm) => {
     //     const menu = menuMap.get(perm.menuId);
@@ -1317,7 +1317,7 @@ const MainLayout = () => {
     //       }
     //     }
     //   });
-    
+
     //   // Step 3: Generate Paths Recursively
     //   const generatePaths = (menus: any[], parentPath = "/") => {
     //     menus.forEach((menu) => {
@@ -1327,30 +1327,30 @@ const MainLayout = () => {
     //       }
     //     });
     //   };
-    
+
     //   generatePaths(rootMenus); // Start path generation
-    
+
     //   return rootMenus;
     // };
-    
 
-    const buildMenuHierarchy = (permissions:any) => {
-      const menuMap = new Map();
 
-      // Map permissions by menuId
-      permissions.forEach((perm:any) => {
-        const menu = {
+    const buildMenuHierarchy = (permissions: any[]) => {
+      const menuMap = new Map<number, any>();
+
+      // Step 1: Create a map with menuId as key
+      permissions.forEach((perm: any) => {
+        menuMap.set(perm.menuId, {
           menuId: perm.menuId,
           parentId: perm.parentId,
           menuName: perm.menuName,
-          path: `/path-to/${perm.menuName.replace(/\s+/g, "-").toLowerCase()}`,
-          children: []
-        };
-        menuMap.set(menu.menuId, menu);
+          path: "", // Path will be generated dynamically
+          children: [],
+        });
       });
 
-      // Assign children to their parents
-      const rootMenus:any = [];
+      const rootMenus: any[] = [];
+
+      // Step 2: Assign child items to their respective parents
       menuMap.forEach((menu) => {
         if (menu.parentId === null) {
           rootMenus.push(menu);
@@ -1362,13 +1362,25 @@ const MainLayout = () => {
         }
       });
 
+      // Step 3: Generate Paths Recursively
+      const generatePaths = (menus: any[], parentPath = "") => {
+        menus.forEach((menu) => {
+          menu.path = `${parentPath}/${menu.menuName.replace(/\s+/g, "").toLowerCase()}`; // Append Parent Menu Name
+          if (menu.children.length > 0) {
+            generatePaths(menu.children, menu.path); // Pass updated parent path
+          }
+        });
+      };
+
+      generatePaths(rootMenus); // Start path generation
+
       return rootMenus;
     };
 
     setMenuItems(buildMenuHierarchy(storedPermissions));
   }, []);
 
-  const handleMenuClick = (e:any, item:any) => {
+  const handleMenuClick = (e: any, item: any) => {
     const menuId = item.menuId;
     const menuName = item.menuName;
     const path = `${item.path}?appId=${menuId}&Appname=${menuName}.aspx`;
@@ -1406,7 +1418,7 @@ const MainLayout = () => {
             >
               <Toolbar />
               <Outlet />
-              <Draggable>
+              {/* <Draggable>
                 <Box
                   sx={{
                     position: "fixed",
@@ -1450,10 +1462,10 @@ const MainLayout = () => {
                     onClick={() => setIsChatBotOpen(true)}
                   />
                 </Box>
-              </Draggable>
+              </Draggable> */}
             </Box>
           </Box>
-          <ChatBot open={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} />
+          {/* <ChatBot open={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} /> */}
         </div>
       )}
     </div>
