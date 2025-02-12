@@ -165,8 +165,6 @@ import ItemConsumedReport from "../pages/Reports/ItemConsumedReport/ItemConsumed
 
 
 
-
-
 const appRoutes: RouteType[] = [
   {
     index: true,
@@ -183,10 +181,6 @@ const appRoutes: RouteType[] = [
     },
   },
 
- 
-
-
-
 
   //======================Master Form End========================
 
@@ -195,7 +189,7 @@ const appRoutes: RouteType[] = [
   /////-------------------start ------Inventory-----------------------
 
   {
-    path: "/Inventory",
+    path: "/storemanagement",
     element: <DashboardPageLayout />,
     state: "Inventory",
 
@@ -231,7 +225,7 @@ const appRoutes: RouteType[] = [
       //   state: "Inventory.EditIndentForm",
       // },
       {
-        path: "/Inventory/MRNForm",
+        path: "/storemanagement/materialreceiptnote",
         element: <MaterialRecieptNoteMaster />,
         state: "Inventory.MRNForm",
         sidebarProps: {
@@ -239,17 +233,17 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateMRN",
+        path: "/storemanagement/CreateMRN",
         element: <CreateMaterialRecieptNote />,
         state: "Inventory.CreateMRN",
       },
       {
-        path: "/Inventory/EditMRN",
+        path: "/storemanagement/EditMRN",
         element: <EditMaterialRecieptNote />,
         state: "Inventory.EditMRN",
       },
       {
-        path: "/Inventory/QualityCheck",
+        path: "/storemanagement/qualitycheck",
         element: <QualityCheckMaster />,
         state: "Inventory.QualityCheck",
         sidebarProps: {
@@ -257,21 +251,21 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateQualityCheck",
+        path: "/storemanagement/CreateQualityCheck",
         element: <CreateQualityCheck />,
         state: "Inventory.CreateQualityCheck",
       },
       {
-        path: "/Inventory/EditQualityCheck",
+        path: "/storemanagement/EditQualityCheck",
         element: <EditQualityCheck />,
         state: "Inventory.EditQualityCheck",
       },
 
 
-      
+
 
       {
-        path: "/Inventory/StaffIndent",
+        path: "/storemanagement/indentforstaff",
         element: <StaffIndent />,
         state: "Inventory.StaffIndent",
         sidebarProps: {
@@ -279,18 +273,18 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateStaffIndent",
+        path: "/storemanagement/CreateStaffIndent",
         element: <CreateStaffIndent />,
         state: "Inventory.CreateStaffIndent",
       },
       {
-        path: "/Inventory/EditStaffIndent",
+        path: "/storemanagement/EditStaffIndent",
         element: <EditStaffIndent />,
         state: "Inventory.EditStaffIndent",
       },
 
       {
-        path: "/Inventory/StaffItemIssue",
+        path: "/storemanagement/itemissue/staffitemissue",
         element: <StaffItemIssue />,
         state: "Inventory.StaffItemIssue",
         sidebarProps: {
@@ -298,18 +292,18 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateStaffItemIssue",
+        path: "/storemanagement/itemissue/CreateStaffItemIssue",
         element: <CreateStaffItemIssue />,
         state: "Inventory.CreateStaffItemIssue",
       },
       {
-        path: "/Inventory/EditStaffItemIssue",
+        path: "/storemanagement/itemissue/EditStaffItemIssue",
         element: <EditStaffItemIssue />,
         state: "Inventory.EditStaffItemIssue",
       },
 
       {
-        path: "/Inventory/StaffItemReturn",
+        path: "/storemanagement/itemreturn/staffitemreturn",
         element: <StaffItemReturn />,
         state: "Inventory.StaffItemReturn",
         sidebarProps: {
@@ -317,19 +311,19 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateStaffItemReturn",
+        path: "/storemanagement/itemreturn/CreateStaffItemReturn",
         element: <CreateStaffItemReturn />,
         state: "Inventory.CreateStaffItemReturn",
       },
       {
-        path: "/Inventory/EditStaffItemReturn",
+        path: "/storemanagement/itemreturn/EditStaffItemReturn",
         element: <EditStaffItemReturn />,
         state: "Inventory.EditStaffItemReturn",
       },
-     
+
 
       {
-        path: "/Inventory/JobCardIndent",
+        path: "/storemanagement/workshopindent/jobcardindent",
         element: <JobCardIndent />,
         state: "Inventory.JobCardIndent",
         sidebarProps: {
@@ -337,19 +331,19 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateJobCardIndent",
+        path: "/storemanagement/workshopindent/CreateJobCardIndent",
         element: <CreateJobCardIndent />,
         state: "Inventory.CreateJobCardIndent",
       },
       {
-        path: "/Inventory/EditJobCardIndent",
+        path: "/storemanagement/workshopindent/EditJobCardIndent",
         element: <EditJobCardIndent />,
         state: "Inventory.EditJobCardIndent",
       },
 
 
       {
-        path: "/Inventory/WorkShopPurchaseIndent",
+        path: "/storemanagement/workshopindent/wrk.pur.indent",
         element: <WorkShopPurchaseIndent />,
         state: "Inventory.WorkShopPurchaseIndent",
         sidebarProps: {
@@ -357,24 +351,24 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateWorkShopPurchaseIndent",
+        path: "/storemanagement/workshopindent/CreateWorkShopPurchaseIndent",
         element: <CreateWorkShopPurchaseIndent />,
         state: "Inventory.CreateWorkShopPurchaseIndent",
       },
       {
-        path: "/Inventory/EditWorkShopPurchaseIndent",
+        path: "/storemanagement/workshopindent/EditWorkShopPurchaseIndent",
         element: <EditWorkShopPurchaseIndent />,
         state: "Inventory.EditWorkShopPurchaseIndent",
       },
 
       {
-        path: "/Inventory/StoreMaster",
+        path: "/storemanagement/StoreMaster",
         element: <StoreMaster />,
         state: "Inventory.StoreMaster",
       },
 
       {
-        path: "/Inventory/ItemDetail",
+        path: "/storemanagement/ItemDetail",
         element: <ItemDetail />,
         state: "Inventory.ItemDetail",
         sidebarProps: {
@@ -383,19 +377,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateItemDetail",
+        path: "/storemanagement/CreateItemDetail",
         element: <CreateItemDetail />,
         state: "Inventory.CreateItemDetail",
       },
       {
-        path: "/Inventory/EditItemDetail",
+        path: "/storemanagement/EditItemDetail",
         element: <EditItemDetail />,
         state: "Inventory.EditItemDetail",
 
       },
 
       {
-        path: "/Inventory/OfficePurchaseIndent",
+        path: "/storemanagement/off.purchaseindent",
         element: <OfficePurchaseIndent />,
         state: "Inventory.OfficePurchaseIndent",
         sidebarProps: {
@@ -404,19 +398,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateOfficePurchaseIndent",
+        path: "/storemanagement/CreateOfficePurchaseIndent",
         element: <CreateOfficePurchaseIndent />,
         state: "Inventory.CreateOfficePurchaseIndent",
       },
       {
-        path: "/Inventory/EditOfficePurchaseIndent",
+        path: "/storemanagement/EditOfficePurchaseIndent",
         element: <EditOfficePurchaseIndent />,
         state: "Inventory.EditOfficePurchaseIndent",
 
       },
 
       {
-        path: "/Inventory/OfficePurchaseOrder",
+        path: "/storemanagement/purchaseorder/office",
         element: <OfficePurchaseOrder />,
         state: "Inventory.OfficePurchaseOrder",
         sidebarProps: {
@@ -425,19 +419,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateOfficePurchaseOrder",
+        path: "/storemanagement/purchaseorder/CreateOfficePurchaseOrder",
         element: <CreateOfficePurchaseOrder />,
         state: "Inventory.CreateOfficePurchaseOrder",
       },
       {
-        path: "/Inventory/EditOfficePurchaseOrder",
+        path: "/storemanagement/purchaseorder/EditOfficePurchaseOrder",
         element: <EditOfficePurchaseOrder />,
         state: "Inventory.EditOfficePurchaseOrder",
 
       },
 
       {
-        path: "/Inventory/WorkShopPurchaseOrder",
+        path: "/storemanagement/purchaseorder/workshop",
         element: <WorkShopPurchaseOrder />,
         state: "Inventory.WorkShopPurchaseOrder",
         sidebarProps: {
@@ -446,19 +440,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateWorkShopPurchaseOrder",
+        path: "/storemanagement/purchaseorder/CreateWorkShopPurchaseOrder",
         element: <CreateWorkShopPurchaseOrder />,
         state: "Inventory.CreateWorkShopPurchaseOrder",
       },
       {
-        path: "/Inventory/EditWorkShopPurchaseOrder",
+        path: "/storemanagement/purchaseorder/EditWorkShopPurchaseOrder",
         element: <EditWorkShopPurchaseOrder />,
         state: "Inventory.EditWorkShopPurchaseOrder",
 
       },
 
       {
-        path: "/Inventory/PurchaseInvoice",
+        path: "/storemanagement/PurchaseInvoice",
         element: <PurchaseInvoice />,
         state: "Inventory.PurchaseInvoice",
         sidebarProps: {
@@ -467,19 +461,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreatePurchaseInvoice",
+        path: "/storemanagement/CreatePurchaseInvoice",
         element: <CreatePurchaseInvoice />,
         state: "Inventory.CreatePurchaseInvoice",
       },
       {
-        path: "/Inventory/EditPurchaseInvoice",
+        path: "/storemanagement/EditPurchaseInvoice",
         element: <EditPurchaseInvoice />,
         state: "Inventory.EditPurchaseInvoice",
 
       },
 
       {
-        path: "/Inventory/JobcardItemIssue",
+        path: "/storemanagement/itemissue/jobcarditemissue",
         element: <JobcardItemIssue />,
         state: "Inventory.JobcardItemIssue",
         sidebarProps: {
@@ -488,19 +482,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateJobcardItemIssue",
+        path: "/storemanagement/itemissue/CreateJobcardItemIssue",
         element: <CreateJobcardItemIssue />,
         state: "Inventory.CreateJobcardItemIssue",
       },
       {
-        path: "/Inventory/EditJobcardItemIssue",
+        path: "/storemanagement/itemissue/EditJobcardItemIssue",
         element: <EditJobcardItemIssue />,
         state: "Inventory.EditJobcardItemIssue",
 
       },
 
       {
-        path: "/Inventory/StockGeneral",
+        path: "/storemanagement/stockopening",
         element: <StockGeneral />,
         state: "Inventory.StockGeneral",
         sidebarProps: {
@@ -509,19 +503,19 @@ const appRoutes: RouteType[] = [
       },
       {
 
-        path: "/Inventory/CreateStockGeneral",
+        path: "/storemanagement/CreateStockGeneral",
         element: <CreateStockGeneral />,
         state: "Inventory.CreateStockGeneral",
       },
       {
-        path: "/Inventory/EditStockGeneral",
+        path: "/storemanagement/EditStockGeneral",
         element: <EditStockGeneral />,
         state: "Inventory.EditStockGeneral",
 
       },
 
       {
-        path: "/Inventory/JobCardItemReturn",
+        path: "/storemanagement/itemreturn/jobcarditemreturn",
         element: <JobCardItemReturn />,
         state: "Inventory.JobCardItemReturn",
         sidebarProps: {
@@ -529,12 +523,12 @@ const appRoutes: RouteType[] = [
         }
       },
       {
-        path: "/Inventory/CreateJobCardItemReturn",
+        path: "/storemanagement/itemreturn/CreateJobCardItemReturn",
         element: <CreateJobCardItemReturn />,
         state: "Inventory.CreateJobCardItemReturn",
       },
       {
-        path: "/Inventory/EditJobCardItemReturn",
+        path: "/storemanagement/itemreturn/EditJobCardItemReturn",
         element: <EditJobCardItemReturn />,
         state: "Inventory.EditJobCardItemReturn",
       },
@@ -576,113 +570,112 @@ const appRoutes: RouteType[] = [
 
       },
 
-      // {
-      //   path: "/emailsystem/emailsetting",
-      //   element: <Emailsettingmaster />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/campagianmaster",
-      //   element: <EmailcampgianMaster />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/addcampagianmaster",
-      //   element: <CreatemailcampgiontForm />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/editcampagianmaster",
-      //   element: <Editcampgianmailmaster />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/eventmaster",
-      //   element: <EmaileventMaster />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/addeventmaster",
-      //   element: <CreatemaileventForm />,
-      //   state: "email.emailMaster",
-      // },
-      // {
-      //   path: "/emailsystem/editeventnmaster",
-      //   element: <Editeventemail />,
-      //   state: "email.emailMaster",
-      // },
+      {
+        path: "/communication/email/emailsettings",
+        element: <Emailsettingmaster />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/emailcampaign",
+        element: <EmailcampgianMaster />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/addcampagianmaster",
+        element: <CreatemailcampgiontForm />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/editcampagianmaster",
+        element: <Editcampgianmailmaster />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/emailevent",
+        element: <EmaileventMaster />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/addeventmaster",
+        element: <CreatemaileventForm />,
+        state: "email.emailMaster",
+      },
+      {
+        path: "/communication/email/editeventnmaster",
+        element: <Editeventemail />,
+        state: "email.emailMaster",
+      },
 
-      // {
-      //   path: "/emailsystem/CampaignTemplate",
-      //   element: <CampaignTemplate />,
-      //   state: "emailsystem.CampaignTemplate",
-      //   sidebarProps: {
-      //     displayText: "CampaignTemplate",
-      //   },
-      // },
-      // {
+      {
+        path: "/communication/template(sms/email)",
+        element: <CampaignTemplate />,
+        state: "emailsystem.CampaignTemplate",
+        sidebarProps: {
+          displayText: "CampaignTemplate",
+        },
+      },
+      {
 
-      //   path: "/emailsystem/AddCampaignTemplate",
-      //   element: <AddCampaignTemplate />,
-      //   state: "emailsystem.AddCampaignTemplate",
-      // },
-      // {
-      //   path: "/emailsystem/EditCampaignTemplate",
-      //   element: <EditCampaignTemplate />,
-      //   state: "emailsystem.EditCampaignTemplate",
+        path: "/communication/AddCampaignTemplate",
+        element: <AddCampaignTemplate />,
+        state: "emailsystem.AddCampaignTemplate",
+      },
+      {
+        path: "/communication/EditCampaignTemplate",
+        element: <EditCampaignTemplate />,
+        state: "emailsystem.EditCampaignTemplate",
 
-      // },
+      },
 
-      // {
-      //   path: "/emailsystem/SmsEventSettings",
-      //   element: <SmsEventSettings />,
-      //   state: "emailsystem.SmsEventSettings",
-      //   sidebarProps: {
-      //     displayText: "SmsEventSettings",
-      //   },
-      // },
-      // {
+      {
+        path: "/communication/sms/smsevent",
+        element: <SmsEventSettings />,
+        state: "emailsystem.SmsEventSettings",
+        sidebarProps: {
+          displayText: "SmsEventSettings",
+        },
+      },
+      {
 
-      //   path: "/emailsystem/CreateSmsEventSettings",
-      //   element: <CreateSmsEventSettings />,
-      //   state: "emailsystem.CreateSmsEventSettings",
-      // },
-      // {
-      //   path: "/emailsystem/EditSmsEventSettings",
-      //   element: <EditSmsEventSettings />,
-      //   state: "emailsystem.EditSmsEventSettings",
+        path: "/communication/sms/CreateSmsEventSettings",
+        element: <CreateSmsEventSettings />,
+        state: "emailsystem.CreateSmsEventSettings",
+      },
+      {
+        path: "/communication/sms/EditSmsEventSettings",
+        element: <EditSmsEventSettings />,
+        state: "emailsystem.EditSmsEventSettings",
 
-      // },
+      },
 
-      // {
-      //   path: "/emailsystem/Smscampagian",
-      //   element: <Smscampagian />,
-      //   state: "emailsystem.Smscampagian",
-      //   sidebarProps: {
-      //     displayText: "Smscampagian",
-      //   },
-      // },
-      // {
+      {
+        path: "/communication/sms/smscampaign",
+        element: <Smscampagian />,
+        state: "emailsystem.Smscampagian",
+        sidebarProps: {
+          displayText: "Smscampagian",
+        },
+      },
+      {
 
-      //   path: "/emailsystem/CreateSmscampagian",
-      //   element: <CreateSmscampagian />,
-      //   state: "emailsystem.CreateSmscampagian",
-      // },
-      // {
-      //   path: "/emailsystem/EditSmscampagian",
-      //   element: <EditSmscampagian />,
-      //   state: "emailsystem.EditSmscampagian",
+        path: "/communication/sms/CreateSmscampagian",
+        element: <CreateSmscampagian />,
+        state: "emailsystem.CreateSmscampagian",
+      },
+      {
+        path: "/communication/sms/EditSmscampagian",
+        element: <EditSmscampagian />,
+        state: "emailsystem.EditSmscampagian",
 
-      // },
+      },
 
-      // {
-      //   path: "/emailsystem/Smssetting",
-      //   element: <Smssetting />,
-      //   state: "email.Smssetting",
-      // },
+      {
+        path: "/communication/sms/smssettings",
+        element: <Smssetting />,
+        state: "email.Smssetting",
+      },
     ],
   },
- 
   {
     path: "/Employee",
     element: <DashboardPageLayout />,
@@ -721,198 +714,198 @@ const appRoutes: RouteType[] = [
   },
 
 
- 
+
 
   //====================================vehicleMaster-start================================//
 
-  {
-    path: "/vehiclemaster",
-    element: <DashboardPageLayout />,
-    state: "vehiclemaster",
-    sidebarProps: {
-      displayText: "Vehicle Master",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "vehiclemaster.index",
-      },
-      {
-        path: "/vehiclemaster/LicensingInsuranceMaster",
-        element: <LicensingInsuranceMaster />,
-        state: "vehiclemaster.LicensingInsuranceMaster",
-        sidebarProps: {
-          displayText: "Licensing/Insurance",
-        },
-      },
-      {
-        path: "/vehiclemaster/AddLicensingInsuranceMaster",
-        element: <AddLicensingInsuranceMaster />,
-        state: "vehiclemaster.AddLicensingInsuranceMaster",
-      },
-      {
-        path: "/vehiclemaster/EditLicensingInsuranceMaster",
-        element: <EditLicensingInsuranceMaster />,
-        state: "vehiclemaster.EditLicensingInsuranceMaster",
-      },
-      {
-        path: "/vehiclemaster/MaintainanceWarrantyMaster",
-        element: <MaintainanceWarrantyMaster />,
-        state: "vehiclemaster.MaintainanceWarrantyMaster",
-        sidebarProps: {
-          displayText: "Licensing/Insurance",
-        },
-      },
-      {
-        path: "/vehiclemaster/AddMaintainanceWarrantyMaster",
-        element: <AddMaintainanceWarrantyMaster />,
-        state: "vehiclemaster.AddMaintainanceWarrantyMaster",
-      },
-      {
-        path: "/vehiclemaster/EditMaintainanceWarrantyMaster",
-        element: <EditMaintainanceWarrantyMaster />,
-        state: "vehiclemaster.EditMaintainanceWarrantyMaster",
-      },
-      {
-        path: "/vehiclemaster/UtilizationLog",
-        element: <UtilizationLog />,
-        state: "vehiclemaster.UtilizationLog",
-        sidebarProps: {
-          displayText: "Licensing/Insurance",
-        },
-      },
-      {
-        path: "/vehiclemaster/AddUtilizationLog",
-        element: <AddUtilizationLog />,
-        state: "vehiclemaster.AddUtilizationLog",
-      },
-      {
-        path: "/vehiclemaster/EditUtilizationLog",
-        element: <EditUtilizationLog />,
-        state: "vehiclemaster.EditUtilizationLog",
-      },
-      {
-        path: "/vehiclemaster/VehicleTypeMaster",
-        element: <VehicleTypeMaster />,
-        state: "vehiclemaster.VehicleTypeMaster",
-        sidebarProps: {
-          displayText: "Gender",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/vehiclemaster",
+  //   element: <DashboardPageLayout />,
+  //   state: "vehiclemaster",
+  //   sidebarProps: {
+  //     displayText: "Vehicle Master",
+  //     icon: <DashboardOutlinedIcon />,
+  //   },
+  //   child: [
+  //     {
+  //       index: true,
+  //       element: <DashboardIndex />,
+  //       state: "vehiclemaster.index",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/LicensingInsuranceMaster",
+  //       element: <LicensingInsuranceMaster />,
+  //       state: "vehiclemaster.LicensingInsuranceMaster",
+  //       sidebarProps: {
+  //         displayText: "Licensing/Insurance",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclemaster/AddLicensingInsuranceMaster",
+  //       element: <AddLicensingInsuranceMaster />,
+  //       state: "vehiclemaster.AddLicensingInsuranceMaster",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/EditLicensingInsuranceMaster",
+  //       element: <EditLicensingInsuranceMaster />,
+  //       state: "vehiclemaster.EditLicensingInsuranceMaster",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/MaintainanceWarrantyMaster",
+  //       element: <MaintainanceWarrantyMaster />,
+  //       state: "vehiclemaster.MaintainanceWarrantyMaster",
+  //       sidebarProps: {
+  //         displayText: "Licensing/Insurance",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclemaster/AddMaintainanceWarrantyMaster",
+  //       element: <AddMaintainanceWarrantyMaster />,
+  //       state: "vehiclemaster.AddMaintainanceWarrantyMaster",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/EditMaintainanceWarrantyMaster",
+  //       element: <EditMaintainanceWarrantyMaster />,
+  //       state: "vehiclemaster.EditMaintainanceWarrantyMaster",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/UtilizationLog",
+  //       element: <UtilizationLog />,
+  //       state: "vehiclemaster.UtilizationLog",
+  //       sidebarProps: {
+  //         displayText: "Licensing/Insurance",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclemaster/AddUtilizationLog",
+  //       element: <AddUtilizationLog />,
+  //       state: "vehiclemaster.AddUtilizationLog",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/EditUtilizationLog",
+  //       element: <EditUtilizationLog />,
+  //       state: "vehiclemaster.EditUtilizationLog",
+  //     },
+  //     {
+  //       path: "/vehiclemaster/VehicleTypeMaster",
+  //       element: <VehicleTypeMaster />,
+  //       state: "vehiclemaster.VehicleTypeMaster",
+  //       sidebarProps: {
+  //         displayText: "Gender",
+  //       },
+  //     },
+  //   ],
+  // },
 
   //=====================================Vehicle Complaint=====================================//
 
-  {
-    path: "/vehiclecomplaint",
-    element: <DashboardPageLayout />,
-    state: "vehiclecomplaint",
-    sidebarProps: {
-      displayText: "Vehicle Complaint",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "vehiclemaster.index",
-      },
-      {
-        path: "/vehiclecomplaint/Complaint",
-        element: <Complaint />,
-        state: "vehiclecomplaint.Complaint",
-        sidebarProps: {
-          displayText: "Complaint",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddComplaint",
-        element: <AddComplaint />,
-        state: "vehiclecomplaint.AddComplaint",
-      },
-      {
-        path: "/vehiclecomplaint/EditComplaint",
-        element: <EditComplaint />,
-        state: "vehiclecomplaint.EditComplaint",
-      },
-      {
-        path: "/vehiclecomplaint/JobCard",
-        element: <JobCard />,
-        state: "vehiclecomplaint.JobCard",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobCard",
-        element: <AddJobCard />,
-        state: "vehiclecomplaint.AddJobCard",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobCard",
-        element: <EditJobCard />,
-        state: "vehiclecomplaint.EditJobCard",
-      },
-      {
-        path: "/vehiclecomplaint/JobCard1",
-        element: <JobCard1 />,
-        state: "vehiclecomplaint.JobCard1",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobCard1",
-        element: <AddJobCard1 />,
-        state: "vehiclecomplaint.AddJobCard1",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobCard1",
-        element: <EditJobCard1 />,
-        state: "vehiclecomplaint.EditJobCard1",
-      },
-      {
-        path: "/vehiclecomplaint/JobWorkChallan",
-        element: <JobWorkChallan />,
-        state: "vehiclecomplaint.JobWorkChallan",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobWorkChallan",
-        element: <AddJobWorkChallan />,
-        state: "vehiclecomplaint.AddJobWorkChallan",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobWorkChallan",
-        element: <EditJobWorkChallan />,
-        state: "vehiclecomplaint.EditJobWorkChallan",
-      },
-      {
-        path: "/vehiclecomplaint/JobWorkChallanRecieve",
-        element: <JobWorkChallanRecieve />,
-        state: "vehiclecomplaint.JobWorkChallanRecieve",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobWorkChallanRecieve",
-        element: <AddJobWorkChallanRecieve />,
-        state: "vehiclecomplaint.AddJobWorkChallanRecieve",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobWorkChallanRecieve",
-        element: <EditJobWorkChallanRecieve />,
-        state: "vehiclecomplaint.EditJobWorkChallanRecieve",
-      },
+  // {
+  //   path: "/vehiclecomplaint",
+  //   element: <DashboardPageLayout />,
+  //   state: "vehiclecomplaint",
+  //   sidebarProps: {
+  //     displayText: "Vehicle Complaint",
+  //     icon: <DashboardOutlinedIcon />,
+  //   },
+  //   child: [
+  //     {
+  //       index: true,
+  //       element: <DashboardIndex />,
+  //       state: "vehiclemaster.index",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/Complaint",
+  //       element: <Complaint />,
+  //       state: "vehiclecomplaint.Complaint",
+  //       sidebarProps: {
+  //         displayText: "Complaint",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/AddComplaint",
+  //       element: <AddComplaint />,
+  //       state: "vehiclecomplaint.AddComplaint",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/EditComplaint",
+  //       element: <EditComplaint />,
+  //       state: "vehiclecomplaint.EditComplaint",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/JobCard",
+  //       element: <JobCard />,
+  //       state: "vehiclecomplaint.JobCard",
+  //       sidebarProps: {
+  //         displayText: "JobCard",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/AddJobCard",
+  //       element: <AddJobCard />,
+  //       state: "vehiclecomplaint.AddJobCard",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/EditJobCard",
+  //       element: <EditJobCard />,
+  //       state: "vehiclecomplaint.EditJobCard",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/JobCard1",
+  //       element: <JobCard1 />,
+  //       state: "vehiclecomplaint.JobCard1",
+  //       sidebarProps: {
+  //         displayText: "JobCard",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/AddJobCard1",
+  //       element: <AddJobCard1 />,
+  //       state: "vehiclecomplaint.AddJobCard1",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/EditJobCard1",
+  //       element: <EditJobCard1 />,
+  //       state: "vehiclecomplaint.EditJobCard1",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/JobWorkChallan",
+  //       element: <JobWorkChallan />,
+  //       state: "vehiclecomplaint.JobWorkChallan",
+  //       sidebarProps: {
+  //         displayText: "JobCard",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/AddJobWorkChallan",
+  //       element: <AddJobWorkChallan />,
+  //       state: "vehiclecomplaint.AddJobWorkChallan",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/EditJobWorkChallan",
+  //       element: <EditJobWorkChallan />,
+  //       state: "vehiclecomplaint.EditJobWorkChallan",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/JobWorkChallanRecieve",
+  //       element: <JobWorkChallanRecieve />,
+  //       state: "vehiclecomplaint.JobWorkChallanRecieve",
+  //       sidebarProps: {
+  //         displayText: "JobCard",
+  //       },
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/AddJobWorkChallanRecieve",
+  //       element: <AddJobWorkChallanRecieve />,
+  //       state: "vehiclecomplaint.AddJobWorkChallanRecieve",
+  //     },
+  //     {
+  //       path: "/vehiclecomplaint/EditJobWorkChallanRecieve",
+  //       element: <EditJobWorkChallanRecieve />,
+  //       state: "vehiclecomplaint.EditJobWorkChallanRecieve",
+  //     },
 
-    ],
-  },
+  //   ],
+  // },
 
 
   {
@@ -996,7 +989,7 @@ const appRoutes: RouteType[] = [
 
 
       {
-        path: "/Reports/VehicleAgeReport",
+        path: "/Reports/vehicleagerep",
         element: <VehicleAgeReport />,
         state: "Reports.VehicleAgeReport",
         sidebarProps: {
@@ -1146,76 +1139,96 @@ const appRoutes: RouteType[] = [
 
   //====================================vehicleMaster-start================================//
 
+
   {
-    path: "/vehiclemaster",
+    path: "/vehiclemanagement",
     element: <DashboardPageLayout />,
-    state: "vehiclemaster",
+    state: "vehiclemanagement",
     sidebarProps: {
       displayText: "Vehicle Master",
       icon: <DashboardOutlinedIcon />,
     },
     child: [
       {
-        index: true,
-        element: <DashboardIndex />,
-        state: "vehiclemaster.index",
-      },
-      {
-        path: "/vehiclemaster/LicensingInsuranceMaster",
-        element: <LicensingInsuranceMaster />,
-        state: "vehiclemaster.LicensingInsuranceMaster",
+        path: "/vehiclemanagement/vehiclemaster",
+        element: <DashboardPageLayout />,
+        state: "vehiclemaster",
         sidebarProps: {
-          displayText: "Licensing/Insurance",
+          displayText: "Vehicle Master",
+          icon: <DashboardOutlinedIcon />,
         },
+        child: [
+          {
+            index: true,
+            element: <DashboardIndex />,
+            state: "vehiclemaster.index",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/licensing/insurance",
+            element: <LicensingInsuranceMaster />,
+            state: "vehiclemaster.LicensingInsuranceMaster",
+            sidebarProps: {
+              displayText: "Licensing/Insurance",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/AddLicensingInsuranceMaster",
+            element: <AddLicensingInsuranceMaster />,
+            state: "vehiclemaster.AddLicensingInsuranceMaster",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/EditLicensingInsuranceMaster",
+            element: <EditLicensingInsuranceMaster />,
+            state: "vehiclemaster.EditLicensingInsuranceMaster",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/maintenance/warranty",
+            element: <MaintainanceWarrantyMaster />,
+            state: "vehiclemaster.MaintainanceWarrantyMaster",
+            sidebarProps: {
+              displayText: "Maintainance/Warranty",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/AddMaintainanceWarrantyMaster",
+            element: <AddMaintainanceWarrantyMaster />,
+            state: "vehiclemaster.AddMaintainanceWarrantyMaster",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/EditMaintainanceWarrantyMaster",
+            element: <EditMaintainanceWarrantyMaster />,
+            state: "vehiclemaster.EditMaintainanceWarrantyMaster",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/UtilizationLog",
+            element: <UtilizationLog />,
+            state: "vehiclemaster.UtilizationLog",
+            sidebarProps: {
+              displayText: "UtilizationLog",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/AddUtilizationLog",
+            element: <AddUtilizationLog />,
+            state: "vehiclemaster.AddUtilizationLog",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/EditUtilizationLog",
+            element: <EditUtilizationLog />,
+            state: "vehiclemaster.EditUtilizationLog",
+          },
+          {
+            path: "/vehiclemanagement/vehiclemaster/vehicletypemaster",
+            element: <VehicleTypeMaster />,
+            state: "vehiclemaster.VehicleTypeMaster",
+            sidebarProps: {
+              displayText: "Vehicle Type",
+            },
+          },
+        ],
       },
       {
-        path: "/vehiclemaster/AddLicensingInsuranceMaster",
-        element: <AddLicensingInsuranceMaster />,
-        state: "vehiclemaster.AddLicensingInsuranceMaster",
-      },
-      {
-        path: "/vehiclemaster/EditLicensingInsuranceMaster",
-        element: <EditLicensingInsuranceMaster />,
-        state: "vehiclemaster.EditLicensingInsuranceMaster",
-      },
-      {
-        path: "/vehiclemaster/MaintainanceWarrantyMaster",
-        element: <MaintainanceWarrantyMaster />,
-        state: "vehiclemaster.MaintainanceWarrantyMaster",
-        sidebarProps: {
-          displayText: "Maintainance/Warranty",
-        },
-      },
-      {
-        path: "/vehiclemaster/AddMaintainanceWarrantyMaster",
-        element: <AddMaintainanceWarrantyMaster />,
-        state: "vehiclemaster.AddMaintainanceWarrantyMaster",
-      },
-      {
-        path: "/vehiclemaster/EditMaintainanceWarrantyMaster",
-        element: <EditMaintainanceWarrantyMaster />,
-        state: "vehiclemaster.EditMaintainanceWarrantyMaster",
-      },
-      {
-        path: "/vehiclemaster/UtilizationLog",
-        element: <UtilizationLog />,
-        state: "vehiclemaster.UtilizationLog",
-        sidebarProps: {
-          displayText: "UtilizationLog",
-        },
-      },
-      {
-        path: "/vehiclemaster/AddUtilizationLog",
-        element: <AddUtilizationLog />,
-        state: "vehiclemaster.AddUtilizationLog",
-      },
-      {
-        path: "/vehiclemaster/EditUtilizationLog",
-        element: <EditUtilizationLog />,
-        state: "vehiclemaster.EditUtilizationLog",
-      },
-      {
-        path: "/vehiclemaster/VehicleTypeMaster",
+        path: "/vehiclemanagement/vehicletype",
         element: <VehicleTypeMaster />,
         state: "vehiclemaster.VehicleTypeMaster",
         sidebarProps: {
@@ -1223,149 +1236,193 @@ const appRoutes: RouteType[] = [
         },
       },
       {
-        path: "/vehiclemaster/VehicleDetail",
+        path: "/vehiclemanagement/VehicleDetail",
         element: <VehicleDetail />,
-        state: "vehiclemaster.VehicleDetail",
+        state: "vehiclemanagement.VehicleDetail",
         sidebarProps: {
           displayText: "Vehicle Detail",
         },
       },
       {
-        path: "/vehiclemaster/AddVehicleDetail",
+        path: "/vehiclemanagement/AddVehicleDetail",
         element: <AddVehicleDetail />,
-        state: "vehiclemaster.AddVehicleDetail",
+        state: "vehiclemanagement.AddVehicleDetail",
       },
       {
-        path: "/vehiclemaster/EditVehicleDetail",
+        path: "/vehiclemanagement/EditVehicleDetail",
         element: <EditVehicleDetail />,
-        state: "vehiclemaster.EditVehicleDetail",
+        state: "vehiclemanagement.EditVehicleDetail",
       },
       {
-        path: "/vehiclemaster/BrandMaster",
+        path: "/vehiclemanagement/BrandMaster",
         element: <BrandMaster />,
-        state: "vehiclemaster.BrandMaster",
+        state: "vehiclemanagement.BrandMaster",
         sidebarProps: {
           displayText: "Brand Master",
         },
       },
       {
-        path: "/vehiclemaster/FuelTypeMaster",
+        path: "/vehiclemanagement/fueltype",
         element: <FuelTypeMaster />,
-        state: "vehiclemaster.FuelTypeMaster",
+        state: "vehiclemanagement.FuelTypeMaster",
         sidebarProps: {
           displayText: "Fuel Type Master",
         },
       },
       {
-        path: "/vehiclemaster/Location",
+        path: "/vehiclemanagement/Location",
         element: <Location />,
-        state: "vehiclemaster.Location",
+        state: "vehiclemanagement.Location",
         sidebarProps: {
           displayText: "Location",
         },
       },
       {
-        path: "/vehiclemaster/VehicleTypeInfo",
+        path: "/vehiclemanagement/VehicleTypeInfo",
         element: <VehicleTypeInfo />,
-        state: "vehiclemaster.VehicleTypeInfo",
+        state: "vehiclemanagement.VehicleTypeInfo",
         sidebarProps: {
           displayText: "VehicleTypeInfo",
         },
       },
-    ],
+      {
+        path: "/vehiclemanagement/vehiclecomplaints",
+        element: <DashboardPageLayout />,
+        state: "vehiclecomplaint",
+        sidebarProps: {
+          displayText: "Vehicle Complaint",
+          icon: <DashboardOutlinedIcon />,
+        },
+        child: [
+          {
+            index: true,
+            element: <DashboardIndex />,
+            state: "vehiclecomplaint.index",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/Complaint",
+            element: <Complaint />,
+            state: "vehiclecomplaint.Complaint",
+            sidebarProps: {
+              displayText: "Complaint",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/AddComplaint",
+            element: <AddComplaint />,
+            state: "vehiclecomplaint.AddComplaint",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/EditComplaint",
+            element: <EditComplaint />,
+            state: "vehiclecomplaint.EditComplaint",
+          },
+
+          ((localStorage.getItem("ApplicationFlow") === "outsource") ?
+            {
+              path: "/vehiclemanagement/vehiclecomplaints/JobCard",
+              element: <JobCard />,
+              state: "vehiclecomplaint.JobCard",
+              sidebarProps: {
+                displayText: "JobCard",
+              },
+            } : {
+              path: "/vehiclemanagement/vehiclecomplaints/JobCard",
+              element: <JobCard1 />,
+              state: "vehiclecomplaint.JobCard",
+              sidebarProps: {
+                displayText: "JobCard",
+              },
+            }
+          ),
+          ((localStorage.getItem("ApplicationFlow") === "outsource") ?
+            {
+              path: "/vehiclemanagement/vehiclecomplaints/AddJobCard",
+              element: <AddJobCard />,
+              state: "vehiclecomplaint.AddJobCard",
+            } : {
+              path: "/vehiclemanagement/vehiclecomplaints/AddJobCard",
+              element: <AddJobCard1 />,
+              state: "vehiclecomplaint.AddJobCard",
+            }
+          ),
+          ((localStorage.getItem("ApplicationFlow") === "outsource") ?
+            {
+              path: "/vehiclemanagement/vehiclecomplaints/EditJobCard",
+              element: <EditJobCard />,
+              state: "vehiclecomplaint.EditJobCard",
+            } : {
+              path: "/vehiclemanagement/vehiclecomplaints/EditJobCard",
+              element: <EditJobCard1 />,
+              state: "vehiclecomplaint.EditJobCard",
+            }
+          ),
+
+
+          // {
+          //   path: "/vehiclemanagement/vehiclecomplaints/JobCard",
+          //   element: <JobCard />,
+          //   state: "vehiclecomplaint.JobCard",
+          //   sidebarProps: {
+          //     displayText: "JobCard",
+          //   },
+          // },
+          // {
+          //   path: "/vehiclemanagement/vehiclecomplaints/AddJobCard",
+          //   element: <AddJobCard />,
+          //   state: "vehiclecomplaint.AddJobCard",
+          // },
+          // {
+          //   path: "/vehiclemanagement/vehiclecomplaints/EditJobCard",
+          //   element: <EditJobCard />,
+          //   state: "vehiclecomplaint.EditJobCard",
+          // },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/JobWorkChallan",
+            element: <JobWorkChallan />,
+            state: "vehiclecomplaint.JobWorkChallan",
+            sidebarProps: {
+              displayText: "JobCard",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/AddJobWorkChallan",
+            element: <AddJobWorkChallan />,
+            state: "vehiclecomplaint.AddJobWorkChallan",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/EditJobWorkChallan",
+            element: <EditJobWorkChallan />,
+            state: "vehiclecomplaint.EditJobWorkChallan",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/JobWorkChallanRecieve",
+            element: <JobWorkChallanRecieve />,
+            state: "vehiclecomplaint.JobWorkChallanRecieve",
+            sidebarProps: {
+              displayText: "JobCard",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/AddJobWorkChallanRecieve",
+            element: <AddJobWorkChallanRecieve />,
+            state: "vehiclecomplaint.AddJobWorkChallanRecieve",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/EditJobWorkChallanRecieve",
+            element: <EditJobWorkChallanRecieve />,
+            state: "vehiclecomplaint.EditJobWorkChallanRecieve",
+          },
+
+        ],
+      },
+    ]
   },
+
 
   //=====================================Vehicle Complaint=====================================//
 
-  {
-    path: "/vehiclecomplaint",
-    element: <DashboardPageLayout />,
-    state: "vehiclecomplaint",
-    sidebarProps: {
-      displayText: "Vehicle Complaint",
-      icon: <DashboardOutlinedIcon />,
-    },
-    child: [
-      {
-        index: true,
-        element: <DashboardIndex />,
-        state: "vehiclecomplaint.index",
-      },
-      {
-        path: "/vehiclecomplaint/Complaint",
-        element: <Complaint />,
-        state: "vehiclecomplaint.Complaint",
-        sidebarProps: {
-          displayText: "Complaint",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddComplaint",
-        element: <AddComplaint />,
-        state: "vehiclecomplaint.AddComplaint",
-      },
-      {
-        path: "/vehiclecomplaint/EditComplaint",
-        element: <EditComplaint />,
-        state: "vehiclecomplaint.EditComplaint",
-      },
-      {
-        path: "/vehiclecomplaint/JobCard",
-        element: <JobCard />,
-        state: "vehiclecomplaint.JobCard",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobCard",
-        element: <AddJobCard />,
-        state: "vehiclecomplaint.AddJobCard",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobCard",
-        element: <EditJobCard />,
-        state: "vehiclecomplaint.EditJobCard",
-      },
-      {
-        path: "/vehiclecomplaint/JobWorkChallan",
-        element: <JobWorkChallan />,
-        state: "vehiclecomplaint.JobWorkChallan",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobWorkChallan",
-        element: <AddJobWorkChallan />,
-        state: "vehiclecomplaint.AddJobWorkChallan",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobWorkChallan",
-        element: <EditJobWorkChallan />,
-        state: "vehiclecomplaint.EditJobWorkChallan",
-      },
-      {
-        path: "/vehiclecomplaint/JobWorkChallanRecieve",
-        element: <JobWorkChallanRecieve />,
-        state: "vehiclecomplaint.JobWorkChallanRecieve",
-        sidebarProps: {
-          displayText: "JobCard",
-        },
-      },
-      {
-        path: "/vehiclecomplaint/AddJobWorkChallanRecieve",
-        element: <AddJobWorkChallanRecieve />,
-        state: "vehiclecomplaint.AddJobWorkChallanRecieve",
-      },
-      {
-        path: "/vehiclecomplaint/EditJobWorkChallanRecieve",
-        element: <EditJobWorkChallanRecieve />,
-        state: "vehiclecomplaint.EditJobWorkChallanRecieve",
-      },
 
-    ],
-  },
 
   {
     path: "/vendorinfo",
@@ -1481,7 +1538,7 @@ const appRoutes: RouteType[] = [
 
       {
         path: "/Admin/Flowmaster",
-        element: <Flowmaster/>,
+        element: <Flowmaster />,
         state: "Admin.Flowmaster",
         sidebarProps: {
           displayText: "Flow Master",
@@ -1489,7 +1546,7 @@ const appRoutes: RouteType[] = [
       },
       {
         path: "/Admin/MenuCreate",
-        element: <MenuMaster/>,
+        element: <MenuMaster />,
         state: "Admin.MenuCreate",
         sidebarProps: {
           displayText: "Menu Create",
@@ -1497,7 +1554,7 @@ const appRoutes: RouteType[] = [
       },
       {
         path: "/Admin/HelpCreation",
-        element: <HelpCreation/>,
+        element: <HelpCreation />,
         state: "Admin.HelpCreation",
         sidebarProps: {
           displayText: "Help Creation",
@@ -1517,7 +1574,7 @@ const appRoutes: RouteType[] = [
             element: <DashboardIndex />,
             state: "master.index",
           },
-         
+
           {
             path: "/Admin/masters/ZoneM",
             element: <ZoneMaster />,
@@ -1526,7 +1583,7 @@ const appRoutes: RouteType[] = [
               displayText: "Zone Master",
             },
           },
-         
+
           {
             path: "/Admin/masters/city",
             element: <CityMaster />,
@@ -1543,7 +1600,7 @@ const appRoutes: RouteType[] = [
               displayText: "State",
             },
           },
-         
+
           {
             path: "/Admin/masters/Country",
             element: <CountryMaster />,
@@ -1552,14 +1609,14 @@ const appRoutes: RouteType[] = [
               displayText: "Country",
             },
           },
-         
-          
+
+
           {
             path: "/Admin/masters/Type",
             element: <ItemType />,
             state: "masters.ItemType",
           },
-         
+
           {
             path: "/Admin/masters/category",
             element: <ItemCategory />,
@@ -1568,8 +1625,8 @@ const appRoutes: RouteType[] = [
               displayText: "ItemCategory",
             },
           },
-    
-          
+
+
           {
             path: "/Admin/masters/Tax",
             element: <Taxmaster />,
@@ -1586,7 +1643,7 @@ const appRoutes: RouteType[] = [
               displayText: "Unit master",
             },
           },
-          
+
           {
             path: "/Admin/masters/FolderLocation",
             element: <FolderLocation />,
@@ -1595,8 +1652,8 @@ const appRoutes: RouteType[] = [
               displayText: "Folder Location",
             },
           },
-    
-    
+
+
           {
             path: "/Admin/masters/FinancialYear",
             element: <FinancialYear />,
@@ -1605,8 +1662,8 @@ const appRoutes: RouteType[] = [
               displayText: "Financial Year",
             },
           },
-    
-    
+
+
           {
             path: "/Admin/masters/StockBin",
             element: <StockBin />,
@@ -1615,9 +1672,9 @@ const appRoutes: RouteType[] = [
               displayText: "Stock Bin",
             },
           },
-    
+
         ],
-    
+
       },
       {
         path: "/Admin/security",
@@ -1633,7 +1690,7 @@ const appRoutes: RouteType[] = [
             element: <DashboardIndex />,
             state: "security.index",
           },
-    
+
           {
             path: "/Admin/security/Roles",
             element: <RoleMaster />,
@@ -1660,7 +1717,7 @@ const appRoutes: RouteType[] = [
           displayText: "User Permission",
         }
       },
-    
+
 
     ]
   }

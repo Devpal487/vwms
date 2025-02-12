@@ -251,7 +251,7 @@ const AddComplaint = (props: Props) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
                setIsVisible(true);
-               navigate(`/vehiclecomplaint/Complaint`)
+               navigate(`/vehiclemanagement/vehiclecomplaints/Complaint`)
             } else {
                toast.error(response.data.message);
                setToaster(true);

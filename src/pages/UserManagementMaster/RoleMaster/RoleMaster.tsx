@@ -1265,7 +1265,7 @@ export default function RoleMaster() {
       );
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/security/RoleMaster");
+        navigate("/Admin/security/Roles");
         setOpen(false);
         getList();
       } else {

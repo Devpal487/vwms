@@ -114,14 +114,14 @@ export default function VehicleDetail() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/vehiclemaster/EditVehicleDetail`;
+    let path = `/vehiclemanagement/EditVehicleDetail`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/vehiclemaster/AddVehicleDetail`;
+    let path = `/vehiclemanagement/AddVehicleDetail`;
     navigate(path);
   };
 

@@ -76,14 +76,14 @@ export default function UtilizationLog() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row.toTime);
 
-    let path = `/vehiclemaster/EditUtilizationLog`;
+    let path = `/vehiclemanagement/vehiclemaster/EditUtilizationLog`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/vehiclemaster/AddUtilizationLog`;
+    let path = `/vehiclemanagement/vehiclemaster/AddUtilizationLog`;
     navigate(path);
   };
 

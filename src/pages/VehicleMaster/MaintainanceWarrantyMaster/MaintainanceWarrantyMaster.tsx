@@ -110,14 +110,14 @@ export default function MaintainanceWarrantyMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/vehiclemaster/EditMaintainanceWarrantyMaster`;
+    let path = `/vehiclemanagement/vehiclemaster/EditMaintainanceWarrantyMaster`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/vehiclemaster/AddMaintainanceWarrantyMaster`;
+    let path = `/vehiclemanagement/vehiclemaster/AddMaintainanceWarrantyMaster`;
     navigate(path);
   };
 

@@ -200,7 +200,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
       const response = await api.post(`Master/UpsertMantenanceWarranty`, values);
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclemaster/MaintainanceWarrantyMaster")
+        navigate("/vehiclemanagement/vehiclemaster/maintenance/warranty")
       } else {
         setToaster(true);
         toast.error(response.data.message);

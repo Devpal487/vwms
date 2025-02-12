@@ -492,7 +492,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
           setIsVisible(true);
         }, 500);
         setJobCardId(location.state?.jobCardId || formik.values.jobCardId);
-        //navigate("/vehiclecomplaint/JobWorkChallanRecieve")
+        //navigate("/vehiclemanagement/vehiclecomplaints/AddJobWorkChallan")
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -1669,7 +1669,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                 color="secondary"
               >
               </Button>
-              {isVisible && (
+              {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1719,7 +1719,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
             </Grid>
 
           </form>
