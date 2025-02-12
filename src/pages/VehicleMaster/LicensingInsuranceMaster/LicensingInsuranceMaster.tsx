@@ -109,14 +109,14 @@ export default function LicensingInsuranceMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/vehiclemaster/EditLicensingInsuranceMaster`;
+    let path = `/vehiclemanagement/vehiclemaster/EditLicensingInsuranceMaster`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/vehiclemaster/AddLicensingInsuranceMaster`;
+    let path = `/vehiclemanagement/vehiclemaster/AddLicensingInsuranceMaster`;
     navigate(path);
   };
 

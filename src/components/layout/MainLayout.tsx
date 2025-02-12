@@ -1270,69 +1270,9 @@ const MainLayout = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 
-  useEffect(() => {
+
+  const fetchMenu = () => {
     const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
-
-    // Build a menu hierarchy using parentId relationships
-    // const buildMenuHierarchy = (permissions: any[]) => {
-    //   const menuMap = new Map<number, any>();
-
-    //   // Step 1: Create a map with menuId as key
-    //   permissions.forEach((perm) => {
-    //     menuMap.set(perm.menuId, {
-    //       menuId: perm.menuId,
-    //       parentId: perm.parentId,
-    //       menuName: perm.menuName,
-    //       path: "", // Placeholder for path, will be generated dynamically
-    //       isAdd: perm.isAdd,
-    //       isEdit: perm.isEdit,
-    //       isDel: perm.isDel,
-    //       isView: perm.isView,
-    //       isPrint: perm.isPrint,
-    //       isExport: perm.isExport,
-    //       isRelease: perm.isRelease,
-    //       isPost: perm.isPost,
-    //       srn: perm.srn,
-    //       sno: perm.sno,
-    //       roleId: perm.roleId,
-    //       children: [], // Placeholder for child items
-    //     });
-    //   });
-
-    //   const rootMenus: any[] = [];
-
-    //   // Step 2: Assign child items to their respective parents
-    //   permissions.forEach((perm) => {
-    //     const menu = menuMap.get(perm.menuId);
-    //     if (menu) {
-    //       if (perm.parentId === null) {
-    //         // Root level menu items (No Parent or Parent ID is 0/null)
-    //         rootMenus.push(menu);
-    //       } else {
-    //         // Append to its parent menu
-    //         const parentMenu = menuMap.get(perm.parentId);
-    //         if (parentMenu) {
-    //           parentMenu.children.push(menu);
-    //         }
-    //       }
-    //     }
-    //   });
-
-    //   // Step 3: Generate Paths Recursively
-    //   const generatePaths = (menus: any[], parentPath = "/") => {
-    //     menus.forEach((menu) => {
-    //       menu.path = `${parentPath}${menu.menuName.replace(/\s+/g, "-").toLowerCase()}`;
-    //       if (menu.children.length > 0) {
-    //         generatePaths(menu.children, `${menu.path}/`);
-    //       }
-    //     });
-    //   };
-
-    //   generatePaths(rootMenus); // Start path generation
-
-    //   return rootMenus;
-    // };
-
 
     const buildMenuHierarchy = (permissions: any[]) => {
       const menuMap = new Map<number, any>();
@@ -1378,6 +1318,16 @@ const MainLayout = () => {
     };
 
     setMenuItems(buildMenuHierarchy(storedPermissions));
+  };
+
+  useEffect(() => {
+    fetchMenu(); // Initial fetch
+
+    // ✅ Listen for permission updates from login
+    const updateMenu = () => fetchMenu();
+    window.addEventListener("permissionsUpdated", updateMenu);
+
+    return () => window.removeEventListener("permissionsUpdated", updateMenu);
   }, []);
 
   const handleMenuClick = (e: any, item: any) => {
@@ -1478,83 +1428,4 @@ export default MainLayout;
 
 
 
-
-
-// ===================================================
-
-// 11/02/25
-
-
-// import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import Sidebar from "../common/Sidebar";
-
-// interface Permission {
-//   menuId: number;
-//   parentId: number;
-//   menuName: string;
-// }
-
-// interface MenuItem {
-//   menuId: number;
-//   parentId: number;
-//   menuName: string;
-//   path: string;
-//   children: MenuItem[];
-// }
-
-// const MainLayout = () => {
-//   const navigate = useNavigate();
-//   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-//   const isAuthenticated = localStorage.getItem("userdata");
-
-//   // Redirect to login if user is not authenticated
-//   useEffect(() => {
-//     if (!isAuthenticated) {
-//       navigate("/");
-//     }
-//   }, [isAuthenticated, navigate]);
-
-//   // Fetch user permissions and build menu hierarchy
-//   useEffect(() => {
-//     const storedPermissions: Permission[] = JSON.parse(localStorage.getItem("permissions") || "[]");
-
-//     const menuMap = new Map<number, MenuItem>();
-
-//     storedPermissions.forEach((perm: Permission) => {
-//       const menu: MenuItem = {
-//         menuId: perm.menuId,
-//         parentId: perm.parentId,
-//         menuName: perm.menuName,
-//         path: `/${perm.menuName.replace(/\s+/g, "-").toLowerCase()}`,
-
-//         children: []
-//       };
-//       menuMap.set(menu.menuId, menu);
-//     });
-
-//     const rootMenus: MenuItem[] = [];
-//     menuMap.forEach((menu) => {
-//       if (menu.parentId === 0) {
-//         rootMenus.push(menu);
-//       } else {
-//         const parentMenu = menuMap.get(menu.parentId);
-//         if (parentMenu) {
-//           parentMenu.children.push(menu);
-//         }
-//       }
-//     });
-
-//     setMenuItems(rootMenus);
-//   }, []);
-
-//   return (
-//     <div style={{ display: "flex" }}>
-//       {isAuthenticated && <Sidebar menuItems={menuItems} />}
-//       <div style={{ flexGrow: 1, padding: "20px" }}>Main Content</div>
-//     </div>
-//   );
-// };
-
-// export default MainLayout;
 

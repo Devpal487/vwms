@@ -169,7 +169,7 @@ const AddUtilizationLog = (props: Props) => {
       const response = await api.post(`Master/UpsertUtilizationLog`, values);
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/vehiclemaster/UtilizationLog")
+        navigate("/vehiclemanagement/vehiclemaster/UtilizationLog")
       } else {
         setToaster(true);
         toast.error(response.data.message);

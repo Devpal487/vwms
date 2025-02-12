@@ -1980,7 +1980,7 @@ console.log("location.state",(location.state));
                   </Button>
                 </Grid>
               </Grid>
-              {isVisible && (
+              {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -2009,7 +2009,7 @@ console.log("location.state",(location.state));
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
 
             </Grid>
 

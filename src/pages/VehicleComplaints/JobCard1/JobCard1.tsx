@@ -169,7 +169,7 @@ export default function JobCard() {
    const routeChangeEdit = (row: any) => {
       console.log("row " + row);
 
-      let path = `/vehiclecomplaint/EditJobCard1`;
+      let path = `/vehiclemanagement/vehiclecomplaints/EditJobCard`;
       navigate(path, {
          state: {
             ...row,
@@ -204,7 +204,7 @@ export default function JobCard() {
    };
 
    const routeChangeAdd = () => {
-      let path = `/vehiclecomplaint/AddJobCard1`;
+      let path = `/vehiclemanagement/vehiclecomplaints/AddJobCard`;
       navigate(path);
    };
 

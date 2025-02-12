@@ -241,7 +241,7 @@
 
 // -------------------------------------------------------------
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
    Grid,
    TextField,
@@ -339,6 +339,7 @@ const LoginPage1 = () => {
                    "token",
                    JSON.stringify(response.data.data.token)
                );
+               window.dispatchEvent(new Event("permissionsUpdated"));
                navigate("/home");
            }
 

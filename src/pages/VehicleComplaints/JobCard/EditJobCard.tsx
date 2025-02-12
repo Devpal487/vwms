@@ -453,7 +453,7 @@ const EditJobCard = (props: Props) => {
         setIsEnable(isEnable + 1);
         formik.setFieldValue("jobCardId", response.data.data.jobCardId);
         formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
-        //navigate("/vehiclecomplaint/JobCard");
+        //navigate("/vehiclemanagement/vehiclecomplaints/JobCard");
       } else {
         setToaster(true);
         toast.error(response.data.message);
@@ -1817,7 +1817,7 @@ const EditJobCard = (props: Props) => {
               >
               </Button> */}
 
-              {isVisible && (
+              {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>
                   <Button
                     type="button"
@@ -1846,7 +1846,7 @@ const EditJobCard = (props: Props) => {
                     <ArrowForwardIcon />
                   </Button>
                 </Grid>
-              )}
+              )} */}
 
             </Grid>
 

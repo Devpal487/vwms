@@ -442,7 +442,7 @@ const AddJobCard = (props: Props) => {
         formik.setFieldValue("jobCardNo", response.data.data.jobCardNo);
         setIsVisibleJWC(isVisibleJWC + 1);
         setIsEnable(isEnable + 1);
-        //navigate("/vehiclecomplaint/JobCard");
+        //navigate("/vehiclemanagement/vehiclecomplaints/JobCard");
       } else {
         setToaster(true);
         toast.error(response.data.message);

@@ -119,14 +119,14 @@ export default function Complaint() {
    const routeChangeEdit = (row: any) => {
       console.log("row ", row);
 
-      let path = `/vehiclecomplaint/EditComplaint`;
+      let path = `/vehiclemanagement/vehiclecomplaints/EditComplaint`;
       navigate(path, {
          state: row,
       });
    };
 
    const routeChangeAdd = () => {
-      let path = `/vehiclecomplaint/AddComplaint`;
+      let path = `/vehiclemanagement/vehiclecomplaints/AddComplaint`;
       navigate(path);
    };
 

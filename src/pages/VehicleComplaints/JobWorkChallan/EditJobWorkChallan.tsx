@@ -391,7 +391,7 @@ const EditJobWorkChallan = (props: Props) => {
       if (response.data.status === 1) {
         toast.success(response.data.message);
         setIsVisible(true);
-        navigate("/vehiclecomplaint/JobWorkChallan")
+        navigate("/vehiclemanagement/vehiclecomplaints/jobworkchallan")
       } else {
         setToaster(true);
         toast.error(response.data.message);

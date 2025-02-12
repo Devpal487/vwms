@@ -487,7 +487,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       if (response.data.status === 1) {
         toast.success(response.data.message);
         updateJobCardStatusStatus(location.state?.jobCardId || formik.values.jobCardId);
-        navigate("/vehiclecomplaint/JobWorkChallanRecieve")
+        navigate("/vehiclemanagement/vehiclecomplaints/JobWorkChallanRecieve")
       } else {
         setToaster(true);
         toast.error(response.data.message);

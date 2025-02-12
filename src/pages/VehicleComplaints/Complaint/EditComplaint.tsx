@@ -294,7 +294,7 @@ const EditComplaint = (props: Props) => {
 
             if (response.data.status === 1) {
                toast.success(response.data.message);
-               navigate("/vehiclecomplaint/Complaint")
+               navigate("/vehiclemanagement/vehiclecomplaints/Complaint")
                setIsVisible(true);
             } else {
                toast.error(response.data.message);

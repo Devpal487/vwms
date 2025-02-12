@@ -67,7 +67,7 @@ export default function JobWorkChallan() {
    const routeChangeEdit = (row: any) => {
       console.log("row " + row);
 
-      let path = `/vehiclecomplaint/EditJobWorkChallan`;
+      let path = `/vehiclemanagement/vehiclecomplaints/EditJobWorkChallan`;
       navigate(path, {
          state: {
             ...row, jobWorkChallanDetail: [...row.jobWorkChallanDetail, {
@@ -96,7 +96,7 @@ export default function JobWorkChallan() {
    };
 
    const routeChangeAdd = () => {
-      let path = `/vehiclecomplaint/AddJobWorkChallan`;
+      let path = `/vehiclemanagement/vehiclecomplaints/AddJobWorkChallan`;
       navigate(path);
    };
 

@@ -67,7 +67,7 @@ export default function JobWorkChallanRecieve() {
    const routeChangeEdit = (row: any) => {
       console.log("row " + row);
 
-      let path = `/vehiclecomplaint/EditJobWorkChallanRecieve`;
+      let path = `/vehiclemanagement/vehiclecomplaints/EditJobWorkChallanRecieve`;
       navigate(path, {
          state: {
             ...row, jobWorkChallanRcvDetail: [...row.jobWorkChallanRcvDetail, {
@@ -96,7 +96,7 @@ export default function JobWorkChallanRecieve() {
    };
 
    const routeChangeAdd = () => {
-      let path = `/vehiclecomplaint/AddJobWorkChallanRecieve`;
+      let path = `/vehiclemanagement/vehiclecomplaints/AddJobWorkChallanRecieve`;
       navigate(path);
    };
 
