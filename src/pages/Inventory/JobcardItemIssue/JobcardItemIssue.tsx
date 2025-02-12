@@ -372,7 +372,7 @@ export default function JobcardItemIssue() {
 
   const routeChangeEdit = (row: any) => {
     // console.log(row);
-    let path = `/Inventory/EditJobcardItemIssue`;
+    let path = `/storemanagement/itemissue/EditJobcardItemIssue`;
     navigate(path, {
       state: row,
     });
@@ -380,7 +380,7 @@ export default function JobcardItemIssue() {
 
   
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateJobcardItemIssue`;
+    let path = `/storemanagement/itemissue/CreateJobcardItemIssue`;
     navigate(path);
   };
 

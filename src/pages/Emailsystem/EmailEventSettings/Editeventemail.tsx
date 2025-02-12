@@ -99,7 +99,7 @@ const EditemaileventForm = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/emailsystem/eventmaster");
+                navigate("/communication/email/emailevent");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

@@ -62,14 +62,14 @@ export default function PurchaseInvoice() {
     const routeChangeEdit = (row: any) => {
         console.log("row " + row);
 
-        let path = `/Inventory/EditPurchaseInvoice`;
+        let path = `/storemanagement/EditPurchaseInvoice`;
         navigate(path, {
             state: row,
         });
     };
 
     const routeChangeAdd = () => {
-        let path = `/Inventory/CreatePurchaseInvoice`;
+        let path = `/storemanagement/CreatePurchaseInvoice`;
         navigate(path);
     };
 

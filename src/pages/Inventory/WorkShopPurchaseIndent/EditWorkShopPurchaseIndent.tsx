@@ -223,7 +223,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/WorkShopPurchaseIndent");
+                navigate("/storemanagement/workshopindent/wrk.pur.indent");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

@@ -1028,7 +1028,7 @@ const CreateStaffItemReturn = (props: Props) => {
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/StaffItemReturn");
+        navigate("/storemanagement/itemreturn/staffitemreturn");
       } else {
         setToaster(true);
         toast.error(response.data.message);

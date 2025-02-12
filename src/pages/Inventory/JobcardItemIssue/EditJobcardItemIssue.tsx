@@ -350,7 +350,7 @@ const EditJobcardItemIssue = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/JobcardItemIssue");
+                navigate("/storemanagement/itemissue/jobcarditemissue");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

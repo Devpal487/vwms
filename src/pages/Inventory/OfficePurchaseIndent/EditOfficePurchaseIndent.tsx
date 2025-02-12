@@ -836,7 +836,7 @@ const EditOfficePurchaseIndent = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/OfficePurchaseIndent");
+                navigate("/storemanagement/off.purchaseindent");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

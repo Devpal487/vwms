@@ -62,14 +62,14 @@ export default function OfficePurchaseOrder() {
     const routeChangeEdit = (row: any) => {
         console.log("row " + row);
 
-        let path = `/Inventory/EditOfficePurchaseOrder`;
+        let path = `/storemanagement/purchaseorder/EditOfficePurchaseOrder`;
         navigate(path, {
             state: row,
         });
     };
 
     const routeChangeAdd = () => {
-        let path = `/Inventory/CreateOfficePurchaseOrder`;
+        let path = `/storemanagement/purchaseorder/CreateOfficePurchaseOrder`;
         navigate(path);
     };
 

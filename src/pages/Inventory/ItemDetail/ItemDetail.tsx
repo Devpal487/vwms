@@ -70,14 +70,14 @@ export default function ItemDetail() {
 
   const routeChangeEdit = (row: any) => {
     // console.log(row);
-    let path = `/Inventory/EditItemDetail`;
+    let path = `/storemanagement/EditItemDetail`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateItemDetail`;
+    let path = `/storemanagement/CreateItemDetail`;
     navigate(path);
   };
 

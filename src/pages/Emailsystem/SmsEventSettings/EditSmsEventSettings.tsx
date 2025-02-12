@@ -100,7 +100,7 @@ const EditSmsEventSettings = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/emailsystem/SmsEventSettings");
+                navigate("/communication/sms/smsevent");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

@@ -67,14 +67,14 @@ export default function Smscampagian() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/EditSmscampagian`;
+    let path = `/communication/sms/EditSmscampagian`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/emailsystem/CreateSmscampagian`;
+    let path = `/communication/sms/CreateSmscampagian`;
     navigate(path);
   };
 

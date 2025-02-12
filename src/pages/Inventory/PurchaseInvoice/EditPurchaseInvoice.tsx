@@ -532,7 +532,7 @@ const EditPurchaseInvoice = () => {
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/PurchaseInvoice");
+        navigate("/storemanagement/PurchaseInvoice");
       } else {
         setToaster(true);
         toast.error(response.data.message);

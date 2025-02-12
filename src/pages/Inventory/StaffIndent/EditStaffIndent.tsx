@@ -265,7 +265,7 @@ const EditStaffIndent = (props: Props) => {
       if (response.data.status === 1) {
           setToaster(false);
           toast.success(response.data.message);
-          navigate("/Inventory/StaffIndent");
+          navigate("/storemanagement/indentforstaff");
       } else {
           setToaster(true);
           toast.error(response.data.message);

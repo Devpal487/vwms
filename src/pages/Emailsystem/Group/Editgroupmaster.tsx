@@ -79,7 +79,7 @@ import {
         if (response.data.status===1) {
           setToaster(false);
           toast.success(response.data.message);
-          navigate("/communication/Groupmaster");
+          navigate("/communication/group");
         } else {
           setToaster(true);
           toast.success(response.data.message);

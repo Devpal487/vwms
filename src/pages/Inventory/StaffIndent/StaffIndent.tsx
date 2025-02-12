@@ -62,14 +62,14 @@ export default function IndentFormMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditStaffIndent`;
+    let path = `/storemanagement/EditStaffIndent`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateStaffIndent`;
+    let path = `/storemanagement/CreateStaffIndent`;
     navigate(path);
   };
 

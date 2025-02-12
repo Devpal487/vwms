@@ -582,7 +582,7 @@ const EditWorkShopPurchaseOrder = () => {
             });
             if (response.data.status === 1) {
                 toast.success(response.data.message);
-                navigate("/Inventory/WorkShopPurchaseOrder");
+                navigate("/storemanagement/purchaseorder/workshop");
             } else {
                 toast.error(response.data.message);
             }

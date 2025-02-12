@@ -48,14 +48,14 @@ export default function QualityCheckMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditQualityCheck`;
+    let path = `/storemanagement/EditQualityCheck`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateQualityCheck`;
+    let path = `/storemanagement/CreateQualityCheck`;
     navigate(path);
   };
 

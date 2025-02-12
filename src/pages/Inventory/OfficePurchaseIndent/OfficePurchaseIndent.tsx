@@ -64,14 +64,14 @@ export default function IndentFormMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditOfficePurchaseIndent`;
+    let path = `/storemanagement/EditOfficePurchaseIndent`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateOfficePurchaseIndent`;
+    let path = `/storemanagement/CreateOfficePurchaseIndent`;
     navigate(path);
   };
 

@@ -439,7 +439,7 @@ const EditMaterialRecieptNote = (props: Props) => {
 
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/Inventory/MRNForm");
+        navigate("/storemanagement/materialreceiptnote");
       } else {
         toast.error(response.data.message);
       }
