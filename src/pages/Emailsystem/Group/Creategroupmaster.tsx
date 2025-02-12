@@ -87,7 +87,7 @@ const Creategroupmaster = (props: Props) => {
       if (response.data.status===1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/emailsystem/Groupmaster");
+        navigate("/communication/Groupmaster");
       } else {
         setToaster(true);
         toast.error(response.data.message);

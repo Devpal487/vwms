@@ -53,13 +53,13 @@ export default function Groupmaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/Editgroupmaster`;
+    let path = `/communication/Editgroupmaster`;
     navigate(path, {
       state: row,
     });
   };
   const routeChangeAdd = () => {
-    let path = `/emailsystem/Creategroupmaster`;
+    let path = `/communication/Creategroupmaster`;
     navigate(path);
   };
   let delete_id = "";

@@ -569,18 +569,215 @@ const [openMenus, setOpenMenus] = React.useState<Set<number>>(new Set());
 
 
 
-const handleMenuClick = (menuId: number) => {
-  setActiveMenu(menuId); // Highlight the active menu item
+// const handleMenuClick = (menuId: number) => {
+//   setActiveMenu(menuId); // Highlight the active menu item
+// };
+
+// const toggleMenu = (menuId: number) => {
+//   setOpenMenus((prev) => {
+//     const newOpenMenus = new Set(prev);
+//     if (newOpenMenus.has(menuId)) {
+//       newOpenMenus.delete(menuId);
+//     } else {
+//       newOpenMenus.add(menuId);
+//     }
+//     return newOpenMenus;
+//   });
+// };
+
+// const renderMenu = (menus: any[], level = 0) => {
+//   return menus.map((menu: any) => (
+//     <List key={menu.menuId} sx={{ padding: 0 }}>
+//       <Divider />
+
+//       {/* Parent & Child Items */}
+//       <ListItem
+//         sx={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit", // Highlight active menu
+//           paddingLeft: `${level * 16}px`,
+//           cursor: "pointer",
+//           "&:hover": { backgroundColor: "#f0f0f0" },
+//           borderRadius: "5px",
+//         }}
+//         onClick={() => handleMenuClick(menu.menuId)}
+//       >
+//         {/* Icon + Menu Name */}
+//         <ListItem sx={{ justifyContent: open ? "initial" : "center", paddingLeft: 1 }}>
+//           <ListItemIcon
+//             sx={{
+//               minWidth: 0,
+//               mr: open ? 1 : "auto",
+//               justifyContent: "center",
+//               color: activeMenu === menu.menuId ? "#FF0000" : "inherit",
+//               fontWeight: 600,
+//             }}
+//             onClick={() => toggleMenu(menu.menuId)} // Toggle submenu
+//           >
+//             {/* ✅ Folder for menus with children */}
+//             {menu.children && menu.children.length > 0 ? (
+//               openMenus.has(menu.menuId) ? (
+//                 <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} />
+//               ) : (
+//                 <FolderIcon style={{ color: "#42AEEE" }} />
+//               )
+//             ) : (
+//               /* ✅ File icon for menus with NO children */
+//               <DescriptionIcon style={{ color: "#42AEEE" }} />
+//             )}
+//           </ListItemIcon>
+
+//           <ListItemText
+//             primary={menu.menuName}
+//             sx={{
+//               opacity: open ? 1 : 0,
+//               fontWeight: "bold",
+//               fontSize: "14px",
+//               color: activeMenu === menu.menuId ? "#0056b3" : "inherit", // Active text color
+//             }}
+//           />
+//         </ListItem>
+
+//         {/* Expand / Collapse Icon (For menus with children) */}
+//         {menu.children && menu.children.length > 0 && (
+//           <ListItemIcon
+//             sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}
+//             onClick={() => toggleMenu(menu.menuId)}
+//           >
+//             {openMenus.has(menu.menuId) ? (
+//               <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
+//             ) : (
+//               <ExpandMoreIcon className="sidebar-item-expand-arrow" />
+//             )}
+//           </ListItemIcon>
+//         )}
+//       </ListItem>
+
+//       {/* Recursive Rendering for Submenus (Children & Subchildren) */}
+//       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
+//         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+//           {renderMenu(menu.children, level + 1)}
+//         </List>
+//       )}
+//     </List>
+//   ));
+// };
+
+
+
+
+// const handleMenuClick = (menuId: number) => {
+//   setActiveMenu(menuId); // Highlight active menu
+//   toggleMenu(menuId); // Toggle submenu
+// };
+
+// const toggleMenu = (menuId: number) => {
+//   setOpenMenus((prev) => {
+//     const newOpenMenus = new Set(prev);
+//     newOpenMenus.has(menuId) ? newOpenMenus.delete(menuId) : newOpenMenus.add(menuId);
+//     return newOpenMenus;
+//   });
+// };
+
+// const renderMenu = (menus: any[], level = 0) => {
+//   return menus.map((menu: any) => (
+//     <List key={menu.menuId} sx={{ padding: 0 }}>
+//       <Divider />
+
+//       {/* Menu Item */}
+//       <ListItem
+//         sx={{
+//           display: "flex",
+//           justifyContent: "space-between",
+//           alignItems: "center",
+//           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit", // Highlight active menu
+//           paddingLeft: `${level * 16}px`,
+//           cursor: "pointer",
+//           "&:hover": { backgroundColor: "#f0f0f0" },
+//           borderRadius: "5px",
+//         }}
+//         onClick={() => handleMenuClick(menu.menuId)} // Click to open/collapse
+//       >
+//         {/* Icon + Menu Name */}
+//         <ListItem sx={{ justifyContent: open ? "initial" : "center", paddingLeft: 1 }}>
+//           <ListItemIcon
+//             sx={{
+//               minWidth: 0,
+//               mr: open ? 1 : "auto",
+//               justifyContent: "center",
+//               color: activeMenu === menu.menuId ? "#FF0000" : "inherit",
+//               fontWeight: 600,
+//             }}
+//             onClick={(e) => {
+//               e.stopPropagation(); // Prevents ListItem click event
+//               toggleMenu(menu.menuId);
+//             }}
+//           >
+//             {/* ✅ Folder for menus with children */}
+//             {menu.children && menu.children.length > 0 ? (
+//               openMenus.has(menu.menuId) ? (
+//                 <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} />
+//               ) : (
+//                 <FolderIcon style={{ color: "#42AEEE" }} />
+//               )
+//             ) : (
+//               // ✅ File icon for menus with no children
+//               <DescriptionIcon style={{ color: "#42AEEE" }} />
+//             )}
+//           </ListItemIcon>
+
+//           <ListItemText
+//             primary={menu.menuName}
+//             sx={{
+//               opacity: open ? 1 : 0,
+//               fontWeight: "bold",
+//               fontSize: "14px",
+//               color: activeMenu === menu.menuId ? "#0056b3" : "inherit", // Active text color
+//             }}
+//           />
+//         </ListItem>
+
+//         {/* ✅ Expand / Collapse Caret (For menus with children) */}
+//         {menu.children && menu.children.length > 0 && (
+//           <ListItemIcon
+//             sx={{ paddingRight: "16px", cursor: "pointer", color: "#42AEEE" }}
+//             onClick={(e) => {
+//               e.stopPropagation(); // Prevents ListItem click event
+//               toggleMenu(menu.menuId);
+//             }}
+//           >
+//             {openMenus.has(menu.menuId) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+//           </ListItemIcon>
+//         )}
+//       </ListItem>
+
+//       {/* Recursive Rendering for Submenus (Children & Subchildren) */}
+//       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
+//         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+//           {renderMenu(menu.children, level + 1)}
+//         </List>
+//       )}
+//     </List>
+//   ));
+// };
+
+
+const handleMenuClick = (menu: any) => {
+  setActiveMenu(menu.menuId); // Highlight active menu
+
+  if (menu.children && menu.children.length > 0) {
+    toggleMenu(menu.menuId); // Toggle submenu
+  } else if (menu.path) {
+    navigate(menu.path); // Navigate only if no children exist
+  }
 };
 
 const toggleMenu = (menuId: number) => {
   setOpenMenus((prev) => {
     const newOpenMenus = new Set(prev);
-    if (newOpenMenus.has(menuId)) {
-      newOpenMenus.delete(menuId);
-    } else {
-      newOpenMenus.add(menuId);
-    }
+    newOpenMenus.has(menuId) ? newOpenMenus.delete(menuId) : newOpenMenus.add(menuId);
     return newOpenMenus;
   });
 };
@@ -590,7 +787,7 @@ const renderMenu = (menus: any[], level = 0) => {
     <List key={menu.menuId} sx={{ padding: 0 }}>
       <Divider />
 
-      {/* Parent & Child Items */}
+      {/* Menu Item */}
       <ListItem
         sx={{
           display: "flex",
@@ -602,7 +799,7 @@ const renderMenu = (menus: any[], level = 0) => {
           "&:hover": { backgroundColor: "#f0f0f0" },
           borderRadius: "5px",
         }}
-        onClick={() => handleMenuClick(menu.menuId)}
+        onClick={() => handleMenuClick(menu)}
       >
         {/* Icon + Menu Name */}
         <ListItem sx={{ justifyContent: open ? "initial" : "center", paddingLeft: 1 }}>
@@ -614,7 +811,10 @@ const renderMenu = (menus: any[], level = 0) => {
               color: activeMenu === menu.menuId ? "#FF0000" : "inherit",
               fontWeight: 600,
             }}
-            onClick={() => toggleMenu(menu.menuId)} // Toggle submenu
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents ListItem click event
+              toggleMenu(menu.menuId);
+            }}
           >
             {/* ✅ Folder for menus with children */}
             {menu.children && menu.children.length > 0 ? (
@@ -624,7 +824,7 @@ const renderMenu = (menus: any[], level = 0) => {
                 <FolderIcon style={{ color: "#42AEEE" }} />
               )
             ) : (
-              /* ✅ File icon for menus with NO children */
+              // ✅ File icon for menus with no children
               <DescriptionIcon style={{ color: "#42AEEE" }} />
             )}
           </ListItemIcon>
@@ -640,17 +840,16 @@ const renderMenu = (menus: any[], level = 0) => {
           />
         </ListItem>
 
-        {/* Expand / Collapse Icon (For menus with children) */}
+        {/* ✅ Expand / Collapse Caret (For menus with children) */}
         {menu.children && menu.children.length > 0 && (
           <ListItemIcon
-            sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}
-            onClick={() => toggleMenu(menu.menuId)}
+            sx={{ paddingRight: "16px", cursor: "pointer", color: "#42AEEE" }}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents ListItem click event
+              toggleMenu(menu.menuId);
+            }}
           >
-            {openMenus.has(menu.menuId) ? (
-              <ExpandLessIcon className="sidebar-item-expand-arrow sidebar-item-expand-arrow-expanded" />
-            ) : (
-              <ExpandMoreIcon className="sidebar-item-expand-arrow" />
-            )}
+            {openMenus.has(menu.menuId) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </ListItemIcon>
         )}
       </ListItem>
@@ -664,6 +863,7 @@ const renderMenu = (menus: any[], level = 0) => {
     </List>
   ));
 };
+
 
   
   
@@ -1233,6 +1433,13 @@ const renderMenu = (menus: any[], level = 0) => {
                 <img src={ThemeIcon} width={30} height={30} />
               </ListItemIcon>
               Select Theme
+            </MenuItem>
+
+            <MenuItem onClick={() => navigate("/admin/flowmaster")}>
+              <ListItemIcon>
+                <img src={ThemeIcon} width={30} height={30} />
+              </ListItemIcon>
+              Flow Master
             </MenuItem>
 
             <Divider />
