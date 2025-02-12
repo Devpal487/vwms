@@ -62,14 +62,14 @@ export default function WorkShopPurchaseOrder() {
     const routeChangeEdit = (row: any) => {
         console.log("row " + row);
 
-        let path = `/Inventory/EditWorkShopPurchaseOrder`;
+        let path = `/storemanagement/purchaseorder/EditWorkShopPurchaseOrder`;
         navigate(path, {
             state: row,
         });
     };
 
     const routeChangeAdd = () => {
-        let path = `/Inventory/CreateWorkShopPurchaseOrder`;
+        let path = `/storemanagement/purchaseorder/CreateWorkShopPurchaseOrder`;
         navigate(path);
     };
 

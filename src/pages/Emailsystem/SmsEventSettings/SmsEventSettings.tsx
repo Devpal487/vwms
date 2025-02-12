@@ -65,14 +65,14 @@ export default function SmsEventSettings() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/EditSmsEventSettings`;
+    let path = `/communication/sms/EditSmsEventSettings`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/emailsystem/CreateSmsEventSettings`;
+    let path = `/communication/sms/CreateSmsEventSettings`;
     navigate(path);
   };
 

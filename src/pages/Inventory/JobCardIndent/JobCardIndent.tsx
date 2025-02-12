@@ -62,14 +62,14 @@ export default function JobCardIndent() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditJobCardIndent`;
+    let path = `/storemanagement/workshopindent/EditJobCardIndent`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateJobCardIndent`;
+    let path = `/storemanagement/workshopindent/CreateJobCardIndent`;
     navigate(path);
   };
 

@@ -65,14 +65,14 @@ export default function CampagianTemplate() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/EditCampaignTemplate`;
+    let path = `/communication/EditCampaignTemplate`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/emailsystem/AddCampaignTemplate`;
+    let path = `/communication/AddCampaignTemplate`;
     navigate(path);
   };
 

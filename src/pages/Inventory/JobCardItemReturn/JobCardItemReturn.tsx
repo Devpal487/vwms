@@ -47,14 +47,14 @@ export default function JobCardItemReturn() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditJobCardItemReturn`;
+    let path = `/storemanagement/itemreturn/EditJobCardItemReturn`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateJobCardItemReturn`;
+    let path = `/storemanagement/itemreturn/CreateJobCardItemReturn`;
     navigate(path);
   };
 

@@ -321,14 +321,14 @@ export default function QualityCheckMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditStaffItemReturn`;
+    let path = `/storemanagement/itemreturn/EditStaffItemReturn`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateStaffItemReturn`;
+    let path = `/storemanagement/itemreturn/CreateStaffItemReturn`;
     navigate(path);
   };
 

@@ -1485,7 +1485,7 @@ const GetUnitData = async () => {
           if (response.data.isSuccess) {
               setToaster(false);
               toast.success(response.data.mesg);
-              navigate("/master/Stockledger");
+              navigate("/storemanagement/stockopening");
           } else {
               setToaster(true);
               toast.error(response.data.mesg);

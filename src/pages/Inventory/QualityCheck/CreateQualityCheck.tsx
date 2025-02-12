@@ -580,7 +580,7 @@ const CreateQualityCheck = (props: Props) => {
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/QualityCheck");
+        navigate("/storemanagement/qualitycheck");
       } else {
         setToaster(true);
         toast.error(response.data.message);

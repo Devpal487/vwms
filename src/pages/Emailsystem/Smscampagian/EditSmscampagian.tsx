@@ -220,7 +220,7 @@ const EditSmscampagian = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/emailsystem/Smscampagian");
+                navigate("/communication/sms/smscampaign");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

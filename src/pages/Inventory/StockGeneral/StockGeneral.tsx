@@ -62,14 +62,14 @@ export default function StockGeneral() {
     const routeChangeEdit = (row: any) => {
         console.log("row " + row);
 
-        let path = `/Inventory/EditStockGeneral`;
+        let path = `/storemanagement/EditStockGeneral`;
         navigate(path, {
             state: row,
         });
     };
 
     const routeChangeAdd = () => {
-        let path = `/Inventory/CreateStockGeneral`;
+        let path = `/storemanagement/CreateStockGeneral`;
         navigate(path);
     };
 

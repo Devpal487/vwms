@@ -1085,7 +1085,7 @@ const CreateJobCardItemReturn = (props: Props) => {
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/JobCardItemReturn");
+        navigate("/storemanagement/itemreturn/jobcarditemreturn");
       } else {
         setToaster(true);
         toast.error(response.data.message);

@@ -189,7 +189,7 @@ export default function CreateItemDetail() {
       if (response.data.status === 1) {
         setToaster(false);
         toast.success(response.data.message);
-        navigate("/Inventory/ItemDetail");
+        navigate("/storemanagement/ItemDetail");
       } else {
         setToaster(true);
         toast.error(response.data.message);

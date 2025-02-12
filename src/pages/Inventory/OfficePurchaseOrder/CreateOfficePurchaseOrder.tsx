@@ -1916,7 +1916,7 @@ const CreateOfficePurchaseOrder = () => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/OfficePurchaseOrder");
+                navigate("/storemanagement/purchaseorder/office");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

@@ -62,14 +62,14 @@ export default function IndentFormMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditWorkShopPurchaseIndent`;
+    let path = `/storemanagement/workshopindent/EditWorkShopPurchaseIndent`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateWorkShopPurchaseIndent`;
+    let path = `/storemanagement/workshopindent/CreateWorkShopPurchaseIndent`;
     navigate(path);
   };
 

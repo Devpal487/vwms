@@ -2062,7 +2062,7 @@ const EditOfficePurchaseOrder = () => {
             });
             if (response.data.status === 1) {
                 toast.success(response.data.message);
-                navigate("/Inventory/OfficePurchaseOrder");
+                navigate("/storemanagement/purchaseorder/office");
             } else {
                 toast.error(response.data.message);
             }

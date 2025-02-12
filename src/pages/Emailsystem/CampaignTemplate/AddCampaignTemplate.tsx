@@ -97,7 +97,7 @@ const AddCampagianTemplate = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/emailsystem/CampaignTemplate");
+                navigate("/communication/template(sms/email)");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

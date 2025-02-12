@@ -215,7 +215,7 @@ const CreatemailcampgiontForm = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/emailsystem/campagianmaster");
+                navigate("/communication/email/emailcampaign");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

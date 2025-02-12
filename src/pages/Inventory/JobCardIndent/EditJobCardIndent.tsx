@@ -237,7 +237,7 @@ const EditJobCardIndent = (props: Props) => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/JobCardIndent");
+                navigate("/storemanagement/workshopindent/jobcardindent");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

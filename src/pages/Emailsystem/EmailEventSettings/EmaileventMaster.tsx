@@ -64,14 +64,14 @@ export default function EmaileventMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/editeventnmaster`;
+    let path = `/communication/email/editeventnmaster`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/emailsystem/addeventmaster`;
+    let path = `/communication/email/addeventmaster`;
     navigate(path);
   };
 

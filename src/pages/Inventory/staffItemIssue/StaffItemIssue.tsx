@@ -60,7 +60,7 @@ export default function VendorMaster() {
 
   const routeChangeEdit = (row: any) => {
     // console.log(row);
-    let path = `/Inventory/EditStaffItemIssue`;
+    let path = `/storemanagement/itemissue/EditStaffItemIssue`;
     navigate(path, {
       state: row,
     });
@@ -68,7 +68,7 @@ export default function VendorMaster() {
 
   
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateStaffItemIssue`;
+    let path = `/storemanagement/itemissue/CreateStaffItemIssue`;
     navigate(path);
   };
 

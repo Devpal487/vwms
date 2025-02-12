@@ -62,14 +62,14 @@ export default function MaterialRecieptNoteMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/Inventory/EditMRN`;
+    let path = `/storemanagement/EditMRN`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/Inventory/CreateMRN`;
+    let path = `/storemanagement/CreateMRN`;
     navigate(path);
   };
 

@@ -481,7 +481,7 @@ const CreateWorkShopPurchaseOrder = () => {
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
-                navigate("/Inventory/WorkShopPurchaseOrder");
+                navigate("/storemanagement/purchaseorder/workshop");
             } else {
                 setToaster(true);
                 toast.error(response.data.message);

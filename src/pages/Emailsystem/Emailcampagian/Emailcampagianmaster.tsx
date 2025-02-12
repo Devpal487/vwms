@@ -67,14 +67,14 @@ export default function EmailcampgianMaster() {
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
-    let path = `/emailsystem/editcampagianmaster`;
+    let path = `/communication/email/editcampagianmaster`;
     navigate(path, {
       state: row,
     });
   };
 
   const routeChangeAdd = () => {
-    let path = `/emailsystem/addcampagianmaster`;
+    let path = `/communication/email/addcampagianmaster`;
     navigate(path);
   };
 
