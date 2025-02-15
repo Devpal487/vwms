@@ -308,21 +308,44 @@ export default function MiniDrawer({ items }: any) {
     setActiveMenu(menu.menuId); // Highlight active menu
 
     if (menu.children && menu.children.length > 0) {
-      toggleMenu(menu.menuId); // Toggle submenu
+      toggleMenu(menu.menuId, menu.parentId); // Toggle submenu
     } else if (menu.path) {
       navigate(menu.path); // Navigate only if no children exist
     }
   };
 
-  const toggleMenu = (menuId: number) => {
-    setOpenMenus((prev) => {
+  // const toggleMenu = (menuId: number) => {
+  //   setOpenMenus((prev) => {
+  //     const newOpenMenus = new Set(prev);
+  //     newOpenMenus.has(menuId)
+  //       ? newOpenMenus.delete(menuId)
+  //       : newOpenMenus.add(menuId);
+  //     return newOpenMenus;
+  //   });
+  // };
+
+  const toggleMenu = (menuId: number, parentId: number | null) => {
+    setOpenMenus((prev: Set<number>) => {
       const newOpenMenus = new Set(prev);
-      newOpenMenus.has(menuId)
-        ? newOpenMenus.delete(menuId)
-        : newOpenMenus.add(menuId);
+
+      if (newOpenMenus.has(menuId)) {
+        // If the clicked menu is already open, close it
+        newOpenMenus.delete(menuId);
+      } else {
+        // Close other parent menus if this is a top-level menu (parentId === null)
+        if (parentId === null) {
+          newOpenMenus.clear(); // Collapse all parent menus
+        }
+
+        newOpenMenus.add(menuId); // Open the clicked menu
+      }
+
       return newOpenMenus;
     });
   };
+
+
+
 
   // const renderMenu = (menus: any[], level = 0) => {
   //   return menus.map((menu: any) => (
@@ -406,12 +429,277 @@ export default function MiniDrawer({ items }: any) {
   //   ));
   // };
 
-  const renderMenu = (menus: any[], level = 0) => {
-    return menus.map((menu: any) => (
+  // const renderMenu = (menus: any[], level = 0) => {
+  //   return menus.map((menu: any) => (
+  //     <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
+  //       <Divider />
+
+  //       {/* Menu Item */}
+  //       <ListItem
+  //         sx={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           alignItems: "center",
+  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
+  //           paddingLeft: `${level * 14}px`,
+  //           paddingY: 0.3, // Reduced vertical padding
+  //           cursor: "pointer",
+  //           "&:hover": { backgroundColor: "#ccccff" },
+  //           borderRadius: "6px",
+  //           transition: "background 0.2s ease-in-out",
+  //         }}
+  //         onClick={() => handleMenuClick(menu)}
+  //       >
+  //         {/* Left Section: Icon + Menu Name */}
+  //         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+  //           <ListItemIcon
+  //             sx={{
+  //               minWidth: "32px",
+  //               justifyContent: "center",
+  //               color: activeMenu === menu.menuId ? "#FF0000" : "#333",
+  //               fontWeight: 600,
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation(); // Prevents ListItem click event
+  //               toggleMenu(menu.menuId, menu.parentId);
+  //             }}
+  //           >
+  //             {menu.children && menu.children.length > 0 ? (
+  //               openMenus.has(menu.menuId) ? (
+  //                 <FaRegFolderOpen
+  //                   style={{ color: "#42AEEE", fontSize: "18px" }}
+  //                 />
+  //               ) : (
+  //                 <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //               )
+  //             ) : (
+  //               <DescriptionIcon
+  //                 style={{ color: "#42AEEE", fontSize: "18px" }}
+  //               />
+  //             )}
+  //           </ListItemIcon>
+
+  //           <ListItemText
+  //             primary={menu.menuName}
+  //             sx={{
+  //               fontWeight: "bold",
+  //               fontSize: "14px",
+  //               color:
+  //                 activeMenu === menu.menuId
+  //                   ? "#0056b3"
+  //                   : "var(--grid-menuColor)",
+  //               transition: "color 0.2s ease-in-out",
+  //             }}
+  //           />
+  //         </Box>
+
+  //         {/* ✅ Right Section: Caret for Expand/Collapse */}
+  //         {menu.children && menu.children.length > 0 && (
+  //           <ListItemIcon
+  //             sx={{
+  //               paddingRight: "16px",
+  //               minWidth: "32px",
+  //               justifyContent: "flex-end",
+  //               cursor: "pointer",
+  //               color: "#42AEEE",
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation();
+  //               toggleMenu(menu.menuId, menu.parentId);
+  //             }}
+  //           >
+  //             {openMenus.has(menu.menuId) ? (
+  //               <ExpandLessIcon fontSize="small" />
+  //             ) : (
+  //               <ExpandMoreIcon fontSize="small" />
+  //             )}
+  //           </ListItemIcon>
+  //         )}
+  //       </ListItem>
+
+  //       {/* Recursive Rendering for Submenus */}
+  //       {openMenus.has(menu.menuId) &&
+  //         menu.children &&
+  //         menu.children.length > 0 && (
+  //           <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+  //             {renderMenu(menu.children, level + 1)}
+  //           </List>
+  //         )}
+  //     </List>
+  //   ));
+  // };
+
+  // const parentMenuOrder = [
+  //   "Vehicle Management",
+  //   "Store Management",
+  //   "Communication",
+  //   "Vendor Info",
+  //   "Employee Info",
+  //   "Reports",
+  //   "Admin",
+  // ];
+
+  // // Function to sort parent menus based on predefined order
+  // const sortParentMenus = (menus: any[]) => {
+  //   const orderMap = new Map(parentMenuOrder.map((name, index) => [name, index]));
+
+  //   return menus.slice().sort((a, b) => {
+  //     const indexA: any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
+  //     const indexB: any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
+  //     return indexA - indexB;
+  //   });
+  // };
+
+  // // Function to sort child menus by menuId
+  // const sortMenusById = (menus: any[]) => {
+  //   return menus.slice().sort((a, b) => a.menuId - b.menuId);
+  // };
+
+  // const renderMenu = (menus: any[], level = 0) => {
+  //   // Sort parent menus at level 0, otherwise sort by menuId
+  //   const sortedMenus = level === 0 ? sortParentMenus(menus) : sortMenusById(menus);
+
+  //   return sortedMenus.map((menu: any) => (
+  //     <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
+  //       <Divider />
+
+  //       <ListItem
+  //         sx={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           alignItems: "center",
+  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
+  //           paddingLeft: `${level * 14}px`,
+  //           paddingY: 0.3,
+  //           cursor: "pointer",
+  //           "&:hover": { backgroundColor: "#ccccff" },
+  //           borderRadius: "6px",
+  //           transition: "background 0.2s ease-in-out",
+  //         }}
+  //         onClick={() => handleMenuClick(menu)}
+  //       >
+  //         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+  //           <ListItemIcon
+  //             sx={{
+  //               minWidth: "32px",
+  //               justifyContent: "center",
+  //               color: activeMenu === menu.menuId ? "#FF0000" : "#333",
+  //               fontWeight: 600,
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation();
+  //               toggleMenu(menu.menuId, menu.parentId);
+  //             }}
+  //           >
+  //             {menu.children && menu.children.length > 0 ? (
+  //               openMenus.has(menu.menuId) ? (
+  //                 <FaRegFolderOpen style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //               ) : (
+  //                 <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //               )
+  //             ) : (
+  //               <DescriptionIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //             )}
+  //           </ListItemIcon>
+
+  //           <ListItemText
+  //             primary={menu.menuName}
+  //             sx={{
+  //               fontWeight: "bold",
+  //               fontSize: "14px",
+  //               color: activeMenu === menu.menuId ? "#0056b3" : "var(--grid-menuColor)",
+  //               transition: "color 0.2s ease-in-out",
+  //             }}
+  //           />
+  //         </Box>
+
+  //         {menu.children && menu.children.length > 0 && (
+  //           <ListItemIcon
+  //             sx={{
+  //               paddingRight: "16px",
+  //               minWidth: "32px",
+  //               justifyContent: "flex-end",
+  //               cursor: "pointer",
+  //               color: "#42AEEE",
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation();
+  //               toggleMenu(menu.menuId, menu.parentId);
+  //             }}
+  //           >
+  //             {openMenus.has(menu.menuId) ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+  //           </ListItemIcon>
+  //         )}
+  //       </ListItem>
+
+  //       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
+  //         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+  //           {renderMenu(menu.children, level + 1)}
+  //         </List>
+  //       )}
+  //     </List>
+  //   ));
+  // };
+
+  const parentMenuOrder = [
+    "Vehicle Management",
+    "Store Management",
+    "Communication",
+    "Vendor Info",
+    "Employee Info",
+    "Reports",
+    "Admin",
+  ];
+  
+  // Predefined child order for "Store Management"
+  const storeManagementChildOrder = [
+    "Item Detail",
+    "Indent For Staff",
+    "WorkShop Indent",
+    "Item Issue",
+    "Item Return",
+    "PurchaseOrder",
+    "Material Receipt Note",
+    "Quality Check",
+    "Store Master",
+    "Stock Opening",
+    "Off.Purchase Indent",
+    "PurchaseInvoice",
+  ];
+  
+  // Function to sort parent menus based on predefined order
+  const sortParentMenus = (menus: any[]) => {
+    const orderMap = new Map(parentMenuOrder.map((name, index) => [name, index]));
+  
+    return menus.slice().sort((a, b) => {
+      const indexA:any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
+      const indexB:any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
+      return indexA - indexB;
+    });
+  };
+  
+  // Function to sort child menus
+  const sortChildMenus = (parentMenuName: string, menus: any[]) => {
+    if (parentMenuName === "Store Management") {
+      const orderMap = new Map(storeManagementChildOrder.map((name, index) => [name, index]));
+      
+      return menus.slice().sort((a, b) => {
+        const indexA:any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
+        const indexB:any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
+        return indexA - indexB;
+      });
+    }
+    return menus.slice().sort((a, b) => a.menuId - b.menuId); // Default sorting by menuId
+  };
+  
+  const renderMenu = (menus: any[], level = 0, parentMenuName = "") => {
+    // Sort parent menus at level 0, otherwise sort by menuId or predefined order
+    const sortedMenus = level === 0 ? sortParentMenus(menus) : sortChildMenus(parentMenuName, menus);
+  
+    return sortedMenus.map((menu: any) => (
       <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
         <Divider />
-
-        {/* Menu Item */}
+  
         <ListItem
           sx={{
             display: "flex",
@@ -419,15 +707,14 @@ export default function MiniDrawer({ items }: any) {
             alignItems: "center",
             backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
             paddingLeft: `${level * 14}px`,
-            paddingY: 0.3, // Reduced vertical padding
+            paddingY: 0.3,
             cursor: "pointer",
-            "&:hover": { backgroundColor: "#f8f9fa" },
+            "&:hover": { backgroundColor: "#ccccff" },
             borderRadius: "6px",
             transition: "background 0.2s ease-in-out",
           }}
           onClick={() => handleMenuClick(menu)}
         >
-          {/* Left Section: Icon + Menu Name */}
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
             <ListItemIcon
               sx={{
@@ -437,40 +724,32 @@ export default function MiniDrawer({ items }: any) {
                 fontWeight: 600,
               }}
               onClick={(e) => {
-                e.stopPropagation(); // Prevents ListItem click event
-                toggleMenu(menu.menuId);
+                e.stopPropagation();
+                toggleMenu(menu.menuId, menu.parentId);
               }}
             >
               {menu.children && menu.children.length > 0 ? (
                 openMenus.has(menu.menuId) ? (
-                  <FaRegFolderOpen
-                    style={{ color: "#42AEEE", fontSize: "18px" }}
-                  />
+                  <FaRegFolderOpen style={{ color: "#42AEEE", fontSize: "18px" }} />
                 ) : (
                   <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
                 )
               ) : (
-                <DescriptionIcon
-                  style={{ color: "#42AEEE", fontSize: "18px" }}
-                />
+                <DescriptionIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
               )}
             </ListItemIcon>
-
+  
             <ListItemText
               primary={menu.menuName}
               sx={{
                 fontWeight: "bold",
                 fontSize: "14px",
-                color:
-                  activeMenu === menu.menuId
-                    ? "#0056b3"
-                    : "var(--grid-menuColor)",
+                color: activeMenu === menu.menuId ? "#0056b3" : "var(--grid-menuColor)",
                 transition: "color 0.2s ease-in-out",
               }}
             />
           </Box>
-
-          {/* ✅ Right Section: Caret for Expand/Collapse */}
+  
           {menu.children && menu.children.length > 0 && (
             <ListItemIcon
               sx={{
@@ -482,29 +761,26 @@ export default function MiniDrawer({ items }: any) {
               }}
               onClick={(e) => {
                 e.stopPropagation();
-                toggleMenu(menu.menuId);
+                toggleMenu(menu.menuId, menu.parentId);
               }}
             >
-              {openMenus.has(menu.menuId) ? (
-                <ExpandLessIcon fontSize="small" />
-              ) : (
-                <ExpandMoreIcon fontSize="small" />
-              )}
+              {openMenus.has(menu.menuId) ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
             </ListItemIcon>
           )}
         </ListItem>
-
-        {/* Recursive Rendering for Submenus */}
-        {openMenus.has(menu.menuId) &&
-          menu.children &&
-          menu.children.length > 0 && (
-            <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
-              {renderMenu(menu.children, level + 1)}
-            </List>
-          )}
+  
+        {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
+          <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+            {renderMenu(menu.children, level + 1, menu.menuName)}
+          </List>
+        )}
       </List>
     ));
   };
+  
+
+
+
 
   interface MenuItem {
     Icon: any;
@@ -1117,7 +1393,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-            // style={{  borderBottomRightRadius: "15px" }}
+          // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1208,13 +1484,19 @@ export default function MiniDrawer({ items }: any) {
         </div>
       </AppBar>
 
-      <Drawer
+      {open && (<Drawer
         variant="permanent"
         open={open}
         PaperProps={{
           sx: {
             backgroundColor: drawerStyles,
             color: `var(--drawer-color)`,
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           },
         }}
       >
@@ -1348,6 +1630,7 @@ export default function MiniDrawer({ items }: any) {
           {renderMenu(filteredItems.length > 0 ? filteredItems : items)}
         </React.Fragment>
       </Drawer>
+      )}
       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
       </Box> */}
@@ -1393,7 +1676,7 @@ export default function MiniDrawer({ items }: any) {
         onClose={() => {
           setProfileDrawerOpen(false);
         }}
-        onOpen={() => {}}
+        onOpen={() => { }}
         style={{
           zIndex: 1300,
         }}

@@ -1330,6 +1330,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.quantity}
                                 onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                                 onFocus={e => e.target.select()}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
                               />
                             </td>
                             <td
@@ -1343,7 +1344,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.quantity}
                                 sx={{ width: "70px" }}
                                 onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
-                                inputProps={{ step: "any", min: "0" }}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
                                 onFocus={e => e.target.select()}
                               />
                             </td>
@@ -1358,7 +1359,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.rate}
                                 sx={{ width: "70px" }}
                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                                inputProps={{ step: "any", min: "0" }}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
                                 onFocus={e => e.target.select()}
                               />
                             </td>
@@ -1399,7 +1400,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.cgst.toFixed(2)}
                                 size="small"
                                 sx={{ width: "100px" }}
-                                inputProps={{ readOnly: true }}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               />
                             </td>
                             <td
@@ -1412,7 +1413,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.sgst.toFixed(2)}
                                 size="small"
                                 sx={{ width: "100px" }}
-                                inputProps={{ readOnly: true }}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               />
                             </td>
                             {/* <td
@@ -1437,7 +1438,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.netAmount}
                                 size="small"
                                 sx={{ width: "100px" }}
-                                inputProps={{ readOnly: true }}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               />
                             </td>
                           </tr>
@@ -1453,7 +1454,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalAmount}
                         </td> */}
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "right", border: "1px solid black" }}>
                             {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                           </td>
                         </tr>
@@ -1463,7 +1464,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
 
                           </td>
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "right", border: "1px solid black" }}>
                             {tableData.reduce((acc, row) => acc + (parseFloat(row.cgst) || 0), 0).toFixed(2)}
                           </td>
                         </tr>
@@ -1473,7 +1474,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
 
 
                           </td>
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "right", border: "1px solid black" }}>
                             {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst) || 0), 0).toFixed(2)}
                           </td>
                         </tr>
@@ -1486,7 +1487,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                           {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td> */}
-                          <td style={{ textAlign: "center", border: "1px solid black" }}>
+                          <td style={{ textAlign: "right", border: "1px solid black" }}>
                             {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                           </td>
                         </tr>

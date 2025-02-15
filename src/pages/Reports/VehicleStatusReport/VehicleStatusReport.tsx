@@ -51,7 +51,7 @@ interface MenuPermission {
 }
 
 export default function VehicleStatusReport() {
-  const {defaultValues} = getISTDate();
+  const { defaultValues } = getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -86,19 +86,12 @@ export default function VehicleStatusReport() {
       genderID: -1,
       complaintDateFrom: defaultValues,
       complaintDateTo: defaultValues,
-
     },
     validationSchema: Yup.object({
-      complaintDateTo
-        : Yup.string()
-          .required("Complaint To date required"),
-      complaintDateFrom: Yup.string()
-        .required("Complaint from date required"),
-
+      complaintDateTo: Yup.string().required("Complaint To date required"),
+      complaintDateFrom: Yup.string().required("Complaint from date required"),
     }),
-    onSubmit: async (values) => {
-    
-    },
+    onSubmit: async (values) => { },
   });
 
   // const handleDownload = async () => {
@@ -109,10 +102,10 @@ export default function VehicleStatusReport() {
   //     show: false,
   //     exportOption: selectedFormat, // .pdf, .xls, or TabularExc
   //   };
-  
+
   //   try {
   //     const response = await api.post(`Report/GetVehicleStatusApi`, collectData);
-  
+
   //     if (response.data.status === "Success" && response.data.base64) {
   //       const base64String = response.data.base64;
   //       const byteCharacters = atob(base64String);
@@ -120,10 +113,10 @@ export default function VehicleStatusReport() {
   //         .fill(0)
   //         .map((_, i) => byteCharacters.charCodeAt(i));
   //       const byteArray = new Uint8Array(byteNumbers);
-  
+
   //       let fileType = "";
   //       let fileName = response.data.fileName || "Report";
-  
+
   //       if (selectedFormat === ".pdf") {
   //         fileType = "application/pdf";
   //         fileName += ".pdf";
@@ -134,7 +127,7 @@ export default function VehicleStatusReport() {
   //         fileType = "application/vnd.ms-excel";
   //         fileName += ".xls";
   //       }
-  
+
   //       const blob = new Blob([byteArray], { type: fileType });
   //       const link = document.createElement("a");
   //       link.href = URL.createObjectURL(blob);
@@ -161,11 +154,16 @@ export default function VehicleStatusReport() {
     };
 
     try {
-      const response = await api.post(`Report/GetVehicleStatusApi`, collectData);
+      const response = await api.post(
+        `Report/GetVehicleStatusApi`,
+        collectData
+      );
       if (response.data.status === "Success" && response.data.base64) {
         const base64String = response.data.base64;
         const byteCharacters = atob(base64String);
-        const byteNumbers = Array.from(byteCharacters, (char) => char.charCodeAt(0));
+        const byteNumbers = Array.from(byteCharacters, (char) =>
+          char.charCodeAt(0)
+        );
         const byteArray = new Uint8Array(byteNumbers);
 
         let fileType = "";
@@ -197,19 +195,16 @@ export default function VehicleStatusReport() {
   let navigate = useNavigate();
   const { t } = useTranslation();
 
-  useEffect(() => {
-
-  }, []);
-
+  useEffect(() => { }, []);
 
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "complaintDateFrom": formik.values.complaintDateFrom,
-        "complaintDateTo": formik.values.complaintDateTo,
-        show: true, 
-        "status": "detail",
-        exportOption: "selectedFormat", 
+        complaintDateFrom: formik.values.complaintDateFrom,
+        complaintDateTo: formik.values.complaintDateTo,
+        show: true,
+        status: "detail",
+        exportOption: "selectedFormat",
       };
       const response = await api.post(
         `Report/GetVehicleStatusApi`,
@@ -241,44 +236,116 @@ export default function VehicleStatusReport() {
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo"),
-            flex: 1.3,
+            flex: 1,
             cellClassName: "wrap-text", // Added here
             headerClassName: "MuiDataGrid-colCell",
-           
+            minWidth: 120,
           },
           {
             field: "complaintDate",
             headerName: t("text.complaintDate"),
-            flex: 1.5,
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
             renderCell: (params) => {
               return moment(params.row.complaintDate).format("DD-MM-YYYY");
             },
+            minWidth: 140,
           },
           {
             field: "complainStatus",
             headerName: t("text.complainStatus"),
-            flex: 1.3,
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 140,
           },
           {
             field: "jobCardNo",
-            headerName: t("text.jobCardNo"),
-            flex: 1.3,
+            headerName: t("text.JobCardNum"),
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 120,
           },
-        
+          {
+            field: "jobCardDate",
+            headerName: t("text.JobCardDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+            minWidth: 120,
+          },
+          {
+            field: "challanDate",
+            headerName: t("text.ChallanDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+            minWidth: 120,
+          },
+          {
+            field: "challanRcvDate",
+            headerName: t("text.ChallanRcvDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+            minWidth: 140,
+          },
+
+          {
+            field: "challanStatus",
+            headerName: t("text.ChallanStatus"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 120,
+          },
+
           {
             field: "jobcardStatus",
             headerName: t("text.jobcardStatus"),
-            flex: 1.5,
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 120,
           },
-
+          {
+            field: "indentDate",
+            headerName: t("text.IndentDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+            minWidth: 120,
+          },
+          {
+            field: "indentStatus",
+            headerName: t("text.IndentStatus"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 120,
+          },
+          {
+            field: "currentStatus",
+            headerName: t("text.CurrentStatus"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 120,
+          },
         ];
         setColumns(columns as any);
       }
@@ -292,7 +359,6 @@ export default function VehicleStatusReport() {
     ...column,
   }));
 
-
   const styles = `
   .wrap-text {
     white-space: normal !important;
@@ -302,8 +368,6 @@ export default function VehicleStatusReport() {
 `;
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
-
-  
 
   return (
     <>
@@ -323,7 +387,7 @@ export default function VehicleStatusReport() {
             "& .MuiDataGrid-colCell": {
               backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: 900,
             },
           }}
@@ -344,16 +408,17 @@ export default function VehicleStatusReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} >
-
-
+          <Grid item xs={12} container spacing={2}>
             <Grid xs={12} sm={6} md={6} item>
               <TextField
                 type="date"
                 id="complaintDateFrom"
                 name="complaintDateFrom"
                 label={
-                  <CustomLabel text={t("text.complaintDateFrom")} required={true} />
+                  <CustomLabel
+                    text={t("text.complaintDateFrom")}
+                    required={true}
+                  />
                 }
                 value={formik.values.complaintDateFrom}
                 placeholder={t("text.complaintDateFrom")}
@@ -361,8 +426,14 @@ export default function VehicleStatusReport() {
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.complaintDateFrom && Boolean(formik.errors.complaintDateFrom)}
-                helperText={formik.touched.complaintDateFrom && formik.errors.complaintDateFrom}
+                error={
+                  formik.touched.complaintDateFrom &&
+                  Boolean(formik.errors.complaintDateFrom)
+                }
+                helperText={
+                  formik.touched.complaintDateFrom &&
+                  formik.errors.complaintDateFrom
+                }
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -373,47 +444,55 @@ export default function VehicleStatusReport() {
                 type="date"
                 id="complaintDateTo"
                 name="complaintDateTo"
-                label={<CustomLabel text={t("text.complaintDateTo")} required={true} />}
+                label={
+                  <CustomLabel
+                    text={t("text.complaintDateTo")}
+                    required={true}
+                  />
+                }
                 value={formik.values.complaintDateTo}
                 placeholder={t("text.complaintDateTo")}
                 size="small"
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.complaintDateTo && Boolean(formik.errors.complaintDateTo)}
-                helperText={formik.touched.complaintDateTo && formik.errors.complaintDateTo}
+                error={
+                  formik.touched.complaintDateTo &&
+                  Boolean(formik.errors.complaintDateTo)
+                }
+                helperText={
+                  formik.touched.complaintDateTo &&
+                  formik.errors.complaintDateTo
+                }
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
 
-             <Grid item xs={12} sm={12} lg={12}>
-                                  <FormControl component="fieldset">
-                                    <RadioGroup
-                                      row
-                                      value={selectedFormat}
-                                      onChange={handleFormatChange}
-                                    >
-                                      <FormControlLabel
-                                        value=".pdf"
-                                        control={<Radio />}
-                                        label={t("text.pdf")}
-                                      />
-                                      <FormControlLabel
-                                        value=".xls"
-                                        control={<Radio />}
-                                        label={t("text.excel")}
-                                      />
-                                      {/* <FormControlLabel
+            <Grid item xs={12} sm={12} lg={12}>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value=".pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value=".xls"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  {/* <FormControlLabel
                                         value="TabularExc"
                                         control={<Radio />}
                                         label={t("text.tabular")}
                                       /> */}
-                                    </RadioGroup>
-                                  </FormControl>
-                                </Grid>
-          
-
-
+                </RadioGroup>
+              </FormControl>
+            </Grid>
 
             <Grid xs={12} sm={3} md={3} item>
               <Button
@@ -436,7 +515,6 @@ export default function VehicleStatusReport() {
                       formik.setTouched({
                         complaintDateFrom: true,
                         complaintDateTo: true,
-
                       });
                       toast.error("Please fill in all required fields.");
                     }
@@ -444,9 +522,8 @@ export default function VehicleStatusReport() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-               {t("text.show")}
+                {t("text.show")}
               </Button>
-
             </Grid>
             <Grid xs={12} sm={3} md={3} item>
               <Button
@@ -464,36 +541,39 @@ export default function VehicleStatusReport() {
                   setVisible(false);
                 }}
               >
-                 {t("text.reset")}
+                {t("text.reset")}
               </Button>
             </Grid>
 
             <Grid item xs={12} sm={3} md={3}>
-          
-        <Button
-          fullWidth
-          style={{ backgroundColor: "#4caf50", color: "white", marginTop: "10px" }}
-          startIcon={<DownloadIcon />}
-          onClick={() => handleDownload("detail")}
-        >
-            {t("text.download")}
-          
-        </Button>
-      </Grid>
+              <Button
+                fullWidth
+                style={{
+                  backgroundColor: "#4caf50",
+                  color: "white",
+                  marginTop: "10px",
+                }}
+                startIcon={<DownloadIcon />}
+                onClick={() => handleDownload("detail")}
+              >
+                {t("text.download")}
+              </Button>
+            </Grid>
 
-      <Grid item xs={12} sm={3} md={3}>
-        <Button
-          fullWidth
-          style={{ backgroundColor: "#4caf50", color: "white", marginTop: "10px" }}
-          startIcon={<DownloadIcon />}
-          onClick={() => handleDownload("summary")}
-        > 
-        {t("text.downloadSummary")}
-          
-        </Button>
-      </Grid>
-             
-            
+            <Grid item xs={12} sm={3} md={3}>
+              <Button
+                fullWidth
+                style={{
+                  backgroundColor: "#4caf50",
+                  color: "white",
+                  marginTop: "10px",
+                }}
+                startIcon={<DownloadIcon />}
+                onClick={() => handleDownload("summary")}
+              >
+                {t("text.downloadSummary")}
+              </Button>
+            </Grid>
           </Grid>
 
           <Grid

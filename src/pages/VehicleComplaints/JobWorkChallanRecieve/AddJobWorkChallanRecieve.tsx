@@ -1440,7 +1440,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'qty', parseFloat(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1455,7 +1455,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'serviceCharge', parseFloat(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               sx={{ width: "100px" }}
                             />
                           </td>
@@ -1471,7 +1471,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'amount', (row.serviceCharge * row.qty) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               sx={{ width: "100px" }}
                             />
                           </td>
@@ -1518,7 +1518,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'cgst', parseFloat(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1533,7 +1533,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'sgst', parseFloat(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1547,7 +1547,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
                               value={row.amount + row.amount * (row.gst / 100)}
                               //onChange={(e) => handleInputChange(index, 'netAmount', (row.serviceCharge * row.qty) || 0)}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               onFocus={(e) => e.target.select()}
                             />
                           </td>

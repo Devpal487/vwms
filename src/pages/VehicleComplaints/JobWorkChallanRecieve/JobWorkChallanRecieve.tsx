@@ -54,6 +54,7 @@ export default function JobWorkChallanRecieve() {
    const [isLoading, setIsLoading] = useState(true);
    const [lang, setLang] = useState<Language>("en");
    const { defaultValues } = getISTDate();
+   const location = useLocation();
 
    let navigate = useNavigate();
    const { t } = useTranslation();
@@ -163,7 +164,12 @@ export default function JobWorkChallanRecieve() {
             jobCardDate: formatDate(Item.jobCardDate),
             challanDate: formatDate(Item.challanDate),
          }));
-         setItem(arr);
+
+         if (location.state) {
+            setItem(arr.filter((item: any) => item.vehicleNo === location.state.vehicleno))
+         } else {
+            setItem(arr);
+         }
          setIsLoading(false);
 
          if (data.length > 0) {
@@ -267,7 +273,7 @@ export default function JobWorkChallanRecieve() {
                   headerClassName: "MuiDataGrid-colCell",
                },
                // {
-               //    field: "file",
+               //    field: "challanRcvDoc",
                //    headerName: t("text.ChallanRcvDoc"),
                //    flex: 1,
                //    headerClassName: "MuiDataGrid-colCell",

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -35,6 +35,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import api from "../../../utils/Url";
 import DataGrids from "../../../utils/Datagrids";
 import dayjs from "dayjs";
+import { clearInterval } from "timers";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -47,18 +48,39 @@ export default function JobCardIndent() {
   const [item, setItem] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
- 
+
 
   let navigate = useNavigate();
   const { t } = useTranslation();
 
+  const [vehicleOption, setVehicleOption] = useState([
+    { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
+  ]);
   useEffect(() => {
-  
-                fetchZonesData();
-    
+
+    getVehicleDetails();
+
+    // fetchZonesData();
+   
+
   }, [isLoading]);
 
-  
+  const getVehicleDetails = async () => {
+    const response = await api.get(
+      `Master/GetVehicleDetail?ItemMasterId=-1`,
+    );
+    const data = response.data.data;
+    const arr = data.map((Item: any, index: any) => ({
+      value: Item.itemMasterId,
+      label: Item.vehicleNo,
+      name: Item.itemName,
+      empId: Item.empId
+    }));
+    setVehicleOption(arr);
+    fetchZonesData();
+  };
+
+
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
@@ -78,13 +100,13 @@ export default function JobCardIndent() {
   const accept = () => {
     const collectData = {
       indentId: delete_id,
-    
+
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post( `Master/DeleteIndent`, collectData)
+      .post(`Master/DeleteIndent`, collectData)
       .then((response) => {
-        if (response.data.status===1) {
+        if (response.data.status === 1) {
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
@@ -94,12 +116,12 @@ export default function JobCardIndent() {
   };
 
   const reject = () => {
-    
+
     toast.warn("Rejected: You have rejected", { autoClose: 3000 });
   };
 
   const handledeleteClick = (del_id: any) => {
-    
+
     delete_id = del_id;
     confirmDialog({
       message: "Do you want to delete this record ?",
@@ -114,24 +136,25 @@ export default function JobCardIndent() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-     "indentId": -1,
-     "indentNo": "",
-     "empId":-1
+        "indentId": -1,
+        "indentNo": "",
+        "empId": -1
       };
       const response = await api.post(
-         `Master/GetIndent`,
+        `Master/GetIndent`,
         collectData
       );
       const data = response.data.data;
-      const IndentWithIds = data.map((Item: any, index:any) => ({
+      const IndentWithIds = data.map((Item: any, index: any) => ({
         ...Item,
         serialNo: index + 1,
         id: Item.indentId,
         indentNo: Item.indentNo,
         empId: Item.empId,
-        
+        vehicleNo: vehicleOption.find((e: any) => e.value === Item.vehicleitem)?.label
+
       }))
-      .filter((Item: any) => Item.indenttype==="JobCard");
+        .filter((Item: any) => Item.indenttype === "JobCard");
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -150,32 +173,32 @@ export default function JobCardIndent() {
                   direction="row"
                   sx={{ alignItems: "center", marginTop: "5px" }}
                 >
-                  
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
-                  
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
+
+                  <EditIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "blue",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit(params.row)}
+                  />
+
+                  <DeleteIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handledeleteClick(params.row.id);
+                    }}
+                  />
                 </Stack>,
               ];
             },
           },
-          
+
 
           // {
           //   field: "serialNo",
@@ -189,14 +212,14 @@ export default function JobCardIndent() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-          //  {
-          //   field: "vehicleNo",
-          //   headerName: t("text.vehicleNo"),
-          //   flex: 1,
-          //   headerClassName: "MuiDataGrid-colCell",
-          // },
+          {
+            field: "vehicleNo",
+            headerName: t("text.vehicleNo"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+          },
 
-         
+
           {
             field: "indentDate",
             headerName: t("text.indentDate11"),
@@ -219,14 +242,14 @@ export default function JobCardIndent() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-         
+
         ];
         setColumns(columns as any);
       }
 
     } catch (error) {
       alert(error);
-      
+
     }
   };
 
@@ -234,7 +257,7 @@ export default function JobCardIndent() {
     ...column,
   }));
 
-  
+
   return (
     <>
       <Card
@@ -243,7 +266,7 @@ export default function JobCardIndent() {
           // height: "100%",
           backgroundColor: "#E9FDEE",
           border: ".5px solid #FF7722 ",
-          marginTop:"3vh"
+          marginTop: "3vh"
         }}
       >
         <Paper
@@ -251,7 +274,7 @@ export default function JobCardIndent() {
             width: "100%",
             overflow: "hidden",
             "& .MuiDataGrid-colCell": {
-              backgroundColor:`var(--grid-headerBackground)`,
+              backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
               fontSize: 17,
               fontWeight: 900
@@ -268,15 +291,15 @@ export default function JobCardIndent() {
             sx={{ padding: "20px" }}
             align="left"
           >
-           {t("text.JobCardIndent")}
+            {t("text.JobCardIndent")}
           </Typography>
           <Divider />
 
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
-           
-              {/* <Button
+
+            {/* <Button
                 onClick={routeChangeAdd}
                 variant="contained"
                 endIcon={<AddCircleIcon />}
@@ -287,7 +310,7 @@ export default function JobCardIndent() {
               </Button> */}
             {/* ) } */}
 
-           
+
           </Stack>
 
 
@@ -301,7 +324,7 @@ export default function JobCardIndent() {
         </Paper>
       </Card>
       <ToastApp />
-      
+
     </>
   );
 }

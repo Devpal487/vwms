@@ -74,9 +74,9 @@ const CreateJobcardItemIssue = (props: Props) => {
   const [indentOptions, setIndentOptions] = useState([
     { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
   ]);
-  const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
-    { value: -1, label: t("text.itemMasterId") },
-  ]);
+  const [itemOption, setitemOption] = useState<
+    { value: number; label: string; unitId?: number }[]
+  >([{ value: -1, label: t("text.itemMasterId") }]);
   const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
@@ -84,39 +84,37 @@ const CreateJobcardItemIssue = (props: Props) => {
     { value: -1, label: t("text.VehicleNo") },
   ]);
 
-
   useEffect(() => {
     GetIndentID();
     GetitemData();
     GetUnitData();
-  
+
     getVehicleDetails();
   }, []);
 
-  
   const getVehicleDetails = async () => {
     try {
       const response = await api.get(`Master/GetVehicleDetail?ItemMasterId=-1`);
       const data = response.data?.data; // Safe access
-  
+
       if (!Array.isArray(data)) {
         console.error("Vehicle data is missing or invalid:", data);
         setVehicleOption([]); // Set empty array to prevent errors
         return;
       }
-  
+
       const arr = data.map((Item: any) => ({
         value: Item.itemMasterId,
         label: Item.vehicleNo,
       }));
-  
+
       setVehicleOption(arr);
     } catch (error) {
       console.error("Error fetching vehicle details:", error);
       setVehicleOption([]); // Prevent further errors
     }
   };
-  
+
   const GetIndentID = async () => {
     const collectData = {
       indentId: -1,
@@ -143,20 +141,20 @@ const CreateJobcardItemIssue = (props: Props) => {
     try {
       const collectData = { indentId: itemID, issueType: "JobCard" };
       const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
-  
+
       if (!response.data || response.data.data === null) {
         toast.error("Please add item");
         setTableData([]); // Clear table data if response is null
         return;
       }
-  
+
       const data = response?.data?.data?.itemIssueDetail;
       if (!Array.isArray(data)) {
         console.warn("Invalid indent data received:", data);
         setTableData([]);
         return;
       }
-  
+
       const indent = data.map((item: any, index: any) => ({
         id: index,
         issueId: -1,
@@ -172,7 +170,7 @@ const CreateJobcardItemIssue = (props: Props) => {
         batchNo: item?.batchNo || "",
         indentNo: "",
       }));
-  
+
       setTableData(indent);
       setIsIndentSelected(true);
     } catch (error) {
@@ -181,19 +179,19 @@ const CreateJobcardItemIssue = (props: Props) => {
       toast.error("Failed to fetch item data");
     }
   };
-  
+
   // const GetIndentIDById = async (itemID: any) => {
   //   try {
   //     const collectData = { indentId: itemID, issueType: "JobCard" };
   //     const response = await api.post(`ItemIssue/GetItemOnIndent`, collectData);
-      
+
   //     const data = response?.data?.data?.itemIssueDetail;
   //     if (!Array.isArray(data)) {
   //       console.warn("Invalid indent data received:", data);
   //       setTableData([]); // Prevent error
   //       return;
   //     }
-  
+
   //     const indent = data.map((item: any, index: any) => ({
   //       id: index,
   //       issueId: -1,
@@ -207,11 +205,11 @@ const CreateJobcardItemIssue = (props: Props) => {
   //       stockQty: item?.stockQty || 0,
   //       issueQty: item?.issueQty || 0,
   //       batchNo: item?.batchNo || "",
-      
+
   //     "indentNo": "",
 
   //     }));
-  
+
   //     setTableData(indent);
   //     setIsIndentSelected(true);
   //   } catch (error) {
@@ -219,7 +217,6 @@ const CreateJobcardItemIssue = (props: Props) => {
   //     setTableData([]); // Ensure safe empty state
   //   }
   // };
-  
 
   console.log("check table", tableData);
 
@@ -259,9 +256,7 @@ const CreateJobcardItemIssue = (props: Props) => {
     setSelectedAction(event.target.value);
   };
 
-  const validateRow = (row: any) => {
-  
-  };
+  const validateRow = (row: any) => {};
 
   const formik = useFormik({
     initialValues: {
@@ -284,38 +279,36 @@ const CreateJobcardItemIssue = (props: Props) => {
     },
 
     validationSchema: Yup.object({
-      indentId: Yup.string()
-       .required(t("text.reqIndentNum")),
-     
+      indentId: Yup.string().required(t("text.reqIndentNum")),
     }),
     onSubmit: async (values) => {
-  if (!tableData || tableData.length === 0) {
-    toast.error("Please add item");
-    return; // Stop form submission
-  }
+      if (!tableData || tableData.length === 0) {
+        toast.error("Please add item");
+        return; // Stop form submission
+      }
 
-  values.itemIssueDetail = tableData;
-  const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
+      values.itemIssueDetail = tableData;
+      const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
 
-  if (response.data.mesg === null) {
-    toast.error("Please add item");
-    return; // Stop further execution
-  }
+      if (response.data.mesg === null) {
+        toast.error("Please add item");
+        return; // Stop further execution
+      }
 
-  if (response.data.status === 1) {
-    setToaster(false);
-    toast.success(response.data.message);
-    navigate("/storemanagement/itemissue/jobcarditemissue");
-  } else {
-    setToaster(true);
-    toast.error(response.data.message);
-  }
-}
+      if (response.data.status === 1) {
+        setToaster(false);
+        toast.success(response.data.message);
+        navigate("/storemanagement/itemissue/jobcarditemissue");
+      } else {
+        setToaster(true);
+        toast.error(response.data.message);
+      }
+    },
 
     // onSubmit: async (values) => {
     //   const validTableData = tableData;
     //   values.itemIssueDetail = tableData;
-   
+
     //   const response = await api.post(`ItemIssue/UpsertItemIssue`, values);
 
     //   if (response.data.status === 1) {
@@ -446,24 +439,57 @@ const CreateJobcardItemIssue = (props: Props) => {
           </Grid>
           <Divider />
           <br />
-          <ToastContainer/>
+          <ToastContainer />
           <form onSubmit={formik.handleSubmit}>
             {/* {toaster === false ? "" : <ToastApp />} */}
             <Grid item xs={12} container spacing={2}>
+
+            <Grid item xs={12} sm={4} lg={4}>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  options={vehicleOption}
+                  value={
+                    vehicleOption.find(
+                      (opt) => opt.value === formik.values.vehicleitem
+                    ) || null
+                  }
+                  // value={itemValue}
+                  fullWidth
+                  size="small"
+                  onChange={(event: any, newValue: any) => {
+                    console.log(newValue?.value);
+                    formik.setFieldValue("vehicleitem", newValue?.value);
+                    //setItemValue(newValue?.label)
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={
+                        <CustomLabel
+                          text={t("text.VehicleNos1")}
+                          required={true}
+                        />
+                      }
+                      // name="vehicleitem"
+                      //  id="vehicleitem"
+                      placeholder={t("text.VehicleNos1")}
+                    />
+                  )}
+                />
+              </Grid>
+
+
               <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
                   disablePortal
                   id="combo-box-demo"
-                 // options={indentOptions}
-                  options={
-                    
-                    indentOptions.filter((e:any) =>
-                    {
-                      if(e.indenttype === "JobCard")
-                      {
-                        return e;
-                      }
-                    })}
+                  // options={indentOptions}
+                  options={indentOptions.filter((e: any) => {
+                    if (e.indenttype === "JobCard" && e.vehicleitem === formik.values.vehicleitem) {
+                      return e;
+                    }
+                  })}
                   value={
                     indentOptions.find(
                       (opt: any) => opt.value === formik.values.indentId
@@ -480,7 +506,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                         "indentNo",
                         newValue?.label?.toString() || ""
                       );
-                      
+
                       formik.setFieldValue(
                         "vehicleitem",
                         newValue?.vehicleitem
@@ -503,51 +529,16 @@ const CreateJobcardItemIssue = (props: Props) => {
                     />
                   )}
                 />
-                {(!formik.values.indentId) &&  formik.touched.indentId && formik.errors.indentId && (
-                  <div style={{ color: "red", margin: "5px" }}>
-                    {formik.errors.indentId}
-                  </div>
-                )}
-              </Grid>
-
-              <Grid item xs={12} sm={4} lg={4}>
-                <Autocomplete
-                  disablePortal
-                  id="combo-box-demo"
-                  options={
-                    
-                    vehicleOption}
-                  value={
-                    vehicleOption.find(
-                      (opt) => opt.value === formik.values.vehicleitem
-                    ) || null
-                  }
-                  // value={itemValue}
-                  disabled
-                  fullWidth
-                  size="small"
-                  onChange={(event: any, newValue: any) => {
-                    console.log(newValue?.value);
-                    formik.setFieldValue("vehicleitem", newValue?.value);
-                    //setItemValue(newValue?.label)
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label={
-                        <CustomLabel
-                          text={t("text.VehicleNos1")}
-                          required={false}
-                        />
-                      }
-                      // name="vehicleitem"
-                      //  id="vehicleitem"
-                      placeholder={t("text.VehicleNos1")}
-                    />
+                {!formik.values.indentId &&
+                  formik.touched.indentId &&
+                  formik.errors.indentId && (
+                    <div style={{ color: "red", margin: "5px" }}>
+                      {formik.errors.indentId}
+                    </div>
                   )}
-                />
               </Grid>
 
+              
               <Grid item lg={4} xs={12}>
                 <TextField
                   id="issueDate"
@@ -576,10 +567,12 @@ const CreateJobcardItemIssue = (props: Props) => {
                         border: "1px solid black",
                       }}
                     >
-                      <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                      <thead
+                        style={{
+                          backgroundColor: `var(--grid-headerBackground)`,
+                          color: `var(--grid-headerColor)`,
+                        }}
+                      >
                         <tr>
                           <th
                             style={{
@@ -643,8 +636,6 @@ const CreateJobcardItemIssue = (props: Props) => {
                           >
                             {t("text.issueQty")}
                           </th>
-                        
-  
                         </tr>
                       </thead>
                       <tbody>
@@ -653,7 +644,6 @@ const CreateJobcardItemIssue = (props: Props) => {
                             key={row.id}
                             style={{ border: "1px solid black" }}
                           >
-                          
                             <td
                               style={{
                                 border: "1px solid black",
@@ -687,14 +677,10 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={itemOption}
-                                value={
-                                 
-                                   row.itemName
-                                }
+                                value={row.itemName}
                                 fullWidth
                                 size="small"
                                 sx={{ width: "175px" }}
-                              
                                 onChange={(e: any, newValue: any) => {
                                   if (!newValue) {
                                     return;
@@ -719,17 +705,24 @@ const CreateJobcardItemIssue = (props: Props) => {
                             >
                               <select
                                 value={row.unitId}
-                                onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                                style={{ width: '95%', height: '35px' }}
+                                onChange={(e: any) =>
+                                  handleInputChange(
+                                    index,
+                                    "unitId",
+                                    e.target.value
+                                  )
+                                }
+                                style={{ width: "95%", height: "35px" }}
                               >
-                              
                                 {unitOptions.map((option) => (
-                                  <option key={option.value} value={option.value}>
+                                  <option
+                                    key={option.value}
+                                    value={option.value}
+                                  >
                                     {option.label}
                                   </option>
                                 ))}
                               </select>
-                      
                             </td>
                             <td
                               style={{
@@ -743,6 +736,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 id="BatchNo"
                                 name="BatchNo"
                                 size="small"
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                 sx={{ width: "150px" }}
                                 onChange={(e) =>
                                   handleInputChange(
@@ -764,7 +758,14 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 // type="number"
                                 size="small"
                                 value={row.stockQty}
-                                onChange={(e) => handleInputChange(index, 'stockQty', parseInt(e.target.value))}
+                                onChange={(e) =>
+                                  handleInputChange(
+                                    index,
+                                    "stockQty",
+                                    parseInt(e.target.value)
+                                  )
+                                }
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                 onFocus={(e) => {
                                   e.target.select();
                                 }}
@@ -782,6 +783,7 @@ const CreateJobcardItemIssue = (props: Props) => {
                                 size="small"
                                 // type="text"
                                 value={row.reqQty}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                 onChange={(e) =>
                                   handleInputChange(
                                     index,
@@ -813,12 +815,12 @@ const CreateJobcardItemIssue = (props: Props) => {
                                     e.target.value
                                   )
                                 }
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                 onFocus={(e) => {
                                   e.target.select();
                                 }}
                               />
                             </td>
-                         
                           </tr>
                         ))}
                       </tbody>

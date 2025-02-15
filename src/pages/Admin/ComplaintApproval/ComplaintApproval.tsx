@@ -536,14 +536,14 @@ export default function ComplaintApproval() {
    const routeChangeEdit = (row: any) => {
       console.log("row ", row);
 
-      let path = `/Admin/EditComplaintApproval`;
+      let path = `/vehiclemanagement/vehiclecomplaints/EditComplaintApproval`;
       navigate(path, {
          state: row,
       });
    };
 
    const routeChangeAdd = () => {
-      let path = `/Admin/AddComplaintApproval`;
+      let path = `/vehiclemanagement/vehiclecomplaints/AddComplaintApproval`;
       navigate(path);
    };
 
@@ -598,7 +598,7 @@ export default function ComplaintApproval() {
             ...Item,
             serialNo: index + 1,
             id: Item.compId,
-            complaintDate: formatDate(Item.complaintDate)
+            complaintDate: Item.complaintDate
          }));
          setItem(arr.filter((e:any) => e.status === "pending"));
          setIsLoading(false);

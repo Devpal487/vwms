@@ -322,7 +322,7 @@ export default function UserPermissionMaster() {
       const response = await api.post(`Employee/UpsertEmpPermission`, values);
       if (response.data.status === 1) {
         toast.success(response.data.message);
-        navigate("/UserManagement/UserPermissionMaster");
+        navigate("/admin/userpremission");
         formik.resetForm();
         getModalList();
         setOpen(false);

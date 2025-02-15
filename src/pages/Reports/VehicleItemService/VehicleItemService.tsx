@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import axios from "axios";
@@ -46,7 +43,6 @@ import * as XLSX from "xlsx";
 import { getISTDate } from "../../../utils/Constant";
 import Logo from "../../../assets/images/KanpurLogo.png";
 
-
 interface MenuPermission {
   isAdd: boolean;
   isEdit: boolean;
@@ -66,7 +62,7 @@ export default function VehicleItemService() {
   const [option, setOption] = useState([
     { value: "-1", label: "Vehicle Type" },
   ]);
- 
+
   const [isPrint, setPrint] = useState([]);
 
   const [selectedFormat, setSelectedFormat] = useState<any>(".pdf");
@@ -90,23 +86,20 @@ export default function VehicleItemService() {
 
   const formik = useFormik({
     initialValues: {
-     // genderID: -1,
+      // genderID: -1,
       // vehicleNo: location.state?.vehicleNo || "",
       // jobCardNofrom: "",
       // jobCardNoTo: "",
       // complainDateTo: "",
       // complainDatefrom: "",
-      "complaintDateFrom": defaultValues,
-      "complaintDateTo": defaultValues,
-      "vehcileNo": location.state?.vehicleNo || "",
-      "jobCardNoFrom": "",
-      "jobCardNoTo": "",
-      "isStatus_Complete": false
-   
-     
+      complaintDateFrom: defaultValues,
+      complaintDateTo: defaultValues,
+      vehcileNo: location.state?.vehicleNo || "",
+      jobCardNoFrom: "",
+      jobCardNoTo: "",
+      isStatus_Complete: false,
     },
     onSubmit: async (values) => {
-      
       //   const response = await api.post(
       //     `Gender/AddUpdateGenderMaster`,
       //     values
@@ -124,19 +117,22 @@ export default function VehicleItemService() {
 
   const handleDownload = async () => {
     const collectData = {
-      "complaintDateFrom":formik.values.complaintDateFrom,
-      "complaintDateTo": formik.values.complaintDateTo,
-      "vehcileNo": formik.values.vehcileNo||vNO,
-      "jobCardNoFrom": formik.values.jobCardNoFrom,
-      "jobCardNoTo": formik.values.jobCardNoTo,
-      "isStatus_Complete": false,
+      complaintDateFrom: formik.values.complaintDateFrom,
+      complaintDateTo: formik.values.complaintDateTo,
+      vehcileNo: formik.values.vehcileNo || vNO,
+      jobCardNoFrom: formik.values.jobCardNoFrom,
+      jobCardNoTo: formik.values.jobCardNoTo,
+      isStatus_Complete: false,
       show: false,
       exportOption: selectedFormat, // .pdf, .xls, or TabularExc
     };
-  
+
     try {
-      const response = await api.post(`Master/GetVehicleItemService`, collectData);
-  
+      const response = await api.post(
+        `Master/GetVehicleItemService`,
+        collectData
+      );
+
       if (response.data.status === "Success" && response.data.base64) {
         const base64String = response.data.base64;
         const byteCharacters = atob(base64String);
@@ -144,10 +140,10 @@ export default function VehicleItemService() {
           .fill(0)
           .map((_, i) => byteCharacters.charCodeAt(i));
         const byteArray = new Uint8Array(byteNumbers);
-  
+
         let fileType = "";
         let fileName = response.data.fileName || "Report";
-  
+
         if (selectedFormat === ".pdf") {
           fileType = "application/pdf";
           fileName += ".pdf";
@@ -158,7 +154,7 @@ export default function VehicleItemService() {
           fileType = "application/vnd.ms-excel";
           fileName += ".xls";
         }
-  
+
         const blob = new Blob([byteArray], { type: fileType });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
@@ -179,19 +175,20 @@ export default function VehicleItemService() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    console.log("location", location.state)
+    console.log("location", location.state);
     getVehicleNo();
-       if (location.state) {
-          formik.setFieldValue("complaintDateFrom", moment("2020-02-01T13:13:51.91").format("YYYY-MM-DD"));
-          formik.setFieldValue("complaintDateTo", defaultValues);
-          // fetchZonesData();
-          // setVisible(true);
-        }
+    if (location.state) {
+      formik.setFieldValue(
+        "complaintDateFrom",
+        moment("2020-02-01T13:13:51.91").format("YYYY-MM-DD")
+      );
+      formik.setFieldValue("complaintDateTo", defaultValues);
+      // fetchZonesData();
+      // setVisible(true);
+    }
   }, []);
 
-
   const getVehicleNo = () => {
-
     api.get(`Master/GetVehicleDetail?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.vehicleNo,
@@ -215,9 +212,6 @@ export default function VehicleItemService() {
   //   return <div>Vehicle No: {vehicleNo}</div>;
   // };
 
-
-
-
   const fetchZonesData = async () => {
     try {
       const collectData = {
@@ -228,14 +222,14 @@ export default function VehicleItemService() {
         // "complainDateTo": defaultValues,
         // "challanStatus": ""
 
-        "complaintDateFrom":formik.values.complaintDateFrom,
-  "complaintDateTo": formik.values.complaintDateTo,
-  "vehcileNo": formik.values.vehcileNo||vNO,
-  "jobCardNoFrom": formik.values.jobCardNoFrom,
-  "jobCardNoTo": formik.values.jobCardNoTo,
-  "isStatus_Complete": false,
-  show: true, 
-  exportOption: "selectedFormat", 
+        complaintDateFrom: formik.values.complaintDateFrom,
+        complaintDateTo: formik.values.complaintDateTo,
+        vehcileNo: formik.values.vehcileNo || vNO,
+        jobCardNoFrom: formik.values.jobCardNoFrom,
+        jobCardNoTo: formik.values.jobCardNoTo,
+        isStatus_Complete: false,
+        show: true,
+        exportOption: "selectedFormat",
       };
       const response = await api.post(
         `Master/GetVehicleItemService`,
@@ -257,12 +251,95 @@ export default function VehicleItemService() {
 
       if (data.length > 0) {
         const columns: GridColDef[] = [
+          // {
+          //   field: "serialNo",
+          //   headerName: t("text.SrNo"),
+          //   flex: 0.8,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: 0.8,
+            field: "jobCardNo",
+            headerName: t("text.JobCardNo"),
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 130
+          },
+          {
+            field: "vehicleNo",
+            headerName: t("text.VehicleNo"),
+            flex: 1.2,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 110
+          },
+           {
+            field: "service",
+            headerName: t("text.Service"),
+            flex: 1.5,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 140
+          },
+          {
+            field: "item",
+            headerName: t("text.ItemName"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 100
+          },
+          {
+            field: "qty",
+            headerName: t("text.Quantity"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 60
+          },
+          {
+            field: "amount",
+            headerName: t("text.Rate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 70
+          },
+          {
+            field: "vendor",
+            headerName: t("text.Vendor"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 140
+          },
+          {
+            field: "servOrItem",
+            headerName: t("text.servOrItem"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 100  
+          },
+          {
+            field: "challanStatus",
+            headerName: t("text.Status"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 100
+          },
+          {
+            field: "complainDate",
+            headerName: t("text.ComplainDate"),
+            flex: 1,
+            cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
+            renderCell: (params) => {
+              return moment(params.row.complainDate).format("DD-MM-YYYY");
+            },
+            minWidth: 110
           },
           {
             field: "jobCardDate",
@@ -273,32 +350,11 @@ export default function VehicleItemService() {
             renderCell: (params) => {
               return moment(params.row.jobCardDate).format("DD-MM-YYYY");
             },
+            minWidth: 110
           },
 
-          {
-            field: "complainDate",
-            headerName: t("text.ComplainDate"),
-            flex: 1,
-            cellClassName: "wrap-text", // Added here
-            headerClassName: "MuiDataGrid-colCell",
-            renderCell: (params) => {
-              return moment(params.row.complainDate).format("DD-MM-YYYY");
-            },
-          },
-          {
-            field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
-            flex: 1.2,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "jobCardNo",
-            headerName: t("text.JobCardNo"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+        
+         
           // {
           //   field: "challanNo",
           //   headerName: t("text.ChallanNo"),
@@ -306,30 +362,9 @@ export default function VehicleItemService() {
           //   headerClassName: "MuiDataGrid-colCell",
           //   cellClassName: "wrap-text", // Added here
           // },
-          {
-            field: "itemName",
-            headerName: t("text.ItemName"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
-          {
-            field: "item",
-            headerName: t("text.Item"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            align: 'right',
-            headerAlign: 'right',
-            cellClassName: "wrap-text", // Added here
-          },
-          // {
-          //   field: "service",
-          //   headerName: t("text.Service"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
-
+        
+        
+         
         ];
         setColumns(columns as any);
       }
@@ -343,7 +378,6 @@ export default function VehicleItemService() {
     ...column,
   }));
 
-
   const styles = `
   .wrap-text {
     white-space: normal !important;
@@ -353,8 +387,6 @@ export default function VehicleItemService() {
 `;
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
-
- 
 
   return (
     <>
@@ -395,13 +427,17 @@ export default function VehicleItemService() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} >
+          <Grid item xs={12} container spacing={2}>
             <Grid item xs={12} sm={4} lg={4}>
-            <Autocomplete
+              <Autocomplete
                 disablePortal
                 id="combo-box-demo"
                 options={VnoOption}
-                value={VnoOption.find((option) => option.label === formik.values.vehcileNo) || null}
+                value={
+                  VnoOption.find(
+                    (option) => option.label === formik.values.vehcileNo
+                  ) || null
+                }
                 fullWidth
                 size="small"
                 onChange={(event, newValue) => {
@@ -417,13 +453,15 @@ export default function VehicleItemService() {
                   <TextField
                     {...params}
                     label={
-                      <CustomLabel text={t("text.VehicleNos1")} required={false} />
+                      <CustomLabel
+                        text={t("text.VehicleNos1")}
+                        required={false}
+                      />
                     }
                   />
                 )}
                 popupIcon={null}
               />
-
             </Grid>
 
             {/* <Grid item xs={12} sm={3} lg={3}>
@@ -454,7 +492,6 @@ export default function VehicleItemService() {
               />
             </Grid> */}
 
-
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNoFrom")} />}
@@ -469,7 +506,6 @@ export default function VehicleItemService() {
                 onBlur={formik.handleBlur}
               />
             </Grid>
-
 
             <Grid xs={12} md={4} lg={4} item>
               <TextField
@@ -492,7 +528,10 @@ export default function VehicleItemService() {
                 id="complaintDateFrom"
                 name="complaintDateFrom"
                 label={
-                  <CustomLabel text={t("text.complaintDateFrom")} required={false} />
+                  <CustomLabel
+                    text={t("text.complaintDateFrom")}
+                    required={false}
+                  />
                 }
                 value={formik.values.complaintDateFrom}
                 placeholder={t("text.complaintDateFrom")}
@@ -510,7 +549,12 @@ export default function VehicleItemService() {
                 type="date"
                 id="complaintDateTo"
                 name="complaintDateTo"
-                label={<CustomLabel text={t("text.complaintDateTo")} required={false} />}
+                label={
+                  <CustomLabel
+                    text={t("text.complaintDateTo")}
+                    required={false}
+                  />
+                }
                 value={formik.values.complaintDateTo}
                 placeholder={t("text.complaintDateTo")}
                 size="small"
@@ -521,34 +565,31 @@ export default function VehicleItemService() {
               />
             </Grid>
 
-               <Grid item xs={12} sm={12} lg={12}>
-                                   <FormControl component="fieldset">
-                                     <RadioGroup
-                                       row
-                                       value={selectedFormat}
-                                       onChange={handleFormatChange}
-                                     >
-                                       <FormControlLabel
-                                         value=".pdf"
-                                         control={<Radio />}
-                                         label={t("text.pdf")}
-                                       />
-                                       <FormControlLabel
-                                         value=".xls"
-                                         control={<Radio />}
-                                         label={t("text.excel")}
-                                       />
-                                       <FormControlLabel
-                                         value="TabularExc"
-                                         control={<Radio />}
-                                         label={t("text.tabular")}
-                                       />
-                                     </RadioGroup>
-                                   </FormControl>
-                                 </Grid>
-           
-
-
+            <Grid item xs={12} sm={12} lg={12}>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value=".pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value=".xls"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  <FormControlLabel
+                    value="TabularExc"
+                    control={<Radio />}
+                    label={t("text.tabular")}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
               <Button
@@ -573,7 +614,7 @@ export default function VehicleItemService() {
                 }}
                 startIcon={<VisibilityIcon />}
               >
-              {t("text.show")}
+                {t("text.show")}
               </Button>
             </Grid>
 
@@ -594,7 +635,7 @@ export default function VehicleItemService() {
                   setVno("");
                 }}
               >
-                 {t("text.reset")}
+                {t("text.reset")}
               </Button>
             </Grid>
 
@@ -669,6 +710,12 @@ export default function VehicleItemService() {
                         wordWrap: "break-word", // Break words to avoid overflow
                         overflowWrap: "break-word", // Ensure long words wrap correctly
                       },
+                      "& .MuiDataGrid-iconButtonContainer": {
+                        color: "#fff !important", // Change arrow color
+                      },
+                      "& .MuiDataGrid-sortIcon": {
+                        color: "#fff !important", // Ensures sort icon color change
+                      },
                     }}
                   />
                 )}
@@ -681,4 +728,3 @@ export default function VehicleItemService() {
     </>
   );
 }
-

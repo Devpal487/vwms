@@ -246,7 +246,7 @@ export default function ComplainStatus() {
           },
           {
             field: "jobCardNo",
-            headerName: t("text.jobCardNo"),
+            headerName: t("text.JobCardNo"),
             flex: 1.2,
              headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
@@ -280,6 +280,13 @@ export default function ComplainStatus() {
             renderCell: (params) => {
               return moment(params.row.updatedOn).format("DD-MM-YYYY");
             },
+          },
+          {
+            field: "totaldays",
+            headerName: t("text.totaldays"),
+            flex: 1.3,
+            cellClassName: "wrap-text", // Added here
+            headerClassName: "MuiDataGrid-colCell",
           },
 
         ];

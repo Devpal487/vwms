@@ -1128,10 +1128,7 @@ const CreateWorkShopPurchaseOrder = () => {
 
                                                                 }}
                                                                 onFocus={e => e.target.select()}
-                                                                inputProps={{
-                                                                    step: "any",
-                                                                    min: "0"
-                                                                }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                                 size="small"
                                                             />
                                                         </td>
@@ -1148,7 +1145,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 size="small"
                                                                 value={row.rate}
                                                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                                                                inputProps={{ step: "any", min: "0" }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                                 onFocus={e => e.target.select()}
                                                             />
                                                         </td>
@@ -1162,7 +1159,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 value={row.rate * row.quantity}
                                                                 onChange={(e) => handleInputChange(index, 'amount', (row.rate * row.quantity) || 0)}
                                                                 size="small"
-                                                                inputProps={{ readOnly: true }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                                 onFocus={e => e.target.select()}
                                                             />
                                                         </td>
@@ -1208,7 +1205,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
-                                                                inputProps={{ readOnly: true }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                             />
                                                         </td>
                                                         <td
@@ -1223,7 +1220,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 onFocus={(e) => e.target.select()}
                                                                 size="small"
                                                                 sx={{ width: "80px" }}
-                                                                inputProps={{ readOnly: true }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                             />
                                                         </td>
                                                         {/* <td
@@ -1248,7 +1245,7 @@ const CreateWorkShopPurchaseOrder = () => {
                                                                 value={row.netAmount}
                                                                 // value={(row.amount + row.amount * (row.gst / 100)||0)}
                                                                 size="small"
-                                                                inputProps={{ readOnly: true }}
+                                                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                             />
                                                         </td>
                                                     </tr>

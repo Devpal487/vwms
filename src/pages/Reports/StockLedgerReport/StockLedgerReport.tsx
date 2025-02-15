@@ -299,25 +299,25 @@ export default function StockLedgerReport() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          // {
-          //   field: "docDate",
-          //   headerName: t("text.docDate"),
-          //   flex: 1.3,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          //   renderCell: (params) => {
-          //     return moment(params.row.docDate).format("DD-MM-YYYY");
-          //   },
-          // },
           {
-            field: "opening",
-            headerName: t("text.opening"),
-            flex: 1,
+            field: "docDate",
+            headerName: t("text.docDate"),
+            flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
-            //align: 'right',
-            // headerAlign: 'right',
             cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.docDate).format("DD-MM-YYYY");
+            },
           },
+          // {
+          //   field: "opening",
+          //   headerName: t("text.opening"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   //align: 'right',
+          //   // headerAlign: 'right',
+          //   cellClassName: "wrap-text", // Added here
+          // },
           {
             field: "inQty",
             headerName: t("text.inQty"),
@@ -339,13 +339,13 @@ export default function StockLedgerReport() {
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          {
-            field: "balance",
-            headerName: t("text.balance"),
-            flex: 1,
-            headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "balance",
+          //   headerName: t("text.balance"),
+          //   flex: 1,
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   cellClassName: "wrap-text", // Added here
+          // },
           // {
           //   field: "fuelConsumption",
           //   headerName: t("text.FuelConsumption"),

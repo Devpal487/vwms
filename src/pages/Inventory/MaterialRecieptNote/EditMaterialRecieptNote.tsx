@@ -1,5 +1,3 @@
-
-
 import {
   Autocomplete,
   Button,
@@ -8,11 +6,9 @@ import {
   Divider,
   TextField,
   Typography,
-
-
   Table,
 } from "@mui/material";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -44,34 +40,34 @@ const EditMaterialRecieptNote = (props: Props) => {
   const [vendorData, setVendorData] = useState<any>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
-    "sno": 0,
-    "id": 0,
-    "mrnId": 0,
-    "orderId": 0,
-    "orderNo": "",
-    "batchNo": "",
-    "serialNo": "",
-    "qcStatus": "",
-    "itemId": 0,
-    "balQuantity": 0,
-    "quantity": 0,
-    "rate": 0,
-    "amount": 0,
-    "gstId": 0,
-    "gstRate": 0,
-    "cgst": 0,
-    "sgst": 0,
-    "igst": 0,
-    "cgstid": 0,
-    "sgstid": 0,
-    "igstid": 0,
-    "netAmount": 0,
-    "unitId": 0,
-    "totalGst": 0,
-    "qcApplicable": true,
-    "isDelete": false,
-    "itemName": "",
-    "unitName": ""
+    sno: 0,
+    id: 0,
+    mrnId: 0,
+    orderId: 0,
+    orderNo: "",
+    batchNo: "",
+    serialNo: "",
+    qcStatus: "",
+    itemId: 0,
+    balQuantity: 0,
+    quantity: 0,
+    rate: 0,
+    amount: 0,
+    gstId: 0,
+    gstRate: 0,
+    cgst: 0,
+    sgst: 0,
+    igst: 0,
+    cgstid: 0,
+    sgstid: 0,
+    igstid: 0,
+    netAmount: 0,
+    unitId: 0,
+    totalGst: 0,
+    qcApplicable: true,
+    isDelete: false,
+    itemName: "",
+    unitName: "",
   };
   const [tableData, setTableData] = useState([{ ...initialRowData }]);
   const [taxData, setTaxData] = useState<any>([]);
@@ -85,7 +81,6 @@ const EditMaterialRecieptNote = (props: Props) => {
   const [itemOption, setitemOption] = useState<any>([]);
 
   const mrnTypeOption = [
-    
     { value: "1", label: "Bill" },
     { value: "2", label: "Challan" },
   ];
@@ -98,8 +93,8 @@ const EditMaterialRecieptNote = (props: Props) => {
     GetitemData();
     GetorderData();
     GetUnitData();
-    getPurchaseOrder()
-    console.log("@@@@@@@@@@@@", location.state)
+    getPurchaseOrder();
+    console.log("@@@@@@@@@@@@", location.state);
     const arr: any = [];
     orderData.map((item: any) => {
       if (item.id === location.state.vendorId) {
@@ -125,7 +120,8 @@ const EditMaterialRecieptNote = (props: Props) => {
     setUnitOptions(arr);
   };
   const getMrnById = (id: any) => {
-    api.post(`QualityCheck/GetMrn`, { MrnId: id })
+    api
+      .post(`QualityCheck/GetMrn`, { MrnId: id })
       .then((response) => {
         if (response.data.data.length > 0) {
           const data = response.data.data[0]?.mrnDetail || [];
@@ -139,7 +135,9 @@ const EditMaterialRecieptNote = (props: Props) => {
           // Set mrnId in formik values
           formik.setFieldValue("mrnId", id);
         } else {
-          console.error("No MRN data found or the data structure is incorrect.");
+          console.error(
+            "No MRN data found or the data structure is incorrect."
+          );
         }
       })
       .catch((error) => {
@@ -147,10 +145,7 @@ const EditMaterialRecieptNote = (props: Props) => {
       });
   };
 
-  
-  useEffect(() => {
-  
-  }, [tableData]);
+  useEffect(() => {}, [tableData]);
 
   const GetitemData = async () => {
     const collectData = {
@@ -170,8 +165,8 @@ const EditMaterialRecieptNote = (props: Props) => {
 
   const GetorderData = async () => {
     const collectData = {
-      "orderId": -1,
-      "indentId": -1
+      orderId: -1,
+      indentId: -1,
     };
     const response = await api.post(
       `PurchaseOrder/GetPurchaseOrder`,
@@ -190,10 +185,10 @@ const EditMaterialRecieptNote = (props: Props) => {
 
   const getVendorData = async () => {
     const result = await api.post(`Master/GetVendorMaster`, {
-      "venderId": -1,
-      "countryId": -1,
-      "stateId": -1,
-      "cityId": -1
+      venderId: -1,
+      countryId: -1,
+      stateId: -1,
+      cityId: -1,
     });
     if (result.data.isSuccess) {
       const arr =
@@ -214,20 +209,23 @@ const EditMaterialRecieptNote = (props: Props) => {
     if (result.data.isSuccess) {
       const arr =
         result?.data?.data?.map((item: any) => ({
-          details: item
+          details: item,
         })) || [];
 
-      setVendorDetail(arr[0]['details']);
+      setVendorDetail(arr[0]["details"]);
     }
   };
 
   console.log("setVendorDetail", vendorDetail);
 
   const getTaxData = async () => {
-    const result = await api.post(`UnitMaster/GetTaxMaster
-`, {
-      taxId: -1,
-    });
+    const result = await api.post(
+      `UnitMaster/GetTaxMaster
+`,
+      {
+        taxId: -1,
+      }
+    );
     if (result.data.status === 1) {
       const arr =
         result?.data?.data?.map((item: any) => ({
@@ -252,12 +250,15 @@ const EditMaterialRecieptNote = (props: Props) => {
     }
   };
 
- 
-  const handleInputChange = async (index: number, field: string, value: any) => {
+  const handleInputChange = async (
+    index: number,
+    field: string,
+    value: any
+  ) => {
     const updatedItems = [...tableData];
     let item = { ...updatedItems[index] };
     if (field === "itemId") {
-      const selectedItem = itemOption.find((item:any) => item.value === value);
+      const selectedItem = itemOption.find((item: any) => item.value === value);
       updatedItems[index].itemId = selectedItem?.value || 0;
       updatedItems[index].unitId = selectedItem?.unitId || 0; // Automatically set unitId
 
@@ -279,9 +280,7 @@ const EditMaterialRecieptNote = (props: Props) => {
           orderNo: selectedItem?.label,
         };
       }
-    }
-   
-     else if (field === "batchNo") {
+    } else if (field === "batchNo") {
       item.batchNo = value?.toString();
     } else if (field === "balQuantity") {
       item.balQuantity = value === "" ? 0 : parseFloat(value);
@@ -307,7 +306,7 @@ const EditMaterialRecieptNote = (props: Props) => {
     item.gst = ((item.amount * (parseFloat(item.gstRate) || 0)) / 100).toFixed(
       2
     );
-    
+
     item.netAmount = (item.amount + (parseFloat(item.gst) || 0)).toFixed(2);
     item.sgst = item.gst / 2;
     item.cgst = item.gst / 2;
@@ -318,12 +317,8 @@ const EditMaterialRecieptNote = (props: Props) => {
     updatedItems[index] = item;
     setTableData(updatedItems);
     updateTotalAmounts(updatedItems);
-
-   
   };
 
-
-  
   console.log("tableData.....", tableData);
 
   const isRowFilled = (row: any) => {
@@ -355,7 +350,7 @@ const EditMaterialRecieptNote = (props: Props) => {
         totalSGST: 0,
         totalIGST: 0,
         netAmount: 0,
-       // totalGrossAmount:0
+        // totalGrossAmount:0
       }
     );
 
@@ -366,15 +361,12 @@ const EditMaterialRecieptNote = (props: Props) => {
       totalSGST: totals.totalSGST,
       totalIGST: totals.totalIGST,
       netAmount: totals.netAmount,
-      totalGrossAmount:totals.netAmount
+      totalGrossAmount: totals.netAmount,
     });
   };
 
-
-
   const deleteRow = (index: number) => {
     if (tableData.length === 1) {
-    
       setTableData([{ ...initialRowData }]);
     } else {
       const newData = tableData.filter((_, i) => i !== index);
@@ -384,12 +376,12 @@ const EditMaterialRecieptNote = (props: Props) => {
   };
 
   const addRow = () => {
-    console.log("HI")
+    console.log("HI");
     // setTableData([...tableData, { ...initialRowData }]);
     setTableData((prevData) => [...prevData, { ...initialRowData }]);
   };
 
-  console.log(location)
+  console.log(location);
   const formik = useFormik({
     initialValues: {
       mrnId: location.state.mrnId || "", // Set mrnId from location.state
@@ -398,7 +390,9 @@ const EditMaterialRecieptNote = (props: Props) => {
       mrnType: location.state.mrnType || null,
       vendorId: location.state.vendorId,
       bill_ChalanNo: location.state.bill_ChalanNo,
-      bill_ChalanDate: dayjs(location.state.bill_ChalanDate).format("YYYY-MM-DD"),
+      bill_ChalanDate: dayjs(location.state.bill_ChalanDate).format(
+        "YYYY-MM-DD"
+      ),
       shipmentNo: location.state.shipmentNo,
       remark: location.state.remark,
       totalAmount: location.state.totalAmount,
@@ -420,10 +414,9 @@ const EditMaterialRecieptNote = (props: Props) => {
       purOrderId: location.state.purOrderId,
       vendorName: location.state.vendorName,
       // vendor: {},
-      name: location.state.name || '',
+      name: location.state.name || "",
       netAmountv: location.state.netAmountv,
       mrnDetail: [],
-
     },
     onSubmit: async (values) => {
       // Filter or map tableData to include mrnId
@@ -444,23 +437,23 @@ const EditMaterialRecieptNote = (props: Props) => {
         toast.error(response.data.message);
       }
     },
-   
   });
 
   const back = useNavigate();
   const getPurchaseOrderById = async (id: any) => {
-
     const collectData = {
-      "orderId": id,
-      "indentId": -1
+      orderId: id,
+      indentId: -1,
     };
 
-    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const result = await api.post(
+      `PurchaseOrder/GetPurchaseOrder`,
+      collectData
+    );
     const transData = result?.data?.data[0]["purchaseOrderDetail"];
     let arr: any = [];
     for (let i = 0; i < transData.length; i++) {
       arr.push({
-
         id: i + 1,
         mrnId: 0,
         orderId: transData[i]["orderId"],
@@ -471,39 +464,36 @@ const EditMaterialRecieptNote = (props: Props) => {
         amount: transData[i]["amount"],
         gstId: transData[i]["gstId"],
         gstRate: transData[i]["gstRate"],
-        "cgst": transData[i]["cgst"],
-        "sgst": transData[i]["sgst"],
-        "igst": transData[i]["igst"],
-        "cgstid": transData[i]["cgstid"],
-        "sgstid": transData[i]["sgstid"],
-        "igstid": transData[i]["igstid"],
+        cgst: transData[i]["cgst"],
+        sgst: transData[i]["sgst"],
+        igst: transData[i]["igst"],
+        cgstid: transData[i]["cgstid"],
+        sgstid: transData[i]["sgstid"],
+        igstid: transData[i]["igstid"],
         netAmount: transData[i]["netAmount"],
 
         orderNo: "",
-        "batchNo": "",
-        "serialNo": "",
-        "qcStatus": "",
-        "balQuantity": 0,
-        "qcApplicable": true
-
-
-
+        batchNo: "",
+        serialNo: "",
+        qcStatus: "",
+        balQuantity: 0,
+        qcApplicable: true,
       });
     }
     // arr.push({ ...initialRowData });
     setTableData(arr);
-
-
-  }
+  };
 
   const getPurchaseOrder = async () => {
-
     const collectData = {
-      "orderId": -1,
-      "indentId": -1
+      orderId: -1,
+      indentId: -1,
     };
 
-    const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
+    const result = await api.post(
+      `PurchaseOrder/GetPurchaseOrder`,
+      collectData
+    );
     const transData = result?.data?.data[0]["purchaseOrderDetail"];
 
     const data = result.data.data;
@@ -611,7 +601,9 @@ const EditMaterialRecieptNote = (props: Props) => {
                   options={mrnTypeOption}
                   fullWidth
                   size="small"
-                  value={mrnTypeOption.find((opt: any) => opt.value === formik.values.mrnType)}
+                  value={mrnTypeOption.find(
+                    (opt: any) => opt.value === formik.values.mrnType
+                  )}
                   onChange={(event: any, newValue: any) => {
                     console.log(newValue?.value);
 
@@ -678,7 +670,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                   id="shipmentNo"
                   name="shipmentNo"
                   label={
-                    <CustomLabel text={t("text.EntershipmentNo")} required={false} />
+                    <CustomLabel
+                      text={t("text.EntershipmentNo")}
+                      required={false}
+                    />
                   }
                   value={formik.values.shipmentNo}
                   placeholder={t("text.EntershipmentNo")}
@@ -708,11 +703,14 @@ const EditMaterialRecieptNote = (props: Props) => {
                     id="combo-box-demo"
                     options={vendorData}
                     value={
-                      vendorData[vendorData.findIndex((e: any) => e.value == formik.values.vendorId)]?.label || ""
+                      vendorData[
+                        vendorData.findIndex(
+                          (e: any) => e.value == formik.values.vendorId
+                        )
+                      ]?.label || ""
                     }
                     fullWidth
                     size="small"
-
                     onChange={(event: any, newValue: any) => {
                       if (!newValue) {
                         return;
@@ -720,7 +718,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                       handleVendorSelect(event, newValue);
                       console.log(newValue?.value);
                       //getPurchaseOrderById(newValue?.value);
-                      formik.setFieldValue('vendorId', newValue?.value);
+                      formik.setFieldValue("vendorId", newValue?.value);
                       const arr: any = [];
                       orderData.map((item: any) => {
                         if (item.id === newValue?.value) {
@@ -742,7 +740,6 @@ const EditMaterialRecieptNote = (props: Props) => {
                     )}
                   />
                 </Grid>
-              
 
                 {vendorDetail?.gstinNo && (
                   <Grid item lg={4} xs={12} md={6}>
@@ -862,10 +859,12 @@ const EditMaterialRecieptNote = (props: Props) => {
                       border: "1px solid black",
                     }}
                   >
-                   <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                    <thead
+                      style={{
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
+                      }}
+                    >
                       <tr>
                         <th
                           style={{
@@ -960,7 +959,6 @@ const EditMaterialRecieptNote = (props: Props) => {
                           }}
                         >
                           {t("text.cgst")}
-
                         </th>
                         <th
                           style={{
@@ -1016,13 +1014,12 @@ const EditMaterialRecieptNote = (props: Props) => {
                               onClick={() => {
                                 addRow();
                               }}
-
                               style={{ cursor: "pointer" }}
                             />
                             <DeleteIcon
                               onClick={() => {
                                 if (tableData.length > 1) {
-                                  deleteRow(index)
+                                  deleteRow(index);
                                 } else {
                                   alert("Atleast one row should be there");
                                 }
@@ -1044,7 +1041,11 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "155px" }}
                               value={
-                                orderOption[orderOption.findIndex((e: any) => e.value == row.orderId)]?.label || ""
+                                orderOption[
+                                  orderOption.findIndex(
+                                    (e: any) => e.value == row.orderId
+                                  )
+                                ]?.label || ""
                               }
                               // value={orderOption.find((opt: any) => opt.value == row.orderId)}
                               onChange={(e: any, newValue: any) =>
@@ -1054,12 +1055,8 @@ const EditMaterialRecieptNote = (props: Props) => {
                                   newValue?.value
                                 )
                               }
-
                               renderInput={(params) => (
-                                <TextField
-                                  {...params}
-
-                                />
+                                <TextField {...params} />
                               )}
                             />
                           </td>
@@ -1078,7 +1075,11 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "155px" }}
                               value={
-                                itemOption[itemOption.findIndex((e: any) => e.value == row.itemId)]?.label || ""
+                                itemOption[
+                                  itemOption.findIndex(
+                                    (e: any) => e.value == row.itemId
+                                  )
+                                ]?.label || ""
                               }
                               //value={itemOption.find((opt: any) => opt.value === row.itemId)}
                               onChange={(e: any, newValue: any) =>
@@ -1089,14 +1090,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                                 )
                               }
                               renderInput={(params) => (
-                                <TextField
-                                  {...params}
-
-                                />
+                                <TextField {...params} />
                               )}
                             />
                           </td>
-
 
                           <td
                             style={{
@@ -1108,17 +1105,34 @@ const EditMaterialRecieptNote = (props: Props) => {
                               value={row.batchNo}
                               size="small"
                               sx={{ width: "150px" }}
-                              onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
-                              onFocus={(e) => { e.target.select() }}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "batchNo",
+                                  e.target.value
+                                )
+                              }
+                              onFocus={(e) => {
+                                e.target.select();
+                              }}
                             />
                           </td>
-                          <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          <td
+                            style={{
+                              border: "1px solid black",
+                              textAlign: "center",
+                            }}
+                          >
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
                               options={unitOptions}
                               value={
-                                unitOptions[unitOptions.findIndex((e: any) => e.value == row.unitId)]?.label || ""
+                                unitOptions[
+                                  unitOptions.findIndex(
+                                    (e: any) => e.value == row.unitId
+                                  )
+                                ]?.label || ""
                               }
                               // value={
                               //   unitOptions.find((opt) => (opt.value) === row?.unitId) || null
@@ -1127,13 +1141,16 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "130px" }}
                               onChange={(e, newValue: any) =>
-                                handleInputChange(index, "unitId", newValue?.value)
+                                handleInputChange(
+                                  index,
+                                  "unitId",
+                                  newValue?.value
+                                )
                               }
-
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
-                                //  label={<CustomLabel text={t("text.selectUnit")} />}
+                                  //  label={<CustomLabel text={t("text.selectUnit")} />}
                                 />
                               )}
                             />
@@ -1148,8 +1165,20 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "70px" }}
                               value={row.quantity}
-                              onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
-                              onFocus={(e) => { e.target.select() }}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "quantity",
+                                  e.target.value
+                                )
+                              }
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
+                              onFocus={(e) => {
+                                e.target.select();
+                              }}
                             />
                           </td>
                           <td
@@ -1162,9 +1191,20 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               value={row.quantity}
                               sx={{ width: "70px" }}
-                              onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
-                              inputProps={{ step: "any", min: "0" }}
-                              onFocus={e => e.target.select()}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "quantity",
+                                  e.target.value
+                                )
+                              }
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                                step: "any",
+                                min: "0",
+                              }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
                           <td
@@ -1177,13 +1217,18 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "90px" }}
                               value={row.rate}
-                              onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                              inputProps={{ step: "any", min: "0" }}
-                              onFocus={e => e.target.select()}
+                              onChange={(e) =>
+                                handleInputChange(index, "rate", e.target.value)
+                              }
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                                step: "any",
+                                min: "0",
+                              }}
+                              onFocus={(e) => e.target.select()}
                             />
                           </td>
-
-
 
                           <td
                             style={{
@@ -1199,17 +1244,22 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "80px" }}
                               value={
-                                taxData[taxData.findIndex((e: any) => e.value == row.gstId)]?.label || ""
+                                taxData[
+                                  taxData.findIndex(
+                                    (e: any) => e.value == row.gstId
+                                  )
+                                ]?.label || ""
                               }
                               // value={taxData.find((opt: any) => opt.value == row.gstId)}
                               onChange={(e: any, newValue: any) =>
-                                handleInputChange(index, "gstId", newValue?.value)
+                                handleInputChange(
+                                  index,
+                                  "gstId",
+                                  newValue?.value
+                                )
                               }
                               renderInput={(params) => (
-                                <TextField
-                                  {...params}
-
-                                />
+                                <TextField {...params} />
                               )}
                             />
                           </td>
@@ -1224,7 +1274,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                               value={row.cgst}
                               sx={{ width: "100px" }}
                               size="small"
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                           <td
@@ -1237,7 +1290,10 @@ const EditMaterialRecieptNote = (props: Props) => {
                               value={row.sgst}
                               size="small"
                               sx={{ width: "100px" }}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                           {/* <td
@@ -1253,7 +1309,6 @@ const EditMaterialRecieptNote = (props: Props) => {
                                                       />
                                                     </td> */}
 
-
                           <td
                             style={{
                               border: "1px solid black",
@@ -1264,70 +1319,120 @@ const EditMaterialRecieptNote = (props: Props) => {
                               value={row.netAmount}
                               size="small"
                               sx={{ width: "100px" }}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                         </tr>
-
                       ))}
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td
+                          colSpan={11}
+                          style={{ textAlign: "right", fontWeight: "bold" }}
+                        >
                           {t("text.TotalAmount1")}
-
                         </td>
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalAmount}
                         </td> */}
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                        <td
+                          style={{
+                            textAlign: "right",
+                            border: "1px solid black",
+                          }}
+                        >
+                          {tableData
+                            .reduce(
+                              (acc, row) => acc + (parseFloat(row.amount) || 0),
+                              0
+                            )
+                            .toFixed(2)}
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td
+                          colSpan={11}
+                          style={{ textAlign: "right", fontWeight: "bold" }}
+                        >
                           {t("text.TotalCGstAmt")}
-
-
                         </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.cgst) || 0), 0).toFixed(2)}
+                        <td
+                          style={{
+                            textAlign: "right",
+                            border: "1px solid black",
+                          }}
+                        >
+                          {tableData
+                            .reduce(
+                              (acc, row) => acc + (parseFloat(row.cgst) || 0),
+                              0
+                            )
+                            .toFixed(2)}
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td
+                          colSpan={11}
+                          style={{ textAlign: "right", fontWeight: "bold" }}
+                        >
                           {t("text.TotalSGstAmt")}
-
-
                         </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst) || 0), 0).toFixed(2)}
+                        <td
+                          style={{
+                            textAlign: "right",
+                            border: "1px solid black",
+                          }}
+                        >
+                          {tableData
+                            .reduce(
+                              (acc, row) => acc + (parseFloat(row.sgst) || 0),
+                              0
+                            )
+                            .toFixed(2)}
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={11} style={{ textAlign: "right", fontWeight: "bold" }}>
+                        <td
+                          colSpan={11}
+                          style={{ textAlign: "right", fontWeight: "bold" }}
+                        >
                           {t("text.Totalnetamount")}
-
                         </td>
 
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td> */}
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
-                          {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
+                        <td
+                          style={{
+                            textAlign: "right",
+                            border: "1px solid black",
+                          }}
+                        >
+                          {tableData
+                            .reduce(
+                              (acc, row) =>
+                                acc + (parseFloat(row.netAmount) || 0),
+                              0
+                            )
+                            .toFixed(2)}
                         </td>
                       </tr>
                     </tfoot>
                   </Table>
-                </div> </Grid>
-
+                </div>{" "}
+              </Grid>
 
               <Grid item xs={12} md={12} lg={12}>
                 <TextField
                   placeholder={t("text.Remark")}
-
                   value={formik.values.remark}
-                  onChange={(e: any) => formik.setFieldValue("remark", e.target.value)}
+                  onChange={(e: any) =>
+                    formik.setFieldValue("remark", e.target.value)
+                  }
                   style={{
                     width: "100%",
                     height: "auto",

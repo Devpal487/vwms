@@ -1428,6 +1428,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             size="small"
                                                             sx={{ width: "150px" }}
                                                             onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                         />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
@@ -1436,6 +1437,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             size="small"
                                                             value={row.issueQty - row.returnQty}
                                                             onFocus={(e) => e.target.select()}
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                         // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
                                                         />
                                                     </td>
@@ -1447,6 +1449,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             value={row.issueQty}
                                                             onChange={(e) => handleInputChange(index, 'issueQty', row.issueQty)}
                                                             onFocus={(e) => e.target.select()}
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                         />
                                                     </td>
                                                     <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>
@@ -1457,6 +1460,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                                             value={row.returnQty}
                                                             onChange={(e) => handleInputChange(index, 'returnQty', parseInt(e.target.value))}
                                                             onFocus={(e) => e.target.select()}
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                         />
                                                     </td>
                                                     {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>

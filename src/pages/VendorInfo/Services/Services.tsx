@@ -321,7 +321,7 @@ export default function Services() {
                   disablePortal
                   id="combo-box-demo"
                   options={serviceTypeOption}
-                  value={formik.values.serviceTypeName}
+                  value={serviceTypeOption.find(option => option.label === formik.values.serviceTypeName) || null}
                   fullWidth
                   size="small"
                   onChange={(event: any, newValue: any) => {
@@ -420,6 +420,7 @@ export default function Services() {
                   fullWidth
                   size="small"
                   popupIcon={null}
+                  value={serviceTypeOption.find(option => option.label === formik.values.serviceTypeName) || null}
                   onInputChange={(event, newValue) => {
                     setTypedServiceType(newValue);
                   }}

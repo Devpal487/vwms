@@ -69,7 +69,9 @@ export default function MenuMaster() {
 
 
   const getParentMenuMaster = () => {
-    api.post(`Menu/GetParentMenuMaster`).then((res) => {
+    api.post(`Menu/GetMenuMaster`,{
+      "menuId": -1
+    }).then((res) => {
       console.log("result" + JSON.stringify(res.data.data));
       const data = res.data.data;
       const arr = data.map((item: any, index: any) => ({

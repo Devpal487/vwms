@@ -255,7 +255,7 @@ const EditComplaintApproval = (props: Props) => {
          collectData
       );
       const data = response.data.data;
-      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^data:image\/\w+;base64,/, ""));
    }
 
    function convertToYYYYMMDD(dateString: any) {
@@ -282,7 +282,7 @@ const EditComplaintApproval = (props: Props) => {
          status: "inprogress",
          currentReading: location.state?.currentReading,
          createdOn: location.state?.createdOn,
-         complaintDate: convertToYYYYMMDD(location.state?.complaintDate),
+         complaintDate: dayjs(location.state?.complaintDate).format("YYYY-MM-DD"),
          updatedOn: location.state?.updatedOn,
          compAppdt: location.state?.compAppdt || "",
          jobCardNo: location.state?.jobCardNo || location.state?.complaintNo || "",
@@ -308,7 +308,7 @@ const EditComplaintApproval = (props: Props) => {
             const response = await api.post(`Master/UpsertComplaint`, values);
             if (response.data.status === 1) {
                toast.success(response.data.message);
-               navigate("/Admin/ComplaintApproval")
+               navigate("/vehiclemanagement/vehiclecomplaints/ComplaintApproval")
                if (localStorage.getItem("ApplicationFlow") === "outsource") {
                   setIsVisible(true);
                } else {
@@ -538,7 +538,7 @@ const EditComplaintApproval = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.EditComplaintApproval")}
+                        {t("text.ComplaintApproval")}
                      </Typography>
                   </Grid>
 
@@ -1359,7 +1359,7 @@ const EditComplaintApproval = (props: Props) => {
                      >
                      </Button>
 
-                     {/* {isVisible && (
+                     {isVisible && (
                         <Grid item lg={6} sm={6} xs={12}>
                            <Button
                               type="button"
@@ -1373,29 +1373,35 @@ const EditComplaintApproval = (props: Props) => {
                                  width: "100px",
                               }}
                               onClick={() => {
-                                 // if (localStorage.getItem("ApplicationFlow") == "outsource") {
-                                 //    navigate("/vehiclecomplaint/AddJobCard", {
-                                 //       state: formik.values,
-                                 //    });
-                                 // }
-                                 // else {
-                                 //    navigate("/vehiclecomplaint/AddJobCard1", {
-                                 //       state: formik.values,
-                                 //    });
-                                 // }
-                                 navigate("/vehiclecomplaint/AddJobCard", {
-                                    state: {
-                                       ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
-                                       designation: empOption.find(e => e.value == formik.values.empId)?.designation
-                                    },
-                                 });
+                                 if (localStorage.getItem("ApplicationFlow") == "outsource") {
+                                    navigate("/vehiclemanagement/vehiclecomplaints/AddJobCard", {
+                                       state: {
+                                          ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
+                                          designation: empOption.find(e => e.value == formik.values.empId)?.designation
+                                       }
+                                    });
+                                 }
+                                 else {
+                                    navigate("/vehiclemanagement/vehiclecomplaints/AddJobCard", {
+                                       state: {
+                                          ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
+                                          designation: empOption.find(e => e.value == formik.values.empId)?.designation
+                                       }
+                                    });
+                                 }
+                                 // navigate("/vehiclecomplaint/AddJobCard", {
+                                 //    state: {
+                                 //       ...formik.values, department: empOption.find(e => e.value == formik.values.empId)?.department,
+                                 //       designation: empOption.find(e => e.value == formik.values.empId)?.designation
+                                 //    },
+                                 // });
                               }}
                            >
                               {t("text.Next")}
                               <ArrowForwardIcon />
                            </Button>
                         </Grid>
-                     )} */}
+                     )}
                   </Grid>
                </form>
             </CardContent>

@@ -1271,55 +1271,144 @@ const MainLayout = () => {
   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 
 
+  // const fetchMenu = () => {
+  //   const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+
+  //   const buildMenuHierarchy = (permissions: any[]) => {
+  //     const menuMap = new Map<number, any>();
+
+  //     // Step 1: Create a map with menuId as key
+  //     permissions.forEach((perm: any) => {
+  //       menuMap.set(perm.menuId, {
+  //         menuId: perm.menuId,
+  //         parentId: perm.parentId,
+  //         menuName: perm.menuName,
+  //         path: "", // Path will be generated dynamically
+  //         children: [],
+  //       });
+  //     });
+
+  //     const rootMenus: any[] = [];
+
+  //     // Step 2: Assign child items to their respective parents
+  //     menuMap.forEach((menu) => {
+  //       if (menu.parentId === null) {
+  //         rootMenus.push(menu);
+  //       } else {
+  //         const parentMenu = menuMap.get(menu.parentId);
+  //         if (parentMenu) {
+  //           parentMenu.children.push(menu);
+  //         }
+  //       }
+  //     });
+
+  //     // Step 3: Generate Paths Recursively
+  //     const generatePaths = (menus: any[], parentPath = "") => {
+  //       menus.forEach((menu) => {
+  //         menu.path = `${parentPath}/${menu.menuName.replace(/\s+/g, "").toLowerCase()}`; // Append Parent Menu Name
+  //         if (menu.children.length > 0) {
+  //           generatePaths(menu.children, menu.path); // Pass updated parent path
+  //         }
+  //       });
+  //     };
+
+  //     generatePaths(rootMenus); // Start path generation
+
+  //     return rootMenus;
+  //   };
+
+  //   setMenuItems(buildMenuHierarchy(storedPermissions));
+  // };
+
+
   const fetchMenu = () => {
     const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
-
+  
     const buildMenuHierarchy = (permissions: any[]) => {
       const menuMap = new Map<number, any>();
-
-      // Step 1: Create a map with menuId as key
+  
+      // ✅ Step 1: Store all menus in a map
       permissions.forEach((perm: any) => {
         menuMap.set(perm.menuId, {
           menuId: perm.menuId,
           parentId: perm.parentId,
           menuName: perm.menuName,
-          path: "", // Path will be generated dynamically
+          path: "",
           children: [],
         });
       });
-
-      const rootMenus: any[] = [];
-
-      // Step 2: Assign child items to their respective parents
+  
+      let rootMenus: any[] = [];
+  
+      // ✅ Step 2: Assign children to their parents
       menuMap.forEach((menu) => {
-        if (menu.parentId === null) {
+        if ((menu.parentId === null) && menuMap.has(menu.menuId)) {
           rootMenus.push(menu);
         } else {
           const parentMenu = menuMap.get(menu.parentId);
-          if (parentMenu) {
+          if (parentMenu && menuMap.has(parentMenu.menuId)) {
             parentMenu.children.push(menu);
           }
         }
       });
-
-      // Step 3: Generate Paths Recursively
+  
+      // ✅ Step 3: Define the fixed order for parent menus
+      const parentMenuOrder = [
+        "Vehicle Management",
+        "Store Management",
+        "Communication",
+        "Vendor Info",
+        "Employee Info",
+        "Reports",
+        "Admin",
+      ];
+  
+      // ✅ Step 4: Filter root menus based on permissions & sort them in the given order
+      rootMenus = rootMenus.filter((menu) =>
+        permissions.some((perm) => perm.menuName === menu.menuName)
+      );
+  
+      rootMenus.sort((a, b) => {
+        const indexA = parentMenuOrder.indexOf(a.menuName);
+        const indexB = parentMenuOrder.indexOf(b.menuName);
+        return indexA - indexB;
+      });
+  
+      // ✅ Step 5: Sort child items alphabetically & remove empty parents
+      const filterAndSortChildren:any = (menus: any[]) => {
+        return menus
+          .filter((menu) => menuMap.has(menu.menuId)) // Remove non-existing menus
+          .map((menu) => ({
+            ...menu,
+            children: filterAndSortChildren(menu.children).sort((a:any, b:any) =>
+              a.menuName.localeCompare(b.menuName)
+            ),
+          }));
+      };
+  
+      const sortedMenus = filterAndSortChildren(rootMenus);
+  
+      // ✅ Step 6: Generate Paths Recursively
       const generatePaths = (menus: any[], parentPath = "") => {
         menus.forEach((menu) => {
-          menu.path = `${parentPath}/${menu.menuName.replace(/\s+/g, "").toLowerCase()}`; // Append Parent Menu Name
+          menu.path = `${parentPath}/${menu.menuName.replace(/\s+/g, "").toLowerCase()}`;
           if (menu.children.length > 0) {
-            generatePaths(menu.children, menu.path); // Pass updated parent path
+            generatePaths(menu.children, menu.path);
           }
         });
       };
-
-      generatePaths(rootMenus); // Start path generation
-
-      return rootMenus;
+  
+      generatePaths(sortedMenus);
+  
+      return sortedMenus;
     };
-
+  
     setMenuItems(buildMenuHierarchy(storedPermissions));
   };
-
+  
+  
+  
+  
   useEffect(() => {
     fetchMenu(); // Initial fetch
 
@@ -1368,7 +1457,7 @@ const MainLayout = () => {
             >
               <Toolbar />
               <Outlet />
-              {/* <Draggable>
+              <Draggable>
                 <Box
                   sx={{
                     position: "fixed",
@@ -1412,10 +1501,10 @@ const MainLayout = () => {
                     onClick={() => setIsChatBotOpen(true)}
                   />
                 </Box>
-              </Draggable> */}
+              </Draggable>
             </Box>
           </Box>
-          {/* <ChatBot open={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} /> */}
+          <ChatBot open={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} />
         </div>
       )}
     </div>

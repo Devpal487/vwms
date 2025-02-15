@@ -78,8 +78,8 @@ const CreateQualityCheck = (props: Props) => {
   const [taxData, setTaxData] = useState<any>([]);
   const [qcOptions, setQcOptions] = useState([]);
   const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
-     { value: -1, label: t("text.itemMasterId") },
-   ]);
+    { value: -1, label: t("text.itemMasterId") },
+  ]);
   const [mrnNoOptions, setmrnNoOptions] = useState([
     { value: "-1", label: t("text.selectMRN") },
   ]);
@@ -353,7 +353,7 @@ const CreateQualityCheck = (props: Props) => {
   };
   // const handleInputChange = (index: number, field: string, value: any) => {
   //   const updatedItems = [...tableData];
-  
+
   //   let item = { ...updatedItems[index] };
   //   if (field === "itemId") {
   //     const selectedItem = itemOption.find((item) => item.value === value);
@@ -528,7 +528,7 @@ const CreateQualityCheck = (props: Props) => {
 
     validationSchema: Yup.object({
       mrnNo: Yup.string()
-       .required(t("text.reqmrnNo")),
+        .required(t("text.reqmrnNo")),
     }),
 
 
@@ -832,7 +832,7 @@ const CreateQualityCheck = (props: Props) => {
                     />
                   )}
                 />
-                 {formik.touched.mrnNo && formik.errors.mrnNo && (
+                {formik.touched.mrnNo && formik.errors.mrnNo && (
                   <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.mrnNo)}</div>
                 )}
               </Grid>
@@ -1061,7 +1061,7 @@ const CreateQualityCheck = (props: Props) => {
                       border: "1px solid black",
                     }}
                   >
-                   <thead style={{
+                    <thead style={{
                       backgroundColor: `var(--grid-headerBackground)`,
                       color: `var(--grid-headerColor)`
                     }}>
@@ -1318,7 +1318,10 @@ const CreateQualityCheck = (props: Props) => {
                               size="small"
                               sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
-                              onFocus={e => e.target.select()}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
 
@@ -1374,7 +1377,11 @@ const CreateQualityCheck = (props: Props) => {
                               size="small"
                               value={row.acceptQty}
                               onChange={(e) => handleInputChange(index, "acceptQty", e.target.value)}
-                              inputProps={{ step: "any", min: "0" }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                                step: "any", min: "0"
+                              }}
                               onFocus={e => e.target.select()}
                             />
                           </td>
@@ -1392,7 +1399,10 @@ const CreateQualityCheck = (props: Props) => {
                                 handleInputChange(index, "rejectQty", newvalue)
                               }}
                               onFocus={e => e.target.select()}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                           <td
@@ -1406,7 +1416,11 @@ const CreateQualityCheck = (props: Props) => {
                               value={row.rate}
                               sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                              inputProps={{ step: "any", min: "0" }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                                step: "any", min: "0"
+                              }}
                               onFocus={e => e.target.select()}
                             />
                           </td>
@@ -1439,14 +1453,18 @@ const CreateQualityCheck = (props: Props) => {
                               )}
                             />
                           </td> */}
-                          
+
                           <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <TextField
                               size="small"
                               value={row.gstRate || 0}
                               onChange={(e) => handleInputChange(index, "gstRate", e.target.value)} // ✅ Allow editing
                               onBlur={(e) => handleInputChange(index, "gstRate", e.target.value)}
-                              inputProps={{ step: "any", min: "0" }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                                step: "any", min: "0"
+                              }}
                             />
                           </td>
 
@@ -1462,7 +1480,10 @@ const CreateQualityCheck = (props: Props) => {
                               value={row.cgst}
                               size="small"
                               sx={{ width: "100px" }}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                           <td
@@ -1475,7 +1496,10 @@ const CreateQualityCheck = (props: Props) => {
                               value={row.sgst}
                               size="small"
                               sx={{ width: "100px" }}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
 
@@ -1489,7 +1513,10 @@ const CreateQualityCheck = (props: Props) => {
                               value={row.netAmount}
                               size="small"
                               sx={{ width: "100px" }}
-                              inputProps={{ readOnly: true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                         </tr>
@@ -1506,7 +1533,7 @@ const CreateQualityCheck = (props: Props) => {
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.totalAmount}
                         </td> */}
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                        <td style={{ textAlign: "right", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
@@ -1516,7 +1543,7 @@ const CreateQualityCheck = (props: Props) => {
 
 
                         </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                        <td style={{ textAlign: "right", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.cgst) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
@@ -1526,7 +1553,7 @@ const CreateQualityCheck = (props: Props) => {
 
 
                         </td>
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                        <td style={{ textAlign: "right", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.sgst) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
@@ -1539,7 +1566,7 @@ const CreateQualityCheck = (props: Props) => {
                         {/* <td colSpan={6} style={{ textAlign: "end" }}>
                           <b>:</b>{formik.values.netAmount}
                         </td> */}
-                        <td style={{ textAlign: "center", border: "1px solid black" }}>
+                        <td style={{ textAlign: "right", border: "1px solid black" }}>
                           {tableData.reduce((acc, row) => acc + (parseFloat(row.netAmount) || 0), 0).toFixed(2)}
                         </td>
                       </tr>
