@@ -162,6 +162,9 @@ import Juridiction from "../pages/UserManagementMaster/Juridiction/Juridiction";
 import MenuMaster from "../pages/Admin/MenuMaster/MenuMaster";
 import HelpCreation from "../pages/Admin/HelpCreation/HelpCreation";
 import ItemConsumedReport from "../pages/Reports/ItemConsumedReport/ItemConsumedReport";
+import PageSetup from "../pages/Admin/PageSetup/PageSetup";
+//import Oragnisation from "../pages/Admin/Setting/Oragnisation";
+
 
 
 
@@ -1727,6 +1730,39 @@ const appRoutes: RouteType[] = [
           },
         ],
       },
+      // {
+      //   path: "/Admin/Setting",
+      //   element: <DashboardPageLayout />,
+      //   state: "Setting",
+      //   sidebarProps: {
+      //     displayText: "Setting",
+      //     icon: <DashboardOutlinedIcon />,
+      //   },
+      //   child: [
+      //     {
+      //       index: true,
+      //       element: <DashboardIndex />,
+      //       state: "Setting.index",
+      //     },
+
+      //     {
+      //       path: "/Admin/Setting/Oragnisation",
+      //       element: <Oragnisation />,
+      //       state: "Setting.Oragnisation",
+      //       sidebarProps: {
+      //         displayText: "Oragnisation",
+      //       }
+      //     },
+      //     {
+      //       path: "/Admin/Setting/PageSetup",
+      //       element: <PageSetup />,
+      //       state: "Setting.PageSetup",
+      //       sidebarProps: {
+      //         displayText: "PageSetup",
+      //       }
+      //     },
+      //   ],
+      // },
       {
         path: "/Admin/userpremission",
         element: <UserPermissionMaster />,
