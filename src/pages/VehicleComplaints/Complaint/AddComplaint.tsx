@@ -96,7 +96,7 @@ const AddComplaint = (props: Props) => {
    const [aprDept2, setaprEmpDept2] = useState("");
    const [aprDept3, setaprEmpDept3] = useState("");
    const [aprDept4, setaprEmpDept4] = useState("");
-
+   const [nextEnable,setNextEnable] = useState(false);
 
    const [panOpens, setPanOpen] = React.useState(false);
    const [modalImg, setModalImg] = useState("");
@@ -109,6 +109,12 @@ const AddComplaint = (props: Props) => {
       getDeptData();
       getDesignationData();
       getEmpData();
+      const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+      permissions.map((e: any) => {
+         if (e.menuId === 144) {
+            setNextEnable(true);
+         }
+      })
    }, []);
 
    const getcomplaintNo = async () => {
@@ -251,7 +257,7 @@ const AddComplaint = (props: Props) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
                setIsVisible(true);
-               navigate(`/vehiclemanagement/vehiclecomplaints/Complaint`)
+               //navigate(`/vehiclemanagement/vehiclecomplaints/Complaint`)
             } else {
                toast.error(response.data.message);
                setToaster(true);
@@ -291,7 +297,7 @@ const AddComplaint = (props: Props) => {
    const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
       const file = event.target.files?.[0];
       if (!file) return;
-   
+
       // Validate file type (only allow images)
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       if (!['jpg', 'jpeg', 'png'].includes(fileExtension || '')) {
@@ -299,28 +305,28 @@ const AddComplaint = (props: Props) => {
          event.target.value = ''; // Clear input field
          return;
       }
-   
+
       const reader = new FileReader();
       reader.onload = () => {
          const base64String = reader.result as string;
-         
+
          // Use regex to remove the base64 prefix dynamically
          const base64Content = base64String.replace(/^data:image\/(jpeg|jpg|png);base64,/, "");
-         
+
          if (base64Content) {
             formik.setFieldValue(params, base64Content); // Store the stripped base64 string
          } else {
             alert("Error processing image data.");
          }
       };
-   
+
       reader.onerror = () => {
          alert("Error reading file. Please try again.");
       };
-   
+
       reader.readAsDataURL(file);
    };
-   
+
 
 
    // const otherDocChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, params: string) => {
@@ -494,7 +500,7 @@ const AddComplaint = (props: Props) => {
                </Grid>
                <Divider />
                <br />
-               {/* <ToastContainer /> */}
+               <ToastContainer />
                <form onSubmit={formik.handleSubmit}>
                   {toaster === false ? "" : <ToastApp />}
 
@@ -1094,7 +1100,7 @@ const AddComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
-                  {/* {isVisible && (
+                  {isVisible && nextEnable && (
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
                            type="button"
@@ -1108,8 +1114,8 @@ const AddComplaint = (props: Props) => {
                               width: "100px",
                            }}
                            onClick={() => {
-                              navigate("/Admin/AddComplaintApproval", {
-                                 state: formik.values,
+                              navigate("/Admin/EditComplaintApproval", {
+                                 state: { ...formik.values, complaintDate: dayjs(formik.values.complaintDate).format("YYYY-MM-DD") },
                               });
                            }}
                         >
@@ -1118,7 +1124,7 @@ const AddComplaint = (props: Props) => {
                         </Button>
 
                      </Grid>
-                  )} */}
+                  )}
 
 
                </form>

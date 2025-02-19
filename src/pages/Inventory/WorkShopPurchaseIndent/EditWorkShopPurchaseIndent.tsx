@@ -1,17 +1,14 @@
-
-
-
 import {
     Autocomplete,
     Button,
     Card,
     CardContent,
     Grid,
-    Divider, Table,
+    Divider,
+    Table,
     MenuItem,
     TextField,
     Typography,
-
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
@@ -27,20 +24,19 @@ import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
-
 
 const EditWorkShopPurchaseIndent = (props: Props) => {
     let navigate = useNavigate();
     const { t } = useTranslation();
     const [lang, setLang] = useState<Language>("en");
     const location = useLocation();
-    console.log('CheckLocation', location)
+    console.log("CheckLocation", location);
     const { defaultValues } = getISTDate();
     const [toaster, setToaster] = useState(false);
 
@@ -71,21 +67,22 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         item: {},
     };
 
-
-    const [tableData, setTableData] = useState([{
-        id: -1,
-        indentId: 0,
-        itemId: 0,
-        quantity: 0,
-        rate: 0,
-        amount: 0,
-        approveQuantity: 0,
-        fyId: 0,
-        srn: 0,
-        unitId: 0,
-        unitName: "",
-        isDelete: true
-    }]);
+    const [tableData, setTableData] = useState([
+        {
+            id: -1,
+            indentId: 0,
+            itemId: 0,
+            quantity: 0,
+            rate: 0,
+            amount: 0,
+            approveQuantity: 0,
+            fyId: 0,
+            srn: 0,
+            unitId: 0,
+            unitName: "",
+            isDelete: true,
+        },
+    ]);
     const [unitOptions, setUnitOptions] = useState([
         { value: "-1", label: t("text.SelectUnitId") },
     ]);
@@ -94,20 +91,14 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         { value: -1, label: t("text.itemMasterId") },
     ]);
 
-
-
-
     useEffect(() => {
         GetitemData();
 
         getTransDataById(location.state.id);
         GetUnitData();
-
-
     }, []);
 
-
-    console.log("🚀 ~ EditWorkShopPurchaseIndent ~ tableData:", tableData)
+    console.log("🚀 ~ EditWorkShopPurchaseIndent ~ tableData:", tableData);
 
     const GetUnitData = async () => {
         const collectData = {
@@ -127,9 +118,9 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
 
     const getTransDataById = async (id: any) => {
         const collectData = {
-            "indentId": id,
-            "indentNo": "",
-            "empId": -1
+            indentId: id,
+            indentNo: "",
+            empId: -1,
         };
         try {
             const result = await api.post(`Master/GetIndent`, collectData);
@@ -138,25 +129,25 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
             console.log("🚀 ~ getTransDataById ~ data:", data);
 
             if (data.length > 0) {
-                const formattedData = data[0]['indentDetail'].map((item: any, index: number) => ({
-                    indentID: item.indentID,
-                    itemId: item.itemId,
-                    //id: index + 1,
-                    quantity: item.quantity,
-                    approveQuantity: item.approveQuantity,
-                    rate: item.rate,
-                    amount: item.amount,
-                    unitId: item.unitId,
-                    unitName: item.unitName,
-                }));
+                const formattedData = data[0]["indentDetail"].map(
+                    (item: any, index: number) => ({
+                        indentID: item.indentID,
+                        itemId: item.itemId,
+                        //id: index + 1,
+                        quantity: item.quantity,
+                        approveQuantity: item.approveQuantity,
+                        rate: item.rate,
+                        amount: item.amount,
+                        unitId: item.unitId,
+                        unitName: item.unitName,
+                    })
+                );
                 setTableData(formattedData);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
         }
-    }
-
-
+    };
 
     const GetitemData = async () => {
         const collectData = {
@@ -174,17 +165,17 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         setitemOption(arr);
     };
 
-  const validateRow = (row: any) => {
-    if (row.approveQuantity <= 0) {
-        alert("Approve Quantity must be greater than 0.");
-        return false;
-    }
-    if (row.approveQuantity > row.quantity) {
-        alert("Approve Quantity cannot be greater than Quantity.");
-        return false;
-    }
-    return true;
-};
+    const validateRow = (row: any) => {
+        if (row.approveQuantity <= 0) {
+            alert("Approve Quantity must be greater than 0.");
+            return false;
+        }
+        if (row.approveQuantity > row.quantity) {
+            alert("Approve Quantity cannot be greater than Quantity.");
+            return false;
+        }
+        return true;
+    };
     const formik = useFormik({
         initialValues: {
             indentId: location.state.indentId,
@@ -207,19 +198,19 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
             releasedOn: defaultValues,
             postedOn: defaultValues,
             indentDetail: [],
-            srn: location.state.srn
+            srn: location.state.srn,
         },
         onSubmit: async (values) => {
             const validTableData = tableData.filter(validateRow);
             if (validTableData.length !== tableData.length) {
                 return;
             }
-        
-            console.log('values', values)
-            const response = await api.post(
-                `Master/UpsertIndent`,
-                { ...values, indentDetail: tableData }
-            );
+
+            console.log("values", values);
+            const response = await api.post(`Master/UpsertIndent`, {
+                ...values,
+                indentDetail: tableData,
+            });
             if (response.data.status === 1) {
                 setToaster(false);
                 toast.success(response.data.message);
@@ -228,7 +219,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                 setToaster(true);
                 toast.error(response.data.message);
             }
-        }
+        },
     });
 
     const back = useNavigate();
@@ -236,29 +227,27 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
     const handleInputChange = (index: number, field: string, value: number) => {
         const newData: any = [...tableData];
 
-
         const numericValue = parseFloat(value.toString());
 
         newData[index][field] = numericValue;
 
-
-        if (field === 'quantity' && numericValue < 1) {
+        if (field === "quantity" && numericValue < 1) {
             newData[index].quantity = 1;
         }
 
-
-        if (field === 'quantity' || field === 'rate' || field === 'approveQuantity') {
+        if (
+            field === "quantity" ||
+            field === "rate" ||
+            field === "approveQuantity"
+        ) {
             const quantity = newData[index].quantity;
             const rate = newData[index].rate;
             const approveQuantity = newData[index].approveQuantity;
 
-
             newData[index].amount = rate * approveQuantity;
         }
 
-
         setTableData(newData);
-
 
         // if (newData[index].quantity >= 1 && newData[index].rate > 0 && newData[index].approveQuantity >= 1) {
         //     if (index === tableData.length - 1) {
@@ -266,7 +255,6 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         //     }
         // }
     };
-
 
     const addRow = () => {
         setTableData([
@@ -288,7 +276,6 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
         ]);
     };
 
-
     const deleteRow = (index: any) => {
         const newData = tableData.filter((_, i) => i !== index);
         setTableData(newData);
@@ -306,8 +293,7 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                 }}
             >
                 <CardContent>
-
-                    <Grid item xs={12} container spacing={2} >
+                    <Grid item xs={12} container spacing={2}>
                         <Grid item lg={2} md={2} xs={2} marginTop={2}>
                             <Button
                                 type="submit"
@@ -321,7 +307,14 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                 <ArrowBackSharpIcon />
                             </Button>
                         </Grid>
-                        <Grid item lg={7} md={7} xs={7} alignItems="center" justifyContent="center">
+                        <Grid
+                            item
+                            lg={7}
+                            md={7}
+                            xs={7}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
                             <Typography
                                 gutterBottom
                                 variant="h5"
@@ -352,26 +345,26 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                     <form onSubmit={formik.handleSubmit}>
                         {toaster === false ? "" : <ToastApp />}
                         <Grid item xs={12} container spacing={2}>
-
                             <Grid item lg={4} xs={12}>
                                 <TextField
                                     id="indentNo"
                                     name="indentNo"
-                                    label={<CustomLabel text={t("text.IndentNO")} required={false} />}
+                                    label={
+                                        <CustomLabel text={t("text.IndentNO")} required={false} />
+                                    }
                                     value={formik.values.indentNo}
-
                                     size="small"
                                     fullWidth
-
                                 />
                             </Grid>
-
 
                             <Grid item lg={4} xs={12}>
                                 <TextField
                                     id="indentDate"
                                     name="indentDate"
-                                    label={<CustomLabel text={t("text.indentDate")} required={false} />}
+                                    label={
+                                        <CustomLabel text={t("text.indentDate")} required={false} />
+                                    }
                                     value={formik.values.indentDate}
                                     placeholder={t("text.indentDate")}
                                     size="small"
@@ -382,10 +375,6 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                     InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
-
-
-
-
 
                             {/* <Grid item xs={12} sm={4} lg={4}>
                                 <Autocomplete
@@ -414,40 +403,90 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                 />
                             </Grid> */}
 
-
-
-
-
-
-
-
-
                             <Grid item xs={12}>
-
-
                                 <div style={{ overflowX: "scroll", margin: 0, padding: 0 }}>
-                                    <Table style={{ borderCollapse: 'collapse', width: '100%', border: '1px solid black' }}>
-                                    <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                                    <Table
+                                        style={{
+                                            borderCollapse: "collapse",
+                                            width: "100%",
+                                            border: "1px solid black",
+                                        }}
+                                    >
+                                        <thead
+                                            style={{
+                                                backgroundColor: `var(--grid-headerBackground)`,
+                                                color: `var(--grid-headerColor)`,
+                                            }}
+                                        >
                                             <tr>
-
                                                 {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
-                                                <th style={{ border: '1px solid black', textAlign: 'center' }}>{t("text.Action")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.itemName")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Unit")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.quantity")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.approveQuantity")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.Rate")}</th>
-                                                <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px' }}>{t("text.totalAmount")}</th>
-
-
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    {t("text.Action")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.itemName")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.Unit")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.quantity")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.approveQuantity")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.Rate")}
+                                                </th>
+                                                <th
+                                                    style={{
+                                                        border: "1px solid black",
+                                                        textAlign: "center",
+                                                        padding: "5px",
+                                                    }}
+                                                >
+                                                    {t("text.totalAmount")}
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {tableData.map((row: any, index: any) => (
-                                                <tr key={row.id} style={{ border: '1px solid black' }}>
+                                                <tr key={row.id} style={{ border: "1px solid black" }}>
                                                     {/* <td style={{ border: '1px solid black', textAlign: 'center' }}>{index + 1}</td> */}
                                                     <td
                                                         style={{
@@ -459,13 +498,12 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                                             onClick={() => {
                                                                 addRow();
                                                             }}
-
                                                             style={{ cursor: "pointer" }}
                                                         />
                                                         <DeleteIcon
                                                             onClick={() => {
                                                                 if (tableData.length > 1) {
-                                                                    deleteRow(index)
+                                                                    deleteRow(index);
                                                                 } else {
                                                                     alert("Atleast one row should be there");
                                                                 }
@@ -485,16 +523,20 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                                             options={itemOption}
                                                             fullWidth
                                                             size="small"
-                                                            value={itemOption.find((opt: any) => opt.value === row.itemId) || null}
+                                                            value={
+                                                                itemOption.find(
+                                                                    (opt: any) => opt.value === row.itemId
+                                                                ) || null
+                                                            }
                                                             onChange={(e: any, newValue: any) => {
                                                                 if (!newValue) {
-                                                                    return
+                                                                    return;
                                                                 } else {
                                                                     handleInputChange(
                                                                         index,
                                                                         "itemId",
                                                                         newValue?.value
-                                                                    )
+                                                                    );
                                                                 }
                                                             }}
                                                             renderInput={(params) => (
@@ -511,25 +553,32 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                                         />
                                                     </td>
 
-
-                                                    <td style={{ border: '1px solid black', textAlign: 'center' }}>
-
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
                                                         <Autocomplete
                                                             disablePortal
                                                             id="combo-box-demo"
                                                             options={unitOptions}
                                                             fullWidth
                                                             size="small"
-                                                            value={unitOptions.find((opt: any) => opt.value === row.unitId) || null}
+                                                            value={
+                                                                unitOptions.find(
+                                                                    (opt: any) => opt.value === row.unitId
+                                                                ) || null
+                                                            }
                                                             onChange={(e: any, newValue: any) => {
                                                                 if (!newValue) {
-                                                                    return
+                                                                    return;
                                                                 } else {
                                                                     handleInputChange(
                                                                         index,
                                                                         "unitId",
                                                                         newValue?.value
-                                                                    )
+                                                                    );
                                                                 }
                                                             }}
                                                             renderInput={(params) => (
@@ -545,98 +594,161 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
                                                             )}
                                                         />
                                                         {/* <select
-                                                                                                                                           value={row.unitId}
-                                                                                                                                           onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                                                                                                                                           style={{ width: '90%', height: '35px' }}
-                                                                                                                                       >
-                                                                                                                                           <option value="">{t("text.SelectUnit")}</option>
-                                                                                                                                           {unitOptions.map((option) => (
-                                                                                                                                               <option key={option.value} value={option.value}>
-                                                                                                                                                   {option.label}
-                                                                                                                                               </option>
-                                                                                                                                           ))}
-                                                                                                                                       </select> */}
+                                                            value={row.unitId}
+                                                            onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                                                            style={{ width: '90%', height: '35px' }}
+                                                        >
+                                                            <option value="">{t("text.SelectUnit")}</option>
+                                                            {unitOptions.map((option) => (
+                                                                <option key={option.value} value={option.value}>
+                                                                    {option.label}
+                                                                </option>
+                                                            ))}
+                                                        </select> */}
                                                     </td>
 
-
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            padding: "5px",
+                                                            width: "10%",
+                                                            height: "35px",
+                                                        }}
+                                                    >
                                                         <TextField
-
                                                             size="small"
                                                             // type="text"
                                                             value={row.quantity}
-                                                            onChange={(e) => handleInputChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => { e.target.select() }}
+                                                            onChange={(e) =>
+                                                                handleInputChange(
+                                                                    index,
+                                                                    "quantity",
+                                                                    parseFloat(e.target.value) || 0
+                                                                )
+                                                            }
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
+                                                            onFocus={(e) => {
+                                                                e.target.select();
+                                                            }}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '10%', height: '35px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            padding: "5px",
+                                                            width: "10%",
+                                                            height: "35px",
+                                                        }}
+                                                    >
                                                         <TextField
-
                                                             size="small"
                                                             // type="text"
                                                             value={row.approveQuantity}
-                                                            onChange={(e) => handleInputChange(index, 'approveQuantity', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => { e.target.select() }}
+                                                            onChange={(e) =>
+                                                                handleInputChange(
+                                                                    index,
+                                                                    "approveQuantity",
+                                                                    parseFloat(e.target.value) || 0
+                                                                )
+                                                            }
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
+                                                            onFocus={(e) => {
+                                                                e.target.select();
+                                                            }}
                                                         />
                                                     </td>
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            width: "10%",
+                                                            height: "35px",
+                                                        }}
+                                                    >
                                                         <TextField
-
                                                             size="small"
                                                             // type="text"
                                                             value={row.rate}
-                                                            onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                                                            onFocus={(e) => { e.target.select() }}
+                                                            onChange={(e) =>
+                                                                handleInputChange(
+                                                                    index,
+                                                                    "rate",
+                                                                    parseFloat(e.target.value) || 0
+                                                                )
+                                                            }
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
+                                                            onFocus={(e) => {
+                                                                e.target.select();
+                                                            }}
                                                         />
                                                     </td>
 
-                                                    <td style={{ border: '1px solid black', textAlign: 'center', width: '10%', height: '35px' }}>
+                                                    <td
+                                                        style={{
+                                                            border: "1px solid black",
+                                                            textAlign: "center",
+                                                            width: "10%",
+                                                            height: "35px",
+                                                        }}
+                                                    >
                                                         <TextField
                                                             // type="number"
                                                             value={row.amount.toFixed(2)}
                                                             size="small"
-                                                            inputProps={{ "aria-readonly": true }}
-
+                                                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                                                         />
                                                     </td>
-
                                                 </tr>
                                             ))}
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <td colSpan={6} style={{ textAlign: "right", fontWeight: "bold" }}>
+                                                <td
+                                                    colSpan={6}
+                                                    style={{ textAlign: "right", fontWeight: "bold" }}
+                                                >
                                                     {t("text.Totalnetamount")}
-
                                                 </td>
-                                                <td style={{ textAlign: "center", border: "1px solid black" }}>
-                                                    {tableData.reduce((acc: any, row: any) => acc + (parseFloat(row.amount) || 0), 0).toFixed(2)}
+                                                <td
+                                                    style={{
+                                                        textAlign: "right",
+                                                        border: "1px solid black",
+                                                    }}
+                                                >
+                                                    {tableData
+                                                        .reduce(
+                                                            (acc: any, row: any) =>
+                                                                acc + (parseFloat(row.amount) || 0),
+                                                            0
+                                                        )
+                                                        .toFixed(2)}
                                                 </td>
                                             </tr>
-
-
                                         </tfoot>
                                     </Table>
-                                </div>   </Grid>
-
-
+                                </div>{" "}
+                            </Grid>
 
                             <Grid item xs={12} md={12} lg={12}>
                                 <TextField
                                     placeholder={t("text.Remark")}
-                                    onChange={(e) => formik.setFieldValue('remark', e.target.value)}
+                                    onChange={(e) =>
+                                        formik.setFieldValue("remark", e.target.value)
+                                    }
                                     value={formik.values.remark}
                                     style={{
-                                        width: '100%',
-                                        height: 'auto',
-                                        border: '1px solid #ccc',
-                                        padding: '8px',
-                                        borderRadius: '4px',
-                                        fontSize: '16px',
-                                        resize: 'none',
-                                    }} />
+                                        width: "100%",
+                                        height: "auto",
+                                        border: "1px solid #ccc",
+                                        padding: "8px",
+                                        borderRadius: "4px",
+                                        fontSize: "16px",
+                                        resize: "none",
+                                    }}
+                                />
                             </Grid>
-
 
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Button
@@ -675,4 +787,3 @@ const EditWorkShopPurchaseIndent = (props: Props) => {
 };
 
 export default EditWorkShopPurchaseIndent;
-

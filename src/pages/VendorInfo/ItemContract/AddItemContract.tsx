@@ -528,7 +528,7 @@ const AddItemContract = (props: Props) => {
                             value={row.rate}
                             onChange={(e) => handleInputChange(index, 'rate', parseFloat(e.target.value) || 0)}
                             size="small"
-                            inputProps={{ "aria-readonly": true }}
+                            inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                           />
                         </td>
                       </tr>

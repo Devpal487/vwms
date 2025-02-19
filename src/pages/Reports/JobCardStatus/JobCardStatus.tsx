@@ -289,6 +289,16 @@ export default function JobCardStatus() {
             },
           },
           {
+            field: "compAppdt",
+            headerName: t("text.complaintApprovalDate"),
+            flex: 2,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complaintDate).format("DD-MM-YYYY");
+            },
+          },
+          {
             field: "jobcardDate",
             headerName: t("text.JobCardDate"),
             flex: 1.5,

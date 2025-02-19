@@ -1317,6 +1317,24 @@ const appRoutes: RouteType[] = [
             element: <EditComplaint />,
             state: "vehiclecomplaint.EditComplaint",
           },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/complaintapproval",
+            element: <ComplaintApproval />,
+            state: "vehiclecomplaint.Complaint",
+            sidebarProps: {
+              displayText: "Complaint",
+            },
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/AddComplaintApproval",
+            element: <AddComplaintApproval />,
+            state: "Admin.AddComplaintApproval",
+          },
+          {
+            path: "/vehiclemanagement/vehiclecomplaints/EditComplaintApproval",
+            element: <EditComplaintApproval />,
+            state: "Admin.EditComplaintApproval",
+          },
 
           ((localStorage.getItem("ApplicationFlow") === "outsource") ?
             {

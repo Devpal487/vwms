@@ -1,5 +1,3 @@
-
-
 import {
   Autocomplete,
   Button,
@@ -92,7 +90,7 @@ const EditStaffIndent = (props: Props) => {
   const [itemOption, setitemOption] = useState<
     { value: number; label: string; unitId?: number }[]
   >([{ value: -1, label: t("text.itemMasterId") }]);
-  
+
   const [VnoOption, setVnoOption] = useState([
     { value: -1, label: t("text.itemMasterId") },
   ]);
@@ -202,17 +200,16 @@ const EditStaffIndent = (props: Props) => {
     setitemOption(arr);
   };
   const validateRow = (row: any) => {
-    
     if (row.approveQuantity <= 0) {
-        alert("Approve Quantity must be greater than 0.");
-        return false;
+      alert("Approve Quantity must be greater than 0.");
+      return false;
     }
     if (row.approveQuantity > row.quantity) {
-        alert("Approve Quantity cannot be greater than Quantity.");
-        return false;
+      alert("Approve Quantity cannot be greater than Quantity.");
+      return false;
     }
     return true;
-};
+  };
   const formik = useFormik({
     initialValues: {
       indentId: location.state.indentId,
@@ -254,24 +251,23 @@ const EditStaffIndent = (props: Props) => {
     onSubmit: async (values) => {
       const validTableData = tableData.filter(validateRow);
       if (validTableData.length !== tableData.length) {
-          return;
+        return;
       }
-  
-      console.log('values', values)
-      const response = await api.post(
-          `Master/UpsertIndent`,
-          { ...values, indentDetail: tableData }
-      );
+
+      console.log("values", values);
+      const response = await api.post(`Master/UpsertIndent`, {
+        ...values,
+        indentDetail: tableData,
+      });
       if (response.data.status === 1) {
-          setToaster(false);
-          toast.success(response.data.message);
-          navigate("/storemanagement/indentforstaff");
+        setToaster(false);
+        toast.success(response.data.message);
+        navigate("/storemanagement/indentforstaff");
       } else {
-          setToaster(true);
-          toast.error(response.data.message);
+        setToaster(true);
+        toast.error(response.data.message);
       }
-  }
-  
+    },
   });
 
   const back = useNavigate();
@@ -542,10 +538,12 @@ const EditStaffIndent = (props: Props) => {
                       border: "1px solid black",
                     }}
                   >
-                    <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                    <thead
+                      style={{
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`,
+                      }}
+                    >
                       <tr>
                         {/* <th style={{ border: '1px solid black', textAlign: 'center', padding: '5px', width: '5%', height: '35px' }}>{t("text.SrNo")}</th> */}
                         <th
@@ -689,10 +687,15 @@ const EditStaffIndent = (props: Props) => {
                           >
                             <select
                               value={row.unitId}
-                              onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                              style={{ width: '90%', height: '35px' }}
+                              onChange={(e: any) =>
+                                handleInputChange(
+                                  index,
+                                  "unitId",
+                                  e.target.value
+                                )
+                              }
+                              style={{ width: "90%", height: "35px" }}
                             >
-                              
                               {unitOptions.map((option) => (
                                 <option key={option.value} value={option.value}>
                                   {option.label}
@@ -700,17 +703,17 @@ const EditStaffIndent = (props: Props) => {
                               ))}
                             </select>
                             {/* <select
-                                                                                                                                           value={row.unitId}
-                                                                                                                                           onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
-                                                                                                                                           style={{ width: '90%', height: '35px' }}
-                                                                                                                                       >
-                                                                                                                                           <option value="">{t("text.SelectUnit")}</option>
-                                                                                                                                           {unitOptions.map((option) => (
-                                                                                                                                               <option key={option.value} value={option.value}>
-                                                                                                                                                   {option.label}
-                                                                                                                                               </option>
-                                                                                                                                           ))}
-                                                                                                                                       </select> */}
+                              value={row.unitId}
+                              onChange={(e: any) => handleInputChange(index, 'unitId', e.target.value)}
+                              style={{ width: '90%', height: '35px' }}
+                            >
+                              <option value="">{t("text.SelectUnit")}</option>
+                              {unitOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select> */}
                           </td>
 
                           <td
@@ -735,6 +738,10 @@ const EditStaffIndent = (props: Props) => {
                               }
                               onFocus={(e) => {
                                 e.target.select();
+                              }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
                               }}
                             />
                           </td>
@@ -761,6 +768,10 @@ const EditStaffIndent = (props: Props) => {
                               onFocus={(e) => {
                                 e.target.select();
                               }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                           <td
@@ -782,6 +793,10 @@ const EditStaffIndent = (props: Props) => {
                                   parseFloat(e.target.value) || 0
                                 )
                               }
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                               onFocus={(e) => {
                                 e.target.select();
                               }}
@@ -800,7 +815,10 @@ const EditStaffIndent = (props: Props) => {
                               // type="number"
                               value={row.amount.toFixed(2)}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{
+                                style: { textAlign: "right" },
+                                "aria-readonly": true,
+                              }}
                             />
                           </td>
                         </tr>
@@ -816,7 +834,7 @@ const EditStaffIndent = (props: Props) => {
                         </td>
                         <td
                           style={{
-                            textAlign: "center",
+                            textAlign: "right",
                             border: "1px solid black",
                           }}
                         >

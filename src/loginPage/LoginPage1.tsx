@@ -319,7 +319,7 @@ const LoginPage1 = () => {
             setLoading(true);
             const response = await api.post("Auth/login", values);
 
-            console.log("values", values);
+            //console.log("values", values);
             // Check if login is successful
             if (response.data.status === 1) {
                localStorage.setItem(

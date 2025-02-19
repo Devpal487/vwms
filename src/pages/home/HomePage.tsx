@@ -106,6 +106,7 @@ export default function HomePage() {
   const [searchTerm3, setSearchTerm3] = useState("");
   const [searchTerm4, setSearchTerm4] = useState("");
   const [searchTerm5, setSearchTerm5] = useState("");
+  const [totalComplaints, setTotalComplaints] = useState(0);
 
   let navigate = useNavigate();
   // const handleClick1 = (key: any) => {
@@ -322,7 +323,7 @@ export default function HomePage() {
           { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
           { field: "effectiveDate", headerName: "Effective Date", flex: 1 },
           { field: "todate", headerName: "Expiry Date", flex: 1 },
-          { field: "attachMentName", headerName: "Document", flex: 1 },
+          { field: "attachment", headerName: "Document", flex: 1 },
           { field: "licenceType", headerName: "Document Type", flex: 1 },
         ];
         setColumns(dynamicColumns);
@@ -1144,7 +1145,7 @@ th, td {
               <td>${row.vehicleNo}</td>
               <td>${row.effectiveDate}</td>
               <td>${row.todate}</td>
-              <td>${row.attachMentName}</td>
+              <td>${row.attachment}</td>
               <td>${row.licenceType}</td>
             </tr>`
             )
@@ -1836,7 +1837,7 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                     <SearchIcon
+                                    <SearchIcon
                                       sx={{
                                         color: `var(--grid-headerBackground)`,
                                       }}
@@ -1916,7 +1917,7 @@ th, td {
                               InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                     <SearchIcon
+                                    <SearchIcon
                                       sx={{
                                         color: `var(--grid-headerBackground)`,
                                       }}
@@ -2105,6 +2106,12 @@ th, td {
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
+                                    },
                                   }}
                                 />
                               </div>
@@ -2217,6 +2224,12 @@ th, td {
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
+                                    },
                                   }}
                                 />
                               </div>
@@ -2289,15 +2302,15 @@ th, td {
                                       },
                                     },
                                     {
-                                      field: "attachMentName",
+                                      field: "attachment",
                                       headerName: t("text.Document"),
                                       flex: 1.5,
                                     },
-                                    {
-                                      field: "licenceType",
-                                      headerName: t("text.DocumentType"),
-                                      flex: 1,
-                                    },
+                                    // {
+                                    //   field: "licenceType",
+                                    //   headerName: t("text.DocumentType"),
+                                    //   flex: 1,
+                                    // },
                                   ]}
                                   autoHeight
                                   pageSizeOptions={[5, 10, 25, 50, 100].map(
@@ -2322,6 +2335,12 @@ th, td {
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
+                                    },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
                                     },
                                   }}
                                 />
@@ -2424,6 +2443,12 @@ th, td {
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
+                                    },
                                   }}
                                 />
                               </div>
@@ -2470,10 +2495,36 @@ th, td {
                                   }
                                   //rows={IssuedStatusOption.length > 0 ? IssuedStatusOption : []}
                                   columns={[
+                                    // {
+                                    //   field: "vehicleno",
+                                    //   headerName: t("text.vehicleNo12"),
+                                    //   flex: 1,
+                                    // },
                                     {
                                       field: "vehicleno",
                                       headerName: t("text.vehicleNo12"),
                                       flex: 1,
+                                      renderCell: (params) => (
+                                        <span
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "#007bff",
+                                          }}
+                                          onClick={() => {
+                                            navigate(
+                                              `/vehiclemanagement/vehiclecomplaints/jobworkchallanrecieve`,
+                                              {
+                                                state: {
+                                                  vehicleno:
+                                                    params.row.vehicleno,
+                                                },
+                                              }
+                                            );
+                                          }}
+                                        >
+                                          {params.row.vehicleno}
+                                        </span>
+                                      ),
                                     },
                                     {
                                       field: "noOfServices",
@@ -2514,6 +2565,12 @@ th, td {
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
+                                    },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
                                     },
                                   }}
                                 />
@@ -2600,6 +2657,12 @@ th, td {
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
+                                    },
+                                    "& .MuiDataGrid-iconButtonContainer": {
+                                      color: "#fff !important", // Change arrow color
+                                    },
+                                    "& .MuiDataGrid-sortIcon": {
+                                      color: "#fff !important", // Ensures sort icon color change
                                     },
                                   }}
                                 />

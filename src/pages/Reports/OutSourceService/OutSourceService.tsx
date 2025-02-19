@@ -70,17 +70,13 @@ export default function OutSourceService() {
     { value: -1, label: "Select Vehicle No " },
   ]);
 
-
   const [VendorOption, setVendorOption] = useState([
     { value: -1, label: "Select Vendor " },
   ]);
 
   const [Vend, setVend] = useState("");
 
-
   const [vNO, setVno] = useState("");
-
-
 
   const handleFormatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFormat((event.target as HTMLInputElement).value);
@@ -102,14 +98,10 @@ export default function OutSourceService() {
       Vendor: "",
       Service: "",
       JobCardNo: "",
-
     },
     validationSchema: Yup.object({
-      jobCardDatefrom: Yup.string()
-        .required("JobCard from Date required"),
-      jobCardDateTo: Yup.string()
-        .required("JobCard To Date required"),
-
+      jobCardDatefrom: Yup.string().required("JobCard from Date required"),
+      jobCardDateTo: Yup.string().required("JobCard To Date required"),
     }),
     onSubmit: async (values) => {
       //   const response = await api.post(
@@ -130,18 +122,21 @@ export default function OutSourceService() {
   // Handle Download Button Click
   const handleDownload = async () => {
     const collectData = {
-      "vehicleNo": vNO,
-      "jobCardNo": formik.values.JobCardNo,
-      "serviceName": formik.values.Service,
-      "vendor": Vend,
-      "jobCardDatefrom": formik.values.jobCardDatefrom,
-      "jobCardDateTo": formik.values.jobCardDateTo,
+      vehicleNo: vNO,
+      jobCardNo: formik.values.JobCardNo,
+      serviceName: formik.values.Service,
+      vendor: Vend,
+      jobCardDatefrom: formik.values.jobCardDatefrom,
+      jobCardDateTo: formik.values.jobCardDateTo,
       show: false,
       exportOption: selectedFormat, // .pdf, .xls, or TabularExc
     };
 
     try {
-      const response = await api.post(`Report/GetServiceVehicleApi`, collectData);
+      const response = await api.post(
+        `Report/GetServiceVehicleApi`,
+        collectData
+      );
 
       if (response.data.status === "Success" && response.data.base64) {
         const base64String = response.data.base64;
@@ -185,14 +180,11 @@ export default function OutSourceService() {
   const { t } = useTranslation();
 
   useEffect(() => {
-
     getVendor();
     getVehicleNo();
   }, []);
 
-
   const getVehicleNo = () => {
-
     api.get(`Master/GetVehicleDetail?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.vehicleNo,
@@ -202,16 +194,13 @@ export default function OutSourceService() {
     });
   };
 
-
   const getVendor = () => {
-
     const collectData = {
-
-      "venderId": -1,
-      "countryId": 0,
-      "stateId": 0,
-      "cityId": 0
-    }
+      venderId: -1,
+      countryId: 0,
+      stateId: 0,
+      cityId: 0,
+    };
 
     api.post(`Master/GetVendorMaster`, collectData).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
@@ -222,16 +211,15 @@ export default function OutSourceService() {
     });
   };
 
-
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo": vNO,
-        "jobCardNo": formik.values.JobCardNo,
-        "serviceName": formik.values.Service,
-        "vendor": Vend,
-        "jobCardDatefrom": formik.values.jobCardDatefrom,
-        "jobCardDateTo": formik.values.jobCardDateTo,
+        vehicleNo: vNO,
+        jobCardNo: formik.values.JobCardNo,
+        serviceName: formik.values.Service,
+        vendor: Vend,
+        jobCardDatefrom: formik.values.jobCardDatefrom,
+        jobCardDateTo: formik.values.jobCardDateTo,
         show: true,
         exportOption: "selectedFormat",
       };
@@ -264,25 +252,26 @@ export default function OutSourceService() {
           // },
           {
             field: "vehicleNo",
-            headerName: t("text.VehicleNo"),
+            headerName: t("text.VehicleNum"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 110
           },
           {
             field: "jobCardNo",
-            headerName: t("text.JobCardNo"),
+            headerName: t("text.JobCardNum"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-
             cellClassName: "wrap-text", // Added here
+            minWidth: 110
           },
           {
             field: "itemName",
-            headerName: t("text.ItemName"),
-            flex: 1.5,
+            headerName: t("text.VehicleName"),
+            flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-
+            minWidth: 120,
             cellClassName: "wrap-text", // Added here
           },
 
@@ -292,37 +281,57 @@ export default function OutSourceService() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 140
           },
-          // {
-          //   field: "complainDate",
-          //   headerName: t("text.ComplainDate"),
-          //   flex: 1,
-          //   cellClassName: "wrap-text", // Added here
-          //   renderCell: (params) => {
-          //     return moment(params.row.complainDate).format("DD-MM-YYYY");
-          //   },
-          // },
-
-          // {
-          //   field: "jobCardDate",
-          //   headerName: t("text.JobCardDate"),
-          //   flex: 1,
-          //   cellClassName: "wrap-text", // Added here
-          //   renderCell: (params) => {
-          //     return moment(params.row.jobCardDate).format("DD-MM-YYYY");
-          //   },
-          // },
-
-
+          {
+            field: "amount",
+            headerName: t("text.Amount"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 80
+          },
           {
             field: "vendor",
             headerName: t("text.Vendor"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
+            minWidth: 140
           },
 
+          {
+            field: "complainDate",
+            headerName: t("text.ComplainDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.complainDate).format("DD-MM-YYYY");
+            },
+            minWidth: 130
+          },
 
+          {
+            field: "jobCardDate",
+            headerName: t("text.JobCardDate"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            renderCell: (params) => {
+              return moment(params.row.jobCardDate).format("DD-MM-YYYY");
+            },
+            minWidth: 130
+          },
+
+          {
+            field: "challanStatus",
+            headerName: t("text.Status"),
+            flex: 1,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+            minWidth: 100
+          },
 
         ];
         setColumns(columns as any);
@@ -337,7 +346,6 @@ export default function OutSourceService() {
     ...column,
   }));
 
-
   const styles = `
   .wrap-text {
     white-space: normal !important;
@@ -347,8 +355,6 @@ export default function OutSourceService() {
 `;
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
-
-
 
   return (
     <>
@@ -389,7 +395,7 @@ export default function OutSourceService() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} >
+          <Grid item xs={12} container spacing={2}>
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
@@ -406,7 +412,6 @@ export default function OutSourceService() {
 
                   setVno(newValue.label);
                 }}
-
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -421,9 +426,6 @@ export default function OutSourceService() {
                 popupIcon={null}
               />
             </Grid>
-
-
-
 
             <Grid xs={12} md={4} lg={4} item>
               <TextField
@@ -440,7 +442,6 @@ export default function OutSourceService() {
               />
             </Grid>
 
-
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.JobCardNo")} />}
@@ -455,7 +456,6 @@ export default function OutSourceService() {
                 onBlur={formik.handleBlur}
               />
             </Grid>
-
 
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
@@ -473,7 +473,6 @@ export default function OutSourceService() {
 
                   setVend(newValue.label);
                 }}
-
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -503,8 +502,14 @@ export default function OutSourceService() {
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.jobCardDatefrom && Boolean(formik.errors.jobCardDatefrom)}
-                helperText={formik.touched.jobCardDatefrom && formik.errors.jobCardDatefrom}
+                error={
+                  formik.touched.jobCardDatefrom &&
+                  Boolean(formik.errors.jobCardDatefrom)
+                }
+                helperText={
+                  formik.touched.jobCardDatefrom &&
+                  formik.errors.jobCardDatefrom
+                }
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
@@ -522,12 +527,16 @@ export default function OutSourceService() {
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.jobCardDateTo && Boolean(formik.errors.jobCardDateTo)}
-                helperText={formik.touched.jobCardDateTo && formik.errors.jobCardDateTo}
+                error={
+                  formik.touched.jobCardDateTo &&
+                  Boolean(formik.errors.jobCardDateTo)
+                }
+                helperText={
+                  formik.touched.jobCardDateTo && formik.errors.jobCardDateTo
+                }
                 InputLabelProps={{ shrink: true }}
               />
             </Grid>
-
 
             <Grid item xs={12} sm={12} lg={12}>
               <FormControl component="fieldset">
@@ -555,10 +564,7 @@ export default function OutSourceService() {
               </FormControl>
             </Grid>
 
-
             <Grid xs={12} sm={4} md={4} item>
-
-
               <Button
                 type="submit"
                 fullWidth
@@ -613,7 +619,6 @@ export default function OutSourceService() {
                 Show
               </Button> */}
             </Grid>
-
 
             <Grid xs={12} sm={4} md={4} item>
               <Button

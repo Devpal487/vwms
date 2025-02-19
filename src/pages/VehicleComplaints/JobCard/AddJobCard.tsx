@@ -1484,7 +1484,7 @@ const AddJobCard = (props: Props) => {
                               }}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1499,7 +1499,7 @@ const AddJobCard = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'unitRate', parseFloat(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               sx={{ width: "80px" }}
                             />
                           </td>
@@ -1521,7 +1521,7 @@ const AddJobCard = (props: Props) => {
                               onFocus={(e) => e.target.select()}
                               sx={{ width: "90px" }}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1539,7 +1539,7 @@ const AddJobCard = (props: Props) => {
                               onFocus={(e) => e.target.select()}
                               size="small"
                               sx={{ width: "90px" }}
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1569,7 +1569,7 @@ const AddJobCard = (props: Props) => {
                               onChange={(e) => handleInputChange(index, 'challanNo', parseInt(e.target.value) || 0)}
                               onFocus={(e) => e.target.select()}
                               size="small"
-                              inputProps={{ "aria-readonly": true }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td

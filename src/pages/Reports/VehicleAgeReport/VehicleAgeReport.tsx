@@ -70,7 +70,9 @@ export default function VehicleAgeReport() {
     { value: -1, label: "Select Vehicle No " },
   ]);
 
-  const [EmpOption, setEmpOption] = useState([{ value: -1, label: "Select Employee" }]);
+  const [EmpOption, setEmpOption] = useState([
+    { value: -1, label: "Select Employee" },
+  ]);
   const [vNO, setVno] = useState("");
 
   const [IsEmp, setEmployee] = useState("");
@@ -82,7 +84,6 @@ export default function VehicleAgeReport() {
   };
   const formik = useFormik({
     initialValues: {
-
       fromDate: "",
       toDate: "",
       days: 0,
@@ -116,18 +117,18 @@ export default function VehicleAgeReport() {
 
   const handleDownload = async () => {
     const collectData = {
-     "vehicleNo": vNO,
-        "empName": IsEmp,
-        "itemCategory": itemCat,
-        "purchaseYearfrom": parseInt(formik.values.PurchaseYearFrom),
-        "purchaseYearTo": parseInt(formik.values.PurchaseYearTo),
+      vehicleNo: vNO,
+      empName: IsEmp,
+      itemCategory: itemCat,
+      purchaseYearfrom: parseInt(formik.values.PurchaseYearFrom),
+      purchaseYearTo: parseInt(formik.values.PurchaseYearTo),
       show: false,
       exportOption: selectedFormat, // .pdf, .xls, or TabularExc
     };
-  
+
     try {
       const response = await api.post(`Report/GetVehicleAgeApi`, collectData);
-  
+
       if (response.data.status === "Success" && response.data.base64) {
         const base64String = response.data.base64;
         const byteCharacters = atob(base64String);
@@ -135,10 +136,10 @@ export default function VehicleAgeReport() {
           .fill(0)
           .map((_, i) => byteCharacters.charCodeAt(i));
         const byteArray = new Uint8Array(byteNumbers);
-  
+
         let fileType = "";
         let fileName = response.data.fileName || "Report";
-  
+
         if (selectedFormat === ".pdf") {
           fileType = "application/pdf";
           fileName += ".pdf";
@@ -149,7 +150,7 @@ export default function VehicleAgeReport() {
           fileType = "application/vnd.ms-excel";
           fileName += ".xls";
         }
-  
+
         const blob = new Blob([byteArray], { type: fileType });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
@@ -176,10 +177,7 @@ export default function VehicleAgeReport() {
     getVehicleNo();
   }, []);
 
-
-
   const getVehicleNo = () => {
-
     api.get(`Master/GetVehicleDetail?ItemMasterId=-1`).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
         label: item.vehicleNo,
@@ -191,9 +189,9 @@ export default function VehicleAgeReport() {
 
   const getEmp = () => {
     const collectData = {
-      "empid": -1,
-      "userId": ""
-    }
+      empid: -1,
+      userId: "",
+    };
 
     api.post(`Employee/GetEmployee`, collectData).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
@@ -206,9 +204,8 @@ export default function VehicleAgeReport() {
 
   const getCategory = () => {
     const collectData = {
-      "itemCategoryId": -1,
-
-    }
+      itemCategoryId: -1,
+    };
 
     api.post(`ItemCategory/GetItemCategory`, collectData).then((res) => {
       const arr = res?.data?.data.map((item: any) => ({
@@ -219,23 +216,18 @@ export default function VehicleAgeReport() {
     });
   };
 
-
-
   const fetchZonesData = async () => {
     try {
       const collectData = {
-        "vehicleNo": vNO,
-        "empName": IsEmp,
-        "itemCategory": itemCat,
-        "purchaseYearfrom": parseInt(formik.values.PurchaseYearFrom),
-        "purchaseYearTo": parseInt(formik.values.PurchaseYearTo),
-        show: true, 
-        exportOption: "selectedFormat", 
+        vehicleNo: vNO,
+        empName: IsEmp,
+        itemCategory: itemCat,
+        purchaseYearfrom: parseInt(formik.values.PurchaseYearFrom),
+        purchaseYearTo: parseInt(formik.values.PurchaseYearTo),
+        show: true,
+        exportOption: "selectedFormat",
       };
-      const response = await api.post(
-        `Report/GetVehicleAgeApi`,
-        collectData
-      );
+      const response = await api.post(`Report/GetVehicleAgeApi`, collectData);
       const data = response?.data;
 
       const Print = data.map((item: any, index: any) => ({
@@ -259,23 +251,16 @@ export default function VehicleAgeReport() {
           //   headerClassName: "MuiDataGrid-colCell",
           //   cellClassName: "wrap-text", // Added here
           // },
-          {
-            field: "itemCode",
-            headerName: t("text.itemCode"),
-            flex: 1.3,
-            cellClassName: "wrap-text", // Added here
-            headerClassName: "MuiDataGrid-colCell",
-            // renderCell: (params) => {
-            //   return moment(params.row.trackDate).format("DD-MM-YYYY");
-            // },
-          },
-          {
-            field: "itemName",
-            headerName: t("text.itemName"),
-            flex: 1.2,
-             headerClassName: "MuiDataGrid-colCell",
-            cellClassName: "wrap-text", // Added here
-          },
+          // {
+          //   field: "itemCode",
+          //   headerName: t("text.itemCode"),
+          //   flex: 1.3,
+          //   cellClassName: "wrap-text", // Added here
+          //   headerClassName: "MuiDataGrid-colCell",
+          //   // renderCell: (params) => {
+          //   //   return moment(params.row.trackDate).format("DD-MM-YYYY");
+          //   // },
+          // },
           {
             field: "vehicleNo",
             headerName: t("text.vehicleNo"),
@@ -284,51 +269,69 @@ export default function VehicleAgeReport() {
             cellClassName: "wrap-text", // Added here
           },
           {
+            field: "itemName",
+            headerName: t("text.itemName"),
+            flex: 1.2,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+          {
             field: "purchaseYear",
             headerName: t("text.purchaseYear"),
             flex: 1.3,
-              headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+          {
+            field: "age",
+            headerName: t("text.age"),
+            flex: 0.7,
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemType",
             headerName: t("text.itemType"),
             flex: 1.5,
-           headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "itemCategory",
-            headerName: t("text.itemCategory"),
+            headerName: t("text.ItemCategory"),
             flex: 1.5,
             headerClassName: "MuiDataGrid-colCell",
-           
+
             cellClassName: "wrap-text", // Added here
           },
           {
             field: "empName",
             headerName: t("text.empName"),
             flex: 1.7,
-             headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-          // {
-          //   field: "empMobileNo",
-          //   headerName: t("text.empMobileNo"),
-          //   flex: 1.5,
-          //   headerClassName: "MuiDataGrid-colCell",
-          //   cellClassName: "wrap-text", // Added here
-          // },
           {
-            field: "age",
-            headerName: t("text.age"),
+            field: "empMobileNo",
+            headerName: t("text.empMobileNo"),
             flex: 1.5,
-            //  align: 'right',
-            // headerAlign: 'right',
-             headerClassName: "MuiDataGrid-colCell",
+            headerClassName: "MuiDataGrid-colCell",
             cellClassName: "wrap-text", // Added here
           },
-
+          {
+            field: "service",
+            headerName: t("text.TotalServices"),
+            flex: 1.5,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
+          {
+            field: "expense",
+            headerName: t("text.TotalExpense"),
+            flex: 1.5,
+            headerClassName: "MuiDataGrid-colCell",
+            cellClassName: "wrap-text", // Added here
+          },
         ];
         setColumns(columns as any);
       }
@@ -342,7 +345,6 @@ export default function VehicleAgeReport() {
     ...column,
   }));
 
-
   const styles = `
   .wrap-text {
     white-space: normal !important;
@@ -352,8 +354,6 @@ export default function VehicleAgeReport() {
 `;
 
   document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
-
-
 
   return (
     <>
@@ -394,7 +394,7 @@ export default function VehicleAgeReport() {
 
           <Box height={10} />
 
-          <Grid item xs={12} container spacing={2} >
+          <Grid item xs={12} container spacing={2}>
             <Grid item xs={12} sm={4} lg={4}>
               <Autocomplete
                 //multiple
@@ -405,10 +405,8 @@ export default function VehicleAgeReport() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-
                   setVno(newValue?.label);
                 }}
-
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -424,7 +422,6 @@ export default function VehicleAgeReport() {
               />
             </Grid>
 
-
             <Grid xs={12} md={4} lg={4} item>
               <TextField
                 label={<CustomLabel text={t("text.PurchaseYearFrom")} />}
@@ -439,7 +436,6 @@ export default function VehicleAgeReport() {
                 onBlur={formik.handleBlur}
               />
             </Grid>
-
 
             <Grid xs={12} md={4} lg={4} item>
               <TextField
@@ -466,10 +462,8 @@ export default function VehicleAgeReport() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-
                   setEmployee(newValue?.label);
                 }}
-
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -496,10 +490,8 @@ export default function VehicleAgeReport() {
                 fullWidth
                 size="small"
                 onChange={(event: any, newValue: any) => {
-
                   setItemCat(newValue?.label);
                 }}
-
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
@@ -511,36 +503,34 @@ export default function VehicleAgeReport() {
                     }
                   />
                 )}
-              //popupIcon={null}
+                //popupIcon={null}
               />
             </Grid>
             <Grid item xs={12} sm={12} lg={12}>
-                        <FormControl component="fieldset">
-                          <RadioGroup
-                            row
-                            value={selectedFormat}
-                            onChange={handleFormatChange}
-                          >
-                            <FormControlLabel
-                              value=".pdf"
-                              control={<Radio />}
-                              label={t("text.pdf")}
-                            />
-                            <FormControlLabel
-                              value=".xls"
-                              control={<Radio />}
-                              label={t("text.excel")}
-                            />
-                            <FormControlLabel
-                              value="TabularExc"
-                              control={<Radio />}
-                              label={t("text.tabular")}
-                            />
-                          </RadioGroup>
-                        </FormControl>
-                      </Grid>
-
-
+              <FormControl component="fieldset">
+                <RadioGroup
+                  row
+                  value={selectedFormat}
+                  onChange={handleFormatChange}
+                >
+                  <FormControlLabel
+                    value=".pdf"
+                    control={<Radio />}
+                    label={t("text.pdf")}
+                  />
+                  <FormControlLabel
+                    value=".xls"
+                    control={<Radio />}
+                    label={t("text.excel")}
+                  />
+                  <FormControlLabel
+                    value="TabularExc"
+                    control={<Radio />}
+                    label={t("text.tabular")}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
 
             <Grid xs={12} sm={4} md={4} item>
               <Button
@@ -568,7 +558,6 @@ export default function VehicleAgeReport() {
                 {t("text.show")}
               </Button>
             </Grid>
-
 
             <Grid xs={12} sm={4} md={4} item>
               <Button
@@ -677,21 +666,6 @@ export default function VehicleAgeReport() {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 
 // import MuiDrawer from "@mui/material/Drawer";
@@ -759,7 +733,7 @@ export default function VehicleAgeReport() {
 
 // import InputAdornment from "@mui/material/InputAdornment";
 // import {
- 
+
 //   CardContent,
 
 //   // Typography,
@@ -775,17 +749,14 @@ export default function VehicleAgeReport() {
 //   Flag,
 // } from "@mui/icons-material";
 
-
 // import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 // import TreeView from "@mui/x-tree-view/TreeView";
 // import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-
 
 // import { FaRegFolderOpen } from "react-icons/fa6";
 // import DescriptionIcon from '@mui/icons-material/Description';
 
 // import { FaFileLines } from "react-icons/fa6";
-
 
 // const drawerWidth = 225;
 
@@ -1823,7 +1794,7 @@ export default function VehicleAgeReport() {
 //                     {text.name.charAt(0)}
 //                   </div>
 //                 )}
-              
+
 //                 <ListItemText primary={text.name} sx={{ opacity: open ? 1 : 0 }} />
 //               </ListItem>
 //               <ListItemIcon sx={{ opacity: open ? 1 : 0, justifyContent: "end" }}>

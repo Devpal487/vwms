@@ -73,7 +73,7 @@ export default function Flowmaster() {
                     color: "#2B4593",
                     "&.Mui-checked": { color: "#2B4593" },
                   }} />}
-                  label=   {t("text.Inhouse")}
+                  label=   {t("text.InhouseAndOutsource")}
                   // label={t("Inhouse")}
                 />
               </RadioGroup>

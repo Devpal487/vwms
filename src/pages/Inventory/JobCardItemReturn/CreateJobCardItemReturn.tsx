@@ -1476,6 +1476,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                               name="BatchNo"
                               size="small"
                               sx={{ width: "150px" }}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               onChange={(e) =>
                                 handleInputChange(
                                   index,
@@ -1498,6 +1499,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                               value={row.issueQty - row.returnQty}
                               onFocus={(e) => e.target.select()}
                               // onChange={(e) => handleInputChange(index, 'stockQty', Number(row.srn - row.issueQty))}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           <td
@@ -1519,6 +1521,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                   parseInt(row.issueQty) || 0
                                 )
                               }
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                               onFocus={(e) => e.target.select()}
                             />
                           </td>
@@ -1542,6 +1545,7 @@ const CreateJobCardItemReturn = (props: Props) => {
                                 )
                               }
                               onFocus={(e) => e.target.select()}
+                              inputProps={{ style: { textAlign: "right" }, "aria-readonly": true }}
                             />
                           </td>
                           {/* <td style={{ border: '1px solid black', textAlign: 'center' }} onClick={() => deleteRow(index)}>
