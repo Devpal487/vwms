@@ -1,51 +1,42 @@
-import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
 import {
-   Button,
-   Card,
-   Grid,
-   TextField,
-   Typography,
-   Divider,
-   Box,
-   CardContent,
-   FormControl,
-   FormLabel,
-   RadioGroup,
-   FormControlLabel,
-   Radio,
-   Checkbox,
-   ListItemText,
-   IconButton,
-   InputAdornment,
-   Popover,
-   Modal,
+  Button,
+  CardContent,
+  Grid,
+  TextField,
+  Typography,
+  Divider,
+  Autocomplete,
+  Modal,
+  Box,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  IconButton,
+  InputAdornment,
+  FormControl,
+  FormLabel,
+  Checkbox,
+  ListItemText,
+  Popover,
 } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { ConfirmDialog } from "primereact/confirmdialog";
-import CircularProgress from "@mui/material/CircularProgress";
+import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "react-i18next";
-import { GridColDef } from "@mui/x-data-grid";
-import { toast, ToastContainer } from "react-toastify";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import ToastApp from "../../../ToastApp";
-import CustomLabel from "../../../CustomLable";
-import { Language, ReactTransliterate } from "react-transliterate";
 import api from "../../../utils/Url";
+import { toast } from "react-toastify";
+import ToastApp from "../../../ToastApp";
+import { ColorLens as ColorLensIcon } from "@mui/icons-material";
+import { SketchPicker } from "react-color";
+import CustomLabel from "../../../CustomLable";
+import nopdf from "../../../assets/images/imagepreview.jpg";
+import { getId, getdivisionId, getinstId } from "../../../utils/Constant";
 import Languages from "../../../Languages";
-import DataGrids from "../../../utils/Datagrids";
-import { useLocation, useNavigate } from "react-router-dom";
-import React from "react";
-import dayjs from "dayjs";
-import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { Language, ReactTransliterate } from "react-transliterate";
+import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
-import nopdf from "../../../assets/nopdf.png";
-import { getdivisionId, getId, getinstId } from "../../../utils/Constant";
-//import { SketchPicker } from "react-color";
 
 const style = {
   position: "absolute" as "absolute",
@@ -152,58 +143,124 @@ const InstituteAdd = (props: Props) => {
     setColorPickerOver(null);
   };
 
+  // const handlePanClose = () => {
+  //   setPanOpen(false);
+  // };
+
+  // const modalOpenHandle = (event: any) => {
+  //   setPanOpen(true);
+  //   if (event === "instLogo") {
+  //     setModalImg(formik.values.instLogo);
+  //   }
+  // };
+
+  // const handlePanClose1 = () => {
+  //   setOpen(false);
+  // };
+
+  // const modalOpenHandle1 = (event: any) => {
+  //   setOpen(true);
+  //   if (event === "instImage") {
+  //     setImg(formik.values.instImage);
+  //   }
+  // };
+
+  // const handlePanClose2 = () => {
+  //   setOpenImg(false);
+  // };
+
+  // const modalOpenHandle2 = (event: any) => {
+  //   setOpenImg(true);
+  //   if (event === "reportheaderimg") {
+  //     setImg(formik.values.reportheaderimg);
+  //   }
+  // };
+
+  // const handlePanClose3 = () => {
+  //   setOpenFooter(false);
+  // };
+
+  // const modalOpenHandle3 = (event: any) => {
+  //   setOpenFooter(true);
+  //   if (event === "reportfooterimg") {
+  //     setImg(formik.values.reportfooterimg);
+  //   }
+  // };
+
+  // const handlePanClose4 = () => {
+  //   setOpenHeader(false);
+  // };
+
+  // const modalOpenHandle4 = (event: any) => {
+  //   setOpenHeader(true);
+  //   if (event === "reportHeader") {
+  //     setImg(formik.values.reportHeader);
+  //   }
+  // };
+
   const handlePanClose = () => {
     setPanOpen(false);
   };
-
   const modalOpenHandle = (event: any) => {
     setPanOpen(true);
     if (event === "instLogo") {
-      setModalImg(formik.values.instLogo);
+      setModalImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instLogo)
+        ? formik.values.instLogo
+        : `data:image/jpeg;base64,${formik.values.instLogo}`);
     }
   };
 
   const handlePanClose1 = () => {
     setOpen(false);
   };
-
   const modalOpenHandle1 = (event: any) => {
     setOpen(true);
     if (event === "instImage") {
-      setImg(formik.values.instImage);
+      setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instImage)
+        ? formik.values.instImage
+        : `data:image/jpeg;base64,${formik.values.instImage}`);
+      //setImg(formik.values.instImage);
     }
   };
+
 
   const handlePanClose2 = () => {
     setOpenImg(false);
   };
-
   const modalOpenHandle2 = (event: any) => {
     setOpenImg(true);
     if (event === "reportheaderimg") {
-      setImg(formik.values.reportheaderimg);
+      //setImg(formik.values.reportheaderimg);
+      setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportheaderimg)
+        ? formik.values.reportheaderimg
+        : `data:image/jpeg;base64,${formik.values.reportheaderimg}`);
     }
   };
 
   const handlePanClose3 = () => {
     setOpenFooter(false);
   };
-
   const modalOpenHandle3 = (event: any) => {
     setOpenFooter(true);
     if (event === "reportfooterimg") {
-      setImg(formik.values.reportfooterimg);
+      //setImg(formik.values.reportfooterimg);
+      setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportfooterimg)
+        ? formik.values.reportfooterimg
+        : `data:image/jpeg;base64,${formik.values.reportfooterimg}`);
     }
   };
+
 
   const handlePanClose4 = () => {
     setOpenHeader(false);
   };
-
   const modalOpenHandle4 = (event: any) => {
     setOpenHeader(true);
     if (event === "reportHeader") {
-      setImg(formik.values.reportHeader);
+      //setImg(formik.values.reportHeader);
+      setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportHeader)
+        ? formik.values.reportHeader
+        : `data:image/jpeg;base64,${formik.values.reportHeader}`);
     }
   };
 
@@ -222,21 +279,19 @@ const InstituteAdd = (props: Props) => {
   };
 
   const otherDocChangeHandler = async (event: any, params: any) => {
-    console.log("check");
-
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const fileNameParts = file.name.split(".");
       const fileExtension = fileNameParts[fileNameParts.length - 1];
-      if (!fileExtension.toLowerCase().match(/(jpg|jpeg)$/)) {
-        alert("Only image files (jpg, jpeg) are allowed to be uploaded.");
+      if (fileExtension.toLowerCase() != "file") {
+        const base64: any = await ConvertBase64(file);
+        const base64WithoutPrefix: any = base64.replace(/^data:image\/\w+;base64,/, "");;
+        formik.setFieldValue(params, base64WithoutPrefix);
+        console.log(base64);
+      } else {
+        toast.error("Only files are allowed to be uploaded.");
         event.target.value = null;
-        return;
       }
-
-      const base64 = await ConvertBase64(file);
-      formik.setFieldValue(params, base64);
-      console.log(base64);
     }
   };
 
@@ -244,7 +299,7 @@ const InstituteAdd = (props: Props) => {
     const collectData = {
       countryId: -1,
     };
-    api.post(`Country/GetCountryMaster`, collectData).then((res) => {
+    api.post(`CountryMaster/GetCountry`, collectData).then((res) => {
       const arr = res.data.data.map((item: any) => ({
         label: item.countryName,
         value: item.countryId,
@@ -258,7 +313,7 @@ const InstituteAdd = (props: Props) => {
       stateId: -1,
       countryId: -1,
     };
-    api.post(`State/GetStateMaster`, collectData).then((res) => {
+    api.post(`StateMaster/GetState`, collectData).then((res) => {
       const arr = res.data.data.map((item: any) => ({
         label: item.stateName,
         value: item.stateId,
@@ -270,9 +325,9 @@ const InstituteAdd = (props: Props) => {
   const getCity = () => {
     const collectData = {
       cityId: -1,
-      stateId: -1,
+      //stateId: -1,
     };
-    api.post(`M10_District/GetDistrictMaster`, collectData).then((res) => {
+    api.post(`CityMaster/GetCityMaster`, collectData).then((res) => {
       const arr = res.data.data.map((item: any) => ({
         label: item.cityName,
         value: item.cityId,
@@ -282,13 +337,13 @@ const InstituteAdd = (props: Props) => {
   };
 
   const getStRoles = () => {
-    const collectData = {
-      roleId: "-1",
-    };
-    api.post(`Auth/GetRoleMaster`, collectData).then((res) => {
+    // const collectData = {
+    //   roleId: "-1",
+    // };
+    api.get(`Auth/GetRoles`).then((res) => {
       const arr = res.data.data.map((item: any) => ({
-        label: item.roleName,
-        value: item.roleId,
+        label: item.name,
+        value: item.id,
       }));
       setStRole(arr);
     });
@@ -298,10 +353,10 @@ const InstituteAdd = (props: Props) => {
     const collectData = {
       roleId: "-1",
     };
-    api.post(`Auth/GetRoleMaster`, collectData).then((res) => {
+    api.get(`Auth/GetRoles`).then((res) => {
       const arr = res.data.data.map((item: any) => ({
-        label: item.roleName,
-        value: item.roleId,
+        label: item.name,
+        value: item.id,
       }));
       setEmpRole(arr);
     });
@@ -312,7 +367,7 @@ const InstituteAdd = (props: Props) => {
       id: -1,
     };
     api
-      .post(`Institute_Master/GetInstitute_Master`, collectData)
+      .post(`Setting/GetInstitute_Master`, collectData)
       .then((res) => {
         const arr = res.data.data.map((item: any) => ({
           label: item.insname,
@@ -423,13 +478,13 @@ const InstituteAdd = (props: Props) => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const response = await api.post(
-        `Institute_Master/AddUpdateInstitute_Master`,
+        `Setting/AddUpdateInstitute_Master`,
         values
       );
       if (response.data.isSuccess) {
         setToaster(false);
         toast.success(response.data.mesg);
-        navigate("/Organisation/Organisation");
+        navigate("/Admin/Setting/oragnisation");
       } else {
         setToaster(true);
         toast.error(response.data.mesg);
@@ -1286,7 +1341,7 @@ const InstituteAdd = (props: Props) => {
                     backgroundColor: "white",
                     borderColor:
                       formik.touched.reAttenDuration &&
-                      formik.errors.reAttenDuration
+                        formik.errors.reAttenDuration
                         ? "red"
                         : "initial",
                   }}
@@ -1294,7 +1349,7 @@ const InstituteAdd = (props: Props) => {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.reAttenDuration &&
-                formik.errors.reAttenDuration ? (
+                  formik.errors.reAttenDuration ? (
                   <div style={{ color: "red", margin: "5px" }}>
                     {formik.errors.reAttenDuration}
                   </div>
@@ -1646,10 +1701,10 @@ const InstituteAdd = (props: Props) => {
                     horizontal: "left",
                   }}
                 >
-                  {/* <SketchPicker
+                  <SketchPicker
                     color={formik.values.mBackColor}
                     onChangeComplete={handleColorChange}
-                  /> */}
+                  />
                 </Popover>
               </Grid>
 
@@ -1690,10 +1745,10 @@ const InstituteAdd = (props: Props) => {
                     horizontal: "left",
                   }}
                 >
-                  {/* <SketchPicker
+                  <SketchPicker
                     color={formik.values.mOverColor}
                     onChangeComplete={handleColorChange1}
-                  /> */}
+                  />
                 </Popover>
               </Grid>
             </Grid>
@@ -1740,7 +1795,12 @@ const InstituteAdd = (props: Props) => {
                     />
                   ) : (
                     <img
-                      src={formik.values.instLogo}
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instLogo)
+                          ? formik.values.instLogo
+                          : `data:image/jpeg;base64,${formik.values.instLogo}`
+                      }
+                      //src={formik.values.instLogo}
                       style={{
                         width: 150,
                         height: 100,
@@ -1831,7 +1891,12 @@ const InstituteAdd = (props: Props) => {
                     />
                   ) : (
                     <img
-                      src={formik.values.instImage}
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instImage)
+                          ? formik.values.instImage
+                          : `data:image/jpeg;base64,${formik.values.instImage}`
+                      }
+                      // src={formik.values.instImage}
                       style={{
                         width: 150,
                         height: 100,
@@ -1855,6 +1920,7 @@ const InstituteAdd = (props: Props) => {
                   </Typography>
                 </Grid>
               </Grid>
+
 
               <Modal open={Opens} onClose={handlePanClose1}>
                 <Box sx={style}>
@@ -1880,6 +1946,7 @@ const InstituteAdd = (props: Props) => {
                 </Box>
               </Modal>
             </Grid>
+
 
             <Grid container spacing={1} item>
               <Grid
@@ -1923,7 +1990,12 @@ const InstituteAdd = (props: Props) => {
                     />
                   ) : (
                     <img
-                      src={formik.values.reportheaderimg}
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportheaderimg)
+                          ? formik.values.reportheaderimg
+                          : `data:image/jpeg;base64,${formik.values.reportheaderimg}`
+                      }
+                      //src={formik.values.reportheaderimg}
                       style={{
                         width: 150,
                         height: 100,
@@ -1947,6 +2019,7 @@ const InstituteAdd = (props: Props) => {
                   </Typography>
                 </Grid>
               </Grid>
+
 
               <Modal open={OpenImg} onClose={handlePanClose2}>
                 <Box sx={style}>
@@ -1972,6 +2045,7 @@ const InstituteAdd = (props: Props) => {
                 </Box>
               </Modal>
             </Grid>
+
 
             <Grid container spacing={1} item>
               <Grid
@@ -2015,7 +2089,12 @@ const InstituteAdd = (props: Props) => {
                     />
                   ) : (
                     <img
-                      src={formik.values.reportfooterimg}
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportfooterimg)
+                          ? formik.values.reportfooterimg
+                          : `data:image/jpeg;base64,${formik.values.reportfooterimg}`
+                      }
+                      //src={formik.values.reportfooterimg}
                       style={{
                         width: 150,
                         height: 100,
@@ -2039,6 +2118,7 @@ const InstituteAdd = (props: Props) => {
                   </Typography>
                 </Grid>
               </Grid>
+
 
               <Modal open={OpenFooter} onClose={handlePanClose3}>
                 <Box sx={style}>
@@ -2064,6 +2144,8 @@ const InstituteAdd = (props: Props) => {
                 </Box>
               </Modal>
             </Grid>
+
+
 
             <Grid container spacing={1} item>
               <Grid
@@ -2107,7 +2189,12 @@ const InstituteAdd = (props: Props) => {
                     />
                   ) : (
                     <img
-                      src={formik.values.reportHeader}
+                      src={
+                        /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportHeader)
+                          ? formik.values.reportHeader
+                          : `data:image/jpeg;base64,${formik.values.reportHeader}`
+                      }
+                      //src={formik.values.reportHeader}
                       style={{
                         width: 150,
                         height: 100,
@@ -2131,6 +2218,7 @@ const InstituteAdd = (props: Props) => {
                   </Typography>
                 </Grid>
               </Grid>
+
 
               <Modal open={OpenHeader} onClose={handlePanClose4}>
                 <Box sx={style}>
@@ -2157,6 +2245,7 @@ const InstituteAdd = (props: Props) => {
               </Modal>
             </Grid>
 
+
             <Grid
               item
               xs={12}
@@ -2169,10 +2258,10 @@ const InstituteAdd = (props: Props) => {
                   type="submit"
                   fullWidth
                   style={{
-                    
+
                     backgroundColor: `var(--grid-headerBackground)`,
                     color: `var(--grid-headerColor)`,
-                    marginTop:"10px"
+                    marginTop: "10px"
                   }}
                 >
                   {t("text.save")}

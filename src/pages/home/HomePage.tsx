@@ -197,6 +197,7 @@ export default function HomePage() {
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
+        grossPercent: (item.actprice > 0) ? (item.amount * 100 / item.actprice).toFixed(2) : 0
       }));
       setRepairOption(processedData);
       setIsLoading(false);
@@ -229,6 +230,7 @@ export default function HomePage() {
           },
           { field: "actprice", headerName: t("text.ActualPrice"), flex: 1 },
           { field: "amount", headerName: t("text.Expense"), flex: 1 },
+          { field: "amount", headerName: t("text.GrossExpenditurePercent"), flex: 1 },
           { field: "age", headerName: t("text.Age"), flex: 1 },
         ];
         setColumns(dynamicColumns);
@@ -898,8 +900,8 @@ export default function HomePage() {
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
   }));
-  useEffect(() => {}, [getTop]);
-  useEffect(() => {}, [getTop1]);
+  useEffect(() => { }, [getTop]);
+  useEffect(() => { }, [getTop1]);
   const adjustedColumns1 = columns1.map((column: any) => ({
     ...column,
   }));
@@ -935,8 +937,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row) => `
+        .map(
+          (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleTypename}</td>
@@ -944,8 +946,8 @@ export default function HomePage() {
               <td>${row.amount}</td>
               <td>${row.age}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1069,8 +1071,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row) => `
+        .map(
+          (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.noOfComplaints}</td>
@@ -1078,8 +1080,8 @@ export default function HomePage() {
               <td>${row.amount}</td>
              
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1139,8 +1141,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.effectiveDate}</td>
@@ -1148,8 +1150,8 @@ th, td {
               <td>${row.attachment}</td>
               <td>${row.licenceType}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1209,8 +1211,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleRegistrationDate}</td>
@@ -1218,8 +1220,8 @@ th, td {
               <td>${row.vehiclePhotoFile}</td>
               <td>${row.vehicleTypename}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1277,15 +1279,15 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleno}</td>
               <td>${row.noOfServices}</td>
             <td>${row.jobCardDate}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1343,15 +1345,15 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.date}</td>
             
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1410,24 +1412,22 @@ th, td {
                   alignItems: "center",
                   padding: "1%,",
                   backgroundColor: "#fff",
-                  border: `2px solid ${
-                    selectedCardId === item.id ? "#3498db" : "#e0e0e0"
-                  }`,
+                  border: `2px solid ${selectedCardId === item.id ? "#3498db" : "#e0e0e0"
+                    }`,
                   borderRadius: "8px",
                   boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                  borderLeft: `4px solid ${
-                    item.id === 0
-                      ? "blue"
-                      : item.id === 1
+                  borderLeft: `4px solid ${item.id === 0
+                    ? "blue"
+                    : item.id === 1
                       ? "red"
                       : item.id === 2
-                      ? "green"
-                      : item.id === 3
-                      ? "orange"
-                      : item.id === 4
-                      ? "purple"
-                      : "teal"
-                  }`,
+                        ? "green"
+                        : item.id === 3
+                          ? "orange"
+                          : item.id === 4
+                            ? "purple"
+                            : "teal"
+                    }`,
                   transition: "transform 0.3s, box-shadow 0.3s",
                   cursor: "pointer",
                   "&:hover": {
@@ -2029,7 +2029,8 @@ th, td {
                                     {
                                       field: "vehicleNo",
                                       headerName: t("text.vehicleNo12"),
-                                      flex: 1.5,
+                                      flex: 1,
+                                      minWidth:110,
                                       renderCell: (params) => (
                                         <span
                                           style={{
@@ -2064,17 +2065,45 @@ th, td {
                                     {
                                       field: "vehicleTypename",
                                       headerName: t("text.VehicleType"),
-                                      flex: 1.5,
+                                      flex: 1.2,
+                                      minWidth:140
                                     },
                                     {
                                       field: "actprice",
                                       headerName: t("text.ActualPrice"),
                                       flex: 0.7,
+                                      minWidth:100
                                     },
                                     {
                                       field: "amount",
                                       headerName: t("text.Expense"),
                                       flex: 0.7,
+                                      minWidth:100
+                                    },
+                                    {
+                                      field: "grossPercent",
+                                      headerName: t("text.GrossExpenditurePercent"),
+                                      headerClassName: "MuiDataGrid-colCell",
+                                      cellClassName: "wrap-text",
+                                      flex: 1,
+                                      minWidth:140,
+                                      renderCell: (params) => (
+                                        (params.row.grossPercent > 75) ? (<span
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "red",
+                                          }}
+                                        >
+                                          {params.row.grossPercent+"%"}
+                                        </span>) : (<span
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "#007bff",
+                                          }}
+                                        >
+                                          {params.row.grossPercent+"%"}
+                                        </span>)
+                                      ),
                                     },
                                     {
                                       field: "age",

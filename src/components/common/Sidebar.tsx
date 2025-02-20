@@ -27,6 +27,7 @@ import {
   DialogTitle,
   Modal,
   Stack,
+  Tooltip,
 } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -344,303 +345,6 @@ export default function MiniDrawer({ items }: any) {
     });
   };
 
-
-
-
-  // const renderMenu = (menus: any[], level = 0) => {
-  //   return menus.map((menu: any) => (
-  //     <List key={menu.menuId} sx={{ padding: 0 }}>
-  //       <Divider />
-
-  //       {/* Menu Item */}
-  //       <ListItem
-  //         sx={{
-  //           display: "flex",
-  //           justifyContent: "space-between",
-  //           alignItems: "center",
-  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit", // Highlight active menu
-  //           paddingLeft: `${level * 16}px`,
-  //           cursor: "pointer",
-  //           "&:hover": { backgroundColor: "#f0f0f0" },
-  //           borderRadius: "5px",
-  //         }}
-  //         onClick={() => handleMenuClick(menu)}
-  //       >
-  //         {/* Icon + Menu Name */}
-  //         <ListItem sx={{ justifyContent: open ? "initial" : "center", paddingLeft: 1 }}>
-  //           <ListItemIcon
-  //             sx={{
-  //               minWidth: 0,
-  //               mr: open ? 1 : "auto",
-  //               justifyContent: "center",
-  //               color: activeMenu === menu.menuId ? "#FF0000" : "inherit",
-  //               fontWeight: 600,
-  //             }}
-  //             onClick={(e) => {
-  //               e.stopPropagation(); // Prevents ListItem click event
-  //               toggleMenu(menu.menuId);
-  //             }}
-  //           >
-  //             {/* ✅ Folder for menus with children */}
-  //             {menu.children && menu.children.length > 0 ? (
-  //               openMenus.has(menu.menuId) ? (
-  //                 <FaRegFolderOpen style={{ color: "#42AEEE" }} size={20} />
-  //               ) : (
-  //                 <FolderIcon style={{ color: "#42AEEE" }} />
-  //               )
-  //             ) : (
-  //               // ✅ File icon for menus with no children
-  //               <DescriptionIcon style={{ color: "#42AEEE" }} />
-  //             )}
-  //           </ListItemIcon>
-
-  //           <ListItemText
-  //             primary={menu.menuName}
-  //             sx={{
-  //               opacity: open ? 1 : 0,
-  //               fontWeight: "bold",
-  //               fontSize: "14px",
-  //               color: activeMenu === menu.menuId ? "#0056b3" : "inherit", // Active text color
-  //             }}
-  //           />
-  //         </ListItem>
-
-  //         {/* ✅ Expand / Collapse Caret (For menus with children) */}
-  //         {menu.children && menu.children.length > 0 && (
-  //           <ListItemIcon
-  //             sx={{ paddingRight: "16px", cursor: "pointer", color: "#42AEEE" }}
-  //             onClick={(e) => {
-  //               e.stopPropagation(); // Prevents ListItem click event
-  //               toggleMenu(menu.menuId);
-  //             }}
-  //           >
-  //             {openMenus.has(menu.menuId) ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-  //           </ListItemIcon>
-  //         )}
-  //       </ListItem>
-
-  //       {/* Recursive Rendering for Submenus (Children & Subchildren) */}
-  //       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
-  //         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
-  //           {renderMenu(menu.children, level + 1)}
-  //         </List>
-  //       )}
-  //     </List>
-  //   ));
-  // };
-
-  // const renderMenu = (menus: any[], level = 0) => {
-  //   return menus.map((menu: any) => (
-  //     <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
-  //       <Divider />
-
-  //       {/* Menu Item */}
-  //       <ListItem
-  //         sx={{
-  //           display: "flex",
-  //           justifyContent: "space-between",
-  //           alignItems: "center",
-  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
-  //           paddingLeft: `${level * 14}px`,
-  //           paddingY: 0.3, // Reduced vertical padding
-  //           cursor: "pointer",
-  //           "&:hover": { backgroundColor: "#ccccff" },
-  //           borderRadius: "6px",
-  //           transition: "background 0.2s ease-in-out",
-  //         }}
-  //         onClick={() => handleMenuClick(menu)}
-  //       >
-  //         {/* Left Section: Icon + Menu Name */}
-  //         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-  //           <ListItemIcon
-  //             sx={{
-  //               minWidth: "32px",
-  //               justifyContent: "center",
-  //               color: activeMenu === menu.menuId ? "#FF0000" : "#333",
-  //               fontWeight: 600,
-  //             }}
-  //             onClick={(e) => {
-  //               e.stopPropagation(); // Prevents ListItem click event
-  //               toggleMenu(menu.menuId, menu.parentId);
-  //             }}
-  //           >
-  //             {menu.children && menu.children.length > 0 ? (
-  //               openMenus.has(menu.menuId) ? (
-  //                 <FaRegFolderOpen
-  //                   style={{ color: "#42AEEE", fontSize: "18px" }}
-  //                 />
-  //               ) : (
-  //                 <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
-  //               )
-  //             ) : (
-  //               <DescriptionIcon
-  //                 style={{ color: "#42AEEE", fontSize: "18px" }}
-  //               />
-  //             )}
-  //           </ListItemIcon>
-
-  //           <ListItemText
-  //             primary={menu.menuName}
-  //             sx={{
-  //               fontWeight: "bold",
-  //               fontSize: "14px",
-  //               color:
-  //                 activeMenu === menu.menuId
-  //                   ? "#0056b3"
-  //                   : "var(--grid-menuColor)",
-  //               transition: "color 0.2s ease-in-out",
-  //             }}
-  //           />
-  //         </Box>
-
-  //         {/* ✅ Right Section: Caret for Expand/Collapse */}
-  //         {menu.children && menu.children.length > 0 && (
-  //           <ListItemIcon
-  //             sx={{
-  //               paddingRight: "16px",
-  //               minWidth: "32px",
-  //               justifyContent: "flex-end",
-  //               cursor: "pointer",
-  //               color: "#42AEEE",
-  //             }}
-  //             onClick={(e) => {
-  //               e.stopPropagation();
-  //               toggleMenu(menu.menuId, menu.parentId);
-  //             }}
-  //           >
-  //             {openMenus.has(menu.menuId) ? (
-  //               <ExpandLessIcon fontSize="small" />
-  //             ) : (
-  //               <ExpandMoreIcon fontSize="small" />
-  //             )}
-  //           </ListItemIcon>
-  //         )}
-  //       </ListItem>
-
-  //       {/* Recursive Rendering for Submenus */}
-  //       {openMenus.has(menu.menuId) &&
-  //         menu.children &&
-  //         menu.children.length > 0 && (
-  //           <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
-  //             {renderMenu(menu.children, level + 1)}
-  //           </List>
-  //         )}
-  //     </List>
-  //   ));
-  // };
-
-  // const parentMenuOrder = [
-  //   "Vehicle Management",
-  //   "Store Management",
-  //   "Communication",
-  //   "Vendor Info",
-  //   "Employee Info",
-  //   "Reports",
-  //   "Admin",
-  // ];
-
-  // // Function to sort parent menus based on predefined order
-  // const sortParentMenus = (menus: any[]) => {
-  //   const orderMap = new Map(parentMenuOrder.map((name, index) => [name, index]));
-
-  //   return menus.slice().sort((a, b) => {
-  //     const indexA: any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
-  //     const indexB: any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
-  //     return indexA - indexB;
-  //   });
-  // };
-
-  // // Function to sort child menus by menuId
-  // const sortMenusById = (menus: any[]) => {
-  //   return menus.slice().sort((a, b) => a.menuId - b.menuId);
-  // };
-
-  // const renderMenu = (menus: any[], level = 0) => {
-  //   // Sort parent menus at level 0, otherwise sort by menuId
-  //   const sortedMenus = level === 0 ? sortParentMenus(menus) : sortMenusById(menus);
-
-  //   return sortedMenus.map((menu: any) => (
-  //     <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
-  //       <Divider />
-
-  //       <ListItem
-  //         sx={{
-  //           display: "flex",
-  //           justifyContent: "space-between",
-  //           alignItems: "center",
-  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
-  //           paddingLeft: `${level * 14}px`,
-  //           paddingY: 0.3,
-  //           cursor: "pointer",
-  //           "&:hover": { backgroundColor: "#ccccff" },
-  //           borderRadius: "6px",
-  //           transition: "background 0.2s ease-in-out",
-  //         }}
-  //         onClick={() => handleMenuClick(menu)}
-  //       >
-  //         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-  //           <ListItemIcon
-  //             sx={{
-  //               minWidth: "32px",
-  //               justifyContent: "center",
-  //               color: activeMenu === menu.menuId ? "#FF0000" : "#333",
-  //               fontWeight: 600,
-  //             }}
-  //             onClick={(e) => {
-  //               e.stopPropagation();
-  //               toggleMenu(menu.menuId, menu.parentId);
-  //             }}
-  //           >
-  //             {menu.children && menu.children.length > 0 ? (
-  //               openMenus.has(menu.menuId) ? (
-  //                 <FaRegFolderOpen style={{ color: "#42AEEE", fontSize: "18px" }} />
-  //               ) : (
-  //                 <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
-  //               )
-  //             ) : (
-  //               <DescriptionIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
-  //             )}
-  //           </ListItemIcon>
-
-  //           <ListItemText
-  //             primary={menu.menuName}
-  //             sx={{
-  //               fontWeight: "bold",
-  //               fontSize: "14px",
-  //               color: activeMenu === menu.menuId ? "#0056b3" : "var(--grid-menuColor)",
-  //               transition: "color 0.2s ease-in-out",
-  //             }}
-  //           />
-  //         </Box>
-
-  //         {menu.children && menu.children.length > 0 && (
-  //           <ListItemIcon
-  //             sx={{
-  //               paddingRight: "16px",
-  //               minWidth: "32px",
-  //               justifyContent: "flex-end",
-  //               cursor: "pointer",
-  //               color: "#42AEEE",
-  //             }}
-  //             onClick={(e) => {
-  //               e.stopPropagation();
-  //               toggleMenu(menu.menuId, menu.parentId);
-  //             }}
-  //           >
-  //             {openMenus.has(menu.menuId) ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
-  //           </ListItemIcon>
-  //         )}
-  //       </ListItem>
-
-  //       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
-  //         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
-  //           {renderMenu(menu.children, level + 1)}
-  //         </List>
-  //       )}
-  //     </List>
-  //   ));
-  // };
-
   const parentMenuOrder = [
     "Vehicle Management",
     "Store Management",
@@ -650,7 +354,7 @@ export default function MiniDrawer({ items }: any) {
     "Reports",
     "Admin",
   ];
-  
+
   // Predefined child order for "Store Management"
   const storeManagementChildOrder = [
     "Item Detail",
@@ -666,40 +370,55 @@ export default function MiniDrawer({ items }: any) {
     "Off.Purchase Indent",
     "PurchaseInvoice",
   ];
-  
+
   // Function to sort parent menus based on predefined order
   const sortParentMenus = (menus: any[]) => {
-    const orderMap = new Map(parentMenuOrder.map((name, index) => [name, index]));
-  
+    const orderMap = new Map(
+      parentMenuOrder.map((name, index) => [name, index])
+    );
+
     return menus.slice().sort((a, b) => {
-      const indexA:any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
-      const indexB:any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
+      const indexA: any = orderMap.has(a.menuName)
+        ? orderMap.get(a.menuName)
+        : Infinity;
+      const indexB: any = orderMap.has(b.menuName)
+        ? orderMap.get(b.menuName)
+        : Infinity;
       return indexA - indexB;
     });
   };
-  
+
   // Function to sort child menus
   const sortChildMenus = (parentMenuName: string, menus: any[]) => {
     if (parentMenuName === "Store Management") {
-      const orderMap = new Map(storeManagementChildOrder.map((name, index) => [name, index]));
-      
+      const orderMap = new Map(
+        storeManagementChildOrder.map((name, index) => [name, index])
+      );
+
       return menus.slice().sort((a, b) => {
-        const indexA:any = orderMap.has(a.menuName) ? orderMap.get(a.menuName) : Infinity;
-        const indexB:any = orderMap.has(b.menuName) ? orderMap.get(b.menuName) : Infinity;
+        const indexA: any = orderMap.has(a.menuName)
+          ? orderMap.get(a.menuName)
+          : Infinity;
+        const indexB: any = orderMap.has(b.menuName)
+          ? orderMap.get(b.menuName)
+          : Infinity;
         return indexA - indexB;
       });
     }
     return menus.slice().sort((a, b) => a.menuId - b.menuId); // Default sorting by menuId
   };
-  
+
   const renderMenu = (menus: any[], level = 0, parentMenuName = "") => {
     // Sort parent menus at level 0, otherwise sort by menuId or predefined order
-    const sortedMenus = level === 0 ? sortParentMenus(menus) : sortChildMenus(parentMenuName, menus);
-  
+    const sortedMenus =
+      level === 0
+        ? sortParentMenus(menus)
+        : sortChildMenus(parentMenuName, menus);
+
     return sortedMenus.map((menu: any) => (
       <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
         <Divider />
-  
+
         <ListItem
           sx={{
             display: "flex",
@@ -730,16 +449,20 @@ export default function MiniDrawer({ items }: any) {
             >
               {menu.children && menu.children.length > 0 ? (
                 openMenus.has(menu.menuId) ? (
-                  <FaRegFolderOpen style={{ color: "#42AEEE", fontSize: "18px" }} />
+                  <FaRegFolderOpen
+                    style={{ color: "#42AEEE", fontSize: "18px" }}
+                  />
                 ) : (
                   <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
                 )
               ) : (
-                <DescriptionIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+                <DescriptionIcon
+                  style={{ color: "#42AEEE", fontSize: "18px" }}
+                />
               )}
             </ListItemIcon>
-  
-            <ListItemText
+
+            {/* <ListItemText
               primary={menu.menuName}
               sx={{
                 fontWeight: "bold",
@@ -747,9 +470,26 @@ export default function MiniDrawer({ items }: any) {
                 color: activeMenu === menu.menuId ? "#0056b3" : "var(--grid-menuColor)",
                 transition: "color 0.2s ease-in-out",
               }}
-            />
+            /> */}
+            <Tooltip title={menu.menuName} arrow>
+              <ListItemText
+                primary={
+                  open ? menu.menuName : menu.menuName.charAt(0).toUpperCase()
+                } // Show first letter if closed
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "13px",
+                  color: activeMenu === menu.menuId ? "#0056b3" : "#333",
+                  transition: "color 0.2s ease-in-out",
+                  // Styling for truncation when menu name is long
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+              />
+            </Tooltip>
           </Box>
-  
+
           {menu.children && menu.children.length > 0 && (
             <ListItemIcon
               sx={{
@@ -764,23 +504,137 @@ export default function MiniDrawer({ items }: any) {
                 toggleMenu(menu.menuId, menu.parentId);
               }}
             >
-              {openMenus.has(menu.menuId) ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+              {openMenus.has(menu.menuId) ? (
+                <ExpandLessIcon fontSize="small" />
+              ) : (
+                <ExpandMoreIcon fontSize="small" />
+              )}
             </ListItemIcon>
           )}
         </ListItem>
-  
-        {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
-          <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
-            {renderMenu(menu.children, level + 1, menu.menuName)}
-          </List>
-        )}
+
+        {openMenus.has(menu.menuId) &&
+          menu.children &&
+          menu.children.length > 0 && (
+            <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+              {renderMenu(menu.children, level + 1, menu.menuName)}
+            </List>
+          )}
       </List>
     ));
   };
-  
 
+  // const handleMenuClick = (menu: any) => {
+  //   setActiveMenu(menu.menuId); // Highlight active menu
 
+  //   if (menu.children && menu.children.length > 0) {
+  //     toggleMenu(menu.menuId); // Toggle submenu
+  //   } else if (menu.path) {
+  //     navigate(menu.path); // Navigate only if no children exist
+  //   }
+  // };
 
+  // const toggleMenu = (menuId: number) => {
+  //   setOpenMenus((prev) => {
+  //     const newOpenMenus = new Set(prev);
+  //     newOpenMenus.has(menuId) ? newOpenMenus.delete(menuId) : newOpenMenus.add(menuId);
+  //     return newOpenMenus;
+  //   });
+  // };
+
+  // const renderMenu = (menus: any[], level = 0) => {
+  //   return menus.map((menu: any) => (
+  //     <List key={menu.menuId} sx={{ paddingY: 0.5, paddingX: 0 }}>
+  //       <Divider />
+
+  //       {/* Menu Item */}
+  //       <ListItem
+  //         sx={{
+  //           display: "flex",
+  //           justifyContent: "space-between",
+  //           alignItems: "center",
+  //           backgroundColor: activeMenu === menu.menuId ? "#dfe6f5" : "inherit",
+  //           paddingLeft: `${level * 14}px`,
+  //           paddingY: 0.3, // Reduced vertical padding
+  //           cursor: "pointer",
+  //           "&:hover": { backgroundColor: "#f8f9fa" },
+  //           borderRadius: "6px",
+  //           transition: "background 0.2s ease-in-out",
+  //         }}
+  //         onClick={() => handleMenuClick(menu)}
+  //       >
+  //         {/* Left Section: Icon + Menu Name */}
+  //         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+  //           <ListItemIcon
+  //             sx={{
+  //               minWidth: "32px",
+  //               justifyContent: "center",
+  //               color: activeMenu === menu.menuId ? "#FF0000" : "#333",
+  //               fontWeight: 600,
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation(); // Prevents ListItem click event
+  //               toggleMenu(menu.menuId);
+  //             }}
+  //           >
+  //             {menu.children && menu.children.length > 0 ? (
+  //               openMenus.has(menu.menuId) ? (
+  //                 <FaRegFolderOpen style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //               ) : (
+  //                 <FolderIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //               )
+  //             ) : (
+  //               <DescriptionIcon style={{ color: "#42AEEE", fontSize: "18px" }} />
+  //             )}
+  //           </ListItemIcon>
+
+  //           {/* Tooltip added here for full menu name */}
+  //           <Tooltip title={menu.menuName} arrow>
+  //             <ListItemText
+  //               primary={open ? menu.menuName : menu.menuName.charAt(0).toUpperCase()} // Show first letter if closed
+  //               sx={{
+  //                 fontWeight: "bold",
+  //                 fontSize: "13px",
+  //                 color: activeMenu === menu.menuId ? "#0056b3" : "#333",
+  //                 transition: "color 0.2s ease-in-out",
+  //                 // Styling for truncation when menu name is long
+  //                 overflow: "hidden",
+  //                 whiteSpace: "nowrap",
+  //                 textOverflow: "ellipsis",
+  //               }}
+  //             />
+  //           </Tooltip>
+  //         </Box>
+
+  //         {/* ✅ Right Section: Caret for Expand/Collapse */}
+  //         {menu.children && menu.children.length > 0 && (
+  //           <ListItemIcon
+  //             sx={{
+  //               paddingRight: "16px",
+  //               minWidth: "32px",
+  //               justifyContent: "flex-end",
+  //               cursor: "pointer",
+  //               color: "#42AEEE",
+  //             }}
+  //             onClick={(e) => {
+  //               e.stopPropagation();
+  //               toggleMenu(menu.menuId);
+  //             }}
+  //           >
+  //             {openMenus.has(menu.menuId) ? <ExpandLessIcon fontSize="small" /> : <ExpandMoreIcon fontSize="small" />}
+  //           </ListItemIcon>
+  //         )}
+  //       </ListItem>
+
+  //       {/* Recursive Rendering for Submenus */}
+  //       {openMenus.has(menu.menuId) && menu.children && menu.children.length > 0 && (
+  //         <List sx={{ paddingLeft: 2, backgroundColor: "inherit" }}>
+  //           {renderMenu(menu.children, level + 1)}
+  //         </List>
+  //       )}
+  //     </List>
+  //   ));
+  // };
 
   interface MenuItem {
     Icon: any;
@@ -825,22 +679,56 @@ export default function MiniDrawer({ items }: any) {
     item.toLowerCase().includes(searchValue.toLowerCase())
   );
 
+  // const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log("first 1", e.target.value);
+  //   const value = e.target.value.toLowerCase();
+  //   setSearchValue(value);
+
+  //   // Filter menu items based on search value (before rendering)
+  //   const filtered = items.filter(
+  //     (menu: any) =>
+  //       menu.menuName.toLowerCase().includes(value) ||
+  //       (menu.children &&
+  //         menu.children.some((child: any) =>
+  //           child.menuName.toLowerCase().includes(value)
+  //         ))
+  //   );
+
+  //   setFilteredItems(filtered); // Store filtered menu items, NOT rendered JSX
+  // };
+
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("first 1", e.target.value);
     const value = e.target.value.toLowerCase();
     setSearchValue(value);
 
-    // Filter menu items based on search value (before rendering)
-    const filtered = items.filter(
-      (menu: any) =>
-        menu.menuName.toLowerCase().includes(value) ||
-        (menu.children &&
-          menu.children.some((child: any) =>
-            child.menuName.toLowerCase().includes(value)
-          ))
-    );
+    const expandedMenuIds: any = new Set();
 
-    setFilteredItems(filtered); // Store filtered menu items, NOT rendered JSX
+    if (value === "") {
+      // If search is cleared, collapse all menus
+      setFilteredItems(items);
+      setOpenMenus(new Set());
+      return;
+    }
+
+    const filtered = items.reduce((acc: any, menu: any) => {
+      if (menu.menuName.toLowerCase().includes(value)) {
+        acc.push(menu);
+        expandedMenuIds.add(menu.menuId);
+      } else if (menu.children) {
+        const filteredChildren = menu.children.filter((child: any) =>
+          child.menuName.toLowerCase().includes(value)
+        );
+
+        if (filteredChildren.length > 0) {
+          acc.push({ ...menu, children: filteredChildren });
+          expandedMenuIds.add(menu.menuId);
+        }
+      }
+      return acc;
+    }, []);
+
+    setFilteredItems(filtered);
+    setOpenMenus(expandedMenuIds);
   };
 
   var [date, setDate] = React.useState(new Date());
@@ -1393,7 +1281,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-          // style={{  borderBottomRightRadius: "15px" }}
+            // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1484,7 +1372,8 @@ export default function MiniDrawer({ items }: any) {
         </div>
       </AppBar>
 
-      {open && (<Drawer
+      {/* {open && ( */}
+      <Drawer
         variant="permanent"
         open={open}
         PaperProps={{
@@ -1630,7 +1519,7 @@ export default function MiniDrawer({ items }: any) {
           {renderMenu(filteredItems.length > 0 ? filteredItems : items)}
         </React.Fragment>
       </Drawer>
-      )}
+      {/* )} */}
       {/* <Box  sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
       </Box> */}
@@ -1676,7 +1565,7 @@ export default function MiniDrawer({ items }: any) {
         onClose={() => {
           setProfileDrawerOpen(false);
         }}
-        onOpen={() => { }}
+        onOpen={() => {}}
         style={{
           zIndex: 1300,
         }}

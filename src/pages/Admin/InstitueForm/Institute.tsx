@@ -1,54 +1,19 @@
-import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
-import {
-   Button,
-   Card,
-   Grid,
-   TextField,
-   Typography,
-   Divider,
-   Box,
-   CardContent,
-   FormControl,
-   FormLabel,
-   RadioGroup,
-   FormControlLabel,
-   Radio,
-   Checkbox,
-   ListItemText,
-   IconButton,
-   InputAdornment,
-   Popover,
-   Modal,
-   Stack,
-} from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { confirmDialog, ConfirmDialog } from "primereact/confirmdialog";
-import CircularProgress from "@mui/material/CircularProgress";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from "react";
 import { GridColDef } from "@mui/x-data-grid";
-import { toast, ToastContainer } from "react-toastify";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import ToastApp from "../../../ToastApp";
-import CustomLabel from "../../../CustomLable";
-import { Language, ReactTransliterate } from "react-transliterate";
-import api from "../../../utils/Url";
-import Languages from "../../../Languages";
-import DataGrids from "../../../utils/Datagrids";
-import { useLocation, useNavigate } from "react-router-dom";
-import React from "react";
-import dayjs from "dayjs";
-import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
+import Card from "@mui/material/Card";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import TranslateTextField from "../../../TranslateTextField";
-import nopdf from "../../../assets/nopdf.png";
-import { getdivisionId, getId, getinstId } from "../../../utils/Constant";
-//import { SketchPicker } from "react-color";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import Paper from "@mui/material/Paper";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { toast } from "react-toastify";
+import ToastApp from "../../../ToastApp";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+import CircularProgress from "@mui/material/CircularProgress";
+import api from "../../../utils/Url";
+import DataGrids from "../../../utils/Datagrids";
 
 
 interface MenuPermission {
@@ -74,35 +39,36 @@ export default function Institute() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const dataString = localStorage.getItem("userdata");
-    if (dataString) {
-      const data = JSON.parse(dataString);
-      if (data && data.length > 0) {
-        const userPermissionData = data[0]?.userPermission;
-        if (userPermissionData && userPermissionData.length > 0) {
-          const menudata = userPermissionData[0]?.parentMenu;
-          for (let index = 0; index < menudata.length; index++) {
-            const childMenudata = menudata[index]?.childMenu;
-            const pathrow = childMenudata.find(
-              (x: any) => x.path === location.pathname
-            );
-            // console.log("data", pathrow);
-            if (pathrow) {
-              setPermissionData(pathrow);
-              fetchDocData();
-            }
-          }
-        }
-      }
-    }
+    fetchDocData();
+    // const dataString = localStorage.getItem("userdata");
+    // if (dataString) {
+    //   const data = JSON.parse(dataString);
+    //   if (data && data.length > 0) {
+    //     const userPermissionData = data[0]?.userPermission;
+    //     if (userPermissionData && userPermissionData.length > 0) {
+    //       const menudata = userPermissionData[0]?.parentMenu;
+    //       for (let index = 0; index < menudata.length; index++) {
+    //         const childMenudata = menudata[index]?.childMenu;
+    //         const pathrow = childMenudata.find(
+    //           (x: any) => x.path === location.pathname
+    //         );
+    //         // console.log("data", pathrow);
+    //         if (pathrow) {
+    //           setPermissionData(pathrow);
+    //           fetchDocData();
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }, [isLoading]);
   const routeChangeAdd = () => {
-    let path = `/Organisation/OrganisationAdd`;
+    let path = `/Admin/Setting/addoragnisation`;
     navigate(path);
   };
 
   const routeChangeEdit = (row: any) => {
-    let path = `/Organisation/OrganisationEdit`;
+    let path = `/Admin/Setting/editoragnisation`;
     navigate(path, {
       state: row,
     });
@@ -116,8 +82,8 @@ export default function Institute() {
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`Setting/DeleteInstitute_Master`,  collectData )
-      .then((response:any) => {
+      .delete(`Setting/DeleteInstitute_Master`, { data: collectData })
+      .then((response) => {
         if (response.data.isSuccess) {
           toast.success(response.data.mesg);
         } else {
@@ -192,7 +158,16 @@ export default function Institute() {
                       onClick={() => routeChangeEdit(params.row)}
                     />
                   ) : (
-                    ""
+                    //""
+                    <EditIcon
+                      style={{
+                        fontSize: "20px",
+                        color: "blue",
+                        cursor: "pointer",
+                      }}
+                      className="cursor-pointer"
+                      onClick={() => routeChangeEdit(params.row)}
+                    />
                   )}
                   {permissionData?.isDel ? (
                     <DeleteIcon
@@ -206,7 +181,17 @@ export default function Institute() {
                       }}
                     />
                   ) : (
-                    ""
+                    // ""
+                    <DeleteIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handledeleteClick(params.row.id);
+                    }}
+                  />
                   )}
                 </Stack>,
               ];
@@ -295,17 +280,26 @@ export default function Institute() {
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
-            {permissionData?.isAdd == true && (
+            {/* {permissionData?.isAdd == true && (
               <Button
                 onClick={routeChangeAdd}
                 variant="contained"
-               // endIcon={<AddCircleIcon />}
+                endIcon={<AddCircleIcon />}
                 size="large"
                 style={{backgroundColor:`var(--grid-headerBackground)`,color: `var(--grid-headerColor)`}}
               >
                 {t("text.add")}
               </Button>
-            )}
+            )} */}
+             <Button
+                onClick={routeChangeAdd}
+                variant="contained"
+                endIcon={<AddCircleIcon />}
+                size="large"
+                style={{backgroundColor:`var(--grid-headerBackground)`,color: `var(--grid-headerColor)`}}
+              >
+                {t("text.add")}
+              </Button>
           </Stack>
 
           {isLoading ? (
