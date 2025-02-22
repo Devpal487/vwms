@@ -59,22 +59,29 @@ export default function CountryMaster() {
   const [lang, setLang] = useState<Language>("en");
 
   const [isCountryCode, setIsCountryCode] = useState(false);
-
   const getPageSetupData = async () => {
     await api.get(`Setting/GetPageSetupDataall`).then((res) => {
       const data = res.data.data;
-      data.map((e: any, index: number) => {
-        if (e.setupId === 3 && e.showHide) {
-          setIsCountryCode(true);
-        } else if (e.setupId === 3 && !e.showHide) {
-          setIsCountryCode(false);
-        } else {
-          setIsCountryCode(true);
-        }
-      })
+      const pageSetup = data.find((e: any) => e.setupId === 3);
+      setIsCountryCode(pageSetup?.showHide ?? true); // Default to true only if undefined
     });
-    //return response;
-  }
+  };
+  
+  // const getPageSetupData = async () => {
+  //   await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+  //     const data = res.data.data;
+  //     data.map((e: any, index: number) => {
+  //       if (e.setupId === 3 && e.showHide) {
+  //         setIsCountryCode(true);
+  //       } else if (e.setupId === 3 && !e.showHide) {
+  //         setIsCountryCode(false);
+  //       } else {
+  //         setIsCountryCode(true);
+  //       }
+  //     })
+  //   });
+  //   //return response;
+  // }
 
   useEffect(() => {
     getPageSetupData();

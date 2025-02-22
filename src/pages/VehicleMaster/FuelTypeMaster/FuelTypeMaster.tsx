@@ -54,11 +54,22 @@ export default function FuelTypeMaster() {
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
-
+   const [isfuelShortName, setIsfuelShortName] = useState(false);
+   const getPageSetupData = async () => {
+      await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+        const data = res.data.data;
+        const pageSetup = data.find((e: any) => e.setupId === 2);
+        setIsfuelShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
+      });
+    };
 
    useEffect(() => {
-      fetchFuelTypeData();
-
+      getPageSetupData();
+      const timeout = setTimeout(() => {
+         //getPageSetupData();
+         fetchFuelTypeData();
+       }, 100);
+       return () => clearTimeout(timeout);
    }, [isLoading]);
 
 
@@ -228,12 +239,13 @@ export default function FuelTypeMaster() {
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
                },
-               {
+               ...(isfuelShortName ? [{
+               
                   field: "shortName",
                   headerName: t("text.FueltypeShortName"),
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
-               },
+               }] : []),
             ];
             setColumns(columns as any);
          }
@@ -339,7 +351,7 @@ export default function FuelTypeMaster() {
 
                      {/* fuel Short Name */}
                      <Grid item xs={12} sm={4} lg={4}>
-                        <TextField
+                     {(isfuelShortName) ? (<TextField
                            label={
                               <CustomLabel
                                  text={t("text.FuelTypeShortName")}
@@ -356,7 +368,7 @@ export default function FuelTypeMaster() {
                            onChange={(e) => {
                               formik.setFieldValue("shortName", e.target.value);
                            }}
-                        />
+                        /> ) : ""}
                      </Grid>
 
 

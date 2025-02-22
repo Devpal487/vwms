@@ -5,6 +5,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
+import help from "../../assets/images/help.png";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
@@ -305,6 +306,9 @@ export default function MiniDrawer({ items }: any) {
     setMenuData(items);
     
   }, []);
+  //   // Get logged-in user from localStorage
+//   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
+//   const userName = userData?.userDetails?.userName || "User";
 
   const handleMenuClick = (menu: any) => {
     setActiveMenu(menu.menuId); // Highlight active menu
@@ -316,6 +320,11 @@ export default function MiniDrawer({ items }: any) {
     }
   };
 
+  
+  
+
+ 
+  
   // const toggleMenu = (menuId: number) => {
   //   setOpenMenus((prev) => {
   //     const newOpenMenus = new Set(prev);
@@ -1084,6 +1093,8 @@ export default function MiniDrawer({ items }: any) {
       setExpandedItems([...expandedItems, nodeId]);
     }
   };
+  //   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
+//   const userName = userData?.userDetails?.userName || "User";
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -1197,12 +1208,12 @@ export default function MiniDrawer({ items }: any) {
             </MenuItem>
 
             {/* <MenuItem > */}
-            {/* <MenuItem onClick={handleMyProfileClick}>
+            <MenuItem onClick={handleMyProfileClick}>
               <ListItemIcon>
                 <img src={id} width={30} height={30} />
               </ListItemIcon>
               My Profile
-            </MenuItem> */}
+            </MenuItem>
 
             <Divider />
 
@@ -1238,6 +1249,18 @@ export default function MiniDrawer({ items }: any) {
                 <img src={ThemeIcon} width={30} height={30} />
               </ListItemIcon>
               Select Theme
+            </MenuItem>
+                        <MenuItem
+              onClick={() => {
+                let path = "/Admin/HelpDesk";
+               // localStorage.setItem("menuData", menuData.toString());
+                window.open(path, "_blank");
+              }}
+            >
+              <ListItemIcon>
+                <img src={help} width={30} height={30} alt="Help Desk" />
+              </ListItemIcon>
+              Help Desk
             </MenuItem>
 
             <MenuItem onClick={() => navigate("/admin/flowmaster")}>
@@ -2540,18 +2563,18 @@ export default function MiniDrawer({ items }: any) {
 //               Select Theme
 //             </MenuItem>
 
-//             {/* <MenuItem
-//               onClick={() => {
-//                 let path = "/HelpDesk";
-//                // localStorage.setItem("menuData", menuData.toString());
-//                 window.open(path, "_blank");
-//               }}
-//             >
-//               <ListItemIcon>
-//                 <img src={help} width={30} height={30} alt="Help Desk" />
-//               </ListItemIcon>
-//               Help Desk
-//             </MenuItem> */}
+            // {/* <MenuItem
+            //   onClick={() => {
+            //     let path = "/HelpDesk";
+            //    // localStorage.setItem("menuData", menuData.toString());
+            //     window.open(path, "_blank");
+            //   }}
+            // >
+            //   <ListItemIcon>
+            //     <img src={help} width={30} height={30} alt="Help Desk" />
+            //   </ListItemIcon>
+            //   Help Desk
+            // </MenuItem> */}
 
 //             {/* <MenuItem onClick={handleClose}>
 //               <ListItemIcon>

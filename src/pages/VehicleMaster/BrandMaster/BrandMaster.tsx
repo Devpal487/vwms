@@ -58,22 +58,28 @@ export default function BrandMaster() {
 
 
    const [isbrandShortName, setIsbrandShortName] = useState(false);
-
    const getPageSetupData = async () => {
       await api.get(`Setting/GetPageSetupDataall`).then((res) => {
-         const data = res.data.data;
-         data.map((e: any, index: number) => {
-            if (e.setupId === 1 && e.showHide) {
-               setIsbrandShortName(true);
-            } else if (e.setupId === 1 && !e.showHide) {
-               setIsbrandShortName(false);
-            } else {
-               setIsbrandShortName(true);
-            }
-         })
+        const data = res.data.data;
+        const pageSetup = data.find((e: any) => e.setupId === 1);
+        setIsbrandShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
       });
-      //return response;
-   }
+    };
+   // const getPageSetupData = async () => {
+   //    await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+   //       const data = res.data.data;
+   //       data.map((e: any, index: number) => {
+   //          if (e.setupId === 1 && e.showHide) {
+   //             setIsbrandShortName(true);
+   //          } else if (e.setupId === 1 && !e.showHide) {
+   //             setIsbrandShortName(false);
+   //          } else {
+   //             setIsbrandShortName(true);
+   //          }
+   //       })
+   //    });
+   //    //return response;
+   // }
 
 
    useEffect(() => {

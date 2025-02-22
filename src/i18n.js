@@ -9116,6 +9116,7 @@ const resources = {
         CollegeCategory:"College Category",
         ResidencialAddress:"Residencial Address",
         CreateInstitute:"Create Institute",
+        EditInstitute:"Edit Institute",
         ShowAcademicSession:"Show Academic Session",
         ShowFinancialYear:"Show Financial Year",
         EditAcademicSession:"Edit Academic Session",

@@ -83,7 +83,7 @@ export default function HelpCreation() {
    const fetchTotalFile = async () => {
       try {
          const collectData = {
-            pageTitleId: -1,
+            menuId: -1,
          };
          console.log("collectData", collectData);
          const response = await api.post(
