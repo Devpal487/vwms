@@ -16,15 +16,37 @@ interface ChatBotProps {
 
 // Mock API for chatbot responses
 const API = {
-  GetChatbotResponse: async (message: string) => {
-    return new Promise<string>((resolve) => {
-      setTimeout(() => {
-        resolve(
-          message === "hi" ? "Welcome to the chatbot!" : `echo: ${message}`
-        );
-      }, 2000);
-    });
-  },
+   GetChatbotResponse : async (message:string) => {
+    try {
+      const response = await fetch("http://192.168.1.57:8096/chat/project1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ input_text: message }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.response || "No response from chatbot";
+    } catch (error) {
+      console.error("Error fetching chatbot response:", error);
+      return "Error communicating with chatbot";
+    }
+  }
+  
+  // GetChatbotResponse: async (message: string) => {
+  //   return new Promise<string>((resolve) => {
+  //     setTimeout(() => {
+  //       resolve(
+  //         message === "hi" ? "Welcome to the chatbot!" : `echo: ${message}`
+  //       );
+  //     }, 2000);
+  //   });
+  // },
 };
 
 const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
@@ -57,7 +79,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose} >
       <Paper>
-       
+
         <div className="chatbot">
           <div className="header">
             ChatBot

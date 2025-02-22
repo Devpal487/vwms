@@ -362,7 +362,7 @@ export default function PageSetup() {
             //values.setupId = editId;
 
             const response = await api.post(
-                `PageSetup/AddUpdatepagesetupData`,
+                `Setting/AddUpdatepagesetupData`,
                 values
             );
             if (response.data.isSuccess) {

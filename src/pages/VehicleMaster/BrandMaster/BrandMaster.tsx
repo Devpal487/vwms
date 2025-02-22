@@ -57,8 +57,32 @@ export default function BrandMaster() {
    const [toaster, setToaster] = useState(false);
 
 
+   const [isbrandShortName, setIsbrandShortName] = useState(false);
+
+   const getPageSetupData = async () => {
+      await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+         const data = res.data.data;
+         data.map((e: any, index: number) => {
+            if (e.setupId === 1 && e.showHide) {
+               setIsbrandShortName(true);
+            } else if (e.setupId === 1 && !e.showHide) {
+               setIsbrandShortName(false);
+            } else {
+               setIsbrandShortName(true);
+            }
+         })
+      });
+      //return response;
+   }
+
+
    useEffect(() => {
-      fetchBrandData();
+      getPageSetupData();
+      const timeout = setTimeout(() => {
+         //getPageSetupData();
+         fetchBrandData();
+       }, 100);
+       return () => clearTimeout(timeout);
    }, [isLoading]);
 
 
@@ -123,7 +147,7 @@ export default function BrandMaster() {
          "brandCode": "",
          "createdBy": "adminvm",
          "updatedBy": "adminvm",
-         "createdOn":defaultValuestime,
+         "createdOn": defaultValuestime,
          "updatedOn": defaultValuestime,
          "srno": 0
       }
@@ -228,12 +252,12 @@ export default function BrandMaster() {
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
                },
-               {
+               ...(isbrandShortName ? [{
                   field: "brandshortname",
                   headerName: t("text.BrandShortname"),
                   flex: 1,
                   headerClassName: "MuiDataGrid-colCell",
-               },
+               }] : []),
             ];
             setColumns(columns as any);
          }
@@ -343,7 +367,7 @@ export default function BrandMaster() {
 
                      {/* Brand Short Name */}
                      <Grid item xs={12} sm={4} lg={4}>
-                        <TextField
+                        {(isbrandShortName) ? (<TextField
                            label={
                               <CustomLabel
                                  text={t("text.BrandShortName")}
@@ -360,7 +384,7 @@ export default function BrandMaster() {
                            onChange={(e) => {
                               formik.setFieldValue("brandshortname", e.target.value)
                            }}
-                        />
+                        />) : ""}
                      </Grid>
 
 

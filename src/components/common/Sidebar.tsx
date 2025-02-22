@@ -303,6 +303,7 @@ export default function MiniDrawer({ items }: any) {
   React.useEffect(() => {
     //const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
     setMenuData(items);
+    
   }, []);
 
   const handleMenuClick = (menu: any) => {
@@ -479,7 +480,7 @@ export default function MiniDrawer({ items }: any) {
                 sx={{
                   fontWeight: "bold",
                   fontSize: "13px",
-                  color: activeMenu === menu.menuId ? "#0056b3" : "#333",
+                  color: activeMenu === menu.menuId ? "#0056b3" : "var(--grid-menuColor)",
                   transition: "color 0.2s ease-in-out",
                   // Styling for truncation when menu name is long
                   overflow: "hidden",
@@ -1123,7 +1124,16 @@ export default function MiniDrawer({ items }: any) {
           </div>
 
           <div style={{ fontSize: "2.5vw" }}>
-            Vehicle Workshop Management System
+          <div style={{ fontFamily: "Georgia, serif" }}>
+            <span style={{ fontSize: "3vw", color:"#FFAE35" }}>V</span>
+            <span style={{ fontSize: "2.2vw" }}>ehicle </span>
+            <span style={{ fontSize: "3vw", color:"#D50E00"}}>W</span>
+            <span style={{ fontSize: "2.2vw" }}>orkshop </span>
+            <span style={{ fontSize: "3vw", color:"#FFE100"}}>M</span>
+            <span style={{ fontSize: "2.2vw" }}>anagement </span>
+            <span style={{ fontSize: "3vw", color:"#e69f9f"}}>S</span>
+            <span style={{ fontSize: "2.2vw" }}>ystem</span>
+          </div>
           </div>
 
           <IconButton

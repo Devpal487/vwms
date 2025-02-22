@@ -58,7 +58,30 @@ export default function CountryMaster() {
   });
   const [lang, setLang] = useState<Language>("en");
 
+  const [isCountryCode, setIsCountryCode] = useState(false);
+
+  const getPageSetupData = async () => {
+    await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+      const data = res.data.data;
+      data.map((e: any, index: number) => {
+        if (e.setupId === 3 && e.showHide) {
+          setIsCountryCode(true);
+        } else if (e.setupId === 3 && !e.showHide) {
+          setIsCountryCode(false);
+        } else {
+          setIsCountryCode(true);
+        }
+      })
+    });
+    //return response;
+  }
+
   useEffect(() => {
+    getPageSetupData();
+
+    // const pgSetup :any = localStorage.getItem("PageSetup");
+    // setPageSetup(JSON.parse(pgSetup))
+
     // const dataString = localStorage.getItem("userdata");
     // if (dataString) {
     //   const data = JSON.parse(dataString);
@@ -81,7 +104,15 @@ export default function CountryMaster() {
     //   }
     // }
     getList();
+
+    const timeout = setTimeout(() => {
+      //getPageSetupData();
+      getList()
+    }, 100);
+    return () => clearTimeout(timeout);
   }, [isLoading]);
+
+
 
   let delete_id = "";
   const accept = () => {
@@ -193,12 +224,12 @@ export default function CountryMaster() {
               flex: 1,
               headerClassName: "MuiDataGrid-colCell",
             },
-            {
+            ...(isCountryCode ? [{
               field: "countryCode",
               headerName: t("text.CountryCode"),
               flex: 1,
               headerClassName: "MuiDataGrid-colCell",
-            },
+            }] : [])
           ];
           setColumns(columns as any);
         }
@@ -364,7 +395,7 @@ export default function CountryMaster() {
                 </Grid>
 
                 <Grid item xs={5}>
-                  <TextField
+                  {(isCountryCode) ? (<TextField
                     label={<CustomLabel text={t("text.EnterCountryCode")} />}
                     value={formik.values.countryCode}
                     placeholder={t("text.EnterCountryCode")}
@@ -378,7 +409,7 @@ export default function CountryMaster() {
                       formik.handleBlur(e); // Keep formik's default blur handling
                       formik.setFieldTouched("countryName", false); // Clear translation suggestions for the previous field
                     }}
-                  />
+                  />) : ""}
 
                   {/* <TextField
                     label={<CustomLabel text={t("text.EnterCountryCode")} />}

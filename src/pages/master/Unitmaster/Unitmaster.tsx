@@ -60,9 +60,33 @@ export default function Unitmaster() {
 
   const { t } = useTranslation();
 
+
+  const [showStates, setShowStates] = useState({ showState1: false });
+
+
+  const getPageSetUp = () => {
+    api.get("Setting/GetPageSetupDataall").then((res) => {
+      const data = res?.data?.data;
+
+
+      // const setupItem = data.find((item: any) => item.setupId === 2);
+
+      const setupItem1 = data.find((item: any) => item.setupId === 5);
+
+      setShowStates({
+        // showState: setupItem ? setupItem.showHide : false,
+        showState1: setupItem1 ? setupItem1.showHide : false,
+      });
+    });
+  };
+
+
   useEffect(() => {
-    // 
-    fetchZonesData();
+    getPageSetUp();
+    const timeout = setTimeout(() => {
+      fetchZonesData();
+    }, 1000);
+    return () => clearTimeout(timeout);
   }, []);
 
 
@@ -184,12 +208,17 @@ export default function Unitmaster() {
             flex: 1,
 
           },
-          {
+
+          ...(showStates.showState1 ? [{
             field: "unitShortname",
             headerName: t("text.unitShortname"),
             flex: 1,
-
-          },
+          }] : []),
+          // {
+          //   field: "unitShortname",
+          //   headerName: t("text.unitShortname"),
+          //   flex: 1,
+          // }
 
         ];
         setColumns(columns as any);
@@ -332,7 +361,7 @@ export default function Unitmaster() {
               </Grid>
 
               <Grid item xs={12} sm={5} lg={5}>
-                <TextField
+                {(showStates.showState1) ? (<TextField
                   label={
                     <CustomLabel
                       text={t("text.enterunitShortname")}
@@ -347,7 +376,7 @@ export default function Unitmaster() {
                   value={formik.values.unitShortname}
                   placeholder={t("text.enterunitShortname")}
                   onChange={formik.handleChange}
-                />
+                />) : ""}
               </Grid>
 
               <Grid item xs={2} sx={{ m: -1 }}>

@@ -60,7 +60,27 @@ export default function StateMaster() {
   const [lang, setLang] = useState<Language>("en");
   let navigate = useNavigate();
 
+  const [isStateCode, setIsStateCode] = useState(false);
+
+  const getPageSetupData = async () => {
+    await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+      const data = res.data.data;
+      data.map((e: any, index: number) => {
+        if (e.setupId === 4 && e.showHide) {
+          setIsStateCode(true);
+        } else if (e.setupId === 4 && !e.showHide) {
+          setIsStateCode(false);
+        } else {
+          setIsStateCode(true);
+        }
+      })
+    });
+    //return response;
+  }
+
   useEffect(() => {
+    getPageSetupData();
+
     // const dataString = localStorage.getItem("userdata");
     // if (dataString) {
     //   const data = JSON.parse(dataString);
@@ -81,8 +101,12 @@ export default function StateMaster() {
     //     }
     //   }
     // }
-    fetchZonesData();
     getCountryName();
+    const timeout = setTimeout(() => {
+      //getPageSetupData();
+      fetchZonesData();
+    }, 100);
+    return () => clearTimeout(timeout);
   }, [isLoading]);
 
   const getCountryName = () => {
@@ -172,7 +196,7 @@ export default function StateMaster() {
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`StateMaster/DeleteState`, collectData )
+      .post(`StateMaster/DeleteState`, collectData)
       .then((response) => {
         if (response.data.status === 1) {
           toast.success(response.data.message);
@@ -273,12 +297,13 @@ export default function StateMaster() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-          {
+
+          ...(isStateCode ? [{
             field: "stateCode",
             headerName: t("text.StateCode"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
-          },
+          }] : []),
           {
             field: "countryName",
             headerName: t("text.CountryName"),
@@ -428,7 +453,7 @@ export default function StateMaster() {
               </Grid>
 
               <Grid xs={3.5} sm={3.5} item>
-                <TextField
+                {(isStateCode) ? (<TextField
                   label={<CustomLabel text={t("text.EnterStateCode")} />}
                   value={formik.values.stateCode}
                   name="stateCode"
@@ -439,7 +464,7 @@ export default function StateMaster() {
                   style={{ backgroundColor: "white" }}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                />
+                />) : ""}
               </Grid>
 
               <Grid item xs={2} sx={{ m: -1 }}>
