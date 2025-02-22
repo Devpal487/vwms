@@ -163,7 +163,7 @@ export default function PageSetup() {
         };
         //console.log("collectData " + JSON.stringify(collectData));
         api
-            .post(`Setting/DeletepagesetupData`, collectData)
+            .post(`Setting/GetPageSetupData?PageId=-1`, collectData)
             .then((response) => {
                 if (response.data.isSuccess) {
                     toast.success(response.data.mesg);
@@ -302,23 +302,23 @@ export default function PageSetup() {
                                 flex: 1,
                                 headerClassName: "MuiDataGrid-colCell",
                                 renderCell: (params) => [
-                                  <Stack direction="row" spacing={1}>
-                                    {params.row.showHide === true ? (
-                                      <Chip
-                                        label={t("Active")}
-                                        color="success"
-                                        style={{ fontSize: "14px" }}
-                                      />
-                                    ) : (
-                                      <Chip
-                                        label={("InActive")}
-                                        color="error"
-                                        style={{ fontSize: "14px" }}
-                                      />
-                                    )}
-                                  </Stack>,
+                                    <Stack direction="row" spacing={1}>
+                                        {params.row.showHide === true ? (
+                                            <Chip
+                                                label={t("Active")}
+                                                color="success"
+                                                style={{ fontSize: "14px" }}
+                                            />
+                                        ) : (
+                                            <Chip
+                                                label={("InActive")}
+                                                color="error"
+                                                style={{ fontSize: "14px" }}
+                                            />
+                                        )}
+                                    </Stack>,
                                 ],
-                              },
+                            },
 
                         ];
                         setColumns(columns as any);
@@ -362,7 +362,7 @@ export default function PageSetup() {
             //values.setupId = editId;
 
             const response = await api.post(
-                `PageSetup/AddUpdatepagesetupData`,
+                `Setting/AddUpdatepagesetupData`,
                 values
             );
             if (response.data.isSuccess) {
@@ -459,7 +459,7 @@ export default function PageSetup() {
                         <Box height={10} />
                         <form onSubmit={formik.handleSubmit}>
                             <Grid item xs={12} container spacing={2}>
-                                
+
                                 <Grid xs={4} sm={4} item>
                                     <TextField
                                         label={<CustomLabel text={t("text.PageName")} />}

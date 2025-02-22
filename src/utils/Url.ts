@@ -8,6 +8,14 @@ export const HOST_URL = 'http://103.12.1.132:8185/api/';
 
 
 
+export const Bot_URL = 'http://192.168.1.57:8096/chat/project1';
+export const Chat = axios.create({
+  baseURL: Bot_URL,
+});
+
+
+
+
 const api = axios.create({
   baseURL: HOST_URL,
 });

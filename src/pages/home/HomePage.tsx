@@ -197,6 +197,7 @@ export default function HomePage() {
         ...item,
         id: item.vehicleNo || index,
         serialNo: index + 1,
+        grossPercent: (item.actprice > 0) ? Math.round(item.amount * 100 / item.actprice) : 0
       }));
       setRepairOption(processedData);
       setIsLoading(false);
@@ -206,6 +207,12 @@ export default function HomePage() {
       setIsShow5(false);
       setIsShow6(false);
       setIsShow(true);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -229,6 +236,7 @@ export default function HomePage() {
           },
           { field: "actprice", headerName: t("text.ActualPrice"), flex: 1 },
           { field: "amount", headerName: t("text.Expense"), flex: 1 },
+          { field: "amount", headerName: t("text.GrossExpenditurePercent"), flex: 1 },
           { field: "age", headerName: t("text.Age"), flex: 1 },
         ];
         setColumns(dynamicColumns);
@@ -257,6 +265,12 @@ export default function HomePage() {
       setIsShow6(false);
       setIsShow(false);
       setIsShow2(true);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -305,6 +319,12 @@ export default function HomePage() {
       setIsShow6(false);
       setIsShow(false);
       setIsShow2(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -351,6 +371,12 @@ export default function HomePage() {
       setIsShow6(false);
       setIsShow(false);
       setIsShow2(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -400,6 +426,12 @@ export default function HomePage() {
       setIsShow6(false);
       setIsShow(false);
       setIsShow2(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
           {
@@ -449,6 +481,12 @@ export default function HomePage() {
       setIsShow6(true);
       setIsShow(false);
       setIsShow2(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
 
       if (data.length > 0) {
         const dynamicColumns: GridColDef[] = [
@@ -485,6 +523,12 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     } else if (id === 1) {
       GetTopVehicleMaxNoOfComplaints(); // Load COMPLAINTS data
       setIsShow(false);
@@ -493,6 +537,12 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     } else if (id === 2) {
       GetReOrderLevel(); // Load INSURANCE data
       setIsShow(false);
@@ -501,6 +551,12 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     } else if (id === 3) {
       GetTopVehiclewaiting(); // Load REGISTRATION data
       setIsShow(false);
@@ -509,6 +565,12 @@ export default function HomePage() {
       setIsShow4(true);
       setIsShow5(false);
       setIsShow6(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     } else if (id === 4) {
       GetTopItemIssued(); // Load SERVICES data
       setIsShow(false);
@@ -517,6 +579,12 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(true);
       setIsShow6(false);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     } else if (id === 5) {
       GetScrapDetail(); // Load SCRAP DETAIL data
       setIsShow(false);
@@ -525,6 +593,12 @@ export default function HomePage() {
       setIsShow4(false);
       setIsShow5(false);
       setIsShow6(true);
+      setSearchTerm("");
+      setSearchTerm1("");
+      setSearchTerm2("");
+      setSearchTerm3("");
+      setSearchTerm4("");
+      setSearchTerm5("");
     }
   };
 
@@ -625,7 +699,7 @@ export default function HomePage() {
           .includes(searchTerm.toLowerCase())
       )
     );
-  }, [RepairOption, columns, searchTerm]);
+  }, [RepairOption, columns, searchTerm, isShow]);
 
   const filteredRows1 = React.useMemo(() => {
     return ComplaintsOption.filter((row) =>
@@ -898,8 +972,8 @@ export default function HomePage() {
   const adjustedColumns = columns.map((column: any) => ({
     ...column,
   }));
-  useEffect(() => {}, [getTop]);
-  useEffect(() => {}, [getTop1]);
+  useEffect(() => { }, [getTop]);
+  useEffect(() => { }, [getTop1]);
   const adjustedColumns1 = columns1.map((column: any) => ({
     ...column,
   }));
@@ -935,8 +1009,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row) => `
+        .map(
+          (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleTypename}</td>
@@ -944,8 +1018,8 @@ export default function HomePage() {
               <td>${row.amount}</td>
               <td>${row.age}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1069,8 +1143,8 @@ export default function HomePage() {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row) => `
+        .map(
+          (row) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.noOfComplaints}</td>
@@ -1078,8 +1152,8 @@ export default function HomePage() {
               <td>${row.amount}</td>
              
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1139,8 +1213,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.effectiveDate}</td>
@@ -1148,8 +1222,8 @@ th, td {
               <td>${row.attachment}</td>
               <td>${row.licenceType}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1209,8 +1283,8 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.vehicleRegistrationDate}</td>
@@ -1218,8 +1292,8 @@ th, td {
               <td>${row.vehiclePhotoFile}</td>
               <td>${row.vehicleTypename}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1277,15 +1351,15 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleno}</td>
               <td>${row.noOfServices}</td>
             <td>${row.jobCardDate}</td>
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1343,15 +1417,15 @@ th, td {
         </thead>
         <tbody>
           ${rowsToPrint
-            .map(
-              (row: any) => `
+        .map(
+          (row: any) => `
             <tr>
               <td>${row.vehicleNo}</td>
               <td>${row.date}</td>
             
             </tr>`
-            )
-            .join("")}
+        )
+        .join("")}
         </tbody>
       </table>
     `;
@@ -1410,24 +1484,22 @@ th, td {
                   alignItems: "center",
                   padding: "1%,",
                   backgroundColor: "#fff",
-                  border: `2px solid ${
-                    selectedCardId === item.id ? "#3498db" : "#e0e0e0"
-                  }`,
+                  border: `2px solid ${selectedCardId === item.id ? "#3498db" : "#e0e0e0"
+                    }`,
                   borderRadius: "8px",
                   boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.1)",
-                  borderLeft: `4px solid ${
-                    item.id === 0
-                      ? "blue"
-                      : item.id === 1
+                  borderLeft: `4px solid ${item.id === 0
+                    ? "blue"
+                    : item.id === 1
                       ? "red"
                       : item.id === 2
-                      ? "green"
-                      : item.id === 3
-                      ? "orange"
-                      : item.id === 4
-                      ? "purple"
-                      : "teal"
-                  }`,
+                        ? "green"
+                        : item.id === 3
+                          ? "orange"
+                          : item.id === 4
+                            ? "purple"
+                            : "teal"
+                    }`,
                   transition: "transform 0.3s, box-shadow 0.3s",
                   cursor: "pointer",
                   "&:hover": {
@@ -1468,7 +1540,7 @@ th, td {
           <Grid container spacing={2}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={8} lg={8} sm={6}>
-                <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
+                <motion.div initial="hidden" whileHover={{ scale: 1.01 }}>
                   <Accordion expanded={true}>
                     <AccordionSummary
                       expandIcon={<ArrowDropDownIcon />}
@@ -2029,7 +2101,8 @@ th, td {
                                     {
                                       field: "vehicleNo",
                                       headerName: t("text.vehicleNo12"),
-                                      flex: 1.5,
+                                      flex: 1,
+                                      minWidth: 110,
                                       renderCell: (params) => (
                                         <span
                                           style={{
@@ -2064,17 +2137,45 @@ th, td {
                                     {
                                       field: "vehicleTypename",
                                       headerName: t("text.VehicleType"),
-                                      flex: 1.5,
+                                      flex: 1.2,
+                                      minWidth: 140
                                     },
                                     {
                                       field: "actprice",
                                       headerName: t("text.ActualPrice"),
                                       flex: 0.7,
+                                      minWidth: 100
                                     },
                                     {
                                       field: "amount",
                                       headerName: t("text.Expense"),
                                       flex: 0.7,
+                                      minWidth: 100
+                                    },
+                                    {
+                                      field: "grossPercent",
+                                      headerName: t("text.GrossExpenditurePercent"),
+                                      headerClassName: "MuiDataGrid-colCell",
+                                      cellClassName: "wrap-text",
+                                      flex: 1,
+                                      minWidth: 140,
+                                      renderCell: (params) => (
+                                        (params.row.grossPercent > 75) ? (<span
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "red",
+                                          }}
+                                        >
+                                          {params.row.grossPercent + "%"}
+                                        </span>) : (<span
+                                          style={{
+                                            cursor: "pointer",
+                                            color: "#007bff",
+                                          }}
+                                        >
+                                          {params.row.grossPercent + "%"}
+                                        </span>)
+                                      ),
                                     },
                                     {
                                       field: "age",
@@ -2082,37 +2183,70 @@ th, td {
                                       flex: 0.7,
                                     },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2200,37 +2334,70 @@ th, td {
                                       flex: 1,
                                     },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2312,37 +2479,70 @@ th, td {
                                     //   flex: 1,
                                     // },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2419,37 +2619,70 @@ th, td {
                                       flex: 1,
                                     },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2542,37 +2775,70 @@ th, td {
                                       },
                                     },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2634,37 +2900,70 @@ th, td {
                                       },
                                     },
                                   ]}
-                                  autoHeight
-                                  pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                    (size) => ({
-                                      value: size,
-                                      label: `${size}`,
-                                    })
-                                  )}
-                                  initialState={{
-                                    pagination: {
-                                      paginationModel: { pageSize: 5 },
+                                  // autoHeight
+                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
+                                  //   (size) => ({
+                                  //     value: size,
+                                  //     label: `${size}`,
+                                  //   })
+                                  // )}
+                                  // initialState={{
+                                  //   pagination: {
+                                  //     paginationModel: { pageSize: 5 },
+                                  //   },
+                                  // }}
+                                  // slotProps={{
+                                  //   toolbar: { showQuickFilter: false },
+                                  // }}
+                                  // sx={{
+                                  //   border: 0,
+                                  //   "& .MuiDataGrid-columnHeaders": {
+                                  //     backgroundColor: `var(--grid-headerBackground)`,
+                                  //     color: `var(--grid-headerColor)`,
+                                  //   },
+                                  //   "& .MuiDataGrid-columnHeaderTitle": {
+                                  //     color: "white",
+                                  //   },
+                                  //   "& .MuiDataGrid-iconButtonContainer": {
+                                  //     color: "#fff !important", // Change arrow color
+                                  //   },
+                                  //   "& .MuiDataGrid-sortIcon": {
+                                  //     color: "#fff !important", // Ensures sort icon color change
+                                  //   },
+                                  // }}
+                                  slots={{
+                                    toolbar: GridToolbar,
+                                  }}
+
+
+                                  slotProps={{
+                                    toolbar: {
+                                      showQuickFilter: true,
                                     },
                                   }}
-                                  slotProps={{
-                                    toolbar: { showQuickFilter: false },
-                                  }}
+
+                                  autoHeight={false}
                                   sx={{
                                     border: 0,
                                     "& .MuiDataGrid-columnHeaders": {
                                       backgroundColor: `var(--grid-headerBackground)`,
                                       color: `var(--grid-headerColor)`,
+                                      position: "sticky",
+                                      top: 0,
+                                      zIndex: 1,
                                     },
                                     "& .MuiDataGrid-columnHeaderTitle": {
                                       color: "white",
                                     },
-                                    "& .MuiDataGrid-iconButtonContainer": {
-                                      color: "#fff !important", // Change arrow color
+                                    "& .MuiDataGrid-cell": {
+                                      whiteSpace: "normal",
+                                      wordWrap: "break-word",
+                                      overflowWrap: "break-word",
                                     },
-                                    "& .MuiDataGrid-sortIcon": {
-                                      color: "#fff !important", // Ensures sort icon color change
-                                    },
+                                    height: 400,
+                                    overflowY: "auto",
                                   }}
+
                                 />
                               </div>
                             )}
@@ -2677,7 +2976,7 @@ th, td {
               </Grid>
 
               <Grid item xs={12} md={4} lg={4} sm={6}>
-                <motion.div initial="hidden" whileHover={{ scale: 1.05 }}>
+                <motion.div initial="hidden" whileHover={{ scale: 1.01 }}>
                   <Card
                     elevation={2}
                     style={{

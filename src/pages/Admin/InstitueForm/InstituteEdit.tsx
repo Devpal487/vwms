@@ -1,51 +1,26 @@
-import Paper from "@mui/material/Paper";
-import { useEffect, useState } from "react";
-import {
-   Button,
-   Card,
-   Grid,
-   TextField,
-   Typography,
-   Divider,
-   Box,
-   CardContent,
-   FormControl,
-   FormLabel,
-   RadioGroup,
-   FormControlLabel,
-   Radio,
-   Checkbox,
-   ListItemText,
-   IconButton,
-   InputAdornment,
-   Popover,
-   Modal,
-} from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import { ConfirmDialog } from "primereact/confirmdialog";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Button, CardContent, Grid, TextField, Typography, Divider, Autocomplete, Modal, Box, Select, MenuItem, FormControlLabel, Radio, IconButton, InputAdornment, Dialog, DialogTitle, DialogContent, RadioGroup, Checkbox, ListItemText, FormControl, FormLabel, Popover } from '@mui/material';
+import ArrowBackSharpIcon from '@mui/icons-material/ArrowBackSharp';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+
+import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useTranslation } from "react-i18next";
-import { GridColDef } from "@mui/x-data-grid";
-import { toast, ToastContainer } from "react-toastify";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// import nopdf from '../../../assets/images/nopdf.png'
+import dayjs, { Dayjs } from "dayjs";
+import api from '../../../utils/Url';
+import AddIcon from '@mui/icons-material/Add';
+import { toast } from "react-toastify";
 import ToastApp from "../../../ToastApp";
-import CustomLabel from "../../../CustomLable";
-import { Language, ReactTransliterate } from "react-transliterate";
-import api from "../../../utils/Url";
+import { ColorLens as ColorLensIcon } from "@mui/icons-material";
+import { SketchPicker } from "react-color";
+import CustomLabel from '../../../CustomLable';
+import nopdf from '../../../assets/images/imagepreview.jpg';
 import Languages from "../../../Languages";
-import DataGrids from "../../../utils/Datagrids";
-import { useLocation, useNavigate } from "react-router-dom";
-import React from "react";
-import dayjs from "dayjs";
-import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
-import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { Language, ReactTransliterate } from "react-transliterate";
+import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
-import nopdf from "../../../assets/nopdf.png";
-//import { SketchPicker } from 'react-color';
-// Adjust the path as necessary
 
 
 const style = {
@@ -160,83 +135,77 @@ const InstituteEdit = (props: Props) => {
 
     const getCountry = () => {
         const collectData = {
-            "countryId": -1
+            countryId: -1,
         };
-        api.post(`Country/GetCountryMaster`, collectData)
-            .then((res) => {
-                const arr = res.data.data.map((item: any) => ({
-                    label: item.countryName,
-                    value: item.countryId,
-                }));
-                setCountryOps(arr);
-            });
+        api.post(`CountryMaster/GetCountry`, collectData).then((res) => {
+            const arr = res.data.data.map((item: any) => ({
+                label: item.countryName,
+                value: item.countryId,
+            }));
+            setCountryOps(arr);
+        });
     };
 
     const getState = () => {
         const collectData = {
-            "stateId": -1,
-            "countryId": -1
+            stateId: -1,
+            countryId: -1,
         };
-        api.post(`State/GetStateMaster`, collectData)
-            .then((res) => {
-                const arr = res.data.data.map((item: any) => ({
-                    label: item.stateName,
-                    value: item.stateId,
-                }));
-                setStateOps(arr);
-            });
+        api.post(`StateMaster/GetState`, collectData).then((res) => {
+            const arr = res.data.data.map((item: any) => ({
+                label: item.stateName,
+                value: item.stateId,
+            }));
+            setStateOps(arr);
+        });
     };
 
     const getCity = () => {
         const collectData = {
-            "cityId": -1,
-            "stateId": -1
+            cityId: -1,
+            //stateId: -1,
         };
-        api.post(`M10_District/GetDistrictMaster`, collectData)
-            .then((res) => {
-                const arr = res.data.data.map((item: any) => ({
-                    label: item.cityName,
-                    value: item.cityId,
-                }));
-                setCityOps(arr);
-            });
+        api.post(`CityMaster/GetCityMaster`, collectData).then((res) => {
+            const arr = res.data.data.map((item: any) => ({
+                label: item.cityName,
+                value: item.cityId,
+            }));
+            setCityOps(arr);
+        });
     };
-
 
     const getStRoles = () => {
-        const collectData = {
-            "roleId": "-1"
-        };
-        api.post(`Auth/GetRoleMaster`, collectData)
-            .then((res) => {
-                const arr = res.data.data.map((item: any) => ({
-                    label: item.roleName,
-                    value: item.roleId,
-                }));
-                setStRole(arr);
-            });
+        // const collectData = {
+        //   roleId: "-1",
+        // };
+        api.get(`Auth/GetRoles`).then((res) => {
+            const arr = res.data.data.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+            }));
+            setStRole(arr);
+        });
     };
-
 
     const getEmpRoles = () => {
         const collectData = {
-            "roleId": "-1"
+            roleId: "-1",
         };
-        api.post(`Auth/GetRoleMaster`, collectData)
-            .then((res) => {
-                const arr = res.data.data.map((item: any) => ({
-                    label: item.roleName,
-                    value: item.roleId,
-                }));
-                setEmpRole(arr);
-            });
+        api.get(`Auth/GetRoles`).then((res) => {
+            const arr = res.data.data.map((item: any) => ({
+                label: item.name,
+                value: item.id,
+            }));
+            setEmpRole(arr);
+        });
     };
 
     const getParentInst = () => {
         const collectData = {
-            "id": -1
+            id: -1,
         };
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api
+            .post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 const arr = res.data.data.map((item: any) => ({
                     label: item.insname,
@@ -246,16 +215,17 @@ const InstituteEdit = (props: Props) => {
             });
     };
 
+
     const getLogoById = () => {
         const collectData = {
             id: location.state.id,
         };
 
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api.post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 const Doc = res.data.data[0]["instLogo"];
                 if (Doc) {
-                    formik.setFieldValue("instLogo", Doc);
+                    formik.setFieldValue("instLogo", Doc || "");
                 }
             });
     };
@@ -265,11 +235,11 @@ const InstituteEdit = (props: Props) => {
             id: location.state.id,
         };
 
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api.post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 //console.log("result" + JSON.stringify(res.data.data[0]["instImage"]));
                 const Doc = res.data.data[0]["instImage"];
-                formik.setFieldValue("instImage", Doc);
+                formik.setFieldValue("instImage", Doc || "");
             });
     };
 
@@ -278,11 +248,11 @@ const InstituteEdit = (props: Props) => {
             id: location.state.id,
         };
 
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api.post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 const Doc = res.data.data[0]["reportheaderimg"];
                 if (Doc) {
-                    formik.setFieldValue("reportheaderimg", Doc);
+                    formik.setFieldValue("reportheaderimg", Doc || "");
                 }
             });
     };
@@ -292,11 +262,11 @@ const InstituteEdit = (props: Props) => {
             id: location.state.id,
         };
 
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api.post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 const Doc = res.data.data[0]["reportfooterimg"];
                 if (Doc) {
-                    formik.setFieldValue("reportfooterimg", Doc);
+                    formik.setFieldValue("reportfooterimg", Doc || "");
                 }
             });
     };
@@ -306,11 +276,11 @@ const InstituteEdit = (props: Props) => {
         const collectData = {
             id: location.state.id,
         };
-        api.post(`Institute_Master/GetInstitute_Master`, collectData)
+        api.post(`Setting/GetInstitute_Master`, collectData)
             .then((res) => {
                 const Doc = res.data.data[0]["reportHeader"];
                 if (Doc) {
-                    formik.setFieldValue("reportHeader", Doc);
+                    formik.setFieldValue("reportHeader", Doc || "");
                 }
             });
     };
@@ -329,7 +299,9 @@ const InstituteEdit = (props: Props) => {
     const modalOpenHandle = (event: any) => {
         setPanOpen(true);
         if (event === "instLogo") {
-            setModalImg(formik.values.instLogo);
+            setModalImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instLogo)
+                ? formik.values.instLogo
+                : `data:image/jpeg;base64,${formik.values.instLogo}`);
         }
     };
 
@@ -339,7 +311,10 @@ const InstituteEdit = (props: Props) => {
     const modalOpenHandle1 = (event: any) => {
         setOpen(true);
         if (event === "instImage") {
-            setImg(formik.values.instImage);
+            setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instImage)
+                ? formik.values.instImage
+                : `data:image/jpeg;base64,${formik.values.instImage}`);
+            //setImg(formik.values.instImage);
         }
     };
 
@@ -350,7 +325,10 @@ const InstituteEdit = (props: Props) => {
     const modalOpenHandle2 = (event: any) => {
         setOpenImg(true);
         if (event === "reportheaderimg") {
-            setImg(formik.values.reportheaderimg);
+            //setImg(formik.values.reportheaderimg);
+            setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportheaderimg)
+                ? formik.values.reportheaderimg
+                : `data:image/jpeg;base64,${formik.values.reportheaderimg}`);
         }
     };
 
@@ -360,7 +338,10 @@ const InstituteEdit = (props: Props) => {
     const modalOpenHandle3 = (event: any) => {
         setOpenFooter(true);
         if (event === "reportfooterimg") {
-            setImg(formik.values.reportfooterimg);
+            //setImg(formik.values.reportfooterimg);
+            setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportfooterimg)
+                ? formik.values.reportfooterimg
+                : `data:image/jpeg;base64,${formik.values.reportfooterimg}`);
         }
     };
 
@@ -371,7 +352,10 @@ const InstituteEdit = (props: Props) => {
     const modalOpenHandle4 = (event: any) => {
         setOpenHeader(true);
         if (event === "reportHeader") {
-            setImg(formik.values.reportHeader);
+            //setImg(formik.values.reportHeader);
+            setImg(/^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportHeader)
+                ? formik.values.reportHeader
+                : `data:image/jpeg;base64,${formik.values.reportHeader}`);
         }
     };
 
@@ -394,8 +378,9 @@ const InstituteEdit = (props: Props) => {
             const fileNameParts = file.name.split(".");
             const fileExtension = fileNameParts[fileNameParts.length - 1];
             if (fileExtension.toLowerCase() != "file") {
-                const base64 = await ConvertBase64(file);
-                formik.setFieldValue(params, base64);
+                const base64: any = await ConvertBase64(file);
+                const base64WithoutPrefix: any = base64.replace(/^data:image\/\w+;base64,/, "");;
+                formik.setFieldValue(params, base64WithoutPrefix);
                 console.log(base64);
             } else {
                 toast.error("Only files are allowed to be uploaded.");
@@ -432,7 +417,7 @@ const InstituteEdit = (props: Props) => {
             .matches(/^[0-9]+$/, t('text.EnterNoOnly')),
         reAttenDuration: Yup.string()
             .matches(/^[0-9]+$/, t('text.EnterNoOnly')),
-            pincode: Yup.string()
+        pincode: Yup.string()
             .matches(/^[0-9]+$/, t('text.EnterNoOnly')),
         email: Yup.string()
             .matches(
@@ -442,7 +427,7 @@ const InstituteEdit = (props: Props) => {
     });
 
     const [toaster, setToaster] = useState(false);
-    
+
     const formik = useFormik({
         initialValues: {
             id: location.state.id,
@@ -507,23 +492,28 @@ const InstituteEdit = (props: Props) => {
             reportheaderimgbyte: location.state.reportheaderimgbyte,
             reportfooterimgbyte: location.state.reportfooterimgbyte,
             reportHeaderbyte: location.state.reportHeaderbyte,
-            reportheaderimg: location.state.reportheaderimg,
-            reportfooterimg: location.state.reportfooterimg,
-            reportHeader: location.state.reportHeader,
+            reportheaderimg: "",
+            //reportheaderimg: location.state.reportheaderimg,
+            reportfooterimg: "",
+            //reportfooterimg: location.state.reportfooterimg,
+            reportHeader: "",
+            //reportHeader: location.state.reportHeader,
             parent_inst: location.state.parent_inst,
-            instImage: location.state.instImage,
-            instLogo: location.state.instLogo,
+            instImage: "",
+            //instImage: location.state.instImage,
+            instLogo: "",
+            //instLogo: location.state.instLogo,
         },
 
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            const response = await api.post(`Institute_Master/AddUpdateInstitute_Master`,
+            const response = await api.post(`Setting/AddUpdateInstitute_Master`,
                 values
             );
             if (response.data.isSuccess) {
                 setToaster(false);
                 toast.success(response.data.mesg);
-                navigate("/Organisation/Organisation");
+                navigate("/Admin/Setting/oragnisation");
             } else {
                 setToaster(true);
                 toast.error(response.data.mesg);
@@ -549,45 +539,45 @@ const InstituteEdit = (props: Props) => {
                 }}
             >
                 <CardContent>
-                    
+
 
                     <Grid item xs={12} container spacing={2} >
-            <Grid item lg={2} md={2} xs={2} marginTop={2}>
-              <Button
-                type="submit"
-                onClick={() => back(-1)}
-                variant="contained"
-                style={{backgroundColor:`var(--grid-headerBackground)`,color: `var(--grid-headerColor)`}}
-              >
-                <ArrowBackSharpIcon />
-              </Button>
-            </Grid>
-            <Grid item lg={7} md={7} xs={7} alignItems="center" justifyContent="center">
-              <Typography
-                gutterBottom
-                variant="h5"
-                component="div"
-                sx={{ padding: "20px" }}
-                align="center"
-              >
-                {t("text.EditInstitute")}
-              </Typography>
-            </Grid>
+                        <Grid item lg={2} md={2} xs={2} marginTop={2}>
+                            <Button
+                                type="submit"
+                                onClick={() => back(-1)}
+                                variant="contained"
+                                style={{ backgroundColor: `var(--grid-headerBackground)`, color: `var(--grid-headerColor)` }}
+                            >
+                                <ArrowBackSharpIcon />
+                            </Button>
+                        </Grid>
+                        <Grid item lg={7} md={7} xs={7} alignItems="center" justifyContent="center">
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                                sx={{ padding: "20px" }}
+                                align="center"
+                            >
+                                {t("text.EditInstitute")}
+                            </Typography>
+                        </Grid>
 
-            <Grid item lg={3} md={3} xs={3} marginTop={3}>
-              <select
-                className="language-dropdown"
-                value={lang}
-                onChange={(e) => setLang(e.target.value as Language)}
-              >
-                {Languages.map((l:any) => (
-                  <option key={l.value} value={l.value}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
-            </Grid>
-          </Grid>
+                        <Grid item lg={3} md={3} xs={3} marginTop={3}>
+                            <select
+                                className="language-dropdown"
+                                value={lang}
+                                onChange={(e) => setLang(e.target.value as Language)}
+                            >
+                                {Languages.map((l) => (
+                                    <option key={l.value} value={l.value}>
+                                        {l.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </Grid>
+                    </Grid>
                     <Divider />
                     <br />
                     <form onSubmit={formik.handleSubmit}>
@@ -675,57 +665,57 @@ const InstituteEdit = (props: Props) => {
                             <Grid item md={12}>
 
                                 <FormControl component="fieldset" style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 20,
-                    // marginTop: "13px",
-                    // marginLeft: "12px",
-                  }}> 
-                  <Grid>
-                                    <FormLabel component="legend">{<CustomLabel text={t("text.OrgType")} />}</FormLabel>
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    gap: 20,
+                                    // marginTop: "13px",
+                                    // marginLeft: "12px",
+                                }}>
+                                    <Grid>
+                                        <FormLabel component="legend">{<CustomLabel text={t("text.OrgType")} />}</FormLabel>
                                     </Grid>
                                     <Grid>
-                                    <RadioGroup
-                                        row
-                                        aria-label="inst_type"
-                                        name="inst_type"
-                                        id="inst_type"
-                                        value={formik.values.inst_type}
-                                        onChange={formik.handleChange}
-                                    >
-                                        <FormControlLabel value="S" control={<Radio />} label={t("text.School")} />
-                                        <FormControlLabel value="C" control={<Radio />} label={t("text.College")} />
-                                        <FormControlLabel value="U" control={<Radio />} label={t("text.University")} />
-                                        <FormControlLabel value="I" control={<Radio />} label={t("text.Institute")} />
-                                    </RadioGroup>
+                                        <RadioGroup
+                                            row
+                                            aria-label="inst_type"
+                                            name="inst_type"
+                                            id="inst_type"
+                                            value={formik.values.inst_type}
+                                            onChange={formik.handleChange}
+                                        >
+                                            <FormControlLabel value="S" control={<Radio />} label={t("text.School")} />
+                                            <FormControlLabel value="C" control={<Radio />} label={t("text.College")} />
+                                            <FormControlLabel value="U" control={<Radio />} label={t("text.University")} />
+                                            <FormControlLabel value="I" control={<Radio />} label={t("text.Institute")} />
+                                        </RadioGroup>
                                     </Grid>
                                 </FormControl>
                             </Grid>
 
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                  label={t("text.InstituteName")}
-                  value={formik.values.insname}
-                  onChangeText={(text: string) =>
-                    handleConversionChange("insname", text)
-                  }
-                  required={false}
-                  lang={lang}
-                />
+                                <TranslateTextField
+                                    label={t("text.InstituteName")}
+                                    value={formik.values.insname}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("insname", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                    label={t("text.ShortName")}
-                    value={formik.values.shortName}
-                    onChangeText={(text: string) =>
-                      handleConversionChange("shortName", text)
-                    }
-                    required={false}
-                    lang={lang}
-                  />
+                                <TranslateTextField
+                                    label={t("text.ShortName")}
+                                    value={formik.values.shortName}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("shortName", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
 
@@ -829,26 +819,26 @@ const InstituteEdit = (props: Props) => {
 
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                    label={t("text.Address")}
-                    value={formik.values.address}
-                    onChangeText={(text: string) =>
-                      handleConversionChange("address", text)
-                    }
-                    required={false}
-                    lang={lang}
-                  />
+                                <TranslateTextField
+                                    label={t("text.Address")}
+                                    value={formik.values.address}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("address", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                    label={t("text.District")}
-                    value={formik.values.district}
-                    onChangeText={(text: string) =>
-                      handleConversionChange("district", text)
-                    }
-                    required={false}
-                    lang={lang}
-                  />
+                                <TranslateTextField
+                                    label={t("text.District")}
+                                    value={formik.values.district}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("district", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
 
@@ -878,48 +868,48 @@ const InstituteEdit = (props: Props) => {
 
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                    label={t("text.Category")}
-                    value={formik.values.collegeCategory}
-                    onChangeText={(text: string) =>
-                      handleConversionChange("collegeCategory", text)
-                    }
-                    required={false}
-                    lang={lang}
-                  />
+                                <TranslateTextField
+                                    label={t("text.Category")}
+                                    value={formik.values.collegeCategory}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("collegeCategory", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                      label={t("text.Principal")}
-                      value={formik.values.principal}
-                      onChangeText={(text: string) =>
-                        handleConversionChange("principal", text)
-                      }
-                      required={false}
-                      lang={lang}
-                    />
+                                <TranslateTextField
+                                    label={t("text.Principal")}
+                                    value={formik.values.principal}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("principal", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                      label={t("text.collegeStatus")}
-                      value={formik.values.collegeStatus}
-                      onChangeText={(text: string) =>
-                        handleConversionChange("collegeStatus", text)
-                      }
-                      required={false}
-                      lang={lang}
-                    />
+                                <TranslateTextField
+                                    label={t("text.collegeStatus")}
+                                    value={formik.values.collegeStatus}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("collegeStatus", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                      label={t("text.ResidencialAddress")}
-                      value={formik.values.resiAddress}
-                      onChangeText={(text: string) =>
-                        handleConversionChange("resiAddress", text)
-                      }
-                      required={false}
-                      lang={lang}
-                    />
+                                <TranslateTextField
+                                    label={t("text.ResidencialAddress")}
+                                    value={formik.values.resiAddress}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("resiAddress", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
                                 <TextField
@@ -946,28 +936,28 @@ const InstituteEdit = (props: Props) => {
 
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                        label={t("text.OficeNO")}
-                        value={formik.values.officeNo}
-                        onChangeText={(text: string) =>
-                          handleConversionChange("officeNo", text)
-                        }
-                        required={false}
-                        lang={lang}
-                      />
+                                <TranslateTextField
+                                    label={t("text.OficeNO")}
+                                    value={formik.values.officeNo}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("officeNo", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                        label={t("text.ResiNO")}
-                        value={formik.values.resiNo}
-                        onChangeText={(text: string) =>
-                          handleConversionChange("resiNo", text)
-                        }
-                        required={false}
-                        lang={lang}
-                      />
+                                <TranslateTextField
+                                    label={t("text.ResiNO")}
+                                    value={formik.values.resiNo}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("resiNo", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
 
@@ -1002,7 +992,7 @@ const InstituteEdit = (props: Props) => {
                                     value={formik.values.email}
                                     placeholder={t("text.Email")}
                                     size="small"
-                                   
+
 
                                     fullWidth
                                     name="email"
@@ -1011,7 +1001,7 @@ const InstituteEdit = (props: Props) => {
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                 />
-                                 {formik.touched.email && formik.errors.email ? (
+                                {formik.touched.email && formik.errors.email ? (
                                     <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.email)}</div>
                                 ) : null}
                             </Grid>
@@ -1051,38 +1041,38 @@ const InstituteEdit = (props: Props) => {
                                 />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                        label={t("text.DistrictArea")}
-                        value={formik.values.districtArea}
-                        onChangeText={(text: string) =>
-                          handleConversionChange("districtArea", text)
-                        }
-                        required={false}
-                        lang={lang}
-                      />
+                                <TranslateTextField
+                                    label={t("text.DistrictArea")}
+                                    value={formik.values.districtArea}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("districtArea", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
                             <Grid md={4} item>
-                            <TranslateTextField
-                        label={t("text.StatusPg")}
-                        value={formik.values.statusPG}
-                        onChangeText={(text: string) =>
-                          handleConversionChange("statusPG", text)
-                        }
-                        required={false}
-                        lang={lang}
-                      />
+                                <TranslateTextField
+                                    label={t("text.StatusPg")}
+                                    value={formik.values.statusPG}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("statusPG", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
                             <Grid md={4} item>
-                            <TranslateTextField
-                        label={t("text.Registrar")}
-                        value={formik.values.registrar}
-                        onChangeText={(text: string) =>
-                          handleConversionChange("registrar", text)
-                        }
-                        required={false}
-                        lang={lang}
-                      />
+                                <TranslateTextField
+                                    label={t("text.Registrar")}
+                                    value={formik.values.registrar}
+                                    onChangeText={(text: string) =>
+                                        handleConversionChange("registrar", text)
+                                    }
+                                    required={false}
+                                    lang={lang}
+                                />
                             </Grid>
 
                             <Grid md={4} item>
@@ -1533,7 +1523,7 @@ const InstituteEdit = (props: Props) => {
                                         horizontal: "left",
                                     }}
                                 >
-                                    {/* <SketchPicker color={formik.values.mBackColor} onChangeComplete={handleColorChange} /> */}
+                                    <SketchPicker color={formik.values.mBackColor} onChangeComplete={handleColorChange} />
                                 </Popover>
                             </Grid>
 
@@ -1577,7 +1567,7 @@ const InstituteEdit = (props: Props) => {
                                         horizontal: "left",
                                     }}
                                 >
-                                    {/* <SketchPicker color={formik.values.mOverColor} onChangeComplete={handleColorChange1} /> */}
+                                    <SketchPicker color={formik.values.mOverColor} onChangeComplete={handleColorChange1} />
                                 </Popover>
                             </Grid>
 
@@ -1630,7 +1620,12 @@ const InstituteEdit = (props: Props) => {
                                         />
                                     ) : (
                                         <img
-                                            src={formik.values.instLogo}
+                                            src={
+                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instLogo)
+                                                    ? formik.values.instLogo
+                                                    : `data:image/jpeg;base64,${formik.values.instLogo}`
+                                            }
+                                            //src={formik.values.instLogo}
                                             style={{
                                                 width: 150,
                                                 height: 100,
@@ -1721,7 +1716,12 @@ const InstituteEdit = (props: Props) => {
                                         />
                                     ) : (
                                         <img
-                                            src={formik.values.instImage}
+                                            src={
+                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.instImage)
+                                                    ? formik.values.instImage
+                                                    : `data:image/jpeg;base64,${formik.values.instImage}`
+                                            }
+                                            // src={formik.values.instImage}
                                             style={{
                                                 width: 150,
                                                 height: 100,
@@ -1815,7 +1815,12 @@ const InstituteEdit = (props: Props) => {
                                         />
                                     ) : (
                                         <img
-                                            src={formik.values.reportheaderimg}
+                                            src={
+                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportheaderimg)
+                                                    ? formik.values.reportheaderimg
+                                                    : `data:image/jpeg;base64,${formik.values.reportheaderimg}`
+                                            }
+                                            //src={formik.values.reportheaderimg}
                                             style={{
                                                 width: 150,
                                                 height: 100,
@@ -1909,7 +1914,12 @@ const InstituteEdit = (props: Props) => {
                                         />
                                     ) : (
                                         <img
-                                            src={formik.values.reportfooterimg}
+                                            src={
+                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportfooterimg)
+                                                    ? formik.values.reportfooterimg
+                                                    : `data:image/jpeg;base64,${formik.values.reportfooterimg}`
+                                            }
+                                            //src={formik.values.reportfooterimg}
                                             style={{
                                                 width: 150,
                                                 height: 100,
@@ -2004,7 +2014,12 @@ const InstituteEdit = (props: Props) => {
                                         />
                                     ) : (
                                         <img
-                                            src={formik.values.reportHeader}
+                                            src={
+                                                /^(data:image\/(jpeg|jpg|png);base64,)/.test(formik.values.reportHeader)
+                                                    ? formik.values.reportHeader
+                                                    : `data:image/jpeg;base64,${formik.values.reportHeader}`
+                                            }
+                                            //src={formik.values.reportHeader}
                                             style={{
                                                 width: 150,
                                                 height: 100,
@@ -2070,11 +2085,11 @@ const InstituteEdit = (props: Props) => {
                                     type="submit"
                                     fullWidth
                                     style={{
-                                        
-                                        backgroundColor:`var(--grid-headerBackground)`,
+
+                                        backgroundColor: `var(--grid-headerBackground)`,
                                         color: `var(--grid-headerColor)`,
-                                        marginTop:"10px",
-                                      }}
+                                        marginTop: "10px",
+                                    }}
                                 >
                                     {t("text.update")}
                                 </Button>

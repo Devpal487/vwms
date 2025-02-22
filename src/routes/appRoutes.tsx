@@ -163,6 +163,9 @@ import MenuMaster from "../pages/Admin/MenuMaster/MenuMaster";
 import HelpCreation from "../pages/Admin/HelpCreation/HelpCreation";
 import ItemConsumedReport from "../pages/Reports/ItemConsumedReport/ItemConsumedReport";
 import PageSetup from "../pages/Admin/PageSetup/PageSetup";
+import Institute from "../pages/Admin/InstitueForm/Institute";
+import InstituteAdd from "../pages/Admin/InstitueForm/InstituteAdd";
+import InstituteEdit from "../pages/Admin/InstitueForm/InstituteEdit";
 //import Oragnisation from "../pages/Admin/Setting/Oragnisation";
 
 
@@ -1730,39 +1733,50 @@ const appRoutes: RouteType[] = [
           },
         ],
       },
-      // {
-      //   path: "/Admin/Setting",
-      //   element: <DashboardPageLayout />,
-      //   state: "Setting",
-      //   sidebarProps: {
-      //     displayText: "Setting",
-      //     icon: <DashboardOutlinedIcon />,
-      //   },
-      //   child: [
-      //     {
-      //       index: true,
-      //       element: <DashboardIndex />,
-      //       state: "Setting.index",
-      //     },
+      {
+        path: "/Admin/Setting",
+        element: <DashboardPageLayout />,
+        state: "Setting",
+        sidebarProps: {
+          displayText: "Setting",
+          icon: <DashboardOutlinedIcon />,
+        },
+        child: [
+          {
+            index: true,
+            element: <DashboardIndex />,
+            state: "Setting.index",
+          },
 
-      //     {
-      //       path: "/Admin/Setting/Oragnisation",
-      //       element: <Oragnisation />,
-      //       state: "Setting.Oragnisation",
-      //       sidebarProps: {
-      //         displayText: "Oragnisation",
-      //       }
-      //     },
-      //     {
-      //       path: "/Admin/Setting/PageSetup",
-      //       element: <PageSetup />,
-      //       state: "Setting.PageSetup",
-      //       sidebarProps: {
-      //         displayText: "PageSetup",
-      //       }
-      //     },
-      //   ],
-      // },
+          {
+            path: "/Admin/Setting/oragnisation",
+            element: <Institute />,
+            state: "Setting.Oragnisation",
+            sidebarProps: {
+              displayText: "Oragnisation",
+            }
+          },
+          {
+            path: "/Admin/Setting/addoragnisation",
+            element: <InstituteAdd />,
+            state: "Setting.addoragnisation",
+          },
+          {
+            path: "/Admin/Setting/editoragnisation",
+            element: <InstituteEdit />,
+            state: "Settting.editoragnisation",
+          },
+          {
+            path: "/Admin/Setting/pagesetup",
+            element: <PageSetup />,
+            state: "Setting.PageSetup",
+            sidebarProps: {
+              displayText: "PageSetup",
+            }
+          },
+         
+        ],
+      },
       {
         path: "/Admin/userpremission",
         element: <UserPermissionMaster />,
