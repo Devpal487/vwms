@@ -13,7 +13,15 @@ export function getISTDate() {
       defaultValuestime,
   };
 }
+// export function getMenuData() {
 
+//   const menuId:any = sessionStorage.getItem("menuId");
+//   const menuName = sessionStorage.getItem("menuName");
+
+//   return {
+//     menuId, menuName
+//   };
+// }
 
 export function getId() {
   let ID:any = localStorage.getItem("useR_ID");

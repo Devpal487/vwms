@@ -158,7 +158,7 @@ export default function CreateItemDetail() {
       "unitId": null,
       "empId": 0,
       "vZoneID": 0,
-      "taxId": 0,
+      "taxId": null,
       "purchaseYear": 0,
       "modelNo": "",
       "serialNo": "",

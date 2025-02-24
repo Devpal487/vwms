@@ -250,7 +250,7 @@ export default function MiniDrawer({ items }: any) {
 
   const greeting = getGreeting();
 
-  let navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   // function searchMenuItems(items: any, query: string) {
   //   const results = [];
@@ -304,11 +304,11 @@ export default function MiniDrawer({ items }: any) {
   React.useEffect(() => {
     //const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
     setMenuData(items);
-    
+
   }, []);
   //   // Get logged-in user from localStorage
-//   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
-//   const userName = userData?.userDetails?.userName || "User";
+  //   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
+  //   const userName = userData?.userDetails?.userName || "User";
 
   const handleMenuClick = (menu: any) => {
     setActiveMenu(menu.menuId); // Highlight active menu
@@ -320,20 +320,41 @@ export default function MiniDrawer({ items }: any) {
     }
   };
 
+
+  // const handleMenuClick = (menu: any) => {
+  //   setActiveMenu(menu.menuId);
+  
+  //   if (menu.menuName === "Help Desk") {
+  //     console.log("✅ Storing Menu ID in LocalStorage:", menu.menuId);
+  
+  //     localStorage.setItem("selectedMenuId", menu.menuId.toString()); // ✅ Store menuId
+  //     console.log("📌 Stored menuId in LocalStorage:", localStorage.getItem("selectedMenuId"));
+  
+  //     const helpDeskURL = `/Admin/HelpDesk?menuId=${menu.menuId}`;
+  //     console.log("🔗 Navigating to:", helpDeskURL); // ✅ Log navigation URL
+  
+  //     navigate(helpDeskURL, { replace: true }); // ✅ Ensure it navigates in the same tab
+  //   } else {
+  //     if (menu.children && menu.children.length > 0) {
+  //       toggleMenu(menu.menuId, menu.parentId);
+  //     } else if (menu.path) {
+  //       navigate(menu.path);
+  //     }
+  //   }
+  // };
+  
+  
+  
+  
+  
   
   
 
- 
+
+
+
+
   
-  // const toggleMenu = (menuId: number) => {
-  //   setOpenMenus((prev) => {
-  //     const newOpenMenus = new Set(prev);
-  //     newOpenMenus.has(menuId)
-  //       ? newOpenMenus.delete(menuId)
-  //       : newOpenMenus.add(menuId);
-  //     return newOpenMenus;
-  //   });
-  // };
 
   const toggleMenu = (menuId: number, parentId: number | null) => {
     setOpenMenus((prev: Set<number>) => {
@@ -845,8 +866,8 @@ export default function MiniDrawer({ items }: any) {
   var currentLanguage = localStorage.getItem("preferredLanguage");
   var newLanguage = currentLanguage === "hi" ? "English" : "हिंदी";
 
-  const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
-  const userDetail = userData[0]?.userdetail || [];
+  //const userData = JSON.parse(localStorage.getItem("userdata")!) || {};
+  // const userDetail = userData[0]?.userdetail || [];
   // console.log(userDetail);
 
   const collapsehamndle = (index: any) => {
@@ -923,6 +944,7 @@ export default function MiniDrawer({ items }: any) {
 
   const [showThemeMenu, setShowThemeMenu] = React.useState(false);
 
+  const [userData, setUserData] = React.useState<any>(null);
   const [selectedTheme, setSelectedTheme] = React.useState(() => {
     const storedTheme = localStorage.getItem("theme");
 
@@ -1003,6 +1025,25 @@ export default function MiniDrawer({ items }: any) {
   };
 
   const defaultSelectedNodeId = parseInt(localStorage.getItem("id") + "");
+  React.useEffect(() => {
+    const storedData = localStorage.getItem("userdata");
+
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+
+        // Since parsedData is an array, get the first item
+        if (Array.isArray(parsedData) && parsedData.length > 0) {
+          setUserData(parsedData[0]?.userDetails || {});
+        } else {
+          setUserData({});
+        }
+      } catch (error) {
+        console.error("Error parsing userdata:", error);
+        setUserData({});
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     // Set default selected node here
@@ -1094,7 +1135,7 @@ export default function MiniDrawer({ items }: any) {
     }
   };
   //   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
-//   const userName = userData?.userDetails?.userName || "User";
+  //   const userName = userData?.userDetails?.userName || "User";
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -1135,16 +1176,16 @@ export default function MiniDrawer({ items }: any) {
           </div>
 
           <div style={{ fontSize: "2.5vw" }}>
-          <div style={{ fontFamily: "Georgia, serif" }}>
-            <span style={{ fontSize: "3vw", color:"#FFAE35" }}>V</span>
-            <span style={{ fontSize: "2.2vw" }}>ehicle </span>
-            <span style={{ fontSize: "3vw", color:"#D50E00"}}>W</span>
-            <span style={{ fontSize: "2.2vw" }}>orkshop </span>
-            <span style={{ fontSize: "3vw", color:"#FFE100"}}>M</span>
-            <span style={{ fontSize: "2.2vw" }}>anagement </span>
-            <span style={{ fontSize: "3vw", color:"#e69f9f"}}>S</span>
-            <span style={{ fontSize: "2.2vw" }}>ystem</span>
-          </div>
+            <div style={{ fontFamily: "Georgia, serif" }}>
+              <span style={{ fontSize: "3vw", color: "#FFAE35" }}>V</span>
+              <span style={{ fontSize: "2.2vw" }}>ehicle </span>
+              <span style={{ fontSize: "3vw", color: "#D50E00" }}>W</span>
+              <span style={{ fontSize: "2.2vw" }}>orkshop </span>
+              <span style={{ fontSize: "3vw", color: "#FFE100" }}>M</span>
+              <span style={{ fontSize: "2.2vw" }}>anagement </span>
+              <span style={{ fontSize: "3vw", color: "#e69f9f" }}>S</span>
+              <span style={{ fontSize: "2.2vw" }}>ystem</span>
+            </div>
           </div>
 
           <IconButton
@@ -1173,8 +1214,8 @@ export default function MiniDrawer({ items }: any) {
                 color: `var(--menu-color)`,
                 overflow: "auto",
                 filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                paddingRight: "10px",
-                paddingLeft: "10px",
+                paddingRight: "5px",
+                paddingLeft: "5px",
                 mt: 1.5,
                 "& .MuiAvatar-root": {
                   width: 32,
@@ -1250,10 +1291,10 @@ export default function MiniDrawer({ items }: any) {
               </ListItemIcon>
               Select Theme
             </MenuItem>
-                        <MenuItem
+            <MenuItem
               onClick={() => {
                 let path = "/Admin/HelpDesk";
-               // localStorage.setItem("menuData", menuData.toString());
+                // localStorage.setItem("menuData", menuData.toString());
                 window.open(path, "_blank");
               }}
             >
@@ -1314,7 +1355,7 @@ export default function MiniDrawer({ items }: any) {
           <div
             role="presentation"
             onClick={handleClicked}
-            // style={{  borderBottomRightRadius: "15px" }}
+          // style={{  borderBottomRightRadius: "15px" }}
           >
             <Breadcrumbs aria-label="breadcrumb" sx={{ color: "#fff" }}>
               {/* <Link
@@ -1591,8 +1632,95 @@ export default function MiniDrawer({ items }: any) {
           </div>
         </Box>
       </Modal>
+      <Avatar
+        src={userData?.profileImage || "/default-avatar.png"}
+        sx={{ width: 10, height: 30, cursor: "pointer" }}
+        onClick={() => setProfileDrawerOpen(true)}
+      />
+     
 
       <SwipeableDrawer
+        anchor="left"
+        open={profileDrawerOpen}
+        onClose={() => setProfileDrawerOpen(false)}
+        onOpen={() => { }}
+        style={{ zIndex: 1300 }}
+      >
+        <Box sx={{ width: drawerWidth }}>
+          {/* Close Button */}
+          <IconButton
+            edge="end"
+            onClick={() => setProfileDrawerOpen(false)}
+            sx={{ position: "absolute", right: 15, top: 2, color: "white" }}
+          >
+            <CloseIcon />
+          </IconButton>
+
+          {/* Header with Gradient Background */}
+          <Typography
+            sx={{
+              paddingTop: "3vh",
+              paddingBottom: "3vh",
+              textAlign: "center",
+              backgroundImage: "linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d)",
+              color: "whitesmoke",
+              borderBottomLeftRadius: "1px",
+              borderBottomRightRadius: "1px",
+              fontSize: "20px",
+            }}
+          >
+            User Details
+          </Typography>
+
+          {/* Avatar */}
+          <Box
+            sx={{
+              display: "flex",        // Enables flexbox for centering
+              justifyContent: "center", // Centers horizontally
+              alignItems: "center",    // Centers vertically (if needed)
+              marginTop: "10px",
+              marginBottom: "10px",
+              width: "100%",           // Ensures full width for proper centering
+            }}
+          >
+            <Avatar
+              src={userData?.profileImage || "/default-avatar.png"}
+              sx={{
+                width: "90px",
+                height: "90px",
+                borderRadius: "50%",
+                backgroundColor: "red",
+                color: "whitesmoke",
+                fontSize: "20px",
+              }}
+            >
+              {userData?.userName?.charAt(0) || "U"}
+            </Avatar>
+          </Box>
+
+
+          {/* User Info Section */}
+          <Box sx={{ paddingX: 2 }}>
+            <Divider />
+            <Typography sx={{ fontWeight: "bold", marginTop: 1 }}>Username:</Typography>
+            <Typography>{userData?.userName || "N/A"}</Typography>
+            <Divider />
+
+            <Typography sx={{ fontWeight: "bold", marginTop: 1 }}>Email:</Typography>
+            <Typography>{userData?.email || "N/A"}</Typography>
+            <Divider />
+
+            <Typography sx={{ fontWeight: "bold", marginTop: 1 }}>Phone Number:</Typography>
+            <Typography>{userData?.phoneNumber || "N/A"}</Typography>
+            <Divider />
+
+            <Typography sx={{ fontWeight: "bold", marginTop: 1 }}>Account Status:</Typography>
+            <Typography>{userData?.iS_ACTIVE ? "Inactive ❌ ✅" : "Active ✅"}</Typography>
+            <Divider />
+          </Box>
+        </Box>
+      </SwipeableDrawer>
+      {/* <SwipeableDrawer
         anchor="left"
         open={profileDrawerOpen}
         onClose={() => {
@@ -1781,7 +1909,7 @@ export default function MiniDrawer({ items }: any) {
             </div>
           ))}
         </Box>
-      </SwipeableDrawer>
+      </SwipeableDrawer> */}
     </Box>
   );
 }
@@ -2563,18 +2691,18 @@ export default function MiniDrawer({ items }: any) {
 //               Select Theme
 //             </MenuItem>
 
-            // {/* <MenuItem
-            //   onClick={() => {
-            //     let path = "/HelpDesk";
-            //    // localStorage.setItem("menuData", menuData.toString());
-            //     window.open(path, "_blank");
-            //   }}
-            // >
-            //   <ListItemIcon>
-            //     <img src={help} width={30} height={30} alt="Help Desk" />
-            //   </ListItemIcon>
-            //   Help Desk
-            // </MenuItem> */}
+// {/* <MenuItem
+//   onClick={() => {
+//     let path = "/HelpDesk";
+//    // localStorage.setItem("menuData", menuData.toString());
+//     window.open(path, "_blank");
+//   }}
+// >
+//   <ListItemIcon>
+//     <img src={help} width={30} height={30} alt="Help Desk" />
+//   </ListItemIcon>
+//   Help Desk
+// </MenuItem> */}
 
 //             {/* <MenuItem onClick={handleClose}>
 //               <ListItemIcon>
@@ -3208,610 +3336,3 @@ export default function MiniDrawer({ items }: any) {
 //   );
 // }
 
-// ============================================================
-// newsidebar
-
-// import * as React from "react";
-// import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import MuiDrawer from "@mui/material/Drawer";
-// import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
-// import List from "@mui/material/List";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import Typography from "@mui/material/Typography";
-// import Divider from "@mui/material/Divider";
-// import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import { useNavigate, Navigate } from "react-router-dom";
-// import { useTranslation } from "react-i18next";
-// import {
-//   Avatar,
-//   Checkbox,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   Modal,
-//   Stack,
-// } from "@mui/material";
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import call from "../../assets/images/phone-call.png";
-// import roles from "../../assets/images/role-model.png";
-// import tick from "../../assets/images/check-mark.png";
-// import crs from "../../assets/images/cross.png";
-// import log from "../../assets/images/profile.png";
-// import emails from "../../assets/images/gmail.png";
-// import genders from "../../assets/images/symbol.png";
-// import dobs from "../../assets/images/timetable.png";
-// import id from "../../assets/images/profile1.png";
-// import settings from "../../assets/images/settings.png";
-// import trans from "../../assets/images/translation.png";
-// import logout from "../../assets/images/logout.png";
-// import logged from "../../assets/images/permission.png";
-// import logo from "../../assets/images/recyclebinLogo.png";
-// import loged from "../../assets/images/DrawerLogo.png";
-// import CloseIcon from "@mui/icons-material/Close";
-// import dayjs from "dayjs";
-// import { Home } from "@mui/icons-material";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-// import Collapse from "@mui/material/Collapse";
-// import Typewriter from "./TypeWriter";
-// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-// import FolderIcon from "@mui/icons-material/Folder";
-// import TouchAppIcon from "@mui/icons-material/TouchApp";
-// import "./Shine.css";
-// import Breadcrumbs from "@mui/material/Breadcrumbs";
-// import Link from "@mui/material/Link";
-// import HomeIcon from "@mui/icons-material/Home";
-// import WhatshotIcon from "@mui/icons-material/Whatshot";
-// import GrainIcon from "@mui/icons-material/Grain";
-// import names from "../../assets/images/id-card (2).png";
-// import backgrd from "../../assets/images/backgroundimage.jpg";
-// import SearchIcon from "@mui/icons-material/Search";
-// import Paper from "@mui/material/Paper";
-// import InputBase from "@mui/material/InputBase";
-// import Autocomplete from "@mui/material/Autocomplete";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import {
-//   Button,
-//   Card,
-//   CardContent,
-//   Grid,
-//   TextField,
-//   // Typography,
-// } from "@mui/material";
-// import "./ThemeStyle.css";
-// import ThemeIcon from "../../assets/images/themes.png";
-// import {
-//   Brightness5,
-//   Brightness4,
-//   Waves,
-//   WbSunny,
-//   Forest,
-//   Flag,
-// } from "@mui/icons-material";
-// import api from "../../utils/Url";
-// import { toast } from "react-toastify";
-// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-// import TreeView from "@mui/x-tree-view/TreeView";
-// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-// import { FaRegFolderOpen } from "react-icons/fa6";
-// import DescriptionIcon from '@mui/icons-material/Description';
-// import { FaFileLines } from "react-icons/fa6";
-// import SettingsIcon from "@mui/icons-material/Settings";
-// import LogoutIcon from "@mui/icons-material/Logout";
-// import Brightness4Icon from "@mui/icons-material/Brightness4";
-// import Brightness5Icon from "@mui/icons-material/Brightness5";
-
-// const drawerWidth = 225;
-
-// const style = {
-//   position: "absolute" as "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: "95%",
-//   height: "85%",
-//   bgcolor: "#f5f5f5",
-//   border: "1px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-//   borderRadius: 10,
-// };
-
-// const openedMixin = (theme: Theme): CSSObject => ({
-//   width: drawerWidth,
-//   transition: theme.transitions.create("width", {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.enteringScreen,
-//   }),
-//   overflowX: "hidden",
-// });
-
-// const closedMixin = (theme: Theme): CSSObject => ({
-//   transition: theme.transitions.create("width", {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   overflowX: "hidden",
-//   width: `calc(${theme.spacing(7)} + 1px)`,
-//   [theme.breakpoints.up("sm")]: {
-//     width: `calc(${theme.spacing(12)} + 1px)`,
-//   },
-// });
-// const DrawerHeader = styled("div")(({ theme }) => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "flex-end",
-//   padding: theme.spacing(0, 1),
-//   ...theme.mixins.toolbar,
-// }));
-// interface AppBarProps extends MuiAppBarProps {
-//   open?: boolean;
-// }
-
-// const AppBar = styled(MuiAppBar, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })<AppBarProps>(({ theme, open }) => ({
-//   zIndex: theme.zIndex.drawer + 1,
-//   transition: theme.transitions.create(["width", "margin"], {
-//     easing: theme.transitions.easing.sharp,
-//     duration: theme.transitions.duration.leavingScreen,
-//   }),
-//   ...(open && {
-//     marginLeft: drawerWidth,
-//     width: `calc(100% - ${drawerWidth}px)`,
-//     transition: theme.transitions.create(["width", "margin"], {
-//       easing: theme.transitions.easing.sharp,
-//       duration: theme.transitions.duration.enteringScreen,
-//     }),
-//   }),
-// }));
-
-// const Drawer = styled(MuiDrawer, {
-//   shouldForwardProp: (prop) => prop !== "open",
-// })(({ theme, open }) => ({
-//   width: drawerWidth,
-//   flexShrink: 0,
-//   whiteSpace: "nowrap",
-//   boxSizing: "border-box",
-//   ...(open && {
-//     ...openedMixin(theme),
-//     "& .MuiDrawer-paper": openedMixin(theme),
-//   }),
-//   ...(!open && {
-//     ...closedMixin(theme),
-//     "& .MuiDrawer-paper": closedMixin(theme),
-//   }),
-// }));
-// function getGreeting() {
-//   const hour = new Date().getHours();
-
-//   let greeting;
-//   if (hour < 12) {
-//     greeting = {
-//       text: "Good Morning",
-//       color: "#FFFFE0",
-//       icon: "🌅", // Sunrise emoji
-//     };
-//   } else if (hour < 17) {
-//     greeting = {
-//       text: "Good Afternoon",
-//       color: "#FFE4B5",
-//       icon: "🌞", // Sun emoji
-//     };
-//   } else {
-//     greeting = {
-//       text: "Good Evening",
-//       color: "#FFDAB9",
-//       icon: "🌜", // Crescent moon emoji
-//     };
-//   }
-
-//   return greeting;
-// }
-
-// interface MenuItemType {
-//   menuId: number;
-//   menuName: string;
-//   path: string;
-//   children: MenuItemType[];
-// }
-
-// export default function Sidebar({ menuItems }: { menuItems: MenuItemType[] }) {
-//   const theme = useTheme();
-//   const [open, setOpen] = React.useState(true);
-//   const [menuOpen, setMenuOpen] = React.useState(false);
-//   const [profileDrawerOpen, setProfileDrawerOpen] = React.useState(false);
-//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-//   const [collapseIndex, setCollapseIndex] = React.useState<any>(-1);
-//   const [openlogo, setOpenlogo] = React.useState(true);
-//   const [homeColor, setHomeColor] = React.useState("inherit");
-//   const { t } = useTranslation();
-
-//   const [selectedSubMenu, setSelectedSubMenu] = React.useState(null);
-
-//   const [expandedItems, setExpandedItems] = React.useState<any[]>([]);
-//   const [isModalOpen, setIsModalOpen] = React.useState(false);
-
-//   const [treedata, setTreedata] = React.useState<any>([]);
-
-//   const [check, setCheck] = React.useState<any>([]);
-
-//   const [searchValue, setSearchValue] = React.useState("");
-//   // const [filteredItems, setFilteredItems] = React.useState([]);
-//   //const [filteredItems, setFilteredItems] = React.useState<MenuItem[]>([]);
-
-//   const themes = [
-//     { name: "light-theme", icon: <Brightness5 /> },
-//     { name: "dark-theme", icon: <Brightness4 /> },
-//     { name: "ocean-theme", icon: <Waves /> },
-//     { name: "sunset-theme", icon: <WbSunny /> },
-//     { name: "forest-theme", icon: <Forest /> },
-//     { name: "bhagwa-theme", icon: <Flag /> },
-//   ];
-
-//   const greeting = getGreeting();
-//   const navigate = useNavigate();
-//  // const [open, setOpen] = React.useState(true);
-//   const [expandedMenus, setExpandedMenus] = React.useState<number[]>([]);
-// const [themeMode, setThemeMode] = React.useState("light");
-//   // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-//   // Get logged-in user from localStorage
-//   const userData = JSON.parse(localStorage.getItem("userdata") || "{}");
-//   const userName = userData?.userDetails?.userName || "User";
-
-//   const handleToggle = (menuId: number) => {
-//     setExpandedMenus((prev) =>
-//       prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]
-//     );
-//   };
-
-//   const renderMenu = (items: MenuItemType[]) => {
-//     return items.map((item) => (
-//       <React.Fragment key={item.menuId}>
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={() => (item.children.length ? handleToggle(item.menuId) : navigate(item.path))}>
-//             <ListItemIcon>
-//               {item.children.length > 0 ? <FolderIcon /> : <FaFileLines />}
-//             </ListItemIcon>
-//             <ListItemText primary={item.menuName} />
-//             {item.children.length > 0 ? (
-//               expandedMenus.includes(item.menuId) ? <ExpandLessIcon /> : <ExpandMoreIcon />
-//             ) : null}
-//           </ListItemButton>
-//         </ListItem>
-//         {item.children.length > 0 && (
-//           <Collapse in={expandedMenus.includes(item.menuId)} timeout="auto" unmountOnExit>
-//             <List component="div" disablePadding sx={{ pl: 4 }}>
-//               {renderMenu(item.children)}
-//             </List>
-//           </Collapse>
-//         )}
-//       </React.Fragment>
-//     ));
-//   };
-
-//   const handleLogout = () => {
-//     localStorage.removeItem("userdata");
-//     localStorage.removeItem("permissions");
-//     localStorage.removeItem("token");
-//     navigate("/"); // ✅ Redirect to login
-// };
-
-//   const handleThemeChange = () => {
-//     setThemeMode((prev) => (prev === "light" ? "dark" : "light"));
-//     document.body.className = themeMode === "light" ? "dark-theme" : "light-theme";
-//   };
-
-// const handleProfileMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-//   setAnchorEl(event.currentTarget);
-// };
-
-// const handleProfileMenuClose = () => {
-//   setAnchorEl(null);
-// };
-
-//   return (
-//     <Drawer variant="permanent" open={open}>
-//       <List>
-//         {/* Home */}
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={() => navigate("/home")}>
-//             <ListItemIcon>
-//               <HomeIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Home" />
-//           </ListItemButton>
-//         </ListItem>
-
-//         {/* Dynamic Menu */}
-//         {renderMenu(menuItems)}
-
-//         <Divider />
-
-//         {/* Profile */}
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={handleProfileMenuClick}>
-//             <ListItemIcon>
-//               <Avatar>{userName.charAt(0).toUpperCase()}</Avatar>
-//             </ListItemIcon>
-//             <ListItemText primary={userName} />
-//           </ListItemButton>
-//         </ListItem>
-
-//         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleProfileMenuClose}>
-//           <MenuItem onClick={handleProfileMenuClose}>My Profile</MenuItem>
-//           <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
-//         </Menu>
-
-//         <Divider />
-
-//         {/* Theme Toggle */}
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={handleThemeChange}>
-//             <ListItemIcon>
-//               {themeMode === "light" ? <Brightness5Icon /> : <Brightness4Icon />}
-//             </ListItemIcon>
-//             <ListItemText primary="Toggle Theme" />
-//           </ListItemButton>
-//         </ListItem>
-
-//         {/* Logout */}
-//         <ListItem disablePadding>
-//           <ListItemButton onClick={handleLogout}>
-//             <ListItemIcon>
-//               <LogoutIcon />
-//             </ListItemIcon>
-//             <ListItemText primary="Logout" />
-//           </ListItemButton>
-//         </ListItem>
-//       </List>
-//     </Drawer>
-//   );
-// }
-
-// ===============================
-// 11/02/25
-// import * as React from "react";
-// import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-// import Box from "@mui/material/Box";
-// import MuiDrawer from "@mui/material/Drawer";
-// import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
-// import List from "@mui/material/List";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import Typography from "@mui/material/Typography";
-// import Divider from "@mui/material/Divider";
-// import IconButton from "@mui/material/IconButton";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import ListItemText from "@mui/material/ListItemText";
-// import { useNavigate, Navigate } from "react-router-dom";
-// import { useTranslation } from "react-i18next";
-// import {
-//   Avatar,
-//   Checkbox,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   Modal,
-//   Stack,
-// } from "@mui/material";
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import call from "../../assets/images/phone-call.png";
-// import roles from "../../assets/images/role-model.png";
-// import tick from "../../assets/images/check-mark.png";
-// import crs from "../../assets/images/cross.png";
-// import log from "../../assets/images/profile.png";
-// import emails from "../../assets/images/gmail.png";
-// import genders from "../../assets/images/symbol.png";
-// import dobs from "../../assets/images/timetable.png";
-// import id from "../../assets/images/profile1.png";
-// import settings from "../../assets/images/settings.png";
-// import trans from "../../assets/images/translation.png";
-// import logout from "../../assets/images/logout.png";
-// import logged from "../../assets/images/permission.png";
-// import logo from "../../assets/images/recyclebinLogo.png";
-// import loged from "../../assets/images/DrawerLogo.png";
-// import CloseIcon from "@mui/icons-material/Close";
-// import dayjs from "dayjs";
-// import { Home } from "@mui/icons-material";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-// import Collapse from "@mui/material/Collapse";
-// import Typewriter from "./TypeWriter";
-// import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-// import FolderIcon from "@mui/icons-material/Folder";
-// import TouchAppIcon from "@mui/icons-material/TouchApp";
-// import "./Shine.css";
-// import Breadcrumbs from "@mui/material/Breadcrumbs";
-// import Link from "@mui/material/Link";
-// import HomeIcon from "@mui/icons-material/Home";
-// import WhatshotIcon from "@mui/icons-material/Whatshot";
-// import GrainIcon from "@mui/icons-material/Grain";
-// import names from "../../assets/images/id-card (2).png";
-// import backgrd from "../../assets/images/backgroundimage.jpg";
-// import SearchIcon from "@mui/icons-material/Search";
-// import Paper from "@mui/material/Paper";
-// import InputBase from "@mui/material/InputBase";
-// import Autocomplete from "@mui/material/Autocomplete";
-// import InputAdornment from "@mui/material/InputAdornment";
-// import {
-//   Button,
-//   Card,
-//   CardContent,
-//   Grid,
-//   TextField,
-//   // Typography,
-// } from "@mui/material";
-// import "./ThemeStyle.css";
-// import ThemeIcon from "../../assets/images/themes.png";
-// import {
-//   Brightness5,
-//   Brightness4,
-//   Waves,
-//   WbSunny,
-//   Forest,
-//   Flag,
-// } from "@mui/icons-material";
-// import api from "../../utils/Url";
-// import { toast } from "react-toastify";
-// import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-// import TreeView from "@mui/x-tree-view/TreeView";
-// import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-
-// import { FaRegFolderOpen } from "react-icons/fa6";
-// import DescriptionIcon from '@mui/icons-material/Description';
-
-// import { FaFileLines } from "react-icons/fa6";
-// import ExpandLess from "@mui/icons-material/ExpandLess";
-// import ExpandMore from "@mui/icons-material/ExpandMore";
-// import LogoutIcon from "@mui/icons-material/Logout";
-// import Brightness4Icon from "@mui/icons-material/Brightness4";
-// import Brightness5Icon from "@mui/icons-material/Brightness5";
-// const themes = [
-//   { name: "light-theme", icon: <Brightness5 /> },
-//   { name: "dark-theme", icon: <Brightness4 /> },
-//   { name: "ocean-theme", icon: <Waves /> },
-//   { name: "sunset-theme", icon: <WbSunny /> },
-//   { name: "forest-theme", icon: <Forest /> },
-//   { name: "bhagwa-theme", icon: <Flag /> },
-// ];
-// interface MenuItem {
-//   menuId: number;
-//   menuName: string;
-//   path: string;
-//   children: MenuItem[];
-// }
-
-// export default function Sidebar({ menuItems }: { menuItems: MenuItem[] }) {
-//   const navigate = useNavigate();
-//   const [expandedMenus, setExpandedMenus] = React.useState<number[]>([]);
-//   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-//   const handleToggle = (menuId: number) => {
-//     setExpandedMenus(prev =>
-//       prev.includes(menuId) ? prev.filter(id => id !== menuId) : [...prev, menuId]
-//     );
-//   };
-//   const handleProfileMenuClose = () => {
-//     setAnchorEl(null);
-//   };
-//   const handleLogout = () => {
-//     localStorage.removeItem("userdata");
-//     localStorage.removeItem("permissions");
-//     localStorage.removeItem("token");
-//     navigate("/"); // ✅ Redirect to login
-// };
-//   const handleProfileMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const handleThemeChange = (theme: any) => {
-//     setSelectedTheme(theme);
-//     setShowThemeMenu(false);
-//   };
-//   const [showThemeMenu, setShowThemeMenu] = React.useState(false);
-
-//   const [selectedTheme, setSelectedTheme] = React.useState(() => {
-//     const storedTheme = localStorage.getItem("theme");
-
-//     return storedTheme ? storedTheme : themes[0]["name"];
-//   });
-//   const [themeMode, setThemeMode] = React.useState("light");
-//   const renderMenu = (items: MenuItem[]) => {
-//     return items.map((item) => (
-//       <React.Fragment key={item.menuId}>
-//         <ListItem disablePadding>
-
-//           <ListItemButton onClick={() => item.children.length ? handleToggle(item.menuId) : navigate(item.path)}>
-//             <ListItemIcon>
-//               <FolderIcon />
-//             </ListItemIcon>
-//             <ListItemText primary={item.menuName} />
-//             {item.children.length > 0 ? (expandedMenus.includes(item.menuId) ? <ExpandLess /> : <ExpandMore />) : null}
-//           </ListItemButton>
-//         </ListItem>
-//         {item.children.length > 0 && (
-//           <Collapse in={expandedMenus.includes(item.menuId)} timeout="auto" unmountOnExit>
-//             <List component="div" disablePadding sx={{ pl: 4 }}>
-//               {renderMenu(item.children)}
-//             </List>
-//           </Collapse>
-//         )}
-//       </React.Fragment>
-//     ));
-//   };
-
-//   return (
-//     <List>
-//     {/* Home */}
-//     <ListItem disablePadding>
-//       <ListItemButton onClick={() => navigate("/home")}>
-//         <ListItemIcon>
-//           <HomeIcon />
-//         </ListItemIcon>
-//         <ListItemText primary="Home" />
-//       </ListItemButton>
-//     </ListItem>
-
-//     {/* Dynamic Menu */}
-//     {renderMenu(menuItems)}
-
-//     <Divider />
-
-//     {/* Profile */}
-//     <ListItem disablePadding>
-//       <ListItemButton onClick={handleProfileMenuClick}>
-//         {/* <ListItemIcon>
-//           <Avatar>{userName.charAt(0).toUpperCase()}</Avatar>
-//         </ListItemIcon> */}
-//         {/* <ListItemText primary={userName} /> */}
-//       </ListItemButton>
-//     </ListItem>
-
-//     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleProfileMenuClose}>
-//       <MenuItem onClick={handleProfileMenuClose}>My Profile</MenuItem>
-//       <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
-//     </Menu>
-
-//     <Divider />
-
-//     {/* Theme Toggle */}
-//     <ListItem disablePadding>
-//       <ListItemButton onClick={handleThemeChange}>
-//         <ListItemIcon>
-//           {themeMode === "light" ? <Brightness5Icon /> : <Brightness4Icon />}
-//         </ListItemIcon>
-//         <ListItemText primary="Toggle Theme" />
-//       </ListItemButton>
-//     </ListItem>
-
-//     {/* Logout */}
-//     <ListItem disablePadding>
-//       <ListItemButton onClick={handleLogout}>
-//         <ListItemIcon>
-//           <LogoutIcon />
-//         </ListItemIcon>
-//         <ListItemText primary="Logout" />
-//       </ListItemButton>
-//     </ListItem>
-//   </List>
-
-//   );
-// }
