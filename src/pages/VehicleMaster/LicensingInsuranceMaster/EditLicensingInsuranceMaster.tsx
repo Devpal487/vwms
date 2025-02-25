@@ -136,7 +136,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("attachment", data[0].attachment.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+    formik.setFieldValue("attachment", (data[0].attachment !== null) ? data[0].attachment.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, "") : "");
   }
 
 

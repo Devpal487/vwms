@@ -66,7 +66,7 @@ export default function CountryMaster() {
       setIsCountryCode(pageSetup?.showHide ?? true); // Default to true only if undefined
     });
   };
-  
+
   // const getPageSetupData = async () => {
   //   await api.get(`Setting/GetPageSetupDataall`).then((res) => {
   //     const data = res.data.data;
@@ -82,6 +82,15 @@ export default function CountryMaster() {
   //   });
   //   //return response;
   // }
+
+
+  useEffect(() => {
+    const permissionsData = localStorage.getItem("permissions");
+    const permissions = permissionsData ? JSON.parse(permissionsData) : null;
+    if (permissions && permissions.length > 0) {
+      setPermissionData(permissions.find((e: any) => e.menuId === 6))
+    }
+  }, [])
 
   useEffect(() => {
     getPageSetupData();
@@ -187,33 +196,33 @@ export default function CountryMaster() {
                     direction="row"
                     sx={{ alignItems: "center", marginTop: "5px" }}
                   >
-                    {/* {permissionData?.isEdit ? (  */}
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
-                    {/* ) : ( 
-                       "" 
-                     )}  */}
-                    {/* {permissionData?.isDel ? (  */}
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
-                    {/* ) : ( 
-                        "" 
-                      )}  */}
+                    {permissionData?.isEdit ? (
+                      <EditIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
+                        className="cursor-pointer"
+                        onClick={() => routeChangeEdit(params.row)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {permissionData?.isDel ? (
+                      <DeleteIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          handledeleteClick(params.row.id);
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Stack>,
                 ];
               },

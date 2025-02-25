@@ -599,8 +599,9 @@ export default function ComplaintApproval() {
             serialNo: index + 1,
             id: Item.compId,
             complaintDate: Item.complaintDate
+
          }));
-         setItem(arr.filter((e:any) => e.status === "pending"));
+         setItem(arr.filter((e:any) => e.status === "pending" || e.status === "Pending"));
          setIsLoading(false);
 
          if (data.length > 0) {

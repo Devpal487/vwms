@@ -250,7 +250,7 @@ export default function MiniDrawer({ items }: any) {
 
   const greeting = getGreeting();
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // function searchMenuItems(items: any, query: string) {
   //   const results = [];
@@ -323,16 +323,16 @@ export default function MiniDrawer({ items }: any) {
 
   // const handleMenuClick = (menu: any) => {
   //   setActiveMenu(menu.menuId);
-  
+
   //   if (menu.menuName === "Help Desk") {
   //     console.log("✅ Storing Menu ID in LocalStorage:", menu.menuId);
-  
+
   //     localStorage.setItem("selectedMenuId", menu.menuId.toString()); // ✅ Store menuId
   //     console.log("📌 Stored menuId in LocalStorage:", localStorage.getItem("selectedMenuId"));
-  
+
   //     const helpDeskURL = `/Admin/HelpDesk?menuId=${menu.menuId}`;
   //     console.log("🔗 Navigating to:", helpDeskURL); // ✅ Log navigation URL
-  
+
   //     navigate(helpDeskURL, { replace: true }); // ✅ Ensure it navigates in the same tab
   //   } else {
   //     if (menu.children && menu.children.length > 0) {
@@ -342,19 +342,19 @@ export default function MiniDrawer({ items }: any) {
   //     }
   //   }
   // };
-  
-  
-  
-  
-  
-  
-  
 
 
 
 
 
-  
+
+
+
+
+
+
+
+
 
   const toggleMenu = (menuId: number, parentId: number | null) => {
     setOpenMenus((prev: Set<number>) => {
@@ -1295,7 +1295,8 @@ export default function MiniDrawer({ items }: any) {
               onClick={() => {
                 let path = "/Admin/HelpDesk";
                 // localStorage.setItem("menuData", menuData.toString());
-                window.open(path, "_blank");
+                navigate(path, { state: { activeMenu } })
+                //window.open(path, "_blank");
               }}
             >
               <ListItemIcon>
@@ -1637,7 +1638,7 @@ export default function MiniDrawer({ items }: any) {
         sx={{ width: 10, height: 30, cursor: "pointer" }}
         onClick={() => setProfileDrawerOpen(true)}
       />
-     
+
 
       <SwipeableDrawer
         anchor="left"

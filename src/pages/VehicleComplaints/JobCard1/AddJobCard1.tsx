@@ -528,7 +528,7 @@ const AddJobCard1 = (props: Props) => {
     }),
 
     // onSubmit: async (values) => {
-      
+
     //   const validServiceDetails = tableData.filter(
     //     (row) => row.serviceId && row.challanStatus
     //   );
@@ -585,54 +585,54 @@ const AddJobCard1 = (props: Props) => {
     // },
     onSubmit: async (values) => {
       setIsSubmitting(true); // Disable the Save button on submit
-  
+
       const validServiceDetails = tableData.filter(
-          (row) => row.serviceId && row.challanStatus
+        (row) => row.serviceId && row.challanStatus
       );
       const validItemDetails = tableData1.filter(
-          (row: any) => row.itemId && row.qty > 0 && row.rate > 0
+        (row: any) => row.itemId && row.qty > 0 && row.rate > 0
       );
-  
+
       if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
-          setBtnEnable1(true);
+        setBtnEnable1(true);
       }
-  
+
       if (validItemDetails.length > 0) {
-          setBtnEnable2(true);
+        setBtnEnable2(true);
       }
-  
+
       const payload = {
-          ...values,
-          serviceDetail: validServiceDetails,
-          itemDetail: validItemDetails,
+        ...values,
+        serviceDetail: validServiceDetails,
+        itemDetail: validItemDetails,
       };
-  
+
       try {
-          const response = await api.post(`Master/UpsertJobCardInhouse`, payload);
-          if (response.data.status === 1) {
-              toast.success(response.data.message);
-              formik.setFieldValue("jobCardId", response.data.data.jobCardId);
-  
-              if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
-                  setBtnEnable1(true);
-              }
-  
-              if (validItemDetails.length > 0) {
-                  setBtnEnable2(true);
-              }
-  
-              // Keep Save button disabled after success
-          } else {
-              toast.error(response.data.message);
-              setIsSubmitting(false); // Re-enable Save button on failure
+        const response = await api.post(`Master/UpsertJobCardInhouse`, payload);
+        if (response.data.status === 1) {
+          toast.success(response.data.message);
+          formik.setFieldValue("jobCardId", response.data.data.jobCardId);
+
+          if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
+            setBtnEnable1(true);
           }
+
+          if (validItemDetails.length > 0) {
+            setBtnEnable2(true);
+          }
+
+          // Keep Save button disabled after success
+        } else {
+          toast.error(response.data.message);
+          setIsSubmitting(false); // Re-enable Save button on failure
+        }
       } catch (error) {
-          console.error("Error:", error);
-          toast.error("Failed to submit.");
-          setIsSubmitting(false); // Re-enable Save button on error
+        console.error("Error:", error);
+        toast.error("Failed to submit.");
+        setIsSubmitting(false); // Re-enable Save button on error
       }
-  },
-  
+    },
+
   });
   const handleGenerateIndent = async (values: any) => {
     const validServiceDetails = tableData.filter(
@@ -1996,7 +1996,7 @@ const AddJobCard1 = (props: Props) => {
                       //   alert("Please add some data in table for further process");
                       //   return;
                       // } else {
-                      //   formik.setFieldValue("status", "jobwork");
+                      formik.setFieldValue("status", "jobwork");
                       //   handleGenerateChallan(formik.values);
                       // }
                     }}

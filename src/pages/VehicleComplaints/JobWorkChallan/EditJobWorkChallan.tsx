@@ -292,7 +292,7 @@ const EditJobWorkChallan = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("challanDoc", data[0].challanDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+    formik.setFieldValue("challanDoc", (data[0].challanDoc !== null) ? data[0].challanDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, "") : "");
   }
 
 
@@ -604,7 +604,7 @@ const EditJobWorkChallan = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobWorkChallan")}
+                {location.state.isView ? t("text.JobWorkChallan") : t("text.EditJobWorkChallan")}
               </Typography>
             </Grid>
 
@@ -1240,7 +1240,7 @@ const EditJobWorkChallan = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {location.state.isView ? "" : (<Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1250,12 +1250,12 @@ const EditJobWorkChallan = (props: Props) => {
                   }}
                 >
                   {t("text.update")}
-                </Button>
+                </Button>)}
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {location.state.isView ? "" : (<Button
                   type="reset"
                   fullWidth
                   style={{
@@ -1269,6 +1269,7 @@ const EditJobWorkChallan = (props: Props) => {
                 >
                   {t("text.reset")}
                 </Button>
+                )}
               </Grid>
               {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>

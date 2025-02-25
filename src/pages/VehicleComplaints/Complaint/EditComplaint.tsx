@@ -210,7 +210,7 @@ const EditComplaint = (props: Props) => {
    };
 
 
-   
+
    const fetchImage = async (compId: any = location.state?.compId || 0) => {
       const collectData = {
          "compId": compId,
@@ -516,7 +516,8 @@ const EditComplaint = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.EditComplaint")}
+                        {location.state.isView ? t("text.Complaint") : t("text.EditComplaint")}
+                        {/* {t("text.EditComplaint")} */}
                      </Typography>
                   </Grid>
 
@@ -1093,35 +1094,40 @@ const EditComplaint = (props: Props) => {
 
                      {/* Submit Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="submit"
-                           fullWidth
-                           style={{
-                              backgroundColor: `var(--header-background)`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                        >
-                           {t("text.update")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="submit"
+                              fullWidth
+                              style={{
+                                 backgroundColor: `var(--header-background)`,
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                           >
+                              {t("text.update")}
+                           </Button>
+                        )}
+
                      </Grid>
 
                      {/* Reset Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="reset"
-                           fullWidth
-                           style={{
-                              backgroundColor: "#F43F5E",
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              formik.resetForm();
-                           }}
-                        >
-                           {t("text.reset")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="reset"
+                              fullWidth
+                              style={{
+                                 backgroundColor: "#F43F5E",
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                              onClick={() => {
+                                 formik.resetForm();
+                              }}
+                           >
+                              {t("text.reset")}
+                           </Button>
+                        )}
                      </Grid>
 
                   </Grid>

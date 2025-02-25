@@ -9,6 +9,7 @@ import {
    TextField,
    Typography,
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -264,7 +265,7 @@ export default function JobCard() {
                   field: "actions",
                   headerClassName: "MuiDataGrid-colCell",
                   headerName: t("text.Action"),
-                  width: 55,
+                  width: 70,
 
                   renderCell: (params) => {
                      return [
@@ -282,6 +283,14 @@ export default function JobCard() {
                               }}
                               className="cursor-pointer"
                               onClick={() => routeChangeEdit(params.row)}
+                           />
+                            <VisibilityIcon
+                              style={{
+                                 fontSize: "20px",
+                                 color: "grey",
+                                 cursor: "pointer",
+                              }}
+                              onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                            />
                            {/* ) : ( */}
                            {/* "" */}

@@ -5,21 +5,24 @@ import { toast } from "react-toastify";
 import api from "../../../utils/Url";
 import { useTranslation } from "react-i18next";
 import ToastApp from "../../../ToastApp";
+import { useLocation } from "react-router-dom";
 
 export default function HelpDesk() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [PageName, setPageName] = useState<string>("");
   const [PageDesk, setPageDesk] = useState<string>("");
+  const location =  useLocation();
 
   useEffect(() => {
+    console.log("@@@@@@",location.state.activeMenu)
     fetchHelpDeskData();
   }, []);
 
   const fetchHelpDeskData = async () => {
     setIsLoading(true);
     try {
-      const response = await api.post(`/Auth/GetHelpMenu`, { menuId: 39 }); // need to replace
+      const response = await api.post(`/Auth/GetHelpMenu`, { menuId: location.state.activeMenu || 39 }); // need to replace
       if (response.data && response.data.data.length > 0) {
         setPageName(response.data.data[0]["menuName"]);
         setPageDesk(response.data.data[0]["helpedit"]); 

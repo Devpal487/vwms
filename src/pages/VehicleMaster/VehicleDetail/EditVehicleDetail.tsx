@@ -210,8 +210,8 @@ const EditVehicleDetail = (props: Props) => {
          `Master/GetVehicleDetail?ItemMasterId=${itemId}`,
       );
       const data = response.data.data;
-      formik.setFieldValue("filename", data[0].filename.replace(/^data:image\/\w+;base64,/, ""));
-      formik.setFieldValue("vehiclePhotoFile", data[0].vehiclePhotoFile.replace(/^data:image\/\w+;base64,/, ""));
+      formik.setFieldValue("filename", (data[0].filename !== null) ? data[0].filename.replace(/^data:image\/\w+;base64,/, "") : "");
+      formik.setFieldValue("vehiclePhotoFile", (data[0].vehiclePhotoFile !== null) ? data[0].vehiclePhotoFile.replace(/^data:image\/\w+;base64,/, "") : "");
    }
 
    const getVehicletypeData = async () => {

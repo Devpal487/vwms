@@ -309,7 +309,7 @@ const EditItemContract = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditItemContract")}
+                {location.state.isView ? t("text.ItemContract") : t("text.EditItemContract")}
               </Typography>
             </Grid>
 
@@ -577,35 +577,42 @@ const EditItemContract = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      style={{
+                        backgroundColor: `var(--header-background)`,
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {t("text.update")}
+                    </Button>
+                  )}
+
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                      onClick={() => {
+                        formik.resetForm();
+                      }}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
               </Grid>
 
             </Grid>

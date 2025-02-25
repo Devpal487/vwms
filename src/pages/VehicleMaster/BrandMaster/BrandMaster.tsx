@@ -60,11 +60,11 @@ export default function BrandMaster() {
    const [isbrandShortName, setIsbrandShortName] = useState(false);
    const getPageSetupData = async () => {
       await api.get(`Setting/GetPageSetupDataall`).then((res) => {
-        const data = res.data.data;
-        const pageSetup = data.find((e: any) => e.setupId === 1);
-        setIsbrandShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
+         const data = res.data.data;
+         const pageSetup = data.find((e: any) => e.setupId === 1);
+         setIsbrandShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
       });
-    };
+   };
    // const getPageSetupData = async () => {
    //    await api.get(`Setting/GetPageSetupDataall`).then((res) => {
    //       const data = res.data.data;
@@ -87,8 +87,8 @@ export default function BrandMaster() {
       const timeout = setTimeout(() => {
          //getPageSetupData();
          fetchBrandData();
-       }, 100);
-       return () => clearTimeout(timeout);
+      }, 100);
+      return () => clearTimeout(timeout);
    }, [isLoading]);
 
 

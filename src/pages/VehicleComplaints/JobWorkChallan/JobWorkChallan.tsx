@@ -9,6 +9,7 @@ import {
    TextField,
    Typography,
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -170,7 +171,7 @@ export default function JobWorkChallan() {
                   field: "actions",
                   headerClassName: "MuiDataGrid-colCell",
                   headerName: t("text.Action"),
-                  width: 70,
+                  width: 100,
 
                   renderCell: (params) => {
                      return [
@@ -202,6 +203,14 @@ export default function JobWorkChallan() {
                               onClick={() => {
                                  handledeleteClick(params.row.id);
                               }}
+                           />
+                           <VisibilityIcon
+                              style={{
+                                 fontSize: "20px",
+                                 color: "grey",
+                                 cursor: "pointer",
+                              }}
+                              onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                            />
                         </Stack>,
                      ];
