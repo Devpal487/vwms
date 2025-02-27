@@ -34,7 +34,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 import dayjs from "dayjs";
@@ -51,6 +51,7 @@ export default function VehicleTypeInfo() {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
+   const userId = getId();
 
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
@@ -123,8 +124,8 @@ export default function VehicleTypeInfo() {
          "createdOn": defaultValuestime,
          "effectiveDate": dayjs(defaultValuestime).format("YYYY-MM-DD"),
          "updateOn": defaultValuestime,
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm"
+         "createdBy": userId,
+         "updatedBy": userId
       },
 
       validationSchema: Yup.object({

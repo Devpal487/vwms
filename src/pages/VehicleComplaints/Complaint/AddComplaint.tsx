@@ -41,7 +41,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -72,6 +72,7 @@ const AddComplaint = (props: Props) => {
    const { defaultValues } = getISTDate();
    const [toaster, setToaster] = useState(false);
    const [isVisible, setIsVisible] = useState(false);
+   const userId = getId();
 
    const [vehicleOption, setVehicleOption] = useState([
       { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
@@ -221,8 +222,8 @@ const AddComplaint = (props: Props) => {
          "approveEmp1": 0,
          "complaint": "",
          "complaintNo": "",
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": "",
          "status": "pending",
          "currentReading": 0,
          "createdOn": defaultValues,
@@ -257,7 +258,7 @@ const AddComplaint = (props: Props) => {
             if (response.data.status === 1) {
                toast.success(response.data.message);
                setIsVisible(true);
-               //navigate(`/vehiclemanagement/vehiclecomplaints/Complaint`)
+               navigate(`/vehiclemanagement/vehiclecomplaints/Complaint`)
             } else {
                toast.error(response.data.message);
                setToaster(true);
@@ -500,7 +501,7 @@ const AddComplaint = (props: Props) => {
                </Grid>
                <Divider />
                <br />
-               <ToastContainer />
+               {/* <ToastContainer /> */}
                <form onSubmit={formik.handleSubmit}>
                   {toaster === false ? "" : <ToastApp />}
 
@@ -1100,7 +1101,7 @@ const AddComplaint = (props: Props) => {
                      </Grid>
 
                   </Grid>
-                  {isVisible && nextEnable && (
+                  {/* {isVisible && nextEnable && (
                      <Grid item lg={6} sm={6} xs={12}>
                         <Button
                            type="button"
@@ -1124,7 +1125,7 @@ const AddComplaint = (props: Props) => {
                         </Button>
 
                      </Grid>
-                  )}
+                  )} */}
 
 
                </form>

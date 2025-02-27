@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs, { Dayjs } from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -81,6 +81,7 @@ const AddJobCard = (props: Props) => {
   const [isVisibleJWC, setIsVisibleJWC] = useState(0);
   const [isEnable, setIsEnable] = useState(0);
   const inputRef = useRef<HTMLButtonElement>(null);
+  const userId = getId();
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), label2: "", vehicleName: "", empId: "" },
@@ -115,8 +116,8 @@ const AddJobCard = (props: Props) => {
     "approveEmp1": 0,
     "complaint": "",
     "complaintNo": "",
-    "createdBy": "adminvm",
-    "updatedBy": "adminvm",
+    "createdBy": userId,
+    "updatedBy": "",
     "status": "Initial",
     "currentReading": 0,
     "createdOn": defaultValues,
@@ -148,8 +149,8 @@ const AddJobCard = (props: Props) => {
     "complain": "",
     "status": "",
     "serviceType": "",
-    "createdBy": "adminvm",
-    "updatedBy": "adminvm",
+    "createdBy": userId,
+    "updatedBy": "",
     "createdOn": "2025-01-02T08:08:36.700Z",
     "updatedOn": "2025-01-02T08:08:36.700Z",
     "companyId": 0,
@@ -402,8 +403,8 @@ const AddJobCard = (props: Props) => {
       "complain": location.state?.complaint || "",
       "status": "inprogress",
       "serviceType": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,
@@ -672,8 +673,8 @@ const AddJobCard = (props: Props) => {
         itemId: formik.values.itemId,
         jobCardId: formik.values.jobCardId,
         vendorId: uniqueVendor[i],
-        createdBy: "adminvm",
-        updatedBy: "adminvm",
+        createdBy: userId,
+        updatedBy: "",
         createdOn: defaultValues,
         updatedOn: defaultValues,
         companyId: 0,

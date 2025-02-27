@@ -34,7 +34,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 interface MenuPermission {
@@ -50,7 +50,7 @@ export default function Location() {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
-
+   const userId = getId();
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
@@ -60,7 +60,7 @@ export default function Location() {
       fetchLocationData();
    }, [isLoading]);
 
-   
+
 
    const formik = useFormik({
       initialValues:
@@ -69,8 +69,8 @@ export default function Location() {
          "locID": 0,
          "locName": "",
          "parentID": 0,
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": userId,
          "createdOn": defaultValuestime,
          "updatedOn": defaultValuestime,
          "srNo": 0

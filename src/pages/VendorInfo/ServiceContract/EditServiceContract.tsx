@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -67,6 +67,7 @@ const EditServiceContract = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
@@ -79,8 +80,8 @@ const EditServiceContract = (props: Props) => {
     contractId: 0,
     id: 0,
     serviceId: 0,
-    createdBy: "",
-    updatedBy: "",
+    createdBy: userId,
+    updatedBy: userId,
     createdOn: "2024-12-19T06:03:42.610Z",
     updatedOn: "2024-12-19T06:03:42.610Z",
     fyId: 0,
@@ -163,10 +164,10 @@ const EditServiceContract = (props: Props) => {
           contractId: 0,
           id: 0,
           serviceId: 0,
-          createdBy: "",
-          updatedBy: "",
-          createdOn: "2024-12-19T06:03:42.610Z",
-          updatedOn: "2024-12-19T06:03:42.610Z",
+          createdBy: userId,
+          updatedBy: userId,
+          createdOn: defaultValues,
+          updatedOn: defaultValues,
           fyId: 0,
           rate: 0,
           srno: 0,
@@ -189,7 +190,7 @@ const EditServiceContract = (props: Props) => {
       "vendorId": location.state?.vendorId,
       "effectivedate": location.state.effectivedate,
       "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
+      "updatedBy": defaultValues || location.state.updatedBy,
       "type": location.state.type,
       "refDocNo": location.state.refDocNo,
       "createdOn": location.state.createdOn,
@@ -269,10 +270,10 @@ const EditServiceContract = (props: Props) => {
       contractId: 0,
       id: 0,
       serviceId: 0,
-      createdBy: "",
-      updatedBy: "",
-      createdOn: "2024-12-19T06:03:42.610Z",
-      updatedOn: "2024-12-19T06:03:42.610Z",
+      createdBy: userId,
+      updatedBy: userId,
+      createdOn: defaultValues,
+      updatedOn: defaultValues,
       fyId: 0,
       rate: 0,
       srno: 0,
@@ -323,7 +324,7 @@ const EditServiceContract = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditServiceContract")}
+                {location.state.isView ? t("text.ServiceContract") : t("text.EditServiceContract")}
               </Typography>
             </Grid>
 
@@ -590,35 +591,42 @@ const EditServiceContract = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      style={{
+                        backgroundColor: `var(--header-background)`,
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {t("text.update")}
+                    </Button>
+                  )}
+
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                      onClick={() => {
+                        formik.resetForm();
+                      }}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
               </Grid>
 
             </Grid>

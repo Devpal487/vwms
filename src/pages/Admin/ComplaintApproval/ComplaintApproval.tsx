@@ -427,6 +427,7 @@ import {
    Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
@@ -599,8 +600,9 @@ export default function ComplaintApproval() {
             serialNo: index + 1,
             id: Item.compId,
             complaintDate: Item.complaintDate
+
          }));
-         setItem(arr.filter((e:any) => e.status === "pending"));
+         setItem(arr.filter((e: any) => e.status === "pending" || e.status === "Pending"));
          setIsLoading(false);
 
          if (data.length > 0) {
@@ -609,7 +611,7 @@ export default function ComplaintApproval() {
                   field: "actions",
                   headerClassName: "MuiDataGrid-colCell",
                   headerName: t("text.Action"),
-                  width: 70,
+                  width: 90,
 
                   renderCell: (params) => {
                      return [
@@ -641,6 +643,14 @@ export default function ComplaintApproval() {
                               onClick={() => {
                                  handledeleteClick(params.row.compId);
                               }}
+                           />
+                           <VisibilityIcon
+                              style={{
+                                 fontSize: "20px",
+                                 color: "grey",
+                                 cursor: "pointer",
+                              }}
+                              onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                            />
                         </Stack>,
                      ];

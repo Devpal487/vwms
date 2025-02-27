@@ -166,6 +166,7 @@ import PageSetup from "../pages/Admin/PageSetup/PageSetup";
 import Institute from "../pages/Admin/InstitueForm/Institute";
 import InstituteAdd from "../pages/Admin/InstitueForm/InstituteAdd";
 import InstituteEdit from "../pages/Admin/InstitueForm/InstituteEdit";
+import Helpdesk from "../pages/Admin/Helpdesk/Helpdesk";
 //import Oragnisation from "../pages/Admin/Setting/Oragnisation";
 
 
@@ -1582,6 +1583,14 @@ const appRoutes: RouteType[] = [
         state: "Admin.HelpCreation",
         sidebarProps: {
           displayText: "Help Creation",
+        },
+      },
+      {
+        path: "/Admin/Helpdesk",
+        element: <Helpdesk />,
+        state: "Admin.Helpdesk",
+        sidebarProps: {
+          displayText: "Help desk",
         },
       },
       {

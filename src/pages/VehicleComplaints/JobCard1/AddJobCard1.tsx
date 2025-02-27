@@ -73,6 +73,7 @@ const style = {
 
 const AddJobCard1 = (props: Props) => {
   const [isIndentGenerateEnabled, setIsIndentGenerateEnabled] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isIndentPrintEnabled, setIsIndentPrintEnabled] = useState(false);
   const [isChallanEnabled, setIsChallanEnabled] = useState(false);
@@ -195,7 +196,7 @@ const AddJobCard1 = (props: Props) => {
           id: 0,
           jobCardId: 0,
           itemId: 0,
-          unitID: 0,
+          unitID: null,
           indentId: 0,
           indentNo: "",
           qty: 0,
@@ -223,7 +224,7 @@ const AddJobCard1 = (props: Props) => {
       id: 0,
       jobCardId: 0,
       itemId: null,
-      unitID: 0,
+      unitID: null,
       indentId: 0,
       indentNo: "",
       qty: 0,
@@ -526,23 +527,71 @@ const AddJobCard1 = (props: Props) => {
       vehicleNo: Yup.string().required(t("text.reqVehNum")),
     }),
 
+    // onSubmit: async (values) => {
+
+    //   const validServiceDetails = tableData.filter(
+    //     (row) => row.serviceId && row.challanStatus
+    //   );
+    //   const validItemDetails = tableData1.filter(
+    //     (row: any) => row.itemId && row.qty > 0 && row.rate > 0
+    //   );
+
+    //   // if (validServiceDetails.length === 0) {
+    //   //   toast.error("Add valid service details.");
+    //   //   return;
+    //   // }
+
+    //   // if (validItemDetails.length === 0) {
+    //   //   toast.error("Add valid item details.");
+    //   //   return;
+    //   // }
+
+    //   if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
+    //     setBtnEnable1(true);
+    //   }
+
+    //   if (validItemDetails.length > 0) {
+    //     setBtnEnable2(true);
+    //   }
+
+    //   const payload = {
+    //     ...values,
+    //     serviceDetail: validServiceDetails,
+    //     itemDetail: validItemDetails,
+    //   };
+
+    //   try {
+    //     const response = await api.post(`Master/UpsertJobCardInhouse`, payload);
+    //     if (response.data.status === 1) {
+    //       toast.success(response.data.message);
+    //       formik.setFieldValue("jobCardId", response.data.data.jobCardId);
+
+    //       if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
+    //         setBtnEnable1(true);
+    //       }
+
+    //       if (validItemDetails.length > 0) {
+    //         setBtnEnable2(true);
+    //       }
+    //       //setIsIndentGenerateEnabled(true);
+    //       //  setIsIndentEnabled(true);
+    //     } else {
+    //       toast.error(response.data.message);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error:", error);
+    //     toast.error("Failed to submit.");
+    //   }
+    // },
     onSubmit: async (values) => {
+      setIsSubmitting(true); // Disable the Save button on submit
+
       const validServiceDetails = tableData.filter(
         (row) => row.serviceId && row.challanStatus
       );
       const validItemDetails = tableData1.filter(
         (row: any) => row.itemId && row.qty > 0 && row.rate > 0
       );
-
-      // if (validServiceDetails.length === 0) {
-      //   toast.error("Add valid service details.");
-      //   return;
-      // }
-
-      // if (validItemDetails.length === 0) {
-      //   toast.error("Add valid item details.");
-      //   return;
-      // }
 
       if (validServiceDetails.length > 0 && validServiceDetails[0].challanStatus === "JobWork") {
         setBtnEnable1(true);
@@ -571,16 +620,19 @@ const AddJobCard1 = (props: Props) => {
           if (validItemDetails.length > 0) {
             setBtnEnable2(true);
           }
-          //setIsIndentGenerateEnabled(true);
-          //  setIsIndentEnabled(true);
+
+          // Keep Save button disabled after success
         } else {
           toast.error(response.data.message);
+          setIsSubmitting(false); // Re-enable Save button on failure
         }
       } catch (error) {
         console.error("Error:", error);
         toast.error("Failed to submit.");
+        setIsSubmitting(false); // Re-enable Save button on error
       }
     },
+
   });
   const handleGenerateIndent = async (values: any) => {
     const validServiceDetails = tableData.filter(
@@ -1944,7 +1996,7 @@ const AddJobCard1 = (props: Props) => {
                       //   alert("Please add some data in table for further process");
                       //   return;
                       // } else {
-                      //   formik.setFieldValue("status", "jobwork");
+                      formik.setFieldValue("status", "jobwork");
                       //   handleGenerateChallan(formik.values);
                       // }
                     }}
@@ -2473,6 +2525,21 @@ const AddJobCard1 = (props: Props) => {
                     type="submit"
                     fullWidth
                     style={{
+                      backgroundColor: isSubmitting ? "#ccc" : `var(--header-background)`, // Change color when disabled
+                      color: "white",
+                      minWidth: "120px", // Set a fixed width
+                      textAlign: "center",
+                      cursor: isSubmitting ? "not-allowed" : "pointer",
+                    }}
+                    disabled={isSubmitting} // Disable button when submitting
+                  >
+                    {t("text.save")}
+                  </Button>
+
+                  {/* <Button
+                    type="submit"
+                    fullWidth
+                    style={{
                       backgroundColor: `var(--header-background)`,
                       color: "white",
                       minWidth: "120px", // Set a fixed width
@@ -2481,7 +2548,7 @@ const AddJobCard1 = (props: Props) => {
                   //onClick={() => handleSave(formik.values)}
                   >
                     {t("text.save")}
-                  </Button>
+                  </Button> */}
                 </Grid>
 
                 {/* Reset Button */}

@@ -47,7 +47,7 @@ export default function HelpCreation() {
    const [lang, setLang] = useState<Language>("en");
 
    const [PageTitle, setPageTitle] = useState([
-      { value: "-1", label: t("text.PageTitle") },
+      { value: "-1", label: t("text.PageTitle"), parentId: -1, pageUrl: "" },
    ]);
 
    const [totalFile, setTotalFile] = useState([]);
@@ -74,7 +74,9 @@ export default function HelpCreation() {
          const data = res.data.data;
          const arr = data.map((item: any, index: any) => ({
             value: item.menuId,
-            label: item.menuName
+            label: item.menuName,
+            parentId: item.parentId,
+            pageUrl: item.pageUrl
          }));
          setPageTitle(arr);
       });
@@ -83,7 +85,7 @@ export default function HelpCreation() {
    const fetchTotalFile = async () => {
       try {
          const collectData = {
-            pageTitleId: -1,
+            menuId: -1,
          };
          console.log("collectData", collectData);
          const response = await api.post(
@@ -141,7 +143,7 @@ export default function HelpCreation() {
          "sno": 0,
          "menuId": 0,
          "menuName": "",
-         "parentId": 0,
+         "parentId": null,
          "pageUrl": "",
          "icon": "",
          "displayNo": 0,
@@ -257,6 +259,8 @@ export default function HelpCreation() {
                                  // setEditorContent(rowdata['frontDesign']);
                                  formik.setFieldValue("menuId", newValue?.value);
                                  formik.setFieldValue("menuName", newValue?.label);
+                                 formik.setFieldValue("parentId", newValue?.parentId);
+                                 formik.setFieldValue("pageUrl", newValue?.pageUrl);
 
                                  formik.setFieldTouched("menuId", true);
                                  formik.setFieldTouched("menuId", false);

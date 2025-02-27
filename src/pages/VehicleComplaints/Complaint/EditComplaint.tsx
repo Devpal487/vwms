@@ -41,7 +41,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -74,6 +74,7 @@ const EditComplaint = (props: Props) => {
    const [isVisible, setIsVisible] = useState(false);
    const location = useLocation();
    const inputRef = useRef<HTMLButtonElement>(null);
+   const userId = getId();
 
 
    const [vehicleOption, setVehicleOption] = useState([
@@ -210,7 +211,7 @@ const EditComplaint = (props: Props) => {
    };
 
 
-   
+
    const fetchImage = async (compId: any = location.state?.compId || 0) => {
       const collectData = {
          "compId": compId,
@@ -266,14 +267,14 @@ const EditComplaint = (props: Props) => {
          "complaint": location.state?.complaint || "",
          "complaintNo": location.state.complaintNo,
          "createdBy": location.state.createdBy,
-         "updatedBy": location.state.updatedBy,
+         "updatedBy": userId,
          "status": location.state.status,
          "currentReading": location.state.currentReading,
-         "createdOn": defaultValues,
+         "createdOn": location.state?.createdOn || defaultValues,
          "complaintDate": formattedDate || dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
          "updatedOn": defaultValues,
          "compAppdt": location.state.compAppdt,
-         "jobCardNo": location.state?.jobCardNo || location.state.complaintNo,
+         "jobCardNo": location.state?.jobCardNo || 0,
          "file": location.state?.file || "",
          "fileOldName": "",
          "vehicleNo": location.state.vehicleNo,
@@ -516,7 +517,8 @@ const EditComplaint = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.EditComplaint")}
+                        {location.state.isView ? t("text.Complaint") : t("text.EditComplaint")}
+                        {/* {t("text.EditComplaint")} */}
                      </Typography>
                   </Grid>
 
@@ -1093,35 +1095,40 @@ const EditComplaint = (props: Props) => {
 
                      {/* Submit Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="submit"
-                           fullWidth
-                           style={{
-                              backgroundColor: `var(--header-background)`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                        >
-                           {t("text.update")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="submit"
+                              fullWidth
+                              style={{
+                                 backgroundColor: `var(--header-background)`,
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                           >
+                              {t("text.update")}
+                           </Button>
+                        )}
+
                      </Grid>
 
                      {/* Reset Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="reset"
-                           fullWidth
-                           style={{
-                              backgroundColor: "#F43F5E",
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              formik.resetForm();
-                           }}
-                        >
-                           {t("text.reset")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="reset"
+                              fullWidth
+                              style={{
+                                 backgroundColor: "#F43F5E",
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                              onClick={() => {
+                                 formik.resetForm();
+                              }}
+                           >
+                              {t("text.reset")}
+                           </Button>
+                        )}
                      </Grid>
 
                   </Grid>

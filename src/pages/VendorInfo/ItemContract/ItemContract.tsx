@@ -14,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import PrintIcon from "@mui/icons-material/Print";
@@ -175,9 +176,9 @@ export default function ItemContract() {
         toDate: formatDate(Item.toDate),
       }));
 
-      const arr1:any = [];
-      arr.forEach((element:any) => {
-        if(element.type === "Itemwise") {
+      const arr1: any = [];
+      arr.forEach((element: any) => {
+        if (element.type === "Itemwise") {
           arr1.push(element);
         }
       });
@@ -190,7 +191,7 @@ export default function ItemContract() {
             field: "actions",
             headerClassName: "MuiDataGrid-colCell",
             headerName: t("text.Action"),
-            width: 80,
+            width: 90,
 
             renderCell: (params) => {
               return [
@@ -222,6 +223,14 @@ export default function ItemContract() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

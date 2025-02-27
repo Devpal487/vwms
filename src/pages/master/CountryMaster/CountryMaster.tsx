@@ -59,22 +59,38 @@ export default function CountryMaster() {
   const [lang, setLang] = useState<Language>("en");
 
   const [isCountryCode, setIsCountryCode] = useState(false);
-
   const getPageSetupData = async () => {
     await api.get(`Setting/GetPageSetupDataall`).then((res) => {
       const data = res.data.data;
-      data.map((e: any, index: number) => {
-        if (e.setupId === 3 && e.showHide) {
-          setIsCountryCode(true);
-        } else if (e.setupId === 3 && !e.showHide) {
-          setIsCountryCode(false);
-        } else {
-          setIsCountryCode(true);
-        }
-      })
+      const pageSetup = data.find((e: any) => e.setupId === 3);
+      setIsCountryCode(pageSetup?.showHide ?? true); // Default to true only if undefined
     });
-    //return response;
-  }
+  };
+
+  // const getPageSetupData = async () => {
+  //   await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+  //     const data = res.data.data;
+  //     data.map((e: any, index: number) => {
+  //       if (e.setupId === 3 && e.showHide) {
+  //         setIsCountryCode(true);
+  //       } else if (e.setupId === 3 && !e.showHide) {
+  //         setIsCountryCode(false);
+  //       } else {
+  //         setIsCountryCode(true);
+  //       }
+  //     })
+  //   });
+  //   //return response;
+  // }
+
+
+  useEffect(() => {
+    const permissionsData = localStorage.getItem("permissions");
+    const permissions = permissionsData ? JSON.parse(permissionsData) : null;
+    if (permissions && permissions.length > 0) {
+      setPermissionData(permissions.find((e: any) => e.menuId === 6))
+    }
+  }, [])
 
   useEffect(() => {
     getPageSetupData();
@@ -180,33 +196,33 @@ export default function CountryMaster() {
                     direction="row"
                     sx={{ alignItems: "center", marginTop: "5px" }}
                   >
-                    {/* {permissionData?.isEdit ? (  */}
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
-                    {/* ) : ( 
-                       "" 
-                     )}  */}
-                    {/* {permissionData?.isDel ? (  */}
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
-                    {/* ) : ( 
-                        "" 
-                      )}  */}
+                    {permissionData?.isEdit ? (
+                      <EditIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
+                        className="cursor-pointer"
+                        onClick={() => routeChangeEdit(params.row)}
+                      />
+                    ) : (
+                      ""
+                    )}
+                    {permissionData?.isDel ? (
+                      <DeleteIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          handledeleteClick(params.row.id);
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </Stack>,
                 ];
               },

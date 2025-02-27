@@ -35,7 +35,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 import { DEFAULT_DESKTOP_MODE_MEDIA_QUERY } from "@mui/x-date-pickers";
@@ -52,28 +52,35 @@ export default function BrandMaster() {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
+   const userId = getId();
 
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
 
 
    const [isbrandShortName, setIsbrandShortName] = useState(false);
-
    const getPageSetupData = async () => {
       await api.get(`Setting/GetPageSetupDataall`).then((res) => {
          const data = res.data.data;
-         data.map((e: any, index: number) => {
-            if (e.setupId === 1 && e.showHide) {
-               setIsbrandShortName(true);
-            } else if (e.setupId === 1 && !e.showHide) {
-               setIsbrandShortName(false);
-            } else {
-               setIsbrandShortName(true);
-            }
-         })
+         const pageSetup = data.find((e: any) => e.setupId === 1);
+         setIsbrandShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
       });
-      //return response;
-   }
+   };
+   // const getPageSetupData = async () => {
+   //    await api.get(`Setting/GetPageSetupDataall`).then((res) => {
+   //       const data = res.data.data;
+   //       data.map((e: any, index: number) => {
+   //          if (e.setupId === 1 && e.showHide) {
+   //             setIsbrandShortName(true);
+   //          } else if (e.setupId === 1 && !e.showHide) {
+   //             setIsbrandShortName(false);
+   //          } else {
+   //             setIsbrandShortName(true);
+   //          }
+   //       })
+   //    });
+   //    //return response;
+   // }
 
 
    useEffect(() => {
@@ -81,8 +88,8 @@ export default function BrandMaster() {
       const timeout = setTimeout(() => {
          //getPageSetupData();
          fetchBrandData();
-       }, 100);
-       return () => clearTimeout(timeout);
+      }, 100);
+      return () => clearTimeout(timeout);
    }, [isLoading]);
 
 
@@ -93,8 +100,8 @@ export default function BrandMaster() {
          "brandname": "",
          "brandshortname": "",
          "brandCode": "",
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": userId,
          "createdOn": defaultValuestime,
          "updatedOn": defaultValuestime,
          "srno": 0

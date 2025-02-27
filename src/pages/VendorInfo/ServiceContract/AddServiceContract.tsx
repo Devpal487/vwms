@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -66,6 +66,7 @@ const AddServiceContract = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
 
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
@@ -78,10 +79,10 @@ const AddServiceContract = (props: Props) => {
     contractId: 0,
     id: 0,
     serviceId: 0,
-    createdBy: "",
-    updatedBy: "",
-    createdOn: "2024-12-19T06:03:42.610Z",
-    updatedOn: "2024-12-19T06:03:42.610Z",
+    createdBy: userId,
+    updatedBy: userId,
+    createdOn: defaultValues,
+    updatedOn: defaultValues,
     fyId: 0,
     rate: 0,
     srno: 0,
@@ -139,8 +140,8 @@ const AddServiceContract = (props: Props) => {
       //"contractId": 0,
       "vendorId": null,
       "effectivedate": defaultValues,
-      "createdBy": "as",
-      "updatedBy": "as",
+      "createdBy": userId,
+      "updatedBy": "",
       "type": "ty",
       "refDocNo": "",
       "createdOn": defaultValues,
@@ -157,8 +158,8 @@ const AddServiceContract = (props: Props) => {
           "contractId": 0,
           "id": 0,
           "itemId": 6,
-          "createdBy": "",
-          "updatedBy": "",
+          "createdBy": userId,
+          "updatedBy": userId,
           "createdOn": defaultValues,
           "updatedOn": defaultValues,
           "fyId": 2,
@@ -220,10 +221,10 @@ const AddServiceContract = (props: Props) => {
       contractId: 0,
       id: 0,
       serviceId: 0,
-      createdBy: "",
-      updatedBy: "",
-      createdOn: "2024-12-19T06:03:42.610Z",
-      updatedOn: "2024-12-19T06:03:42.610Z",
+      createdBy: userId,
+      updatedBy: userId,
+      createdOn: defaultValues,
+      updatedOn: defaultValues,
       fyId: 0,
       rate: 0,
       srno: 0,

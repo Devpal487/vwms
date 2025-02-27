@@ -46,8 +46,7 @@ const style = {
 type Props = {};
 
 const EditVendor = (props: Props) => {
-  let userId = getId();
-
+  const userId = getId();
   const { i18n, t } = useTranslation();
   const { defaultValuestime } = getISTDate();
   const location = useLocation();
@@ -257,9 +256,9 @@ const EditVendor = (props: Props) => {
       "cityId": location.state.cityId,
       "pincode": location.state.pincode,
       "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
+      "updatedBy": userId,
       "createdOn": location.state.createdOn,
-      "updatedOn": location.state.updatedOn,
+      "updatedOn": defaultValuestime,
       "imageFile": location.state.imageFile,
       "signatureFile": location.state.signatureFile,
       "panFile": location.state.panFile,
@@ -360,7 +359,7 @@ const EditVendor = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditVendor")}
+                {location.state.isView ? t("text.Vendor") : t("text.EditVendor")}
               </Typography>
             </Grid>
 
@@ -1269,33 +1268,39 @@ const EditVendor = (props: Props) => {
 
               <Grid item lg={6} sm={6} xs={12}>
                 <Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      marginTop: "10px",
-                    }}
-                  >
-                    {t("text.update")}
-                  </Button>
+                  {location.state.isView ? "" : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      style={{
+                        backgroundColor: `var(--header-background)`,
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {t("text.update")}
+                    </Button>
+                  )}
+
                 </Grid>
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                      onClick={(e) => formik.resetForm()}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
               </Grid>
             </Grid>
           </form>

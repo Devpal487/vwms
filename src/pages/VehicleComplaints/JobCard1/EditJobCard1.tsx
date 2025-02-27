@@ -564,7 +564,7 @@ const EditJobCard1 = (props: Props) => {
       complainId: location.state?.complainId || 0,
       complainDate: location.state?.complaintDate || defaultValues,
       empId: location.state?.empId || 0,
-      itemId: location.state?.itemId || location.state?.itemID   || 0,
+      itemId: location.state?.itemId || location.state?.itemID || 0,
       currenReading: location.state?.currenReading || 0,
       complain: location.state?.complain || "",
       status: location.state?.status,
@@ -1131,7 +1131,7 @@ const EditJobCard1 = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobCard")}
+                {location.state.isView ? t("text.Jobcard") : t("text.EditJobCard")}
               </Typography>
             </Grid>
 
@@ -1274,15 +1274,15 @@ const EditJobCard1 = (props: Props) => {
                       console.log("newValue" + JSON.stringify(newValue));
                       console.log(
                         "newValue" +
-                          JSON.stringify(
-                            jobCardData[
-                              jobCardData.findIndex(
-                                (e) =>
-                                  e.itemId == newValue?.itemID &&
-                                  e.complainId == newValue?.compId
-                              )
-                            ]?.itemDetail
-                          )
+                        JSON.stringify(
+                          jobCardData[
+                            jobCardData.findIndex(
+                              (e) =>
+                                e.itemId == newValue?.itemID &&
+                                e.complainId == newValue?.compId
+                            )
+                          ]?.itemDetail
+                        )
                       );
                       //formik.setFieldValue("itemName", newValue?.label2);
                       formik.setFieldValue("vehicleNo", newValue?.vehicleNo);
@@ -1496,7 +1496,7 @@ const EditJobCard1 = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.VehicleName")}
-                      //required={true}
+                    //required={true}
                     />
                   }
                   variant="outlined"
@@ -1506,7 +1506,7 @@ const EditJobCard1 = (props: Props) => {
                   id="VehicleName"
                   value={vehicleName}
                   placeholder={t("text.VehicleName")}
-                  onChange={(e) => {}}
+                  onChange={(e) => { }}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
@@ -1550,7 +1550,7 @@ const EditJobCard1 = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.Department")}
-                      //required={true}
+                    //required={true}
                     />
                   }
                   variant="outlined"
@@ -1560,7 +1560,7 @@ const EditJobCard1 = (props: Props) => {
                   id="deptValue"
                   value={deptValue}
                   placeholder={t("text.Department")}
-                  onChange={(e) => {}}
+                  onChange={(e) => { }}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
@@ -1571,7 +1571,7 @@ const EditJobCard1 = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.Designation")}
-                      //required={true}
+                    //required={true}
                     />
                   }
                   variant="outlined"
@@ -1592,7 +1592,7 @@ const EditJobCard1 = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.ReadingKM")}
-                      //required={true}
+                    //required={true}
                     />
                   }
                   variant="outlined"
@@ -1629,7 +1629,7 @@ const EditJobCard1 = (props: Props) => {
                   label={
                     <CustomLabel
                       text={t("text.enterComplaint")}
-                      //required={true}
+                    //required={true}
                     />
                   }
                   variant="outlined"
@@ -1783,7 +1783,7 @@ const EditJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={serviceOption}
-                              value={serviceOption.find(e=>e.value === row.serviceId)}
+                              value={serviceOption.find(e => e.value === row.serviceId)}
                               sx={{ width: "225px" }}
                               size="small"
                               onChange={(_, newValue: any) => {
@@ -1849,7 +1849,7 @@ const EditJobCard1 = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={vendorOption}
-                              value={vendorOption.find(e=>e.value === row.vendorId)}
+                              value={vendorOption.find(e => e.value === row.vendorId)}
                               fullWidth
                               size="small"
                               disabled={serviceGridDisable}
@@ -2541,67 +2541,72 @@ const EditJobCard1 = (props: Props) => {
 
                 {/* Submit Button */}
                 <Grid item>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      minWidth: "120px", // Set a fixed width
-                      textAlign: "center",
-                    }}
+                  {location.state.isView ? "" : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      style={{
+                        backgroundColor: `var(--header-background)`,
+                        color: "white",
+                        minWidth: "120px", // Set a fixed width
+                        textAlign: "center",
+                      }}
                     //onClick={() => handleSave(formik.values)}
-                  >
-                    {t("text.save")}
-                  </Button>
+                    >
+                      {t("text.save")}
+                    </Button>
+                  )}
                 </Grid>
 
                 {/* Reset Button */}
                 <Grid item>
-                  <Button
-                    type="reset"
-                    fullWidth
-                    style={{
-                      backgroundColor: "#F43F5E",
-                      color: "white",
-                      minWidth: "120px", // Set a fixed width
-                      textAlign: "center",
-                    }}
-                    onClick={() => {
-                      formik.resetForm();
-                      setTableData1([
-                        {
-                          id: 0,
-                          jobCardId: 0,
-                          itemId: 0,
-                          unitID: null,
-                          indentId: 0,
-                          indentNo: "",
-                          qty: 0,
-                          rate: 0,
-                          batchNo: "",
-                          amount: 0,
-                          gstId: 0,
-                          gstRate: 0,
-                          cgst: 0,
-                          sgst: 0,
-                          igst: 0,
-                          netAmount: 0,
-                          srno: 0,
-                          isDelete: true,
-                          prevReading: 0,
-                          unitName: "",
-                        },
-                      ]);
-                      setDeptValue("");
-                      setDesgValue("");
-                      setVehicleName("");
-                      //  setIsIndentSelected(false);
-                      console.log(totalAmount);
-                    }}
-                  >
-                    {t("text.reset")}
-                  </Button>
+                  {location.state.isView ? "" : (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        minWidth: "120px", // Set a fixed width
+                        textAlign: "center",
+                      }}
+                      onClick={() => {
+                        formik.resetForm();
+                        setTableData1([
+                          {
+                            id: 0,
+                            jobCardId: 0,
+                            itemId: 0,
+                            unitID: null,
+                            indentId: 0,
+                            indentNo: "",
+                            qty: 0,
+                            rate: 0,
+                            batchNo: "",
+                            amount: 0,
+                            gstId: 0,
+                            gstRate: 0,
+                            cgst: 0,
+                            sgst: 0,
+                            igst: 0,
+                            netAmount: 0,
+                            srno: 0,
+                            isDelete: true,
+                            prevReading: 0,
+                            unitName: "",
+                          },
+                        ]);
+                        setDeptValue("");
+                        setDesgValue("");
+                        setVehicleName("");
+                        //  setIsIndentSelected(false);
+                        console.log(totalAmount);
+                      }}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
+
                 </Grid>
               </Grid>
 

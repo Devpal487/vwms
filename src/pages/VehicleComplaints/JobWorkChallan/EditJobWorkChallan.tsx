@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -68,6 +68,7 @@ const EditJobWorkChallan = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -292,7 +293,7 @@ const EditJobWorkChallan = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("challanDoc", data[0].challanDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, ""));
+    formik.setFieldValue("challanDoc", (data[0].challanDoc !== null) ? data[0].challanDoc.replace(/^data:image\/(jpeg|jpg|png|9j);base64,/, "") : "");
   }
 
 
@@ -347,10 +348,10 @@ const EditJobWorkChallan = (props: Props) => {
       "itemId": location.state?.itemId || 0,
       "jobCardId": location.state?.jobCardId || 0,
       "vendorId": location.state?.vendorId || 0,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": location.state.createdBy,
+      "updatedBy": userId,
       "createdOn": location.state?.createdOn || defaultValues,
-      "updatedOn": location.state?.updatedOn || defaultValues,
+      "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": location.state?.fyId,
       "serviceAmount": location.state?.serviceAmount || 0,
@@ -604,7 +605,7 @@ const EditJobWorkChallan = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobWorkChallan")}
+                {location.state.isView ? t("text.JobWorkChallan") : t("text.EditJobWorkChallan")}
               </Typography>
             </Grid>
 
@@ -1240,7 +1241,7 @@ const EditJobWorkChallan = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {location.state.isView ? "" : (<Button
                   type="submit"
                   fullWidth
                   style={{
@@ -1250,12 +1251,12 @@ const EditJobWorkChallan = (props: Props) => {
                   }}
                 >
                   {t("text.update")}
-                </Button>
+                </Button>)}
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
+                {location.state.isView ? "" : (<Button
                   type="reset"
                   fullWidth
                   style={{
@@ -1269,6 +1270,7 @@ const EditJobWorkChallan = (props: Props) => {
                 >
                   {t("text.reset")}
                 </Button>
+                )}
               </Grid>
               {/* {isVisible && (
                 <Grid item lg={6} sm={6} xs={12}>

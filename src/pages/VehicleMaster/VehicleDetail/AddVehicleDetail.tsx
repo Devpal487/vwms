@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -66,7 +66,7 @@ const AddVehicleDetail = (props: Props) => {
    const [lang, setLang] = useState<Language>("en");
    const { defaultValues, defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
-
+   const userId = getId();
 
    const [zoneOption, setzoneOption] = useState([
       { value: -1, label: t("text.zoneID") },
@@ -288,12 +288,12 @@ const AddVehicleDetail = (props: Props) => {
          "chesisNo": "",
          "qcApplicable": true,
          "depreciationRate": 0,
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": "",
          "mileage": 0,
          "createdOn": defaultValues,
          "updatedOn": defaultValues,
-         vehicleRegistrationDate:defaultValues,
+         vehicleRegistrationDate: defaultValues,
          "zoneName": "",
          "vehiclePhotoFile": "",
          "deptName": "",
@@ -766,6 +766,29 @@ const AddVehicleDetail = (props: Props) => {
                            placeholder={t("text.EnterPurYear")}
                            onChange={(e) => {
                               formik.setFieldValue("purchaseYear", parseInt(e.target.value));
+                           }}
+                        />
+                     </Grid>
+
+                     {/* vehicle registration date */}
+                     <Grid item lg={4} sm={4} xs={12}>
+                        <TextField
+                           label={
+                              <CustomLabel
+                                 text={t("text.VehRegDate")}
+                                 required={false}
+                              />
+                           }
+                           type="date"
+                           variant="outlined"
+                           fullWidth
+                           size="small"
+                           name="vehicleRegistrationDate"
+                           id="vehicleRegistrationDate"
+                           value={formik.values.vehicleRegistrationDate}
+                           placeholder={t("text.VehRegDate")}
+                           onChange={(e) => {
+                              formik.setFieldValue("vehicleRegistrationDate", e.target.value);
                            }}
                         />
                      </Grid>

@@ -61,6 +61,14 @@ export default function FileMaster() {
   const [lang, setLang] = useState<Language>("en");
 
   useEffect(() => {
+    const permissionsData = localStorage.getItem("permissions");
+    const permissions = permissionsData ? JSON.parse(permissionsData) : null;
+    if (permissions && permissions.length > 0) {
+      setPermissionData(permissions.find((e:any) => e.menuId === 8))
+    }
+  }, [])
+
+  useEffect(() => {
     // const dataString = localStorage.getItem("userdata");
     // if (dataString) {
     //   const data = JSON.parse(dataString);
@@ -84,6 +92,7 @@ export default function FileMaster() {
     getList();
     getStateZone();
   }, [isLoading, location.pathname]);
+
 
   const getStateZone = () => {
     const collectData = {
@@ -168,33 +177,33 @@ export default function FileMaster() {
                     direction="row"
                     sx={{ alignItems: "center", marginTop: "5px" }}
                   >
-                    {/* {permissionData?.isEdit ? ( */}
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
-                    {/* ) : (
+                    {permissionData?.isEdit ? (
+                      <EditIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "blue",
+                          cursor: "pointer",
+                        }}
+                        className="cursor-pointer"
+                        onClick={() => routeChangeEdit(params.row)}
+                      />
+                    ) : (
                       ""
-                    )} */}
-                    {/* {permissionData?.isDel ? ( */}
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
-                    {/* ) : (
+                    )}
+                    {permissionData?.isDel ? (
+                      <DeleteIcon
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          handledeleteClick(params.row.id);
+                        }}
+                      />
+                    ) : (
                       ""
-                    )} */}
+                    )}
                   </Stack>,
                 ];
               },

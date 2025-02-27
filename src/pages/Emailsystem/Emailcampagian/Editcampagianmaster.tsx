@@ -74,6 +74,7 @@ const EditemailcampgiontForm = (props: Props) => {
     const [empOption, setempOption] = useState([
         { value: -1, label: t("text.empid") },
     ]);
+     const [employeeData, setEmployeeData] = useState<any[]>([]);
 
     const [groupOption, setgroupOption] = useState<any>([
         { value: -1, label: t("text.groupId") },
@@ -98,55 +99,102 @@ const EditemailcampgiontForm = (props: Props) => {
         getTemplateDta();
 
     }, []);
-
     const getEmpData = async () => {
         const collectData = {
             "empid": -1,
             "userId": "",
-           
         };
-
+    
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
-
+    
         const arr = data.map((item: any) => ({
             label: item.empName,
             value: item.empid,
         }));
-
+    
         setempOption([{ label: "Select All", value: "selectAll" }, ...arr]);
+        setEmployeeData(data); // Save full employee details in state
     };
+    // const getEmpData = async () => {
+    //     const collectData = {
+    //         "empid": -1,
+    //         "userId": "",
+           
+    //     };
 
+    //     const response = await api.post(`Employee/GetEmployee`, collectData);
+    //     const data = response.data.data;
+
+    //     const arr = data.map((item: any) => ({
+    //         label: item.empName,
+    //         value: item.empid,
+    //     }));
+
+    //     setempOption([{ label: "Select All", value: "selectAll" }, ...arr]);
+    // };
     const handleChange = (event: any, newValue: any) => {
         let updatedList;
-
+    
         if (newValue.some((option: any) => option.value === "selectAll")) {
             if (newValue.length === empOption.length) {
-
                 updatedList = [];
             } else {
-
                 updatedList = empOption.slice(1);
             }
         } else {
             updatedList = newValue;
         }
-
-        const memberId = updatedList.map((item: any) => ({
-            id: 0,
-            campaignId: 0,
-            groupId: 0,
-            memberId: item.value,
-            message: "",
-            emailId: "",
-            mobileNo: "",
-            receiverType: "",
-            name: "",
-            isSelected: true,
-        }));
-
+    
+        const memberId = updatedList.map((item: any) => {
+            const selectedEmployee = employeeData.find((emp: any) => emp.empid === item.value);
+    
+            return {
+                id: 0,
+                campaignId: 0,
+                groupId: 0,
+                memberId: item.value,
+                message: "",
+                emailId: selectedEmployee ? selectedEmployee.email : "", // Auto-fill emailId
+                mobileNo: selectedEmployee ? selectedEmployee.empMobileNo : "", // Auto-fill mobileNo
+                receiverType: "",
+                name: selectedEmployee ? selectedEmployee.empName : "", // Auto-fill name
+                isSelected: true,
+            };
+        });
+    
         formik.setFieldValue("listMembers", memberId);
     };
+    // const handleChange = (event: any, newValue: any) => {
+    //     let updatedList;
+
+    //     if (newValue.some((option: any) => option.value === "selectAll")) {
+    //         if (newValue.length === empOption.length) {
+
+    //             updatedList = [];
+    //         } else {
+
+    //             updatedList = empOption.slice(1);
+    //         }
+    //     } else {
+    //         updatedList = newValue;
+    //     }
+
+    //     const memberId = updatedList.map((item: any) => ({
+    //         id: 0,
+    //         campaignId: 0,
+    //         groupId: 0,
+    //         memberId: item.value,
+    //         message: "",
+    //         emailId: "",
+    //         mobileNo: "",
+    //         receiverType: "",
+    //         name: "",
+    //         isSelected: true,
+    //     }));
+
+    //     formik.setFieldValue("listMembers", memberId);
+    // };
     const getgroupData = async () => {
         const collectData = {
             "groupId": -1

@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -69,6 +69,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -370,7 +371,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("challanRcvDoc", data[0].challanRcvDoc.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+    formik.setFieldValue("challanRcvDoc", (data[0].challanRcvDoc !== null) ? data[0].challanRcvDoc.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, "") : "");
   }
 
 
@@ -443,8 +444,8 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       "serviceAmount": location.state?.serviceAmount,
       "itemAmount": location.state?.itemAmount,
       "netAmount": location.state?.netAmount,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": location.state.createdBy,
+      "updatedBy": userId,
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "releasedBy": "",
@@ -810,7 +811,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobWorkChallanRecieve")}
+                {location.state.isView ? t("text.JobWorkChallanRecieve") : t("text.EditJobWorkChallanRecieve")}
               </Typography>
             </Grid>
 
@@ -1530,35 +1531,37 @@ const EditJobWorkChallanRecieve = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" :
+                  (<Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>)}
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (<Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => {
+                      formik.resetForm();
+                    }}
+                  >
+                    {t("text.reset")}
+                  </Button>)}
               </Grid>
 
             </Grid>

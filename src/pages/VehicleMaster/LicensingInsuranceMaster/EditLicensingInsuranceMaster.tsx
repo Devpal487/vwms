@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -61,6 +61,7 @@ const style = {
 };
 
 const EditLicensingInsuranceMaster = (props: Props) => {
+  const userId = getId();
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
@@ -136,7 +137,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
       collectData
     );
     const data = response.data.data;
-    formik.setFieldValue("attachment", data[0].attachment.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, ""));
+    formik.setFieldValue("attachment", (data[0].attachment !== null) ? data[0].attachment.replace(/^data:image\/(jpeg|jpg|png|9j|xLSPtxB61);base64,/, "") : "");
   }
 
 
@@ -156,9 +157,9 @@ const EditLicensingInsuranceMaster = (props: Props) => {
       "attachMentName": location.state.attachMentName,
       "licenceType": location.state.licenceType,
       "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
+      "updatedBy": userId,
       "createdOn": location.state.createdOn,
-      "updatedOn": location.state.updatedOn,
+      "updatedOn": defaultValues,
       "file": location.state?.file || "",
       "vendorName": location.state?.vendorName || "",
       "vehicleNo": location.state?.vehicleNo || ""
@@ -292,7 +293,7 @@ const EditLicensingInsuranceMaster = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditLicensingInsurance")}
+                {location.state.isView ? t("text.LicensingInsurance") : t("text.EditLicensingInsurance")}
               </Typography>
             </Grid>
 
@@ -628,37 +629,41 @@ const EditLicensingInsuranceMaster = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>
+                )}
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => {
+                      formik.resetForm();
+                    }}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                )}
               </Grid>
-
+              
             </Grid>
 
           </form>

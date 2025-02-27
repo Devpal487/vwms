@@ -41,7 +41,7 @@ import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -71,6 +71,7 @@ const AddJobWorkChallanRecieve = (props: Props) => {
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
   const [isEnable, setIsEnable] = useState(true);
+  const userId = getId();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -440,8 +441,8 @@ const AddJobWorkChallanRecieve = (props: Props) => {
       "serviceAmount": location.state?.serviceAmount || 0,
       "itemAmount": location.state?.itemAmount || 0,
       "netAmount": location.state?.netAmount || 0,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "releasedBy": "",

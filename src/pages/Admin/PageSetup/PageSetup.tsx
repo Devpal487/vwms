@@ -163,7 +163,7 @@ export default function PageSetup() {
         };
         //console.log("collectData " + JSON.stringify(collectData));
         api
-            .post(`Setting/GetPageSetupData?PageId=-1`, collectData)
+            .post(`Setting/DeletepagesetupData`, collectData)
             .then((response) => {
                 if (response.data.isSuccess) {
                     toast.success(response.data.mesg);

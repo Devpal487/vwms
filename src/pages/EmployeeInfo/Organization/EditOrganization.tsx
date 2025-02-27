@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -68,6 +68,7 @@ const EditOrganization = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [StateOption, setStateOption] = useState<any>([
     { value: "-1", label: t("text.SelectState") },
@@ -149,9 +150,9 @@ const EditOrganization = (props: Props) => {
       gstnNo: location.state?.gstnNo || "",
       panNo: location.state?.panNo || "",
       createdBy: location.state?.createdBy || "adminvm",
-      updatedBy: location.state?.updatedBy || "adminvm",
+      updatedBy: userId || "adminvm",
       createdOn: location.state?.createdOn || defaultValues,
-      updatedOn: location.state?.updatedOn || defaultValues,
+      updatedOn: defaultValues || location.state?.updatedOn,
       cityName: location.state?.cityName || "",
       stateName: location.state?.stateName || "",
       countryName: location.state?.countryName || "",
@@ -322,7 +323,7 @@ const EditOrganization = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditOrganization")}
+                {location.state.isView ? t("text.Organization") : t("text.EditOrganization")}
               </Typography>
             </Grid>
 
@@ -769,35 +770,42 @@ const EditOrganization = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      style={{
+                        backgroundColor: `var(--header-background)`,
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {t("text.update")}
+                    </Button>
+                  )}
+
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                      onClick={() => {
+                        formik.resetForm();
+                      }}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
               </Grid>
 
             </Grid>

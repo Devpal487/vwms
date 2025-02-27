@@ -45,7 +45,7 @@ const style = {
 type Props = {};
 
 const AddVendor = (props: Props) => {
-  let userId = getId();
+  const userId = getId();
 
   const { i18n, t } = useTranslation();
   const { defaultValuestime } = getISTDate();
@@ -254,10 +254,10 @@ const AddVendor = (props: Props) => {
       "countryId": 0,
       "cityId": 0,
       "pincode": 0,
-      "createdBy": "",
+      "createdBy": userId,
       "updatedBy": "",
-      "createdOn": "2024-12-18T06:28:06.530Z",
-      "updatedOn": "2024-12-18T06:28:06.530Z",
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime,
       "imageFile": "",
       "signatureFile": "",
       "panFile": "",
