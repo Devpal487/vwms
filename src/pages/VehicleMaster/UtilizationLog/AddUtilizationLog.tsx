@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -66,6 +66,7 @@ const AddUtilizationLog = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), name: "" },
@@ -147,8 +148,8 @@ const AddUtilizationLog = (props: Props) => {
       "fromTime": "",
       "toTime": "",
       "remark": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,

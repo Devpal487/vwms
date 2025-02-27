@@ -49,7 +49,7 @@ const style = {
 type Props = {};
 
 const EditEmployee = (props: Props) => {
-  let userId = getId();
+  const userId = getId();
 
   const { i18n, t } = useTranslation();
   const { defaultValuestime } = getISTDate();
@@ -345,9 +345,9 @@ const EditEmployee = (props: Props) => {
       "empCityId": location.state?.empCityId,
       "empPincode": location.state?.empPincode,
       "createdBy": location.state?.createdBy,
-      "updatedBy": location.state?.updatedBy,
+      "updatedBy": userId,
       "createdOn": location.state?.createdOn,
-      "updatedOn": location.state?.updatedOn,
+      "updatedOn": defaultValuestime || location.state?.updatedOn,
       "userId": location.state?.userId,
       "roleId": location.state?.roleId,
       "imageFile": location.state?.imageFile || "",
@@ -528,7 +528,7 @@ const EditEmployee = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditEmployee")}
+                {location.state.isView ? t("text.Employee") : t("text.EditEmployee")}
               </Typography>
             </Grid>
 
@@ -718,6 +718,7 @@ const EditEmployee = (props: Props) => {
                   fullWidth
                   onChange={(e) => {
                     formik.setFieldValue("email", e.target.value);
+                    formik.setFieldValue("registerModel.email", e.target.value || "user@example.com");
                   }}
                   onBlur={formik.handleBlur}
                 />
@@ -1056,7 +1057,7 @@ const EditEmployee = (props: Props) => {
                   disablePortal
                   id="combo-box-demo"
                   options={zoneOption}
-                  value={formik.values?.zoneName || zoneOption.find(e=>e.value === formik.values.eZoneID)?.label || ""}
+                  value={formik.values?.zoneName || zoneOption.find(e => e.value === formik.values.eZoneID)?.label || ""}
                   fullWidth
                   size="small"
                   onChange={(event, newValue: any) => {
@@ -1669,33 +1670,40 @@ const EditEmployee = (props: Props) => {
 
               <Grid item lg={6} sm={6} xs={12}>
                 <Grid>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    style={{
-                      backgroundColor: `var(--header-background)`,
-                      color: "white",
-                      marginTop: "10px",
-                    }}
-                  >
-                    {t("text.update")}
-                  </Button>
+                  {location.state.isView ? "" :
+                    (
+                      <Button
+                        type="submit"
+                        fullWidth
+                        style={{
+                          backgroundColor: `var(--header-background)`,
+                          color: "white",
+                          marginTop: "10px",
+                        }}
+                      >
+                        {t("text.update")}
+                      </Button>
+                    )}
+
                 </Grid>
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" :
+                  (
+                    <Button
+                      type="reset"
+                      fullWidth
+                      style={{
+                        backgroundColor: "#F43F5E",
+                        color: "white",
+                        marginTop: "10px",
+                      }}
+                      onClick={(e) => formik.resetForm()}
+                    >
+                      {t("text.reset")}
+                    </Button>
+                  )}
               </Grid>
             </Grid>
           </form>

@@ -27,7 +27,7 @@ import { toast } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 
 type Props = {};
 
@@ -37,6 +37,7 @@ const CreateQualityCheck = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
+  const userId = getId();
   const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
@@ -511,8 +512,8 @@ const CreateQualityCheck = (props: Props) => {
       disPer: 0,
       disAmt: 0,
       netAmount: 0,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: userId,
+      updatedBy: "",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: 0,
@@ -1228,18 +1229,20 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <AddCircleIcon
                               onClick={() => {
-                                addRow();
+                                //addRow();
+                                alert("Can't add row")
                               }}
 
                               style={{ cursor: "pointer" }}
                             />
                             <DeleteIcon
                               onClick={() => {
-                                if (tableData.length > 1) {
-                                  deleteRow(index)
-                                } else {
-                                  alert("Atleast one row should be there");
-                                }
+                                // if (tableData.length > 1) {
+                                //   deleteRow(index)
+                                // } else {
+                                //   alert("Atleast one row should be there");
+                                // }
+                                alert("Can't delete row")
                               }}
                               style={{ cursor: "pointer" }}
                             />
@@ -1255,6 +1258,7 @@ const CreateQualityCheck = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={orderOption}
+                              disabled={true}
                               value={orderOption.find((opt: any) => opt.value === row.orderId) || null}
                               fullWidth
                               size="small"
@@ -1284,6 +1288,7 @@ const CreateQualityCheck = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "155px" }}
@@ -1312,6 +1317,7 @@ const CreateQualityCheck = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.batchNo || ""} // Bind to row.batchNo
                               id="BatchNo"
                               name="BatchNo"
@@ -1335,6 +1341,7 @@ const CreateQualityCheck = (props: Props) => {
                               value={
                                 unitOptions.find((opt) => (opt.value) === row?.unitId) || null
                               }
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "130px" }}
@@ -1359,7 +1366,7 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <TextField
                               size="small"
-
+                              disabled={true}
                               value={
                                 row.mrnQty
                               }
@@ -1393,6 +1400,7 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              disabled={true}
                               value={Number(row.mrnQty) - Number(row.acceptQty)}
                               onChange={(e) => {
                                 const newvalue = Number(row.mrnQty) - Number(row.acceptQty)
@@ -1414,6 +1422,7 @@ const CreateQualityCheck = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.rate}
+                              disabled={true}
                               sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{
@@ -1457,6 +1466,7 @@ const CreateQualityCheck = (props: Props) => {
                           <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <TextField
                               size="small"
+                              disabled={true}
                               value={row.gstRate || 0}
                               onChange={(e) => handleInputChange(index, "gstRate", e.target.value)} // ✅ Allow editing
                               onBlur={(e) => handleInputChange(index, "gstRate", e.target.value)}
@@ -1478,6 +1488,7 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <TextField
                               value={row.cgst}
+                              disabled={true}
                               size="small"
                               sx={{ width: "100px" }}
                               inputProps={{
@@ -1494,6 +1505,7 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <TextField
                               value={row.sgst}
+                              disabled={true}
                               size="small"
                               sx={{ width: "100px" }}
                               inputProps={{
@@ -1511,6 +1523,7 @@ const CreateQualityCheck = (props: Props) => {
                           >
                             <TextField
                               value={row.netAmount}
+                              disabled={true}
                               size="small"
                               sx={{ width: "100px" }}
                               inputProps={{

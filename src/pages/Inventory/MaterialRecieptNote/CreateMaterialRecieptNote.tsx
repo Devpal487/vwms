@@ -32,7 +32,7 @@ import api from "../../../utils/Url";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 
 type Props = {};
 
@@ -44,6 +44,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
+  const userId = getId();
   const [unitOptions, setUnitOptions] = useState([
     { value: "-1", label: t("text.SelectUnitId") },
   ]);
@@ -123,23 +124,23 @@ const CreateMaterialRecieptNote = (props: Props) => {
       setOpenDialog(true); // Open the confirmation dialog
     }
   };
-  
+
   const handleConfirm = async () => {
     if (selectedOrder && selectedOrder.length > 0) {
       let mergedTableData: any[] = [];
-  
+
       for (const order of selectedOrder) {
         const items = await getPurchaseOrderById(order.orderId); // ✅ Fetch items
         mergedTableData = [...mergedTableData, ...items]; // ✅ Merge data
       }
-  
+
       setTableData(mergedTableData); // ✅ Update table with all selected orders
       setIsIndentSelected(true);
     }
     setOpenDialog(false); // Close dialog
   };
-  
-  
+
+
   // const handleConfirm = () => {
   //   if (selectedOrder) {
   //     getPurchaseOrderById(selectedOrder.orderId);
@@ -446,8 +447,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
       "netAmount": 0,
       "qcApplicable": true,
       "qcStatus": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,
@@ -465,11 +466,11 @@ const CreateMaterialRecieptNote = (props: Props) => {
       // bill_ChalanNo: Yup.string()
       //  .required(t("text.reqBillNum")),
       bill_ChalanNo: Yup.string()
-       .required(t("text.reqBillNum")),
-       vendorId: Yup.string()
-       .required(t("text.reqvendor")),
-       shipmentNo: Yup.string()
-       .required(t("text.reqshipmentNo")),
+        .required(t("text.reqBillNum")),
+      vendorId: Yup.string()
+        .required(t("text.reqvendor")),
+      shipmentNo: Yup.string()
+        .required(t("text.reqshipmentNo")),
     }),
 
     onSubmit: async (values) => {
@@ -570,53 +571,53 @@ const CreateMaterialRecieptNote = (props: Props) => {
       orderId: id,
       indentId: -1,
     };
-  
+
     const result = await api.post(`PurchaseOrder/GetPurchaseOrder`, collectData);
     const transData = result?.data?.data[0]?.purchaseOrderDetail || [];
     const orderData = result?.data?.data[0]; // Get overall order details
-  
+
     let arr = transData.map((item: any, i: number) => ({
       id: i + 1,
       // id: i + 1,
-            mrnId: 0,
-            orderId: transData[i]["orderId"],
-            itemId: transData[i]["itemId"],
-            unitId: transData[i]["unitId"],
-            quantity: transData[i]["quantity"],
-            rate: transData[i]["rate"],
-            amount: transData[i]["amount"],
-            gstId: transData[i]["gstId"],
-            gstRate: transData[i]["gstRate"],
-            "cgst": transData[i]["cgst"],
-            "sgst": transData[i]["sgst"],
-            "igst": transData[i]["igst"],
-            "cgstid": transData[i]["cgstid"],
-            "sgstid": transData[i]["sgstid"],
-            "igstid": transData[i]["igstid"],
-            netAmount: transData[i]["netAmount"],
-            batchNo: IsbatchNO || "",
-            orderNo: "",
-            // "batchNo": "",
-            "serialNo": "",
-            "qcStatus": "",
-            "balQuantity": 0,
-            "itemName": "",
-            "unitName": "",
-            "totalGst": 0,
-            "qcApplicable": true
+      mrnId: 0,
+      orderId: transData[i]["orderId"],
+      itemId: transData[i]["itemId"],
+      unitId: transData[i]["unitId"],
+      quantity: transData[i]["quantity"],
+      rate: transData[i]["rate"],
+      amount: transData[i]["amount"],
+      gstId: transData[i]["gstId"],
+      gstRate: transData[i]["gstRate"],
+      "cgst": transData[i]["cgst"],
+      "sgst": transData[i]["sgst"],
+      "igst": transData[i]["igst"],
+      "cgstid": transData[i]["cgstid"],
+      "sgstid": transData[i]["sgstid"],
+      "igstid": transData[i]["igstid"],
+      netAmount: transData[i]["netAmount"],
+      batchNo: IsbatchNO || "",
+      orderNo: "",
+      // "batchNo": "",
+      "serialNo": "",
+      "qcStatus": "",
+      "balQuantity": 0,
+      "itemName": "",
+      "unitName": "",
+      "totalGst": 0,
+      "qcApplicable": true
     }));
-  
+
     // ✅ Set Formik values
     formik.setFieldValue("totalAmount", orderData?.totalAmount || 0);
     formik.setFieldValue("totalCGST", orderData?.totalCGST || 0);
     formik.setFieldValue("totalSGST", orderData?.totalSGST || 0);
     formik.setFieldValue("netAmount", orderData?.netAmount || 0);
     formik.setFieldValue("totalGrossAmount", orderData?.netAmount || 0);
-  
+
     return arr; // ✅ Return items to be used in `handleConfirm`
   };
-  
-  
+
+
   // const getPurchaseOrderById = async (id: any) => {
 
   //   const collectData = {
@@ -830,7 +831,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                 {formik.touched.bill_ChalanNo && formik.errors.bill_ChalanNo && (
+                {formik.touched.bill_ChalanNo && formik.errors.bill_ChalanNo && (
                   <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.bill_ChalanNo)}</div>
                 )}
               </Grid>
@@ -872,7 +873,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                 {formik.touched.shipmentNo && formik.errors.shipmentNo && (
+                {formik.touched.shipmentNo && formik.errors.shipmentNo && (
                   <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.shipmentNo)}</div>
                 )}
               </Grid>
@@ -890,7 +891,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                 </Grid>
                 <Divider />
 
-              
+
 
                 <Grid item lg={4} xs={12}>
                   <Autocomplete
@@ -922,8 +923,8 @@ const CreateMaterialRecieptNote = (props: Props) => {
                     )}
                   />
                   {formik.touched.vendorId && formik.errors.vendorId && (
-                  <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.vendorId)}</div>
-                )}
+                    <div style={{ color: "red", margin: "5px" }}>{String(formik.errors.vendorId)}</div>
+                  )}
                 </Grid>
 
 
@@ -1029,7 +1030,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         />
                       )}
                     />
-                
+
                   </Grid>
                 )}
               </Grid>
@@ -1054,10 +1055,10 @@ const CreateMaterialRecieptNote = (props: Props) => {
                         border: "1px solid black",
                       }}
                     >
-                     <thead style={{
-                      backgroundColor: `var(--grid-headerBackground)`,
-                      color: `var(--grid-headerColor)`
-                    }}>
+                      <thead style={{
+                        backgroundColor: `var(--grid-headerBackground)`,
+                        color: `var(--grid-headerColor)`
+                      }}>
                         <tr>
                           <th
                             style={{
@@ -1197,18 +1198,20 @@ const CreateMaterialRecieptNote = (props: Props) => {
                             >
                               <AddCircleIcon
                                 onClick={() => {
-                                  addRow();
+                                  //addRow();
+                                  alert("Can't add row")
                                 }}
 
                                 style={{ cursor: "pointer" }}
                               />
                               <DeleteIcon
                                 onClick={() => {
-                                  if (tableData.length > 1) {
-                                    deleteRow(index)
-                                  } else {
-                                    alert("Atleast one row should be there");
-                                  }
+                                  // if (tableData.length > 1) {
+                                  //   deleteRow(index)
+                                  // } else {
+                                  //   alert("Atleast one row should be there");
+                                  // }
+                                  alert("Can't delete row")
                                 }}
                                 style={{ cursor: "pointer" }}
                               />
@@ -1224,6 +1227,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 id="combo-box-demo"
                                 options={orderOption}
                                 value={orderOption.find((opt: any) => opt.value === row.orderId) || null}
+                                disabled={true}
                                 fullWidth
                                 size="small"
                                 sx={{ width: "155px" }}
@@ -1253,6 +1257,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={itemOption}
+                                disabled={true}
                                 fullWidth
                                 size="small"
                                 sx={{ width: "155px" }}
@@ -1283,6 +1288,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               }}
                             >
                               <TextField
+                                disabled={true}
                                 value={row.batchNo || ""} // Bind to row.batchNo
                                 id="BatchNo"
                                 name="BatchNo"
@@ -1302,6 +1308,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={
                                   unitOptions.find((opt) => (opt.value) === row?.unitId) || null
                                 }
+                                disabled={true}
                                 fullWidth
                                 size="small"
                                 sx={{ width: "130px" }}
@@ -1325,12 +1332,13 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               }}
                             >
                               <TextField
+                                disabled={true}
                                 size="small"
                                 sx={{ width: "70px" }}
                                 value={row.quantity}
                                 onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
                                 onFocus={e => e.target.select()}
-                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true, step: "any", min: "0" }}
                               />
                             </td>
                             <td
@@ -1344,7 +1352,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 value={row.quantity}
                                 sx={{ width: "70px" }}
                                 onChange={(e) => handleInputChange(index, "quantity", e.target.value)}
-                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true, step: "any", min: "0" }}
                                 onFocus={e => e.target.select()}
                               />
                             </td>
@@ -1355,11 +1363,12 @@ const CreateMaterialRecieptNote = (props: Props) => {
                               }}
                             >
                               <TextField
+                                disabled={true}
                                 size="small"
                                 value={row.rate}
                                 sx={{ width: "70px" }}
                                 onChange={(e) => handleInputChange(index, "rate", e.target.value)}
-                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true ,step: "any", min: "0"}}
+                                inputProps={{ style: { textAlign: "right" }, "aria-readonly": true, step: "any", min: "0" }}
                                 onFocus={e => e.target.select()}
                               />
                             </td>
@@ -1374,6 +1383,7 @@ const CreateMaterialRecieptNote = (props: Props) => {
                                 disablePortal
                                 id="combo-box-demo"
                                 options={taxData}
+                                disabled={true}
                                 fullWidth
                                 size="small"
                                 sx={{ width: "80px" }}

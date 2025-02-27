@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -69,6 +69,7 @@ const EditJobWorkChallanRecieve = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -443,8 +444,8 @@ const EditJobWorkChallanRecieve = (props: Props) => {
       "serviceAmount": location.state?.serviceAmount,
       "itemAmount": location.state?.itemAmount,
       "netAmount": location.state?.netAmount,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": location.state.createdBy,
+      "updatedBy": userId,
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "releasedBy": "",

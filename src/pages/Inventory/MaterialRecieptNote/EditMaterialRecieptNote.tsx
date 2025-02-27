@@ -24,7 +24,7 @@ import api from "../../../utils/Url";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
@@ -37,6 +37,7 @@ const EditMaterialRecieptNote = (props: Props) => {
   const [orderData, setOrderData] = useState([]);
   const [orderVendorData, setOrderVendorData] = useState([]);
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
   const [vendorData, setVendorData] = useState<any>([]);
   const [vendorDetail, setVendorDetail] = useState<any>();
   const initialRowData: any = {
@@ -145,7 +146,7 @@ const EditMaterialRecieptNote = (props: Props) => {
       });
   };
 
-  useEffect(() => {}, [tableData]);
+  useEffect(() => { }, [tableData]);
 
   const GetitemData = async () => {
     const collectData = {
@@ -405,9 +406,9 @@ const EditMaterialRecieptNote = (props: Props) => {
       netAmount: location.state.netAmount,
       qcApplicable: location.state.qcApplicable,
       qcStatus: location.state.qcStatus,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
-      createdOn: defaultValues,
+      createdBy: location.state.createdBy,
+      updatedBy: userId,
+      createdOn: location.state.createdOn || defaultValues,
       updatedOn: defaultValues,
       companyId: location.state.companyId,
       fyId: location.state.fyId,
@@ -522,7 +523,7 @@ const EditMaterialRecieptNote = (props: Props) => {
             textAlign="center"
             style={{ fontSize: "18px", fontWeight: 500 }}
           >
-            {t("text.EditMaterialRecieptNote")}
+            {location.state.isView ? t("text.mrn") : t("text.EditMaterialRecieptNote")}
           </Typography>
 
           <Grid item sm={4} xs={12}>
@@ -1012,17 +1013,19 @@ const EditMaterialRecieptNote = (props: Props) => {
                           >
                             <AddCircleIcon
                               onClick={() => {
-                                addRow();
+                                //addRow();
+                                alert("Can't add row")
                               }}
                               style={{ cursor: "pointer" }}
                             />
                             <DeleteIcon
                               onClick={() => {
-                                if (tableData.length > 1) {
-                                  deleteRow(index);
-                                } else {
-                                  alert("Atleast one row should be there");
-                                }
+                                // if (tableData.length > 1) {
+                                //   deleteRow(index);
+                                // } else {
+                                //   alert("Atleast one row should be there");
+                                // }
+                                alert("Can't delete row")
                               }}
                               style={{ cursor: "pointer" }}
                             />
@@ -1037,6 +1040,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={orderOption}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "155px" }}
@@ -1071,6 +1075,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "155px" }}
@@ -1102,6 +1107,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.batchNo}
                               size="small"
                               sx={{ width: "150px" }}
@@ -1137,6 +1143,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               // value={
                               //   unitOptions.find((opt) => (opt.value) === row?.unitId) || null
                               // }
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "130px" }}
@@ -1150,7 +1157,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               renderInput={(params: any) => (
                                 <TextField
                                   {...params}
-                                  //  label={<CustomLabel text={t("text.selectUnit")} />}
+                                //  label={<CustomLabel text={t("text.selectUnit")} />}
                                 />
                               )}
                             />
@@ -1165,6 +1172,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "70px" }}
                               value={row.quantity}
+                              disabled={true}
                               onChange={(e) =>
                                 handleInputChange(
                                   index,
@@ -1217,6 +1225,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               size="small"
                               sx={{ width: "90px" }}
                               value={row.rate}
+                              disabled={true}
                               onChange={(e) =>
                                 handleInputChange(index, "rate", e.target.value)
                               }
@@ -1240,6 +1249,7 @@ const EditMaterialRecieptNote = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={taxData}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "80px" }}
@@ -1460,32 +1470,38 @@ const EditMaterialRecieptNote = (props: Props) => {
                 >
                   {t("text.update")}
                 </Button> */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+
+                {location.state.isView ? "" : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>
+                )}
+
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e: any) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={(e: any) => formik.resetForm()}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </form>

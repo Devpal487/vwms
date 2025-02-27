@@ -403,7 +403,17 @@ export default function Complaint() {
                      {t("text.add")}
                   </Button>
                   {/* ) } */}
-
+                  <Button
+                     onClick={() => {
+                        navigate("/reports/complainstatus")
+                     }}
+                     variant="contained"
+                     endIcon={<PrintIcon />}
+                     size="large"
+                     style={{ backgroundColor: `var(--header-background)` }}
+                  >
+                     {t("text.print")}
+                  </Button>
                </Stack>
 
                <DataGrids

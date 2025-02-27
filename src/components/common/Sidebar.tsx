@@ -441,6 +441,7 @@ export default function MiniDrawer({ items }: any) {
 
   const renderMenu = (menus: any[], level = 0, parentMenuName = "") => {
     // Sort parent menus at level 0, otherwise sort by menuId or predefined order
+    //console.log("menus",menus)
     const sortedMenus =
       level === 0
         ? sortParentMenus(menus)

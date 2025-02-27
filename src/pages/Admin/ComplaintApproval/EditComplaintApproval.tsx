@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -75,6 +75,7 @@ const EditComplaintApproval = (props: Props) => {
    const { defaultValues } = getISTDate();
    const [toaster, setToaster] = useState(false);
    const [isVisible, setIsVisible] = useState(false);
+   const userId = getId();
 
    const [vehicleOption, setVehicleOption] = useState([
       { value: -1, label: t("text.VehicleNo"), name: "", empId: "" },
@@ -255,7 +256,7 @@ const EditComplaintApproval = (props: Props) => {
          collectData
       );
       const data = response.data.data;
-      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^data:image\/\w+;base64,/, ""));
+      formik.setFieldValue("complaintDoc", data[0].complaintDoc.replace(/^(data:image\/\w+;base64,)/, ""));
    }
 
    function convertToYYYYMMDD(dateString: any) {
@@ -278,7 +279,7 @@ const EditComplaintApproval = (props: Props) => {
          complaint: location.state?.complaint,
          complaintNo: (location.state?.complaintNo),
          createdBy: location.state?.createdBy,
-         updatedBy: location.state?.updatedBy,
+         updatedBy: userId,
          status: "inprogress",
          currentReading: location.state?.currentReading,
          createdOn: location.state?.createdOn,
@@ -611,14 +612,14 @@ const EditComplaintApproval = (props: Props) => {
                                        )
                                     ].complaintType
                                  );
-                                 formik.setFieldValue(
-                                    "complaintDoc",
-                                    complaintData[
-                                       complaintData.findIndex(
-                                          (x) => x.itemID == newValue?.value
-                                       )
-                                    ].complaintDoc
-                                 );
+                                 // formik.setFieldValue(
+                                 //    "complaintDoc",
+                                 //    complaintData[
+                                 //       complaintData.findIndex(
+                                 //          (x) => x.itemID == newValue?.value
+                                 //       )
+                                 //    ].complaintDoc
+                                 // );
                                  formik.setFieldValue(
                                     "empId",
                                     complaintData[
@@ -1311,35 +1312,39 @@ const EditComplaintApproval = (props: Props) => {
 
                      {/* Submit Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="submit"
-                           fullWidth
-                           style={{
-                              backgroundColor: `var(--header-background)`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                        >
-                           {t("text.update")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="submit"
+                              fullWidth
+                              style={{
+                                 backgroundColor: `var(--header-background)`,
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                           >
+                              {t("text.update")}
+                           </Button>
+                        )}
                      </Grid>
 
                      {/* Reset Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="reset"
-                           fullWidth
-                           style={{
-                              backgroundColor: "#F43F5E",
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              formik.resetForm();
-                           }}
-                        >
-                           {t("text.reset")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="reset"
+                              fullWidth
+                              style={{
+                                 backgroundColor: "#F43F5E",
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                              onClick={() => {
+                                 formik.resetForm();
+                              }}
+                           >
+                              {t("text.reset")}
+                           </Button>
+                        )}
                      </Grid>
 
                      <Button

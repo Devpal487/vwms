@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
@@ -63,12 +64,12 @@ export default function UploadDocuments() {
   ]);
 
   useEffect(() => {
-    fetchUploadData();
-    // getVehicleDetails();
-    // const timeoutId = setTimeout(() => {
-    //   fetchUploadData();
-    // }, 100);
-    // return () => clearTimeout(timeoutId);
+    // fetchUploadData();
+    getVehicleDetails();
+    const timeoutId = setTimeout(() => {
+      fetchUploadData();
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [isLoading]);
 
   const getVehicleDetails = async () => {
@@ -152,6 +153,7 @@ export default function UploadDocuments() {
         ...Item,
         serialNo: index + 1,
         id: Item.id,
+        vehicleNo: Item.vehicleNo || vehicleOption.find(e => e.value === Item.vehicleId)?.label
       }));
       setItem(arr);
       setIsLoading(false);
@@ -162,7 +164,7 @@ export default function UploadDocuments() {
             field: "actions",
             headerClassName: "MuiDataGrid-colCell",
             headerName: t("text.Action"),
-            width: 80,
+            width: 90,
 
             renderCell: (params) => {
               return [
@@ -194,6 +196,14 @@ export default function UploadDocuments() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

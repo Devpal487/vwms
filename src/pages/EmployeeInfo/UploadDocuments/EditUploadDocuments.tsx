@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -67,6 +67,7 @@ const EditUploadDocuments = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), empId: -1 },
@@ -144,7 +145,7 @@ const EditUploadDocuments = (props: Props) => {
       "docTypeName": location.state.docTypeName,
       "srno": location.state.srno,
       "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
+      "updatedBy": userId,
       "file": location.state?.file || "",
       "fileOldName": location.state?.fileOldName || "",
       "empName": location.state.empName,
@@ -535,35 +536,40 @@ const EditUploadDocuments = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>
+                )}
+
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => {
+                      formik.resetForm();
+                    }}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                )}
               </Grid>
 
             </Grid>

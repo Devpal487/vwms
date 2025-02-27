@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -67,6 +67,7 @@ const EditItemContract = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [vendorOption, setVendorOption] = useState([
     { value: -1, label: t("text.VendorName") },
@@ -78,10 +79,10 @@ const EditItemContract = (props: Props) => {
     contractId: 0,
     id: 0,
     itemId: 0,
-    createdBy: "a",
-    updatedBy: "a",
-    createdOn: "2024-12-19T10:50:11.993Z",
-    updatedOn: "2024-12-19T10:50:11.993Z",
+    createdBy: userId,
+    updatedBy: userId,
+    createdOn: defaultValues,
+    updatedOn: defaultValues,
     fyId: 0,
     rate: 0,
     srno: 0,
@@ -156,10 +157,10 @@ const EditItemContract = (props: Props) => {
           contractId: 0,
           id: 0,
           itemId: 0,
-          createdBy: "a",
-          updatedBy: "a",
-          createdOn: "2024-12-19T10:50:11.993Z",
-          updatedOn: "2024-12-19T10:50:11.993Z",
+          createdBy: userId,
+          updatedBy: userId,
+          createdOn: defaultValues,
+          updatedOn: defaultValues,
           fyId: 0,
           rate: 0,
           srno: 0,
@@ -249,10 +250,10 @@ const EditItemContract = (props: Props) => {
       contractId: 0,
       id: 0,
       itemId: 0,
-      createdBy: "",
-      updatedBy: "",
-      createdOn: "2024-12-19T10:50:11.993Z",
-      updatedOn: "2024-12-19T10:50:11.993Z",
+      createdBy: userId,
+      updatedBy: userId,
+      createdOn: defaultValues,
+      updatedOn: defaultValues,
       fyId: 0,
       rate: 0,
       srno: 0,

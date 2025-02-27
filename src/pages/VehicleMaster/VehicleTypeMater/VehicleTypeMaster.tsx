@@ -34,7 +34,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import api from "../../../utils/Url";
 import DataGrids from "../../../utils/Datagrids";
 import dayjs from "dayjs";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import { useFormik } from "formik";
 import CustomLabel from "../../../CustomLable";
 import TranslateTextField from "../../../TranslateTextField";
@@ -57,6 +57,7 @@ export default function VehicleTypeMaster() {
   const { defaultValuestime } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const [lang, setLang] = useState<Language>("en");
+  const userId = getId();
 
 
   useEffect(() => {
@@ -70,8 +71,8 @@ export default function VehicleTypeMaster() {
       "vehicleTypename": "",
       "shortName": "",
       "vehicleCode": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValuestime,
       "updatedOn": defaultValuestime,
       "srno": 0
@@ -102,6 +103,9 @@ export default function VehicleTypeMaster() {
     formik.setFieldValue("vehicleTypename", row.vehicleTypename);
     formik.setFieldValue("vehicleCode", row.vehicleCode);
     formik.setFieldValue("shortName", row.shortName);
+    formik.setFieldValue("updatedBy", userId);
+    formik.setFieldValue("createdBy", row.createdBy);
+    formik.setFieldValue("updatedOn", defaultValuestime);
   }
 
   let delete_id = "";

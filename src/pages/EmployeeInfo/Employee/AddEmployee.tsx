@@ -47,7 +47,7 @@ const style = {
 type Props = {};
 
 const AddEmployee = (props: Props) => {
-  let userId = getId();
+  const userId = getId();
 
   const { i18n, t } = useTranslation();
   const { defaultValuestime } = getISTDate();
@@ -339,8 +339,8 @@ const AddEmployee = (props: Props) => {
       "empCountryID": 0,
       "empCityId": 0,
       "empPincode": 0,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValuestime,
       "updatedOn": defaultValuestime,
       "userId": "",
@@ -682,6 +682,7 @@ const AddEmployee = (props: Props) => {
                   fullWidth
                   onChange={(e) => {
                     formik.setFieldValue("email", e.target.value);
+                    formik.setFieldValue("registerModel.email", e.target.value || "user@example.com");
                   }}
                   onBlur={formik.handleBlur}
                 />

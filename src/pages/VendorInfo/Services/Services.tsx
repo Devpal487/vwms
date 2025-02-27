@@ -40,7 +40,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 interface MenuPermission {
@@ -56,6 +56,7 @@ export default function Services() {
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
+  const userId = getId();
 
 
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -103,10 +104,10 @@ export default function Services() {
       "serviceTypeid": 0,
       "serviceItem": "",
       "unitId": 0,
-      "createdBy": "",
-      "updatedBy": "",
-      "createdOn": "2024-12-19T10:12:29.354Z",
-      "updatedOn": "2024-12-19T10:12:29.354Z",
+      "createdBy": userId,
+      "updatedBy": userId,
+      "createdOn": defaultValuestime,
+      "updatedOn": defaultValuestime,
       "serviceTypeName": "",
       "unitName": ""
     },

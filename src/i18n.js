@@ -9159,7 +9159,9 @@ const resources = {
         ReportHeaderImg:"Report Header Image",
         ReportFooterImg:"Report Footer Image",
         ReportHeader:"Report Header",
-        GrossExpenditurePercent:"Gross Expenditure %"
+        GrossExpenditurePercent:"Gross Expenditure %",
+
+        VehRegDate:"Vehicle Registration Date",
 
 
 
@@ -13647,7 +13649,8 @@ const resources = {
         ReportFooterImg: "रिपोर्ट फुटर छवि",
         ReportHeader: "रिपोर्ट हेडर",
         PinCode:"पिनकोड",
-        GrossExpenditurePercent:"सकल व्यय प्रतिशत"
+        GrossExpenditurePercent:"सकल व्यय प्रतिशत",
+        VehRegDate:"वाहन पंजीकरण तिथि",
 
       },
 

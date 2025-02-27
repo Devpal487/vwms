@@ -41,7 +41,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -81,6 +81,7 @@ const EditJobCard = (props: Props) => {
   const [isVisibleJWC, setIsVisibleJWC] = useState(0);
   const [isEnable, setIsEnable] = useState(0);
   //const inputRef = useRef<HTMLButtonElement>(null);
+  const userId = getId();
 
   const [vehicleOption, setVehicleOption] = useState([
     { value: -1, label: t("text.VehicleNo"), vehicleName: "", empId: "" },
@@ -416,9 +417,9 @@ const EditJobCard = (props: Props) => {
       "status": location.state?.status,
       "serviceType": location.state?.serviceType,
       "createdBy": location.state?.createdBy,
-      "updatedBy": location.state?.updatedBy,
+      "updatedBy": userId,
       "createdOn": location.state?.createdOn,
-      "updatedOn": location.state.updatedOn,
+      "updatedOn": defaultValues,
       "companyId": location.state?.companyId,
       "fyId": location.state?.fyId,
       "totalItemAmount": 0,
@@ -664,8 +665,8 @@ const EditJobCard = (props: Props) => {
         "itemId": formik.values.itemId,
         "jobCardId": formik.values.jobCardId,
         "vendorId": uniqueVendor[i],
-        "createdBy": "adminvm",
-        "updatedBy": "adminvm",
+        "createdBy": userId,
+        "updatedBy": userId,
         "createdOn": defaultValues,
         "updatedOn": defaultValues,
         "companyId": 0,

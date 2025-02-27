@@ -27,7 +27,7 @@ import api from "../../../utils/Url";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
@@ -37,6 +37,7 @@ const EditQualityCheck = (props: Props) => {
   const { t } = useTranslation();
   const { defaultValues } = getISTDate();
   const location = useLocation();
+  const userId = getId();
 
   const [toaster, setToaster] = useState(false);
   const [vendorData, setVendorData] = useState<any>([]);
@@ -182,8 +183,8 @@ const EditQualityCheck = (props: Props) => {
                 itemId: item.itemId,
                 itemName: item.itemName || "",
                 rejectQty: item.rejectQty,
-                unitId:item.unitId,
-                unitName:item.unitName,
+                unitId: item.unitId,
+                unitName: item.unitName,
                 quantity: item.quantity,
                 rate: item.rate,
                 amount: item.amount,
@@ -371,9 +372,9 @@ const EditQualityCheck = (props: Props) => {
     } else if (field === "batchNo") {
       item.batchNo = value.toString();
     }
-      else if(field ==="unitId"){
-        item.unitId = value.toString();
-      
+    else if (field === "unitId") {
+      item.unitId = value.toString();
+
     } else if (field === "mrnQty") {
       item.mrnQty = value === "" ? 0 : parseFloat(value);
     } else if (field === "acceptQty") {
@@ -517,8 +518,8 @@ const EditQualityCheck = (props: Props) => {
       netAmount: location.state.netAmount,
       // qcApplicable: location.state.qcApplicable,
       // qcStatus: location.state.qcStatus,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: location.state.createdBy,
+      updatedBy: userId,
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: location.state.companyId,
@@ -631,7 +632,7 @@ const EditQualityCheck = (props: Props) => {
             textAlign="center"
             style={{ fontSize: "18px", fontWeight: 500 }}
           >
-            {t("text.EditQualityCheck")}
+            {location.state.isView ? t("text.qc") : t("text.EditQualityCheck")}
           </Typography>
 
           <Grid item sm={4} xs={12}>
@@ -1095,18 +1096,20 @@ const EditQualityCheck = (props: Props) => {
                           >
                             <AddCircleIcon
                               onClick={() => {
-                                addRow();
+                                //addRow();
+                                alert("Can't add row")
                               }}
 
                               style={{ cursor: "pointer" }}
                             />
                             <DeleteIcon
                               onClick={() => {
-                                if (tableData.length > 1) {
-                                  deleteRow(index)
-                                } else {
-                                  alert("Atleast one row should be there");
-                                }
+                                // if (tableData.length > 1) {
+                                //   deleteRow(index)
+                                // } else {
+                                //   alert("Atleast one row should be there");
+                                // }
+                                alert("Can't delete row")
                               }}
                               style={{ cursor: "pointer" }}
                             />
@@ -1121,6 +1124,7 @@ const EditQualityCheck = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={orderOption}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "155px" }}
@@ -1159,6 +1163,7 @@ const EditQualityCheck = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={itemOption}
+                              disabled={true}
                               fullWidth
                               size="small"
                               sx={{ width: "155px" }}
@@ -1197,6 +1202,7 @@ const EditQualityCheck = (props: Props) => {
                           >
                             <TextField
                               value={row.batchNo}
+                              disabled={true}
                               size="small"
                               sx={{ width: "150px" }}
                               onChange={(e) => handleInputChange(index, "batchNo", e.target.value)}
@@ -1212,22 +1218,22 @@ const EditQualityCheck = (props: Props) => {
                               disablePortal
                               id="combo-box-demo"
                               options={unitOptions}
-                              
-                              value={unitOptions.find((opt:any) => (opt.value) == row?.unitId)?.label || ""}
+                              disabled={true}
+                              value={unitOptions.find((opt: any) => (opt.value) == row?.unitId)?.label || ""}
                               // value={
                               //   unitOptions.find((opt) => (opt.value) == row?.unitId) || null
                               // }
                               fullWidth
                               size="small"
                               sx={{ width: "130px" }}
-                              onChange={(e, newValue: any) =>{
+                              onChange={(e, newValue: any) => {
                                 if (!newValue) {
                                   return;
                                 }
-                              
+
                                 handleInputChange(index, "unitId", newValue?.value)
                               }
-                            }
+                              }
 
                               renderInput={(params: any) => (
                                 <TextField
@@ -1246,6 +1252,7 @@ const EditQualityCheck = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.mrnQty}
+                              disabled={true}
                               onChange={(e) => handleInputChange(index, "mrnQty", e.target.value)}
                               onFocus={e => e.target.select()}
                               inputProps={{
@@ -1281,6 +1288,7 @@ const EditQualityCheck = (props: Props) => {
                           >
                             <TextField
                               size="small"
+                              disabled={true}
                               value={Number(row.mrnQty) - Number(row.acceptQty)}
                               onChange={(e) => {
                                 const newvalue = Number(row.mrnQty) - Number(row.acceptQty)
@@ -1303,6 +1311,7 @@ const EditQualityCheck = (props: Props) => {
                             <TextField
                               size="small"
                               value={row.rate}
+                              disabled={true}
                               sx={{ width: "70px" }}
                               onChange={(e) => handleInputChange(index, "rate", e.target.value)}
                               inputProps={{
@@ -1335,6 +1344,7 @@ const EditQualityCheck = (props: Props) => {
                             <Autocomplete
                               disablePortal
                               id="combo-box-demo"
+                              disabled={true}
                               options={taxData}
                               fullWidth
                               size="small"
@@ -1377,6 +1387,7 @@ const EditQualityCheck = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.cgst}
                               size="small"
                               sx={{ width: "100px" }}
@@ -1393,6 +1404,7 @@ const EditQualityCheck = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.sgst}
                               size="small"
                               sx={{ width: "100px" }}
@@ -1421,6 +1433,7 @@ const EditQualityCheck = (props: Props) => {
                             }}
                           >
                             <TextField
+                              disabled={true}
                               value={row.netAmount}
                               size="small"
                               inputProps={{
@@ -1538,32 +1551,39 @@ const EditQualityCheck = (props: Props) => {
                                                     >
                                                         {t("text.update")}
                                                     </Button> */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" : (
+
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>
+                )}
+
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={(e: any) => formik.resetForm()}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" : (
+
+                  <Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={(e: any) => formik.resetForm()}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </form>

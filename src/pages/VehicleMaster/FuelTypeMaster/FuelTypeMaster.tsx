@@ -34,7 +34,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 interface MenuPermission {
@@ -50,6 +50,7 @@ export default function FuelTypeMaster() {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
+   const userId = getId();
 
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
@@ -57,19 +58,19 @@ export default function FuelTypeMaster() {
    const [isfuelShortName, setIsfuelShortName] = useState(false);
    const getPageSetupData = async () => {
       await api.get(`Setting/GetPageSetupDataall`).then((res) => {
-        const data = res.data.data;
-        const pageSetup = data.find((e: any) => e.setupId === 2);
-        setIsfuelShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
+         const data = res.data.data;
+         const pageSetup = data.find((e: any) => e.setupId === 2);
+         setIsfuelShortName(pageSetup?.showHide ?? true); // Default to true only if undefined
       });
-    };
+   };
 
    useEffect(() => {
       getPageSetupData();
       const timeout = setTimeout(() => {
          //getPageSetupData();
          fetchFuelTypeData();
-       }, 100);
-       return () => clearTimeout(timeout);
+      }, 100);
+      return () => clearTimeout(timeout);
    }, [isLoading]);
 
 
@@ -82,8 +83,8 @@ export default function FuelTypeMaster() {
          "fuelTypename": "",
          "shortName": "",
          "fuelCode": "",
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": userId,
          "createdOn": defaultValuestime,
          "updatedOn": defaultValuestime,
          "srno": 0
@@ -116,10 +117,10 @@ export default function FuelTypeMaster() {
    });
 
    const handleEdit = (row: any) => {
-      formik.setFieldValue("fuelTypeId",row.fuelTypeId);
-      formik.setFieldValue("fuelTypename",row.fuelTypename);
-      formik.setFieldValue("shortName",row.shortName);
-      formik.setFieldValue("fuelCode",row.fuelCode);
+      formik.setFieldValue("fuelTypeId", row.fuelTypeId);
+      formik.setFieldValue("fuelTypename", row.fuelTypename);
+      formik.setFieldValue("shortName", row.shortName);
+      formik.setFieldValue("fuelCode", row.fuelCode);
    }
 
 
@@ -240,7 +241,7 @@ export default function FuelTypeMaster() {
                   headerClassName: "MuiDataGrid-colCell",
                },
                ...(isfuelShortName ? [{
-               
+
                   field: "shortName",
                   headerName: t("text.FueltypeShortName"),
                   flex: 1,
@@ -351,7 +352,7 @@ export default function FuelTypeMaster() {
 
                      {/* fuel Short Name */}
                      <Grid item xs={12} sm={4} lg={4}>
-                     {(isfuelShortName) ? (<TextField
+                        {(isfuelShortName) ? (<TextField
                            label={
                               <CustomLabel
                                  text={t("text.FuelTypeShortName")}
@@ -368,7 +369,7 @@ export default function FuelTypeMaster() {
                            onChange={(e) => {
                               formik.setFieldValue("shortName", e.target.value);
                            }}
-                        /> ) : ""}
+                        />) : ""}
                      </Grid>
 
 

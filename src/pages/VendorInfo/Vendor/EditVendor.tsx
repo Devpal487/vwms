@@ -46,8 +46,7 @@ const style = {
 type Props = {};
 
 const EditVendor = (props: Props) => {
-  let userId = getId();
-
+  const userId = getId();
   const { i18n, t } = useTranslation();
   const { defaultValuestime } = getISTDate();
   const location = useLocation();
@@ -257,9 +256,9 @@ const EditVendor = (props: Props) => {
       "cityId": location.state.cityId,
       "pincode": location.state.pincode,
       "createdBy": location.state.createdBy,
-      "updatedBy": location.state.updatedBy,
+      "updatedBy": userId,
       "createdOn": location.state.createdOn,
-      "updatedOn": location.state.updatedOn,
+      "updatedOn": defaultValuestime,
       "imageFile": location.state.imageFile,
       "signatureFile": location.state.signatureFile,
       "panFile": location.state.panFile,

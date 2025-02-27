@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
@@ -142,7 +143,7 @@ export default function Employee() {
             field: "actions",
             headerClassName: "MuiDataGrid-colCell",
             headerName: t("text.Action"),
-            width: 80,
+            width: 90,
 
             renderCell: (params) => {
               return [
@@ -174,6 +175,14 @@ export default function Employee() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

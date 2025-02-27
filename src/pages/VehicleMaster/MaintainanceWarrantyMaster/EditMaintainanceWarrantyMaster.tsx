@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -68,6 +68,7 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const location = useLocation();
+  const userId = getId();
 
   const [itemValue, setItemValue] = useState();
   const [vendorValue, setVendorValue] = useState();
@@ -161,7 +162,7 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
       attachment: location.state?.attachment || "",
       attachmentName: location.state?.attachmentName || "",
       createdBy: location.state?.createdBy || "",
-      updatedBy: location.state?.updatedBy || "",
+      updatedBy: userId,
       createdOn: location.state?.createdOn || defaultValues,
       updatedOn: location.state?.updatedOn || defaultValues,
       companyId: location.state?.companyId || 0,
@@ -296,7 +297,7 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditMaintainanceWarranty")}
+                {location.state.isView ? t("text.MaintainanceWarranty") : t("text.EditMaintainanceWarranty")}
               </Typography>
             </Grid>
 
@@ -616,35 +617,39 @@ const EditMaintainanceWarrantyMaster = (props: Props) => {
 
               {/* Submit Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  style={{
-                    backgroundColor: `var(--header-background)`,
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                >
-                  {t("text.update")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="submit"
+                    fullWidth
+                    style={{
+                      backgroundColor: `var(--header-background)`,
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {t("text.update")}
+                  </Button>
+                )}
               </Grid>
 
               {/* Reset Button */}
               <Grid item lg={6} sm={6} xs={12}>
-                <Button
-                  type="reset"
-                  fullWidth
-                  style={{
-                    backgroundColor: "#F43F5E",
-                    color: "white",
-                    marginTop: "10px",
-                  }}
-                  onClick={() => {
-                    formik.resetForm();
-                  }}
-                >
-                  {t("text.reset")}
-                </Button>
+                {location.state.isView ? "" : (
+                  <Button
+                    type="reset"
+                    fullWidth
+                    style={{
+                      backgroundColor: "#F43F5E",
+                      color: "white",
+                      marginTop: "10px",
+                    }}
+                    onClick={() => {
+                      formik.resetForm();
+                    }}
+                  >
+                    {t("text.reset")}
+                  </Button>
+                )}
               </Grid>
 
             </Grid>

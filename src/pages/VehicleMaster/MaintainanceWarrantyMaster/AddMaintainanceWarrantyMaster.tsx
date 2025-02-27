@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -67,6 +67,7 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
 
   const [itemValue, setItemValue] = useState();
   const [vendorValue, setVendorValue] = useState();
@@ -140,8 +141,8 @@ const AddMaintainanceWarrantyMaster = (props: Props) => {
       "remark": "",
       "attachment": "",
       "attachmentName": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": userId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,

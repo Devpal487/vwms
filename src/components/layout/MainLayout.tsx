@@ -1270,7 +1270,7 @@ const MainLayout = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 
-
+ //console.log("menuItems",menuItems);
   // const fetchMenu = () => {
   //   const storedPermissions = JSON.parse(localStorage.getItem("permissions") || "[]");
 

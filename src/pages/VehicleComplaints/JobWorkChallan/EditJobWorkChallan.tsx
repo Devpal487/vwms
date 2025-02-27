@@ -40,7 +40,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -68,6 +68,7 @@ const EditJobWorkChallan = (props: Props) => {
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
+  const userId = getId();
 
   const [panOpens, setPanOpen] = React.useState(false);
   const [modalImg, setModalImg] = useState("");
@@ -347,10 +348,10 @@ const EditJobWorkChallan = (props: Props) => {
       "itemId": location.state?.itemId || 0,
       "jobCardId": location.state?.jobCardId || 0,
       "vendorId": location.state?.vendorId || 0,
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": location.state.createdBy,
+      "updatedBy": userId,
       "createdOn": location.state?.createdOn || defaultValues,
-      "updatedOn": location.state?.updatedOn || defaultValues,
+      "updatedOn": defaultValues,
       "companyId": 0,
       "fyId": location.state?.fyId,
       "serviceAmount": location.state?.serviceAmount || 0,

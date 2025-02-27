@@ -39,7 +39,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -67,6 +67,7 @@ const EditVehicleDetail = (props: Props) => {
    const { defaultValues, defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
    const location = useLocation();
+   const userId = getId();
 
 
    const [zoneOption, setzoneOption] = useState([
@@ -300,11 +301,11 @@ const EditVehicleDetail = (props: Props) => {
          qcApplicable: location.state?.qcApplicable ?? true,  // Ensuring boolean default works properly
          depreciationRate: location.state?.depreciationRate || 0,
          createdBy: location.state?.createdBy || "adminvm",
-         updatedBy: location.state?.updatedBy || "adminvm",
+         updatedBy: userId,
          mileage: location.state?.mileage || 0,
          createdOn: location.state?.createdOn || defaultValues,
-         updatedOn: location.state?.updatedOn || defaultValues,
-         "vehicleRegistrationDate": location.state?.vehicleRegistrationDate || defaultValues,
+         updatedOn: defaultValues,
+         vehicleRegistrationDate: dayjs(location.state?.vehicleRegistrationDate).format("YYYY-MM-DD") || defaultValues,
          zoneName: location.state?.zoneName || "",
          vehiclePhotoFile: "",
          deptName: location.state?.deptName || "",
@@ -442,7 +443,7 @@ const EditVehicleDetail = (props: Props) => {
                         sx={{ padding: "20px" }}
                         align="center"
                      >
-                        {t("text.EditVehicleDetail")}
+                        {location.state.isView ? t("text.VehicleDetail") : t("text.EditVehicleDetail")}
                      </Typography>
                   </Grid>
 
@@ -777,6 +778,29 @@ const EditVehicleDetail = (props: Props) => {
                            placeholder={t("text.EnterPurYear")}
                            onChange={(e) => {
                               formik.setFieldValue("purchaseYear", parseInt(e.target.value));
+                           }}
+                        />
+                     </Grid>
+
+                     {/* vehicle registration date */}
+                     <Grid item lg={4} sm={4} xs={12}>
+                        <TextField
+                           label={
+                              <CustomLabel
+                                 text={t("text.VehRegDate")}
+                                 required={false}
+                              />
+                           }
+                           type="date"
+                           variant="outlined"
+                           fullWidth
+                           size="small"
+                           name="vehicleRegistrationDate"
+                           id="vehicleRegistrationDate"
+                           value={formik.values.vehicleRegistrationDate}
+                           placeholder={t("text.VehRegDate")}
+                           onChange={(e) => {
+                              formik.setFieldValue("vehicleRegistrationDate", e.target.value);
                            }}
                         />
                      </Grid>
@@ -1255,35 +1279,39 @@ const EditVehicleDetail = (props: Props) => {
 
                      {/* Submit Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="submit"
-                           fullWidth
-                           style={{
-                              backgroundColor: `var(--header-background)`,
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                        >
-                           {t("text.update")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="submit"
+                              fullWidth
+                              style={{
+                                 backgroundColor: `var(--header-background)`,
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                           >
+                              {t("text.update")}
+                           </Button>
+                        )}
                      </Grid>
 
                      {/* Reset Button */}
                      <Grid item lg={6} sm={6} xs={12}>
-                        <Button
-                           type="reset"
-                           fullWidth
-                           style={{
-                              backgroundColor: "#F43F5E",
-                              color: "white",
-                              marginTop: "10px",
-                           }}
-                           onClick={() => {
-                              formik.resetForm();
-                           }}
-                        >
-                           {t("text.reset")}
-                        </Button>
+                        {location.state.isView ? "" : (
+                           <Button
+                              type="reset"
+                              fullWidth
+                              style={{
+                                 backgroundColor: "#F43F5E",
+                                 color: "white",
+                                 marginTop: "10px",
+                              }}
+                              onClick={() => {
+                                 formik.resetForm();
+                              }}
+                           >
+                              {t("text.reset")}
+                           </Button>
+                        )}
                      </Grid>
 
                   </Grid>

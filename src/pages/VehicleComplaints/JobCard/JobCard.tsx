@@ -284,7 +284,7 @@ export default function JobCard() {
                               className="cursor-pointer"
                               onClick={() => routeChangeEdit(params.row)}
                            />
-                            <VisibilityIcon
+                           <VisibilityIcon
                               style={{
                                  fontSize: "20px",
                                  color: "grey",
@@ -473,7 +473,17 @@ export default function JobCard() {
                      {t("text.add")}
                   </Button>
                   {/* ) } */}
-
+                  <Button
+                     onClick={()=>{
+                        navigate("/reports/jobcardstatus")
+                     }}
+                     variant="contained"
+                     endIcon={<PrintIcon />}
+                     size="large"
+                     style={{ backgroundColor: `var(--header-background)` }}
+                  >
+                     {t("text.print")}
+                  </Button>
                </Stack>
 
                <DataGrids

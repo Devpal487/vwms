@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Card from "@mui/material/Card";
@@ -39,12 +40,12 @@ export default function QualityCheckMaster() {
   const { t } = useTranslation();
 
   useEffect(() => {
-   
+
     fetchZonesData();
-   
+
   }, [isLoading]);
 
-  
+
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
@@ -77,7 +78,7 @@ export default function QualityCheckMaster() {
       });
   };
   // const accept = () => {
-    
+
   //   api
   //     .post(`QualityCheck/DeleteQc?filter=1`, {
   //       headers:{ QcId: delete_id},
@@ -111,13 +112,13 @@ export default function QualityCheckMaster() {
 
   const fetchZonesData = async () => {
     try {
-      
-      const collectData ={
-        qcId:-1
+
+      const collectData = {
+        qcId: -1
       };
-      
+
       const response = await api.post(
-        `QualityCheck/GetQc`,collectData
+        `QualityCheck/GetQc`, collectData
       );
       const data = response.data.data;
       const IndentWithIds = data.map((Item: any, index: any) => ({
@@ -169,6 +170,15 @@ export default function QualityCheckMaster() {
                       handledeleteClick(params.row.id);
                     }}
                   />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
+                  />
                 </Stack>,
               ];
             },
@@ -207,8 +217,8 @@ export default function QualityCheckMaster() {
             flex: 1.3,
             headerClassName: "MuiDataGrid-colCell",
             renderCell(params) {
-                return dayjs(params.row.bill_ChalanDate).format("DD-MMM-YYYY")
-              },
+              return dayjs(params.row.bill_ChalanDate).format("DD-MMM-YYYY")
+            },
           },
           // {
           //   field: "mrnType",
@@ -216,8 +226,8 @@ export default function QualityCheckMaster() {
           //   flex: 1,
           //   headerClassName: "MuiDataGrid-colCell",
           // },
-        
-         
+
+
           {
             field: "remark",
             headerName: t("text.Remark1"),
@@ -272,7 +282,7 @@ export default function QualityCheckMaster() {
             sx={{ padding: "20px" }}
             align="left"
           >
-           {t("text.qc")}
+            {t("text.qc")}
           </Typography>
           <Divider />
 

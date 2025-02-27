@@ -35,7 +35,7 @@ import {
 import DataGrids from "../../../utils/Datagrids";
 import api from "../../../utils/Url";
 import { useFormik } from "formik";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import * as Yup from "yup";
 import { DEFAULT_DESKTOP_MODE_MEDIA_QUERY } from "@mui/x-date-pickers";
@@ -52,6 +52,7 @@ export default function BrandMaster() {
    let navigate = useNavigate();
    const { t } = useTranslation();
    const [lang, setLang] = useState<Language>("en");
+   const userId = getId();
 
    const { defaultValuestime } = getISTDate();
    const [toaster, setToaster] = useState(false);
@@ -99,8 +100,8 @@ export default function BrandMaster() {
          "brandname": "",
          "brandshortname": "",
          "brandCode": "",
-         "createdBy": "adminvm",
-         "updatedBy": "adminvm",
+         "createdBy": userId,
+         "updatedBy": userId,
          "createdOn": defaultValuestime,
          "updatedOn": defaultValuestime,
          "srno": 0

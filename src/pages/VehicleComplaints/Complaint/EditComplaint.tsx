@@ -41,7 +41,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 import TranslateTextField from "../../../TranslateTextField";
 import nopdf from "../../../assets/images/imagepreview.jpg";
@@ -74,6 +74,7 @@ const EditComplaint = (props: Props) => {
    const [isVisible, setIsVisible] = useState(false);
    const location = useLocation();
    const inputRef = useRef<HTMLButtonElement>(null);
+   const userId = getId();
 
 
    const [vehicleOption, setVehicleOption] = useState([
@@ -266,14 +267,14 @@ const EditComplaint = (props: Props) => {
          "complaint": location.state?.complaint || "",
          "complaintNo": location.state.complaintNo,
          "createdBy": location.state.createdBy,
-         "updatedBy": location.state.updatedBy,
+         "updatedBy": userId,
          "status": location.state.status,
          "currentReading": location.state.currentReading,
-         "createdOn": defaultValues,
+         "createdOn": location.state?.createdOn || defaultValues,
          "complaintDate": formattedDate || dayjs(location.state.complaintDate).format("YYYY-MM-DD"),
          "updatedOn": defaultValues,
          "compAppdt": location.state.compAppdt,
-         "jobCardNo": location.state?.jobCardNo || location.state.complaintNo,
+         "jobCardNo": location.state?.jobCardNo || 0,
          "file": location.state?.file || "",
          "fileOldName": "",
          "vehicleNo": location.state.vehicleNo,
