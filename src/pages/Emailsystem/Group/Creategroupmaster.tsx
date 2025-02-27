@@ -33,7 +33,7 @@ import api2 from "../../../utils/Url";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { getISTDate } from "../../../utils/Constant";
+import { getId,getISTDate } from "../../../utils/Constant";
 import { url } from "inspector";
 import api from "../../../utils/Url";
 import Languages from "../../../Languages";
@@ -44,6 +44,7 @@ type Props = {};
 const Creategroupmaster = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
+  const UserId = getId();
   const { defaultValuestime } = getISTDate();
   const [toaster, setToaster] = useState(false);
   const initialRowData = {
@@ -53,8 +54,8 @@ const Creategroupmaster = (props: Props) => {
   "description": "",
   "type": "",
   "isActive": "true",
-    createdBy: "adminvm",
-    updatedBy: "adminvm",
+    createdBy: UserId,
+    updatedBy: "",
     createdOn: defaultValuestime,
     updatedOn: defaultValuestime
   };
@@ -70,8 +71,8 @@ const Creategroupmaster = (props: Props) => {
   "description": "",
   "type": "",
   "isActive": true,
-    createdBy: "adminvm",
-    updatedBy: "adminvm",
+    createdBy: UserId,
+    updatedBy: "",
     createdOn: defaultValuestime,
     updatedOn: defaultValuestime
     },

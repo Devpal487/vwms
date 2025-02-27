@@ -9,6 +9,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -53,9 +54,9 @@ export default function StockGeneral() {
     const { t } = useTranslation();
 
     useEffect(() => {
-     
+
         fetchZonesData();
-        
+
     }, [isLoading]);
 
 
@@ -76,11 +77,11 @@ export default function StockGeneral() {
     let delete_id = "";
 
     const accept = () => {
-        
+
         api
             .post(`StockLedger/DeleteStockLedger?filter=${delete_id}`, null)
             .then((response) => {
-                if (response.data.status===1) {
+                if (response.data.status === 1) {
                     toast.success(response.data.message);
                     fetchZonesData();
                 } else {
@@ -88,14 +89,14 @@ export default function StockGeneral() {
                 }
             });
     };
- 
+
 
     const reject = () => {
         toast.warn("Rejected: You have rejected", { autoClose: 3000 });
     };
 
     const handledeleteClick = (del_id: any) => {
-       
+
         delete_id = del_id;
         confirmDialog({
             message: "Do you want to delete this record ?",
@@ -121,8 +122,8 @@ export default function StockGeneral() {
                 ...Item,
                 serialNo: index + 1,
                 id: Item.entryNo,
-           //    itemName: Item.itemMaster.itemName,
-                
+                //    itemName: Item.itemMaster.itemName,
+
             }));
             setItem(IndentWithIds);
             setIsLoading(false);
@@ -142,7 +143,7 @@ export default function StockGeneral() {
                                     direction="row"
                                     sx={{ alignItems: "center", marginTop: "5px" }}
                                 >
-                                   
+
                                     <EditIcon
                                         style={{
                                             fontSize: "20px",
@@ -151,8 +152,8 @@ export default function StockGeneral() {
                                         }}
                                         className="cursor-pointer"
                                         onClick={() => routeChangeEdit(params.row)}
-                                    /> 
-                                   
+                                    />
+
                                     <DeleteIcon
                                         style={{
                                             fontSize: "20px",
@@ -162,6 +163,15 @@ export default function StockGeneral() {
                                         onClick={() => {
                                             handledeleteClick(params.row.id);
                                         }}
+                                    />
+                                    <VisibilityIcon
+                                        style={{
+                                            fontSize: "20px",
+                                            color: "grey",
+                                            cursor: "pointer",
+                                        }}
+                                        className="cursor-pointer"
+                                        onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                                     />
                                 </Stack>,
                             ];
@@ -174,7 +184,7 @@ export default function StockGeneral() {
                     //     flex: 1,
                     //     headerClassName: "MuiDataGrid-colCell",
                     // },
-                    
+
                     {
                         field: "batchNo",
                         headerName: t("text.batchNo"),
@@ -215,14 +225,14 @@ export default function StockGeneral() {
                             return dayjs(params.row.voucherDate).format("DD-MM-YYYY")
                         },
                     },
-                    
+
                     // {
                     //     field: "p_InvoiceNo",
                     //     headerName: t("text.p_InvoiceNos"),
                     //     flex: 1,
                     //     headerClassName: "MuiDataGrid-colCell",
                     // },
-                   
+
                     // {
                     //     field: "expiryDate",
                     //     headerName: t("text.expiryDate"),
@@ -238,7 +248,7 @@ export default function StockGeneral() {
                     //     flex: 1,
                     //     headerClassName: "MuiDataGrid-colCell",
                     // },
-                   
+
 
                 ];
                 setColumns(columns as any);
@@ -246,7 +256,7 @@ export default function StockGeneral() {
 
         } catch (error) {
             console.error("Error fetching data:", error);
-           
+
         }
     };
 
@@ -295,7 +305,7 @@ export default function StockGeneral() {
                     <Box height={10} />
 
                     <Stack direction="row" spacing={2} classes="my-2 mb-2">
-                      
+
                         <Button
                             onClick={routeChangeAdd}
                             variant="contained"
@@ -305,7 +315,7 @@ export default function StockGeneral() {
                         >
                             {t("text.add")}
                         </Button>
-                   
+
                     </Stack>
 
 

@@ -26,7 +26,7 @@ import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { getISTDate } from "../../../utils/Constant";
+import {getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
@@ -94,6 +94,7 @@ const EditJobCardIndent = (props: Props) => {
   const [VnoOption, setVnoOption] = useState([
     { value: -1, label: t("text.itemMasterId") },
   ]);
+  const UserId = getId();
 
   useEffect(() => {
     GetitemData();
@@ -197,9 +198,9 @@ const EditJobCardIndent = (props: Props) => {
       indentNo: location.state.indentNo,
       indentDate: dayjs(location.state.indentDate).format("YYYY-MM-DD"),
       remark: location.state.remark,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
-      createdOn: defaultValues,
+      createdBy: location.state.createdBy,
+      updatedBy: UserId,
+      createdOn: location.state.createdOn,
       updatedOn: defaultValues,
       companyId: 0,
       fyId: location.state.fyId,
@@ -359,7 +360,8 @@ const EditJobCardIndent = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobCardIndent")}
+                {location.state.isView ? t("text.JobCardIndent") : t("text.EditJobCardIndent")}
+               
               </Typography>
             </Grid>
 
@@ -796,6 +798,7 @@ const EditJobCardIndent = (props: Props) => {
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
+              {location.state.isView ? "" : (
                 <Button
                   type="submit"
                   fullWidth
@@ -807,9 +810,11 @@ const EditJobCardIndent = (props: Props) => {
                 >
                   {t("text.update")}
                 </Button>
+                )}
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
+              {location.state.isView ? "" : (
                 <Button
                   type="reset"
                   fullWidth
@@ -822,6 +827,7 @@ const EditJobCardIndent = (props: Props) => {
                 >
                   {t("text.reset")}
                 </Button>
+              )}
               </Grid>
             </Grid>
           </form>

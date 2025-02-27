@@ -23,7 +23,7 @@ import api from "../../../utils/Url";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getISTDate } from "../../../utils/Constant";
+import {getId , getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import ButtonWithLoader from "../../../utils/ButtonWithLoader";
 import CustomDataGrid from "../../../utils/CustomDatagrid";
@@ -33,6 +33,7 @@ import "react-transliterate/dist/index.css";
 import TranslateTextField from "../../../TranslateTextField";
 import DataGrids from "../../../utils/Datagrids";
 import axios from "axios";
+// import { get } from "axios";
 
 interface MenuPermission {
   isAdd: boolean;
@@ -42,6 +43,7 @@ interface MenuPermission {
 }
 
 export default function FolderLocation() {
+  const UserId =getId();
   const { t } = useTranslation();
   const { defaultValuestime } = getISTDate();
   const [zones, setZones] = useState([]);
@@ -113,8 +115,8 @@ export default function FolderLocation() {
       sno: 0,
       id: 0,
       path: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
     },

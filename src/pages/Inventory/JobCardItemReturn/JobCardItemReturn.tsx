@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -38,12 +39,12 @@ export default function JobCardItemReturn() {
   const { t } = useTranslation();
 
   useEffect(() => {
-  
+
     fetchZonesData();
- 
+
   }, [isLoading]);
 
-  
+
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
@@ -62,16 +63,16 @@ export default function JobCardItemReturn() {
   const accept = () => {
     const collectData = {
       returnId: delete_id,
-       "returnType": ""
+      "returnType": ""
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post(`Master/DeleteItemReturn`,collectData 
-       
-         
+      .post(`Master/DeleteItemReturn`, collectData
+
+
       )
       .then((response) => {
-        if (response.data.status===1) {
+        if (response.data.status === 1) {
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
@@ -81,7 +82,7 @@ export default function JobCardItemReturn() {
   };
 
 
- 
+
   const reject = () => {
     // toast.warn({summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     toast.warn("Rejected: You have rejected", { autoClose: 3000 });
@@ -105,17 +106,17 @@ export default function JobCardItemReturn() {
     try {
       const collectData = {
         "returnId": -1,
-          "returnType": ""
+        "returnType": ""
       };
       const response = await api.post(`Master/GetItemReturn`, collectData);
-    
+
       const data = response.data.data;
       const IndentWithIds = data.map((Item: any, index: any) => ({
         ...Item,
         serialNo: index + 1,
         id: Item.returnId,
       }))
-      .filter((Item: any) => Item.returnType === "JobCard");
+        .filter((Item: any) => Item.returnType === "JobCard");
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -158,6 +159,16 @@ export default function JobCardItemReturn() {
                       handledeleteClick(params.row.id);
                     }}
                   />
+
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
+                  />
                 </Stack>,
               ];
             },
@@ -175,16 +186,16 @@ export default function JobCardItemReturn() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-       
-          
+
+
           {
             field: "returnDate",
             headerName: t("text.ReturnDate"),
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
             renderCell(params) {
-                return dayjs(params.row.returnDate).format("DD-MMM-YYYY")
-              },
+              return dayjs(params.row.returnDate).format("DD-MMM-YYYY")
+            },
           },
           {
             field: "returnIndentNo",
@@ -240,7 +251,7 @@ export default function JobCardItemReturn() {
             sx={{ padding: "20px" }}
             align="left"
           >
-           {t("text.JobCardItemReturn")}
+            {t("text.JobCardItemReturn")}
           </Typography>
           <Divider />
 

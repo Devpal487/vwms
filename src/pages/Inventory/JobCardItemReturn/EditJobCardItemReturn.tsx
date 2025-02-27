@@ -1102,9 +1102,9 @@ const EditJobCardItemReturn = (props: Props) => {
             returnIndentNo: location.state.returnIndentNo,
             srn: location.state.srn,
             storeName: location.state.storeName || "",
-            createdBy: "adminvm",
-            updatedBy: "adminvm",
-            createdOn: defaultValues,
+            createdBy: location.state.createdBy,
+            updatedBy: location.state.updatedBy,
+            createdOn: location.state.createdOn,
             updatedOn: defaultValues,
 
             itemIssueDetail: [],
@@ -1225,7 +1225,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.EditJobCardItemReturn")}
+                                {location.state.isView ?  t("text.JobCardItemReturn"): t("text.EditJobCardItemReturn")}
                             </Typography>
                         </Grid>
 
@@ -1475,22 +1475,26 @@ const EditJobCardItemReturn = (props: Props) => {
 
                             <Grid item lg={6} sm={6} xs={12}>
                                 <Grid>
+                                    {location.state.isView ? "" : (
                                     <Button
                                         type="submit"
                                         fullWidth
                                         disabled
                                         style={{
-                                            backgroundColor: `var(--header-background)`,
-                                            color: "white",
+                                            backgroundColor: "#e0e0e0", // Faded color for disabled
+                                            color: "#9e9e9e", // Text color for disabled
+                                            //  backgroundColor: `var(--header-background)`,
+                                            //color: "white",
                                             marginTop: "10px",
                                         }}
                                     >
                                         {t("text.update")}
-                                    </Button>
+                                    </Button>)}
                                 </Grid>
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>
+                                {location.state.isView? "":(
                                 <Button
                                     type="reset"
                                     fullWidth
@@ -1502,7 +1506,7 @@ const EditJobCardItemReturn = (props: Props) => {
                                     onClick={(e: any) => formik.resetForm()}
                                 >
                                     {t("text.reset")}
-                                </Button>
+                                </Button>)}
                             </Grid>
                         </Grid>
                     </form>

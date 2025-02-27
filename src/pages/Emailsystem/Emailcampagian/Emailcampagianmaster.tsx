@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -137,12 +138,12 @@ export default function EmailcampgianMaster() {
         id: Item.campaignId,
 
         campaignDate: dayjs(Item.campaignDate).format("YYYY-MM-DD"),
-              
-       // campaignType: Item.campaignType == true ? "EMAIL" : "SMS", 
-       }))
 
-       .filter((Item: any) => Item.campaignType==="EMAIL"); 
-      
+        // campaignType: Item.campaignType == true ? "EMAIL" : "SMS", 
+      }))
+
+        .filter((Item: any) => Item.campaignType === "EMAIL");
+
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -184,6 +185,16 @@ export default function EmailcampgianMaster() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

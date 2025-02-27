@@ -1,6 +1,6 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -8,8 +8,9 @@ import {
   Stack,
   TextField,
   Typography,
-  
+
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -51,17 +52,17 @@ export default function CampagianTemplate() {
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lang, setLang] = useState<Language>("en");
- 
+
 
   let navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
-                fetchZonesData();
+    fetchZonesData();
   }, [isLoading]);
 
-  
-  
+
+
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
@@ -80,14 +81,14 @@ export default function CampagianTemplate() {
   let delete_id = "";
   const accept = () => {
     const collectData = {
-        templateId: delete_id,
-      
+      templateId: delete_id,
+
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
       .post(`Comm/DeleteCampaignTemplate`, collectData)
       .then((response) => {
-        if (response.data.status===1) {
+        if (response.data.status === 1) {
           toast.success(response.data.message);
         } else {
           toast.success(response.data.message);
@@ -116,17 +117,17 @@ export default function CampagianTemplate() {
     try {
       const collectData = {
         "templateId": -1,
-  "template": "",
-  "templateType": ""
+        "template": "",
+        "templateType": ""
       };
       const response = await api.post(
-         `Comm/GetCampaignTemplate`,
+        `Comm/GetCampaignTemplate`,
         collectData
       );
       const data = response.data.data;
-      const IndentWithIds = data.map((Item: any, index:any) => ({
+      const IndentWithIds = data.map((Item: any, index: any) => ({
         ...Item,
-        serialNo: index+1,
+        serialNo: index + 1,
         id: Item.templateId,
       }));
       setItem(IndentWithIds);
@@ -148,29 +149,39 @@ export default function CampagianTemplate() {
                   sx={{ alignItems: "center", marginTop: "5px" }}
                 >
                   {/* {permissionData?.isEdit ? ( */}
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
+                  <EditIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "blue",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit(params.row)}
+                  />
                   {/* ) : ( */}
-                    {/* "" */}
+                  {/* "" */}
                   {/* )} */}
                   {/* {permissionData?.isDel ? ( */}
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
+                  <DeleteIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handledeleteClick(params.row.id);
+                    }}
+                  />
+
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
+                  />
                 </Stack>,
               ];
             },
@@ -200,7 +211,7 @@ export default function CampagianTemplate() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-         
+
         ];
         setColumns(columns as any);
       }
@@ -215,7 +226,7 @@ export default function CampagianTemplate() {
     ...column,
   }));
 
-  
+
   return (
     <>
       <Card
@@ -224,7 +235,7 @@ export default function CampagianTemplate() {
           // height: "100%",
           backgroundColor: "#E9FDEE",
           border: ".5px solid #FF7722 ",
-          marginTop:"3vh"
+          marginTop: "3vh"
         }}
       >
         <Paper
@@ -232,7 +243,7 @@ export default function CampagianTemplate() {
             width: "100%",
             overflow: "hidden",
             "& .MuiDataGrid-colCell": {
-              backgroundColor:`var(--grid-headerBackground)`,
+              backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
               fontSize: 17,
               fontWeight: 900
@@ -242,18 +253,18 @@ export default function CampagianTemplate() {
         >
           <ConfirmDialog />
           <Grid item xs={12} container spacing={1}>
-          <Grid item lg={10} md={10} xs={12}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            sx={{ padding: "20px" }}
-            align="left"
-          >
-          {t("text.CampaignTemplate")}
-          </Typography>
-          </Grid>
-          <Grid item lg={2} md={2} xs={12} marginTop={2}>
+            <Grid item lg={10} md={10} xs={12}>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ padding: "20px" }}
+                align="left"
+              >
+                {t("text.CampaignTemplate")}
+              </Typography>
+            </Grid>
+            <Grid item lg={2} md={2} xs={12} marginTop={2}>
               <select
                 className="language-dropdown"
                 value={lang}
@@ -267,22 +278,22 @@ export default function CampagianTemplate() {
               </select>
             </Grid>
           </Grid>
-         
+
           <Divider />
 
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
             {/* {permissionData?.isAdd == true && ( */}
-              <Button
-                onClick={routeChangeAdd}
-                variant="contained"
-                endIcon={<AddCircleIcon />}
-                size="large"
-                style={{backgroundColor:`var(--header-background)`}}
-              >
-                {t("text.add")}
-              </Button>
+            <Button
+              onClick={routeChangeAdd}
+              variant="contained"
+              endIcon={<AddCircleIcon />}
+              size="large"
+              style={{ backgroundColor: `var(--header-background)` }}
+            >
+              {t("text.add")}
+            </Button>
             {/* ) } */}
 
           </Stack>
@@ -297,7 +308,7 @@ export default function CampagianTemplate() {
         </Paper>
       </Card>
       <ToastApp />
-      
+
     </>
   );
 }

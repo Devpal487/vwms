@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -38,7 +39,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import api from "../../../utils/Url";
 import DataGrids from "../../../utils/Datagrids";
 import dayjs from "dayjs";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import { useFormik } from "formik";
 import CustomLabel from "../../../CustomLable";
 import TranslateTextField from "../../../TranslateTextField";
@@ -53,6 +54,7 @@ interface MenuPermission {
 }
 
 export default function Store() {
+  const UserId =getId();
   const [item, setItem] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,8 +95,8 @@ export default function Store() {
       storeName: "",
       storeCode: "",
       binId: 0,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
       binName: "",

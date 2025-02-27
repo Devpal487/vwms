@@ -43,7 +43,7 @@ interface MenuPermission {
 }
 
 export default function Unitmaster() {
-  const Userid = getId();
+  const UserId = getId();
   const [editId, setEditId] = useState(0);
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
@@ -245,8 +245,8 @@ export default function Unitmaster() {
       unitId: 0,
       unitName: "",
       unitShortname: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
       createdOn: new Date().toISOString(),
       updatedOn: new Date().toISOString(),
     },

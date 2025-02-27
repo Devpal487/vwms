@@ -32,7 +32,7 @@ import {
   import FormGroup from "@mui/material/FormGroup";
   import FormControlLabel from "@mui/material/FormControlLabel";
   import Checkbox from "@mui/material/Checkbox";
-  import { getISTDate } from "../../../utils/Constant";
+  import {getId, getISTDate } from "../../../utils/Constant";
   import { url } from "inspector";
   import api from "../../../utils/Url";
   import Languages from "../../../Languages";
@@ -42,6 +42,7 @@ import {
   type Props = {};
   const Editgroupmaster = (props: Props) => {
     let navigate = useNavigate();
+    const UserId = getId();
     const { t } = useTranslation();
     const { defaultValuestime } = getISTDate();
     const [toaster, setToaster] = useState(false);
@@ -52,8 +53,8 @@ import {
     description: "",
     type: "",
     isActive: true,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy:UserId,
+      updatedBy: UserId,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime
 
@@ -69,9 +70,9 @@ import {
         description: location.state.description,
         type: location.state.type,
         isActive: location.state.isActive,
-        createdBy: "adminvm",
-        updatedBy: "adminvm",
-        createdOn: defaultValuestime,
+        createdBy:location.state.createdBy,
+        updatedBy: UserId,
+        createdOn: location.state.createdOn,
         updatedOn: defaultValuestime
       },
       onSubmit: async (values) => {
@@ -104,7 +105,7 @@ import {
               textAlign="center"
               style={{ fontSize: "18px", fontWeight: 500 }}
             >
-              {t("text.Editgroupmaster")}
+              { location.state.isView?t("text.Groupmaster"):t("text.Editgroupmaster")}
             </Typography>
             <Grid container justifyContent="flex-end">
               <Grid item lg={2} md={2} xs={12} marginTop={2}>
@@ -217,7 +218,7 @@ import {
                                     </RadioGroup>
                                 </FormControl>
                             </Grid>
-                <Grid item lg={6} sm={6} xs={12}>
+                <Grid item lg={6} sm={6} xs={12}> {location.state.isView? "" :(
                   <Button
                     type="submit"
                     fullWidth
@@ -228,9 +229,10 @@ import {
                     }}
                   >
                     {t("text.update")}
-                  </Button>
+                  </Button>)}
                 </Grid>
                 <Grid item lg={6} sm={6} xs={12}>
+                {location.state.isView? "" :(
                   <Button
                     type="reset"
                     fullWidth
@@ -242,7 +244,7 @@ import {
                     onClick={(e: any) => formik.resetForm()}
                   >
                     {t("text.reset")}
-                  </Button>
+                  </Button>)}
                 </Grid>
               </Grid>
             </form>
