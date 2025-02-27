@@ -38,11 +38,11 @@ import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { getISTDate } from "../../../utils/Constant";
+import {getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
-
+const UserId = getId();
 const CreateJobcardItemIssue = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
@@ -268,8 +268,8 @@ const CreateJobcardItemIssue = (props: Props) => {
       issueType: "JobCard",
       vehicleitem: null,
       empId: -1,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: "",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       indentNno: "",

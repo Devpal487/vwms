@@ -42,7 +42,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import nopdf from "../../../assets/images/imagepreview.jpg";
-
+import { getId} from "../../../utils/Constant";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -113,7 +113,7 @@ const CreateJobCardIndent = (props: Props) => {
   ]);
 
 
-
+  const UserId = getId();
   useEffect(() => {
 
     GetUnitData();
@@ -195,8 +195,8 @@ const CreateJobCardIndent = (props: Props) => {
       "indentNo": "",
       "indentDate": defaultValues,
       "remark": "",
-      "createdBy": "adminvm",
-      "updatedBy": "adminvm",
+      "createdBy": UserId,
+      "updatedBy": "",
       "createdOn": defaultValues,
       "updatedOn": defaultValues,
       "companyId": 0,

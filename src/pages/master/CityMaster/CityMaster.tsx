@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { toast } from "react-toastify";
 import ToastApp from "../../../ToastApp";
-import { getISTDate } from "../../../utils/Constant";
+import {getId, getISTDate } from "../../../utils/Constant";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CustomDataGrid from "../../../utils/CustomDatagrid";
@@ -59,7 +59,7 @@ export default function FileMaster() {
     isDel: false,
   });
   const [lang, setLang] = useState<Language>("en");
-
+const UserId = getId();
   useEffect(() => {
     // const dataString = localStorage.getItem("userdata");
     // if (dataString) {
@@ -256,8 +256,8 @@ export default function FileMaster() {
       stateName: "",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {

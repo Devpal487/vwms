@@ -13,6 +13,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -129,9 +130,9 @@ export default function EmaileventMaster() {
         id: Item.eventId,
         //sendingType: Item.sendingType === "EMAIL",
         //   status: Item.status === true ? "open" : "closed", // Map true to "open" and false to "closed"
-       }))
-       .filter((Item: any) => Item.sendingType==="EMAIL"); 
-      
+      }))
+        .filter((Item: any) => Item.sendingType === "EMAIL");
+
       setItem(IndentWithIds);
       setIsLoading(false);
 
@@ -173,6 +174,15 @@ export default function EmaileventMaster() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

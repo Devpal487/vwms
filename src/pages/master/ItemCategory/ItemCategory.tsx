@@ -46,7 +46,8 @@ interface MenuPermission {
 
 export default function ItemCategory() {
   const { t } = useTranslation();
-  const Userid = getId();
+  
+  const UserId = getId();
   const [editId, setEditId] = useState(0);
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
@@ -273,8 +274,8 @@ export default function ItemCategory() {
       itemCategoryAbbre: "",
       parentId: 0,
       taxId: -1,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy:UserId ,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
       taxname: "",

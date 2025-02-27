@@ -332,6 +332,7 @@ import Paper from "@mui/material/Paper";
 import { toast } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import CircularProgress from "@mui/material/CircularProgress";
 //import { getId } from "../../../utils/Constant";
@@ -483,6 +484,16 @@ export default function JobcardItemIssue() {
                       handledeleteClick(params.row.id);
                     }}
                   />
+                      <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
+                  />
+
                   {/* ) : (
                     ""
                   )} */}

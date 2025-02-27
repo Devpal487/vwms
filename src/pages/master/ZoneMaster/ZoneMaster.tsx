@@ -43,7 +43,7 @@ interface MenuPermission {
 }
 
 export default function ZoneMaster() {
-  const Userid = getId();
+  const UserId = getId();
   const [editId, setEditId] = useState(0);
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
@@ -249,8 +249,8 @@ export default function ZoneMaster() {
       zoneAbbrevation: "",
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {

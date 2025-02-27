@@ -38,12 +38,14 @@ import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { getISTDate } from "../../../utils/Constant";
+import {getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
+import { use } from "i18next";
 
 type Props = {};
 
 const EditJobcardItemIssue = (props: Props) => {
+  const UserId =getId();
   let navigate = useNavigate();
   const [itemValue, setItemValue] = useState();
   const { t } = useTranslation();
@@ -295,9 +297,9 @@ const EditJobcardItemIssue = (props: Props) => {
       issueType: location.state.issueType,
       vehicleitem: location.state.vehicleitem,
       empId: location.state.empId || "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
-      createdOn: defaultValues,
+      createdBy: UserId,
+      updatedBy: UserId,
+      createdOn: location.state.createdOn,
       updatedOn: defaultValues,
       indentNno: location.state.indentNno,
       // srn: location.state.srn,
@@ -426,7 +428,7 @@ const EditJobcardItemIssue = (props: Props) => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditJobcardItemIssue")}
+                {location.state.isView ?t("text.JobcardItemIssue"): t("text.EditJobcardItemIssue")}
               </Typography>
             </Grid>
 
@@ -862,6 +864,7 @@ const EditJobcardItemIssue = (props: Props) => {
 
               <Grid item lg={6} sm={6} xs={12}>
                 <Grid>
+                  {location.state.isView ? "" :(
                   <Button
                     disabled
                     type="submit"
@@ -876,10 +879,12 @@ const EditJobcardItemIssue = (props: Props) => {
                   >
                     {t("text.update")}
                   </Button>
+                  )}
                 </Grid>
               </Grid>
 
               <Grid item lg={6} sm={6} xs={12}>
+                {location.state.isView? "":(
                 <Button
                   type="reset"
                   fullWidth
@@ -892,6 +897,7 @@ const EditJobcardItemIssue = (props: Props) => {
                 >
                   {t("text.reset")}
                 </Button>
+                )}
               </Grid>
             </Grid>
           </form>

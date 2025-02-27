@@ -34,7 +34,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import dayjs from "dayjs";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -119,7 +119,7 @@ const EditWorkShopPurchaseOrder = () => {
   const [Opens, setOpen] = React.useState(false);
   const [Img, setImg] = useState("");
   const [vendorData, setVendorData] = useState([]);
-
+const UserId =getId();
   useEffect(() => {
     getTaxData();
     GetitemData();
@@ -554,9 +554,9 @@ const EditWorkShopPurchaseOrder = () => {
       status: location?.state?.status || "",
       orderType: location?.state?.orderType || "",
       createdBy: location?.state?.createdBy || "",
-      updatedBy: location?.state?.updatedBy || "",
-      createdOn: location?.state?.createdOn || defaultValues,
-      updatedOn: location?.state?.updatedOn || defaultValues,
+      updatedBy: UserId,
+      createdOn: location?.state?.createdOn ,
+      updatedOn: defaultValues,
       companyId: location?.state?.companyId || 0,
       fyId: location?.state?.fyId || 0,
       releasedBy: location?.state?.releasedBy || "",
@@ -648,7 +648,7 @@ const EditWorkShopPurchaseOrder = () => {
                 sx={{ padding: "20px" }}
                 align="center"
               >
-                {t("text.EditWorkShopPurchaseOrder")}
+                {location.state.isView? t("text.WorkShopPurchaseOrder"):t("text.EditWorkShopPurchaseOrder")}
               </Typography>
             </Grid>
 
@@ -1456,6 +1456,7 @@ const EditWorkShopPurchaseOrder = () => {
               </Grid>
 
               <Grid item xs={12}>
+                {location.state.isView?"":(
                 <div style={{ justifyContent: "space-between", flex: 2 }}>
                   <Button
                     type="submit"
@@ -1482,6 +1483,7 @@ const EditWorkShopPurchaseOrder = () => {
                     {t("text.reset")}
                   </Button>
                 </div>
+                )}
               </Grid>
             </Grid>
           </form>

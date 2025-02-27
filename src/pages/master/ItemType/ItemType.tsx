@@ -23,7 +23,7 @@ import api from "../../../utils/Url";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import ButtonWithLoader from "../../../utils/ButtonWithLoader";
 import CustomDataGrid from "../../../utils/CustomDatagrid";
@@ -41,6 +41,7 @@ interface MenuPermission {
 }
 
 export default function ItemType() {
+  const UserId =getId();
   const { t } = useTranslation();
   const { defaultValuestime } = getISTDate();
   const [zones, setZones] = useState([]);
@@ -84,8 +85,8 @@ export default function ItemType() {
       itemTypeMasterId:0,
       itemType: "",
       itemTypecode: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy:UserId ,
 
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,

@@ -24,7 +24,7 @@ export function getISTDate() {
 // }
 
 export function getId() {
-  let ID:any = localStorage.getItem("useR_ID");
+  let ID:any = localStorage.getItem("username");
   try {
     return JSON.parse(ID);
   } catch (error) {

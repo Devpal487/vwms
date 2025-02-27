@@ -37,7 +37,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import TranslateTextField from "../../../TranslateTextField";
 import ReactQuill from 'react-quill';
@@ -59,6 +59,7 @@ const CreateSmscampagian = (props: Props) => {
     const handleStatusChange = (event: any, newValue: any) => {
         setStatus(newValue?.value || '');
     };
+    const UserId = getId();
     let navigate = useNavigate();
     const { t } = useTranslation();
     const [lang, setLang] = useState<Language>("en");
@@ -238,8 +239,8 @@ const CreateSmscampagian = (props: Props) => {
             "fromDate": defaultValues,
             "toDate": defaultValues,
             "toTime": "",
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
+            "createdBy": UserId,
+            "updatedBy": "",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "listGroups": [],

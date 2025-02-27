@@ -1311,12 +1311,13 @@ import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import dayjs from "dayjs";
-import { getISTDate } from "../../../utils/Constant";
+import { getId,getISTDate } from "../../../utils/Constant";
 
 type Props = {};
 
 const EditStockGeneral = (props: Props) => {
   let navigate = useNavigate();
+  const UserId =getId();
   const { defaultValues, defaultValuestime } = getISTDate();
   const { i18n, t } = useTranslation();
   const location = useLocation();
@@ -1450,8 +1451,8 @@ const GetUnitData = async () => {
           voucherType: location.state?.voucherType,
           voucherDate: dayjs(location.state?.voucherDate).format("YYYY-MM-DD"),
           createdBy: location.state?.createdBy,
-          updatedBy: location.state?.updatedBy,
-          createdOn: defaultValuestime,
+          updatedBy: UserId,
+          createdOn: location.state?.createdOn,
           updatedOn: defaultValuestime,
           expiryDate: dayjs(location.state?.expiryDate).format("YYYY-MM-DD"),
           companyId: location.state?.companyId,
@@ -1514,7 +1515,7 @@ const GetUnitData = async () => {
                       textAlign="center"
                       style={{ fontSize: "18px", fontWeight: 500 }}
                   >
-                      {t("text.editStockledger")}
+                      {location.state.isView?  t("text.StockGeneral") :t("text.editStockledger")}
                   </Typography>
 
                   <Grid item sm={4} xs={12}>
@@ -1750,6 +1751,7 @@ const GetUnitData = async () => {
 
                           <Grid item lg={6} sm={6} xs={12}>
                               <Grid>
+                                {location.state.isView? "":(
                                   <Button
                                       type="submit"
                                       fullWidth
@@ -1761,9 +1763,11 @@ const GetUnitData = async () => {
                                   >
                                       {t("text.save")}
                                   </Button>
+                                )}
                               </Grid>
                           </Grid>
                           <Grid item lg={6} sm={6} xs={12}>
+                            {location.state.isView? "":(
                               <Button
                                   type="reset"
                                   fullWidth
@@ -1776,6 +1780,7 @@ const GetUnitData = async () => {
                               >
                                   {t("text.reset")}
                               </Button>
+                              )}
                           </Grid>
                       </Grid>
                   </form>

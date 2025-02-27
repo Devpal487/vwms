@@ -16,6 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Switch from "@mui/material/Switch";
 import { useNavigate, useLocation } from "react-router-dom";
 import Chip from "@mui/material/Chip";
@@ -131,7 +132,7 @@ export default function ItemDetail() {
       );
       const zonesWithIds = data.map((Item: any, index: any) => ({
         ...Item,
-        serialNo: index + 1,
+        srNo: index + 1,
         id: Item.itemMasterId,
       }));
       setItem(zonesWithIds);
@@ -176,17 +177,22 @@ export default function ItemDetail() {
                       handledeleteClick(params.row.id);
                     }}
                   />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({...params.row, isView: true})}
+                  />
                  
                 </Stack>,
               ];
             },
           },
 
-          {
-            field: "serialNo",
-            headerName: t("text.SrNo"),
-            flex: .5,
-          },
+       
           {
             field: "itemName",
             headerName: t("text.itemName"),
@@ -211,6 +217,11 @@ export default function ItemDetail() {
           //   flex: 1,
             
           // },
+          {
+            field: "serialNo",
+            headerName: t("text.serialNo"),
+            flex: .5,
+          },
           {
             field: "hsnCode",
             headerName: t("text.hsnCode"),

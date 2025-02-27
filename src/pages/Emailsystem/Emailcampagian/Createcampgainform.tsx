@@ -37,7 +37,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId , getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import TranslateTextField from "../../../TranslateTextField";
 import ReactQuill from 'react-quill';
@@ -69,6 +69,7 @@ const CreatemailcampgiontForm = (props: Props) => {
     const [toaster, setToaster] = useState(false);
     const [toTime, setToTime] = useState<string>("");
     console.log('toTime', toTime)
+    const UserId =getId();
 
     const [editorContent, setEditorContent] = useState<string>("");
     const handleEditorChange = (content: any) => {
@@ -248,8 +249,8 @@ const CreatemailcampgiontForm = (props: Props) => {
             "fromDate": defaultValues,
             "toDate": defaultValues,
             "toTime": "",
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
+            "createdBy": UserId,
+            "updatedBy": "",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "listGroups": [],

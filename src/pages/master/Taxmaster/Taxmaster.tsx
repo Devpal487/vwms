@@ -43,7 +43,7 @@ interface MenuPermission {
 }
 
 export default function Taxmaster() {
-    const Userid = getId();
+    const UserId = getId();
     const [editId, setEditId] = useState(0);
     const [zones, setZones] = useState([]);
     const [columns, setColumns] = useState<any>([]);
@@ -232,8 +232,8 @@ export default function Taxmaster() {
             effectiveDate: dayjs(defaultValuestime).format("YYYY-MM-DD"),
 
 
-            createdBy: "adminvm",
-            updatedBy: "adminvm",
+            createdBy: UserId,
+            updatedBy: UserId,
             createdOn: defaultValuestime,
             updatedOn: defaultValuestime,
         },

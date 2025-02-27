@@ -76,8 +76,8 @@ const CreatemaileventForm = (props: Props) => {
             "sendingType": "EMAIL",
             "message": "",
             "isActive": true || false,
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
+            "createdBy": UserId ,
+            "updatedBy": "",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "srn": 0

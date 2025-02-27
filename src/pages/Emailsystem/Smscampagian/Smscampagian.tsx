@@ -13,6 +13,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
 import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
@@ -135,7 +136,7 @@ export default function Smscampagian() {
         ...Item,
         serialNo: index + 1,
         id: Item.campaignId,
-        campaignDate: moment(Item.campaignDate).format("DD-MM-YYYY"),
+        campaignDate: dayjs(Item.campaignDate).format("YYYY-MM-DD"),
        // campaignType: Item.campaignType === "SMS",
         //   status: Item.status === true ? "open" : "closed", // Map true to "open" and false to "closed"
        }))
@@ -182,6 +183,15 @@ export default function Smscampagian() {
                     onClick={() => {
                       handledeleteClick(params.row.id);
                     }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
                   />
                 </Stack>,
               ];

@@ -11,6 +11,8 @@ const resources = {
       error: {},
       message: {},
       text: {
+        taxRequired:"please select Tax ",
+        unitNameRequired:"Unit Name Required",
         reqshipmentNo:"Shipment No. is required.",
         reqvendor:"Vendor is required.",
         reqmrnNo:"MRN No. is required.",
@@ -9214,7 +9216,8 @@ const resources = {
       error: {},
       message: {},
       text: {
-        //
+        taxRequired: "कृपया कर चुनें",
+unitNameRequired: "इकाई नाम आवश्यक है",
         reqmrnNo:"एमआरएन नंबर आवश्यक है।",
         downloadSummary:"सारांश डाउनलोड करें",
         complainStatus12: "स्थिति",

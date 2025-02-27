@@ -37,7 +37,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -56,6 +56,7 @@ const unitOptions = [
 const EditSmscampagian = (props: Props) => {
     const location = useLocation();
     console.log('location', location.state)
+    const UserId = getId();
     let navigate = useNavigate();
     const { t } = useTranslation();
     const [lang, setLang] = useState<Language>("en");
@@ -73,7 +74,7 @@ const EditSmscampagian = (props: Props) => {
     const [empOption, setempOption] = useState([
         { value: -1, label: t("text.empid") },
     ]);
-const [employeeData, setEmployeeData] = useState<any[]>([]);
+    const [employeeData, setEmployeeData] = useState<any[]>([]);
     const [groupOption, setgroupOption] = useState<any>([
         { value: -1, label: t("text.groupId") },
     ]);
@@ -102,21 +103,21 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
             "empid": -1,
             "userId": "",
         };
-    
+
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
-    
+
         const arr = data.map((item: any) => ({
             label: item.empName,
             value: item.empid,
         }));
-    
+
         setempOption([{ label: "Select All", value: "selectAll" }, ...arr]);
         setEmployeeData(data); // Save full employee details in state
     };
     const handleChange = (event: any, newValue: any) => {
         let updatedList;
-    
+
         if (newValue.some((option: any) => option.value === "selectAll")) {
             if (newValue.length === empOption.length) {
                 updatedList = [];
@@ -126,31 +127,31 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
         } else {
             updatedList = newValue;
         }
-    
+
         const memberId = updatedList.map((item: any) => {
             const selectedEmployee = employeeData.find((emp: any) => emp.empid === item.value);
-    
+
             return {
                 id: 0,
                 campaignId: 0,
                 groupId: 0,
                 memberId: item.value,
                 message: "",
-                emailId: selectedEmployee ? selectedEmployee.email : "", 
+                emailId: selectedEmployee ? selectedEmployee.email : "",
                 mobileNo: selectedEmployee ? selectedEmployee.empMobileNo : "",
                 receiverType: "",
-                name: selectedEmployee ? selectedEmployee.empName : "", 
+                name: selectedEmployee ? selectedEmployee.empName : "",
                 isSelected: true,
             };
         });
-    
+
         formik.setFieldValue("listMembers", memberId);
     };
     // const getEmpData = async () => {
     //     const collectData = {
     //         "empid": -1,
     //         "userId": "",
-      
+
     //     };
 
     //     const response = await api.post(`Employee/GetEmployee`, collectData);
@@ -227,7 +228,13 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
         }
         setTemplateOpation(arr);
     };
+    const inputDate = location.state.campaignDate; // Input in DD-MM-YYYY format
 
+    // Split the date into day, month, and year
+    const [day, month, year] = inputDate.split("-");
+
+    // Rearrange into YYYY-MM-DD format
+    const formattedDate = `${year}-${month}-${day}`
 
     const formik = useFormik({
         initialValues: {
@@ -244,9 +251,9 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
             "toTime": location.state.toTime,
 
 
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
-            "createdOn": defaultValues,
+            "createdBy": location.state.createdBy,
+            "updatedBy": UserId,
+            "createdOn": location.state.createdOn,
             "updatedOn": defaultValues,
             listGroups: location.state?.listGroups || [],
             listMembers: location.state?.listMembers || [],
@@ -316,7 +323,8 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.EditSmscampagian")}
+                                {location.state.isView ? t("text.Smscampagian") : t("text.EditSmscampagian")}
+
                             </Typography>
                         </Grid>
 
@@ -587,7 +595,7 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
 
 
 
-                            <Grid item lg={6} sm={6} xs={12}>
+                            <Grid item lg={6} sm={6} xs={12}>  {location.state.isView ? "" : (
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -598,21 +606,22 @@ const [employeeData, setEmployeeData] = useState<any[]>([]);
                                     }}
                                 >
                                     {t("text.update")}
-                                </Button>
+                                </Button>)}
                             </Grid>
                             <Grid item lg={6} sm={6} xs={12}>
-                                <Button
-                                    type="reset"
-                                    fullWidth
-                                    style={{
-                                        backgroundColor: "#F43F5E",
-                                        color: "white",
-                                        marginTop: "10px",
-                                    }}
-                                    onClick={(e: any) => formik.resetForm()}
-                                >
-                                    {t("text.reset")}
-                                </Button>
+                                {location.state.isView ? "" : (
+                                    <Button
+                                        type="reset"
+                                        fullWidth
+                                        style={{
+                                            backgroundColor: "#F43F5E",
+                                            color: "white",
+                                            marginTop: "10px",
+                                        }}
+                                        onClick={(e: any) => formik.resetForm()}
+                                    >
+                                        {t("text.reset")}
+                                    </Button>)}
                             </Grid>
 
                         </Grid>

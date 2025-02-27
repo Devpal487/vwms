@@ -83,9 +83,9 @@ const EditCampagianTemplate = (props: Props) => {
             "template": location.state.template,
             "templateType": location.state.templateType,
             "smsTemplateID": location.state.smsTemplateID,
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
-            "createdOn": defaultValues,
+            "createdBy": location.state.createdBy,
+            "updatedBy": UserId,
+            "createdOn": location.state.createdOn,
             "updatedOn": defaultValues,
             "srno": 0
         },
@@ -148,7 +148,7 @@ const EditCampagianTemplate = (props: Props) => {
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.EditCampaignTemplate")}
+                                {location.state.isView? t("text.CampaignTemplate"):t("text.EditCampaignTemplate")}
                             </Typography>
                         </Grid>
 
@@ -235,16 +235,20 @@ const EditCampagianTemplate = (props: Props) => {
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>
+                            {location.state.isView? "" :(
                                 <Grid>
+                                   
                                     <ButtonWithLoader
                                         buttonText={t("text.update")}
                                         onClickHandler={handleSubmitWrapper}
                                         fullWidth={true}
                                     />
-                                </Grid>
+                                
+                                </Grid>    )}
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>
+                            {location.state.isView? "" :(
                                 <Button
                                     type="reset"
                                     fullWidth
@@ -257,6 +261,7 @@ const EditCampagianTemplate = (props: Props) => {
                                 >
                                     {t("text.reset")}
                                 </Button>
+                            )}
                             </Grid>
                         </Grid>
                     </form>

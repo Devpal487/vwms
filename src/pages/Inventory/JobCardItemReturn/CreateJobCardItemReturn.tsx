@@ -892,12 +892,13 @@ import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import dayjs from "dayjs";
 
 type Props = {};
 
 const CreateJobCardItemReturn = (props: Props) => {
+  const UserId =getId();
   let navigate = useNavigate();
   const { t } = useTranslation();
   const [lang, setLang] = useState<Language>("en");
@@ -1057,8 +1058,8 @@ const CreateJobCardItemReturn = (props: Props) => {
       returnDate: new Date().toISOString().slice(0, 10),
       returnType: "JobCard",
       returnIndentNo: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: "",
       createdOn: new Date().toISOString(),
       updatedOn: new Date().toISOString(),
       itemReturnDetail: [],

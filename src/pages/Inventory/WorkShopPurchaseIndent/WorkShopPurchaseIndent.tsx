@@ -1,6 +1,6 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -9,6 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import Swal from "sweetalert2";
@@ -47,18 +48,18 @@ export default function IndentFormMaster() {
   const [item, setItem] = useState([]);
   const [columns, setColumns] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(true);
- 
+
 
   let navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
-  
-                fetchZonesData();
-    
+
+    fetchZonesData();
+
   }, [isLoading]);
 
-  
+
   const routeChangeEdit = (row: any) => {
     console.log("row " + row);
 
@@ -78,13 +79,13 @@ export default function IndentFormMaster() {
   const accept = () => {
     const collectData = {
       indentId: delete_id,
-    
+
     };
     console.log("collectData " + JSON.stringify(collectData));
     api
-      .post( `Master/DeleteIndent`, collectData)
+      .post(`Master/DeleteIndent`, collectData)
       .then((response) => {
-        if (response.data.status===1) {
+        if (response.data.status === 1) {
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message);
@@ -94,12 +95,12 @@ export default function IndentFormMaster() {
   };
 
   const reject = () => {
-    
+
     toast.warn("Rejected: You have rejected", { autoClose: 3000 });
   };
 
   const handledeleteClick = (del_id: any) => {
-    
+
     delete_id = del_id;
     confirmDialog({
       message: "Do you want to delete this record ?",
@@ -114,23 +115,23 @@ export default function IndentFormMaster() {
   const fetchZonesData = async () => {
     try {
       const collectData = {
-     "indentId": -1,
-     "indentNo": "",
-     "empId":-1
+        "indentId": -1,
+        "indentNo": "",
+        "empId": -1
       };
       const response = await api.post(
-         `Master/GetIndent`,
+        `Master/GetIndent`,
         collectData
       );
       const data = response.data.data;
-      const IndentWithIds = data.map((Item: any, index:any) => ({
+      const IndentWithIds = data.map((Item: any, index: any) => ({
         ...Item,
         serialNo: index + 1,
         id: Item.indentId,
         indentNo: Item.indentNo,
         empId: Item.empId,
       }))
-      .filter((Item: any) => Item.indenttype==="WorkShopPurchase");
+        .filter((Item: any) => Item.indenttype === "WorkShopPurchase");
 
       setItem(IndentWithIds);
       setIsLoading(false);
@@ -150,27 +151,36 @@ export default function IndentFormMaster() {
                   direction="row"
                   sx={{ alignItems: "center", marginTop: "5px" }}
                 >
-                  
-                    <EditIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "blue",
-                        cursor: "pointer",
-                      }}
-                      className="cursor-pointer"
-                      onClick={() => routeChangeEdit(params.row)}
-                    />
-                  
-                    <DeleteIcon
-                      style={{
-                        fontSize: "20px",
-                        color: "red",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        handledeleteClick(params.row.id);
-                      }}
-                    />
+
+                  <EditIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "blue",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit(params.row)}
+                  />
+
+                  <DeleteIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "red",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      handledeleteClick(params.row.id);
+                    }}
+                  />
+                  <VisibilityIcon
+                    style={{
+                      fontSize: "20px",
+                      color: "grey",
+                      cursor: "pointer",
+                    }}
+                    className="cursor-pointer"
+                    onClick={() => routeChangeEdit({ ...params.row, isView: true })}
+                  />
                 </Stack>,
               ];
             },
@@ -188,7 +198,7 @@ export default function IndentFormMaster() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-         
+
           {
             field: "indentDate",
             headerName: t("text.indentDate11"),
@@ -210,14 +220,14 @@ export default function IndentFormMaster() {
             flex: 1,
             headerClassName: "MuiDataGrid-colCell",
           },
-         
+
         ];
         setColumns(columns as any);
       }
 
     } catch (error) {
       alert(error);
-      
+
     }
   };
 
@@ -225,7 +235,7 @@ export default function IndentFormMaster() {
     ...column,
   }));
 
-  
+
   return (
     <>
       <Card
@@ -234,7 +244,7 @@ export default function IndentFormMaster() {
           // height: "100%",
           backgroundColor: "#E9FDEE",
           border: ".5px solid #FF7722 ",
-          marginTop:"3vh"
+          marginTop: "3vh"
         }}
       >
         <Paper
@@ -242,7 +252,7 @@ export default function IndentFormMaster() {
             width: "100%",
             overflow: "hidden",
             "& .MuiDataGrid-colCell": {
-              backgroundColor:`var(--grid-headerBackground)`,
+              backgroundColor: `var(--grid-headerBackground)`,
               color: `var(--grid-headerColor)`,
               fontSize: 17,
               fontWeight: 900
@@ -259,26 +269,26 @@ export default function IndentFormMaster() {
             sx={{ padding: "20px" }}
             align="left"
           >
-           {t("text.WorkShopPurchaseIndent")}
+            {t("text.WorkShopPurchaseIndent")}
           </Typography>
           <Divider />
 
           <Box height={10} />
 
           <Stack direction="row" spacing={2} classes="my-2 mb-2">
-           
-              <Button
-                onClick={routeChangeAdd}
-                variant="contained"
-                endIcon={<AddCircleIcon />}
-                size="large"
-                style={{backgroundColor:`var(--header-background)`}}
-              >
-                {t("text.add")}
-              </Button>
+
+            <Button
+              onClick={routeChangeAdd}
+              variant="contained"
+              endIcon={<AddCircleIcon />}
+              size="large"
+              style={{ backgroundColor: `var(--header-background)` }}
+            >
+              {t("text.add")}
+            </Button>
             {/* ) } */}
 
-           
+
           </Stack>
 
 
@@ -292,7 +302,7 @@ export default function IndentFormMaster() {
         </Paper>
       </Card>
       <ToastApp />
-      
+
     </>
   );
 }

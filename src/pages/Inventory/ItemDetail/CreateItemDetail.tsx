@@ -48,6 +48,7 @@ interface MenuPermission {
   isDel: boolean;
 }
 export default function CreateItemDetail() {
+  const UserId = getId();
   const { t } = useTranslation();
   const Userid = getId();
   const { defaultValuestime } = getISTDate();
@@ -146,6 +147,12 @@ export default function CreateItemDetail() {
       .required(t("text.itemNameRequired"))
       .min(2, t("text.itemNameMin"))
       .max(100, t("text.itemNameMax")),
+      unitId: Yup.string()
+      .required(t("text.unitNameRequired")),
+      taxId: Yup.string()
+      .required(t("text.taxRequired")),
+
+
   });
   const formik = useFormik({
     initialValues: {
@@ -170,7 +177,7 @@ export default function CreateItemDetail() {
       "chesisNo": "",
       "qcApplicable": true,
       "depreciationRate": 0,
-      "createdBy": "",
+      "createdBy": UserId,
       "updatedBy": "",
       "mileage": 0,
       createdOn: defaultValuestime,
@@ -389,11 +396,19 @@ export default function CreateItemDetail() {
                       label={
                         <CustomLabel
                           text={t("text.selectUnit")}
+                          required={true}
                         />
+
+                        
                       }
                     />
                   )}
                 />
+                {formik.touched.unitId && formik.errors.unitId ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.unitId}
+                  </div>
+                ) : null}
               </Grid>
               <Grid item xs={12} sm={4} lg={4}>
                 <Autocomplete
@@ -413,11 +428,17 @@ export default function CreateItemDetail() {
                       label={
                         <CustomLabel
                           text={t("text.tax")}
+                          required={true}
                         />
                       }
                     />
                   )}
                 />
+                {formik.touched.taxId && formik.errors.taxId ? (
+                  <div style={{ color: "red", margin: "5px" }}>
+                    {formik.errors.taxId}
+                  </div>
+                ) : null}
               </Grid>
               <Grid item xs={12} sm={4} lg={4}>
                 <TextField

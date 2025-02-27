@@ -1219,11 +1219,12 @@ import ToastApp from "../../../ToastApp";
 import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 
 type Props = {};
 
 const CreateStockGeneral = (props: Props) => {
+    const UserId =getId();
     let navigate = useNavigate();
     const { defaultValues, defaultValuestime } = getISTDate();
     const { i18n, t } = useTranslation();
@@ -1321,8 +1322,8 @@ const CreateStockGeneral = (props: Props) => {
     "stockBinId": 0,
     "voucherType": "",
     "voucherDate": defaultValues,
-    "createdBy": "adminvm",
-    "updatedBy": "adminvm",
+    "createdBy": UserId,
+    "updatedBy": "",
     "createdOn": defaultValues,
     "updatedOn": defaultValues,
     "expiryDate": defaultValues,

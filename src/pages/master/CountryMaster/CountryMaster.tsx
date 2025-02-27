@@ -24,7 +24,7 @@ import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { toast } from "react-toastify";
 import ToastApp from "../../../ToastApp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomDataGrid from "../../../utils/CustomDatagrid";
 import CustomLabel from "../../../CustomLable";
 import ButtonWithLoader from "../../../utils/ButtonWithLoader";
@@ -44,7 +44,7 @@ interface MenuPermission {
 export default function CountryMaster() {
   const { i18n, t } = useTranslation();
   const { defaultValues, defaultValuestime } = getISTDate();
-
+const UserId = getId();
   const [columns, setColumns] = useState<any>([]);
   const [rows, setRows] = useState<any>([]);
   const [editId, setEditId] = useState(0);
@@ -265,8 +265,8 @@ export default function CountryMaster() {
       countryId: 0,
       countryName: "",
       countryCode: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId ,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime
     },

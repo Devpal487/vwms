@@ -23,7 +23,7 @@ import api from "../../../utils/Url";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Autocomplete from "@mui/material/Autocomplete";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import CustomLabel from "../../../CustomLable";
 import ButtonWithLoader from "../../../utils/ButtonWithLoader";
 import CustomDataGrid from "../../../utils/CustomDatagrid";
@@ -42,6 +42,7 @@ interface MenuPermission {
 
 export default function StateMaster() {
   const { t } = useTranslation();
+  const UserId =getId();
   const { defaultValuestime } = getISTDate();
   const [zones, setZones] = useState([]);
   const [columns, setColumns] = useState<any>([]);
@@ -150,8 +151,8 @@ export default function StateMaster() {
       stateName: "",
       stateCode: "",
       countryId: 0,
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+      createdBy: UserId,
+      updatedBy: UserId,
       createdOn: defaultValuestime,
       updatedOn: defaultValuestime,
       countryName: "",

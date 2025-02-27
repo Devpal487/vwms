@@ -27,12 +27,13 @@ import Languages from "../../../Languages";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { getISTDate } from "../../../utils/Constant";
-
+import { getId} from "../../../utils/Constant";
 type Props = {};
 
 const CreateWorkShopPurchaseIndent = (props: Props) => {
   let navigate = useNavigate();
   const { t } = useTranslation();
+  const UserId = getId();
   const [lang, setLang] = useState<Language>("en");
   const { defaultValues } = getISTDate();
   const [toaster, setToaster] = useState(false);
@@ -152,8 +153,8 @@ const CreateWorkShopPurchaseIndent = (props: Props) => {
       indentNo: "",
       indentDate: defaultValues,
       remark: "",
-      createdBy: "adminvm",
-      updatedBy: "adminvm",
+    "createdBy": UserId,
+      "updatedBy": "",
       createdOn: defaultValues,
       updatedOn: defaultValues,
       companyId: 0,

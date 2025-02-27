@@ -33,7 +33,7 @@ import CustomLabel from "../../../CustomLable";
 import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
-import { getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 
 const style = {
     position: "absolute" as "absolute",
@@ -134,6 +134,7 @@ const CreateWorkShopPurchaseOrder = () => {
     const [indentOptions, setIndentOptions] = useState([
         { value: -1, label: t("text.SelectindentNo"), indenttype: "" },
     ]);
+    const UserId =getId();
     const [docOpen, setDocOpen] = useState(false);
     const [taxOption, setTaxOption] = useState<any>([]);
     const [itemOption, setitemOption] = useState<{ value: number; label: string; unitId?: number }[]>([
@@ -437,8 +438,8 @@ const CreateWorkShopPurchaseOrder = () => {
             "netAmount": 0,
             "status": "open",
             "orderType": "Workshop",
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
+            "createdBy": UserId,
+            "updatedBy": "",
             "createdOn": defaultValues,
             "updatedOn": defaultValues,
             "companyId": 0,

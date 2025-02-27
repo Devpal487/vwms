@@ -84,9 +84,9 @@ const EditemaileventForm = (props: Props) => {
             "sendingType": location.state.sendingType||"",
             "message": location.state.message,
             "isActive": location.state.isActive,
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
-            "createdOn": defaultValues,
+            "createdBy": location.state.createdBy,
+            "updatedBy": UserId,
+            "createdOn": location.state.createdOn,
             "updatedOn": defaultValues,
             "srn": location.state.srn
 
@@ -151,7 +151,7 @@ const EditemaileventForm = (props: Props) => {
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.EditEmaileventsetting")}
+                                {location.state.isView? t("text.Emaileventsetting"):t("text.EditEmaileventsetting")}
                             </Typography>
                         </Grid>
 
@@ -241,16 +241,18 @@ const EditemaileventForm = (props: Props) => {
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>
+                            {location.state.isView? "" :(
                                 <Grid>
                                     <ButtonWithLoader
                                         buttonText={t("text.update")}
                                         onClickHandler={handleSubmitWrapper}
                                         fullWidth={true}
                                     />
-                                </Grid>
+                                </Grid>)}
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>
+                            {location.state.isView? "" :(
                                 <Button
                                     type="reset"
                                     fullWidth
@@ -262,7 +264,7 @@ const EditemaileventForm = (props: Props) => {
                                     onClick={(e: any) => formik.resetForm()}
                                 >
                                     {t("text.reset")}
-                                </Button>
+                                </Button>)}
                             </Grid>
                         </Grid>
                     </form>

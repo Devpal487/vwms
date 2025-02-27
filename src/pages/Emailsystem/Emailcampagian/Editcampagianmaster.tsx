@@ -37,7 +37,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getISTDate } from "../../../utils/Constant";
+import {getId, getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -56,6 +56,7 @@ const unitOptions = [
 
 const EditemailcampgiontForm = (props: Props) => {
     const location = useLocation();
+    const UserId =getId();
     console.log('location', location.state)
     let navigate = useNavigate();
     const { t } = useTranslation();
@@ -250,9 +251,9 @@ const EditemailcampgiontForm = (props: Props) => {
             "toTime": location.state.toTime,
 
 
-            "createdBy": "adminvm",
-            "updatedBy": "adminvm",
-            "createdOn": defaultValues,
+            "createdBy": location.state.createdBy,
+            "updatedBy": UserId,
+            "createdOn": location.state.createdOn,
             "updatedOn": defaultValues,
             listGroups: location.state?.listGroups || [],
             listMembers: location.state?.listMembers || [],
@@ -322,7 +323,7 @@ const EditemailcampgiontForm = (props: Props) => {
                                 sx={{ padding: "20px" }}
                                 align="center"
                             >
-                                {t("text.EditEmailcampaign")}
+                                {location.state.isView? t("text.Emailcampaign1"):t("text.EditEmailcampaign")}
                             </Typography>
                         </Grid>
 
@@ -597,6 +598,7 @@ const EditemailcampgiontForm = (props: Props) => {
 
 
                             <Grid item lg={6} sm={6} xs={12}>
+                                {location.state.isView?"":(
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -607,9 +609,9 @@ const EditemailcampgiontForm = (props: Props) => {
                                     }}
                                 >
                                     {t("text.update")}
-                                </Button>
+                                </Button>)}
                             </Grid>
-                            <Grid item lg={6} sm={6} xs={12}>
+                            <Grid item lg={6} sm={6} xs={12}>  {location.state.isView?"":(
                                 <Button
                                     type="reset"
                                     fullWidth
@@ -621,7 +623,7 @@ const EditemailcampgiontForm = (props: Props) => {
                                     onClick={(e: any) => formik.resetForm()}
                                 >
                                     {t("text.reset")}
-                                </Button>
+                                </Button>)}
                             </Grid>
 
                         </Grid>
