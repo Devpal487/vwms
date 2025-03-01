@@ -248,12 +248,18 @@ const CreateSmscampagian = (props: Props) => {
             "srno": 0,
             "isExecute": true
         },
-        validationSchema: Yup.object({
-            campaignName: Yup.string()
-                .required("Campaign Name is required")
-                .min(2, "Campaign Name must be at least 2 characters")
-                .max(50, "Campaign Name cannot exceed 50 characters"),
-        }),
+         validationSchema: Yup.object({
+                   campaignName: Yup.string()
+                       .required("Campaign Name is required")
+                       .min(2, "Campaign Name must be at least 2 characters")
+                       .max(50, "Campaign Name cannot exceed 50 characters"),
+                   campaignDate: Yup.string().required("Campaign Date is required"),
+                   status: Yup.string().required("Status is required"),
+                   tamplateId: Yup.number().min(1, "Template is required").required("Template is required"),
+                   listGroups: Yup.array().min(1, "At least one group must be selected"),
+                   listMembers: Yup.array().min(1, "At least one member must be selected"),
+                   message: Yup.string().required("Message is required"),
+               }),
         onSubmit: async (values) => {
             values.toTime = toTime.toString();
             const response = await api.post(
@@ -364,6 +370,7 @@ const CreateSmscampagian = (props: Props) => {
                                     placeholder={t("text.Emailcampgiandate")}
                                     onChange={formik.handleChange}
                                     InputLabelProps={{ shrink: true }}
+                                    value={formik.values.campaignDate}
                                 />
                             </Grid>
 
@@ -384,6 +391,11 @@ const CreateSmscampagian = (props: Props) => {
                                         />
                                     )}
                                 />
+                                 {formik.touched.status && formik.errors.status ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.status}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item lg={4} xs={12}>
@@ -458,6 +470,11 @@ const CreateSmscampagian = (props: Props) => {
                                         />
                                     )}
                                 />
+                                {formik.touched.tamplateId && formik.errors.tamplateId ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.tamplateId}
+                                    </div>
+                                ) : null}
 
                             </Grid>
 
@@ -503,6 +520,11 @@ const CreateSmscampagian = (props: Props) => {
                                         />
                                     )}
                                 />
+                                  {formik.touched.listGroups && formik.errors.listGroups ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.listGroups}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -529,8 +551,14 @@ const CreateSmscampagian = (props: Props) => {
                                             {...params}
                                             label={<CustomLabel text={t("text.listMembers")} />}
                                         />
+                                        
                                     )}
                                 />
+                                   {formik.touched.listMembers && formik.errors.listMembers ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.listMembers}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item lg={12} md={12} xs={12} marginTop={2}>

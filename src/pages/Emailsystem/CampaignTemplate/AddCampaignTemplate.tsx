@@ -75,7 +75,7 @@ const AddCampagianTemplate = (props: Props) => {
             "templateId": 0,
             "template": "",
             "templateType": "",
-            "smsTemplateID": 0,
+            "smsTemplateID": null,
             "createdBy": UserId,
             "updatedBy": "",
             "createdOn": defaultValues,
@@ -86,6 +86,8 @@ const AddCampagianTemplate = (props: Props) => {
         validationSchema:Yup.object({
             smsTemplateID: Yup.string()
             .required("Sms Template Id is required"),
+            // template: Yup.string()
+            // .required("Template is required"),
 
         }),
 
@@ -201,10 +203,10 @@ const AddCampagianTemplate = (props: Props) => {
     
 <Grid item lg={4} xs={12}>
     <TextField
-    label={t("text.smsTemplateID")}
+     label={<CustomLabel text={t("text.smsTemplateID")} required={true} />}
+ //   label={t("text.smsTemplateID")}
     value={formik.values.smsTemplateID}
     onChange={(e) => formik.setFieldValue("smsTemplateID",e.target.value)}
-required={true}
 fullWidth
 size="small"
 />
@@ -246,9 +248,13 @@ size="small"
                                     
                                     modules={modules}
                                     formats={formats}
-                                  
                                      placeholder={t("text.Enteryourtemplatehere")}
                                 />
+                                {/* {(!formik.values.template) &&formik.touched.template && formik.errors.template ?(
+    <div style={{color: 'red',margin:"5px"}}>
+        {formik.errors.template}
+    </div>
+):null} */}
                             </Grid>
 
                             <Grid item lg={6} sm={6} xs={12}>

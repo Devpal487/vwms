@@ -118,8 +118,8 @@ import CreateOfficePurchaseOrder from "../pages/Inventory/OfficePurchaseOrder/Cr
 import EditJobCardItemReturn from "../pages/Inventory/JobCardItemReturn/EditJobCardItemReturn";
 import CreateJobCardItemReturn from "../pages/Inventory/JobCardItemReturn/CreateJobCardItemReturn";
 import JobCardItemReturn from "../pages/Inventory/JobCardItemReturn/JobCardItemReturn";
-import EditStockGeneral from "../pages/Inventory/StockGeneral/EditStockGeneral";
-import CreateStockGeneral from "../pages/Inventory/StockGeneral/CreateStockGeneral";
+// import EditStockGeneral from "../pages/Inventory/StockGeneral/EditStockGeneral";
+// import CreateStockGeneral from "../pages/Inventory/StockGeneral/CreateStockGeneral";
 import StockGeneral from "../pages/Inventory/StockGeneral/StockGeneral";
 import EditJobcardItemIssue from "../pages/Inventory/JobcardItemIssue/EditJobcardItemIssue";
 import CreateJobcardItemIssue from "../pages/Inventory/JobcardItemIssue/CreateJobcardItemIssue";
@@ -167,6 +167,7 @@ import Institute from "../pages/Admin/InstitueForm/Institute";
 import InstituteAdd from "../pages/Admin/InstitueForm/InstituteAdd";
 import InstituteEdit from "../pages/Admin/InstitueForm/InstituteEdit";
 import Helpdesk from "../pages/Admin/Helpdesk/Helpdesk";
+import ChangePassword from "../pages/Admin/ChangePassword/ChangePassword";
 //import Oragnisation from "../pages/Admin/Setting/Oragnisation";
 
 
@@ -508,18 +509,18 @@ const appRoutes: RouteType[] = [
           displayText: "Stock General",
         },
       },
-      {
+      // {
 
-        path: "/storemanagement/CreateStockGeneral",
-        element: <CreateStockGeneral />,
-        state: "Inventory.CreateStockGeneral",
-      },
-      {
-        path: "/storemanagement/EditStockGeneral",
-        element: <EditStockGeneral />,
-        state: "Inventory.EditStockGeneral",
+      //   path: "/storemanagement/CreateStockGeneral",
+      //   element: <CreateStockGeneral />,
+      //   state: "Inventory.CreateStockGeneral",
+      // },
+      // {
+      //   path: "/storemanagement/EditStockGeneral",
+      //   element: <EditStockGeneral />,
+      //   state: "Inventory.EditStockGeneral",
 
-      },
+      // },
 
       {
         path: "/storemanagement/itemreturn/jobcarditemreturn",
@@ -1591,6 +1592,14 @@ const appRoutes: RouteType[] = [
         state: "Admin.Helpdesk",
         sidebarProps: {
           displayText: "Help desk",
+        },
+      },
+      {
+        path: "/Admin/ChangePassword",
+        element: <ChangePassword />,
+        state: "Admin.ChangePassword",
+        sidebarProps: {
+          displayText: "Change Password",
         },
       },
       {

@@ -1435,7 +1435,7 @@ const CreateQualityCheck = (props: Props) => {
                           </td>
 
 
-                          {/* <td
+                          <td
                             style={{
                               border: "1px solid black",
                               textAlign: "center",
@@ -1448,7 +1448,7 @@ const CreateQualityCheck = (props: Props) => {
                               fullWidth
                               size="small"
                               value={
-                                taxData[taxData.findIndex((e: any) => e.value == row.gstId)]?.label || ""
+                                taxData[taxData.findIndex((e: any) => e.value == row.gstId)] || ""
                               }
                               //value={taxData.find((opt: any) => opt.value == row.gstId)}
                               onChange={(e: any, newValue: any) =>
@@ -1461,9 +1461,9 @@ const CreateQualityCheck = (props: Props) => {
                                 />
                               )}
                             />
-                          </td> */}
+                          </td>
 
-                          <td style={{ border: "1px solid black", textAlign: "center" }}>
+                          {/* <td style={{ border: "1px solid black", textAlign: "center" }}>
                             <TextField
                               size="small"
                               disabled={true}
@@ -1476,7 +1476,7 @@ const CreateQualityCheck = (props: Props) => {
                                 step: "any", min: "0"
                               }}
                             />
-                          </td>
+                          </td> */}
 
 
 

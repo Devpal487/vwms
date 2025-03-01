@@ -954,8 +954,11 @@ export default function HomePage() {
     };
     fetchAllStatuses();
   }, []);
-  const calculatePercentage = (count: number) =>
-    total ? Math.round((count / total) * 100) : 0;
+  // const calculatePercentage = (count: number) =>
+  //   total ? Math.round((count / total) * 100) : 0;
+  const calculatePercentage = (count: number, total: number) =>
+    total ? ((count / total) * 100).toFixed(1) : "0.00";
+
   const adjustedColumns4 = columns4.map((column: any) => ({
     ...column,
   }));
@@ -2479,37 +2482,7 @@ th, td {
                                     //   flex: 1,
                                     // },
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                 
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -3060,7 +3033,8 @@ th, td {
                             </Typography>
                             <ProgressBar
                               completed={calculatePercentage(
-                                complaints[key as keyof typeof complaints]
+                                complaints[key as keyof typeof complaints],
+                                total
                               )}
                               bgColor={getColor(key)}
                             />

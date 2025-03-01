@@ -37,7 +37,7 @@ import api from "../../../utils/Url";
 import { Language } from "react-transliterate";
 import Languages from "../../../Languages";
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getId , getISTDate } from "../../../utils/Constant";
+import { getId, getISTDate } from "../../../utils/Constant";
 import moment from "moment";
 import TranslateTextField from "../../../TranslateTextField";
 import ReactQuill from 'react-quill';
@@ -69,7 +69,7 @@ const CreatemailcampgiontForm = (props: Props) => {
     const [toaster, setToaster] = useState(false);
     const [toTime, setToTime] = useState<string>("");
     console.log('toTime', toTime)
-    const UserId =getId();
+    const UserId = getId();
 
     const [editorContent, setEditorContent] = useState<string>("");
     const handleEditorChange = (content: any) => {
@@ -106,24 +106,24 @@ const CreatemailcampgiontForm = (props: Props) => {
             "empid": -1,
             "userId": "",
         };
-    
+
         const response = await api.post(`Employee/GetEmployee`, collectData);
         const data = response.data.data;
-    
+
         const arr = data.map((item: any) => ({
             label: item.empName,
             value: item.empid,
         }));
-    
+
         setempOption([{ label: "Select All", value: "selectAll" }, ...arr]);
         setEmployeeData(data); // Save full employee details in state
     };
-    
+
     // const getEmpData = async () => {
     //     const collectData = {
     //         "empid": -1,
     //         "userId": "",
-            
+
     //     };
 
     //     const response = await api.post(`Employee/GetEmployee`, collectData);
@@ -144,7 +144,7 @@ const CreatemailcampgiontForm = (props: Props) => {
 
     const handleChange = (event: any, newValue: any) => {
         let updatedList;
-    
+
         if (newValue.some((option: any) => option.value === "selectAll")) {
             if (newValue.length === empOption.length) {
                 updatedList = [];
@@ -154,28 +154,28 @@ const CreatemailcampgiontForm = (props: Props) => {
         } else {
             updatedList = newValue;
         }
-    
+
         const memberId = updatedList.map((item: any) => {
             const selectedEmployee = employeeData.find((emp: any) => emp.empid === item.value);
-    
+
             return {
                 id: 0,
                 campaignId: 0,
                 groupId: 0,
                 memberId: item.value,
                 message: "",
-                emailId: selectedEmployee ? selectedEmployee.email : "", 
+                emailId: selectedEmployee ? selectedEmployee.email : "",
                 mobileNo: selectedEmployee ? selectedEmployee.empMobileNo : "",
                 receiverType: "",
-                name: selectedEmployee ? selectedEmployee.empName : "", 
+                name: selectedEmployee ? selectedEmployee.empName : "",
                 isSelected: true,
             };
         });
-    
+
         formik.setFieldValue("listMembers", memberId);
     };
-    
-    
+
+
 
     // const handleChange = (event: any, newValue: any) => {
     //     let updatedList;
@@ -241,7 +241,7 @@ const CreatemailcampgiontForm = (props: Props) => {
         initialValues: {
             "campaignId": 0,
             "campaignName": "",
-            "campaignDate":defaultValues,
+            "campaignDate": defaultValues,
             "campaignType": "EMAIL",
             "tamplateId": 0,
             "message": "",
@@ -258,12 +258,26 @@ const CreatemailcampgiontForm = (props: Props) => {
             "srno": 0,
             "isExecute": true
         },
+        // validationSchema: Yup.object({
+        //     campaignName: Yup.string()
+        //         .required("Campaign Name is required")
+        //         .min(2, "Campaign Name must be at least 2 characters")
+        //         .max(50, "Campaign Name cannot exceed 50 characters"),
+        // }),
+
         validationSchema: Yup.object({
             campaignName: Yup.string()
                 .required("Campaign Name is required")
                 .min(2, "Campaign Name must be at least 2 characters")
                 .max(50, "Campaign Name cannot exceed 50 characters"),
+            campaignDate: Yup.string().required("Campaign Date is required"),
+            status: Yup.string().required("Status is required"),
+            tamplateId: Yup.number().min(1, "Template is required").required("Template is required"),
+            listGroups: Yup.array().min(1, "At least one group must be selected"),
+            listMembers: Yup.array().min(1, "At least one member must be selected"),
+            message: Yup.string().required("Message is required"),
         }),
+
         onSubmit: async (values) => {
             values.toTime = toTime.toString();
             const response = await api.post(
@@ -372,11 +386,12 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     id="campaignDate"
                                     type="date"
                                     placeholder={t("text.Emailcampgiandate")}
-                                   // onChange={formik.handleChange}
-                                    onChange={(e) => {
-                                        formik.setFieldValue("campaignDate", e.target.value)
-                                     }}
+                                    onChange={formik.handleChange}
+                                    // onChange={(e) => {
+                                    //     formik.setFieldValue("campaignDate", e.target.value)
+                                    //  }}
                                     InputLabelProps={{ shrink: true }}
+                                    value={formik.values.campaignDate}
                                 />
                             </Grid>
 
@@ -393,10 +408,15 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.SelectStatus")} required={false} />}
+                                            label={<CustomLabel text={t("text.SelectStatus")} required={true} />}
                                         />
                                     )}
                                 />
+                                {formik.touched.status && formik.errors.status ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.status}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item lg={4} xs={12}>
@@ -467,11 +487,15 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.Template")} required={false} />}
+                                            label={<CustomLabel text={t("text.Template")} required={true} />}
                                         />
                                     )}
                                 />
-
+                                {formik.touched.tamplateId && formik.errors.tamplateId ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.tamplateId}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -512,10 +536,15 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.listGroups")} />}
+                                            label={<CustomLabel text={t("text.listGroups")} required={true} />}
                                         />
                                     )}
                                 />
+                                 {formik.touched.listGroups && formik.errors.listGroups ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.listGroups}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item xs={12} sm={4} lg={4}>
@@ -540,10 +569,15 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label={<CustomLabel text={t("text.listMembers")} />}
+                                            label={<CustomLabel text={t("text.listMembers")} required={true} />}
                                         />
                                     )}
                                 />
+                                  {formik.touched.listMembers && formik.errors.listMembers ? (
+                                    <div style={{ color: "red", margin: "5px" }}>
+                                        {formik.errors.listMembers}
+                                    </div>
+                                ) : null}
                             </Grid>
 
                             <Grid item lg={12} md={12} xs={12} marginTop={2}>
@@ -556,7 +590,7 @@ const CreatemailcampgiontForm = (props: Props) => {
                                     modules={modules}
                                     formats={formats}
                                     //  style={{ backgroundColor: "white", minHeight: "200px" }} 
-                            placeholder={t("text.Enteryourmessagehere")}
+                                    placeholder={t("text.Enteryourmessagehere")}
                                 />
                             </Grid>
 
