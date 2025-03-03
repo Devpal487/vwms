@@ -314,82 +314,85 @@ const LoginPage1 = () => {
          id: "",
       },
       validationSchema,
+      // onSubmit: async (values) => {
+      //    try {
+      //       setLoading(true);
+      //       const response = await api.post("Auth/login", values);
+
+      //       //console.log("values", values);
+      //       // Check if login is successful
+      //       if (response.data.status === 1) {
+      //          localStorage.setItem(
+      //              "userdata",
+      //              JSON.stringify([response.data.data])
+      //          );
+      //          localStorage.setItem(
+      //              "username",
+      //              JSON.stringify(response.data.data.userDetails.userName)
+      //          );
+      //          localStorage.setItem("ApplicationFlow", "outsource");
+           
+      //          // ✅ Store permissions in localStorage
+      //          localStorage.setItem("permissions", JSON.stringify(response.data.data.permissions));
+           
+      //          sessionStorage.setItem(
+      //              "token",
+      //              JSON.stringify(response.data.data.token)
+      //          );
+               
+      //          window.dispatchEvent(new Event("permissionsUpdated"));
+      //          navigate("/home");
+      //      }
+      //       else {
+      //          toast.error(response.data.message);
+      //       }
+      //    } catch (error) {
+      //       toast.error("Login Failed");
+
+      //    } finally {
+      //       setLoading(false);
+      //    }
+      // },
       onSubmit: async (values) => {
          try {
-            setLoading(true);
-            const response = await api.post("Auth/login", values);
-
-            //console.log("values", values);
-            // Check if login is successful
-            if (response.data.status === 1) {
-               localStorage.setItem(
-                   "userdata",
-                   JSON.stringify([response.data.data])
-               );
-               localStorage.setItem(
-                   "username",
-                   JSON.stringify(response.data.data.userDetails.userName)
-               );
+             setLoading(true);
+             const response = await api.post("Auth/login", values);
+     
+             // Check if login is successful
+             if (response.data.status === 1) {
+               const userData = response.data.data;
+               const token = userData.token;
+               const username = userData.userDetails.userName;
+               const permissions = userData.permissions;
+           
+               // ✅ Store token in both localStorage & sessionStorage
+               localStorage.setItem("token", token); 
+               sessionStorage.setItem("token", token);
+           
+               // ✅ Store username as a **string** (Fixing the issue)
+               localStorage.setItem("username", JSON.stringify(username)); 
+           
+               // ✅ Store permissions properly
+               localStorage.setItem("permissions", JSON.stringify(permissions));
+           
+               // ✅ Store user data (if needed)
+               localStorage.setItem("userdata", JSON.stringify(userData));
                localStorage.setItem("ApplicationFlow", "outsource");
            
-               // ✅ Store permissions in localStorage
-               localStorage.setItem("permissions", JSON.stringify(response.data.data.permissions));
-           
-               sessionStorage.setItem(
-                   "token",
-                   JSON.stringify(response.data.data.token)
-               );
-               
+               // ✅ Dispatch event for permission updates
                window.dispatchEvent(new Event("permissionsUpdated"));
-               navigate("/home");
+           
+               navigate("/home"); // Redirect after successful login
            }
             else {
-               toast.error(response.data.message);
-            }
+                 toast.error(response.data.message);
+             }
          } catch (error) {
-            toast.error("Login Failed");
-
+             toast.error("Login Failed. Please try again.");
          } finally {
-            setLoading(false);
+             setLoading(false);
          }
-      },
-   //    onSubmit: async (values) => {
-   //       try {
-   //           setLoading(true);
-   //           const response = await api.post("Auth/login", values);
-     
-   //           // Check if login is successful
-   //           if (response.data.status === 1) {
-   //               const userData = response.data.data;
-   //               const token = userData.token;
-   //               const username = userData.userDetails.userName;
-   //               const permissions = userData.permissions;
-     
-   //               // ✅ Store token in both localStorage & sessionStorage
-   //               localStorage.setItem("token", token); 
-   //               sessionStorage.setItem("token", token);
-     
-   //               // ✅ Store username & permissions
-   //               localStorage.setItem("username", username);
-   //               localStorage.setItem("permissions", JSON.stringify(permissions));
-     
-   //               // ✅ Store user data (if needed)
-   //               localStorage.setItem("userdata", JSON.stringify(userData));
-   //               localStorage.setItem("ApplicationFlow", "outsource");
-     
-   //               // ✅ Dispatch event for permission updates
-   //               window.dispatchEvent(new Event("permissionsUpdated"));
-     
-   //               navigate("/home"); // Redirect after successful login
-   //           } else {
-   //               toast.error(response.data.message);
-   //           }
-   //       } catch (error) {
-   //           toast.error("Login Failed. Please try again.");
-   //       } finally {
-   //           setLoading(false);
-   //       }
-   //   },
+     },
      
    });
    return (
