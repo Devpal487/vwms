@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+
 import { Navigate, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -98,6 +99,7 @@ interface Department {
   session_year: string;
 }
 export default function HomePage() {
+
   const [selectedCardId, setSelectedCardId] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,9 +111,7 @@ export default function HomePage() {
   const [totalComplaints, setTotalComplaints] = useState(0);
 
   let navigate = useNavigate();
-  // const handleClick1 = (key: any) => {
-  //   navigate(`/Reports/ComplainStatus`, { state: { status: key.toUpperCase() } });
-  // };
+ 
   const handleClick1 = (key: any) => {
     if (key.toLowerCase() === "inhouse") {
       return; // Do nothing for inhouse status
@@ -121,7 +121,7 @@ export default function HomePage() {
     });
   };
 
-  // <Button onClick={() => handleClick1("pending")}>Pending Complaints</Button>
+ 
 
   const handleClickVno = (key: any) => {
     navigate(`/Reports/VehicleItemService`, { state: {} });
@@ -165,6 +165,9 @@ export default function HomePage() {
   const [isShow5, setIsShow5] = useState<any>(false);
   const [isShow6, setIsShow6] = useState<any>(false);
   const { t } = useTranslation();
+
+  const [open, setOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
   const [RepairOption, setRepairOption] = useState<any[]>([]);
   const [ComplaintsOption, setComplaintsOption] = useState<any[]>([]);
   const [ReorderOption, setReorderOption] = useState<any[]>([]);
@@ -173,11 +176,7 @@ export default function HomePage() {
   const [DocumentTypeOption, setDocumentTypeOption] = useState<any[]>([]);
   useEffect(() => {
     GetTopVehicleActprice();
-    // GetTopVehicleMaxNoOfComplaints();
-    // GetTopItemIssued();
-    // GetReOrderLevel();
-    // GetTopVehiclewaiting();
-    // GetScrapDetail();
+   
   }, []);
   useEffect(() => {
     setIsShow(true);
@@ -512,7 +511,19 @@ export default function HomePage() {
       console.error("Error fetching data:", error);
     }
   };
+  const handleClickOpen = (image:any) => {
+    setSelectedImage(image);
+    setOpen(true);
+  };
 
+  const handleCloseicon = () => {
+    setOpen(false);
+    setSelectedImage(""); // Clear the image when closed
+  };
+  
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   const handleClick = (id: any) => {
     setSelectedCardId(id);
     if (id === 0) {
@@ -602,56 +613,7 @@ export default function HomePage() {
     }
   };
 
-  // const handleClick = (id: any) => {
-  //   if (id === 0) {
-  //     setIsShow(true);
-  //     setIsShow2(false);
-  //     setIsShow3(false);
-  //     setIsShow4(false);
-  //     setIsShow5(false);
-  //     setIsShow6(false);
-  //   } else if (id === 1) {
-  //     setIsShow(false);
-  //     setIsShow2(true);
-  //     setIsShow3(false);
-  //     setIsShow4(false);
-  //     setIsShow5(false);
-  //     setIsShow6(false);
-  //   }
-  //   else if (id === 2) {
-  //     setIsShow(false);
-  //     setIsShow2(false);
-  //     setIsShow3(true);
-  //     setIsShow4(false);
-  //     setIsShow5(false);
-  //     setIsShow6(false);
-  //   }
-  //   else if (id === 3) {
-  //     setIsShow(false);
-  //     setIsShow2(false);
-  //     setIsShow3(false);
-  //     setIsShow4(true);
-  //     setIsShow5(false);
-  //     setIsShow6(false);
-  //   }
-  //   else if (id === 4) {
-  //     setIsShow(false);
-  //     setIsShow2(false);
-  //     setIsShow3(false);
-  //     setIsShow4(false);
-  //     setIsShow5(true);
-  //     setIsShow6(false);
-  //   }
-  //   else if (id === 5) {
-  //     setIsShow(false);
-  //     setIsShow2(false);
-  //     setIsShow3(false);
-  //     setIsShow4(false);
-  //     setIsShow5(false);
-  //     setIsShow6(true);
-  //   }
-  // };
-
+ 
   const [recentlyIssueTransactionOption] = useState(false);
   const [isVisible, setVisible] = useState(false);
   const [zones1, setZones1] = useState([]);
@@ -1050,73 +1012,7 @@ export default function HomePage() {
     }
   };
 
-  //   const handlePrint = () => {
-  //     const rowsToPrint = getTop
-  //       ? RepairOption.slice(0, 10)
-  //       : RepairOption;
-  //     if (rowsToPrint.length === 0) {
-  //       console.error("No data to print.");
-  //       return;
-  //     }
-  //     const printContent = `
-  //       <table>
-  //         <thead>
-  //           <tr>
-  //             <th>Vehicle No.</th>
-  //             <th>Vehicle Type</th>
-  //             <th>Actual Price</th>
-  //             <th>Expense</th>
-  //             <th>Age</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           ${rowsToPrint
-  //         .map(
-  //           (row) => `
-  //             <tr>
-  //               <td>${row.vehicleNo}</td>
-  //               <td>${row.vehicleTypename}</td>
-  //               <td>${row.actprice}</td>
-  //               <td>${row.amount}</td>
-  //               <td>${row.age}</td>
-  //             </tr>`
-  //         )
-  //         .join("")}
-  //         </tbody>
-  //       </table>
-  //     `;
-  //     const printWindow = window.open("", "_blank");
-  //     if (printWindow) {
-  //       printWindow.document.write(`
-  //         <html>
-  //           <head>
-  //             <title> VEHICLE EXPENDITURE REPORT</title>
-  //             <style>
-  //               body {
-  //                 font-family: Arial, sans-serif;
-  //               }
-  //               table {
-  //                 width: 100%;
-  //                 border-collapse: collapse;
-  //               }
-  //              table, th, td {
-  //   border: 0.1em solid black;
-  // }
-  // th, td {
-  //   padding: 0.5%;
-  //   text-align: left;
-  // }
-  //             </style>
-  //           </head>
-  //           <body>${printContent}</body>
-  //         </html>
-  //       `);
-  //       printWindow.document.close();
-  //       printWindow.print();
-  //     } else {
-  //       console.error("Failed to open print window. Ensure pop-ups are allowed.");
-  //     }
-  //   };
+
   const handlePrint1 = () => {
     const rowsToPrint = getTop ? filteredRows1.slice(0, 10) : filteredRows1;
 
@@ -1125,13 +1021,7 @@ export default function HomePage() {
       return;
     }
 
-    // const filteredRows = RepairOption.filter((row: any) =>
-    //   columns.some((column) =>
-    //     String(row[column.field] || "")
-    //       .toLowerCase()
-    //       .includes(searchTerm.toLowerCase())
-    //   )
-    // );
+  
 
     const printContent = `
       <table>
@@ -2057,22 +1947,7 @@ th, td {
                       {isShow && (
                         <Grid container spacing={2}>
                           <Grid item xs={12} sm={12} lg={12}>
-                            {/* <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          /> */}
-                            {/* <Grid item xs={12} sm={12} lg={12}> */}
+                           
                             {isLoading1 ? (
                               <div
                                 style={{
@@ -2092,15 +1967,9 @@ th, td {
                                       ? filteredRows.slice(0, 10) // Apply filtering and Top 10 logic
                                       : filteredRows
                                   }
-                                  // rows={getTop ? RepairOption.slice(0, 10) : RepairOption}
-                                  // rows={RepairOption.length > 0 ? RepairOption : []}
+                                
                                   columns={[
-                                    // { field: "serialNo", headerName: t("text.SrNo"), flex: 1 },
-                                    // { field: "vehicleNo", headerName: t("text.vehicleNo12"), flex: 1 },
-                                    // { field: "vehicleTypename", headerName: t("text.VehicleType"), flex: 1 },
-                                    // { field: "actprice", headerName:  t("text.ActualPrice"), flex: 1 },
-                                    // { field: "amount", headerName: t("text.Expense"), flex: 1 },
-                                    // { field: "age", headerName: t("text.Age"), flex: 1 },
+                                   
                                     {
                                       field: "vehicleNo",
                                       headerName: t("text.vehicleNo12"),
@@ -2120,15 +1989,7 @@ th, td {
                                                   vehicleNo:
                                                     params.row.vehicleNo,
                                                 },
-                                                // for report page
-                                                //    import { useLocation } from 'react-router-dom';
-
-                                                // const VehicleItemServicePage = () => {
-                                                //   const location = useLocation();
-                                                //   const { vehicleNo } = location.state || {};
-
-                                                //   return <div>Vehicle No: {vehicleNo}</div>;
-                                                // };
+                                               
                                               }
                                             );
                                           }}
@@ -2186,37 +2047,7 @@ th, td {
                                       flex: 0.7,
                                     },
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -2259,22 +2090,7 @@ th, td {
                       {isShow2 && (
                         <Grid container spacing={2}>
                           <Grid item xs={12} sm={12} lg={12}>
-                            {/* <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint1}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          />
-                          <Grid item xs={12} sm={12} lg={12}> */}
+                           
                             {isLoading1 ? (
                               <div
                                 style={{
@@ -2336,38 +2152,13 @@ th, td {
                                       headerName: t("text.Expense"),
                                       flex: 1,
                                     },
+                                    {
+                                      field:"status",
+                                      headerName: t("text.Status"),
+                                      flex: 1,
+                                    }
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                 
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -2409,22 +2200,7 @@ th, td {
                       )}
                       {isShow3 && (
                         <Grid container spacing={2}>
-                          {/* <Grid item xs={12} sm={2} lg={2}>
-                            <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint2}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          /> */}
+                         
                           <Grid item xs={12} sm={12} lg={12}>
                             {isLoading1 ? (
                               <div
@@ -2471,11 +2247,28 @@ th, td {
                                         );
                                       },
                                     },
+                                    // {
+                                    //   field: "attachment",
+                                    //   headerName: t("text.Document"),
+                                    //   flex: 1.5,
+                                    // },
                                     {
                                       field: "attachment",
                                       headerName: t("text.Document"),
                                       flex: 1.5,
+                                      renderCell: (params) =>
+                                        params.row.attachment ? (
+                                          <span
+                                            onClick={() => handleClickOpen(params.row.attachment)}
+                                            style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+                                          >
+                                            View Image
+                                          </span>
+                                        ) : (
+                                          "No Image"
+                                        ),
                                     },
+                                    
                                     // {
                                     //   field: "licenceType",
                                     //   headerName: t("text.DocumentType"),
@@ -2522,24 +2315,29 @@ th, td {
                           </Grid>
                         </Grid>
                       )}
+   <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+  <DialogTitle>
+    Document Preview
+    <IconButton
+      aria-label="close"
+      onClick={handleCloseicon}
+      sx={{
+        position: "absolute",
+        right: 8,
+        top: 8,
+        color: (theme) => theme.palette.grey[500],
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+  </DialogTitle>
+  <DialogContent>
+    <img src={selectedImage} alt="Document Preview" style={{ width: "100%" }} />
+  </DialogContent>
+</Dialog>;
                       {isShow4 && (
                         <Grid container spacing={2}>
-                          {/* <Grid item xs={12} sm={2} lg={2}>
-                            <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint3}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          /> */}
+                         
                           <Grid item xs={12} sm={12} lg={12}>
                             {isLoading1 ? (
                               <div
@@ -2569,22 +2367,54 @@ th, td {
                                     {
                                       field: "vehicleRegistrationDate",
                                       headerName: t("text.RegistrationOn"),
-                                      flex: 0.9,
+                                      flex: 1,
                                       renderCell(params) {
                                         return dayjs(
                                           params.row.vehicleRegistrationDate
                                         ).format("DD-MMM-YYYY");
                                       },
                                     },
+                                    // {
+                                    //   field: "filename",
+                                    //   headerName: t("text.RCDocument1"),
+                                    //   flex: 1,
+                                    // },
                                     {
                                       field: "filename",
                                       headerName: t("text.RCDocument1"),
                                       flex: 1,
+                                      renderCell: (params) =>
+                                        params.row.filename ? (
+                                          <span
+                                            onClick={() => handleClickOpen(params.row.filename)}
+                                            style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+                                          >
+                                            View Image
+                                          </span>
+                                        ) : (
+                                          "No Image"
+                                        ),
                                     },
+                                    // {
+                                    //   field: "vehiclePhotoFile",
+                                    //   headerName: t("text.vehiclePhoto"),
+                                    //   flex: 1.2,
+                                    // },
                                     {
                                       field: "vehiclePhotoFile",
                                       headerName: t("text.vehiclePhoto"),
-                                      flex: 1.2,
+                                      flex: 1,
+                                      renderCell: (params) =>
+                                        params.row.vehiclePhotoFile ? (
+                                          <span
+                                            onClick={() => handleClickOpen(params.row.vehiclePhotoFile)}
+                                            style={{ color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+                                          >
+                                            View Image
+                                          </span>
+                                        ) : (
+                                          "No Image"
+                                        ),
                                     },
                                     {
                                       field: "vehicleTypename",
@@ -2592,37 +2422,7 @@ th, td {
                                       flex: 1,
                                     },
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -2662,24 +2462,10 @@ th, td {
                           </Grid>
                         </Grid>
                       )}
+
                       {isShow5 && (
                         <Grid container spacing={2}>
-                          {/* <Grid item xs={12} sm={2} lg={2}>
-                            <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint4}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          /> */}
+                       
                           <Grid item xs={12} sm={12} lg={12}>
                             {isLoading1 ? (
                               <div
@@ -2748,37 +2534,7 @@ th, td {
                                       },
                                     },
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                  
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -2820,22 +2576,7 @@ th, td {
                       )}
                       {isShow6 && (
                         <Grid container spacing={2}>
-                          {/* <Grid item xs={12} sm={2} lg={2}>
-                            <PrintIcon
-                              fontSize="large"
-                              sx={{ color: "blue", cursor: "pointer" }}
-                              onClick={handlePrint5}
-                            />
-                          </Grid>
-                          <FormControlLabel
-                            control={
-                              <Checkbox
-                                checked={getTop}
-                                onChange={(e) => setGetTop(e.target.checked)}
-                              />
-                            }
-                            label="Top 10"
-                          /> */}
+                        
                           <Grid item xs={12} sm={12} lg={12}>
                             {isLoading1 ? (
                               <div
@@ -2873,37 +2614,7 @@ th, td {
                                       },
                                     },
                                   ]}
-                                  // autoHeight
-                                  // pageSizeOptions={[5, 10, 25, 50, 100].map(
-                                  //   (size) => ({
-                                  //     value: size,
-                                  //     label: `${size}`,
-                                  //   })
-                                  // )}
-                                  // initialState={{
-                                  //   pagination: {
-                                  //     paginationModel: { pageSize: 5 },
-                                  //   },
-                                  // }}
-                                  // slotProps={{
-                                  //   toolbar: { showQuickFilter: false },
-                                  // }}
-                                  // sx={{
-                                  //   border: 0,
-                                  //   "& .MuiDataGrid-columnHeaders": {
-                                  //     backgroundColor: `var(--grid-headerBackground)`,
-                                  //     color: `var(--grid-headerColor)`,
-                                  //   },
-                                  //   "& .MuiDataGrid-columnHeaderTitle": {
-                                  //     color: "white",
-                                  //   },
-                                  //   "& .MuiDataGrid-iconButtonContainer": {
-                                  //     color: "#fff !important", // Change arrow color
-                                  //   },
-                                  //   "& .MuiDataGrid-sortIcon": {
-                                  //     color: "#fff !important", // Ensures sort icon color change
-                                  //   },
-                                  // }}
+                                
                                   slots={{
                                     toolbar: GridToolbar,
                                   }}
@@ -2984,28 +2695,7 @@ th, td {
                         {t("text.ComplaintStatus")}
                         <br />
                       </Typography>
-                      {/* <div style={{ padding: "1%" }}>
-                        {Object.keys(complaints).map((key) => (
-                          <div key={key}>
-                            <Typography
-                              variant="h6"
-                              style={{
-                                color: getColor(key),
-                                cursor: "pointer",
-                                fontSize: "100%",
-                                margin: "2.5%",
-                              }}
-                              onClick={() => handleClick1(key)}
-                            >
-                              {key.toUpperCase()}: {complaints[key as keyof typeof complaints]}
-                            </Typography>
-                            <ProgressBar
-                              completed={calculatePercentage(complaints[key as keyof typeof complaints])}
-                              bgColor={getColor(key)}
-                            />
-                          </div>
-                        ))}
-                      </div> */}
+                    
                       <div style={{ padding: "2%" }}>
                         {Object.keys(complaints).map((key) => (
                           <div key={key}>

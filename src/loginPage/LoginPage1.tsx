@@ -314,71 +314,84 @@ const LoginPage1 = () => {
          id: "",
       },
       validationSchema,
+      // onSubmit: async (values) => {
+      //    try {
+      //       setLoading(true);
+      //       const response = await api.post("Auth/login", values);
+
+      //       //console.log("values", values);
+      //       // Check if login is successful
+      //       if (response.data.status === 1) {
+      //          localStorage.setItem(
+      //              "userdata",
+      //              JSON.stringify([response.data.data])
+      //          );
+      //          localStorage.setItem(
+      //              "username",
+      //              JSON.stringify(response.data.data.userDetails.userName)
+      //          );
+      //          localStorage.setItem("ApplicationFlow", "outsource");
+           
+      //          // ✅ Store permissions in localStorage
+      //          localStorage.setItem("permissions", JSON.stringify(response.data.data.permissions));
+           
+      //          sessionStorage.setItem(
+      //              "token",
+      //              JSON.stringify(response.data.data.token)
+      //          );
+               
+      //          window.dispatchEvent(new Event("permissionsUpdated"));
+      //          navigate("/home");
+      //      }
+      //       else {
+      //          toast.error(response.data.message);
+      //       }
+      //    } catch (error) {
+      //       toast.error("Login Failed");
+
+      //    } finally {
+      //       setLoading(false);
+      //    }
+      // },
       onSubmit: async (values) => {
          try {
-            setLoading(true);
-            const response = await api.post("Auth/login", values);
-
-            //console.log("values", values);
-            // Check if login is successful
-            if (response.data.status === 1) {
-               localStorage.setItem(
-                   "userdata",
-                   JSON.stringify([response.data.data])
-               );
-               localStorage.setItem(
-                   "username",
-                   JSON.stringify(response.data.data.userDetails.userName)
-               );
-               localStorage.setItem("ApplicationFlow", "outsource");
-           
-               // ✅ Store permissions in localStorage
-               localStorage.setItem("permissions", JSON.stringify(response.data.data.permissions));
-           
-               sessionStorage.setItem(
-                   "token",
-                   JSON.stringify(response.data.data.token)
-               );
-               window.dispatchEvent(new Event("permissionsUpdated"));
-               navigate("/home");
-           }
-
-      
-
-           
-         
-           
-
-
-
-            // if (response.data.status === 1) {
-            //    localStorage.setItem(
-            //       "userdata",
-            //       JSON.stringify([response.data.data])
-            //    );
-            //    localStorage.setItem(
-            //       "username",
-            //       JSON.stringify(response.data.data.userDetails.userName)
-            //    );
-            //    localStorage.setItem("ApplicationFlow", "outsource");
-            //    sessionStorage.setItem(
-            //       "token",
-            //       JSON.stringify(response.data.data.token)
-            //    );
-            //    navigate("/home");
-            // } 
-            else {
-               toast.error(response.data.message);
-            }
+             setLoading(true);
+             const response = await api.post("Auth/login", values);
+     
+             // Check if login is successful
+             if (response.data.status === 1) {
+                 const userData = response.data.data;
+                 const token = userData.token;
+                 const username = userData.userDetails.userName;
+                 const permissions = userData.permissions;
+     
+                 // ✅ Store token in both localStorage & sessionStorage
+                 localStorage.setItem("token", token); 
+                 sessionStorage.setItem("token", token);
+     
+                 // ✅ Store username & permissions
+                 localStorage.setItem("username", username);
+                 localStorage.setItem("permissions", JSON.stringify(permissions));
+     
+                 // ✅ Store user data (if needed)
+                 localStorage.setItem("userdata", JSON.stringify(userData));
+                 localStorage.setItem("ApplicationFlow", "outsource");
+     
+                 // ✅ Dispatch event for permission updates
+                 window.dispatchEvent(new Event("permissionsUpdated"));
+     
+                 navigate("/home"); // Redirect after successful login
+             } else {
+                 toast.error(response.data.message);
+             }
          } catch (error) {
-            toast.error("Login Failed");
-
+             toast.error("Login Failed. Please try again.");
          } finally {
-            setLoading(false);
+             setLoading(false);
          }
-      },
+     },
+     
    });
-
    return (
       <Grid container sx={{ justifyContent: "center", alignContent: "center", backgroundImage: `url(${LoginBg})`, backgroundSize: "cover", height: "100vh", opacity: "80%", padding: "5%" }}>
          {/* <Grid item xs={6} sm={6} md={6} sx={{ backgroundImage: `url${LoginImg}`, backgroundSize: "cover", justifyContent: "center", alignContent: "center", }}></Grid> */}
@@ -443,55 +456,6 @@ const LoginPage1 = () => {
                   {formik.touched.password && formik.errors.password && (
                      <div style={{ color: "#e7d215", marginTop: "-10px", marginBottom: "15px" }}>Password is required</div>
                   )}
-
-
-
-
-
-                  {/* <RadioGroup
-                     row
-                     aria-label="type"
-                     name="type"
-                     sx={{ borderColor: "#fff" }}
-                  >
-                     <FormControlLabel
-                        value="Outsource"
-                        control={
-                           <Radio
-                              sx={{
-                                 color: "#fff",
-                                 "&.Mui-checked": {
-                                    color: "#fff",
-                                 },
-                              }}
-                           />
-                        }
-                        label={t("text.Outsource")}
-                        sx={{
-                           marginTop: "-1%",
-                           color: "#fff",
-                        }}
-                     />
-                     <FormControlLabel
-                        value="Inhouse and Outsource"
-                        control={
-                           <Radio
-                              sx={{
-                                 color: "#fff",
-                                 "&.Mui-checked": {
-                                    color: "#fff",
-                                 },
-                              }}
-                           />
-                        }
-                        label={t("text.InhouseandOutsource")}
-                        sx={{ color: "#fff" }}
-                     />
-                  </RadioGroup> */}
-
-
-
-
                   <Button
                      fullWidth
                      variant="contained"
